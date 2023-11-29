@@ -1,0 +1,7 @@
+/vendor/
+composer.lock
+.phpunit.result.cache
+/var/
+/tests/fixtures/cache/
+/tests/fixtures/var/
+/.phpunit.cache/
