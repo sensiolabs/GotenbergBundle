@@ -14,7 +14,7 @@ use Symfony\Component\Config\Definition\Processor;
  * @phpstan-import-type ConfigOptions from BuilderTrait
  */
 #[CoversClass(Configuration::class)]
-class ConfigurationTest extends TestCase
+final class ConfigurationTest extends TestCase
 {
     /**
      * @return array{base_uri: string, default_options: ConfigOptions}
