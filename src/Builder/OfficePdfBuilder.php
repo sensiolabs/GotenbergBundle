@@ -3,14 +3,14 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
-use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
 use Twig\Environment;
 
 final class OfficePdfBuilder implements BuilderInterface
 {
     use BuilderTrait;
 
-    public const ENDPOINT = '/forms/libreoffice/convert';
+    private const ENDPOINT = '/forms/libreoffice/convert';
 
     private const AVAILABLE_EXTENSIONS = [
         'bib',
@@ -94,7 +94,7 @@ final class OfficePdfBuilder implements BuilderInterface
         'xltx',
     ];
 
-    public function __construct(private Gotenberg $gotenberg, private Environment $twig, private string $projectDir)
+    public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
     {}
 
     public function getEndpoint(): string

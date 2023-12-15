@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('http://localhost:3000')
                     ->cannotBeEmpty()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return preg_match('/^(http|https):\/\//', $option) !== 1;
                         })
                         ->thenInvalid('Invalid API Gotenberg host.')
@@ -78,7 +78,7 @@ class Configuration implements ConfigurationInterface
                             ->info('Page ranges to print, e.g., "1-5, 8, 11-13" - default All pages. https://gotenberg.dev/docs/routes#page-properties-chromium')
                             ->defaultNull()
                             ->validate()
-                                ->ifTrue(static function ($option) {
+                                ->ifTrue(static function ($option): bool {
                                     return preg_match('/([\d]+[-][\d]+)/', $option) !== 1;
                                 })
                                 ->thenInvalid('Invalid range values, the range value format need to look like e.g 1-20.')
@@ -88,7 +88,7 @@ class Configuration implements ConfigurationInterface
                             ->info('Duration (e.g, "5s") to wait when loading an HTML document before converting it into PDF - default None. https://gotenberg.dev/docs/routes#wait-before-rendering')
                             ->defaultNull()
                             ->validate()
-                                ->ifTrue(static function ($option) {
+                                ->ifTrue(static function ($option): bool {
                                     return !is_string($option);
                                 })
                                 ->thenInvalid('Invalid value %s')
@@ -119,14 +119,29 @@ class Configuration implements ConfigurationInterface
                                 ->thenInvalid('Invalid value %s')
                             ->end()
                         ->end()
-                        ->scalarNode('extra_http_headers')
-                            ->info('HTTP headers to send by Chromium while loading the HTML document (JSON format) - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
-                            ->defaultNull()
-                            ->validate()
-                                ->ifTrue(static function ($option) {
-                                    return !is_string($option);
-                                })
-                                ->thenInvalid('Invalid value %s')
+                        ->arrayNode('extra_http_headers')
+                            ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
+                            ->defaultValue([])
+                            ->useAttributeAsKey('name')
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('name')
+                                        ->validate()
+                                            ->ifTrue(static function ($option) {
+                                                return !is_string($option);
+                                            })
+                                            ->thenInvalid('Invalid header name %s')
+                                        ->end()
+                                    ->end()
+                                    ->scalarNode('value')
+                                        ->validate()
+                                            ->ifTrue(static function ($option) {
+                                                return !is_string($option);
+                                            })
+                                            ->thenInvalid('Invalid header value %s')
+                                        ->end()
+                                    ->end()
+                                ->end()
                             ->end()
                         ->end()
                         ->booleanNode('fail_on_console_exceptions')

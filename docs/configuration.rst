@@ -40,4 +40,26 @@ The default configuration for the bundle looks like :
 
     For more information about the `defaults properties`_.
 
+Customization
+-------------
+
+Extra HTTP headers
+~~~~~~~~~~~~~~~~~~
+
+HTTP headers to send by Chromium while loading the HTML document.
+
+.. code-block:: yaml
+
+    sensiolabs_gotenberg:
+        base_uri: 'http://localhost:3000'
+        options:
+            extra_http_headers:
+                - { name: 'My-Header', value: 'MyValue' }
+                - { name: 'User-Agent', value: 'MyValue' }
+
+.. tip::
+
+    For more information about `custom HTTP headers`_.
+
 .. _defaults properties: https://gotenberg.dev/docs/routes#page-properties-chromium
+.. _custom HTTP headers: https://gotenberg.dev/docs/routes#custom-http-headers

@@ -24,6 +24,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
  *      'failOnConsoleExceptions'?: bool,
  *      'pdfa'?: string,
  *      'pdfua'?: bool,
+ *      'files' ?: object,
  * }>
  */
 interface BuilderInterface

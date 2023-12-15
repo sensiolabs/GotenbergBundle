@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
-use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
@@ -13,9 +13,9 @@ final class MarkdownPdfBuilder implements BuilderInterface
 {
     use BuilderTrait;
 
-    public const ENDPOINT = '/forms/chromium/convert/markdown';
+    private const ENDPOINT = '/forms/chromium/convert/markdown';
 
-    public function __construct(private Gotenberg $gotenberg, private Environment $twig, private string $projectDir)
+    public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
     {}
 
     public function getEndpoint(): string
@@ -23,6 +23,9 @@ final class MarkdownPdfBuilder implements BuilderInterface
         return self::ENDPOINT;
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function content(string $path, array $context = []): self
     {
         $this->addTwigTemplate($path, PdfPart::BodyPart, $context);

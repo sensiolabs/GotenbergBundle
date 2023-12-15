@@ -34,13 +34,16 @@ class GotenbergClient
         return $response;
     }
 
+    /**
+     * @return array<string|int, mixed>
+     */
     private function prepareHeaders(FormDataPart $dataPart): array
     {
         $preparedHeaders = $dataPart->getPreparedHeaders();
 
         $headers = [];
         foreach ($preparedHeaders->getNames() as $header) {
-            $headers[$header] = $preparedHeaders->get($header)->getBodyAsString();
+            $headers[$header] = $preparedHeaders->get($header)?->getBodyAsString();
         }
 
         return $headers;

@@ -17,9 +17,40 @@ use Symfony\Component\Config\Definition\Processor;
 final class ConfigurationTest extends TestCase
 {
     /**
-     * @return array{base_uri: string, default_options: ConfigOptions}
+     * @return array<string, list<mixed>>
      */
-    public static function getBundleDefaultConfig(): array
+    public static function provideInvalidRange(): array
+    {
+        return [
+            'as string' => ['string'],
+            'as integer' => [12],
+            'as boolean' => [false],
+        ];
+    }
+
+    /**
+     * @return iterable<string, list<array<string, mixed>>>
+     */
+    public static function provideValidOptionsConfiguration(): iterable
+    {
+        yield 'paper size config' => [['paper_width' => 33.1, 'paper_height' => 46.8, 'margin_top' => 1, 'margin_bottom' => 1, 'margin_left' => 1, 'margin_right' => 1]];
+        yield 'styles config' => [['prefer_css_page_size' => true, 'print_background' => true, 'omit_background' => true, 'landscape' => true]];
+        yield 'different scale' => [['scale' => 2.0]];
+        yield 'range a page to generate' => [['native_page_ranges' => '1-12']];
+        yield 'delay to wait before generate' => [['wait_delay' => '5s', 'wait_for_expression' => 'window.globalVar === "ready"']];
+        yield 'emulated media type' => [['emulated_media_type' => 'screen']];
+        yield 'different user agent' => [['user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1']];
+        yield 'exception render' => [['fail_on_console_exceptions' => true]];
+        yield 'pdf format configuration' => [['pdf_format' => 'PDF/A-3b', 'pdf_universal_access' => true]];
+    }
+
+    /**
+     * @return array{
+     *     'base_uri': string,
+     *     'default_options': array<string, mixed>
+     * }
+     */
+    private static function getBundleDefaultConfig(): array
     {
         return [
             'base_uri' => 'http://localhost:3000',
@@ -40,7 +71,7 @@ final class ConfigurationTest extends TestCase
                 'wait_for_expression' => null,
                 'emulated_media_type' => null,
                 'user_agent' => null,
-                'extra_http_headers' => null,
+                'extra_http_headers' => [],
                 'fail_on_console_exceptions' => null,
                 'pdf_format' => null,
                 'pdf_universal_access' => null,
@@ -48,30 +79,7 @@ final class ConfigurationTest extends TestCase
         ];
     }
 
-    public static function provideInvalidRange(): array
-    {
-        return [
-            'as string' => ['string'],
-            'as integer' => [12],
-            'as boolean' => [false],
-        ];
-    }
-
-    public static function provideValidOptionsConfiguration(): iterable
-    {
-        yield 'paper size config' => [['paper_width' => 33.1, 'paper_height' => 46.8, 'margin_top' => 1, 'margin_bottom' => 1, 'margin_left' => 1, 'margin_right' => 1]];
-        yield 'styles config' => [['prefer_css_page_size' => true, 'print_background' => true, 'omit_background' => true, 'landscape' => true]];
-        yield 'different scale' => [['scale' => 2.0]];
-        yield 'range a page to generate' => [['native_page_ranges' => '1-12']];
-        yield 'delay to wait before generate' => [['wait_delay' => '5s', 'wait_for_expression' => 'window.globalVar === "ready"']];
-        yield 'emulated media type' => [['emulated_media_type' => 'screen']];
-        yield 'different user agent' => [['user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1', 'extra_http_headers' => '{\"MyHeader\": \"MyValue\"}'],];
-        yield 'different header options' => [['extra_http_headers' => '{\"MyHeader\": \"MyValue\"}']];
-        yield 'exception render' => [['fail_on_console_exceptions' => true]];
-        yield 'pdf format configuration' => [['pdf_format' => 'PDF/A-3b', 'pdf_universal_access' => true]];
-    }
-
-    public function testDefaultConfig()
+    public function testDefaultConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(
@@ -79,10 +87,10 @@ final class ConfigurationTest extends TestCase
             []
         );
 
-        $this->assertEquals(self::getBundleDefaultConfig(), $config);
+        self::assertEquals(self::getBundleDefaultConfig(), $config);
     }
 
-    public function testInvalidHost()
+    public function testInvalidHost(): void
     {
         $this->expectException(InvalidConfigurationException::class);
         $processor = new Processor();
@@ -93,7 +101,7 @@ final class ConfigurationTest extends TestCase
     }
 
     #[DataProvider('provideInvalidRange')]
-    public function testInvalidRange($range)
+    public function testInvalidRange(mixed $range): void
     {
         $this->expectException(InvalidConfigurationException::class);
         $processor = new Processor();
@@ -103,10 +111,14 @@ final class ConfigurationTest extends TestCase
         );
     }
 
+    /**
+     * @param array<string, mixed> $optionConfig
+     */
     #[DataProvider('provideValidOptionsConfiguration')]
-    public function testValidOptionsConfiguration($optionConfig)
+    public function testValidOptionsConfiguration(array $optionConfig): void
     {
         $processor = new Processor();
+        /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
         $config = $processor->processConfiguration(new Configuration(), [
             [
                 'base_uri' => 'http://gotenberg:3000',
@@ -114,10 +126,37 @@ final class ConfigurationTest extends TestCase
             ]
         ]);
 
-        $config = array_filter($config['default_options'], static function($value) {
-            return $value !== null;
-        });
+        $config = $this->cleanDefaultOptions($config);
+        self::assertEquals($optionConfig, $config);
+    }
 
-        $this->assertEquals($optionConfig, $config);
+    public function testWithExtraHeadersConfiguration(): void
+    {
+        $processor = new Processor();
+        /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
+        $config = $processor->processConfiguration(new Configuration(), [
+            [
+                'base_uri' => 'http://gotenberg:3000',
+                'default_options' => ['extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']]]
+            ]
+        ]);
+
+        $config = $this->cleanDefaultOptions($config);
+        self::assertEquals(['extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue']], $config);
+    }
+
+    /**
+     * @param array{'base_uri': string,'default_options': array<string, mixed>} $userConfigurations
+     * @return array<string, mixed>
+     */
+    private function cleanDefaultOptions(array $userConfigurations): array
+    {
+        return array_filter($userConfigurations['default_options'], static function($config): bool {
+            if (is_array($config)) {
+                return 0 !== count($config);
+            }
+
+            return null !== $config ;
+        });
     }
 }

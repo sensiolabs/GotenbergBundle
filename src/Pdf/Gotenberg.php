@@ -15,6 +15,9 @@ use Twig\Environment;
 
 class Gotenberg implements GotenbergInterface
 {
+    /**
+     * @param array<string, mixed> $userConfigurations
+     */
     public function __construct(private GotenbergClient $gotenbergClient, private Environment $twig, private array $userConfigurations, private string $projectDir)
     {}
 

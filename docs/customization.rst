@@ -267,7 +267,7 @@ Extra HTTP headers
 
 ``default: None``
 
-HTTP headers to send by Chromium while loading the HTML document (JSON format).
+HTTP headers to send by Chromium while loading the HTML document.
 
 .. code-block:: php
 

@@ -3,14 +3,24 @@
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 #[CoversClass(SensiolabsGotenbergExtension::class)]
+#[UsesClass(ContainerBuilder::class)]
 final class SensiolabsGotenbergExtensionTest extends TestCase
 {
-    public static function getValidConfig(): array
+    /**
+     * @return list<
+     *     array{
+     *          'base_uri': string,
+     *          'default_options': array<string, mixed>
+     *      }
+     * >
+     */
+    private static function getValidConfig(): array
     {
         return [
             [
@@ -32,7 +42,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'wait_for_expression' => 'window.globalVar === "ready"',
                     'emulated_media_type' => 'screen',
                     'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
-                    'extra_http_headers' => '{\"MyHeader\": \"MyValue\"}',
+                    'extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']],
                     'fail_on_console_exceptions' => true,
                     'pdf_format' => 'PDF/A-1a',
                     'pdf_universal_access' => true,
@@ -69,7 +79,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'wait_for_expression' => 'window.globalVar === "ready"',
                 'emulated_media_type' => 'screen',
                 'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
-                'extra_http_headers' => '{\"MyHeader\": \"MyValue\"}',
+                'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
                 'fail_on_console_exceptions' => true,
                 'pdf_format' => 'PDF/A-1a',
                 'pdf_universal_access' => true,
@@ -79,7 +89,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         );
     }
 
-    public function testGotenbergConfiguredWithNoConfig()
+    public function testGotenbergConfiguredWithNoConfig(): void
     {
         $extension = new SensiolabsGotenbergExtension();
 

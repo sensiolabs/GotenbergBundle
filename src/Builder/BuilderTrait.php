@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use function Symfony\Component\String\u;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * @phpstan-import-type ConfigBuilder from BuilderInterface
@@ -28,7 +29,7 @@ use function Symfony\Component\String\u;
  *      'wait_for_expression'?: string,
  *      'emulated_media_type'?: string,
  *      'user_agent'?: string,
- *      'extra_http_headers'?: string,
+ *      'extra_http_headers'?: array<string, string>,
  *      'fail_on_console_exceptions'?: bool,
  *      'pdf_format'?: string,
  *      'pdf_universal_access'?: bool,
@@ -65,6 +66,7 @@ trait BuilderTrait
     /**
      * Add a twig template for the header
      * @see https://gotenberg.dev/docs/routes#header--footer
+     * @param array<string, mixed> $context
      */
     public function header(string $path, array $context = []): self
     {
@@ -74,6 +76,7 @@ trait BuilderTrait
     /**
      * Add a twig template for the footer
      * @see https://gotenberg.dev/docs/routes#header--footer
+     * @param array<string, mixed> $context
      */
     public function footer(string $path, array $context = []): self
     {
@@ -259,16 +262,17 @@ trait BuilderTrait
      * Sets extra HTTP headers that Chromium will send when loading the HTML
      * document. (default None)
      * @see https://gotenberg.dev/docs/routes#custom-http-headers
+     * @param array<string, string> $headers
      */
     public function extraHttpHeaders(array $headers): self
     {
-        $json = json_encode($headers);
+        if (0 !== count($headers)) {
+            $json = json_encode($headers, flags: JSON_THROW_ON_ERROR);
 
-        if ($json === false) {
-            throw new HttpException(500, 'json encode for extraHttpHeaders failed.');
+            if (is_string($json)) {
+                $this->multipartFormData[] = ['extraHttpHeaders' => $json];
+            }
         }
-
-        $this->multipartFormData[] = ['extraHttpHeaders' => $json];
 
         return $this;
     }
@@ -337,6 +341,9 @@ trait BuilderTrait
         $this->multipartFormData[] = ['marginRight' => $right];
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     private function addTwigTemplate(string $path, PdfPart $pdfPart, array $context = []): self
     {
         $stream = $this->twig->render($path, $context);
@@ -369,10 +376,13 @@ trait BuilderTrait
         return $this;
     }
 
+    /**
+     * @param string|list<string> $acceptExtension
+     */
     private function fileExtensionChecker(string $filePath, string|array $acceptExtension): void
     {
         $file = new File($this->resolveFilePath($filePath));
-        $extension = $file->guessExtension();
+        $extension = $file->getExtension();
 
         if (is_string($acceptExtension)) {
             $acceptExtension = [$acceptExtension];
