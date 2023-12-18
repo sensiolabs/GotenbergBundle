@@ -44,6 +44,72 @@ final class ConfigurationTest extends TestCase
         yield 'pdf format configuration' => [['pdf_format' => 'PDF/A-3b', 'pdf_universal_access' => true]];
     }
 
+    public function testDefaultConfig(): void
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(
+            new Configuration(),
+            [],
+        );
+
+        self::assertEquals(self::getBundleDefaultConfig(), $config);
+    }
+
+    public function testInvalidHost(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $processor = new Processor();
+        $processor->processConfiguration(
+            new Configuration(),
+            [['base_uri' => 'localhost:3000']],
+        );
+    }
+
+    #[DataProvider('provideInvalidRange')]
+    public function testInvalidRange(mixed $range): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $processor = new Processor();
+        $processor->processConfiguration(
+            new Configuration(),
+            [['default_options' => ['native_page_ranges' => $range]]],
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $optionConfig
+     */
+    #[DataProvider('provideValidOptionsConfiguration')]
+    public function testValidOptionsConfiguration(array $optionConfig): void
+    {
+        $processor = new Processor();
+        /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
+        $config = $processor->processConfiguration(new Configuration(), [
+            [
+                'base_uri' => 'http://gotenberg:3000',
+                'default_options' => $optionConfig,
+            ],
+        ]);
+
+        $config = $this->cleanDefaultOptions($config);
+        self::assertEquals($optionConfig, $config);
+    }
+
+    public function testWithExtraHeadersConfiguration(): void
+    {
+        $processor = new Processor();
+        /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
+        $config = $processor->processConfiguration(new Configuration(), [
+            [
+                'base_uri' => 'http://gotenberg:3000',
+                'default_options' => ['extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']]],
+            ],
+        ]);
+
+        $config = $this->cleanDefaultOptions($config);
+        self::assertEquals(['extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue']], $config);
+    }
+
     /**
      * @return array{
      *     'base_uri': string,
@@ -59,7 +125,7 @@ final class ConfigurationTest extends TestCase
                 'paper_height' => null,
                 'margin_top' => null,
                 'margin_bottom' => null,
-                'margin_left' =>  null,
+                'margin_left' => null,
                 'margin_right' => null,
                 'prefer_css_page_size' => null,
                 'print_background' => null,
@@ -75,88 +141,23 @@ final class ConfigurationTest extends TestCase
                 'fail_on_console_exceptions' => null,
                 'pdf_format' => null,
                 'pdf_universal_access' => null,
-            ]
+            ],
         ];
-    }
-
-    public function testDefaultConfig(): void
-    {
-        $processor = new Processor();
-        $config = $processor->processConfiguration(
-            new Configuration(),
-            []
-        );
-
-        self::assertEquals(self::getBundleDefaultConfig(), $config);
-    }
-
-    public function testInvalidHost(): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $processor = new Processor();
-        $processor->processConfiguration(
-            new Configuration(),
-            [['base_uri' => 'localhost:3000']]
-        );
-    }
-
-    #[DataProvider('provideInvalidRange')]
-    public function testInvalidRange(mixed $range): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $processor = new Processor();
-        $processor->processConfiguration(
-            new Configuration(),
-            [['default_options' => ['native_page_ranges' => $range]]]
-        );
-    }
-
-    /**
-     * @param array<string, mixed> $optionConfig
-     */
-    #[DataProvider('provideValidOptionsConfiguration')]
-    public function testValidOptionsConfiguration(array $optionConfig): void
-    {
-        $processor = new Processor();
-        /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
-        $config = $processor->processConfiguration(new Configuration(), [
-            [
-                'base_uri' => 'http://gotenberg:3000',
-                'default_options' => $optionConfig
-            ]
-        ]);
-
-        $config = $this->cleanDefaultOptions($config);
-        self::assertEquals($optionConfig, $config);
-    }
-
-    public function testWithExtraHeadersConfiguration(): void
-    {
-        $processor = new Processor();
-        /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
-        $config = $processor->processConfiguration(new Configuration(), [
-            [
-                'base_uri' => 'http://gotenberg:3000',
-                'default_options' => ['extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']]]
-            ]
-        ]);
-
-        $config = $this->cleanDefaultOptions($config);
-        self::assertEquals(['extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue']], $config);
     }
 
     /**
      * @param array{'base_uri': string,'default_options': array<string, mixed>} $userConfigurations
+     *
      * @return array<string, mixed>
      */
     private function cleanDefaultOptions(array $userConfigurations): array
     {
-        return array_filter($userConfigurations['default_options'], static function($config): bool {
-            if (is_array($config)) {
-                return 0 !== count($config);
+        return array_filter($userConfigurations['default_options'], static function ($config): bool {
+            if (\is_array($config)) {
+                return 0 !== \count($config);
             }
 
-            return null !== $config ;
+            return null !== $config;
         });
     }
 }

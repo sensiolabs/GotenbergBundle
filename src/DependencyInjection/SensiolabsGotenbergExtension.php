@@ -32,17 +32,17 @@ class SensiolabsGotenbergExtension extends Extension
 
     /**
      * @param array<string, mixed> $userConfigurations
+     *
      * @return array<string, mixed>
      */
     private function cleanDefaultOptions(array $userConfigurations): array
     {
-        return array_filter($userConfigurations, static function($config): bool {
-
-            if (is_array($config)) {
-                return 0 !== count($config);
+        return array_filter($userConfigurations, static function ($config): bool {
+            if (\is_array($config)) {
+                return 0 !== \count($config);
             }
 
-            return null !== $config ;
+            return null !== $config;
         });
     }
 }

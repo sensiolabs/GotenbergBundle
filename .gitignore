@@ -1,7 +1,8 @@
-/vendor/
-composer.lock
-.phpunit.result.cache
-/var/
+/.phpunit.cache/
 /tests/fixtures/cache/
 /tests/fixtures/var/
-/.phpunit.cache/
+/var/
+/vendor/
+.php-cs-fixer.cache
+.phpunit.result.cache
+composer.lock

@@ -16,7 +16,8 @@ final class MarkdownPdfBuilder implements BuilderInterface
     private const ENDPOINT = '/forms/chromium/convert/markdown';
 
     public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
-    {}
+    {
+    }
 
     public function getEndpoint(): string
     {
@@ -29,6 +30,7 @@ final class MarkdownPdfBuilder implements BuilderInterface
     public function content(string $path, array $context = []): self
     {
         $this->addTwigTemplate($path, PdfPart::BodyPart, $context);
+
         return $this;
     }
 
@@ -41,13 +43,13 @@ final class MarkdownPdfBuilder implements BuilderInterface
 
     public function generate(): PdfResponse
     {
-        $markdownFile = array_filter($this->multipartFormData, static function($formData) {
-            return array_filter($formData, static function($data) {
+        $markdownFile = array_filter($this->multipartFormData, static function ($formData) {
+            return array_filter($formData, static function ($data) {
                 return $data instanceof DataPart && $data->getContentType() === 'text/markdown';
             });
         });
 
-        if (count($markdownFile) !== 1) {
+        if (\count($markdownFile) !== 1) {
             throw new HttpException(400, 'Invalid request, a Markdown file is required with markdown method');
         }
 

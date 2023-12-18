@@ -95,7 +95,8 @@ final class OfficePdfBuilder implements BuilderInterface
     ];
 
     public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
-    {}
+    {
+    }
 
     public function getEndpoint(): string
     {

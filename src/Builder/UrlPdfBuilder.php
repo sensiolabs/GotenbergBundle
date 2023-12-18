@@ -13,7 +13,8 @@ final class UrlPdfBuilder implements BuilderInterface
     private const ENDPOINT = '/forms/chromium/convert/url';
 
     public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
-    {}
+    {
+    }
 
     public function getEndpoint(): string
     {
@@ -23,6 +24,7 @@ final class UrlPdfBuilder implements BuilderInterface
     public function content(string $url): self
     {
         $this->multipartFormData[] = ['url' => $url];
+
         return $this;
     }
 

@@ -11,7 +11,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class GotenbergClient
 {
     public function __construct(private string $gotenbergUri, private HttpClientInterface $client)
-    {}
+    {
+    }
 
     public function post(BuilderInterface $builder): ResponseInterface
     {
@@ -20,11 +21,11 @@ class GotenbergClient
 
         $response = $this->client->request(
             'POST',
-            $this->gotenbergUri . $builder->getEndpoint(),
+            $this->gotenbergUri.$builder->getEndpoint(),
             [
                 'headers' => $headers,
-                'body' => $formData->bodyToString()
-            ]
+                'body' => $formData->bodyToString(),
+            ],
         );
 
         if (200 !== $response->getStatusCode()) {
