@@ -3,7 +3,7 @@ GotenbergBundle
 
 .. caution::
 
-    To use this bundle, you must need to have installed `Gotenberg 7.x`_ first
+    To use this bundle, you first need to install and configure `Gotenberg 7.x`_.
 
 Overview
 --------
@@ -28,4 +28,4 @@ Chapters
     customization
 
 .. _Gotenberg 7.x: https://gotenberg.dev/
-.. _`GotenbergBundle`: https://github.com/sensiolabs
+.. _`GotenbergBundle`: https://github.com/sensiolabs/GotenbergBundle
