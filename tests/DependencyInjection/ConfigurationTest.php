@@ -5,14 +5,10 @@ namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\BuilderTrait;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
-/**
- * @phpstan-import-type ConfigOptions from BuilderTrait
- */
 #[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {

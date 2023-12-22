@@ -2,18 +2,25 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Sensiolabs\GotenbergBundle\Client\PdfResponse;
-use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Twig\Environment;
 
-final class UrlPdfBuilder implements BuilderInterface
+class UrlPdfBuilder extends AbstractChromiumPdfBuilder implements UrlPdfBuilderInterface
 {
-    use BuilderTrait;
+    use TwigTrait;
 
     private const ENDPOINT = '/forms/chromium/convert/url';
 
-    public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
+    public function __construct(GotenbergClientInterface $gotenbergClient, string $projectDir, private readonly ?Environment $twig = null)
     {
+        parent::__construct($gotenbergClient, $projectDir);
+    }
+
+    public function url(string $url): self
+    {
+        $this->formFields['url'] = $url;
+
+        return $this;
     }
 
     public function getEndpoint(): string
@@ -21,15 +28,12 @@ final class UrlPdfBuilder implements BuilderInterface
         return self::ENDPOINT;
     }
 
-    public function content(string $url): self
+    public function getMultipartFormData(): array
     {
-        $this->multipartFormData[] = ['url' => $url];
+        if (!\array_key_exists('url', $this->formFields)) {
+            throw new \RuntimeException('URL is required');
+        }
 
-        return $this;
-    }
-
-    public function generate(): PdfResponse
-    {
-        return $this->gotenberg->generate($this);
+        return parent::getMultipartFormData();
     }
 }

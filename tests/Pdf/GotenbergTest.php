@@ -4,8 +4,9 @@ namespace Sensiolabs\GotenbergBundle\Tests\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
 
 #[CoversClass(Gotenberg::class)]
@@ -13,47 +14,100 @@ final class GotenbergTest extends TestCase
 {
     public function testUrlBuilderFactory(): void
     {
-        $gotenbergClient = $this->createMock(GotenbergClient::class);
-        $twig = $this->createMock(Environment::class);
+        $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
 
-        $gotenberg = new Gotenberg($gotenbergClient, $twig, ['native_page_ranges' => '1-5'], __DIR__.'/../Fixtures');
-        $urlBuilder = $gotenberg->url();
+        $gotenberg = new Gotenberg(
+            $gotenbergClient,
+            ['native_page_ranges' => '1-5'],
+            __DIR__.'/../Fixtures',
+        );
+        $builder = $gotenberg->url('https://google.com');
 
-        self::assertEquals([['nativePageRanges' => '1-5']], $urlBuilder->getMultipartFormData());
+        self::assertSame([['nativePageRanges' => '1-5'], ['url' => 'https://google.com']], $builder->getMultipartFormData());
     }
 
-    public function testTwigBuilderFactory(): void
+    public function testHtmlBuilderFactory(): void
     {
-        $gotenbergClient = $this->createMock(GotenbergClient::class);
+        $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
         $twig = $this->createMock(Environment::class);
 
-        $gotenberg = new Gotenberg($gotenbergClient, $twig, ['margin_top' => 3, 'margin_bottom' => 1], __DIR__.'/../Fixtures');
-        $twigBuilder = $gotenberg->twig();
+        $gotenberg = new Gotenberg(
+            $gotenbergClient,
+            ['margin_top' => 3, 'margin_bottom' => 1],
+            __DIR__.'/../Fixtures',
+            $twig,
+        );
+        $builder = $gotenberg->html('content.html');
+        $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertEquals([['marginTop' => 3], ['marginBottom' => 1]], $twigBuilder->getMultipartFormData());
+        self::assertCount(3, $multipartFormData);
+
+        self::assertArrayHasKey(0, $multipartFormData);
+        self::assertSame(['marginTop' => 3.0], $multipartFormData[0]);
+
+        self::assertArrayHasKey(1, $multipartFormData);
+        self::assertSame(['marginBottom' => 1.0], $multipartFormData[1]);
+
+        self::assertArrayHasKey(2, $multipartFormData);
+        self::assertIsArray($multipartFormData[2]);
+        self::assertCount(1, $multipartFormData[2]);
+        self::assertArrayHasKey('files', $multipartFormData[2]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[2]['files']);
+        self::assertSame('index.html', $multipartFormData[2]['files']->getFilename());
     }
 
     public function testMarkdownBuilderFactory(): void
     {
-        $gotenbergClient = $this->createMock(GotenbergClient::class);
+        $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
         $twig = $this->createMock(Environment::class);
 
-        $gotenberg = new Gotenberg($gotenbergClient, $twig, [], __DIR__.'/../Fixtures');
-        $markdownBuilder = $gotenberg->markdown();
+        $gotenberg = new Gotenberg(
+            $gotenbergClient,
+            [],
+            __DIR__.'/../Fixtures',
+            $twig,
+        );
+        $builder = $gotenberg->markdown('template.html', 'assets/file.md');
+        $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertTrue(method_exists($markdownBuilder, 'markdownFile'));
-        self::assertEquals([], $markdownBuilder->getMultipartFormData());
+        self::assertCount(2, $multipartFormData);
+
+        self::assertArrayHasKey(0, $multipartFormData);
+        self::assertIsArray($multipartFormData[0]);
+        self::assertArrayHasKey('files', $multipartFormData[0]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
+        self::assertSame('index.html', $multipartFormData[0]['files']->getFilename());
+
+        self::assertArrayHasKey(1, $multipartFormData);
+        self::assertIsArray($multipartFormData[1]);
+        self::assertArrayHasKey('files', $multipartFormData[1]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
+        self::assertSame('file.md', $multipartFormData[1]['files']->getFilename());
     }
 
     public function testOfficeBuilderFactory(): void
     {
-        $gotenbergClient = $this->createMock(GotenbergClient::class);
+        $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
         $twig = $this->createMock(Environment::class);
 
-        $gotenberg = new Gotenberg($gotenbergClient, $twig, ['paper_width' => 11.7, 'paper_height' => 16.54], __DIR__.'/../Fixtures');
-        $officeBuilder = $gotenberg->office();
+        $gotenberg = new Gotenberg(
+            $gotenbergClient,
+            ['native_page_ranges' => '1-5'],
+            __DIR__.'/../Fixtures',
+            $twig,
+        );
+        $builder = $gotenberg->office('assets/office/document.odt');
+        $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertTrue(method_exists($officeBuilder, 'officeFile'));
-        self::assertEquals([['paperWidth' => 11.7], ['paperHeight' => 16.54]], $officeBuilder->getMultipartFormData());
+        self::assertCount(2, $multipartFormData);
+
+        self::assertArrayHasKey(0, $multipartFormData);
+        self::assertIsArray($multipartFormData[0]);
+        self::assertArrayHasKey('files', $multipartFormData[0]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
+        self::assertSame('document.odt', $multipartFormData[0]['files']->getFilename());
+
+        self::assertArrayHasKey(1, $multipartFormData);
+        self::assertSame(['nativePageRanges' => '1-5'], $multipartFormData[1]);
     }
 }

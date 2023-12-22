@@ -2,67 +2,73 @@
 
 namespace Sensiolabs\GotenbergBundle\Pdf;
 
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\OfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\TwigPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\Client\PdfResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Contracts\HttpClient\ResponseInterface;
+use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Twig\Environment;
 
-class Gotenberg implements GotenbergInterface
+readonly class Gotenberg implements GotenbergInterface
 {
     /**
      * @param array<string, mixed> $userConfigurations
      */
-    public function __construct(private GotenbergClient $gotenbergClient, private Environment $twig, private array $userConfigurations, private string $projectDir)
-    {
+    public function __construct(
+        private GotenbergClientInterface $gotenbergClient,
+        private array $userConfigurations,
+        private string $projectDir,
+        private ?Environment $twig = null,
+    ) {
     }
 
-    public function generate(BuilderInterface $builder): PdfResponse
+    public function html(?string $contentFile = null): HtmlPdfBuilderInterface
     {
-        $response = $this->sendRequest($builder);
+        $builder = new HtmlPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
+        $builder->setConfigurations($this->userConfigurations);
 
-        if (200 !== $response->getStatusCode()) {
-            throw new HttpException($response->getStatusCode(), $response->getContent());
+        if (null !== $contentFile) {
+            $builder->htmlContent($contentFile);
         }
 
-        return new PdfResponse($response);
+        return $builder;
     }
 
-    public function twig(): TwigPdfBuilder
+    public function url(?string $url = null): UrlPdfBuilderInterface
     {
-        return (new TwigPdfBuilder($this, $this->twig, $this->projectDir))
+        $builder = new UrlPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
+        $builder->setConfigurations($this->userConfigurations);
+
+        if (null !== $url) {
+            $builder->url($url);
+        }
+
+        return $builder;
+    }
+
+    public function markdown(?string $htmlTemplate = null, string ...$markdownFiles): MarkdownPdfBuilderInterface
+    {
+        $builder = new MarkdownPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
+        $builder->setConfigurations($this->userConfigurations);
+
+        if (null !== $htmlTemplate) {
+            $builder->htmlTemplate($htmlTemplate);
+        }
+
+        $builder->markdownFiles(...$markdownFiles);
+
+        return $builder;
+    }
+
+    public function office(string ...$officeFiles): LibreOfficePdfBuilderInterface
+    {
+        return (new LibreOfficePdfBuilder($this->gotenbergClient, $this->projectDir))
             ->setConfigurations($this->userConfigurations)
+            ->officeFiles(...$officeFiles)
         ;
-    }
-
-    public function url(): UrlPdfBuilder
-    {
-        return (new UrlPdfBuilder($this, $this->twig, $this->projectDir))
-            ->setConfigurations($this->userConfigurations)
-        ;
-    }
-
-    public function markdown(): MarkdownPdfBuilder
-    {
-        return (new MarkdownPdfBuilder($this, $this->twig, $this->projectDir))
-            ->setConfigurations($this->userConfigurations)
-        ;
-    }
-
-    public function office(): OfficePdfBuilder
-    {
-        return (new OfficePdfBuilder($this, $this->twig, $this->projectDir))
-            ->setConfigurations($this->userConfigurations)
-        ;
-    }
-
-    private function sendRequest(BuilderInterface $builder): ResponseInterface
-    {
-        return $this->gotenbergClient->post($builder);
     }
 }

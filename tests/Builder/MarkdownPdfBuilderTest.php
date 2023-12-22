@@ -3,27 +3,37 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(MarkdownPdfBuilder::class)]
-final class MarkdownPdfBuilderTest extends TestCase
+final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
 {
-    use BuilderTestTrait;
-
     public function testMarkdownFile(): void
     {
-        $builder = new MarkdownPdfBuilder($this->getGotenbergMock(), $this->getTwig(), self::FIXTURE_DIR);
-        $builder->markdownFile('assets/file.md');
+        $client = $this->createMock(GotenbergClientInterface::class);
+        $builder = new MarkdownPdfBuilder($client, self::FIXTURE_DIR);
+        $builder
+            ->htmlTemplate('template.html')
+            ->markdownFiles('assets/file.md')
+        ;
 
-        $multipart = $builder->getMultipartFormData();
-        $itemMarkdown = $multipart[array_key_first($multipart)];
+        $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertArrayHasKey('files', $itemMarkdown);
-        self::assertInstanceOf(DataPart::class, $itemMarkdown['files']);
+        self::assertCount(2, $multipartFormData);
 
-        $dataPart = $itemMarkdown['files'];
-        self::assertEquals('text/markdown', $dataPart->getContentType());
+        self::assertArrayHasKey(0, $multipartFormData);
+        self::assertIsArray($multipartFormData[0]);
+        self::assertArrayHasKey('files', $multipartFormData[0]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
+        self::assertSame('index.html', $multipartFormData[0]['files']->getFilename());
+
+        self::assertArrayHasKey(1, $multipartFormData);
+        self::assertIsArray($multipartFormData[1]);
+        self::assertArrayHasKey('files', $multipartFormData[1]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
+        self::assertSame('file.md', $multipartFormData[1]['files']->getFilename());
+        self::assertSame('text/markdown', $multipartFormData[1]['files']->getContentType());
     }
 }
