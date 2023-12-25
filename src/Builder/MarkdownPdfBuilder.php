@@ -15,7 +15,7 @@ final class MarkdownPdfBuilder implements BuilderInterface
 
     private const ENDPOINT = '/forms/chromium/convert/markdown';
 
-    public function __construct(private GotenbergInterface $gotenberg, private Environment|null $twig, private string $projectDir)
+    public function __construct(private GotenbergInterface $gotenberg, private string $projectDir, private ?Environment $twig)
     {}
 
     public function getEndpoint(): string

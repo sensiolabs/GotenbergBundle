@@ -27,7 +27,7 @@ class SensiolabsGotenbergExtension extends Extension
         $definition->replaceArgument(0, $config['base_uri']);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg');
-        $definition->replaceArgument(2, $this->cleanDefaultOptions($config['default_options']));
+        $definition->replaceArgument(1, $this->cleanDefaultOptions($config['default_options']));
     }
 
     /**

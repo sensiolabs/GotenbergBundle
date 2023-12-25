@@ -10,7 +10,6 @@ use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
 use function Symfony\Component\String\u;
-use const JSON_THROW_ON_ERROR;
 
 /**
  * @phpstan-import-type ConfigBuilder from BuilderInterface
@@ -283,7 +282,7 @@ trait BuilderTrait
     public function extraHttpHeaders(array $headers): self
     {
         if (0 !== count($headers)) {
-            $json = json_encode($headers, flags: JSON_THROW_ON_ERROR);
+            $json = json_encode($headers, flags: \JSON_THROW_ON_ERROR);
 
             if (is_string($json)) {
                 $this->multipartFormData[] = ['extraHttpHeaders' => $json];

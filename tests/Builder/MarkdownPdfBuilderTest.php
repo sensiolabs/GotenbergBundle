@@ -14,7 +14,7 @@ final class MarkdownPdfBuilderTest extends TestCase
 
     public function testMarkdownFile(): void
     {
-        $builder = new MarkdownPdfBuilder($this->getGotenbergMock(), $this->getTwig(), self::FIXTURE_DIR);
+        $builder = new MarkdownPdfBuilder($this->getGotenbergMock(), self::FIXTURE_DIR, $this->getTwig());
         $builder->markdownFile('assets/file.md');
 
         $multipart = $builder->getMultipartFormData();

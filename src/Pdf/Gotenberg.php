@@ -18,7 +18,7 @@ class Gotenberg implements GotenbergInterface
     /**
      * @param array<string, mixed> $userConfigurations
      */
-    public function __construct(private GotenbergClient $gotenbergClient, private Environment|null $twig, private array $userConfigurations, private string $projectDir)
+    public function __construct(private GotenbergClient $gotenbergClient, private array $userConfigurations, private string $projectDir, private ?Environment $twig = null)
     {}
 
     public function generate(BuilderInterface $builder): PdfResponse
@@ -34,28 +34,28 @@ class Gotenberg implements GotenbergInterface
 
     public function twig(): TwigPdfBuilder
     {
-        return (new TwigPdfBuilder($this, $this->twig, $this->projectDir))
+        return (new TwigPdfBuilder($this, $this->projectDir, $this->twig))
             ->setConfigurations($this->userConfigurations)
         ;
     }
 
     public function url(): UrlPdfBuilder
     {
-        return (new UrlPdfBuilder($this, $this->twig, $this->projectDir))
+        return (new UrlPdfBuilder($this, $this->projectDir, $this->twig))
             ->setConfigurations($this->userConfigurations)
         ;
     }
 
     public function markdown(): MarkdownPdfBuilder
     {
-        return (new MarkdownPdfBuilder($this, $this->twig, $this->projectDir))
+        return (new MarkdownPdfBuilder($this, $this->projectDir, $this->twig))
             ->setConfigurations($this->userConfigurations)
         ;
     }
 
     public function office(): OfficePdfBuilder
     {
-        return (new OfficePdfBuilder($this, $this->twig, $this->projectDir))
+        return (new OfficePdfBuilder($this, $this->projectDir, $this->twig))
             ->setConfigurations($this->userConfigurations)
         ;
     }

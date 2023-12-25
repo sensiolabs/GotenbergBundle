@@ -13,9 +13,9 @@ return function(ContainerConfigurator $container): void {
     $services->set('sensiolabs_gotenberg', Gotenberg::class)
         ->args([
             service('sensiolabs_gotenberg.client'),
-            service('twig')->nullOnInvalid(),
             abstract_arg('user configuration options'),
             param('kernel.project_dir'),
+            service('twig')->nullOnInvalid(),
         ])
         ->public();
     $services->alias(Gotenberg::class, 'sensiolabs_gotenberg')

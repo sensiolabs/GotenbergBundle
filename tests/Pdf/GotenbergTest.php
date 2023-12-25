@@ -19,7 +19,7 @@ final class GotenbergTest extends TestCase
         $gotenbergClient = $this->createMock(GotenbergClient::class);
         $twig = $this->createMock(Environment::class);
 
-        $gotenberg = new Gotenberg($gotenbergClient, $twig, ['native_page_ranges' => '1-5'], __DIR__.'/../Fixtures');
+        $gotenberg = new Gotenberg($gotenbergClient, ['native_page_ranges' => '1-5'], __DIR__.'/../Fixtures', $twig);
         $urlBuilder = $gotenberg->url();
 
         self::assertEquals([['nativePageRanges' => '1-5']], $urlBuilder->getMultipartFormData());
@@ -30,7 +30,7 @@ final class GotenbergTest extends TestCase
         $gotenbergClient = $this->createMock(GotenbergClient::class);
         $twig = $this->createMock(Environment::class);
 
-        $gotenberg = new Gotenberg($gotenbergClient, $twig, ['margin_top' => 3, 'margin_bottom' => 1], __DIR__.'/../Fixtures');
+        $gotenberg = new Gotenberg($gotenbergClient, ['margin_top' => 3, 'margin_bottom' => 1], __DIR__.'/../Fixtures', $twig);
         $twigBuilder = $gotenberg->twig();
 
         self::assertEquals([['marginTop' => 3], ['marginBottom' => 1]], $twigBuilder->getMultipartFormData());
@@ -41,7 +41,7 @@ final class GotenbergTest extends TestCase
         $gotenbergClient = $this->createMock(GotenbergClient::class);
         $twig = $this->createMock(Environment::class);
 
-        $gotenberg = new Gotenberg($gotenbergClient, $twig, [], __DIR__.'/../Fixtures');
+        $gotenberg = new Gotenberg($gotenbergClient, [], __DIR__.'/../Fixtures', $twig);
         $markdownBuilder = $gotenberg->markdown();
 
         self::assertTrue(method_exists($markdownBuilder, 'markdownFile'));
@@ -53,7 +53,7 @@ final class GotenbergTest extends TestCase
         $gotenbergClient = $this->createMock(GotenbergClient::class);
         $twig = $this->createMock(Environment::class);
 
-        $gotenberg = new Gotenberg($gotenbergClient, $twig, ['paper_width' => 11.7, 'paper_height' => 16.54], __DIR__.'/../Fixtures');
+        $gotenberg = new Gotenberg($gotenbergClient, ['paper_width' => 11.7, 'paper_height' => 16.54], __DIR__.'/../Fixtures', $twig);
         $officeBuilder = $gotenberg->office();
 
         self::assertTrue(method_exists($officeBuilder, 'officeFile'));

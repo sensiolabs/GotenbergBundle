@@ -46,7 +46,7 @@ final class TwigPdfBuilderTest extends TestCase
 
     public function testWithConfigurations(): void
     {
-        $builder = new TwigPdfBuilder($this->getGotenbergMock(), $this->getTwig(), self::FIXTURE_DIR);
+        $builder = new TwigPdfBuilder($this->getGotenbergMock(), self::FIXTURE_DIR, $this->getTwig());
         $builder->setConfigurations(self::getUserConfig());
 
         self::assertEquals([
@@ -75,7 +75,7 @@ final class TwigPdfBuilderTest extends TestCase
 
     public function testWithTemplate(): void
     {
-        $builder = new TwigPdfBuilder($this->getGotenbergMock(), $this->getTwig(), self::FIXTURE_DIR);
+        $builder = new TwigPdfBuilder($this->getGotenbergMock(), self::FIXTURE_DIR, $this->getTwig());
         $builder->content('content.html.twig');
 
         $multipart = $builder->getMultipartFormData();
@@ -90,7 +90,7 @@ final class TwigPdfBuilderTest extends TestCase
 
     public function testWithAssets(): void
     {
-        $builder = new TwigPdfBuilder($this->getGotenbergMock(), $this->getTwig(), self::FIXTURE_DIR);
+        $builder = new TwigPdfBuilder($this->getGotenbergMock(), self::FIXTURE_DIR, $this->getTwig());
         $builder->assets('assets/logo.png');
 
         $multipart = $builder->getMultipartFormData();
@@ -105,7 +105,7 @@ final class TwigPdfBuilderTest extends TestCase
 
     public function testWithHeader(): void
     {
-        $builder = new TwigPdfBuilder($this->getGotenbergMock(), $this->getTwig(), self::FIXTURE_DIR);
+        $builder = new TwigPdfBuilder($this->getGotenbergMock(), self::FIXTURE_DIR, $this->getTwig());
         $builder->header('header.html.twig');
 
         $multipart = $builder->getMultipartFormData();
@@ -120,7 +120,7 @@ final class TwigPdfBuilderTest extends TestCase
 
     public function testWithHtmlHeader(): void
     {
-        $builder = new TwigPdfBuilder($this->getGotenbergMock(), null, self::FIXTURE_DIR);
+        $builder = new TwigPdfBuilder($this->getGotenbergMock(), self::FIXTURE_DIR, null);
         $builder->header('templates/test_header.html');
 
         $multipart = $builder->getMultipartFormData();

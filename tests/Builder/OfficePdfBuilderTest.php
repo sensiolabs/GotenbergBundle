@@ -30,7 +30,7 @@ final class OfficePdfBuilderTest extends TestCase
     #[DataProvider('provideValidOfficeFiles')]
     public function testOfficeFiles(string $filePath, string $contentType): void
     {
-        $builder = new OfficePdfBuilder($this->getGotenbergMock(), $this->getTwig(), self::FIXTURE_DIR);
+        $builder = new OfficePdfBuilder($this->getGotenbergMock(), self::FIXTURE_DIR, $this->getTwig());
         $builder->officeFile($filePath);
 
         $multipart = $builder->getMultipartFormData();
