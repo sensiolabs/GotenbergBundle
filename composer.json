@@ -38,7 +38,7 @@
         "symfony/twig-bundle": "^6.3"
     },
     "suggest": {
-        "symfony/twig-bundle": "Allow you to use twig to add template into PDF"
+        "symfony/twig-bundle": "Allow you to use twig environment to add templates into PDF"
     },
     "config": {
         "allow-plugins": {
