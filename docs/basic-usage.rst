@@ -78,6 +78,11 @@ to the method ``content``.
 Convert a Twig template into PDF
 --------------------------------
 
+.. warning::
+
+    To use this builder, you first need to install Twig Environment who is an
+    optional service, with the composer command ``composer require symfony/twig-bundle``.
+
 ``TwigPdfBuilder`` comes with the Twig Environment service and thus has access
 to your your templates ``default_path`` configuration. This makes it easy to
 pass the name of the templates to the builder. You can also pass

@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
+use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
 use Twig\Environment;
 
@@ -12,7 +13,7 @@ final class UrlPdfBuilder implements BuilderInterface
 
     private const ENDPOINT = '/forms/chromium/convert/url';
 
-    public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
+    public function __construct(private GotenbergInterface $gotenberg, private Environment|null $twig, private string $projectDir)
     {}
 
     public function getEndpoint(): string

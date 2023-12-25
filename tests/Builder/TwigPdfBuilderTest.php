@@ -117,5 +117,21 @@ final class TwigPdfBuilderTest extends TestCase
         $dataPart = $itemTemplate['files'];
         self::assertEquals('text/html', $dataPart->getContentType());
     }
+
+    public function testWithHtmlHeader(): void
+    {
+        $builder = new TwigPdfBuilder($this->getGotenbergMock(), null, self::FIXTURE_DIR);
+        $builder->header('templates/test_header.html');
+
+        $multipart = $builder->getMultipartFormData();
+        $itemTemplate = $multipart[array_key_last($multipart)];
+
+        self::assertArrayHasKey('files', $itemTemplate);
+        self::assertInstanceOf(DataPart::class, $itemTemplate['files']);
+
+        $dataPart = $itemTemplate['files'];
+        self::assertSame('text/html', $dataPart->getContentType());
+        self::assertSame('header.html', $dataPart->getFileName());
+    }
 }
 

@@ -18,7 +18,7 @@ class Gotenberg implements GotenbergInterface
     /**
      * @param array<string, mixed> $userConfigurations
      */
-    public function __construct(private GotenbergClient $gotenbergClient, private Environment $twig, private array $userConfigurations, private string $projectDir)
+    public function __construct(private GotenbergClient $gotenbergClient, private Environment|null $twig, private array $userConfigurations, private string $projectDir)
     {}
 
     public function generate(BuilderInterface $builder): PdfResponse
