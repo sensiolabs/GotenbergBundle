@@ -3,11 +3,6 @@ Configuration
 
 The default configuration for the bundle looks like :
 
-.. caution::
-
-    If you don't configure anything, the defaults values on Gotenberg API
-    will be used.
-
 .. code-block:: yaml
 
     # app/config/sensiolabs_gotenberg.yml
@@ -35,6 +30,11 @@ The default configuration for the bundle looks like :
             fail_on_console_exceptions: null    # false
             pdf_format: null                    # None
             pdf_universal_access: null          # false
+
+.. caution::
+
+    If you don't configure anything, the defaults values on Gotenberg API
+    will be used.
 
 .. tip::
 

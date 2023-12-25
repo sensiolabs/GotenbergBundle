@@ -1,14 +1,14 @@
 Customization
 =============
 
-Every Builder instance give you the possibility to configure the options,
-or override the options you already set in your ``sensiolabs_gotenberg.yml``
-before generating it, if your PDF need to have his own style.
+If your PDF needs to have its own style, every Builder instance give you
+the possibility to configure the options, or override the options you've
+already set in your ``sensiolabs_gotenberg.yml``.
 
 .. note::
 
-    All of the next example will be realised with a ``TwigBuilder``, but
-    every customization methods belows can be done to every builders.
+    All of the following examples are made using a ``TwigBuilder``, but
+    each of the customization methods below apply to all builders.
 
 .. tip::
 
@@ -17,7 +17,8 @@ before generating it, if your PDF need to have his own style.
 Additional Assets
 -----------------
 
-You may also send additional files, like images, fonts, stylesheets, and so on.
+You can reference any file (like images, fonts, stylesheets, and so on...)
+from within a template.
 
 .. warning::
     The only requirement is that their paths in the template file are on the root level.
@@ -39,7 +40,8 @@ You may also send additional files, like images, fonts, stylesheets, and so on.
         </body>
     </html>
 
-And you can add it with the ``assets`` method.
+When building the PDF, you just have to use the ``assets`` method to add any
+asset referenced in the template to the request.
 
 .. code-block:: php
 
@@ -61,7 +63,7 @@ And you can add it with the ``assets`` method.
 Paper size
 ----------
 
-You can override the default paper size with (width and height, in inches):
+You can override the default paper size with width and height (in inches):
 
 .. code-block:: php
 
@@ -127,10 +129,15 @@ Hide the default white background and allow generating PDFs with transparency.
     The rules regarding the printBackground and omitBackground form fields are the following:
 
         If printBackground is set to false, no background is printed.
+
         If printBackground is set to true:
+
             If the HTML document has a background, that background is used.
+
             If not:
+
                 If omitBackground is set to true, the default background is transparent.
+
                 If not, the default white background is used.
 
 Landscape orientation
