@@ -85,7 +85,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'pdf_universal_access' => true,
 
             ],
-            $arguments[2]
+            $arguments[1]
         );
     }
 
@@ -99,7 +99,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg');
         $arguments = $gotenbergDefinition->getArguments();
 
-        self::assertEquals([], $arguments[2]);
+        self::assertEquals([], $arguments[1]);
     }
 
     public function testGotenbergClientConfiguredWithDefaultConfig(): void
