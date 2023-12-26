@@ -80,11 +80,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $extension = new SensiolabsGotenbergExtension();
 
         $containerBuilder = new ContainerBuilder();
-        $extension->load([[
-            'base_uri' => 'https://sensiolabs.com',
-        ]],
-            $containerBuilder,
-        );
+        $extension->load([
+            ['base_uri' => 'https://sensiolabs.com'],
+        ], $containerBuilder);
 
         $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg.client');
         $arguments = $gotenbergDefinition->getArguments();
