@@ -18,7 +18,6 @@ return (new PhpCsFixer\Config())
         'no_useless_else' => true,
         'no_useless_return' => true,
         'nullable_type_declaration_for_default_null_value' => false,
-        'ordered_class_elements' => true,
         'return_assignment' => true,
         'strict_param' => true,
         'trailing_comma_in_multiline' => [
