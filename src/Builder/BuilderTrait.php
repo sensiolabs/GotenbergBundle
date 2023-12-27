@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Mime\Part\DataPart;
@@ -70,11 +71,8 @@ trait BuilderTrait
      */
     public function header(string $path, array $context = []): self
     {
-        if ($this->twig instanceof Environment) {
-            return $this->addTwigTemplate($path, PdfPart::HeaderPart, $context);
-        }
-
-        return $this->addHtmlTemplate($path, PdfPart::HeaderPart);
+        $this->checkTwigDependency(__METHOD__);
+        return $this->addTwigTemplate($path, PdfPart::HeaderPart, $context);
     }
 
     /**
@@ -84,11 +82,8 @@ trait BuilderTrait
      */
     public function footer(string $path, array $context = []): self
     {
-        if ($this->twig instanceof Environment) {
-            return $this->addTwigTemplate($path, PdfPart::FooterPart, $context);
-        }
-
-        return $this->addHtmlTemplate($path, PdfPart::FooterPart);
+        $this->checkTwigDependency(__METHOD__);
+        return $this->addTwigTemplate($path, PdfPart::FooterPart, $context);
     }
 
     /**
@@ -409,6 +404,16 @@ trait BuilderTrait
 
         if (! in_array($extension, $acceptExtension, true)) {
             throw new HttpException(400, "The extension file {$extension} is not available in Gotenberg.");
+        }
+    }
+
+    /**
+     * @throws ServiceNotFoundException
+     */
+    private function checkTwigDependency(string $method): void
+    {
+        if (!$this->twig instanceof Environment) {
+            throw new ServiceNotFoundException('twig', msg: sprintf('Twig is required to use this method "%s". Try to run "composer require symfony/twig-bundle"', $method));
         }
     }
 }

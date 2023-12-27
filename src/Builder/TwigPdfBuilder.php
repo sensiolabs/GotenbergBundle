@@ -5,7 +5,6 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Environment;
 
 final class TwigPdfBuilder implements BuilderInterface
@@ -27,10 +26,7 @@ final class TwigPdfBuilder implements BuilderInterface
      */
     public function content(string $path, array $context = []): self
     {
-        if (!$this->twig instanceof Environment) {
-            throw new ServiceNotFoundException('twig', msg: sprintf('Twig is required to use this method "%s". Try to run "composer require symfony/twig-bundle"', __FUNCTION__));
-        }
-
+        $this->checkTwigDependency(__METHOD__);
         $this->addTwigTemplate($path, PdfPart::BodyPart, $context);
         return $this;
     }

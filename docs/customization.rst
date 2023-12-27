@@ -198,17 +198,6 @@ You can add a header and/or a footer to each page of the PDF:
 If you want to add some HTML templates rather than a Twig templates you can also
 do it with these methods.
 
-.. warning::
-    The only prerequisite is that the path to the file is from the root of the project
-    and no longer through the ``default_path`` configuration related to Twig Environment
-    service.
-
-.. code-block:: php
-
-    $twigPdfBuilder
-        ->header('templates/my_header.html')
-        ->footer('templates/my_footer.html');
-
 .. tip::
 
     For more information and restrictions about `Header and footer`_.
