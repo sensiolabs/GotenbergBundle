@@ -26,6 +26,7 @@ Chapters
     configuration
     basic-usage
     customization
+    custom-builders
 
 .. _Gotenberg 7.x: https://gotenberg.dev/
 .. _`GotenbergBundle`: https://github.com/sensiolabs/GotenbergBundle
