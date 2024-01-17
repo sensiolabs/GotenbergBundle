@@ -34,9 +34,9 @@ final class TwigPdfBuilderTest extends TestCase
             'wait_for_expression' => 'window.globalVar === "ready"',
             'emulated_media_type' => 'screen',
             'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
-            'extra_http_headers' =>  [
+            'extra_http_headers' => [
                 'MyHeader' => 'Value',
-                'User-Agent' => 'MyValue'
+                'User-Agent' => 'MyValue',
             ],
             'fail_on_console_exceptions' => true,
             'pdf_format' => 'PDF/A-1a',
@@ -118,4 +118,3 @@ final class TwigPdfBuilderTest extends TestCase
         self::assertEquals('text/html', $dataPart->getContentType());
     }
 }
-

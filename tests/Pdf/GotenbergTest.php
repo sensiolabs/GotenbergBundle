@@ -4,11 +4,8 @@ namespace Sensiolabs\GotenbergBundle\Tests\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
-use Sensiolabs\GotenbergBundle\Tests\Builder\BuilderInterfaceMock;
 use Twig\Environment;
 
 #[CoversClass(Gotenberg::class)]

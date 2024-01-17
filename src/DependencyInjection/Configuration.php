@@ -89,7 +89,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultNull()
                             ->validate()
                                 ->ifTrue(static function ($option): bool {
-                                    return !is_string($option);
+                                    return !\is_string($option);
                                 })
                                 ->thenInvalid('Invalid value %s')
                             ->end()
@@ -99,7 +99,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultNull()
                             ->validate()
                                 ->ifTrue(static function ($option) {
-                                    return !is_string($option);
+                                    return !\is_string($option);
                                 })
                                 ->thenInvalid('Invalid value %s')
                             ->end()
@@ -114,7 +114,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultNull()
                             ->validate()
                                 ->ifTrue(static function ($option) {
-                                    return !is_string($option);
+                                    return !\is_string($option);
                                 })
                                 ->thenInvalid('Invalid value %s')
                             ->end()
@@ -128,7 +128,7 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('name')
                                         ->validate()
                                             ->ifTrue(static function ($option) {
-                                                return !is_string($option);
+                                                return !\is_string($option);
                                             })
                                             ->thenInvalid('Invalid header name %s')
                                         ->end()
@@ -136,7 +136,7 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('value')
                                         ->validate()
                                             ->ifTrue(static function ($option) {
-                                                return !is_string($option);
+                                                return !\is_string($option);
                                             })
                                             ->thenInvalid('Invalid header value %s')
                                         ->end()

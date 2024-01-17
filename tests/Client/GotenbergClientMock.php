@@ -20,8 +20,8 @@ final class GotenbergClientMock
             'response_headers' => [
                 'accept-ranges' => 'bytes',
                 'content-disposition' => 'attachment; filename="simple_pdf.pdf"',
-                'content-type' => 'application/pdf'
-            ]
+                'content-type' => 'application/pdf',
+            ],
         ]);
 
         $mockClient = new MockHttpClient([$mockResponse]);

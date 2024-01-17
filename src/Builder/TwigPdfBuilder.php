@@ -14,7 +14,8 @@ final class TwigPdfBuilder implements BuilderInterface
     private const ENDPOINT = '/forms/chromium/convert/html';
 
     public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
-    {}
+    {
+    }
 
     public function getEndpoint(): string
     {
@@ -27,6 +28,7 @@ final class TwigPdfBuilder implements BuilderInterface
     public function content(string $path, array $context = []): self
     {
         $this->addTwigTemplate($path, PdfPart::BodyPart, $context);
+
         return $this;
     }
 

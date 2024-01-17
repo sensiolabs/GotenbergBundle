@@ -8,10 +8,10 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use function Symfony\Component\String\u;
-use const JSON_THROW_ON_ERROR;
 
 /**
  * @phpstan-import-type ConfigBuilder from BuilderInterface
+ *
  * @phpstan-type ConfigOptions array{
  *      'paper_width'?: float,
  *      'paper_height'?: float,
@@ -48,14 +48,15 @@ trait BuilderTrait
     }
 
     /**
-     * To set configurations by an array of configurations
+     * To set configurations by an array of configurations.
+     *
      * @param ConfigOptions $configurations
      */
     public function setConfigurations(array $configurations): self
     {
         foreach ($configurations as $property => $value) {
             $method = u($property)->camel()->toString();
-            if (is_callable([$this, $method])) {
+            if (\is_callable([$this, $method])) {
                 $this->{$method}($value);
             }
         }
@@ -64,8 +65,10 @@ trait BuilderTrait
     }
 
     /**
-     * Add a twig template for the header
+     * Add a twig template for the header.
+     *
      * @see https://gotenberg.dev/docs/routes#header--footer
+     *
      * @param array<string, mixed> $context
      */
     public function header(string $path, array $context = []): self
@@ -74,8 +77,10 @@ trait BuilderTrait
     }
 
     /**
-     * Add a twig template for the footer
+     * Add a twig template for the footer.
+     *
      * @see https://gotenberg.dev/docs/routes#header--footer
+     *
      * @param array<string, mixed> $context
      */
     public function footer(string $path, array $context = []): self
@@ -84,9 +89,10 @@ trait BuilderTrait
     }
 
     /**
-     * Add some assets as img, css, js
+     * Add some assets as img, css, js.
      *
      * Assets are not loaded in header and footer
+     *
      * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function assets(string ...$pathToAssets): self
@@ -119,6 +125,7 @@ trait BuilderTrait
      * A4 - 8.27 x 11.7
      * A5 - 5.83 x 8.27
      * A6 - 4.13 x 5.83
+     *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function paperSize(float $width, float $height): self
@@ -131,6 +138,7 @@ trait BuilderTrait
 
     /**
      * Overrides the default margins (e.g., 0.39), in inches.
+     *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function margins(float $top, float $bottom, float $left, float $right): self
@@ -144,7 +152,8 @@ trait BuilderTrait
     }
 
     /**
-     * Define whether to prefer page size as defined by CSS. (Default false)
+     * Define whether to prefer page size as defined by CSS. (Default false).
+     *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function preferCssPageSize(): self
@@ -155,7 +164,8 @@ trait BuilderTrait
     }
 
     /**
-     * Prints the background graphics. (Default false)
+     * Prints the background graphics. (Default false).
+     *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function printBackground(): self
@@ -167,7 +177,8 @@ trait BuilderTrait
 
     /**
      * Hides default white background and allows generating PDFs with
-     * transparency. (Default false)
+     * transparency. (Default false).
+     *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function omitBackground(): self
@@ -178,7 +189,8 @@ trait BuilderTrait
     }
 
     /**
-     * Sets the paper orientation to landscape. (Default false)
+     * Sets the paper orientation to landscape. (Default false).
+     *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function landscape(): self
@@ -189,7 +201,8 @@ trait BuilderTrait
     }
 
     /**
-     * The scale of the page rendering (e.g., 1.0). (Default 1.0)
+     * The scale of the page rendering (e.g., 1.0). (Default 1.0).
+     *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function scale(float $scale): self
@@ -200,7 +213,8 @@ trait BuilderTrait
     }
 
     /**
-     * Page ranges to print, e.g., '1-5, 8, 11-13'. (default All pages)
+     * Page ranges to print, e.g., '1-5, 8, 11-13'. (default All pages).
+     *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function nativePageRanges(string $range): self
@@ -212,7 +226,8 @@ trait BuilderTrait
 
     /**
      * Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML
-     * document before converting it to PDF. (default None)
+     * document before converting it to PDF. (default None).
+     *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
      */
     public function waitDelay(string $delay): self
@@ -224,9 +239,10 @@ trait BuilderTrait
 
     /**
      * Sets the JavaScript expression to wait before converting an HTML
-     * document to PDF until it returns true. (default None)
+     * document to PDF until it returns true. (default None).
      *
      * For instance: "window.status === 'ready'".
+     *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
      */
     public function waitForExpression(string $expression): self
@@ -237,7 +253,8 @@ trait BuilderTrait
     }
 
     /**
-     * Forces Chromium to emulate, either "screen" or "print". (default "print")
+     * Forces Chromium to emulate, either "screen" or "print". (default "print").
+     *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
      */
     public function emulatedMediaType(string $mediaType): self
@@ -248,7 +265,8 @@ trait BuilderTrait
     }
 
     /**
-     * Overrides the default "User-Agent" header.(default None)
+     * Overrides the default "User-Agent" header.(default None).
+     *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers
      */
     public function userAgent(string $userAgent): self
@@ -260,16 +278,18 @@ trait BuilderTrait
 
     /**
      * Sets extra HTTP headers that Chromium will send when loading the HTML
-     * document. (default None)
+     * document. (default None).
+     *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers
+     *
      * @param array<string, string> $headers
      */
     public function extraHttpHeaders(array $headers): self
     {
-        if (0 !== count($headers)) {
-            $json = json_encode($headers, flags: JSON_THROW_ON_ERROR);
+        if (0 !== \count($headers)) {
+            $json = json_encode($headers, flags: \JSON_THROW_ON_ERROR);
 
-            if (is_string($json)) {
+            if (\is_string($json)) {
                 $this->multipartFormData[] = ['extraHttpHeaders' => $json];
             }
         }
@@ -279,7 +299,8 @@ trait BuilderTrait
 
     /**
      * Forces Gotenberg to return a 409 Conflict response if there are
-     * exceptions in the Chromium console. (default false)
+     * exceptions in the Chromium console. (default false).
+     *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
      */
     public function failOnConsoleExceptions(): self
@@ -290,7 +311,8 @@ trait BuilderTrait
     }
 
     /**
-     * Sets the PDF format of the resulting PDF. (default None)
+     * Sets the PDF format of the resulting PDF. (default None).
+     *
      * @See https://gotenberg.dev/docs/routes#pdfa-chromium.
      */
     public function pdfFormat(string $format): self
@@ -301,7 +323,8 @@ trait BuilderTrait
     }
 
     /**
-     * Enable PDF for Universal Access for optimal accessibility. (default false)
+     * Enable PDF for Universal Access for optimal accessibility. (default false).
+     *
      * @See https://gotenberg.dev/docs/routes#pdfa-chromium.
      */
     public function pdfUniversalAccess(): self
@@ -384,11 +407,11 @@ trait BuilderTrait
         $file = new File($this->resolveFilePath($filePath));
         $extension = $file->getExtension();
 
-        if (is_string($acceptExtension)) {
+        if (\is_string($acceptExtension)) {
             $acceptExtension = [$acceptExtension];
         }
 
-        if (! in_array($extension, $acceptExtension, true)) {
+        if (!\in_array($extension, $acceptExtension, true)) {
             throw new HttpException(400, "The extension file {$extension} is not available in Gotenberg.");
         }
     }
