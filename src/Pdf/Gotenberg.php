@@ -9,7 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Twig\Environment;
 
-readonly class Gotenberg implements GotenbergInterface
+final readonly class Gotenberg implements GotenbergInterface
 {
     /**
      * @param array<string, mixed> $userConfigurations
