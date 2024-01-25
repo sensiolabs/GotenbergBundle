@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 
@@ -96,7 +97,7 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder
     public function getMultipartFormData(): array
     {
         if ([] === ($this->formFields['officeFiles'] ?? [])) {
-            throw new \RuntimeException('At least one office file is required');
+            throw new MissingRequiredFieldException('At least one office file is required');
         }
 
         $formFields = $this->formFields;

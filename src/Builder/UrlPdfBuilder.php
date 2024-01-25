@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Twig\Environment;
 
 class UrlPdfBuilder extends AbstractChromiumPdfBuilder
@@ -37,7 +38,7 @@ class UrlPdfBuilder extends AbstractChromiumPdfBuilder
     public function getMultipartFormData(): array
     {
         if (!\array_key_exists('url', $this->formFields)) {
-            throw new \RuntimeException('URL is required');
+            throw new MissingRequiredFieldException('URL is required');
         }
 
         return parent::getMultipartFormData();

@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
@@ -64,11 +65,11 @@ class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
     public function getMultipartFormData(): array
     {
         if (!\array_key_exists('htmlTemplate', $this->formFields) && !\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
-            throw new \RuntimeException('HTML template is required');
+            throw new MissingRequiredFieldException('HTML template is required');
         }
 
         if ([] === ($this->formFields['markdownFiles'] ?? [])) {
-            throw new \RuntimeException('At least one markdown file is required');
+            throw new MissingRequiredFieldException('At least one markdown file is required');
         }
 
         return parent::getMultipartFormData();

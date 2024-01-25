@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
@@ -42,7 +43,7 @@ class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
     public function getMultipartFormData(): array
     {
         if (!\array_key_exists('htmlContent', $this->formFields) && !\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
-            throw new \RuntimeException('HTML content is required');
+            throw new MissingRequiredFieldException('HTML content is required');
         }
 
         return parent::getMultipartFormData();

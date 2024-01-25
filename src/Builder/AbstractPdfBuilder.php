@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\String\UnicodeString;
 
@@ -29,6 +30,8 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      * Compiles the form values into a multipart form data array to send to the HTTP client.
      *
      * @return array<int, array<string, string>>
+     *
+     * @throws MissingRequiredFieldException
      */
     abstract public function getMultipartFormData(): array;
 
