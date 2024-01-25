@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Twig\Environment;
 
-class UrlPdfBuilder extends AbstractChromiumPdfBuilder implements UrlPdfBuilderInterface
+class UrlPdfBuilder extends AbstractChromiumPdfBuilder
 {
     use TwigTrait;
 
@@ -16,6 +16,9 @@ class UrlPdfBuilder extends AbstractChromiumPdfBuilder implements UrlPdfBuilderI
         parent::__construct($gotenbergClient, $projectDir);
     }
 
+    /**
+     * URL of the page you want to convert into PDF.
+     */
     public function url(string $url): self
     {
         $this->formFields['url'] = $url;

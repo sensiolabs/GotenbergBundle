@@ -8,7 +8,7 @@ use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
 
-class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder implements MarkdownPdfBuilderInterface
+class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
 {
     use TwigTrait;
 
@@ -19,6 +19,9 @@ class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder implements MarkdownP
         parent::__construct($gotenbergClient, $projectDir);
     }
 
+    /**
+     * The HTML file that wraps the markdown content.
+     */
     public function htmlTemplate(string $filePath): self
     {
         $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($filePath)), PdfPart::BodyPart->value);

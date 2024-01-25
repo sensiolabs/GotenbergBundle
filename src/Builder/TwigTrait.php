@@ -9,6 +9,11 @@ use Twig\Environment;
 
 trait TwigTrait
 {
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @throws PdfPartRenderingException if the template could not be rendered
+     */
     public function renderPart(PdfPart $pdfPart, string $template, array $context = []): self
     {
         if (!$this->twig instanceof Environment) {

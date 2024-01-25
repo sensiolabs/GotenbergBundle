@@ -2,18 +2,15 @@
 
 namespace Sensiolabs\GotenbergBundle\Pdf;
 
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
 
 interface GotenbergInterface
 {
-    public function html(?string $contentFile = null): HtmlPdfBuilderInterface;
+    public function html(?string $contentFile = null): PdfBuilderInterface;
 
-    public function url(?string $url = null): UrlPdfBuilderInterface;
+    public function url(?string $url = null): PdfBuilderInterface;
 
-    public function markdown(?string $htmlTemplate = null, string ...$markdownFiles): MarkdownPdfBuilderInterface;
+    public function markdown(?string $htmlTemplate = null, string ...$markdownFiles): PdfBuilderInterface;
 
-    public function office(string ...$officeFiles): LibreOfficePdfBuilderInterface;
+    public function office(string ...$officeFiles): PdfBuilderInterface;
 }

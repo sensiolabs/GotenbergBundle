@@ -17,6 +17,18 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     {
     }
 
+    /**
+     * The Gotenberg API endpoint path.
+     */
+    abstract public function getEndpoint(): string;
+
+    /**
+     * Compiles the form values into a multipart form data array to send to the HTTP client.
+     *
+     * @return array<int, array<string, string>>
+     */
+    abstract public function getMultipartFormData(): array;
+
     public function generate(): PdfResponse
     {
         return $this->gotenbergClient->post($this->getEndpoint(), $this->getMultipartFormData());

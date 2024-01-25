@@ -3,13 +3,9 @@
 namespace Sensiolabs\GotenbergBundle\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Twig\Environment;
 
@@ -26,7 +22,7 @@ readonly class Gotenberg implements GotenbergInterface
     ) {
     }
 
-    public function html(?string $contentFile = null): HtmlPdfBuilderInterface
+    public function html(?string $contentFile = null): HtmlPdfBuilder
     {
         $builder = new HtmlPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
         $builder->setConfigurations($this->userConfigurations);
@@ -38,7 +34,7 @@ readonly class Gotenberg implements GotenbergInterface
         return $builder;
     }
 
-    public function url(?string $url = null): UrlPdfBuilderInterface
+    public function url(?string $url = null): UrlPdfBuilder
     {
         $builder = new UrlPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
         $builder->setConfigurations($this->userConfigurations);
@@ -50,7 +46,7 @@ readonly class Gotenberg implements GotenbergInterface
         return $builder;
     }
 
-    public function markdown(?string $htmlTemplate = null, string ...$markdownFiles): MarkdownPdfBuilderInterface
+    public function markdown(?string $htmlTemplate = null, string ...$markdownFiles): MarkdownPdfBuilder
     {
         $builder = new MarkdownPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
         $builder->setConfigurations($this->userConfigurations);
@@ -64,7 +60,7 @@ readonly class Gotenberg implements GotenbergInterface
         return $builder;
     }
 
-    public function office(string ...$officeFiles): LibreOfficePdfBuilderInterface
+    public function office(string ...$officeFiles): LibreOfficePdfBuilder
     {
         return (new LibreOfficePdfBuilder($this->gotenbergClient, $this->projectDir))
             ->setConfigurations($this->userConfigurations)

@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 
-class LibreOfficePdfBuilder extends AbstractPdfBuilder implements LibreOfficePdfBuilderInterface
+class LibreOfficePdfBuilder extends AbstractPdfBuilder
 {
     use FileTrait;
 
@@ -20,6 +20,9 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder implements LibreOfficePdf
         'odp', 'odg', 'dotx', 'xltx',
     ];
 
+    /**
+     * Sets the paper orientation to landscape.
+     */
     public function landscape(bool $bool = true): self
     {
         $this->formFields['landscape'] = $bool;
@@ -27,6 +30,11 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder implements LibreOfficePdf
         return $this;
     }
 
+    /**
+     * Page ranges to print, e.g., '1-4' - empty means all pages.
+     *
+     * If multiple files are provided, the page ranges will be applied independently to each file.
+     */
     public function nativePageRanges(string $range): self
     {
         $this->formFields['nativePageRanges'] = $range;
@@ -34,6 +42,9 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder implements LibreOfficePdf
         return $this;
     }
 
+    /**
+     * Convert the resulting PDF into the given PDF/A format.
+     */
     public function pdfFormat(string $format): self
     {
         $this->formFields['pdfa'] = $format;
@@ -41,6 +52,9 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder implements LibreOfficePdf
         return $this;
     }
 
+    /**
+     * Enable PDF for Universal Access for optimal accessibility.
+     */
     public function pdfUniversalAccess(bool $bool = true): self
     {
         $this->formFields['pdfua'] = $bool;
@@ -48,6 +62,9 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder implements LibreOfficePdf
         return $this;
     }
 
+    /**
+     * Adds office files to convert (overrides any previous files).
+     */
     public function officeFiles(string ...$paths): self
     {
         $this->formFields['officeFiles'] = [];
@@ -59,6 +76,9 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder implements LibreOfficePdf
         return $this;
     }
 
+    /**
+     * Adds an office file to convert.
+     */
     public function addOfficeFile(string $path): self
     {
         $this->assertFileExtension($path, self::AVAILABLE_EXTENSIONS);

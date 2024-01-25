@@ -8,7 +8,7 @@ use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
 
-class HtmlPdfBuilder extends AbstractChromiumPdfBuilder implements HtmlPdfBuilderInterface
+class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
 {
     use TwigTrait;
 
@@ -19,6 +19,9 @@ class HtmlPdfBuilder extends AbstractChromiumPdfBuilder implements HtmlPdfBuilde
         parent::__construct($gotenbergClient, $projectDir);
     }
 
+    /**
+     * The HTML file to convert into PDF.
+     */
     public function htmlContent(string $filePath): self
     {
         $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($filePath)), PdfPart::BodyPart->value);
