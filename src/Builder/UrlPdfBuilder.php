@@ -11,8 +11,11 @@ class UrlPdfBuilder extends AbstractChromiumPdfBuilder
 
     private const ENDPOINT = '/forms/chromium/convert/url';
 
-    public function __construct(GotenbergClientInterface $gotenbergClient, string $projectDir, private readonly ?Environment $twig = null)
-    {
+    public function __construct(
+        GotenbergClientInterface $gotenbergClient,
+        string $projectDir,
+        private readonly ?Environment $twig = null,
+    ) {
         parent::__construct($gotenbergClient, $projectDir);
     }
 

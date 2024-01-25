@@ -7,8 +7,6 @@ use Symfony\Component\Mime\Part\File as DataPartFile;
 
 class LibreOfficePdfBuilder extends AbstractPdfBuilder
 {
-    use FileTrait;
-
     private const ENDPOINT = '/forms/libreoffice/convert';
 
     private const AVAILABLE_EXTENSIONS = [

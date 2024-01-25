@@ -9,8 +9,6 @@ use Symfony\Component\Mime\Part\File as DataPartFile;
 
 abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 {
-    use FileTrait;
-
     /**
      * Overrides the default paper size, in inches.
      *

@@ -14,8 +14,11 @@ class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
 
     private const ENDPOINT = '/forms/chromium/convert/markdown';
 
-    public function __construct(GotenbergClientInterface $gotenbergClient, string $projectDir, private readonly ?Environment $twig = null)
-    {
+    public function __construct(
+        GotenbergClientInterface $gotenbergClient,
+        string $projectDir,
+        private readonly ?Environment $twig = null,
+    ) {
         parent::__construct($gotenbergClient, $projectDir);
     }
 

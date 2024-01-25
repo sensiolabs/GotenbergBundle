@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\String\UnicodeString;
 
 abstract class AbstractPdfBuilder implements PdfBuilderInterface
@@ -13,8 +14,10 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     protected array $formFields = [];
 
-    public function __construct(protected readonly GotenbergClientInterface $gotenbergClient, protected readonly string $projectDir)
-    {
+    public function __construct(
+        protected readonly GotenbergClientInterface $gotenbergClient,
+        protected readonly string $projectDir,
+    ) {
     }
 
     /**
@@ -51,5 +54,24 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param string[] $validExtensions
+     */
+    protected function assertFileExtension(string $path, array $validExtensions): void
+    {
+        $path = str_starts_with('/', $path) ? $path : $this->projectDir.'/'.$path;
+        $file = new File($path);
+        $extension = $file->getExtension();
+
+        if (!\in_array($extension, $validExtensions, true)) {
+            throw new \InvalidArgumentException(sprintf('The file extension "%s" is not available in Gotenberg.', $extension));
+        }
+    }
+
+    protected function resolveFilePath(string $path): string
+    {
+        return str_starts_with('/', $path) ? $path : $this->projectDir.'/'.$path;
     }
 }
