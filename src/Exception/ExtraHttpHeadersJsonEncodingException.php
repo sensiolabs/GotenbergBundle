@@ -2,6 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Exception;
 
-class ExtraHttpHeadersJsonEncodingException extends \JsonException
+final class ExtraHttpHeadersJsonEncodingException extends \JsonException implements ExceptionInterface
 {
 }

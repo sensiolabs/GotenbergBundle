@@ -2,6 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Exception;
 
-class PdfPartRenderingException extends \RuntimeException
+final class PdfPartRenderingException extends \RuntimeException implements ExceptionInterface
 {
 }
