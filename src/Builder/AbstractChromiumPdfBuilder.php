@@ -2,13 +2,24 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
+use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
+use Twig\Environment;
 
 abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 {
+    public function __construct(
+        GotenbergClientInterface $gotenbergClient,
+        string $projectDir,
+        private readonly ?Environment $twig = null,
+    ) {
+        parent::__construct($gotenbergClient, $projectDir);
+    }
+
     /**
      * Overrides the default paper size, in inches.
      *
@@ -28,7 +39,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function paperSize(float $width, float $height): self
+    public function paperSize(float $width, float $height): static
     {
         $this->paperWidth($width);
         $this->paperHeight($height);
@@ -36,14 +47,14 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    public function paperWidth(float $width): self
+    public function paperWidth(float $width): static
     {
         $this->formFields['paperWidth'] = $width;
 
         return $this;
     }
 
-    public function paperHeight(float $height): self
+    public function paperHeight(float $height): static
     {
         $this->formFields['paperHeight'] = $height;
 
@@ -55,7 +66,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function margins(float $top, float $bottom, float $left, float $right): self
+    public function margins(float $top, float $bottom, float $left, float $right): static
     {
         $this->marginTop($top);
         $this->marginBottom($bottom);
@@ -65,28 +76,28 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    public function marginTop(float $top): self
+    public function marginTop(float $top): static
     {
         $this->formFields['marginTop'] = $top;
 
         return $this;
     }
 
-    public function marginBottom(float $bottom): self
+    public function marginBottom(float $bottom): static
     {
         $this->formFields['marginBottom'] = $bottom;
 
         return $this;
     }
 
-    public function marginLeft(float $left): self
+    public function marginLeft(float $left): static
     {
         $this->formFields['marginLeft'] = $left;
 
         return $this;
     }
 
-    public function marginRight(float $right): self
+    public function marginRight(float $right): static
     {
         $this->formFields['marginRight'] = $right;
 
@@ -98,7 +109,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function preferCssPageSize(bool $bool = true): self
+    public function preferCssPageSize(bool $bool = true): static
     {
         $this->formFields['preferCssPageSize'] = $bool;
 
@@ -110,7 +121,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function printBackground(bool $bool = true): self
+    public function printBackground(bool $bool = true): static
     {
         $this->formFields['printBackground'] = $bool;
 
@@ -123,7 +134,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function omitBackground(bool $bool = true): self
+    public function omitBackground(bool $bool = true): static
     {
         $this->formFields['omitBackground'] = $bool;
 
@@ -135,7 +146,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function landscape(bool $bool = true): self
+    public function landscape(bool $bool = true): static
     {
         $this->formFields['landscape'] = $bool;
 
@@ -147,7 +158,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function scale(float $scale): self
+    public function scale(float $scale): static
     {
         $this->formFields['scale'] = $scale;
 
@@ -159,7 +170,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function nativePageRanges(string $range): self
+    public function nativePageRanges(string $range): static
     {
         $this->formFields['nativePageRanges'] = $range;
 
@@ -167,33 +178,45 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * @param array<string, mixed> $context
+     *
+     * @throws PdfPartRenderingException if the template could not be rendered
+     */
+    public function header(string $template, array $context = []): static
+    {
+        return $this->renderPart(PdfPart::HeaderPart, $template, $context);
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @throws PdfPartRenderingException if the template could not be rendered
+     */
+    public function footer(string $template, array $context = []): static
+    {
+        return $this->renderPart(PdfPart::FooterPart, $template, $context);
+    }
+
+    /**
      * HTML file containing the header. (default None).
      */
-    public function htmlHeader(string $filePath): self
+    public function headerFile(string $path): static
     {
-        $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($filePath)), PdfPart::HeaderPart->value);
-
-        $this->formFields[PdfPart::HeaderPart->value] = $dataPart;
-
-        return $this;
+        return $this->pdfPartFile(PdfPart::HeaderPart, $path);
     }
 
     /**
      * HTML file containing the footer. (default None).
      */
-    public function htmlFooter(string $filePath): self
+    public function footerFile(string $path): static
     {
-        $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($filePath)), PdfPart::FooterPart->value);
-
-        $this->formFields[PdfPart::FooterPart->value] = $dataPart;
-
-        return $this;
+        return $this->pdfPartFile(PdfPart::FooterPart, $path);
     }
 
     /**
      * Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
      */
-    public function assets(string ...$paths): self
+    public function assets(string ...$paths): static
     {
         $this->formFields['assets'] = [];
 
@@ -207,7 +230,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     /**
      * Adds a file, like an image, font, stylesheet, and so on.
      */
-    public function addAsset(string $path): self
+    public function addAsset(string $path): static
     {
         $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($path)));
 
@@ -222,7 +245,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
      */
-    public function waitDelay(string $delay): self
+    public function waitDelay(string $delay): static
     {
         $this->formFields['waitDelay'] = $delay;
 
@@ -237,7 +260,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
      */
-    public function waitForExpression(string $expression): self
+    public function waitForExpression(string $expression): static
     {
         $this->formFields['waitForExpression'] = $expression;
 
@@ -249,7 +272,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
      */
-    public function emulatedMediaType(string $mediaType): self
+    public function emulatedMediaType(string $mediaType): static
     {
         $this->formFields['emulatedMediaType'] = $mediaType;
 
@@ -261,7 +284,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers
      */
-    public function userAgent(string $userAgent): self
+    public function userAgent(string $userAgent): static
     {
         $this->formFields['userAgent'] = $userAgent;
 
@@ -276,7 +299,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @param array<string, string> $headers
      */
-    public function extraHttpHeaders(array $headers): self
+    public function extraHttpHeaders(array $headers): static
     {
         $this->formFields['extraHttpHeaders'] = $headers;
 
@@ -291,7 +314,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @param array<string, string> $headers
      */
-    public function addExtraHttpHeaders(array $headers): self
+    public function addExtraHttpHeaders(array $headers): static
     {
         $this->formFields['extraHttpHeaders'] = [
             ...$this->formFields['extraHttpHeaders'],
@@ -307,7 +330,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
      */
-    public function failOnConsoleExceptions(bool $bool = true): self
+    public function failOnConsoleExceptions(bool $bool = true): static
     {
         $this->formFields['failOnConsoleExceptions'] = $bool;
 
@@ -319,7 +342,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @See https://gotenberg.dev/docs/routes#pdfa-chromium.
      */
-    public function pdfFormat(string $format): self
+    public function pdfFormat(string $format): static
     {
         $this->formFields['pdfa'] = $format;
 
@@ -331,7 +354,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @See https://gotenberg.dev/docs/routes#pdfa-chromium.
      */
-    public function pdfUniversalAccess(bool $bool = true): self
+    public function pdfUniversalAccess(bool $bool = true): static
     {
         $this->formFields['pdfua'] = $bool;
 
@@ -383,5 +406,39 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         }
 
         return $multipartFormData;
+    }
+
+    protected function pdfPartFile(PdfPart $pdfPart, string $path): static
+    {
+        $dataPart = new DataPart(
+            new DataPartFile($this->resolveFilePath($path)),
+            $pdfPart->value,
+        );
+
+        $this->formFields[$pdfPart->value] = $dataPart;
+
+        return $this;
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @throws PdfPartRenderingException if the template could not be rendered
+     */
+    protected function renderPart(PdfPart $pdfPart, string $template, array $context = []): static
+    {
+        if (!$this->twig instanceof Environment) {
+            throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
+        }
+
+        try {
+            $html = $this->twig->render($template, $context);
+        } catch (\Throwable $error) {
+            throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s".', $template, $pdfPart->value), previous: $error);
+        }
+
+        $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
+
+        return $this;
     }
 }

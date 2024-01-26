@@ -22,16 +22,11 @@ final readonly class Gotenberg implements GotenbergInterface
     ) {
     }
 
-    public function html(?string $contentFile = null): HtmlPdfBuilder
+    public function html(): HtmlPdfBuilder
     {
-        $builder = new HtmlPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
-        $builder->setConfigurations($this->userConfigurations);
-
-        if (null !== $contentFile) {
-            $builder->htmlContent($contentFile);
-        }
-
-        return $builder;
+        return (new HtmlPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig))
+            ->setConfigurations($this->userConfigurations)
+        ;
     }
 
     public function url(?string $url = null): UrlPdfBuilder
@@ -46,25 +41,19 @@ final readonly class Gotenberg implements GotenbergInterface
         return $builder;
     }
 
-    public function markdown(?string $htmlTemplate = null, string ...$markdownFiles): MarkdownPdfBuilder
+    public function markdown(string ...$files): MarkdownPdfBuilder
     {
-        $builder = new MarkdownPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
-        $builder->setConfigurations($this->userConfigurations);
-
-        if (null !== $htmlTemplate) {
-            $builder->htmlTemplate($htmlTemplate);
-        }
-
-        $builder->markdownFiles(...$markdownFiles);
-
-        return $builder;
+        return (new MarkdownPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig))
+            ->setConfigurations($this->userConfigurations)
+            ->files(...$files)
+        ;
     }
 
-    public function office(string ...$officeFiles): LibreOfficePdfBuilder
+    public function office(string ...$files): LibreOfficePdfBuilder
     {
         return (new LibreOfficePdfBuilder($this->gotenbergClient, $this->projectDir))
             ->setConfigurations($this->userConfigurations)
-            ->officeFiles(...$officeFiles)
+            ->files(...$files)
         ;
     }
 }

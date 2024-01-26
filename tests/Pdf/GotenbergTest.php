@@ -37,7 +37,8 @@ final class GotenbergTest extends TestCase
             __DIR__.'/../Fixtures',
             $twig,
         );
-        $builder = $gotenberg->html('content.html');
+        $builder = $gotenberg->html();
+        $builder->contentFile('content.html');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(3, $multipartFormData);
@@ -67,7 +68,8 @@ final class GotenbergTest extends TestCase
             __DIR__.'/../Fixtures',
             $twig,
         );
-        $builder = $gotenberg->markdown('template.html', 'assets/file.md');
+        $builder = $gotenberg->markdown('assets/file.md');
+        $builder->htmlWrapperFile('wrapper.html');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);
@@ -76,13 +78,13 @@ final class GotenbergTest extends TestCase
         self::assertIsArray($multipartFormData[0]);
         self::assertArrayHasKey('files', $multipartFormData[0]);
         self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
-        self::assertSame('index.html', $multipartFormData[0]['files']->getFilename());
+        self::assertSame('file.md', $multipartFormData[0]['files']->getFilename());
 
         self::assertArrayHasKey(1, $multipartFormData);
         self::assertIsArray($multipartFormData[1]);
         self::assertArrayHasKey('files', $multipartFormData[1]);
         self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
-        self::assertSame('file.md', $multipartFormData[1]['files']->getFilename());
+        self::assertSame('index.html', $multipartFormData[1]['files']->getFilename());
     }
 
     public function testOfficeBuilderFactory(): void

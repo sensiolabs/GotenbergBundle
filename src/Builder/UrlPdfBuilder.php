@@ -2,23 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Twig\Environment;
 
-class UrlPdfBuilder extends AbstractChromiumPdfBuilder
+final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
 {
-    use TwigTrait;
-
     private const ENDPOINT = '/forms/chromium/convert/url';
-
-    public function __construct(
-        GotenbergClientInterface $gotenbergClient,
-        string $projectDir,
-        private readonly ?Environment $twig = null,
-    ) {
-        parent::__construct($gotenbergClient, $projectDir);
-    }
 
     /**
      * URL of the page you want to convert into PDF.
@@ -30,11 +18,6 @@ class UrlPdfBuilder extends AbstractChromiumPdfBuilder
         return $this;
     }
 
-    public function getEndpoint(): string
-    {
-        return self::ENDPOINT;
-    }
-
     public function getMultipartFormData(): array
     {
         if (!\array_key_exists('url', $this->formFields)) {
@@ -42,5 +25,10 @@ class UrlPdfBuilder extends AbstractChromiumPdfBuilder
         }
 
         return parent::getMultipartFormData();
+    }
+
+    protected function getEndpoint(): string
+    {
+        return self::ENDPOINT;
     }
 }

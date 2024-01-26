@@ -30,7 +30,7 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
     {
         $client = $this->createMock(GotenbergClientInterface::class);
         $builder = new LibreOfficePdfBuilder($client, self::FIXTURE_DIR);
-        $builder->officeFiles($filePath);
+        $builder->files($filePath);
 
         $multipartFormData = $builder->getMultipartFormData();
 

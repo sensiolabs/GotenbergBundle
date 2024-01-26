@@ -2,76 +2,71 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
-use Twig\Environment;
 
-class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
+final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
 {
-    use TwigTrait;
-
     private const ENDPOINT = '/forms/chromium/convert/markdown';
 
-    public function __construct(
-        GotenbergClientInterface $gotenbergClient,
-        string $projectDir,
-        private readonly ?Environment $twig = null,
-    ) {
-        parent::__construct($gotenbergClient, $projectDir);
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @throws PdfPartRenderingException if the template could not be rendered
+     */
+    public function htmlWrapper(string $template, array $context = []): self
+    {
+        return $this->renderPart(PdfPart::BodyPart, $template, $context);
     }
 
     /**
      * The HTML file that wraps the markdown content.
      */
-    public function htmlTemplate(string $filePath): self
+    public function htmlWrapperFile(string $path): self
     {
-        $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($filePath)), PdfPart::BodyPart->value);
-
-        $this->formFields['htmlTemplate'] = $dataPart;
-
-        return $this;
+        return $this->pdfPartFile(PdfPart::BodyPart, $path);
     }
 
-    public function markdownFiles(string ...$paths): self
+    public function files(string ...$paths): self
     {
-        $this->formFields['markdownFiles'] = [];
+        $this->formFields['files'] = [];
 
         foreach ($paths as $path) {
-            $this->addMarkdownFile($path);
+            $this->addFile($path);
         }
 
         return $this;
     }
 
-    public function addMarkdownFile(string $path): self
+    public function addFile(string $path): self
     {
         $this->assertFileExtension($path, ['md']);
 
         $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($path)));
 
-        $this->formFields['markdownFiles'][$path] = $dataPart;
+        $this->formFields['files'][$path] = $dataPart;
 
         return $this;
     }
 
-    public function getEndpoint(): string
-    {
-        return self::ENDPOINT;
-    }
-
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists('htmlTemplate', $this->formFields) && !\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
+        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
             throw new MissingRequiredFieldException('HTML template is required');
         }
 
-        if ([] === ($this->formFields['markdownFiles'] ?? [])) {
+        if ([] === ($this->formFields['files'] ?? [])) {
             throw new MissingRequiredFieldException('At least one markdown file is required');
         }
 
         return parent::getMultipartFormData();
+    }
+
+    protected function getEndpoint(): string
+    {
+        return self::ENDPOINT;
     }
 }

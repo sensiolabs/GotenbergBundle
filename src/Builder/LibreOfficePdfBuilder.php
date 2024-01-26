@@ -6,7 +6,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 
-class LibreOfficePdfBuilder extends AbstractPdfBuilder
+final class LibreOfficePdfBuilder extends AbstractPdfBuilder
 {
     private const ENDPOINT = '/forms/libreoffice/convert';
 
@@ -64,12 +64,12 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * Adds office files to convert (overrides any previous files).
      */
-    public function officeFiles(string ...$paths): self
+    public function files(string ...$paths): self
     {
-        $this->formFields['officeFiles'] = [];
+        $this->formFields['files'] = [];
 
         foreach ($paths as $path) {
-            $this->addOfficeFile($path);
+            $this->addFile($path);
         }
 
         return $this;
@@ -78,39 +78,34 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * Adds an office file to convert.
      */
-    public function addOfficeFile(string $path): self
+    public function addFile(string $path): self
     {
         $this->assertFileExtension($path, self::AVAILABLE_EXTENSIONS);
 
         $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($path)));
 
-        $this->formFields['officeFiles'][$path] = $dataPart;
+        $this->formFields['files'][$path] = $dataPart;
 
         return $this;
     }
 
-    public function getEndpoint(): string
-    {
-        return self::ENDPOINT;
-    }
-
     public function getMultipartFormData(): array
     {
-        if ([] === ($this->formFields['officeFiles'] ?? [])) {
+        if ([] === ($this->formFields['files'] ?? [])) {
             throw new MissingRequiredFieldException('At least one office file is required');
         }
 
         $formFields = $this->formFields;
         $multipartFormData = [];
 
-        $files = $this->formFields['officeFiles'] ?? [];
+        $files = $this->formFields['files'] ?? [];
         if ([] !== $files) {
             foreach ($files as $dataPart) {
                 $multipartFormData[] = [
                     'files' => $dataPart,
                 ];
             }
-            unset($formFields['officeFiles']);
+            unset($formFields['files']);
         }
 
         foreach ($formFields as $key => $value) {
@@ -127,5 +122,10 @@ class LibreOfficePdfBuilder extends AbstractPdfBuilder
         }
 
         return $multipartFormData;
+    }
+
+    protected function getEndpoint(): string
+    {
+        return self::ENDPOINT;
     }
 }

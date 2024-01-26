@@ -22,11 +22,6 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * The Gotenberg API endpoint path.
-     */
-    abstract public function getEndpoint(): string;
-
-    /**
      * Compiles the form values into a multipart form data array to send to the HTTP client.
      *
      * @return array<int, array<string, string>>
@@ -34,6 +29,11 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      * @throws MissingRequiredFieldException
      */
     abstract public function getMultipartFormData(): array;
+
+    /**
+     * The Gotenberg API endpoint path.
+     */
+    abstract protected function getEndpoint(): string;
 
     public function generate(): PdfResponse
     {
