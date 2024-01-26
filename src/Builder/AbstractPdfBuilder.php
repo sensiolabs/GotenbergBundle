@@ -64,8 +64,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     protected function assertFileExtension(string $path, array $validExtensions): void
     {
-        $path = str_starts_with('/', $path) ? $path : $this->projectDir.'/'.$path;
-        $file = new File($path);
+        $file = new File($this->resolveFilePath($path));
         $extension = $file->getExtension();
 
         if (!\in_array($extension, $validExtensions, true)) {
