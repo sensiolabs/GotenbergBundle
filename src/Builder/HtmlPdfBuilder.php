@@ -17,7 +17,7 @@ final class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
      */
     public function content(string $template, array $context = []): self
     {
-        return $this->renderPart(PdfPart::BodyPart, $template, $context);
+        return $this->withRenderedPart(PdfPart::BodyPart, $template, $context);
     }
 
     /**
@@ -25,7 +25,7 @@ final class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
      */
     public function contentFile(string $path): self
     {
-        return $this->pdfPartFile(PdfPart::BodyPart, $path);
+        return $this->withPdfPartFile(PdfPart::BodyPart, $path);
     }
 
     public function getMultipartFormData(): array

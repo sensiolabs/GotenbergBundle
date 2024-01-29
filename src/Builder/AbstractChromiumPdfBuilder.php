@@ -184,7 +184,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function header(string $template, array $context = []): static
     {
-        return $this->renderPart(PdfPart::HeaderPart, $template, $context);
+        return $this->withRenderedPart(PdfPart::HeaderPart, $template, $context);
     }
 
     /**
@@ -194,7 +194,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function footer(string $template, array $context = []): static
     {
-        return $this->renderPart(PdfPart::FooterPart, $template, $context);
+        return $this->withRenderedPart(PdfPart::FooterPart, $template, $context);
     }
 
     /**
@@ -202,7 +202,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function headerFile(string $path): static
     {
-        return $this->pdfPartFile(PdfPart::HeaderPart, $path);
+        return $this->withPdfPartFile(PdfPart::HeaderPart, $path);
     }
 
     /**
@@ -210,7 +210,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function footerFile(string $path): static
     {
-        return $this->pdfPartFile(PdfPart::FooterPart, $path);
+        return $this->withPdfPartFile(PdfPart::FooterPart, $path);
     }
 
     /**
@@ -408,7 +408,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $multipartFormData;
     }
 
-    protected function pdfPartFile(PdfPart $pdfPart, string $path): static
+    protected function withPdfPartFile(PdfPart $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
             new DataPartFile($this->resolveFilePath($path)),
@@ -425,7 +425,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    protected function renderPart(PdfPart $pdfPart, string $template, array $context = []): static
+    protected function withRenderedPart(PdfPart $pdfPart, string $template, array $context = []): static
     {
         if (!$this->twig instanceof Environment) {
             throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
