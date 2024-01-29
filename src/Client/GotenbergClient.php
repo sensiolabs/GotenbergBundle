@@ -12,7 +12,7 @@ final readonly class GotenbergClient implements GotenbergClientInterface
     {
     }
 
-    public function post(string $endpoint, array $multipartFormData): PdfResponse
+    public function call(string $endpoint, array $multipartFormData): PdfResponse
     {
         $formData = new FormDataPart($multipartFormData);
         $headers = $this->prepareHeaders($formData);

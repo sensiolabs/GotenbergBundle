@@ -37,7 +37,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
     public function generate(): PdfResponse
     {
-        return $this->gotenbergClient->post($this->getEndpoint(), $this->getMultipartFormData());
+        return $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
     }
 
     /**

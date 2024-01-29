@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[UsesClass(HeaderBag::class)]
 final class GotenbergClientTest extends TestCase
 {
-    public function testPostRequest(): void
+    public function testCall(): void
     {
         /** @var string $stream */
         $stream = file_get_contents(__DIR__.'/../Fixtures/pdf/simple_pdf.pdf');
@@ -33,7 +33,7 @@ final class GotenbergClientTest extends TestCase
         $mockClient = new MockHttpClient([$mockResponse]);
 
         $gotenbergClient = new GotenbergClient('http://localhost:3000', $mockClient);
-        $response = $gotenbergClient->post('/forms/chromium/convert/url', []);
+        $response = $gotenbergClient->call('/forms/chromium/convert/url', []);
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
         self::assertSame('application/pdf', $response->headers->get('content-type'));

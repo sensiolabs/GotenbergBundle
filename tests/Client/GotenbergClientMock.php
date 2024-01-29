@@ -26,6 +26,6 @@ final class GotenbergClientMock
         $mockClient = new MockHttpClient([$mockResponse]);
         $gotenbergClient = new GotenbergClient('http://localhost:3000', $mockClient);
 
-        return $gotenbergClient->post('/forms/chromium/convert/url', []);
+        return $gotenbergClient->call('/forms/chromium/convert/url', []);
     }
 }
