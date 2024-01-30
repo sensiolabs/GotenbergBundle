@@ -21,7 +21,8 @@ final class GotenbergTest extends TestCase
             ['native_page_ranges' => '1-5'],
             __DIR__.'/../Fixtures',
         );
-        $builder = $gotenberg->url('https://google.com');
+        $builder = $gotenberg->url();
+        $builder->url('https://google.com');
 
         self::assertSame([['nativePageRanges' => '1-5'], ['url' => 'https://google.com']], $builder->getMultipartFormData());
     }
@@ -68,8 +69,9 @@ final class GotenbergTest extends TestCase
             __DIR__.'/../Fixtures',
             $twig,
         );
-        $builder = $gotenberg->markdown('assets/file.md');
-        $builder->htmlWrapperFile('wrapper.html');
+        $builder = $gotenberg->markdown();
+        $builder->files('assets/file.md');
+        $builder->wrapperFile('wrapper.html');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);
@@ -98,7 +100,8 @@ final class GotenbergTest extends TestCase
             __DIR__.'/../Fixtures',
             $twig,
         );
-        $builder = $gotenberg->office('assets/office/document.odt');
+        $builder = $gotenberg->office();
+        $builder->files('assets/office/document.odt');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);

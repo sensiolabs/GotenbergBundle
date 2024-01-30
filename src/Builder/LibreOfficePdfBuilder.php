@@ -69,22 +69,12 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
         $this->formFields['files'] = [];
 
         foreach ($paths as $path) {
-            $this->addFile($path);
+            $this->assertFileExtension($path, self::AVAILABLE_EXTENSIONS);
+
+            $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($path)));
+
+            $this->formFields['files'][$path] = $dataPart;
         }
-
-        return $this;
-    }
-
-    /**
-     * Adds an office file to convert.
-     */
-    public function addFile(string $path): self
-    {
-        $this->assertFileExtension($path, self::AVAILABLE_EXTENSIONS);
-
-        $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($path)));
-
-        $this->formFields['files'][$path] = $dataPart;
 
         return $this;
     }

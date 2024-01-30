@@ -15,7 +15,7 @@ final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
         $client = $this->createMock(GotenbergClientInterface::class);
         $builder = new MarkdownPdfBuilder($client, self::FIXTURE_DIR);
         $builder
-            ->htmlWrapperFile('template.html')
+            ->wrapperFile('template.html')
             ->files('assets/file.md')
         ;
 

@@ -13,11 +13,13 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
     private const ENDPOINT = '/forms/chromium/convert/markdown';
 
     /**
+     * The HTML file that wraps the markdown content, rendered from a Twig template.
+     *
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    public function htmlWrapper(string $template, array $context = []): self
+    public function wrapper(string $template, array $context = []): self
     {
         return $this->withRenderedPart(PdfPart::BodyPart, $template, $context);
     }
@@ -25,7 +27,7 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
     /**
      * The HTML file that wraps the markdown content.
      */
-    public function htmlWrapperFile(string $path): self
+    public function wrapperFile(string $path): self
     {
         return $this->withPdfPartFile(PdfPart::BodyPart, $path);
     }
@@ -35,19 +37,12 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
         $this->formFields['files'] = [];
 
         foreach ($paths as $path) {
-            $this->addFile($path);
+            $this->assertFileExtension($path, ['md']);
+
+            $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($path)));
+
+            $this->formFields['files'][$path] = $dataPart;
         }
-
-        return $this;
-    }
-
-    public function addFile(string $path): self
-    {
-        $this->assertFileExtension($path, ['md']);
-
-        $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($path)));
-
-        $this->formFields['files'][$path] = $dataPart;
 
         return $this;
     }
