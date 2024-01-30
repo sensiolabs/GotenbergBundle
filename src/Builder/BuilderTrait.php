@@ -95,7 +95,7 @@ trait BuilderTrait
      *
      * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
-    public function assets(string ...$pathToAssets): self
+    public function assets(string ...$pathToAssets): static
     {
         foreach ($pathToAssets as $filePath) {
             $file = new DataPartFile($this->resolveFilePath($filePath));
@@ -369,7 +369,7 @@ trait BuilderTrait
      */
     private function addTwigTemplate(string $path, PdfPart $pdfPart, array $context = []): self
     {
-        $stream = $this->twig->render($path, $context);
+        $stream = $this->twig->render($path, array_merge($context, ['this' => $this]));
         $dataPart = new DataPart($stream, $pdfPart->value, 'text/html');
 
         $this->multipartFormData[] = [
@@ -381,7 +381,7 @@ trait BuilderTrait
 
     private function resolveFilePath(string $filePath): string
     {
-        if (str_starts_with('/', $filePath)) {
+        if (str_starts_with($filePath, '/')) {
             return $filePath;
         }
 

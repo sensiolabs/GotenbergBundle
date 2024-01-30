@@ -7,7 +7,7 @@ use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
 use Twig\Environment;
 
-final class TwigPdfBuilder implements BuilderInterface
+final class TwigPdfBuilder implements BuilderInterface, AssetAwareBuilderInterface
 {
     use BuilderTrait;
 

@@ -6,7 +6,7 @@ use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
 use Twig\Environment;
 
-final class UrlPdfBuilder implements BuilderInterface
+final class UrlPdfBuilder implements BuilderInterface, AssetAwareBuilderInterface
 {
     use BuilderTrait;
 

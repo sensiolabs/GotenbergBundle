@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
 
-final class MarkdownPdfBuilder implements BuilderInterface
+final class MarkdownPdfBuilder implements BuilderInterface, AssetAwareBuilderInterface
 {
     use BuilderTrait;
 

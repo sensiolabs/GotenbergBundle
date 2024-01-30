@@ -2,6 +2,7 @@
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -29,4 +30,8 @@ return function (ContainerConfigurator $container): void {
         ->public();
     $services->alias(GotenbergClient::class, 'sensiolabs_gotenberg.client')
         ->private();
+
+    $services->set('sensiolabs_gotenberg.twig.asset_extension', GotenbergAssetExtension::class)
+        ->tag('twig.extension')
+    ;
 };
