@@ -8,9 +8,9 @@ interface GotenbergInterface
 {
     public function html(): PdfBuilderInterface;
 
-    public function url(?string $url = null): PdfBuilderInterface;
+    public function url(): PdfBuilderInterface;
 
-    public function markdown(string ...$files): PdfBuilderInterface;
+    public function markdown(): PdfBuilderInterface;
 
-    public function office(string ...$files): PdfBuilderInterface;
+    public function office(): PdfBuilderInterface;
 }

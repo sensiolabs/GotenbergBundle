@@ -29,31 +29,24 @@ final readonly class Gotenberg implements GotenbergInterface
         ;
     }
 
-    public function url(?string $url = null): UrlPdfBuilder
+    public function url(): UrlPdfBuilder
     {
-        $builder = new UrlPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig);
-        $builder->setConfigurations($this->userConfigurations);
-
-        if (null !== $url) {
-            $builder->url($url);
-        }
-
-        return $builder;
-    }
-
-    public function markdown(string ...$files): MarkdownPdfBuilder
-    {
-        return (new MarkdownPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig))
+        return (new UrlPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig))
             ->setConfigurations($this->userConfigurations)
-            ->files(...$files)
         ;
     }
 
-    public function office(string ...$files): LibreOfficePdfBuilder
+    public function markdown(): MarkdownPdfBuilder
+    {
+        return (new MarkdownPdfBuilder($this->gotenbergClient, $this->projectDir, $this->twig))
+            ->setConfigurations($this->userConfigurations)
+        ;
+    }
+
+    public function office(): LibreOfficePdfBuilder
     {
         return (new LibreOfficePdfBuilder($this->gotenbergClient, $this->projectDir))
             ->setConfigurations($this->userConfigurations)
-            ->files(...$files)
         ;
     }
 }
