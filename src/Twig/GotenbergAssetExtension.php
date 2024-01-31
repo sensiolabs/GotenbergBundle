@@ -21,13 +21,14 @@ class GotenbergAssetExtension extends AbstractExtension
      */
     public function getAssetUrl(array $context, string $path): string
     {
-        $builder = $context['this'];
+        $builder = $context['_builder'];
 
         if (!$builder instanceof AssetAwareBuilderInterface) {
             throw new \LogicException();
         }
 
         $builder->assets($path);
+
         return (new File($path))->getFilename();
     }
 }

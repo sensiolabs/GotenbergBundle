@@ -369,7 +369,7 @@ trait BuilderTrait
      */
     private function addTwigTemplate(string $path, PdfPart $pdfPart, array $context = []): self
     {
-        $stream = $this->twig->render($path, array_merge($context, ['this' => $this]));
+        $stream = $this->twig->render($path, array_merge($context, ['_builder' => $this]));
         $dataPart = new DataPart($stream, $pdfPart->value, 'text/html');
 
         $this->multipartFormData[] = [
