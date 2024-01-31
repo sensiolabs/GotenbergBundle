@@ -74,6 +74,6 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
     protected function resolveFilePath(string $path): string
     {
-        return str_starts_with('/', $path) ? $path : $this->projectDir.'/'.$path;
+        return str_starts_with($path, '/') ? $path : $this->projectDir.'/'.$path;
     }
 }
