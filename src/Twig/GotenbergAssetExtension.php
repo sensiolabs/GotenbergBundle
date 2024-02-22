@@ -2,13 +2,21 @@
 
 namespace Sensiolabs\GotenbergBundle\Twig;
 
+use Sensiolabs\GotenbergBundle\Asset\GotenbergPackage;
 use Sensiolabs\GotenbergBundle\Builder\AssetAwareBuilderInterface;
 use Symfony\Component\Mime\Part\File;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class GotenbergAssetExtension extends AbstractExtension
+final class GotenbergAssetExtension extends AbstractExtension
 {
+    private GotenbergPackage $packages;
+
+    public function __construct(GotenbergPackage $packages)
+    {
+        $this->packages = $packages;
+    }
+
     public function getFunctions(): array
     {
         return [
@@ -24,10 +32,10 @@ class GotenbergAssetExtension extends AbstractExtension
         $builder = $context['_builder'];
 
         if (!$builder instanceof AssetAwareBuilderInterface) {
-            throw new \LogicException();
+            throw new \LogicException('You need to implement AssetAwareBuilderInterface to use gotenberg_asset function.');
         }
 
-        $builder->assets($path);
+        $builder->assets($this->packages->getUrl($path));
 
         return (new File($path))->getFilename();
     }

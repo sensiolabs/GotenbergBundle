@@ -98,7 +98,7 @@ trait BuilderTrait
     public function assets(string ...$pathToAssets): static
     {
         foreach ($pathToAssets as $filePath) {
-            $file = new DataPartFile($this->resolveFilePath($filePath));
+            $file = new DataPartFile($filePath);
             $dataPart = new DataPart($file);
 
             $this->multipartFormData[] = [

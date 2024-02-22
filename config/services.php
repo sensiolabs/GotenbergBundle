@@ -1,5 +1,6 @@
 <?php
 
+use Sensiolabs\GotenbergBundle\Asset\GotenbergPackage;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
@@ -31,7 +32,12 @@ return function (ContainerConfigurator $container): void {
     $services->alias(GotenbergClient::class, 'sensiolabs_gotenberg.client')
         ->private();
 
+    $services->set('sensiolabs_gotenberg.asset.package', GotenbergPackage::class)
+        ->args([param('kernel.project_dir')])
+        ->alias(GotenbergPackage::class, 'sensiolabs_gotenberg.asset.package');
+
     $services->set('sensiolabs_gotenberg.twig.asset_extension', GotenbergAssetExtension::class)
+        ->args([service('sensiolabs_gotenberg.asset.package')])
         ->tag('twig.extension')
     ;
 };
