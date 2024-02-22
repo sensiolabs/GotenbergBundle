@@ -2,15 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Builder\BuilderTrait;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * @phpstan-import-type ConfigOptions from BuilderTrait
- */
 class SensiolabsGotenbergExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -20,14 +16,14 @@ class SensiolabsGotenbergExtension extends Extension
 
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, default_options: ConfigOptions} $config */
+        /** @var array{base_uri: string, default_options: array<string, mixed>} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.client');
         $definition->replaceArgument(0, $config['base_uri']);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg');
-        $definition->replaceArgument(2, $this->cleanDefaultOptions($config['default_options']));
+        $definition->replaceArgument(1, $this->cleanDefaultOptions($config['default_options']));
     }
 
     /**

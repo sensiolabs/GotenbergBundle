@@ -22,7 +22,7 @@ final class PdfResponseTest extends TestCase
 
     public function testSaveToMethod(): void
     {
-        $pdfResponse = new PdfResponse(GotenbergClientMock::defaultResponse());
+        $pdfResponse = GotenbergClientMock::defaultResponse();
         $location = $pdfResponse->saveTo(__DIR__.'/../Fixtures/pdf/generated.pdf');
 
         self::assertFileEquals(__DIR__.'/../Fixtures/pdf/simple_pdf.pdf', $location);

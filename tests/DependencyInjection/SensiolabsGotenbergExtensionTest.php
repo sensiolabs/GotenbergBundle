@@ -22,7 +22,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg');
         $arguments = $gotenbergDefinition->getArguments();
 
-        self::assertEquals(
+        self::assertSame(
             [
                 'paper_width' => 33.1,
                 'paper_height' => 46.8,
@@ -45,7 +45,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'pdf_format' => 'PDF/A-1a',
                 'pdf_universal_access' => true,
             ],
-            $arguments[2],
+            $arguments[1],
         );
     }
 
@@ -59,7 +59,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg');
         $arguments = $gotenbergDefinition->getArguments();
 
-        self::assertEquals([], $arguments[2]);
+        self::assertSame([], $arguments[1]);
     }
 
     public function testGotenbergClientConfiguredWithDefaultConfig(): void
@@ -72,7 +72,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg.client');
         $arguments = $gotenbergDefinition->getArguments();
 
-        self::assertEquals('http://localhost:3000', $arguments[0]);
+        self::assertSame('http://localhost:3000', $arguments[0]);
     }
 
     public function testGotenbergClientConfiguredWithValidConfig(): void
@@ -87,7 +87,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg.client');
         $arguments = $gotenbergDefinition->getArguments();
 
-        self::assertEquals('https://sensiolabs.com', $arguments[0]);
+        self::assertSame('https://sensiolabs.com', $arguments[0]);
     }
 
     /**

@@ -6,7 +6,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\Tests\Builder\BuilderInterfaceMock;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\HeaderBag;
@@ -18,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[UsesClass(HeaderBag::class)]
 final class GotenbergClientTest extends TestCase
 {
-    public function testPostRequest(): void
+    public function testCall(): void
     {
         /** @var string $stream */
         $stream = file_get_contents(__DIR__.'/../Fixtures/pdf/simple_pdf.pdf');
@@ -34,11 +33,9 @@ final class GotenbergClientTest extends TestCase
         $mockClient = new MockHttpClient([$mockResponse]);
 
         $gotenbergClient = new GotenbergClient('http://localhost:3000', $mockClient);
-        $response = $gotenbergClient->post(BuilderInterfaceMock::getDefault());
+        $response = $gotenbergClient->call('/forms/chromium/convert/url', []);
 
-        $header = new HeaderBag($response->getHeaders());
-
-        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        self::assertEquals('application/pdf', $header->get('content-type'));
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame('application/pdf', $response->headers->get('content-type'));
     }
 }

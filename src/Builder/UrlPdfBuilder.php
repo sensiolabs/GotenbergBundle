@@ -2,34 +2,33 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Sensiolabs\GotenbergBundle\Client\PdfResponse;
-use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
-use Twig\Environment;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
-final class UrlPdfBuilder implements BuilderInterface
+final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
 {
-    use BuilderTrait;
-
     private const ENDPOINT = '/forms/chromium/convert/url';
 
-    public function __construct(private GotenbergInterface $gotenberg, private Environment $twig, private string $projectDir)
+    /**
+     * URL of the page you want to convert into PDF.
+     */
+    public function url(string $url): self
     {
-    }
-
-    public function getEndpoint(): string
-    {
-        return self::ENDPOINT;
-    }
-
-    public function content(string $url): self
-    {
-        $this->multipartFormData[] = ['url' => $url];
+        $this->formFields['url'] = $url;
 
         return $this;
     }
 
-    public function generate(): PdfResponse
+    public function getMultipartFormData(): array
     {
-        return $this->gotenberg->generate($this);
+        if (!\array_key_exists('url', $this->formFields)) {
+            throw new MissingRequiredFieldException('URL is required');
+        }
+
+        return parent::getMultipartFormData();
+    }
+
+    protected function getEndpoint(): string
+    {
+        return self::ENDPOINT;
     }
 }
