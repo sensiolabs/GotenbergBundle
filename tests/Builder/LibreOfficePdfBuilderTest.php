@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(LibreOfficePdfBuilder::class)]
@@ -29,7 +30,8 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
     public function testOfficeFiles(string $filePath, string $contentType): void
     {
         $client = $this->createMock(GotenbergClientInterface::class);
-        $builder = new LibreOfficePdfBuilder($client, self::FIXTURE_DIR);
+        $filesystem = $this->createMock(Filesystem::class);
+        $builder = new LibreOfficePdfBuilder($client, self::FIXTURE_DIR, $filesystem);
         $builder->files($filePath);
 
         $multipartFormData = $builder->getMultipartFormData();

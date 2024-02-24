@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
@@ -15,9 +16,10 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         string $projectDir,
+        Filesystem $filesystem,
         private readonly ?Environment $twig = null,
     ) {
-        parent::__construct($gotenbergClient, $projectDir);
+        parent::__construct($gotenbergClient, $projectDir, $filesystem);
     }
 
     /**
@@ -432,7 +434,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         }
 
         try {
-            $html = $this->twig->render($template, $context);
+            $html = $this->twig->render($template, array_merge($context, ['_builder' => $this]));
         } catch (\Throwable $error) {
             throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s".', $template, $pdfPart->value), previous: $error);
         }

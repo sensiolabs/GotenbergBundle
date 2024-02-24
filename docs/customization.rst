@@ -18,9 +18,12 @@ Additional Assets
 -----------------
 
 If a template needs to link to a static asset (e.g. an image), this bundle provides an gotenberg_asset()
-Twig function to help generate that URL.
+Twig function to help generate that path.
 
-This function work as `asset() Twig function`_.
+This function work as `asset() Twig function`_ and fetch your assets in the public folder of your application
+If your files are in another folder, you can override the default value of ``asset_base_dir`` in your
+configuration file ``config/sensiolabs_gotenberg.yml``.
+The path provided can be relative as well as absolute.
 
 .. code-block:: html
 

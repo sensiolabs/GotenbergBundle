@@ -16,7 +16,7 @@ class SensiolabsGotenbergExtension extends Extension
 
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, default_options: array<string, mixed>} $config */
+        /** @var array{base_uri: string, asset_base_dir: string, default_options: array<string, mixed>} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.client');
@@ -24,6 +24,9 @@ class SensiolabsGotenbergExtension extends Extension
 
         $definition = $container->getDefinition('sensiolabs_gotenberg');
         $definition->replaceArgument(1, $this->cleanDefaultOptions($config['default_options']));
+
+        $definition = $container->getDefinition('sensiolabs_gotenberg.asset.base_dir_formatter');
+        $definition->replaceArgument(0, $config['asset_base_dir']);
     }
 
     /**

@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(HtmlPdfBuilder::class)]
@@ -15,7 +16,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     public function testWithConfigurations(): void
     {
         $client = $this->createMock(GotenbergClientInterface::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR);
+        $filesystem = $this->createMock(Filesystem::class);
+        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem);
         $builder->contentFile('content.html');
         $builder->setConfigurations(self::getUserConfig());
 
@@ -54,7 +56,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     public function testWithTemplate(): void
     {
         $client = $this->createMock(GotenbergClientInterface::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, self::$twig);
+        $filesystem = $this->createMock(Filesystem::class);
+        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem, self::$twig);
         $builder->content('content.html.twig');
 
         $multipartFormData = $builder->getMultipartFormData();
@@ -70,7 +73,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     public function testWithAssets(): void
     {
         $client = $this->createMock(GotenbergClientInterface::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR);
+        $filesystem = $this->createMock(Filesystem::class);
+        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem);
         $builder->contentFile('content.html');
         $builder->assets('assets/logo.png');
 
@@ -88,7 +92,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     public function testWithHeader(): void
     {
         $client = $this->createMock(GotenbergClientInterface::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR);
+        $filesystem = $this->createMock(Filesystem::class);
+        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem);
         $builder->headerFile('header.html');
         $builder->contentFile('content.html');
 
@@ -109,7 +114,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $this->expectExceptionMessage('Could not render template "invalid.html.twig" into PDF part "index.html".');
 
         $client = $this->createMock(GotenbergClientInterface::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, self::$twig);
+        $filesystem = $this->createMock(Filesystem::class);
+        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem, self::$twig);
 
         $builder->content('invalid.html.twig');
     }
@@ -120,7 +126,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $this->expectExceptionMessage('Could not encode extra HTTP headers into JSON');
 
         $client = $this->createMock(GotenbergClientInterface::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR);
+        $filesystem = $this->createMock(Filesystem::class);
+        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem);
         $builder->contentFile('content.html');
         // @phpstan-ignore-next-line
         $builder->extraHttpHeaders([

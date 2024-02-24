@@ -2,19 +2,15 @@
 
 namespace Sensiolabs\GotenbergBundle\Twig;
 
-use Sensiolabs\GotenbergBundle\Asset\GotenbergPackage;
-use Sensiolabs\GotenbergBundle\Builder\AssetAwareBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\AbstractChromiumPdfBuilder;
 use Symfony\Component\Mime\Part\File;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class GotenbergAssetExtension extends AbstractExtension
 {
-    private GotenbergPackage $packages;
-
-    public function __construct(GotenbergPackage $packages)
+    public function __construct(private readonly string $formattedAssetBaseDir)
     {
-        $this->packages = $packages;
     }
 
     public function getFunctions(): array
@@ -31,11 +27,11 @@ final class GotenbergAssetExtension extends AbstractExtension
     {
         $builder = $context['_builder'];
 
-        if (!$builder instanceof AssetAwareBuilderInterface) {
-            throw new \LogicException('You need to implement AssetAwareBuilderInterface to use gotenberg_asset function.');
+        if (!$builder instanceof AbstractChromiumPdfBuilder) {
+            throw new \LogicException('You need to extend from AbstractChromiumPdfBuilder to use gotenberg_asset function.');
         }
 
-        $builder->assets($this->packages->getUrl($path));
+        $builder->assets($this->formattedAssetBaseDir.$path);
 
         return (new File($path))->getFilename();
     }

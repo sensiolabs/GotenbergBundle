@@ -2,9 +2,12 @@
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
 use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -18,6 +21,7 @@ return function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.client'),
             abstract_arg('user configuration options'),
             param('kernel.project_dir'),
+            service(Filesystem::class),
             service('twig')->nullOnInvalid(),
         ])
         ->public()
@@ -30,4 +34,20 @@ return function (ContainerConfigurator $container): void {
         ])
         ->public()
         ->alias(GotenbergClientInterface::class, 'sensiolabs_gotenberg.client');
+
+    $services->set('sensiolabs_gotenberg.asset.base_dir_formatter', AssetBaseDirFormatter::class)
+        ->args([
+            abstract_arg('asset_base_dir to assets'),
+            service(Filesystem::class),
+            param('kernel.project_dir'),
+        ])
+        ->alias(AssetBaseDirFormatter::class, 'sensiolabs_gotenberg.asset.base_dir_formatter')
+    ;
+
+    $services->set('sensiolabs_gotenberg.twig.asset_extension', GotenbergAssetExtension::class)
+        ->args([
+            service(AssetBaseDirFormatter::class),
+        ])
+        ->tag('twig.extension')
+    ;
 };

@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
 
@@ -15,11 +16,13 @@ final class GotenbergTest extends TestCase
     public function testUrlBuilderFactory(): void
     {
         $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
+        $filesystem = $this->createMock(Filesystem::class);
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             ['native_page_ranges' => '1-5'],
             __DIR__.'/../Fixtures',
+            $filesystem,
         );
         $builder = $gotenberg->url();
         $builder->url('https://google.com');
@@ -30,12 +33,14 @@ final class GotenbergTest extends TestCase
     public function testHtmlBuilderFactory(): void
     {
         $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
+        $filesystem = $this->createMock(Filesystem::class);
         $twig = $this->createMock(Environment::class);
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             ['margin_top' => 3, 'margin_bottom' => 1],
             __DIR__.'/../Fixtures',
+            $filesystem,
             $twig,
         );
         $builder = $gotenberg->html();
@@ -61,12 +66,14 @@ final class GotenbergTest extends TestCase
     public function testMarkdownBuilderFactory(): void
     {
         $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
+        $filesystem = $this->createMock(Filesystem::class);
         $twig = $this->createMock(Environment::class);
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             [],
             __DIR__.'/../Fixtures',
+            $filesystem,
             $twig,
         );
         $builder = $gotenberg->markdown();
@@ -92,12 +99,14 @@ final class GotenbergTest extends TestCase
     public function testOfficeBuilderFactory(): void
     {
         $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
+        $filesystem = $this->createMock(Filesystem::class);
         $twig = $this->createMock(Environment::class);
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             ['native_page_ranges' => '1-5'],
             __DIR__.'/../Fixtures',
+            $filesystem,
             $twig,
         );
         $builder = $gotenberg->office();

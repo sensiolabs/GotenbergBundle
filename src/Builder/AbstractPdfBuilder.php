@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\String\UnicodeString;
 
@@ -18,6 +19,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     public function __construct(
         protected readonly GotenbergClientInterface $gotenbergClient,
         protected readonly string $projectDir,
+        protected readonly Filesystem $filesystem,
     ) {
     }
 
@@ -74,6 +76,10 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
     protected function resolveFilePath(string $path): string
     {
-        return str_starts_with($path, '/') ? $path : $this->projectDir.'/'.$path;
+        if ($this->filesystem->isAbsolutePath($path)) {
+            return $path;
+        }
+
+        return "{$this->projectDir}/{$path}";
     }
 }
