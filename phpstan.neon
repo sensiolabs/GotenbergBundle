@@ -3,16 +3,3 @@ parameters:
 	paths:
 		- 'src'
 		- 'tests'
-	ignoreErrors:
-		-
-			message: "#^Offset 'files' does not exist on array#"
-			count: 1
-			path: tests/Builder/OfficePdfBuilderTest.php
-		-
-			message: "#^Offset 'files' does not exist on array#"
-			count: 3
-			path: tests/Builder/TwigPdfBuilderTest.php
-		-
-			message: "#^Offset 'files' does not exist on array#"
-			count: 1
-			path: tests/Builder/MarkdownPdfBuilderTest.php

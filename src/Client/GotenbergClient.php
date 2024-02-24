@@ -2,26 +2,24 @@
 
 namespace Sensiolabs\GotenbergBundle\Client;
 
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class GotenbergClient
+final readonly class GotenbergClient implements GotenbergClientInterface
 {
-    public function __construct(private string $gotenbergUri, private HttpClientInterface $client)
+    public function __construct(private string $gotenbergBaseUri, private HttpClientInterface $client)
     {
     }
 
-    public function post(BuilderInterface $builder): ResponseInterface
+    public function call(string $endpoint, array $multipartFormData): PdfResponse
     {
-        $formData = new FormDataPart($builder->getMultipartFormData());
+        $formData = new FormDataPart($multipartFormData);
         $headers = $this->prepareHeaders($formData);
 
         $response = $this->client->request(
             'POST',
-            $this->gotenbergUri.$builder->getEndpoint(),
+            rtrim($this->gotenbergBaseUri, '/').$endpoint,
             [
                 'headers' => $headers,
                 'body' => $formData->bodyToString(),
@@ -32,7 +30,7 @@ class GotenbergClient
             throw new HttpException($response->getStatusCode(), $response->getContent());
         }
 
-        return $response;
+        return new PdfResponse($response);
     }
 
     /**

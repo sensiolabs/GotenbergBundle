@@ -4,15 +4,13 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\OfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Symfony\Component\Mime\Part\DataPart;
 
-#[CoversClass(OfficePdfBuilder::class)]
-final class OfficePdfBuilderTest extends TestCase
+#[CoversClass(LibreOfficePdfBuilder::class)]
+final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
 {
-    use BuilderTestTrait;
-
     private const OFFICE_DOCUMENTS_DIR = 'assets/office';
 
     /**
@@ -30,16 +28,18 @@ final class OfficePdfBuilderTest extends TestCase
     #[DataProvider('provideValidOfficeFiles')]
     public function testOfficeFiles(string $filePath, string $contentType): void
     {
-        $builder = new OfficePdfBuilder($this->getGotenbergMock(), $this->getTwig(), self::FIXTURE_DIR);
-        $builder->officeFile($filePath);
+        $client = $this->createMock(GotenbergClientInterface::class);
+        $builder = new LibreOfficePdfBuilder($client, self::FIXTURE_DIR);
+        $builder->files($filePath);
 
-        $multipart = $builder->getMultipartFormData();
-        $itemOffice = $multipart[array_key_first($multipart)];
+        $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertArrayHasKey('files', $itemOffice);
-        self::assertInstanceOf(DataPart::class, $itemOffice['files']);
+        self::assertCount(1, $multipartFormData);
 
-        $dataPart = $itemOffice['files'];
-        self::assertEquals($contentType, $dataPart->getContentType());
+        self::assertArrayHasKey(0, $multipartFormData);
+        self::assertIsArray($multipartFormData[0]);
+        self::assertArrayHasKey('files', $multipartFormData[0]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
+        self::assertSame($contentType, $multipartFormData[0]['files']->getContentType());
     }
 }
