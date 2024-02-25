@@ -19,6 +19,7 @@ final class GotenbergTest extends TestCase
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             ['native_page_ranges' => '1-5'],
+            [],
             __DIR__.'/../Fixtures',
         );
         $builder = $gotenberg->url();
@@ -35,6 +36,7 @@ final class GotenbergTest extends TestCase
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             ['margin_top' => 3, 'margin_bottom' => 1],
+            [],
             __DIR__.'/../Fixtures',
             $twig,
         );
@@ -66,6 +68,7 @@ final class GotenbergTest extends TestCase
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             [],
+            [],
             __DIR__.'/../Fixtures',
             $twig,
         );
@@ -96,6 +99,7 @@ final class GotenbergTest extends TestCase
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
+            [],
             ['native_page_ranges' => '1-5'],
             __DIR__.'/../Fixtures',
             $twig,

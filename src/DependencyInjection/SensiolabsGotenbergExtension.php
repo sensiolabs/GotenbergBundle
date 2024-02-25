@@ -16,14 +16,15 @@ class SensiolabsGotenbergExtension extends Extension
 
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, default_options: array<string, mixed>} $config */
+        /** @var array{base_uri: string, default_cross_options: array<string, mixed>, chromium_options: array<string, mixed>, office_options: array<string, mixed>} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.client');
         $definition->replaceArgument(0, $config['base_uri']);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg');
-        $definition->replaceArgument(1, $this->cleanDefaultOptions($config['default_options']));
+        $definition->replaceArgument(1, $this->cleanUserOptions(array_merge($config['default_cross_options'], $config['chromium_options'])));
+        $definition->replaceArgument(2, $this->cleanUserOptions(array_merge($config['default_cross_options'], $config['office_options'])));
     }
 
     /**
@@ -31,7 +32,7 @@ class SensiolabsGotenbergExtension extends Extension
      *
      * @return array<string, mixed>
      */
-    private function cleanDefaultOptions(array $userConfigurations): array
+    private function cleanUserOptions(array $userConfigurations): array
     {
         return array_filter($userConfigurations, static function ($config): bool {
             if (\is_array($config)) {

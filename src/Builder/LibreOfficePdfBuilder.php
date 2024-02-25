@@ -62,6 +62,16 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Merge alphanumerically the resulting PDFs.
+     */
+    public function merge(bool $bool = true): self
+    {
+        $this->formFields['merge'] = $bool;
+
+        return $this;
+    }
+
+    /**
      * Adds office files to convert (overrides any previous files).
      */
     public function files(string ...$paths): self

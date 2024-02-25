@@ -16,7 +16,8 @@ return function (ContainerConfigurator $container): void {
     $services->set('sensiolabs_gotenberg', Gotenberg::class)
         ->args([
             service('sensiolabs_gotenberg.client'),
-            abstract_arg('user configuration options'),
+            abstract_arg('chromium configuration options'),
+            abstract_arg('office configuration options'),
             param('kernel.project_dir'),
             service('twig')->nullOnInvalid(),
         ])
