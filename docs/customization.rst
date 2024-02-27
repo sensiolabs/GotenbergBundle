@@ -21,7 +21,7 @@ If a template needs to link to a static asset (e.g. an image), this bundle provi
 Twig function to help generate that path.
 
 This function work as `asset() Twig function`_ and fetch your assets in the public folder of your application
-If your files are in another folder, you can override the default value of ``asset_base_dir`` in your
+If your files are in another folder, you can override the default value of ``base_directory`` in your
 configuration file ``config/sensiolabs_gotenberg.yml``.
 The path provided can be relative as well as absolute.
 
@@ -34,8 +34,8 @@ The path provided can be relative as well as absolute.
             <title>PDF body</title>
         </head>
         <body>
-        <img src="{{ gotenberg_asset('ceo.jpeg') }}" alt="CEO"/>
-        <img src="{{ gotenberg_asset('img/admin.jpeg') }}" alt="Admin"/>
+        <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
+        <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
             <main>
                 <h1>Hello world!</h1>
             </main>

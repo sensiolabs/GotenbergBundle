@@ -9,10 +9,6 @@ use Twig\TwigFunction;
 
 final class GotenbergAssetExtension extends AbstractExtension
 {
-    public function __construct(private readonly string $formattedAssetBaseDir)
-    {
-    }
-
     public function getFunctions(): array
     {
         return [
@@ -31,7 +27,7 @@ final class GotenbergAssetExtension extends AbstractExtension
             throw new \LogicException('You need to extend from AbstractChromiumPdfBuilder to use gotenberg_asset function.');
         }
 
-        $builder->assets($this->formattedAssetBaseDir.$path);
+        $builder->addAsset($path);
 
         return (new File($path))->getFilename();
     }

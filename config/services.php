@@ -20,8 +20,7 @@ return function (ContainerConfigurator $container): void {
         ->args([
             service('sensiolabs_gotenberg.client'),
             abstract_arg('user configuration options'),
-            param('kernel.project_dir'),
-            service(Filesystem::class),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
             service('twig')->nullOnInvalid(),
         ])
         ->public()
@@ -37,17 +36,14 @@ return function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.asset.base_dir_formatter', AssetBaseDirFormatter::class)
         ->args([
-            abstract_arg('asset_base_dir to assets'),
             service(Filesystem::class),
             param('kernel.project_dir'),
+            abstract_arg('base_directory to assets'),
         ])
         ->alias(AssetBaseDirFormatter::class, 'sensiolabs_gotenberg.asset.base_dir_formatter')
     ;
 
     $services->set('sensiolabs_gotenberg.twig.asset_extension', GotenbergAssetExtension::class)
-        ->args([
-            service(AssetBaseDirFormatter::class),
-        ])
         ->tag('twig.extension')
     ;
 };

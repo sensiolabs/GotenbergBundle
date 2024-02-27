@@ -4,18 +4,25 @@ namespace Sensiolabs\GotenbergBundle\Formatter;
 
 use Symfony\Component\Filesystem\Filesystem;
 
-final readonly class AssetBaseDirFormatter implements \Stringable
+final readonly class AssetBaseDirFormatter
 {
-    public function __construct(private string $baseDir, private Filesystem $filesystem, private string $projectDir)
+    private string $baseDir;
+
+    public function __construct(private Filesystem $filesystem, private string $projectDir, string $baseDir)
     {
+        $this->baseDir = rtrim($baseDir, '/');
     }
 
-    public function __toString(): string
+    public function resolve(string $path): string
     {
-        if ($this->filesystem->isAbsolutePath($this->baseDir)) {
-            return $this->baseDir;
+        if ($this->filesystem->isAbsolutePath($path)) {
+            return $path;
         }
 
-        return "{$this->projectDir}/{$this->baseDir}";
+        if ($this->filesystem->isAbsolutePath($this->baseDir)) {
+            return "{$this->baseDir}/{$path}";
+        }
+
+        return "{$this->projectDir}/{$this->baseDir}/{$path}";
     }
 }

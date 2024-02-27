@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
@@ -17,7 +18,10 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     {
         $client = $this->createMock(GotenbergClientInterface::class);
         $filesystem = $this->createMock(Filesystem::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem);
+
+        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::FIXTURE_DIR, self::FIXTURE_DIR);
+
+        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
         $builder->contentFile('content.html');
         $builder->setConfigurations(self::getUserConfig());
 
@@ -57,7 +61,10 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     {
         $client = $this->createMock(GotenbergClientInterface::class);
         $filesystem = $this->createMock(Filesystem::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem, self::$twig);
+
+        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::FIXTURE_DIR, self::FIXTURE_DIR);
+
+        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter, self::$twig);
         $builder->content('content.html.twig');
 
         $multipartFormData = $builder->getMultipartFormData();
@@ -74,7 +81,10 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     {
         $client = $this->createMock(GotenbergClientInterface::class);
         $filesystem = $this->createMock(Filesystem::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem);
+
+        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::FIXTURE_DIR, self::FIXTURE_DIR);
+
+        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
         $builder->contentFile('content.html');
         $builder->assets('assets/logo.png');
 
@@ -93,7 +103,10 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     {
         $client = $this->createMock(GotenbergClientInterface::class);
         $filesystem = $this->createMock(Filesystem::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem);
+
+        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::FIXTURE_DIR, self::FIXTURE_DIR);
+
+        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
         $builder->headerFile('header.html');
         $builder->contentFile('content.html');
 
@@ -115,7 +128,10 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         $client = $this->createMock(GotenbergClientInterface::class);
         $filesystem = $this->createMock(Filesystem::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem, self::$twig);
+
+        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::FIXTURE_DIR, self::FIXTURE_DIR);
+
+        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter, self::$twig);
 
         $builder->content('invalid.html.twig');
     }
@@ -127,7 +143,10 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         $client = $this->createMock(GotenbergClientInterface::class);
         $filesystem = $this->createMock(Filesystem::class);
-        $builder = new HtmlPdfBuilder($client, self::FIXTURE_DIR, $filesystem);
+
+        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::FIXTURE_DIR, self::FIXTURE_DIR);
+
+        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
         $builder->contentFile('content.html');
         // @phpstan-ignore-next-line
         $builder->extraHttpHeaders([
