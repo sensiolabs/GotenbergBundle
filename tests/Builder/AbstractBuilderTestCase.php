@@ -8,12 +8,12 @@ use Twig\Loader\FilesystemLoader;
 
 abstract class AbstractBuilderTestCase extends TestCase
 {
-    protected const FIXTURE_DIR = '/../Fixtures';
+    protected const FIXTURE_DIR = __DIR__.'/../Fixtures';
 
     protected static Environment $twig;
 
     public static function setUpBeforeClass(): void
     {
-        self::$twig = new Environment(new FilesystemLoader(__DIR__.'/../Fixtures/templates'));
+        self::$twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR.'/templates'));
     }
 }

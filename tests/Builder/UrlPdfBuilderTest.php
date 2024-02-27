@@ -7,7 +7,6 @@ use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Symfony\Component\Filesystem\Filesystem;
 
 #[CoversClass(HtmlPdfBuilder::class)]
 final class UrlPdfBuilderTest extends AbstractBuilderTestCase
@@ -15,9 +14,10 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
     public function testUrl(): void
     {
         $client = $this->createMock(GotenbergClientInterface::class);
-        $filesystem = $this->createMock(Filesystem::class);
-
-        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::FIXTURE_DIR, self::FIXTURE_DIR);
+        $assetBaseDirFormatter = $this->createMock(AssetBaseDirFormatter::class);
+        $assetBaseDirFormatter->expects($this->never())
+            ->method('resolve')
+        ;
 
         $builder = new UrlPdfBuilder($client, $assetBaseDirFormatter);
         $builder->url('https://google.com');
