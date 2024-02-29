@@ -104,9 +104,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
      * @return list<
      *     array{
      *          'base_uri': string,
-     *          'default_cross_options': array<string, mixed>,
-     *          'chromium_options': array<string, mixed>,
-     *          'office_options': array<string, mixed>,
+     *          'default_options': array<string, mixed>,
+     *          'default_chromium_options': array<string, mixed>,
+     *          'default_office_options': array<string, mixed>,
      *      }
      * >
      */
@@ -115,11 +115,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         return [
             [
                 'base_uri' => 'http://localhost:3000',
-                'default_cross_options' => [
+                'default_options' => [
                     'pdf_format' => 'PDF/A-1a',
                     'pdf_universal_access' => true,
                 ],
-                'chromium_options' => [
+                'default_chromium_options' => [
                     'paper_width' => 33.1,
                     'paper_height' => 46.8,
                     'margin_top' => 1,
@@ -139,7 +139,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']],
                     'fail_on_console_exceptions' => true,
                 ],
-                'office_options' => [
+                'default_office_options' => [
                     'landscape' => false,
                     'native_page_ranges' => '1-10',
                     'merge' => true,
