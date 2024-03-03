@@ -34,7 +34,7 @@ The default configuration for the bundle looks like :
         default_office_options:
             landscape: null                     # false
             native_page_ranges: null            # All pages
-            merge                               # false
+            merge: null                         # false
 
 .. caution::
 
