@@ -20,6 +20,20 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     ];
 
     /**
+     * To set configurations by an array of configurations.
+     *
+     * @param array<string, mixed> $configurations
+     */
+    public function setConfigurations(array $configurations): self
+    {
+        foreach ($configurations as $property => $value) {
+            $this->addConfiguration($property, $value);
+        }
+
+        return $this;
+    }
+
+    /**
      * Sets the paper orientation to landscape.
      */
     public function landscape(bool $bool = true): self
@@ -127,5 +141,17 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     protected function getEndpoint(): string
     {
         return self::ENDPOINT;
+    }
+
+    private function addConfiguration(string $configurationName, mixed $value): void
+    {
+        match ($configurationName) {
+            'pdf_format' => $this->pdfFormat($value),
+            'pdf_universal_access' => $this->pdfUniversalAccess($value),
+            'landscape' => $this->landscape($value),
+            'native_page_ranges' => $this->nativePageRanges($value),
+            'fail_on_console_exceptions' => $this->merge($value),
+            default => throw new \InvalidArgumentException(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+        };
     }
 }

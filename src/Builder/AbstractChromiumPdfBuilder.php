@@ -21,6 +21,20 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * To set configurations by an array of configurations.
+     *
+     * @param array<string, mixed> $configurations
+     */
+    public function setConfigurations(array $configurations): static
+    {
+        foreach ($configurations as $property => $value) {
+            $this->addConfiguration($property, $value);
+        }
+
+        return $this;
+    }
+
+    /**
      * Overrides the default paper size, in inches.
      *
      * Examples of paper size (width x height):
@@ -440,5 +454,32 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
 
         return $this;
+    }
+
+    private function addConfiguration(string $configurationName, mixed $value): void
+    {
+        match ($configurationName) {
+            'pdf_format' => $this->pdfFormat($value),
+            'pdf_universal_access' => $this->pdfUniversalAccess($value),
+            'paper_width' => $this->paperWidth($value),
+            'paper_height' => $this->paperHeight($value),
+            'margin_top' => $this->marginTop($value),
+            'margin_bottom' => $this->marginBottom($value),
+            'margin_left' => $this->marginLeft($value),
+            'margin_right' => $this->marginRight($value),
+            'prefer_css_page_size' => $this->preferCssPageSize($value),
+            'print_background' => $this->printBackground($value),
+            'omit_background' => $this->omitBackground($value),
+            'landscape' => $this->landscape($value),
+            'scale' => $this->scale($value),
+            'native_page_ranges' => $this->nativePageRanges($value),
+            'wait_delay' => $this->waitDelay($value),
+            'wait_for_expression' => $this->waitForExpression($value),
+            'emulated_media_type' => $this->emulatedMediaType($value),
+            'user_agent' => $this->userAgent($value),
+            'extra_http_headers' => $this->extraHttpHeaders($value),
+            'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
+            default => throw new \InvalidArgumentException(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+        };
     }
 }
