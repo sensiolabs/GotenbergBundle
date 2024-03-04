@@ -3,23 +3,29 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
 
 #[CoversClass(Gotenberg::class)]
+#[UsesClass(AssetBaseDirFormatter::class)]
+#[UsesClass(Filesystem::class)]
 final class GotenbergTest extends TestCase
 {
     public function testUrlBuilderFactory(): void
     {
         $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
+        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), __DIR__.'/../Fixtures', __DIR__.'/../Fixtures');
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             ['native_page_ranges' => '1-5'],
-            __DIR__.'/../Fixtures',
+            $assetBaseDirFormatter,
         );
         $builder = $gotenberg->url();
         $builder->url('https://google.com');
@@ -31,11 +37,12 @@ final class GotenbergTest extends TestCase
     {
         $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
         $twig = $this->createMock(Environment::class);
+        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), __DIR__.'/../Fixtures', __DIR__.'/../Fixtures');
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             ['margin_top' => 3, 'margin_bottom' => 1],
-            __DIR__.'/../Fixtures',
+            $assetBaseDirFormatter,
             $twig,
         );
         $builder = $gotenberg->html();
@@ -62,11 +69,12 @@ final class GotenbergTest extends TestCase
     {
         $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
         $twig = $this->createMock(Environment::class);
+        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), __DIR__.'/../Fixtures', __DIR__.'/../Fixtures');
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             [],
-            __DIR__.'/../Fixtures',
+            $assetBaseDirFormatter,
             $twig,
         );
         $builder = $gotenberg->markdown();
@@ -93,11 +101,12 @@ final class GotenbergTest extends TestCase
     {
         $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
         $twig = $this->createMock(Environment::class);
+        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), __DIR__.'/../Fixtures', __DIR__.'/../Fixtures');
 
         $gotenberg = new Gotenberg(
             $gotenbergClient,
             ['native_page_ranges' => '1-5'],
-            __DIR__.'/../Fixtures',
+            $assetBaseDirFormatter,
             $twig,
         );
         $builder = $gotenberg->office();
