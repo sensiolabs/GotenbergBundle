@@ -16,18 +16,19 @@ final class AssetBaseDirFormatterTest extends TestCase
      */
     public static function generateBaseDirectoryAndPath(): iterable
     {
-        yield 'absolute path and relative base dir' => [__DIR__.'/../Fixtures/assets/logo.png', '/assets'];
-        yield 'relative path and absolute base dir' => ['logo.png', __DIR__.'/../Fixtures/assets'];
-        yield 'relative path and relative base dir' => ['logo.png', 'assets'];
-        yield 'relative path and relative base dir with end slash' => ['logo.png', 'assets/'];
+        yield 'absolute path and absolute base dir' => [__DIR__.'/../Fixtures/assets/file.md', __DIR__.'/../Fixtures/assets', __DIR__.'/../Fixtures/assets/file.md'];
+        yield 'absolute path and relative base dir' => [__DIR__.'/../Fixtures/assets/logo.png', '/assets', __DIR__.'/../Fixtures/assets/logo.png'];
+        yield 'relative path and relative base dir' => ['document.odt', 'assets/office', __DIR__.'/../Fixtures/assets/office/document.odt'];
+        yield 'relative path and relative base dir with end slash' => ['document.odt', 'assets/office/', __DIR__.'/../Fixtures/assets/office/document.odt'];
+        yield 'relative path and absolute base dir' => ['office/document_1.docx', __DIR__.'/../Fixtures/assets', __DIR__.'/../Fixtures/assets/office/document_1.docx'];
     }
 
     #[DataProvider('generateBaseDirectoryAndPath')]
-    public function testResolveWithAbsolutePath(string $path, string $baseDirectory): void
+    public function testResolveWithAbsolutePath(string $path, string $baseDirectory, string $expectedResult): void
     {
         $filesystem = new Filesystem();
         $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, __DIR__.'/../Fixtures', $baseDirectory);
         $resolvedPath = $assetBaseDirFormatter->resolve($path);
-        self::assertSame(__DIR__.'/../Fixtures/assets/logo.png', $resolvedPath);
+        self::assertSame($expectedResult, $resolvedPath);
     }
 }
