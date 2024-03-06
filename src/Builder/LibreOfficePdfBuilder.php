@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
@@ -151,7 +152,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'landscape' => $this->landscape($value),
             'native_page_ranges' => $this->nativePageRanges($value),
             'fail_on_console_exceptions' => $this->merge($value),
-            default => throw new \InvalidArgumentException(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
 }
