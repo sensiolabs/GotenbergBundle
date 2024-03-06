@@ -9,6 +9,7 @@ The default configuration for the bundle looks like :
 
     sensiolabs_gotenberg:
         base_uri: 'http://localhost:3000'
+        base_directory: '%kernel.project_dir%'
         default_options:
             pdf_format: null                    # None
             pdf_universal_access: null          # false

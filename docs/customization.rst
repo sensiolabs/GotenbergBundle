@@ -17,11 +17,13 @@ already set in your ``sensiolabs_gotenberg.yml``.
 Additional Assets
 -----------------
 
-You can reference any file (like images, fonts, stylesheets, and so on...)
-from within a template.
+If a template needs to link to a static asset (e.g. an image), this bundle provides an gotenberg_asset()
+Twig function to help generate that path.
 
-.. warning::
-    The only requirement is that their paths in the template file are on the root level.
+This function work as `asset() Twig function`_ and fetch your assets in the public folder of your application
+If your files are in another folder, you can override the default value of ``base_directory`` in your
+configuration file ``config/sensiolabs_gotenberg.yml``.
+The path provided can be relative as well as absolute.
 
 .. code-block:: html
 
@@ -32,16 +34,13 @@ from within a template.
             <title>PDF body</title>
         </head>
         <body>
-        <img src="ceo.jpeg" />
-        <img src="admin.jpeg" />
+        <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
+        <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
             <main>
                 <h1>Hello world!</h1>
             </main>
         </body>
     </html>
-
-When building the PDF, you just have to use the ``assets`` method to add any
-asset referenced in the template to the request.
 
 .. code-block:: php
 
@@ -50,10 +49,6 @@ asset referenced in the template to the request.
     $twigPdfBuilder = $gotenberg->twig();
     $twigPdfBuilder
         ->content('path/to/template.html.twig')
-        ->assets(
-            'assets/images/profiles/ceo.jpeg',
-            'assets/images/profiles/admin.jpeg',
-        )
         ->generate()
 
 .. tip::
@@ -339,6 +334,7 @@ Enable PDF for Universal Access for optimal accessibility.
 
     For more information about `pdf formats`_.
 
+.. _asset() Twig function: https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets
 .. _assets: https://gotenberg.dev/docs/routes#html-file-into-pdf-route
 .. _defaults properties: https://gotenberg.dev/docs/routes#page-properties-chromium
 .. _Header and footer: https://gotenberg.dev/docs/routes#header--footer

@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
@@ -14,10 +15,10 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 {
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
-        string $projectDir,
+        AssetBaseDirFormatter $asset,
         private readonly ?Environment $twig = null,
     ) {
-        parent::__construct($gotenbergClient, $projectDir);
+        parent::__construct($gotenbergClient, $asset);
     }
 
     /**
@@ -246,9 +247,11 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function addAsset(string $path): static
     {
-        $dataPart = new DataPart(new DataPartFile($this->resolveFilePath($path)));
+        $resolvedPath = $this->asset->resolve($path);
 
-        $this->formFields['assets'][$path] = $dataPart;
+        $dataPart = new DataPart(new DataPartFile($resolvedPath));
+
+        $this->formFields['assets'][$resolvedPath] = $dataPart;
 
         return $this;
     }
@@ -425,7 +428,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     protected function withPdfPartFile(PdfPart $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
-            new DataPartFile($this->resolveFilePath($path)),
+            new DataPartFile($this->asset->resolve($path)),
             $pdfPart->value,
         );
 
@@ -446,9 +449,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         }
 
         try {
-            $html = $this->twig->render($template, $context);
+            $html = $this->twig->render($template, array_merge($context, ['_builder' => $this]));
         } catch (\Throwable $error) {
-            throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s".', $template, $pdfPart->value), previous: $error);
+            throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
         }
 
         $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');

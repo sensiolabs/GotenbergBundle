@@ -146,6 +146,7 @@ final class ConfigurationTest extends TestCase
     {
         return [
             'base_uri' => 'http://localhost:3000',
+            'base_directory' => '%kernel.project_dir%',
             'default_options' => [
                 'pdf_format' => null,
                 'pdf_universal_access' => null,
