@@ -13,11 +13,13 @@ use Twig\Environment;
 final readonly class Gotenberg implements GotenbergInterface
 {
     /**
-     * @param array<string, mixed> $userConfigurations
+     * @param array<string, mixed> $chromiumConfiguration
+     * @param array<string, mixed> $officeConfiguration
      */
     public function __construct(
         private GotenbergClientInterface $gotenbergClient,
-        private array $userConfigurations,
+        private array $chromiumConfiguration,
+        private array $officeConfiguration,
         private AssetBaseDirFormatter $asset,
         private ?Environment $twig = null,
     ) {
@@ -26,28 +28,28 @@ final readonly class Gotenberg implements GotenbergInterface
     public function html(): HtmlPdfBuilder
     {
         return (new HtmlPdfBuilder($this->gotenbergClient, $this->asset, $this->twig))
-            ->setConfigurations($this->userConfigurations)
+            ->setConfigurations($this->chromiumConfiguration)
         ;
     }
 
     public function url(): UrlPdfBuilder
     {
         return (new UrlPdfBuilder($this->gotenbergClient, $this->asset, $this->twig))
-            ->setConfigurations($this->userConfigurations)
+            ->setConfigurations($this->chromiumConfiguration)
         ;
     }
 
     public function markdown(): MarkdownPdfBuilder
     {
         return (new MarkdownPdfBuilder($this->gotenbergClient, $this->asset, $this->twig))
-            ->setConfigurations($this->userConfigurations)
+            ->setConfigurations($this->chromiumConfiguration)
         ;
     }
 
     public function office(): LibreOfficePdfBuilder
     {
         return (new LibreOfficePdfBuilder($this->gotenbergClient, $this->asset))
-            ->setConfigurations($this->userConfigurations)
+            ->setConfigurations($this->officeConfiguration)
         ;
     }
 }

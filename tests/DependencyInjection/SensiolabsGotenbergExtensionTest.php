@@ -24,6 +24,8 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
         self::assertSame(
             [
+                'pdf_format' => 'PDF/A-1a',
+                'pdf_universal_access' => true,
                 'paper_width' => 33.1,
                 'paper_height' => 46.8,
                 'margin_top' => 1,
@@ -42,10 +44,18 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
                 'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
                 'fail_on_console_exceptions' => true,
-                'pdf_format' => 'PDF/A-1a',
-                'pdf_universal_access' => true,
             ],
             $arguments[1],
+        );
+        self::assertSame(
+            [
+                'pdf_format' => 'PDF/A-1a',
+                'pdf_universal_access' => true,
+                'landscape' => false,
+                'native_page_ranges' => '1-10',
+                'merge' => true,
+            ],
+            $arguments[2],
         );
     }
 
@@ -94,7 +104,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
      * @return list<
      *     array{
      *          'base_uri': string,
-     *          'default_options': array<string, mixed>
+     *          'default_options': array<string, mixed>,
+     *          'default_chromium_options': array<string, mixed>,
+     *          'default_office_options': array<string, mixed>,
      *      }
      * >
      */
@@ -104,6 +116,10 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             [
                 'base_uri' => 'http://localhost:3000',
                 'default_options' => [
+                    'pdf_format' => 'PDF/A-1a',
+                    'pdf_universal_access' => true,
+                ],
+                'default_chromium_options' => [
                     'paper_width' => 33.1,
                     'paper_height' => 46.8,
                     'margin_top' => 1,
@@ -122,8 +138,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
                     'extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']],
                     'fail_on_console_exceptions' => true,
-                    'pdf_format' => 'PDF/A-1a',
-                    'pdf_universal_access' => true,
+                ],
+                'default_office_options' => [
+                    'landscape' => false,
+                    'native_page_ranges' => '1-10',
+                    'merge' => true,
                 ],
             ],
         ];

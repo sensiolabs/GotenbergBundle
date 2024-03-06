@@ -10,7 +10,10 @@ The default configuration for the bundle looks like :
     sensiolabs_gotenberg:
         base_uri: 'http://localhost:3000'
         base_directory: '%kernel.project_dir%'
-        options:
+        default_options:
+            pdf_format: null                    # None
+            pdf_universal_access: null          # false
+        default_chromium_options:
             paper_width: null                   # 8.5
             paper_height: null                  # 11
             margin_top: null                    # 0.39
@@ -29,8 +32,10 @@ The default configuration for the bundle looks like :
             user_agent: null                    # None
             extra_http_headers: null            # None
             fail_on_console_exceptions: null    # false
-            pdf_format: null                    # None
-            pdf_universal_access: null          # false
+        default_office_options:
+            landscape: null                     # false
+            native_page_ranges: null            # All pages
+            merge: null                         # false
 
 .. caution::
 
@@ -39,7 +44,7 @@ The default configuration for the bundle looks like :
 
 .. tip::
 
-    For more information about the `defaults properties`_.
+    For more information about the `defaults properties`_ for Chromium.
 
 Customization
 -------------

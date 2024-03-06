@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
@@ -18,6 +19,20 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
         'dif', 'fods', 'ods', 'ots', 'pxl', 'sdc', 'slk', 'stc', 'sxc', 'uos', 'xls', 'xlt', 'xlsx', 'tif', 'jpeg',
         'odp', 'odg', 'dotx', 'xltx',
     ];
+
+    /**
+     * To set configurations by an array of configurations.
+     *
+     * @param array<string, mixed> $configurations
+     */
+    public function setConfigurations(array $configurations): self
+    {
+        foreach ($configurations as $property => $value) {
+            $this->addConfiguration($property, $value);
+        }
+
+        return $this;
+    }
 
     /**
      * Sets the paper orientation to landscape.
@@ -57,6 +72,16 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     public function pdfUniversalAccess(bool $bool = true): self
     {
         $this->formFields['pdfua'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Merge alphanumerically the resulting PDFs.
+     */
+    public function merge(bool $bool = true): self
+    {
+        $this->formFields['merge'] = $bool;
 
         return $this;
     }
@@ -117,5 +142,17 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     protected function getEndpoint(): string
     {
         return self::ENDPOINT;
+    }
+
+    private function addConfiguration(string $configurationName, mixed $value): void
+    {
+        match ($configurationName) {
+            'pdf_format' => $this->pdfFormat($value),
+            'pdf_universal_access' => $this->pdfUniversalAccess($value),
+            'landscape' => $this->landscape($value),
+            'native_page_ranges' => $this->nativePageRanges($value),
+            'fail_on_console_exceptions' => $this->merge($value),
+            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+        };
     }
 }
