@@ -1,76 +1,91 @@
-name: CI
+name: 'CI'
 
 on:
   push:
-    branches: [ 'main' ]
-  pull_request: ~
+    branches: ['main']
+  pull_request:
+    branches: ['main']
 
 permissions:
-  contents: read
+  contents: 'read'
 
 jobs:
-  test:
-    name: "Build and Test - PHP ${{ matrix.php }} Symfony:${{ matrix.symfony-version }} ${{ matrix.deps }}"
-    runs-on: ubuntu-latest
-    env:
-      SYMFONY_DEPRECATIONS_HELPER: max[direct]=0
-    strategy:
-      matrix:
-        include:
-          - symfony-version: 6.4
-            php: 8.2
-            deps: low
-          - symfony-version: 7.0
-            php: 8.2
-            deps: high
-          - symfony-version: 7.0
-            php: 8.3
-            deps: high
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate --strict
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          coverage: none
-
-      - name: Install dependencies
-        if: matrix.deps == 'high'
-        run: composer install
-
-      - name: Install dependencies (min)
-        if: matrix.deps == 'low'
-        run: composer update --prefer-lowest --prefer-stable
-
-      - name: Run test suite
-        run: php vendor/bin/phpunit
 
   php-cs-fixer:
-    name: PHP CS Fixer
-    runs-on: ubuntu-latest
+    name: 'PHP CS Fixer'
+    runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v4
+      - uses: 'actions/checkout@v4'
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: 'Setup PHP'
+        uses: 'shivammathur/setup-php@v2'
         with:
-          php-version: 8.2
-          coverage: none
+          php-version: '8.2'
+          coverage: 'none'
 
-      - name: Install dependencies
-        run: composer install
+      - name: 'Install dependencies'
+        uses: 'ramsey/composer-install@v3'
 
-      - name: Run PHP CS Fixer
-        run: php vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation
+      - name: 'Run PHP CS Fixer'
+        run: 'php vendor/bin/php-cs-fixer fix -v --dry-run'
 
-      - name: Run test suite
-        run: php vendor/bin/phpstan
+  phpstan:
+    name: 'PHPStan'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: 'actions/checkout@v4'
+
+      - name: 'Setup PHP'
+        uses: 'shivammathur/setup-php@v2'
+        with:
+          php-version: '8.2'
+          coverage: 'none'
+
+      - name: 'Install dependencies'
+        uses: 'ramsey/composer-install@v3'
+
+      - name: 'Run PHPStan'
+        run: 'php vendor/bin/phpstan'
+
+  test:
+    name: 'Build and Test - PHP ${{ matrix.php }} - Symfony ${{ matrix.symfony-version }} ${{ matrix.deps }}'
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        symfony-version:
+          - '^7.0'
+        php:
+          - '8.2'
+          - '8.3'
+        deps:
+          - 'lowest'
+          - 'highest'
+        include:
+          # LTS
+          - symfony-version: '^5.4'
+            php: '8.2'
+            deps: 'highest'
+          - symfony-version: '^6.4'
+            php: '8.2'
+            deps: 'highest'
+    env:
+      SYMFONY_REQUIRE: '${{ matrix.symfony-version }}'
+    steps:
+      - uses: 'actions/checkout@v4'
+
+      - name: 'Setup PHP'
+        uses: 'shivammathur/setup-php@v2'
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: 'none'
+
+      - name: 'Validate composer.json and composer.lock'
+        run: 'composer validate --strict'
+
+      - name: 'Install dependencies'
+        uses: 'ramsey/composer-install@v3'
+        with:
+          dependency-versions: '${{ matrix.deps }}'
+
+      - name: 'Run test suite'
+        run: 'php vendor/bin/phpunit'

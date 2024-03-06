@@ -11,6 +11,7 @@
          failOnWarning="true">
     <php>
         <env name="KERNEL_CLASS" value="Sensiolabs\GotenbergBundle\Tests\Kernel"/>
+        <ini name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0"/>
     </php>
 
     <testsuites>
