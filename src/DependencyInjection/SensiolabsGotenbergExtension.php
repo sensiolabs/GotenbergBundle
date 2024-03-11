@@ -16,18 +16,20 @@ class SensiolabsGotenbergExtension extends Extension
 
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, base_directory: string, default_options: array<string, mixed>, default_chromium_options: array<string, mixed>, default_office_options: array<string, mixed>} $config */
+        /** @var array{base_uri: string, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.client');
         $definition->replaceArgument(0, $config['base_uri']);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg');
-        $definition->replaceArgument(1, $this->cleanUserOptions(array_merge($config['default_options'], $config['default_chromium_options'])));
-        $definition->replaceArgument(2, $this->cleanUserOptions(array_merge($config['default_options'], $config['default_office_options'])));
+        $definition->replaceArgument(1, $this->cleanUserOptions($config['default_options']['html']));
+        $definition->replaceArgument(2, $this->cleanUserOptions($config['default_options']['url']));
+        $definition->replaceArgument(3, $this->cleanUserOptions($config['default_options']['markdown']));
+        $definition->replaceArgument(4, $this->cleanUserOptions($config['default_options']['office']));
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.asset.base_dir_formatter');
-        $definition->replaceArgument(0, $config['base_directory']);
+        $definition->replaceArgument(2, $config['base_directory']);
     }
 
     /**

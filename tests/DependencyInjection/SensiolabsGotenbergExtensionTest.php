@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 #[CoversClass(SensiolabsGotenbergExtension::class)]
@@ -24,8 +25,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
         self::assertSame(
             [
-                'pdf_format' => 'PDF/A-1a',
-                'pdf_universal_access' => true,
                 'paper_width' => 33.1,
                 'paper_height' => 46.8,
                 'margin_top' => 1,
@@ -44,18 +43,70 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
                 'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
                 'fail_on_console_exceptions' => true,
+                'pdf_format' => PdfFormat::Pdf1a->value,
+                'pdf_universal_access' => true,
             ],
             $arguments[1],
         );
         self::assertSame(
             [
-                'pdf_format' => 'PDF/A-1a',
-                'pdf_universal_access' => true,
+                'paper_width' => 21,
+                'paper_height' => 50,
+                'margin_top' => 0.5,
+                'margin_bottom' => 0.5,
+                'margin_left' => 0.5,
+                'margin_right' => 0.5,
+                'prefer_css_page_size' => false,
+                'print_background' => false,
+                'omit_background' => false,
                 'landscape' => false,
+                'scale' => 1.5,
                 'native_page_ranges' => '1-10',
-                'merge' => true,
+                'wait_delay' => '5s',
+                'wait_for_expression' => 'window.globalVar === "ready"',
+                'emulated_media_type' => 'screen',
+                'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+                'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                'fail_on_console_exceptions' => false,
+                'pdf_format' => PdfFormat::Pdf2b->value,
+                'pdf_universal_access' => false,
             ],
             $arguments[2],
+        );
+        self::assertSame(
+            [
+                'paper_width' => 30,
+                'paper_height' => 45,
+                'margin_top' => 1,
+                'margin_bottom' => 1,
+                'margin_left' => 1,
+                'margin_right' => 1,
+                'prefer_css_page_size' => true,
+                'print_background' => false,
+                'omit_background' => false,
+                'landscape' => true,
+                'scale' => 1.5,
+                'native_page_ranges' => '1-5',
+                'wait_delay' => '10s',
+                'wait_for_expression' => 'window.globalVar === "ready"',
+                'emulated_media_type' => 'screen',
+                'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+                'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                'fail_on_console_exceptions' => false,
+                'pdf_format' => PdfFormat::Pdf3b->value,
+                'pdf_universal_access' => true,
+            ],
+            $arguments[3],
+        );
+        self::assertSame(
+            [
+                'landscape' => false,
+                'native_page_ranges' => '1-2',
+                'merge' => true,
+                'pdf_format' => PdfFormat::Pdf1a->value,
+                'pdf_universal_access' => true,
+            ],
+            $arguments[4],
         );
     }
 
@@ -101,14 +152,15 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
     }
 
     /**
-     * @return list<
-     *     array{
+     * @return array<int, array{
      *          'base_uri': string,
-     *          'default_options': array<string, mixed>,
-     *          'default_chromium_options': array<string, mixed>,
-     *          'default_office_options': array<string, mixed>,
-     *      }
-     * >
+     *          'default_options': array{
+     *              'html': array<string, mixed>,
+     *              'url': array<string, mixed>,
+     *              'markdown': array<string, mixed>,
+     *              'office': array<string, mixed>,
+     *          }
+     *      }>
      */
     private static function getValidConfig(): array
     {
@@ -116,33 +168,79 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             [
                 'base_uri' => 'http://localhost:3000',
                 'default_options' => [
-                    'pdf_format' => 'PDF/A-1a',
-                    'pdf_universal_access' => true,
-                ],
-                'default_chromium_options' => [
-                    'paper_width' => 33.1,
-                    'paper_height' => 46.8,
-                    'margin_top' => 1,
-                    'margin_bottom' => 1,
-                    'margin_left' => 1,
-                    'margin_right' => 1,
-                    'prefer_css_page_size' => true,
-                    'print_background' => true,
-                    'omit_background' => true,
-                    'landscape' => true,
-                    'scale' => 1.5,
-                    'native_page_ranges' => '1-5',
-                    'wait_delay' => '10s',
-                    'wait_for_expression' => 'window.globalVar === "ready"',
-                    'emulated_media_type' => 'screen',
-                    'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
-                    'extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']],
-                    'fail_on_console_exceptions' => true,
-                ],
-                'default_office_options' => [
-                    'landscape' => false,
-                    'native_page_ranges' => '1-10',
-                    'merge' => true,
+                    'html' => [
+                        'paper_width' => 33.1,
+                        'paper_height' => 46.8,
+                        'margin_top' => 1,
+                        'margin_bottom' => 1,
+                        'margin_left' => 1,
+                        'margin_right' => 1,
+                        'prefer_css_page_size' => true,
+                        'print_background' => true,
+                        'omit_background' => true,
+                        'landscape' => true,
+                        'scale' => 1.5,
+                        'native_page_ranges' => '1-5',
+                        'wait_delay' => '10s',
+                        'wait_for_expression' => 'window.globalVar === "ready"',
+                        'emulated_media_type' => 'screen',
+                        'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+                        'extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']],
+                        'fail_on_console_exceptions' => true,
+                        'pdf_format' => PdfFormat::Pdf1a->value,
+                        'pdf_universal_access' => true,
+                    ],
+                    'url' => [
+                        'paper_width' => 21,
+                        'paper_height' => 50,
+                        'margin_top' => 0.5,
+                        'margin_bottom' => 0.5,
+                        'margin_left' => 0.5,
+                        'margin_right' => 0.5,
+                        'prefer_css_page_size' => false,
+                        'print_background' => false,
+                        'omit_background' => false,
+                        'landscape' => false,
+                        'scale' => 1.5,
+                        'native_page_ranges' => '1-10',
+                        'wait_delay' => '5s',
+                        'wait_for_expression' => 'window.globalVar === "ready"',
+                        'emulated_media_type' => 'screen',
+                        'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+                        'extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']],
+                        'fail_on_console_exceptions' => false,
+                        'pdf_format' => PdfFormat::Pdf2b->value,
+                        'pdf_universal_access' => false,
+                    ],
+                    'markdown' => [
+                        'paper_width' => 30,
+                        'paper_height' => 45,
+                        'margin_top' => 1,
+                        'margin_bottom' => 1,
+                        'margin_left' => 1,
+                        'margin_right' => 1,
+                        'prefer_css_page_size' => true,
+                        'print_background' => false,
+                        'omit_background' => false,
+                        'landscape' => true,
+                        'scale' => 1.5,
+                        'native_page_ranges' => '1-5',
+                        'wait_delay' => '10s',
+                        'wait_for_expression' => 'window.globalVar === "ready"',
+                        'emulated_media_type' => 'screen',
+                        'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+                        'extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']],
+                        'fail_on_console_exceptions' => false,
+                        'pdf_format' => PdfFormat::Pdf3b->value,
+                        'pdf_universal_access' => true,
+                    ],
+                    'office' => [
+                        'landscape' => false,
+                        'native_page_ranges' => '1-2',
+                        'merge' => true,
+                        'pdf_format' => PdfFormat::Pdf1a->value,
+                        'pdf_universal_access' => true,
+                    ],
                 ],
             ],
         ];

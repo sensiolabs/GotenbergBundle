@@ -19,7 +19,9 @@ return function (ContainerConfigurator $container): void {
     $services->set('sensiolabs_gotenberg', Gotenberg::class)
         ->args([
             service('sensiolabs_gotenberg.client'),
-            abstract_arg('chromium configuration options'),
+            abstract_arg('html configuration options'),
+            abstract_arg('url configuration options'),
+            abstract_arg('markdown configuration options'),
             abstract_arg('office configuration options'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
             service('twig')->nullOnInvalid(),
