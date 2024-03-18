@@ -22,7 +22,7 @@ final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
 
         $builder = new MarkdownPdfBuilder($client, $assetBaseDirFormatter);
         $builder
-            ->wrapperFile('template.html')
+            ->htmlWrapper('template.html')
             ->files('assets/file.md')
         ;
 

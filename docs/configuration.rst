@@ -102,10 +102,11 @@ HTTP headers to send by Chromium while loading the HTML document.
 
     sensiolabs_gotenberg:
         base_uri: 'http://localhost:3000'
-        options:
-            extra_http_headers:
-                - { name: 'My-Header', value: 'MyValue' }
-                - { name: 'User-Agent', value: 'MyValue' }
+        default_options:
+            html:
+                extra_http_headers:
+                    - { name: 'My-Header', value: 'MyValue' }
+                    - { name: 'User-Agent', value: 'MyValue' }
 
 .. tip::
 

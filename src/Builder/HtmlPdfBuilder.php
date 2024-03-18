@@ -10,27 +10,33 @@ final class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
 {
     private const ENDPOINT = '/forms/chromium/convert/html';
 
+    private bool $hasContent = false;
+
     /**
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    public function content(string $template, array $context = []): self
+    public function twigContent(string $template, array $context = []): self
     {
-        return $this->withRenderedPart(PdfPart::BodyPart, $template, $context);
+        $this->hasContent = true;
+
+        return $this->addTwigTemplate(PdfPart::BodyPart, $template, $context);
     }
 
     /**
      * The HTML file to convert into PDF.
      */
-    public function contentFile(string $path): self
+    public function htmlContent(string $path): self
     {
-        return $this->withPdfPartFile(PdfPart::BodyPart, $path);
+        $this->hasContent = true;
+
+        return $this->addHtmlTemplate(PdfPart::BodyPart, $path);
     }
 
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
+        if (!$this->hasContent) {
             throw new MissingRequiredFieldException('Content is required');
         }
 

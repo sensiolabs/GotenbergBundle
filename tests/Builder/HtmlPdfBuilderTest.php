@@ -6,7 +6,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Filesystem\Filesystem;
@@ -23,39 +22,39 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
 
         $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
-        $builder->contentFile('content.html');
+        $builder->htmlContent('content.html');
         $builder->setConfigurations(self::getUserConfig());
 
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(21, $multipartFormData);
 
-        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[0]);
-        self::assertSame(['paperWidth' => 33.1], $multipartFormData[2]);
-        self::assertSame(['paperHeight' => 46.8], $multipartFormData[3]);
-        self::assertSame(['marginTop' => 1.0], $multipartFormData[4]);
-        self::assertSame(['marginBottom' => 1.0], $multipartFormData[5]);
-        self::assertSame(['marginLeft' => 1.0], $multipartFormData[6]);
-        self::assertSame(['marginRight' => 1.0], $multipartFormData[7]);
-        self::assertSame(['preferCssPageSize' => 'true'], $multipartFormData[8]);
-        self::assertSame(['printBackground' => 'true'], $multipartFormData[9]);
-        self::assertSame(['omitBackground' => 'true'], $multipartFormData[10]);
-        self::assertSame(['landscape' => 'true'], $multipartFormData[11]);
-        self::assertSame(['scale' => 1.5], $multipartFormData[12]);
-        self::assertSame(['nativePageRanges' => '1-5'], $multipartFormData[13]);
-        self::assertSame(['waitDelay' => '10s'], $multipartFormData[14]);
-        self::assertSame(['waitForExpression' => 'window.globalVar === "ready"'], $multipartFormData[15]);
-        self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[16]);
-        self::assertSame(['userAgent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'], $multipartFormData[17]);
-        self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[18]);
+        self::assertSame(['paperWidth' => '33.1'], $multipartFormData[1]);
+        self::assertSame(['paperHeight' => '46.8'], $multipartFormData[2]);
+        self::assertSame(['marginTop' => '1'], $multipartFormData[3]);
+        self::assertSame(['marginBottom' => '1'], $multipartFormData[4]);
+        self::assertSame(['marginLeft' => '1'], $multipartFormData[5]);
+        self::assertSame(['marginRight' => '1'], $multipartFormData[6]);
+        self::assertSame(['preferCssPageSize' => '1'], $multipartFormData[7]);
+        self::assertSame(['printBackground' => '1'], $multipartFormData[8]);
+        self::assertSame(['omitBackground' => '1'], $multipartFormData[9]);
+        self::assertSame(['landscape' => '1'], $multipartFormData[10]);
+        self::assertSame(['scale' => '1.5'], $multipartFormData[11]);
+        self::assertSame(['nativePageRanges' => '1-5'], $multipartFormData[12]);
+        self::assertSame(['waitDelay' => '10s'], $multipartFormData[13]);
+        self::assertSame(['waitForExpression' => 'window.globalVar === "ready"'], $multipartFormData[14]);
+        self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[15]);
+        self::assertSame(['userAgent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'], $multipartFormData[16]);
+        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[17]);
+        self::assertSame(['failOnConsoleExceptions' => '1'], $multipartFormData[18]);
         self::assertSame(['pdfa' => 'PDF/A-1a'], $multipartFormData[19]);
-        self::assertSame(['pdfua' => 'true'], $multipartFormData[20]);
+        self::assertSame(['pdfua' => '1'], $multipartFormData[20]);
 
-        self::assertIsArray($multipartFormData[1]);
-        self::assertCount(1, $multipartFormData[1]);
-        self::assertArrayHasKey('files', $multipartFormData[1]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
-        self::assertSame('index.html', $multipartFormData[1]['files']->getFilename());
+        self::assertIsArray($multipartFormData[0]);
+        self::assertCount(1, $multipartFormData[0]);
+        self::assertArrayHasKey('files', $multipartFormData[0]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
+        self::assertSame('index.html', $multipartFormData[0]['files']->getFilename());
     }
 
     public function testWithTemplate(): void
@@ -64,7 +63,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
 
         $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter, self::$twig);
-        $builder->content('content.html.twig');
+        $builder->twigContent('content.html.twig');
 
         $multipartFormData = $builder->getMultipartFormData();
 
@@ -82,7 +81,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
 
         $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
-        $builder->contentFile('content.html');
+        $builder->htmlContent('content.html');
         $builder->assets('assets/logo.png');
 
         $multipartFormData = $builder->getMultipartFormData();
@@ -102,8 +101,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
 
         $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
-        $builder->headerFile('header.html');
-        $builder->contentFile('content.html');
+        $builder->htmlHeader('header.html');
+        $builder->htmlContent('content.html');
 
         $multipartFormData = $builder->getMultipartFormData();
 
@@ -126,25 +125,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter, self::$twig);
 
-        $builder->content('invalid.html.twig');
-    }
-
-    public function testInvalidExtraHttpHeaders(): void
-    {
-        $this->expectException(ExtraHttpHeadersJsonEncodingException::class);
-        $this->expectExceptionMessage('Could not encode extra HTTP headers into JSON');
-
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
-
-        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
-        $builder->contentFile('content.html');
-        // @phpstan-ignore-next-line
-        $builder->extraHttpHeaders([
-            'invalid' => tmpfile(),
-        ]);
-
-        $builder->getMultipartFormData();
+        $builder->twigContent('invalid.html.twig');
     }
 
     /**

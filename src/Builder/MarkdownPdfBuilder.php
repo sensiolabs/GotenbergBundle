@@ -12,6 +12,10 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
 {
     private const ENDPOINT = '/forms/chromium/convert/markdown';
 
+    private bool $hasWrapper = false;
+
+    private bool $hasMdFile = false;
+
     /**
      * The HTML file that wraps the markdown content, rendered from a Twig template.
      *
@@ -19,41 +23,45 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    public function wrapper(string $template, array $context = []): self
+    public function twigWrapper(string $template, array $context = []): self
     {
-        return $this->withRenderedPart(PdfPart::BodyPart, $template, $context);
+        $this->hasWrapper = true;
+
+        return $this->addTwigTemplate(PdfPart::BodyPart, $template, $context);
     }
 
     /**
      * The HTML file that wraps the markdown content.
      */
-    public function wrapperFile(string $path): self
+    public function htmlWrapper(string $path): self
     {
-        return $this->withPdfPartFile(PdfPart::BodyPart, $path);
+        $this->hasWrapper = true;
+
+        return $this->addHtmlTemplate(PdfPart::BodyPart, $path);
     }
 
     public function files(string ...$paths): self
     {
-        $this->formFields['files'] = [];
-
         foreach ($paths as $path) {
             $this->assertFileExtension($path, ['md']);
 
             $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
 
-            $this->formFields['files'][$path] = $dataPart;
+            $this->multipartFormData[] = ['files' => $dataPart];
         }
+
+        $this->hasMdFile = true;
 
         return $this;
     }
 
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
+        if (!$this->hasWrapper) {
             throw new MissingRequiredFieldException('HTML template is required');
         }
 
-        if ([] === ($this->formFields['files'] ?? [])) {
+        if (!$this->hasMdFile) {
             throw new MissingRequiredFieldException('At least one markdown file is required');
         }
 
