@@ -12,10 +12,6 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
 {
     private const ENDPOINT = '/forms/chromium/convert/markdown';
 
-    private bool $hasWrapper = false;
-
-    private bool $hasMdFile = false;
-
     /**
      * The HTML file that wraps the markdown content, rendered from a Twig template.
      *
@@ -23,45 +19,41 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    public function twigWrapper(string $template, array $context = []): self
+    public function wrapper(string $template, array $context = []): self
     {
-        $this->hasWrapper = true;
-
-        return $this->addTwigTemplate(PdfPart::BodyPart, $template, $context);
+        return $this->withRenderedPart(PdfPart::BodyPart, $template, $context);
     }
 
     /**
      * The HTML file that wraps the markdown content.
      */
-    public function htmlWrapper(string $path): self
+    public function wrapperFile(string $path): self
     {
-        $this->hasWrapper = true;
-
-        return $this->addHtmlTemplate(PdfPart::BodyPart, $path);
+        return $this->withPdfPartFile(PdfPart::BodyPart, $path);
     }
 
     public function files(string ...$paths): self
     {
+        $this->formFields['files'] = [];
+
         foreach ($paths as $path) {
             $this->assertFileExtension($path, ['md']);
 
             $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
 
-            $this->multipartFormData[] = ['files' => $dataPart];
+            $this->formFields['files'][$path] = $dataPart;
         }
-
-        $this->hasMdFile = true;
 
         return $this;
     }
 
     public function getMultipartFormData(): array
     {
-        if (!$this->hasWrapper) {
+        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
             throw new MissingRequiredFieldException('HTML template is required');
         }
 
-        if (!$this->hasMdFile) {
+        if ([] === ($this->formFields['files'] ?? [])) {
             throw new MissingRequiredFieldException('At least one markdown file is required');
         }
 

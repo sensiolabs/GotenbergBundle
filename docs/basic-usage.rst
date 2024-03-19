@@ -66,7 +66,7 @@ to the method ``content``.
         {
             $urlPdfBuilder = $gotenberg->url();
             return $urlPdfBuilder
-                ->twigContent('https://gotenberg.dev/docs/routes')
+                ->content('https://gotenberg.dev/docs/routes')
                 ->generate(); // will return directly a stream response
         }
     }
@@ -100,9 +100,9 @@ variables to the templates through the second argument of the methods
 
             $twigPdfBuilder = $gotenberg->twig();
             return $twigPdfBuilder
-                ->twigContent('pdf/body.html.twig', ['invoice' => $invoiceReadModel])
-                ->twigHeader('pdf/header.html.twig', ['invoice' => $invoiceReadModel])
-                ->twigFooter('pdf/footer.html.twig')
+                ->content('pdf/body.html.twig', ['invoice' => $invoiceReadModel])
+                ->header('pdf/header.html.twig', ['invoice' => $invoiceReadModel])
+                ->footer('pdf/footer.html.twig')
                 ->generate();  // will return directly a stream response
         }
     }
@@ -137,7 +137,7 @@ that expects the local path of the Markdown file to convert.
         {
             $markdownBuilder = $gotenberg->markdown();
             return $markdownBuilder
-                ->twigContent('pdf/markdown.html.twig', ['invoice' => $invoiceReadModel])
+                ->content('pdf/markdown.html.twig', ['invoice' => $invoiceReadModel])
                 ->markdownFile('templates/intranet/pdf/file.md')
                 ->generate();  // will return directly a stream response
         }
@@ -229,9 +229,9 @@ dumped into this file.
 
             $twigPdfBuilder = $gotenberg->twig();
             $twigPdfBuilder
-                ->twigContent('pdf/body.html.twig', ['datas' => $datas])
-                ->twigHeader('pdf/header.html.twig', ['datas' => $datas])
-                ->twigFooter('pdf/footer.html.twig')
+                ->content('pdf/body.html.twig', ['datas' => $datas])
+                ->header('pdf/header.html.twig', ['datas' => $datas])
+                ->footer('pdf/footer.html.twig')
                 ->assets(
                     'assets/images/profiles/ceo.jpeg',
                     'assets/images/profiles/admin.jpeg',

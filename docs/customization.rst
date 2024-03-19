@@ -48,7 +48,7 @@ The path provided can be relative as well as absolute.
 
     $twigPdfBuilder = $gotenberg->twig();
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->generate()
 
 .. tip::
@@ -66,7 +66,7 @@ You can override the default paper size with width and height (in inches):
 
     $twigPdfBuilder = $gotenberg->twig();
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->paperSize(8.5, 11);
 
 * Letter - 8.5 x 11 (default)
@@ -91,7 +91,7 @@ Define whether to prefer page size as defined by CSS.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->preferCssPageSize();
 
 Print the background graphics
@@ -102,7 +102,7 @@ Print the background graphics
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->printBackground();
 
 
@@ -116,7 +116,7 @@ Hide the default white background and allow generating PDFs with transparency.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->omitBackground();
 
 .. warning::
@@ -145,7 +145,7 @@ The paper orientation to landscape.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->landscape();
 
 Scale
@@ -158,7 +158,7 @@ The scale of the page rendering.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->scale(2.0);
 
 Page ranges
@@ -171,7 +171,7 @@ Page ranges to print (e.g. 1-5, 8, 11-13).
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->nativePageRanges('1-3');
 
 .. warning::
@@ -186,9 +186,9 @@ You can add a header and/or a footer to each page of the PDF:
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
-        ->twigHeader('path/to/header.html.twig')
-        ->twigFooter('path/to/footer.html.twig');
+        ->content('path/to/template.html.twig')
+        ->header('path/to/header.html.twig')
+        ->footer('path/to/footer.html.twig');
 
 .. tip::
 
@@ -206,7 +206,7 @@ you're trying to generate.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->waitDelay('5s');
 
 .. tip::
@@ -223,7 +223,7 @@ You may also wait until a given JavaScript expression.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->waitForExpression("window.globalVar === 'ready'");
 
 .. tip::
@@ -240,7 +240,7 @@ Some websites have dedicated CSS rules for print. Using ``screen`` allows you to
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->emulatedMediaType('screen');
 
 .. tip::
@@ -257,7 +257,7 @@ Override the default User-Agent header.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->userAgent("Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
 
 .. tip::
@@ -274,7 +274,7 @@ HTTP headers to send by Chromium while loading the HTML document.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->extraHttpHeaders([
             'MyHeader' => 'MyValue'
         ]);
@@ -293,7 +293,7 @@ Return a 409 Conflict response if there are exceptions in the Chromium console.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->failOnConsoleExceptions();
 
 .. tip::
@@ -310,7 +310,7 @@ Convert the resulting PDF into the given PDF/A format.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->pdfFormat('PDF/A-2b');
 
 .. tip::
@@ -327,7 +327,7 @@ Enable PDF for Universal Access for optimal accessibility.
 .. code-block:: php
 
     $twigPdfBuilder
-        ->twigContent('path/to/template.html.twig')
+        ->content('path/to/template.html.twig')
         ->pdfUniversalAccess();
 
 .. tip::

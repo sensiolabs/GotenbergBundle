@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -64,12 +65,16 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     public function paperWidth(float $width): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('paperWidth', $width);
+        $this->formFields['paperWidth'] = $width;
+
+        return $this;
     }
 
     public function paperHeight(float $height): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('paperHeight', $height);
+        $this->formFields['paperHeight'] = $height;
+
+        return $this;
     }
 
     /**
@@ -89,22 +94,30 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     public function marginTop(float $top): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('marginTop', $top);
+        $this->formFields['marginTop'] = $top;
+
+        return $this;
     }
 
     public function marginBottom(float $bottom): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('marginBottom', $bottom);
+        $this->formFields['marginBottom'] = $bottom;
+
+        return $this;
     }
 
     public function marginLeft(float $left): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('marginLeft', $left);
+        $this->formFields['marginLeft'] = $left;
+
+        return $this;
     }
 
     public function marginRight(float $right): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('marginRight', $right);
+        $this->formFields['marginRight'] = $right;
+
+        return $this;
     }
 
     /**
@@ -114,7 +127,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function preferCssPageSize(bool $bool = true): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('preferCssPageSize', $bool);
+        $this->formFields['preferCssPageSize'] = $bool;
+
+        return $this;
     }
 
     /**
@@ -124,7 +139,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function printBackground(bool $bool = true): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('printBackground', $bool);
+        $this->formFields['printBackground'] = $bool;
+
+        return $this;
     }
 
     /**
@@ -135,7 +152,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function omitBackground(bool $bool = true): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('omitBackground', $bool);
+        $this->formFields['omitBackground'] = $bool;
+
+        return $this;
     }
 
     /**
@@ -145,7 +164,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function landscape(bool $bool = true): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('landscape', $bool);
+        $this->formFields['landscape'] = $bool;
+
+        return $this;
     }
 
     /**
@@ -155,7 +176,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function scale(float $scale): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('scale', $scale);
+        $this->formFields['scale'] = $scale;
+
+        return $this;
     }
 
     /**
@@ -165,7 +188,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function nativePageRanges(string $range): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('nativePageRanges', $range);
+        $this->formFields['nativePageRanges'] = $range;
+
+        return $this;
     }
 
     /**
@@ -173,9 +198,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    public function twigHeader(string $template, array $context = []): static
+    public function header(string $template, array $context = []): static
     {
-        return $this->addTwigTemplate(PdfPart::HeaderPart, $template, $context);
+        return $this->withRenderedPart(PdfPart::HeaderPart, $template, $context);
     }
 
     /**
@@ -183,25 +208,25 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    public function twigFooter(string $template, array $context = []): static
+    public function footer(string $template, array $context = []): static
     {
-        return $this->addTwigTemplate(PdfPart::FooterPart, $template, $context);
+        return $this->withRenderedPart(PdfPart::FooterPart, $template, $context);
     }
 
     /**
      * HTML file containing the header. (default None).
      */
-    public function htmlHeader(string $path): static
+    public function headerFile(string $path): static
     {
-        return $this->addHtmlTemplate(PdfPart::HeaderPart, $path);
+        return $this->withPdfPartFile(PdfPart::HeaderPart, $path);
     }
 
     /**
      * HTML file containing the footer. (default None).
      */
-    public function htmlFooter(string $path): static
+    public function footerFile(string $path): static
     {
-        return $this->addHtmlTemplate(PdfPart::FooterPart, $path);
+        return $this->withPdfPartFile(PdfPart::FooterPart, $path);
     }
 
     /**
@@ -209,6 +234,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function assets(string ...$paths): static
     {
+        $this->formFields['assets'] = [];
+
         foreach ($paths as $path) {
             $this->addAsset($path);
         }
@@ -224,7 +251,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         $resolvedPath = $this->asset->resolve($path);
 
         $dataPart = new DataPart(new DataPartFile($resolvedPath));
-        $this->multipartFormData[] = ['files' => $dataPart];
+
+        $this->formFields['assets'][$resolvedPath] = $dataPart;
 
         return $this;
     }
@@ -237,7 +265,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function waitDelay(string $delay): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('waitDelay', $delay);
+        $this->formFields['waitDelay'] = $delay;
+
+        return $this;
     }
 
     /**
@@ -250,7 +280,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function waitForExpression(string $expression): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('waitForExpression', $expression);
+        $this->formFields['waitForExpression'] = $expression;
+
+        return $this;
     }
 
     /**
@@ -260,7 +292,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function emulatedMediaType(string $mediaType): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('emulatedMediaType', $mediaType);
+        $this->formFields['emulatedMediaType'] = $mediaType;
+
+        return $this;
     }
 
     /**
@@ -270,7 +304,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function userAgent(string $userAgent): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('userAgent', $userAgent);
+        $this->formFields['userAgent'] = $userAgent;
+
+        return $this;
     }
 
     /**
@@ -283,19 +319,25 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function extraHttpHeaders(array $headers): static
     {
-        $hasProperty = $this->multipartFormDataPropertyExistenceChecker('extraHttpHeaders');
+        $this->formFields['extraHttpHeaders'] = $headers;
 
-        if (!$hasProperty) {
-            $this->multipartFormData[] = ['extraHttpHeaders' => $headers];
+        return $this;
+    }
 
-            return $this;
-        }
-
-        $index = $this->getIndexForExistingPropertyToOverride('extraHttpHeaders');
-
-        $existingHeadersConfig = $this->multipartFormData[$index];
-
-        $this->multipartFormData[$index] = ['extraHttpHeaders' => [...$existingHeadersConfig['extraHttpHeaders'], ...$headers]];
+    /**
+     * Adds extra HTTP headers that Chromium will send when loading the HTML
+     * document. (default None).
+     *
+     * @see https://gotenberg.dev/docs/routes#custom-http-headers
+     *
+     * @param array<string, string> $headers
+     */
+    public function addExtraHttpHeaders(array $headers): static
+    {
+        $this->formFields['extraHttpHeaders'] = [
+            ...$this->formFields['extraHttpHeaders'],
+            ...$headers,
+        ];
 
         return $this;
     }
@@ -308,7 +350,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function failOnConsoleExceptions(bool $bool = true): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('failOnConsoleExceptions', $bool);
+        $this->formFields['failOnConsoleExceptions'] = $bool;
+
+        return $this;
     }
 
     /**
@@ -318,7 +362,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function pdfFormat(string $format): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('pdfa', $format);
+        $this->formFields['pdfa'] = $format;
+
+        return $this;
     }
 
     /**
@@ -328,17 +374,66 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function pdfUniversalAccess(bool $bool = true): static
     {
-        return $this->addPropertyToMultipartFormDataWithExistenceCheck('pdfua', $bool);
+        $this->formFields['pdfua'] = $bool;
+
+        return $this;
     }
 
-    protected function addHtmlTemplate(PdfPart $pdfPart, string $path): static
+    /**
+     * @throws ExtraHttpHeadersJsonEncodingException
+     */
+    public function getMultipartFormData(): array
+    {
+        $formFields = $this->formFields;
+        $multipartFormData = [];
+
+        $extraHttpHeaders = $this->formFields['extraHttpHeaders'] ?? [];
+        if ([] !== $extraHttpHeaders) {
+            try {
+                $extraHttpHeaders = json_encode($extraHttpHeaders, \JSON_THROW_ON_ERROR);
+            } catch (\JsonException $exception) {
+                throw new ExtraHttpHeadersJsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
+            }
+
+            $multipartFormData[] = [
+                'extraHttpHeaders' => $extraHttpHeaders,
+            ];
+            unset($formFields['extraHttpHeaders']);
+        }
+
+        foreach ($formFields as $key => $value) {
+            if (\is_bool($value)) {
+                $multipartFormData[] = [
+                    $key => $value ? 'true' : 'false',
+                ];
+                continue;
+            }
+
+            if (\is_array($value)) {
+                foreach ($value as $nestedValue) {
+                    $multipartFormData[] = [
+                        ($nestedValue instanceof DataPart ? 'files' : $key) => $nestedValue,
+                    ];
+                }
+                continue;
+            }
+
+            $multipartFormData[] = [
+                ($value instanceof DataPart ? 'files' : $key) => $value,
+            ];
+        }
+
+        return $multipartFormData;
+    }
+
+    protected function withPdfPartFile(PdfPart $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
             new DataPartFile($this->asset->resolve($path)),
             $pdfPart->value,
         );
 
-        $this->multipartFormData[] = ['files' => $dataPart];
+        $this->formFields[$pdfPart->value] = $dataPart;
 
         return $this;
     }
@@ -348,7 +443,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    protected function addTwigTemplate(PdfPart $pdfPart, string $template, array $context = []): static
+    protected function withRenderedPart(PdfPart $pdfPart, string $template, array $context = []): static
     {
         if (!$this->twig instanceof Environment) {
             throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
@@ -360,7 +455,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
         }
 
-        $this->multipartFormData[] = ['files' => new DataPart($html, $pdfPart->value, 'text/html')];
+        $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
 
         return $this;
     }

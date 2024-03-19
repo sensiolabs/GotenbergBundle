@@ -78,7 +78,7 @@ simply pass it as an argument to the ``generate`` method of Gotenberg.
         public function yourControllerMethod(Gotenberg $gotenberg): Response
         {
             $myBuilder = new HtmlPdfBuilder();
-            $myBuilder->twigContent('path/to/my-awesome-template.html');
+            $myBuilder->content('path/to/my-awesome-template.html');
 
             return $gotenberg->generate($myBuilder);
         }

@@ -11,8 +11,6 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
 {
     private const ENDPOINT = '/forms/libreoffice/convert';
 
-    private bool $hasOfficeFile = false;
-
     private const AVAILABLE_EXTENSIONS = [
         'bib', 'doc', 'xml', 'docx', 'fodt', 'html', 'ltx', 'txt', 'odt', 'ott', 'pdb', 'pdf', 'psw', 'rtf', 'sdw',
         'stw', 'sxw', 'uot', 'vor', 'wps', 'epub', 'png', 'bmp', 'emf', 'eps', 'fodg', 'gif', 'jpg', 'met', 'odd',
@@ -41,7 +39,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      */
     public function landscape(bool $bool = true): self
     {
-        $this->multipartFormData[] = ['landscape' => $bool];
+        $this->formFields['landscape'] = $bool;
 
         return $this;
     }
@@ -53,7 +51,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      */
     public function nativePageRanges(string $range): self
     {
-        $this->multipartFormData[] = ['nativePageRanges' => $range];
+        $this->formFields['nativePageRanges'] = $range;
 
         return $this;
     }
@@ -63,7 +61,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      */
     public function pdfFormat(string $format): self
     {
-        $this->multipartFormData[] = ['pdfa' => $format];
+        $this->formFields['pdfa'] = $format;
 
         return $this;
     }
@@ -73,7 +71,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      */
     public function pdfUniversalAccess(bool $bool = true): self
     {
-        $this->multipartFormData[] = ['pdfua' => $bool];
+        $this->formFields['pdfua'] = $bool;
 
         return $this;
     }
@@ -83,7 +81,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      */
     public function merge(bool $bool = true): self
     {
-        $this->multipartFormData[] = ['merge' => $bool];
+        $this->formFields['merge'] = $bool;
 
         return $this;
     }
@@ -93,25 +91,52 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      */
     public function files(string ...$paths): self
     {
+        $this->formFields['files'] = [];
+
         foreach ($paths as $path) {
             $this->assertFileExtension($path, self::AVAILABLE_EXTENSIONS);
 
             $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
-            $this->multipartFormData[] = ['files' => $dataPart];
-        }
 
-        $this->hasOfficeFile = true;
+            $this->formFields['files'][$path] = $dataPart;
+        }
 
         return $this;
     }
 
     public function getMultipartFormData(): array
     {
-        if (!$this->hasOfficeFile) {
+        if ([] === ($this->formFields['files'] ?? [])) {
             throw new MissingRequiredFieldException('At least one office file is required');
         }
 
-        return parent::getMultipartFormData();
+        $formFields = $this->formFields;
+        $multipartFormData = [];
+
+        $files = $this->formFields['files'] ?? [];
+        if ([] !== $files) {
+            foreach ($files as $dataPart) {
+                $multipartFormData[] = [
+                    'files' => $dataPart,
+                ];
+            }
+            unset($formFields['files']);
+        }
+
+        foreach ($formFields as $key => $value) {
+            if (\is_bool($value)) {
+                $multipartFormData[] = [
+                    $key => $value ? 'true' : 'false',
+                ];
+                continue;
+            }
+
+            $multipartFormData[] = [
+                $key => $value,
+            ];
+        }
+
+        return $multipartFormData;
     }
 
     protected function getEndpoint(): string
