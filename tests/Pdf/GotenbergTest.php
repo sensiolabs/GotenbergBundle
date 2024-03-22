@@ -5,9 +5,13 @@ namespace Sensiolabs\GotenbergBundle\Tests\Pdf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
+use Sensiolabs\GotenbergBundle\Tests\Kernel;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
@@ -15,44 +19,42 @@ use Twig\Environment;
 #[CoversClass(Gotenberg::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
-final class GotenbergTest extends TestCase
+final class GotenbergTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void
     {
-        $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), __DIR__.'/../Fixtures', __DIR__.'/../Fixtures');
+        self::bootKernel();
 
-        $gotenberg = new Gotenberg(
-            $gotenbergClient,
-            [],
-            ['native_page_ranges' => '1-5'],
-            [],
-            [],
-            $assetBaseDirFormatter,
-        );
+        $container = static::getContainer();
+
+        /** @var GotenbergInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergInterface::class);
         $builder = $gotenberg->url();
-        $builder->url('https://google.com');
+        $builder
+            ->setConfigurations([
+                'native_page_ranges' => '1-5'
+            ])
+            ->url('https://google.com')
+        ;
 
         self::assertSame([['nativePageRanges' => '1-5'], ['url' => 'https://google.com']], $builder->getMultipartFormData());
     }
 
     public function testHtmlBuilderFactory(): void
     {
-        $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
-        $twig = $this->createMock(Environment::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), __DIR__.'/../Fixtures', __DIR__.'/../Fixtures');
+        self::bootKernel();
 
-        $gotenberg = new Gotenberg(
-            $gotenbergClient,
-            ['margin_top' => 3, 'margin_bottom' => 1],
-            [],
-            [],
-            [],
-            $assetBaseDirFormatter,
-            $twig,
-        );
-        $builder = $gotenberg->html();
-        $builder->contentFile('content.html');
+        $container = static::getContainer();
+
+        /** @var GotenbergInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergInterface::class);
+        $builder = $gotenberg->html()
+            ->setConfigurations([
+                'margin_top' => 3,
+                'margin_bottom' => 1]
+            )
+        ;
+        $builder->contentFile(__DIR__  . '/../Fixtures/files/content.html');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(3, $multipartFormData);
@@ -73,22 +75,16 @@ final class GotenbergTest extends TestCase
 
     public function testMarkdownBuilderFactory(): void
     {
-        $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
-        $twig = $this->createMock(Environment::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), __DIR__.'/../Fixtures', __DIR__.'/../Fixtures');
+        self::bootKernel();
 
-        $gotenberg = new Gotenberg(
-            $gotenbergClient,
-            [],
-            [],
-            [],
-            [],
-            $assetBaseDirFormatter,
-            $twig,
-        );
+        $container = static::getContainer();
+
+        /** @var GotenbergInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergInterface::class);
+
         $builder = $gotenberg->markdown();
-        $builder->files('assets/file.md');
-        $builder->wrapperFile('wrapper.html');
+        $builder->files(__DIR__  . '/../Fixtures/assets/file.md');
+        $builder->wrapperFile(__DIR__  . '/../Fixtures/files/wrapper.html');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);
@@ -108,21 +104,18 @@ final class GotenbergTest extends TestCase
 
     public function testOfficeBuilderFactory(): void
     {
-        $gotenbergClient = $this->createMock(GotenbergClientInterface::class);
-        $twig = $this->createMock(Environment::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), __DIR__.'/../Fixtures', __DIR__.'/../Fixtures');
+        self::bootKernel();
 
-        $gotenberg = new Gotenberg(
-            $gotenbergClient,
-            [],
-            [],
-            [],
-            ['native_page_ranges' => '1-5'],
-            $assetBaseDirFormatter,
-            $twig,
-        );
-        $builder = $gotenberg->office();
-        $builder->files('assets/office/document.odt');
+        $container = static::getContainer();
+
+        /** @var GotenbergInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergInterface::class);
+        $builder = $gotenberg->office()
+            ->setConfigurations([
+                'native_page_ranges' => '1-5'
+            ])
+        ;
+        $builder->files(__DIR__  . '/../Fixtures/assets/office/document.odt');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);
