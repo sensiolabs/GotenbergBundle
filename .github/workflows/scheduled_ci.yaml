@@ -39,7 +39,7 @@ jobs:
       - name: 'Install dependencies'
         uses: 'ramsey/composer-install@v3'
         with:
-          dependency-versions: 'highest'
+          dependency-versions: '${{ matrix.deps }}'
 
       - name: 'Run test suite'
         run: 'php vendor/bin/phpunit'
