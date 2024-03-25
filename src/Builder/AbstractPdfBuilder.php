@@ -15,7 +15,9 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     protected array $formFields = [];
 
-    private string|null $fileName;
+    private string|null $fileName = null;
+
+    private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     public function __construct(
         protected readonly GotenbergClientInterface $gotenbergClient,
@@ -26,7 +28,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     /**
      * Compiles the form values into a multipart form data array to send to the HTTP client.
      *
-     * @return array<int, array<string, string>>
+     * @return list<array<string, string>>
      */
     abstract public function getMultipartFormData(): array;
 
@@ -40,9 +42,13 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     abstract public function setConfigurations(array $configurations): self;
 
-    public function withFileName(string $fileName): static
+    /**
+     * @param HeaderUtils::DISPOSITION_* $headerDisposition
+     */
+    public function fileName(string $fileName, string $headerDisposition = HeaderUtils::DISPOSITION_INLINE): static
     {
         $this->fileName = $fileName;
+        $this->headerDisposition = $headerDisposition;
 
         return $this;
     }
@@ -53,7 +59,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
         if (null !== $this->fileName) {
             $disposition = HeaderUtils::makeDisposition(
-                HeaderUtils::DISPOSITION_INLINE, # TODO : make dynamic
+                $this->headerDisposition,
                 $this->fileName
             );
 
@@ -66,7 +72,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @param string[] $validExtensions
+     * @param non-empty-list<string> $validExtensions
      */
     protected function assertFileExtension(string $path, array $validExtensions): void
     {

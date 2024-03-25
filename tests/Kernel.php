@@ -18,7 +18,7 @@ final class Kernel extends BaseKernel implements CompilerPassInterface
 {
     use MicroKernelTrait;
 
-    public function getBuildDir(): string
+    public function getCacheDir(): string
     {
         return __DIR__ . '/../var/cache';
     }
