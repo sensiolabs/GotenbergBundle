@@ -13,9 +13,9 @@ interface GotenbergInterface
     /**
      * @template T of PdfBuilderInterface
      *
-     * @param class-string<T> $builder
+     * @param string|class-string<T> $builder
      *
-     * @return T
+     * @return ($builder is class-string<T> ? T : PdfBuilderInterface)
      */
     public function get(string $builder): PdfBuilderInterface;
 

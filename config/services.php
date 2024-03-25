@@ -16,6 +16,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -81,7 +82,7 @@ return function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg', Gotenberg::class)
         ->args([
-            abstract_arg('All builders indexed by class FQCN')
+            tagged_locator('sensiolabs_gotenberg.builder'),
         ])
         ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')
     ;

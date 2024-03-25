@@ -21,23 +21,39 @@ final readonly class Gotenberg implements GotenbergInterface
         return $this->container->get($builder);
     }
 
+    /**
+     * @param 'html'|'url'|'markdown'|'office' $key
+     *
+     * @return (
+     *     $key is 'html' ? HtmlPdfBuilder :
+     *     $key is 'url' ? UrlPdfBuilder :
+     *     $key is 'office' ? LibreOfficePdfBuilder :
+     *     $key is 'markdown' ? MarkdownPdfBuilder :
+     *      PdfBuilderInterface
+     * )
+     */
+    private function getInternal(string $key): PdfBuilderInterface
+    {
+        return $this->get(".sensiolabs_gotenberg.builder.{$key}");
+    }
+
     public function html(): HtmlPdfBuilder
     {
-        return $this->get(HtmlPdfBuilder::class);
+        return $this->getInternal('html');
     }
 
     public function url(): UrlPdfBuilder
     {
-        return $this->get(UrlPdfBuilder::class);
+        return $this->getInternal('url');
     }
 
     public function office(): LibreOfficePdfBuilder
     {
-        return $this->get(LibreOfficePdfBuilder::class);
+        return $this->getInternal('office');
     }
 
     public function markdown(): MarkdownPdfBuilder
     {
-        return $this->get(MarkdownPdfBuilder::class);
+        return $this->getInternal('markdown');
     }
 }

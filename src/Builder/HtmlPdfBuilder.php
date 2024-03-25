@@ -11,6 +11,7 @@ final class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
     private const ENDPOINT = '/forms/chromium/convert/html';
 
     /**
+     * @param string $template #Template
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered

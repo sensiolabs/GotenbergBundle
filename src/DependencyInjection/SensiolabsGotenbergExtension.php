@@ -44,9 +44,11 @@ class SensiolabsGotenbergExtension extends Extension
     }
 
     /**
-     * @param array<string, mixed> $userConfigurations
+     * @template T of array<string, mixed>
      *
-     * @return array<string, mixed>
+     * @param T $userConfigurations
+     *
+     * @return array<key-of<T>, value-of<T>>
      */
     private function cleanUserOptions(array $userConfigurations): array
     {
