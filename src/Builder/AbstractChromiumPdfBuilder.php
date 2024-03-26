@@ -194,7 +194,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * @param string $template #Template
+     * @param string               $template #Template
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
@@ -205,7 +205,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * @param string $template #Template
+     * @param string               $template #Template
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
@@ -441,7 +441,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * @param string $template #Template
+     * @param string               $template #Template
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered

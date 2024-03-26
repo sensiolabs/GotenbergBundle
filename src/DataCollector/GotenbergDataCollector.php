@@ -12,9 +12,6 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\LateDataCollectorInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\Stub;
-use function array_map;
-use function array_merge;
-use function count;
 
 final class GotenbergDataCollector extends DataCollector implements LateDataCollectorInterface
 {
@@ -45,15 +42,15 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
             $this->data['builders'][$id] ??= [
                 'class' => $builder->getInner()::class,
                 'default_options' => [],
-                'pdfs' => array_map(function (array $request): array {
-                    $request['calls'] = array_map(function (array $call): array {
-                        return array_merge($call, ['stub' => $this->cloneVar($call['stub'])]);
+                'pdfs' => \array_map(function (array $request): array {
+                    $request['calls'] = \array_map(function (array $call): array {
+                        return \array_merge($call, ['stub' => $this->cloneVar($call['stub'])]);
                     }, $request['calls']);
 
                     return $request;
                 }, $builder->getPdfs()),
             ];
-            $this->data['request_count'] += count($builder->getPdfs());
+            $this->data['request_count'] += \count($builder->getPdfs());
         }
     }
 

@@ -12,7 +12,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('sensiolabs_gotenberg.traceable', TraceableGotenberg::class)
         ->decorate('sensiolabs_gotenberg')
         ->args([
-            '$inner' => new Reference('.inner')
+            '$inner' => new Reference('.inner'),
         ])
     ;
 

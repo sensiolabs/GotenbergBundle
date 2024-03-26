@@ -8,7 +8,6 @@ use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Symfony\Component\VarDumper\Caster\ArgsStub;
 use Symfony\Component\VarDumper\Cloner\Stub;
-use function microtime;
 
 final class TraceablePdfBuilder implements PdfBuilderInterface
 {
@@ -31,9 +30,9 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
     public function generate(): PdfResponse
     {
-        $start = microtime(true);
+        $start = \microtime(true);
         $response = $this->inner->generate();
-        $end = microtime(true);
+        $end = \microtime(true);
 
         $fileName = 'Unknown.pdf';
         if ($response->headers->has('Content-Disposition')) {

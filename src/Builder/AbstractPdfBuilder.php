@@ -15,7 +15,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     protected array $formFields = [];
 
-    private string|null $fileName = null;
+    private ?string $fileName = null;
 
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
@@ -60,7 +60,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         if (null !== $this->fileName) {
             $disposition = HeaderUtils::makeDisposition(
                 $this->headerDisposition,
-                $this->fileName
+                $this->fileName,
             );
 
             $pdfResponse
