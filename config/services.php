@@ -1,5 +1,9 @@
 <?php
 
+use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -12,29 +16,16 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return function (ContainerConfigurator $container): void {
     $services = $container->services();
-
-    $services->set('sensiolabs_gotenberg', Gotenberg::class)
-        ->args([
-            service('sensiolabs_gotenberg.client'),
-            abstract_arg('html configuration options'),
-            abstract_arg('url configuration options'),
-            abstract_arg('markdown configuration options'),
-            abstract_arg('office configuration options'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            service('twig')->nullOnInvalid(),
-        ])
-        ->public()
-        ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg');
 
     $services->set('sensiolabs_gotenberg.client', GotenbergClient::class)
         ->args([
             abstract_arg('base_uri to gotenberg API'),
             service(HttpClientInterface::class),
         ])
-        ->public()
         ->alias(GotenbergClientInterface::class, 'sensiolabs_gotenberg.client');
 
     $services->set('sensiolabs_gotenberg.asset.base_dir_formatter', AssetBaseDirFormatter::class)
@@ -48,5 +39,51 @@ return function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.twig.asset_extension', GotenbergAssetExtension::class)
         ->tag('twig.extension')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.builder.html', HtmlPdfBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service('twig')->nullOnInvalid(),
+        ])
+        ->tag('sensiolabs_gotenberg.builder')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.builder.url', UrlPdfBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service('twig')->nullOnInvalid(),
+        ])
+        ->tag('sensiolabs_gotenberg.builder')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.builder.markdown', MarkdownPdfBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service('twig')->nullOnInvalid(),
+        ])
+        ->tag('sensiolabs_gotenberg.builder')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.builder.office', LibreOfficePdfBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+        ])
+        ->tag('sensiolabs_gotenberg.builder')
+    ;
+
+    $services->set('sensiolabs_gotenberg', Gotenberg::class)
+        ->args([
+            tagged_locator('sensiolabs_gotenberg.builder'),
+        ])
+        ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')
     ;
 };

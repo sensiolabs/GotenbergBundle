@@ -1,5 +1,11 @@
 parameters:
 	level: 8
 	paths:
+		- 'config'
 		- 'src'
 		- 'tests'
+	ignoreErrors:
+		-
+			message: "#^Method Sensiolabs\\\\GotenbergBundle\\\\Tests\\\\Kernel\\:\\:configureContainer\\(\\) is unused\\.$#"
+			count: 1
+			path: tests/Kernel.php

@@ -4,9 +4,9 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
-use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 
 abstract class AbstractPdfBuilder implements PdfBuilderInterface
 {
@@ -14,6 +14,10 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      * @var array<string, mixed>
      */
     protected array $formFields = [];
+
+    private string|null $fileName = null;
+
+    private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     public function __construct(
         protected readonly GotenbergClientInterface $gotenbergClient,
@@ -24,9 +28,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     /**
      * Compiles the form values into a multipart form data array to send to the HTTP client.
      *
-     * @return array<int, array<string, string>>
-     *
-     * @throws MissingRequiredFieldException
+     * @return list<array<string, string>>
      */
     abstract public function getMultipartFormData(): array;
 
@@ -40,13 +42,37 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     abstract public function setConfigurations(array $configurations): self;
 
+    /**
+     * @param HeaderUtils::DISPOSITION_* $headerDisposition
+     */
+    public function fileName(string $fileName, string $headerDisposition = HeaderUtils::DISPOSITION_INLINE): static
+    {
+        $this->fileName = $fileName;
+        $this->headerDisposition = $headerDisposition;
+
+        return $this;
+    }
+
     public function generate(): PdfResponse
     {
-        return $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
+        $pdfResponse = $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
+
+        if (null !== $this->fileName) {
+            $disposition = HeaderUtils::makeDisposition(
+                $this->headerDisposition,
+                $this->fileName
+            );
+
+            $pdfResponse
+                ->headers->set('Content-Disposition', $disposition)
+            ;
+        }
+
+        return $pdfResponse;
     }
 
     /**
-     * @param string[] $validExtensions
+     * @param non-empty-list<string> $validExtensions
      */
     protected function assertFileExtension(string $path, array $validExtensions): void
     {

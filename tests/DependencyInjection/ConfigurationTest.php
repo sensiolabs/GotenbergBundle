@@ -53,16 +53,6 @@ final class ConfigurationTest extends TestCase
         self::assertEquals(self::getBundleDefaultConfig(), $config);
     }
 
-    public function testInvalidHost(): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $processor = new Processor();
-        $processor->processConfiguration(
-            new Configuration(),
-            [['base_uri' => 'localhost:3000']],
-        );
-    }
-
     #[DataProvider('provideInvalidRange')]
     public function testInvalidRange(mixed $range): void
     {

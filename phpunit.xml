@@ -9,6 +9,10 @@
          beStrictAboutOutputDuringTests="true"
          failOnRisky="true"
          failOnWarning="true">
+    <php>
+        <env name="KERNEL_CLASS" value="Sensiolabs\GotenbergBundle\Tests\Kernel"/>
+    </php>
+
     <testsuites>
         <testsuite name="default">
             <directory>tests</directory>
