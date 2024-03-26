@@ -15,6 +15,10 @@ class SensiolabsGotenbergExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.php');
 
+        if ($container->getParameter('kernel.debug') === true) {
+            $loader->load('debug.php');
+        }
+
         $configuration = new Configuration();
 
         /** @var array{base_uri: string, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */

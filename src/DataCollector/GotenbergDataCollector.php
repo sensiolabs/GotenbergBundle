@@ -1,0 +1,84 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Sensiolabs\GotenbergBundle\DataCollector;
+
+use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
+use Sensiolabs\GotenbergBundle\Debug\TraceableGotenberg;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Symfony\Component\HttpKernel\DataCollector\LateDataCollectorInterface;
+use Symfony\Component\VarDumper\Cloner\Data;
+use Symfony\Component\VarDumper\Cloner\Stub;
+use function array_map;
+use function array_merge;
+use function count;
+
+final class GotenbergDataCollector extends DataCollector implements LateDataCollectorInterface
+{
+    public function __construct(
+        private readonly TraceableGotenberg $traceableGotenberg,
+    ) {
+    }
+
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+    {
+    }
+
+    public function getName(): string
+    {
+        return 'sensiolabs_gotenberg';
+    }
+
+    public function lateCollect(): void
+    {
+        $this->data['builders'] = [];
+        $this->data['request_count'] = 0;
+
+        /**
+         * @var string              $id
+         * @var TraceablePdfBuilder $builder
+         */
+        foreach ($this->traceableGotenberg->getBuilders() as [$id, $builder]) {
+            $this->data['builders'][$id] ??= [
+                'class' => $builder->getInner()::class,
+                'default_options' => [],
+                'pdfs' => array_map(function (array $request): array {
+                    $request['calls'] = array_map(function (array $call): array {
+                        return array_merge($call, ['stub' => $this->cloneVar($call['stub'])]);
+                    }, $request['calls']);
+
+                    return $request;
+                }, $builder->getPdfs()),
+            ];
+            $this->data['request_count'] += count($builder->getPdfs());
+        }
+    }
+
+    /**
+     * @return array<string, array{
+     *     'class': string,
+     *     'default_options': array<mixed>,
+     *     'pdfs': list<array{
+     *         'time': float,
+     *         'fileName': string,
+     *         'calls': list<array{
+     *             'method': string,
+     *             'arguments': array<mixed>,
+     *             'stub': Data
+     *         }>
+     *     }>
+     * }>
+     */
+    public function getBuilders(): array
+    {
+        return $this->data['builders'] ?? [];
+    }
+
+    public function getRequestCount(): int
+    {
+        return $this->data['request_count'] ?? 0;
+    }
+}
