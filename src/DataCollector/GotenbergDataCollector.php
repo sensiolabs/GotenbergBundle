@@ -46,7 +46,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 
             $this->data['builders'][$id] = [
                 'class' => $builder::class,
-                'default_options' => [],
+                'default_options' => $this->defaultOptions[$id] ?? [],
                 'pdfs' => [],
             ];
         }
@@ -64,17 +64,14 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
          * @var TraceablePdfBuilder $builder
          */
         foreach ($this->traceableGotenberg->getBuilders() as [$id, $builder]) {
-            $this->data['builders'][$id] = [
-                'class' => $builder->getInner()::class,
-                'default_options' => $this->defaultOptions[$id] ?? [],
-                'pdfs' => \array_map(function (array $request): array {
-                    $request['calls'] = \array_map(function (array $call): array {
-                        return \array_merge($call, ['stub' => $this->cloneVar($call['stub'])]);
-                    }, $request['calls']);
+            $this->data['builders'][$id]['pdfs'] = array_merge($this->data['builders'][$id]['pdfs'], \array_map(function (array $request): array {
+                $request['calls'] = \array_map(function (array $call): array {
+                    return \array_merge($call, ['stub' => $this->cloneVar($call['stub'])]);
+                }, $request['calls']);
 
-                    return $request;
-                }, $builder->getPdfs()),
-            ];
+                return $request;
+            }, $builder->getPdfs()));
+
             $this->data['request_count'] += \count($builder->getPdfs());
         }
     }
