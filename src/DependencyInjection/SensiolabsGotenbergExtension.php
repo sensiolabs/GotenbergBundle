@@ -12,17 +12,25 @@ class SensiolabsGotenbergExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $configuration = new Configuration();
+
+        /** @var array{base_uri: string, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
+        $config = $this->processConfiguration($configuration, $configs);
+
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.php');
 
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
+            $container->getDefinition('sensiolabs_gotenberg.data_collector')
+                ->replaceArgument(2, [
+                    'html' => $this->cleanUserOptions($config['default_options']['html']),
+                    'url' => $this->cleanUserOptions($config['default_options']['url']),
+                    'markdown' => $this->cleanUserOptions($config['default_options']['markdown']),
+                    'office' => $this->cleanUserOptions($config['default_options']['office']),
+                ])
+            ;
         }
-
-        $configuration = new Configuration();
-
-        /** @var array{base_uri: string, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
-        $config = $this->processConfiguration($configuration, $configs);
 
         $container->registerForAutoconfiguration(PdfBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.builder')

@@ -109,7 +109,7 @@
                 <div class="tab-content">
                     {% if name in ['html', 'url', 'office', 'markdown'] %}
                         <h4>Default Options</h4>
-                        TODO
+                        {{ dump(builder['default_options']) }}
                     {% endif %}
                     <h4>Requests</h4>
                     {% for request in builder.pdfs %}
