@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\Mime\Part\DataPart;
 
 abstract class AbstractPdfBuilder implements PdfBuilderInterface
@@ -16,6 +17,10 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      * @var array<string, mixed>
      */
     protected array $formFields = [];
+
+    private string|null $fileName = null;
+
+    private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     /**
      * @var array<string, (\Closure(mixed): array<string, array<string|int ,mixed>|non-empty-string|int|float|bool|DataPart>)>
@@ -61,9 +66,33 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     abstract public function setConfigurations(array $configurations): self;
 
+    /**
+     * @param HeaderUtils::DISPOSITION_* $headerDisposition
+     */
+    public function fileName(string $fileName, string $headerDisposition = HeaderUtils::DISPOSITION_INLINE): static
+    {
+        $this->fileName = $fileName;
+        $this->headerDisposition = $headerDisposition;
+
+        return $this;
+    }
+
     public function generate(): PdfResponse
     {
-        return $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
+        $pdfResponse = $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
+
+        if (null !== $this->fileName) {
+            $disposition = HeaderUtils::makeDisposition(
+                $this->headerDisposition,
+                $this->fileName
+            );
+
+            $pdfResponse
+                ->headers->set('Content-Disposition', $disposition)
+            ;
+        }
+
+        return $pdfResponse;
     }
 
     /**
@@ -148,7 +177,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @param string[] $validExtensions
+     * @param non-empty-list<string> $validExtensions
      */
     protected function assertFileExtension(string $path, array $validExtensions): void
     {

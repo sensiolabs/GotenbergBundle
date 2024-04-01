@@ -20,11 +20,8 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $containerBuilder = new ContainerBuilder();
         $extension->load(self::getValidConfig(), $containerBuilder);
 
-        $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg');
-        $arguments = $gotenbergDefinition->getArguments();
-
-        self::assertSame(
-            [
+        $list = [
+            'html' => [
                 'paper_width' => 33.1,
                 'paper_height' => 46.8,
                 'margin_top' => 1,
@@ -46,10 +43,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'pdf_format' => PdfFormat::Pdf1a->value,
                 'pdf_universal_access' => true,
             ],
-            $arguments[1],
-        );
-        self::assertSame(
-            [
+            'url' => [
                 'paper_width' => 21,
                 'paper_height' => 50,
                 'margin_top' => 0.5,
@@ -71,10 +65,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'pdf_format' => PdfFormat::Pdf2b->value,
                 'pdf_universal_access' => false,
             ],
-            $arguments[2],
-        );
-        self::assertSame(
-            [
+            'markdown' => [
                 'paper_width' => 30,
                 'paper_height' => 45,
                 'margin_top' => 1,
@@ -96,31 +87,24 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'pdf_format' => PdfFormat::Pdf3b->value,
                 'pdf_universal_access' => true,
             ],
-            $arguments[3],
-        );
-        self::assertSame(
-            [
+            'office' => [
                 'landscape' => false,
                 'native_page_ranges' => '1-2',
                 'merge' => true,
                 'pdf_format' => PdfFormat::Pdf1a->value,
                 'pdf_universal_access' => true,
             ],
-            $arguments[4],
-        );
-    }
+        ];
 
-    public function testGotenbergConfiguredWithNoConfig(): void
-    {
-        $extension = new SensiolabsGotenbergExtension();
+        foreach ($list as $builderName => $expectedConfig) {
+            $gotenbergDefinition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.builder.{$builderName}");
+            $methodCalls = $gotenbergDefinition->getMethodCalls();
+            $setConfiguration = $methodCalls[0];
 
-        $containerBuilder = new ContainerBuilder();
-        $extension->load([], $containerBuilder);
+            $config = $setConfiguration[1][0];
 
-        $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg');
-        $arguments = $gotenbergDefinition->getArguments();
-
-        self::assertSame([], $arguments[1]);
+            self::assertSame($expectedConfig, $config);
+        }
     }
 
     public function testGotenbergClientConfiguredWithDefaultConfig(): void
