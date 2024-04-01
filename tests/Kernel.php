@@ -20,12 +20,12 @@ final class Kernel extends BaseKernel implements CompilerPassInterface
 
     public function getCacheDir(): string
     {
-        return __DIR__ . '/../var/cache';
+        return __DIR__.'/../var/cache';
     }
 
     public function getLogDir(): string
     {
-        return __DIR__ . '/../var/log';
+        return __DIR__.'/../var/log';
     }
 
     private function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
@@ -34,7 +34,7 @@ final class Kernel extends BaseKernel implements CompilerPassInterface
             'test' => true,
         ]);
         $builder->addCompilerPass($this);
-     }
+    }
 
     public function registerBundles(): iterable
     {

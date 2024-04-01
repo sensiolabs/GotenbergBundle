@@ -56,7 +56,6 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[18]);
         self::assertSame(['pdfa' => 'PDF/A-1a'], $multipartFormData[19]);
         self::assertSame(['pdfua' => 'true'], $multipartFormData[20]);
-
     }
 
     public function testWithTemplate(): void

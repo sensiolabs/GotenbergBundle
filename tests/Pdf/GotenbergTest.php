@@ -4,17 +4,12 @@ namespace Sensiolabs\GotenbergBundle\Tests\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
 use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
-use Sensiolabs\GotenbergBundle\Tests\Kernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
-use Twig\Environment;
 
 #[CoversClass(Gotenberg::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
@@ -32,7 +27,7 @@ final class GotenbergTest extends KernelTestCase
         $builder = $gotenberg->url();
         $builder
             ->setConfigurations([
-                'native_page_ranges' => '1-5'
+                'native_page_ranges' => '1-5',
             ])
             ->url('https://google.com')
         ;
@@ -51,10 +46,10 @@ final class GotenbergTest extends KernelTestCase
         $builder = $gotenberg->html()
             ->setConfigurations([
                 'margin_top' => 3,
-                'margin_bottom' => 1]
+                'margin_bottom' => 1],
             )
         ;
-        $builder->contentFile(__DIR__  . '/../Fixtures/files/content.html');
+        $builder->contentFile(__DIR__.'/../Fixtures/files/content.html');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(3, $multipartFormData);
@@ -83,8 +78,8 @@ final class GotenbergTest extends KernelTestCase
         $gotenberg = $container->get(GotenbergInterface::class);
 
         $builder = $gotenberg->markdown();
-        $builder->files(__DIR__  . '/../Fixtures/assets/file.md');
-        $builder->wrapperFile(__DIR__  . '/../Fixtures/files/wrapper.html');
+        $builder->files(__DIR__.'/../Fixtures/assets/file.md');
+        $builder->wrapperFile(__DIR__.'/../Fixtures/files/wrapper.html');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);
@@ -112,10 +107,10 @@ final class GotenbergTest extends KernelTestCase
         $gotenberg = $container->get(GotenbergInterface::class);
         $builder = $gotenberg->office()
             ->setConfigurations([
-                'native_page_ranges' => '1-5'
+                'native_page_ranges' => '1-5',
             ])
         ;
-        $builder->files(__DIR__  . '/../Fixtures/assets/office/document.odt');
+        $builder->files(__DIR__.'/../Fixtures/assets/office/document.odt');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);
@@ -128,6 +123,5 @@ final class GotenbergTest extends KernelTestCase
         self::assertArrayHasKey('files', $multipartFormData[1]);
         self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
         self::assertSame('document.odt', $multipartFormData[1]['files']->getFilename());
-
     }
 }

@@ -84,7 +84,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         if (null !== $this->fileName) {
             $disposition = HeaderUtils::makeDisposition(
                 $this->headerDisposition,
-                $this->fileName
+                $this->fileName,
             );
 
             $pdfResponse
