@@ -4,9 +4,11 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
-use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Mime\Part\DataPart;
 
 abstract class AbstractPdfBuilder implements PdfBuilderInterface
 {
@@ -15,20 +17,39 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     protected array $formFields = [];
 
+    /**
+     * @var array<string, (\Closure(mixed): array<string, array<string|int ,mixed>|non-empty-string|int|float|bool|DataPart>)>
+     */
+    private array $normalizers;
+
     public function __construct(
         protected readonly GotenbergClientInterface $gotenbergClient,
         protected readonly AssetBaseDirFormatter $asset,
     ) {
-    }
+        $this->normalizers = [
+            'extraHttpHeaders' => static function (mixed $value): array {
+                try {
+                    $extraHttpHeaders = json_encode($value, \JSON_THROW_ON_ERROR);
+                } catch (\JsonException $exception) {
+                    throw new ExtraHttpHeadersJsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
+                }
 
-    /**
-     * Compiles the form values into a multipart form data array to send to the HTTP client.
-     *
-     * @return array<int, array<string, string>>
-     *
-     * @throws MissingRequiredFieldException
-     */
-    abstract public function getMultipartFormData(): array;
+                return ['extraHttpHeaders' => $extraHttpHeaders];
+            },
+            'assets' => static function (array $value): array {
+                return ['files' => $value];
+            },
+            PdfPart::HeaderPart->value => static function (DataPart $value): array {
+                return ['files' => $value];
+            },
+            PdfPart::BodyPart->value => static function (DataPart $value): array {
+                return ['files' => $value];
+            },
+            PdfPart::FooterPart->value => static function (DataPart $value): array {
+                return ['files' => $value];
+            },
+        ];
+    }
 
     /**
      * The Gotenberg API endpoint path.
@@ -43,6 +64,87 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     public function generate(): PdfResponse
     {
         return $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
+    }
+
+    /**
+     * Compiles the form values into a multipart form data array to send to the HTTP client.
+     *
+     * @return array<int, array<string, string>>
+     */
+    public function getMultipartFormData(): array
+    {
+        $multipartFormData = [];
+
+        foreach ($this->formFields as $key => $value) {
+            foreach ($this->addToMultipart($key, $value) as $multiPart) {
+                $multipartFormData[] = $multiPart;
+            }
+        }
+
+        return $multipartFormData;
+    }
+
+    protected function addNormalizer(string $key, \Closure $normalizer): void
+    {
+        $this->normalizers[$key] = $normalizer;
+    }
+
+    /**
+     * @param array<int|string, mixed>|string|int|float|bool|DataPart $value
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value): array
+    {
+        $multipartFormData = [];
+
+        if (\array_key_exists($key, $this->normalizers)) {
+            $result = [];
+            foreach (($this->normalizers[$key])($value) as $key => $value) {
+                if ('extraHttpHeaders' !== $key) {
+                    $result[] = $this->addToMultipart($key, $value);
+
+                    return array_merge(...$result);
+                }
+
+                $multipartFormData[] = [
+                    $key => $value,
+                ];
+            }
+
+            return $multipartFormData;
+        }
+
+        if (\is_bool($value)) {
+            $multipartFormData[] = [
+                $key => $value ? 'true' : 'false',
+            ];
+
+            return $multipartFormData;
+        }
+
+        if (\is_int($value) || \is_float($value)) {
+            $multipartFormData[] = [
+                $key => (string) $value,
+            ];
+
+            return $multipartFormData;
+        }
+
+        if (\is_array($value)) {
+            $result = [];
+            foreach ($value as $nestedValue) {
+                $result[] = $this->addToMultipart($key, $nestedValue);
+            }
+
+            return array_merge(...$result);
+        }
+
+        $multipartFormData[] = [
+            $key => $value,
+        ];
+
+        return $multipartFormData;
     }
 
     /**

@@ -110,33 +110,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             throw new MissingRequiredFieldException('At least one office file is required');
         }
 
-        $formFields = $this->formFields;
-        $multipartFormData = [];
-
-        $files = $this->formFields['files'] ?? [];
-        if ([] !== $files) {
-            foreach ($files as $dataPart) {
-                $multipartFormData[] = [
-                    'files' => $dataPart,
-                ];
-            }
-            unset($formFields['files']);
-        }
-
-        foreach ($formFields as $key => $value) {
-            if (\is_bool($value)) {
-                $multipartFormData[] = [
-                    $key => $value ? 'true' : 'false',
-                ];
-                continue;
-            }
-
-            $multipartFormData[] = [
-                $key => $value,
-            ];
-        }
-
-        return $multipartFormData;
+        return parent::getMultipartFormData();
     }
 
     protected function getEndpoint(): string
