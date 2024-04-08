@@ -32,7 +32,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         protected readonly AssetBaseDirFormatter $asset,
     ) {
         $this->normalizers = [
-            'extraHttpHeaders' => static function (mixed $value): array {
+            '.extraHttpHeaders' => static function (mixed $value): array {
                 try {
                     $extraHttpHeaders = json_encode($value, \JSON_THROW_ON_ERROR);
                 } catch (\JsonException $exception) {
@@ -41,16 +41,16 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
                 return ['extraHttpHeaders' => $extraHttpHeaders];
             },
-            'assets' => static function (array $value): array {
+            '.assets' => static function (array $value): array {
                 return ['files' => $value];
             },
-            PdfPart::HeaderPart->value => static function (DataPart $value): array {
+            '.'.PdfPart::HeaderPart->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
-            PdfPart::BodyPart->value => static function (DataPart $value): array {
+            '.'.PdfPart::BodyPart->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
-            PdfPart::FooterPart->value => static function (DataPart $value): array {
+            '.'.PdfPart::FooterPart->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
         ];
@@ -105,7 +105,13 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         $multipartFormData = [];
 
         foreach ($this->formFields as $key => $value) {
-            foreach ($this->addToMultipart($key, $value) as $multiPart) {
+            $preCallback = null;
+
+            if (\array_key_exists($key, $this->normalizers)) {
+                $preCallback = $this->normalizers[$key](...);
+            }
+
+            foreach ($this->addToMultipart($key, $value, $preCallback) as $multiPart) {
                 $multipartFormData[] = $multiPart;
             }
         }
@@ -115,6 +121,10 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
     protected function addNormalizer(string $key, \Closure $normalizer): void
     {
+        if (!str_starts_with($key, '.')) {
+            throw new \LogicException('To avoid recursive issues, $key must start with ".".');
+        }
+
         $this->normalizers[$key] = $normalizer;
     }
 
@@ -123,41 +133,27 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      *
      * @return list<array<string, mixed>>
      */
-    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value): array
+    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value, \Closure|null $preCallback = null): array
     {
-        $multipartFormData = [];
-
-        if (\array_key_exists($key, $this->normalizers)) {
+        if (null !== $preCallback) {
             $result = [];
-            foreach (($this->normalizers[$key])($value) as $key => $value) {
-                if ('extraHttpHeaders' !== $key) {
-                    $result[] = $this->addToMultipart($key, $value);
+            foreach ($preCallback($value) as $key => $value) {
+                $result[] = $this->addToMultipart($key, $value);
 
-                    return array_merge(...$result);
-                }
-
-                $multipartFormData[] = [
-                    $key => $value,
-                ];
+                return array_merge(...$result);
             }
-
-            return $multipartFormData;
         }
 
         if (\is_bool($value)) {
-            $multipartFormData[] = [
+            return [[
                 $key => $value ? 'true' : 'false',
-            ];
-
-            return $multipartFormData;
+            ]];
         }
 
         if (\is_int($value) || \is_float($value)) {
-            $multipartFormData[] = [
+            return [[
                 $key => (string) $value,
-            ];
-
-            return $multipartFormData;
+            ]];
         }
 
         if (\is_array($value)) {
@@ -169,11 +165,9 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
             return array_merge(...$result);
         }
 
-        $multipartFormData[] = [
+        return [[
             $key => $value,
-        ];
-
-        return $multipartFormData;
+        ]];
     }
 
     /**

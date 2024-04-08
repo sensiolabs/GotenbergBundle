@@ -235,7 +235,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function assets(string ...$paths): static
     {
-        $this->formFields['assets'] = [];
+        $this->formFields['.assets'] = [];
 
         foreach ($paths as $path) {
             $this->addAsset($path);
@@ -253,7 +253,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
         $dataPart = new DataPart(new DataPartFile($resolvedPath));
 
-        $this->formFields['assets'][$resolvedPath] = $dataPart;
+        $this->formFields['.assets'][$resolvedPath] = $dataPart;
 
         return $this;
     }
@@ -320,7 +320,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function extraHttpHeaders(array $headers): static
     {
-        $this->formFields['extraHttpHeaders'] = $headers;
+        $this->formFields['.extraHttpHeaders'] = $headers;
 
         return $this;
     }
@@ -335,14 +335,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function addExtraHttpHeaders(array $headers): static
     {
-        if (\array_key_exists('extraHttpHeaders', $this->formFields)) {
-            $this->formFields['extraHttpHeaders'] = [
-                ...$this->formFields['extraHttpHeaders'],
-                ...$headers,
-            ];
-        } else {
-            $this->extraHttpHeaders($headers);
-        }
+        $this->formFields['.extraHttpHeaders'] = array_merge($this->formFields['.extraHttpHeaders'] ?? [], $headers);
 
         return $this;
     }
@@ -391,7 +384,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             $pdfPart->value,
         );
 
-        $this->formFields[$pdfPart->value] = $dataPart;
+        $this->formFields['.'.$pdfPart->value] = $dataPart;
 
         return $this;
     }
@@ -414,7 +407,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
         }
 
-        $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
+        $this->formFields['.'.$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
 
         return $this;
     }
