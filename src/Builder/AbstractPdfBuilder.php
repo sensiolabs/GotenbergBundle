@@ -32,7 +32,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         protected readonly AssetBaseDirFormatter $asset,
     ) {
         $this->normalizers = [
-            '.extraHttpHeaders' => static function (mixed $value): array {
+            'extraHttpHeaders' => static function (mixed $value): array {
                 try {
                     $extraHttpHeaders = json_encode($value, \JSON_THROW_ON_ERROR);
                 } catch (\JsonException $exception) {
@@ -41,16 +41,16 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
                 return ['extraHttpHeaders' => $extraHttpHeaders];
             },
-            '.assets' => static function (array $value): array {
+            'assets' => static function (array $value): array {
                 return ['files' => $value];
             },
-            '.'.PdfPart::HeaderPart->value => static function (DataPart $value): array {
+            PdfPart::HeaderPart->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
-            '.'.PdfPart::BodyPart->value => static function (DataPart $value): array {
+            PdfPart::BodyPart->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
-            '.'.PdfPart::FooterPart->value => static function (DataPart $value): array {
+            PdfPart::FooterPart->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
         ];
@@ -121,10 +121,6 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
     protected function addNormalizer(string $key, \Closure $normalizer): void
     {
-        if (!str_starts_with($key, '.')) {
-            throw new \LogicException('To avoid recursive issues, $key must start with ".".');
-        }
-
         $this->normalizers[$key] = $normalizer;
     }
 

@@ -31,7 +31,7 @@ final class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
 
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists('.'.PdfPart::BodyPart->value, $this->formFields)) {
+        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
             throw new MissingRequiredFieldException('Content is required');
         }
 

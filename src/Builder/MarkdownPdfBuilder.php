@@ -50,7 +50,7 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
 
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists('.'.PdfPart::BodyPart->value, $this->formFields)) {
+        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
             throw new MissingRequiredFieldException('HTML template is required');
         }
 
