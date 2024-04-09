@@ -122,7 +122,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    public function marginRight(string $right): static
+    public function marginRight(float $right): static
     {
         $this->formFields['marginRight'] = $right;
 
