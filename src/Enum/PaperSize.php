@@ -2,15 +2,15 @@
 
 namespace Sensiolabs\GotenbergBundle\Enum;
 
-enum PaperSize: string
+enum PaperSize
 {
-    case A0 = 'A0';
-    case A1 = 'A1';
-    case A2 = 'A2';
-    case A3 = 'A3';
-    case A4 = 'A4';
-    case A5 = 'A5';
-    case A6 = 'A6';
+    case A0;
+    case A1;
+    case A2;
+    case A3;
+    case A4;
+    case A5;
+    case A6;
 
     public function width(): float
     {
