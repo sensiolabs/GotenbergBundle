@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Enum;
 
-enum PaperSize
+enum PaperSize implements PaperSizeInterface
 {
     case A0;
     case A1;

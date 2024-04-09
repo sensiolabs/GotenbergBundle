@@ -70,6 +70,49 @@ You can override the default paper size with standard paper size using the
         ->content('path/to/template.html.twig')
         ->paperStandardSize(PaperSize::A3);
 
+Or if you want you can create your own logic, you just need to implements `PaperSizeInterface`
+
+.. code-block:: php
+
+    use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
+
+    enum PdfSize implements PaperSizeInterface
+    {
+        case Letter;
+        case Legal;
+        case Tabloid;
+        case Ledger;
+
+        public function width(): float
+        {
+            return match ($this) {
+                PdfSize::Letter, PdfSize::Legal => 8.5,
+                PdfSize::Tabloid => 11,
+                PdfSize::Ledger => 17,
+            };
+        }
+
+        public function height(): float
+        {
+            return match ($this) {
+                PdfSize::Letter, PdfSize::Ledger => 11,
+                PdfSize::Legal => 14,
+                PdfSize::Tabloid => 17,
+            };
+        }
+    }
+
+And then use it with paperStandardSize.
+
+.. code-block:: php
+
+    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+
+    $twigPdfBuilder = $gotenberg->twig();
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->paperStandardSize(PdfSize::Tabloid);
+
 Or, you can even override with your proper width and height (in inches):
 
 .. code-block:: php

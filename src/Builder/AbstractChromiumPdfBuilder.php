@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Enum\PaperSize;
+use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
@@ -64,7 +64,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    public function paperStandardSize(PaperSize $paperSize): static
+    public function paperStandardSize(PaperSizeInterface $paperSize): static
     {
         $this->paperWidth($paperSize->width());
         $this->paperHeight($paperSize->height());
@@ -122,7 +122,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    public function marginRight(float $right): static
+    public function marginRight(string $right): static
     {
         $this->formFields['marginRight'] = $right;
 
