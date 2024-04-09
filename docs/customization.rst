@@ -58,7 +58,19 @@ The path provided can be relative as well as absolute.
 Paper size
 ----------
 
-You can override the default paper size with width and height (in inches):
+You can override the default paper size with standard paper size using the
+`PaperSize` enum :
+
+.. code-block:: php
+
+    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+
+    $twigPdfBuilder = $gotenberg->twig();
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->paperStandardSize(PaperSize::A3);
+
+Or, you can even override with your proper width and height (in inches):
 
 .. code-block:: php
 
@@ -69,17 +81,19 @@ You can override the default paper size with width and height (in inches):
         ->content('path/to/template.html.twig')
         ->paperSize(8.5, 11);
 
-* Letter - 8.5 x 11 (default)
-* Legal - 8.5 x 14
-* Tabloid - 11 x 17
-* Ledger - 17 x 11
-* A0 - 33.1 x 46.8
-* A1 - 23.4 x 33.1
-* A2 - 16.54 x 23.4
-* A3 - 11.7 x 16.54
-* A4 - 8.27 x 11.7
-* A5 - 5.83 x 8.27
-* A6 - 4.13 x 5.83
+.. tip::
+
+    * Letter - 8.5 x 11 (default)
+    * Legal - 8.5 x 14
+    * Tabloid - 11 x 17
+    * Ledger - 17 x 11
+    * A0 - 33.1 x 46.8
+    * A1 - 23.4 x 33.1
+    * A2 - 16.54 x 23.4
+    * A3 - 11.7 x 16.54
+    * A4 - 8.27 x 11.7
+    * A5 - 5.83 x 8.27
+    * A6 - 4.13 x 5.83
 
 Prefer CSS page size
 --------------------
