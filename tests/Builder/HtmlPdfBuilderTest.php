@@ -30,32 +30,32 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         self::assertCount(21, $multipartFormData);
 
-        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[0]);
-        self::assertSame(['paperWidth' => 33.1], $multipartFormData[2]);
-        self::assertSame(['paperHeight' => 46.8], $multipartFormData[3]);
-        self::assertSame(['marginTop' => 1.0], $multipartFormData[4]);
-        self::assertSame(['marginBottom' => 1.0], $multipartFormData[5]);
-        self::assertSame(['marginLeft' => 1.0], $multipartFormData[6]);
-        self::assertSame(['marginRight' => 1.0], $multipartFormData[7]);
-        self::assertSame(['preferCssPageSize' => 'true'], $multipartFormData[8]);
-        self::assertSame(['printBackground' => 'true'], $multipartFormData[9]);
-        self::assertSame(['omitBackground' => 'true'], $multipartFormData[10]);
-        self::assertSame(['landscape' => 'true'], $multipartFormData[11]);
-        self::assertSame(['scale' => 1.5], $multipartFormData[12]);
-        self::assertSame(['nativePageRanges' => '1-5'], $multipartFormData[13]);
-        self::assertSame(['waitDelay' => '10s'], $multipartFormData[14]);
-        self::assertSame(['waitForExpression' => 'window.globalVar === "ready"'], $multipartFormData[15]);
-        self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[16]);
-        self::assertSame(['userAgent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'], $multipartFormData[17]);
+        self::assertIsArray($multipartFormData[0]);
+        self::assertCount(1, $multipartFormData[0]);
+        self::assertArrayHasKey('files', $multipartFormData[0]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
+        self::assertSame('index.html', $multipartFormData[0]['files']->getFilename());
+
+        self::assertSame(['paperWidth' => '33.1'], $multipartFormData[1]);
+        self::assertSame(['paperHeight' => '46.8'], $multipartFormData[2]);
+        self::assertSame(['marginTop' => '1'], $multipartFormData[3]);
+        self::assertSame(['marginBottom' => '1'], $multipartFormData[4]);
+        self::assertSame(['marginLeft' => '1'], $multipartFormData[5]);
+        self::assertSame(['marginRight' => '1'], $multipartFormData[6]);
+        self::assertSame(['preferCssPageSize' => 'true'], $multipartFormData[7]);
+        self::assertSame(['printBackground' => 'true'], $multipartFormData[8]);
+        self::assertSame(['omitBackground' => 'true'], $multipartFormData[9]);
+        self::assertSame(['landscape' => 'true'], $multipartFormData[10]);
+        self::assertSame(['scale' => '1.5'], $multipartFormData[11]);
+        self::assertSame(['nativePageRanges' => '1-5'], $multipartFormData[12]);
+        self::assertSame(['waitDelay' => '10s'], $multipartFormData[13]);
+        self::assertSame(['waitForExpression' => 'window.globalVar === "ready"'], $multipartFormData[14]);
+        self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[15]);
+        self::assertSame(['userAgent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'], $multipartFormData[16]);
+        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[17]);
         self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[18]);
         self::assertSame(['pdfa' => 'PDF/A-1a'], $multipartFormData[19]);
         self::assertSame(['pdfua' => 'true'], $multipartFormData[20]);
-
-        self::assertIsArray($multipartFormData[1]);
-        self::assertCount(1, $multipartFormData[1]);
-        self::assertArrayHasKey('files', $multipartFormData[1]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
-        self::assertSame('index.html', $multipartFormData[1]['files']->getFilename());
     }
 
     public function testWithTemplate(): void

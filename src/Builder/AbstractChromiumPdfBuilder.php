@@ -4,7 +4,6 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
-use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -194,7 +193,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * @param string $template #Template
+     * @param string               $template #Template
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
@@ -205,7 +204,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * @param string $template #Template
+     * @param string               $template #Template
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
@@ -313,7 +312,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     /**
      * Sets extra HTTP headers that Chromium will send when loading the HTML
-     * document. (default None).
+     * document. (default None). (overrides any previous headers).
      *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers
      *
@@ -336,10 +335,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function addExtraHttpHeaders(array $headers): static
     {
-        $this->formFields['extraHttpHeaders'] = [
-            ...$this->formFields['extraHttpHeaders'],
-            ...$headers,
-        ];
+        $this->formFields['extraHttpHeaders'] = array_merge($this->formFields['extraHttpHeaders'] ?? [], $headers);
 
         return $this;
     }
@@ -381,53 +377,6 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    /**
-     * @throws ExtraHttpHeadersJsonEncodingException
-     */
-    public function getMultipartFormData(): array
-    {
-        $formFields = $this->formFields;
-        $multipartFormData = [];
-
-        $extraHttpHeaders = $this->formFields['extraHttpHeaders'] ?? [];
-        if ([] !== $extraHttpHeaders) {
-            try {
-                $extraHttpHeaders = json_encode($extraHttpHeaders, \JSON_THROW_ON_ERROR);
-            } catch (\JsonException $exception) {
-                throw new ExtraHttpHeadersJsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
-            }
-
-            $multipartFormData[] = [
-                'extraHttpHeaders' => $extraHttpHeaders,
-            ];
-            unset($formFields['extraHttpHeaders']);
-        }
-
-        foreach ($formFields as $key => $value) {
-            if (\is_bool($value)) {
-                $multipartFormData[] = [
-                    $key => $value ? 'true' : 'false',
-                ];
-                continue;
-            }
-
-            if (\is_array($value)) {
-                foreach ($value as $nestedValue) {
-                    $multipartFormData[] = [
-                        ($nestedValue instanceof DataPart ? 'files' : $key) => $nestedValue,
-                    ];
-                }
-                continue;
-            }
-
-            $multipartFormData[] = [
-                ($value instanceof DataPart ? 'files' : $key) => $value,
-            ];
-        }
-
-        return $multipartFormData;
-    }
-
     protected function withPdfPartFile(PdfPart $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
@@ -441,7 +390,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * @param string $template #Template
+     * @param string               $template #Template
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered

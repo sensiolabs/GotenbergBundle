@@ -20,7 +20,10 @@ interface GotenbergInterface
     public function get(string $builder): PdfBuilderInterface;
 
     public function html(): HtmlPdfBuilder;
+
     public function url(): UrlPdfBuilder;
+
     public function office(): LibreOfficePdfBuilder;
+
     public function markdown(): MarkdownPdfBuilder;
 }
