@@ -113,8 +113,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertArrayHasKey('paperWidth', $multipartFormData[1]);
         self::assertArrayHasKey('paperHeight', $multipartFormData[2]);
 
-        self::assertSame(PaperSize::A3->width(), $multipartFormData[1]['paperWidth']);
-        self::assertSame(PaperSize::A3->height(), $multipartFormData[2]['paperHeight']);
+        self::assertSame((string) PaperSize::A3->width(), $multipartFormData[1]['paperWidth']);
+        self::assertSame((string) PaperSize::A3->height(), $multipartFormData[2]['paperHeight']);
     }
 
     public function testWithHeader(): void
