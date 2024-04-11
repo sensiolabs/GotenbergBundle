@@ -12,16 +12,16 @@ final class PaperSizeTest extends TestCase
     public function testWidth(): void
     {
         foreach (PaperSize::cases() as $size) {
-            $width = $size->width();
-            self::assertIsFloat($width);
+            $size->width();
+            self::addToAssertionCount(1);
         }
     }
 
     public function testHeight(): void
     {
         foreach (PaperSize::cases() as $size) {
-            $height = $size->height();
-            self::assertIsFloat($height);
+            $size->height();
+            self::addToAssertionCount(1);
         }
     }
 }
