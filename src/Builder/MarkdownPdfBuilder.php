@@ -15,7 +15,7 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
     /**
      * The HTML file that wraps the markdown content, rendered from a Twig template.
      *
-     * @param string $template #Template
+     * @param string               $template #Template
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
