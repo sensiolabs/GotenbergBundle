@@ -8,6 +8,7 @@ use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Configuration implements ConfigurationInterface
 {
@@ -26,8 +27,12 @@ class Configuration implements ConfigurationInterface
                     ->info('Base directory will be used for assets, files, markdown')
                     ->defaultValue('%kernel.project_dir%')
                 ->end()
+                ->scalarNode('http_client')
+                    ->info('HTTP Client reference to use. Defaults to "http_client".')
+                    ->defaultNull()
+                ->end()
                 ->arrayNode('default_options')
-                ->addDefaultsIfNotSet()
+                    ->addDefaultsIfNotSet()
                     ->append($this->addHtmlNode())
                     ->append($this->addUrlNode())
                     ->append($this->addMarkdownNode())

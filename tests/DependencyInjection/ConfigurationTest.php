@@ -116,6 +116,7 @@ final class ConfigurationTest extends TestCase
         return [
             'base_uri' => 'http://localhost:3000',
             'base_directory' => '%kernel.project_dir%',
+            'http_client' => null,
             'default_options' => [
                 'html' => [
                     'paper_width' => null,

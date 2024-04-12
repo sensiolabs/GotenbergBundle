@@ -24,6 +24,8 @@ class SensiolabsGotenbergExtension extends Extension
             ->addTag('sensiolabs_gotenberg.builder')
         ;
 
+        $container->setAlias('sensiolabs_gotenberg.http_client', $config['http_client'] ?? 'http_client');
+
         $definition = $container->getDefinition('sensiolabs_gotenberg.client');
         $definition->replaceArgument(0, $config['base_uri']);
 
