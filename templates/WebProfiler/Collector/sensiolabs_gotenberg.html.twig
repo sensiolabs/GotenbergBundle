@@ -62,7 +62,7 @@
         {% set icon %}
             <span class="icon">{{ source('@SensiolabsGotenberg/WebProfiler/Icon/gotenberg_logo.png.html') }}</span>
             {% set status_color = '' %}
-            <span class="sf-toolbar-value">{{ collector.requestCount }}</span>
+            <span class="sf-toolbar-value"> {{ collector.requestCount }} PDF's</span>
         {% endset %}
 
         {% set text %}
@@ -95,12 +95,18 @@
             <p>No requests were made.</p>
         </div>
     {% else %}
-        <div class="metrics">
-            <div class="metric">
-                <span class="value">{{ collector.requestCount }}</span>
-                <span class="label">Total PDF's generated</span>
+        <section class="metrics">
+            <div class="metric-group">
+                <div class="metric">
+                    <span class="value">{{ collector.requestCount }}</span>
+                    <span class="label">Total PDF's generated</span>
+                </div>
+                <div class="metric">
+                    <span class="value">{{ '%.0f'|format(collector.requestTotalTime * 1000) }} <span class="unit">ms</span></span>
+                    <span class="label">Total PDF's time</span>
+                </div>
             </div>
-        </div>
+        </section>
         <h2>Builders</h2>
         <div class="sf-tabs">
         {% for name, builder in collector.builders %}
