@@ -1,13 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
 use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\Component\VarDumper\Caster\ArgsStub;
 use Symfony\Component\VarDumper\Cloner\Stub;
 
 final class TraceablePdfBuilder implements PdfBuilderInterface
@@ -18,7 +15,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     private array $pdfs = [];
 
     /**
-     * @var list<array{'method': string, 'arguments': array<mixed>, 'stub': Stub}>
+     * @var list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>
      */
     private array $calls = [];
 
@@ -69,9 +66,9 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         $result = $this->inner->$name(...$arguments);
 
         $this->calls[] = [
+            'class' => $this->inner::class,
             'method' => $name,
             'arguments' => $arguments,
-            'stub' => new ArgsStub($arguments, $name, $this->inner::class),
         ];
 
         if ($result === $this->inner) {
@@ -82,7 +79,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float, 'memory': int, 'fileName': string, 'calls': list<array{'method': string, 'arguments': array<mixed>, 'stub': Stub}>}>
+     * @return list<array{'time': float, 'memory': int, 'fileName': string, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getPdfs(): array
     {

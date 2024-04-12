@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass;
 
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
