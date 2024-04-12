@@ -27,18 +27,15 @@ interface GotenbergInterface
     /**
      * @return UrlPdfBuilder
      */
-
     public function url(): PdfBuilderInterface;
 
     /**
      * @return LibreOfficePdfBuilder
      */
-
     public function office(): PdfBuilderInterface;
 
     /**
      * @return MarkdownPdfBuilder
      */
-
     public function markdown(): PdfBuilderInterface;
 }

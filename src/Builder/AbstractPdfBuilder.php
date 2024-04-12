@@ -129,7 +129,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      *
      * @return list<array<string, mixed>>
      */
-    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value, \Closure|null $preCallback = null): array
+    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value, ?\Closure $preCallback = null): array
     {
         if (null !== $preCallback) {
             $result = [];

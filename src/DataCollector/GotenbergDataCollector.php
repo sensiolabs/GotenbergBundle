@@ -18,6 +18,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 {
     /**
      * @param ServiceLocator<PdfBuilderInterface> $builders
+     * @param array<mixed>                        $defaultOptions
      */
     public function __construct(
         private readonly TraceableGotenberg $traceableGotenberg,
@@ -40,8 +41,8 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                 $builder = $builder->getInner();
             }
 
-            if (\str_starts_with($id, '.sensiolabs_gotenberg.builder.')) {
-                [$id] = \sscanf($id, '.sensiolabs_gotenberg.builder.%s');
+            if (str_starts_with($id, '.sensiolabs_gotenberg.builder.')) {
+                [$id] = sscanf($id, '.sensiolabs_gotenberg.builder.%s');
             }
 
             $this->data['builders'][$id] = [
@@ -85,6 +86,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
      *     'default_options': array<mixed>,
      *     'pdfs': list<array{
      *         'time': float,
+     *         'memory': int,
      *         'fileName': string,
      *         'calls': list<array{
      *             'method': string,
