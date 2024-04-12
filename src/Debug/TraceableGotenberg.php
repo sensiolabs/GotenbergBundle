@@ -19,8 +19,9 @@ final class TraceableGotenberg implements GotenbergInterface
      */
     private array $builders = [];
 
-    public function __construct(private readonly GotenbergInterface $inner)
-    {
+    public function __construct(
+        private readonly GotenbergInterface $inner,
+    ) {
     }
 
     public function get(string $builder): PdfBuilderInterface

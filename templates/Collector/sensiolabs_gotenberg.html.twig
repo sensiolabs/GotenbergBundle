@@ -102,8 +102,12 @@
                     <span class="label">Total PDFs generated</span>
                 </div>
                 <div class="metric">
-                    <span class="value">{{ '%.0f'|format(collector.requestTotalTime * 1000) }} <span class="unit">ms</span></span>
-                    <span class="label">Total PDFs time</span>
+                    <span class="value">{{ '%.0f'|format(collector.requestTotalTime) }} <span class="unit">ms</span></span>
+                    <span class="label">Total time</span>
+                </div>
+                <div class="metric">
+                    <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span class="unit">MiB</span></span>
+                    <span class="label">Total memory</span>
                 </div>
             </div>
         </section>
@@ -128,8 +132,12 @@
                                 <div class="metrics">
                                     <div class="metric-group">
                                         <div class="metric">
-                                            <span class="value">{{ '%.0f'|format(request.time * 1000) }} <span class="unit">ms</span></span>
+                                            <span class="value">{{ '%.0f'|format(request.time) }} <span class="unit">ms</span></span>
                                             <span class="label">Total execution time</span>
+                                        </div>
+                                        <div class="metric">
+                                            <span class="value">{{ '%.1f'|format(request.memory / 1024 / 1024) }} <span class="unit">MiB</span></span>
+                                            <span class="label">Total memory</span>
                                         </div>
                                     </div>
                                 </div>

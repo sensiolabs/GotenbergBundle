@@ -30,6 +30,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 
     public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
+        $this->data['request_total_memory'] = 0;
         $this->data['request_total_time'] = 0;
         $this->data['request_count'] = 0;
         $this->data['builders'] = [];
@@ -71,6 +72,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                 }, $request['calls']);
 
                 $this->data['request_total_time'] += $request['time'];
+                $this->data['request_total_memory'] += $request['memory'];
 
                 return $request;
             }, $builder->getPdfs()));
@@ -107,5 +109,10 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     public function getRequestTotalTime(): int|float
     {
         return $this->data['request_total_time'] ?? 0.0;
+    }
+
+    public function getRequestTotalMemory(): int
+    {
+        return $this->data['request_total_memory'] ?? 0;
     }
 }

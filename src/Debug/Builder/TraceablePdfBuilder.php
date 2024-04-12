@@ -6,13 +6,14 @@ namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
 use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\VarDumper\Caster\ArgsStub;
 use Symfony\Component\VarDumper\Cloner\Stub;
 
 final class TraceablePdfBuilder implements PdfBuilderInterface
 {
     /**
-     * @var list<array{'time': float, 'fileName': string, 'calls': list<array{'method': string, 'arguments': array<mixed>, 'stub': Stub}>}>
+     * @var list<array{'time': float, 'memory': int, 'fileName': string, 'calls': list<array{'method': string, 'arguments': array<mixed>, 'stub': Stub}>}>
      */
     private array $pdfs = [];
 
@@ -23,16 +24,22 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
     private int $totalGenerated = 0;
 
+    private static int $count = 0;
+
     public function __construct(
         private readonly PdfBuilderInterface $inner,
+        private readonly Stopwatch $stopwatch,
     ) {
     }
 
     public function generate(): PdfResponse
     {
-        $start = \microtime(true);
+        $name = self::$count . '.' . $this->inner::class . '::' . __FUNCTION__;
+        self::$count++;
+
+        $swEvent = $this->stopwatch->start($name, 'gotenberg.generate_pdf');
         $response = $this->inner->generate();
-        $end = \microtime(true);
+        $swEvent->stop();
 
         $fileName = 'Unknown.pdf';
         if ($response->headers->has('Content-Disposition')) {
@@ -44,7 +51,8 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
         $this->pdfs[] = [
             'calls' => $this->calls,
-            'time' => $end - $start,
+            'time' => $swEvent->getDuration(),
+            'memory' => $swEvent->getMemory(),
             'fileName' => $fileName,
         ];
 
@@ -74,7 +82,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float, 'fileName': string, 'calls': list<array{'method': string, 'arguments': array<mixed>, 'stub': Stub}>}>
+     * @return list<array{'time': float, 'memory': int, 'fileName': string, 'calls': list<array{'method': string, 'arguments': array<mixed>, 'stub': Stub}>}>
      */
     public function getPdfs(): array
     {
