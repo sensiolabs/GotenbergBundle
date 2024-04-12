@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\LateDataCollectorInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
-use function sscanf;
-use function str_starts_with;
 
 final class GotenbergDataCollector extends DataCollector implements LateDataCollectorInterface
 {
@@ -42,8 +40,8 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                 $builder = $builder->getInner();
             }
 
-            if (str_starts_with($id, '.sensiolabs_gotenberg.builder.')) {
-                [$id] = sscanf($id, '.sensiolabs_gotenberg.builder.%s');
+            if (\str_starts_with($id, '.sensiolabs_gotenberg.builder.')) {
+                [$id] = \sscanf($id, '.sensiolabs_gotenberg.builder.%s');
             }
 
             $this->data['builders'][$id] = [
@@ -66,9 +64,9 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
          * @var TraceablePdfBuilder $builder
          */
         foreach ($this->traceableGotenberg->getBuilders() as [$id, $builder]) {
-            $this->data['builders'][$id]['pdfs'] = array_merge($this->data['builders'][$id]['pdfs'], \array_map(function (array $request): array {
-                $request['calls'] = \array_map(function (array $call): array {
-                    return \array_merge($call, ['stub' => $this->cloneVar($call['stub'])]);
+            $this->data['builders'][$id]['pdfs'] = array_merge($this->data['builders'][$id]['pdfs'], array_map(function (array $request): array {
+                $request['calls'] = array_map(function (array $call): array {
+                    return array_merge($call, ['stub' => $this->cloneVar($call['stub'])]);
                 }, $request['calls']);
 
                 $this->data['request_total_time'] += $request['time'];

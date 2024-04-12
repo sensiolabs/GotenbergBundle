@@ -34,8 +34,8 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
     public function generate(): PdfResponse
     {
-        $name = self::$count . '.' . $this->inner::class . '::' . __FUNCTION__;
-        self::$count++;
+        $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
+        ++self::$count;
 
         $swEvent = $this->stopwatch->start($name, 'gotenberg.generate_pdf');
         $response = $this->inner->generate();
