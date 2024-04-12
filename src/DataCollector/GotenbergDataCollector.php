@@ -64,16 +64,25 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
          * @var TraceablePdfBuilder $builder
          */
         foreach ($this->traceableGotenberg->getBuilders() as [$id, $builder]) {
-            $this->data['builders'][$id]['pdfs'] = array_merge($this->data['builders'][$id]['pdfs'], array_map(function (array $request): array {
-                $request['calls'] = array_map(function (array $call): array {
-                    return array_merge($call, ['stub' => $this->cloneVar(new ArgsStub($call['arguments'], $call['method'], $call['class']))]);
-                }, $request['calls']);
+            $this->data['builders'][$id]['pdfs'] = array_merge(
+                $this->data['builders'][$id]['pdfs'],
+                array_map(function (array $request): array {
+                    $this->data['request_total_time'] += $request['time'];
+                    $this->data['request_total_memory'] += $request['memory'];
 
-                $this->data['request_total_time'] += $request['time'];
-                $this->data['request_total_memory'] += $request['memory'];
-
-                return $request;
-            }, $builder->getPdfs()));
+                    return [
+                        'time' => $request['time'],
+                        'memory' => $request['memory'],
+                        'fileName' => $request['fileName'],
+                        'calls' => array_map(function (array $call): array {
+                            return [
+                                'method' => $call['method'],
+                                'stub' => $this->cloneVar(new ArgsStub($call['arguments'], $call['method'], $call['class'])),
+                            ];
+                        }, $request['calls']),
+                    ];
+                }, $builder->getPdfs()),
+            );
 
             $this->data['request_count'] += \count($builder->getPdfs());
         }
@@ -89,7 +98,6 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
      *         'fileName': string,
      *         'calls': list<array{
      *             'method': string,
-     *             'arguments': array<mixed>,
      *             'stub': Data
      *         }>
      *     }>

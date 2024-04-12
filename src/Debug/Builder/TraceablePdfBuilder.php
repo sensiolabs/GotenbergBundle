@@ -5,12 +5,11 @@ namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\Component\VarDumper\Cloner\Stub;
 
 final class TraceablePdfBuilder implements PdfBuilderInterface
 {
     /**
-     * @var list<array{'time': float, 'memory': int, 'fileName': string, 'calls': list<array{'method': string, 'arguments': array<mixed>, 'stub': Stub}>}>
+     * @var list<array{'time': float, 'memory': int, 'fileName': string, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
      */
     private array $pdfs = [];
 
@@ -42,6 +41,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         if ($response->headers->has('Content-Disposition')) {
             $matches = [];
 
+            /* @see https://onlinephp.io/c/c2606 */
             preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $response->headers->get('Content-Disposition', ''), $matches);
             $fileName = $matches['fileName'];
         }
