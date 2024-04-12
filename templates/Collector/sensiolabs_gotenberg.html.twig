@@ -60,7 +60,7 @@
 {% block toolbar %}
     {% if collector.requestCount %}
         {% set icon %}
-            <span class="icon">{{ source('@SensiolabsGotenberg/WebProfiler/Icon/gotenberg_logo.png.html') }}</span>
+            <span class="icon">{{ source('@SensiolabsGotenberg/Icon/gotenberg_logo.png.html') }}</span>
             {% set status_color = '' %}
             <span class="sf-toolbar-value"> {{ collector.requestCount }} PDF's</span>
         {% endset %}
@@ -78,7 +78,7 @@
 
 {% block menu %}
     <span class="label {{ collector.requestCount == 0 ? 'disabled' }}">
-        <span class="icon">{{ source('@SensiolabsGotenberg/WebProfiler/Icon/gotenberg_logo.png.html') }}</span>
+        <span class="icon">{{ source('@SensiolabsGotenberg/Icon/gotenberg_logo.png.html') }}</span>
         <strong>Gotenberg</strong>
         {% if collector.requestCount > 0 %}
             <span class="count">
@@ -121,7 +121,7 @@
                     {% for request in builder.pdfs %}
                         <details>
                             <summary>
-                                <span class="icon">{{ source('@SensiolabsGotenberg/WebProfiler/Icon/file-type-pdf.svg') }}</span>
+                                <span class="icon">{{ source('@SensiolabsGotenberg/Icon/file-type-pdf.svg') }}</span>
                                 {{ request.fileName }}
                             </summary>
                             <p>
