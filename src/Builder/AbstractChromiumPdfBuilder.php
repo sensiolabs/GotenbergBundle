@@ -311,6 +311,30 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
+     *
+     * @see https://gotenberg.dev/docs/routes#cookies-chromium
+     */
+    public function cookies(array $cookies): static
+    {
+        $this->formFields['cookies'] = $cookies;
+
+        return $this;
+    }
+
+    /**
+     * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
+     *
+     * @see https://gotenberg.dev/docs/routes#cookies-chromium
+     */
+    public function addCookies(array $cookies): static
+    {
+        $this->formFields['cookies'][] = $cookies;
+
+        return $this;
+    }
+
+    /**
      * Sets extra HTTP headers that Chromium will send when loading the HTML
      * document. (default None). (overrides any previous headers).
      *
@@ -341,6 +365,19 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Return a 409 Conflict response if the HTTP status code from
+     * the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
+     *
+     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     */
+    public function failOnHttpStatusCodes(array $statusCodes): static
+    {
+        $this->formFields['failOnHttpStatusCodes'] = $statusCodes;
+
+        return $this;
+    }
+
+    /**
      * Forces Gotenberg to return a 409 Conflict response if there are
      * exceptions in the Chromium console. (default false).
      *
@@ -349,6 +386,13 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function failOnConsoleExceptions(bool $bool = true): static
     {
         $this->formFields['failOnConsoleExceptions'] = $bool;
+
+        return $this;
+    }
+
+    public function skipNetworkIdleEvent(bool $bool = true): static
+    {
+        $this->formFields['skipNetworkIdleEvent'] = $bool;
 
         return $this;
     }
@@ -433,8 +477,11 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'wait_for_expression' => $this->waitForExpression($value),
             'emulated_media_type' => $this->emulatedMediaType($value),
             'user_agent' => $this->userAgent($value),
+            'cookies' => $this->cookies($value),
             'extra_http_headers' => $this->extraHttpHeaders($value),
+            'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
+            'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

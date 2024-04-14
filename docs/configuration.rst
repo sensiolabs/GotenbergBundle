@@ -28,8 +28,11 @@ The default configuration for the bundle looks like :
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 user_agent: null                    # None
+                cookies: null                       # None
                 extra_http_headers: null            # None
+                fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
+                skip_network_idle_event: null       # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
             url:
@@ -49,8 +52,11 @@ The default configuration for the bundle looks like :
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 user_agent: null                    # None
+                cookies: null                       # None
                 extra_http_headers: null            # None
+                fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
+                skip_network_idle_event: null       # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
             markdown:
@@ -70,8 +76,11 @@ The default configuration for the bundle looks like :
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 user_agent: null                    # None
+                cookies: null                       # None
                 extra_http_headers: null            # None
+                fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
+                skip_network_idle_event: null       # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
             office:
@@ -80,6 +89,43 @@ The default configuration for the bundle looks like :
                 merge: null                         # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
+        screenshot_options:
+            html:
+                format: null                        # png
+                quality:   null                     # 100
+                omit_background: null               # false
+                optimize_for_speed: null            # false
+                wait_delay: null                    # None
+                emulated_media_type: null           # 'print'
+                cookies: null                       # None
+                extra_http_headers: null            # None
+                fail_on_http_status_codes: null     # [499-599]
+                fail_on_console_exceptions: null    # false
+                skip_network_idle_event: null       # false
+            url:
+                format: null                        # png
+                quality:   null                     # 100
+                omit_background: null               # false
+                optimize_for_speed: null            # false
+                wait_delay: null                    # None
+                emulated_media_type: null           # 'print'
+                cookies: null                       # None
+                extra_http_headers: null            # None
+                fail_on_http_status_codes: null     # [499-599]
+                fail_on_console_exceptions: null    # false
+                skip_network_idle_event: null       # false
+            markdown:
+                format: null                        # png
+                quality:   null                     # 100
+                omit_background: null               # false
+                optimize_for_speed: null            # false
+                wait_delay: null                    # None
+                emulated_media_type: null           # 'print'
+                cookies: null                       # None
+                extra_http_headers: null            # None
+                fail_on_http_status_codes: null     # [499-599]
+                fail_on_console_exceptions: null    # false
+                skip_network_idle_event: null       # false
 
 .. caution::
 
@@ -102,10 +148,46 @@ HTTP headers to send by Chromium while loading the HTML document.
 
     sensiolabs_gotenberg:
         base_uri: 'http://localhost:3000'
-        options:
-            extra_http_headers:
-                - { name: 'My-Header', value: 'MyValue' }
-                - { name: 'User-Agent', value: 'MyValue' }
+        default_options:
+            html:
+                extra_http_headers:
+                    - { name: 'My-Header', value: 'MyValue' }
+
+.. tip::
+
+    For more information about `custom HTTP headers`_.
+
+Invalid HTTP Status Codes
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To return a 409 Conflict response if the HTTP status code from the main page is not acceptable.
+
+.. code-block:: yaml
+
+    sensiolabs_gotenberg:
+        base_uri: 'http://localhost:3000'
+        default_options:
+            html:
+                fail_on_http_status_codes: [401, 403]
+
+.. tip::
+
+    For more information about `Invalid HTTP Status Codes`_.
+
+Cookies
+~~~~~~~
+
+Cookies to store in the Chromium cookie jar.
+
+.. code-block:: yaml
+
+    sensiolabs_gotenberg:
+        base_uri: 'http://localhost:3000'
+        default_options:
+            html:
+                cookies:
+                    - { name: 'yummy_cookie', value: 'choco', domain: 'example.com' }
+                    - { name: 'my_cookie', value: 'symfony', domain: 'symfony.com', secure: true, httpOnly: true, sameSite: 'Lax'  }
 
 .. tip::
 
@@ -113,3 +195,4 @@ HTTP headers to send by Chromium while loading the HTML document.
 
 .. _defaults properties: https://gotenberg.dev/docs/routes#page-properties-chromium
 .. _custom HTTP headers: https://gotenberg.dev/docs/routes#custom-http-headers
+.. _Invalid HTTP Status Codes: https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
