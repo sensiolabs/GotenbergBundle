@@ -247,23 +247,6 @@ Some websites have dedicated CSS rules for print. Using ``screen`` allows you to
 
     For more information about `emulated Media Type`_.
 
-User Agent
-----------
-
-``default: None``
-
-Override the default User-Agent header.
-
-.. code-block:: php
-
-    $twigPdfBuilder
-        ->content('path/to/template.html.twig')
-        ->userAgent("Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
-
-.. tip::
-
-    For more information about `custom HTTP headers`_.
-
 Extra HTTP headers
 ------------------
 
