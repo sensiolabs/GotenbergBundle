@@ -89,43 +89,6 @@ The default configuration for the bundle looks like :
                 merge: null                         # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
-        screenshot_options:
-            html:
-                format: null                        # png
-                quality:   null                     # 100
-                omit_background: null               # false
-                optimize_for_speed: null            # false
-                wait_delay: null                    # None
-                emulated_media_type: null           # 'print'
-                cookies: null                       # None
-                extra_http_headers: null            # None
-                fail_on_http_status_codes: null     # [499-599]
-                fail_on_console_exceptions: null    # false
-                skip_network_idle_event: null       # false
-            url:
-                format: null                        # png
-                quality:   null                     # 100
-                omit_background: null               # false
-                optimize_for_speed: null            # false
-                wait_delay: null                    # None
-                emulated_media_type: null           # 'print'
-                cookies: null                       # None
-                extra_http_headers: null            # None
-                fail_on_http_status_codes: null     # [499-599]
-                fail_on_console_exceptions: null    # false
-                skip_network_idle_event: null       # false
-            markdown:
-                format: null                        # png
-                quality:   null                     # 100
-                omit_background: null               # false
-                optimize_for_speed: null            # false
-                wait_delay: null                    # None
-                emulated_media_type: null           # 'print'
-                cookies: null                       # None
-                extra_http_headers: null            # None
-                fail_on_http_status_codes: null     # [499-599]
-                fail_on_console_exceptions: null    # false
-                skip_network_idle_event: null       # false
 
 .. caution::
 
