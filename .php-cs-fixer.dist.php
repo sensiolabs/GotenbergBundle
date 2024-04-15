@@ -6,6 +6,7 @@ $finder = (new PhpCsFixer\Finder())
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
+    ->exclude(__DIR__.'/var/')
 ;
 
 return (new PhpCsFixer\Config())
@@ -22,6 +23,9 @@ return (new PhpCsFixer\Config())
         'no_useless_else' => true,
         'no_useless_return' => true,
         'nullable_type_declaration_for_default_null_value' => false,
+        'nullable_type_declaration' => [
+            'syntax' => 'union',
+        ],
         'return_assignment' => true,
         'strict_param' => true,
         'trailing_comma_in_multiline' => [

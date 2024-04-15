@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Enum\PaperSize;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -94,6 +95,26 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertArrayHasKey('files', $multipartFormData[1]);
         self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
         self::assertSame('image/png', $multipartFormData[1]['files']->getContentType());
+    }
+
+    public function testWithPaperStandardSize(): void
+    {
+        $client = $this->createMock(GotenbergClientInterface::class);
+        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
+
+        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
+        $builder->contentFile('content.html');
+        $builder->paperStandardSize(PaperSize::A3);
+
+        $multipartFormData = $builder->getMultipartFormData();
+
+        self::assertCount(3, $multipartFormData);
+
+        self::assertArrayHasKey('paperWidth', $multipartFormData[1]);
+        self::assertArrayHasKey('paperHeight', $multipartFormData[2]);
+
+        self::assertSame((string) PaperSize::A3->width(), $multipartFormData[1]['paperWidth']);
+        self::assertSame((string) PaperSize::A3->height(), $multipartFormData[2]['paperHeight']);
     }
 
     public function testWithHeader(): void
