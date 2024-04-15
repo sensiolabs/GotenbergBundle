@@ -16,7 +16,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
-        private readonly ?Environment $twig = null,
+        private readonly Environment|null $twig = null,
     ) {
         parent::__construct($gotenbergClient, $asset);
     }
