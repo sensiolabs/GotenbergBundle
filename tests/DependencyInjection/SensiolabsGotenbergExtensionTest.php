@@ -39,7 +39,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'emulated_media_type' => 'screen',
                 'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
                 'fail_on_console_exceptions' => true,
-                'pdf_format' => PdfFormat::Pdf1b->value,
+                'pdf_format' => 'PDF/A-1b',
                 'pdf_universal_access' => true,
             ],
             'url' => [
@@ -88,7 +88,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'landscape' => false,
                 'native_page_ranges' => '1-2',
                 'merge' => true,
-                'pdf_format' => PdfFormat::Pdf1b->value,
+                'pdf_format' => 'PDF/A-1b',
                 'pdf_universal_access' => true,
             ],
         ];

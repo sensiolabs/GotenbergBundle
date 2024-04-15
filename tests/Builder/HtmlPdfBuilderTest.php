@@ -7,7 +7,6 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PaperSize;
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -55,7 +54,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[15]);
         self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[16]);
         self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[17]);
-        self::assertSame(['pdfa' => PdfFormat::Pdf1b->value], $multipartFormData[18]);
+        self::assertSame(['pdfa' => 'PDF/A-1b'], $multipartFormData[18]);
         self::assertSame(['pdfua' => 'true'], $multipartFormData[19]);
     }
 
@@ -194,7 +193,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
                 'User-Agent' => 'MyValue',
             ],
             'fail_on_console_exceptions' => true,
-            'pdf_format' => PdfFormat::Pdf1b->value,
+            'pdf_format' => 'PDF/A-1b',
             'pdf_universal_access' => true,
         ];
     }
