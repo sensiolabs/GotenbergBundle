@@ -314,6 +314,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
+     *
+     * @param list<array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null}> $cookies
      */
     public function cookies(array $cookies): static
     {
@@ -326,6 +328,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
+     *
+     * @param array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null} $cookies
      */
     public function addCookies(array $cookies): static
     {

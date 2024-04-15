@@ -276,12 +276,29 @@ Cookies to store in the Chromium cookie jar.
     $twigPdfBuilder
         ->content('path/to/template.html.twig')
         ->cookies([
+            [
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ],
+        ]);
+
+Or if you add to add cookies from the ones already loaded in the configuration.
+
+.. code-block:: php
+
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->addCookies([
             'name' => 'my_cookie',
             'value' => 'symfony',
             'domain' => 'symfony.com',
             'secure' => true,
             'httpOnly' => true,
-            'sameSite' => 'Lax'
+            'sameSite' => 'Lax',
         ]);
 
 .. tip::
