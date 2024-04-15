@@ -26,7 +26,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+    public function collect(Request $request, Response $response, \Throwable|null $exception = null): void
     {
         $this->data['request_total_memory'] = 0;
         $this->data['request_total_time'] = 0;
