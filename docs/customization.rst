@@ -331,13 +331,13 @@ Cookies to store in the Chromium cookie jar.
     `cookies` method overrides any previous cookies.
 
 If you want to add cookies from the ones already loaded in the configuration you
-can use `addCookies`.
+can use `addCookie`.
 
 .. code-block:: php
 
     $twigPdfBuilder
         ->content('path/to/template.html.twig')
-        ->addCookies([
+        ->addCookie([
             [
                 'name' => 'my_cookie',
                 'value' => 'symfony',

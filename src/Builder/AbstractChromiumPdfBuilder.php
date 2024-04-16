@@ -327,7 +327,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @param list<array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null}> $cookies
      */
-    public function addCookies(array $cookies): static
+    public function addCookie(array $cookies): static
     {
         $this->formFields['cookies'] = array_merge($this->formFields['cookies'] ?? [], $cookies);
 
@@ -357,7 +357,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @param array<string, string> $headers
      */
-    public function addExtraHttpHeaders(array $headers): static
+    public function addExtraHttpHeader(array $headers): static
     {
         $this->formFields['extraHttpHeaders'] = array_merge($this->formFields['extraHttpHeaders'] ?? [], $headers);
 
