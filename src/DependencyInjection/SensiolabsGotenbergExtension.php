@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -17,12 +18,14 @@ class SensiolabsGotenbergExtension extends Extension
 
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
+        /** @var array{base_uri: string, http_client: string|null, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->registerForAutoconfiguration(PdfBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.builder')
         ;
+
+        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'] ?? 'http_client', false));
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.client');
         $definition->replaceArgument(0, $config['base_uri']);
