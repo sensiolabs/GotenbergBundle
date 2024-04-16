@@ -10,6 +10,7 @@ The default configuration for the bundle looks like :
     sensiolabs_gotenberg:
         base_uri: 'http://localhost:3000'
         base_directory: '%kernel.project_dir%'
+        http_client: null   # Defaults to 'http_client'
         default_options:
             html:
                 paper_width: null                   # 8.5
@@ -27,7 +28,6 @@ The default configuration for the bundle looks like :
                 wait_delay: null                    # None
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
-                user_agent: null                    # None
                 cookies: null                       # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]
@@ -51,7 +51,6 @@ The default configuration for the bundle looks like :
                 wait_delay: null                    # None
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
-                user_agent: null                    # None
                 cookies: null                       # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]
@@ -75,7 +74,6 @@ The default configuration for the bundle looks like :
                 wait_delay: null                    # None
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
-                user_agent: null                    # None
                 cookies: null                       # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]

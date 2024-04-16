@@ -18,7 +18,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      */
     protected array $formFields = [];
 
-    private string|null $fileName = null;
+    private ?string $fileName = null;
 
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
@@ -143,7 +143,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
      *
      * @return list<array<string, mixed>>
      */
-    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value, \Closure|null $preCallback = null): array
+    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value, ?\Closure $preCallback = null): array
     {
         if (null !== $preCallback) {
             $result = [];

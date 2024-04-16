@@ -2,11 +2,24 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 
 final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
 {
     private const ENDPOINT = '/forms/chromium/convert/url';
+
+    public function __construct(
+        GotenbergClientInterface $gotenbergClient,
+        AssetBaseDirFormatter $asset,
+        ?Environment $twig = null,
+        private readonly ?UrlGeneratorInterface $urlGenerator = null,
+    ) {
+        parent::__construct($gotenbergClient, $asset, $twig);
+    }
 
     /**
      * URL of the page you want to convert into PDF.
@@ -16,6 +29,18 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
         $this->formFields['url'] = $url;
 
         return $this;
+    }
+
+    /**
+     * @param string $name #Route
+     */
+    public function route(string $name, array $parameters = []): self
+    {
+        if (null === $this->urlGenerator) {
+            throw new \LogicException(\sprintf('Router is required to use "%s" method. Try to run "composer require symfony/routing".', __METHOD__));
+        }
+
+        return $this->url($this->urlGenerator->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL));
     }
 
     public function getMultipartFormData(): array

@@ -58,7 +58,62 @@ The path provided can be relative as well as absolute.
 Paper size
 ----------
 
-You can override the default paper size with width and height (in inches):
+You can override the default paper size with standard paper size using the
+`PaperSize` enum :
+
+.. code-block:: php
+
+    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+
+    $twigPdfBuilder = $gotenberg->twig();
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->paperStandardSize(PaperSize::A3);
+
+Or if you want you can create your own logic, you just need to implements `PaperSizeInterface`
+
+.. code-block:: php
+
+    use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
+
+    enum PdfSize implements PaperSizeInterface
+    {
+        case Letter;
+        case Legal;
+        case Tabloid;
+        case Ledger;
+
+        public function width(): float
+        {
+            return match ($this) {
+                PdfSize::Letter, PdfSize::Legal => 8.5,
+                PdfSize::Tabloid => 11,
+                PdfSize::Ledger => 17,
+            };
+        }
+
+        public function height(): float
+        {
+            return match ($this) {
+                PdfSize::Letter, PdfSize::Ledger => 11,
+                PdfSize::Legal => 14,
+                PdfSize::Tabloid => 17,
+            };
+        }
+    }
+
+And then use it with paperStandardSize.
+
+.. code-block:: php
+
+    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+
+    $twigPdfBuilder = $gotenberg->twig();
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->paperStandardSize(PdfSize::Tabloid);
+
+Or, you can even override with your proper width and height (in inches):
 
 .. code-block:: php
 
@@ -69,17 +124,19 @@ You can override the default paper size with width and height (in inches):
         ->content('path/to/template.html.twig')
         ->paperSize(8.5, 11);
 
-* Letter - 8.5 x 11 (default)
-* Legal - 8.5 x 14
-* Tabloid - 11 x 17
-* Ledger - 17 x 11
-* A0 - 33.1 x 46.8
-* A1 - 23.4 x 33.1
-* A2 - 16.54 x 23.4
-* A3 - 11.7 x 16.54
-* A4 - 8.27 x 11.7
-* A5 - 5.83 x 8.27
-* A6 - 4.13 x 5.83
+.. tip::
+
+    * Letter - 8.5 x 11 (default)
+    * Legal - 8.5 x 14
+    * Tabloid - 11 x 17
+    * Ledger - 17 x 11
+    * A0 - 33.1 x 46.8
+    * A1 - 23.4 x 33.1
+    * A2 - 16.54 x 23.4
+    * A3 - 11.7 x 16.54
+    * A4 - 8.27 x 11.7
+    * A5 - 5.83 x 8.27
+    * A6 - 4.13 x 5.83
 
 Prefer CSS page size
 --------------------
@@ -246,23 +303,6 @@ Some websites have dedicated CSS rules for print. Using ``screen`` allows you to
 .. tip::
 
     For more information about `emulated Media Type`_.
-
-User Agent
-----------
-
-``default: None``
-
-Override the default User-Agent header.
-
-.. code-block:: php
-
-    $twigPdfBuilder
-        ->content('path/to/template.html.twig')
-        ->userAgent("Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
-
-.. tip::
-
-    For more information about `custom HTTP headers`_.
 
 Cookies
 -------

@@ -8,6 +8,7 @@ use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Configuration implements ConfigurationInterface
 {
@@ -25,6 +26,10 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('base_directory')
                     ->info('Base directory will be used for assets, files, markdown')
                     ->defaultValue('%kernel.project_dir%')
+                ->end()
+                ->scalarNode('http_client')
+                    ->info('HTTP Client reference to use. Defaults to "http_client".')
+                    ->defaultValue('http_client')
                 ->end()
                 ->arrayNode('default_options')
                     ->addDefaultsIfNotSet()
@@ -154,16 +159,6 @@ class Configuration implements ConfigurationInterface
                 ->values([EmulatedMediaType::Screen->value, EmulatedMediaType::Print->value])
                 ->defaultNull()
             ->end()
-                ->scalarNode('user_agent')
-                ->info('Override the default User-Agent header - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
-                ->defaultNull()
-                ->validate()
-                    ->ifTrue(static function ($option) {
-                        return !\is_string($option);
-                    })
-                    ->thenInvalid('Invalid value %s')
-                ->end()
-            ->end()
             ->arrayNode('cookies')
                 ->info('Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/routes#cookies-chromium')
                 ->defaultValue([])
@@ -233,7 +228,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('pdf_format')
                 ->info('Convert the resulting PDF into the given PDF/A format - default None. https://gotenberg.dev/docs/routes#pdfa-chromium')
-                ->values([PdfFormat::Pdf1a->value, PdfFormat::Pdf2b->value, PdfFormat::Pdf3b->value])
+                ->values([PdfFormat::Pdf1b->value, PdfFormat::Pdf2b->value, PdfFormat::Pdf3b->value])
                 ->defaultNull()
             ->end()
             ->booleanNode('pdf_universal_access')
@@ -270,7 +265,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->enumNode('pdf_format')
                     ->info('Convert the resulting PDF into the given PDF/A format - default None. https://gotenberg.dev/docs/routes#pdfa-chromium')
-                    ->values([PdfFormat::Pdf1a->value, PdfFormat::Pdf2b->value, PdfFormat::Pdf3b->value])
+                    ->values([PdfFormat::Pdf1b->value, PdfFormat::Pdf2b->value, PdfFormat::Pdf3b->value])
                     ->defaultNull()
                 ->end()
                 ->booleanNode('pdf_universal_access')

@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
@@ -16,7 +17,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
-        private readonly ?Environment $twig = null,
+        private readonly Environment|null $twig = null,
     ) {
         parent::__construct($gotenbergClient, $asset);
     }
@@ -58,6 +59,14 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     {
         $this->paperWidth($width);
         $this->paperHeight($height);
+
+        return $this;
+    }
+
+    public function paperStandardSize(PaperSizeInterface $paperSize): static
+    {
+        $this->paperWidth($paperSize->width());
+        $this->paperHeight($paperSize->height());
 
         return $this;
     }
@@ -299,18 +308,6 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * Overrides the default "User-Agent" header.(default None).
-     *
-     * @see https://gotenberg.dev/docs/routes#custom-http-headers
-     */
-    public function userAgent(string $userAgent): static
-    {
-        $this->formFields['userAgent'] = $userAgent;
-
-        return $this;
-    }
-
-    /**
      * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
@@ -363,21 +360,6 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function addExtraHttpHeaders(array $headers): static
     {
         $this->formFields['extraHttpHeaders'] = array_merge($this->formFields['extraHttpHeaders'] ?? [], $headers);
-
-        return $this;
-    }
-
-    /**
-     * Return a 409 Conflict response if the HTTP status code from
-     * the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
-     *
-     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
-     *
-     * @param array<int, int> $statusCodes
-     */
-    public function failOnHttpStatusCodes(array $statusCodes): static
-    {
-        $this->formFields['failOnHttpStatusCodes'] = $statusCodes;
 
         return $this;
     }
@@ -481,7 +463,6 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'wait_delay' => $this->waitDelay($value),
             'wait_for_expression' => $this->waitForExpression($value),
             'emulated_media_type' => $this->emulatedMediaType($value),
-            'user_agent' => $this->userAgent($value),
             'cookies' => $this->cookies($value),
             'extra_http_headers' => $this->extraHttpHeaders($value),
             'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),

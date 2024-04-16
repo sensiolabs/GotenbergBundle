@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
+use Sensiolabs\GotenbergBundle\Enum\PaperSize;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Filesystem\Filesystem;
@@ -28,7 +29,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertCount(24, $multipartFormData);
+        self::assertCount(23, $multipartFormData);
 
         self::assertIsArray($multipartFormData[0]);
         self::assertCount(1, $multipartFormData[0]);
@@ -51,14 +52,13 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertSame(['waitDelay' => '10s'], $multipartFormData[13]);
         self::assertSame(['waitForExpression' => 'window.globalVar === "ready"'], $multipartFormData[14]);
         self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[15]);
-        self::assertSame(['userAgent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'], $multipartFormData[16]);
-        self::assertSame(['cookies' => '[{"name":"cook_me","value":"sensio","domain":"sensiolabs.com","secure":true,"httpOnly":true,"sameSite":"Lax"},{"name":"yummy_cookie","value":"choco","domain":"example.com"}]'], $multipartFormData[17]);
-        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[18]);
-        self::assertSame(['failOnHttpStatusCodes' => '[401,403]'], $multipartFormData[19]);
-        self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[20]);
-        self::assertSame(['skipNetworkIdleEvent' => 'true'], $multipartFormData[21]);
-        self::assertSame(['pdfa' => 'PDF/A-1a'], $multipartFormData[22]);
-        self::assertSame(['pdfua' => 'true'], $multipartFormData[23]);
+        self::assertSame(['cookies' => '[{"name":"cook_me","value":"sensio","domain":"sensiolabs.com","secure":true,"httpOnly":true,"sameSite":"Lax"},{"name":"yummy_cookie","value":"choco","domain":"example.com"}]'], $multipartFormData[16]);
+        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[17]);
+        self::assertSame(['failOnHttpStatusCodes' => '[401,403]'], $multipartFormData[18]);
+        self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[19]);
+        self::assertSame(['skipNetworkIdleEvent' => 'true'], $multipartFormData[20]);
+        self::assertSame(['pdfa' => 'PDF/A-1a'], $multipartFormData[21]);
+        self::assertSame(['pdfua' => 'true'], $multipartFormData[22]);
     }
 
     public function testWithTemplate(): void
@@ -97,6 +97,26 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertArrayHasKey('files', $multipartFormData[1]);
         self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
         self::assertSame('image/png', $multipartFormData[1]['files']->getContentType());
+    }
+
+    public function testWithPaperStandardSize(): void
+    {
+        $client = $this->createMock(GotenbergClientInterface::class);
+        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
+
+        $builder = new HtmlPdfBuilder($client, $assetBaseDirFormatter);
+        $builder->contentFile('content.html');
+        $builder->paperStandardSize(PaperSize::A3);
+
+        $multipartFormData = $builder->getMultipartFormData();
+
+        self::assertCount(3, $multipartFormData);
+
+        self::assertArrayHasKey('paperWidth', $multipartFormData[1]);
+        self::assertArrayHasKey('paperHeight', $multipartFormData[2]);
+
+        self::assertSame((string) PaperSize::A3->width(), $multipartFormData[1]['paperWidth']);
+        self::assertSame((string) PaperSize::A3->height(), $multipartFormData[2]['paperHeight']);
     }
 
     public function testWithHeader(): void
@@ -171,7 +191,6 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
             'wait_delay' => '10s',
             'wait_for_expression' => 'window.globalVar === "ready"',
             'emulated_media_type' => 'screen',
-            'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
             'cookies' => [
                 [
                     'name' => 'cook_me',
@@ -194,7 +213,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
             'fail_on_http_status_codes' => [401, 403],
             'fail_on_console_exceptions' => true,
             'skip_network_idle_event' => true,
-            'pdf_format' => 'PDF/A-1a',
+            'pdf_format' => 'PDF/A-1b',
             'pdf_universal_access' => true,
         ];
     }
