@@ -57,6 +57,7 @@ return function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.client'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
             service('twig')->nullOnInvalid(),
+            service('router')->nullOnInvalid(),
         ])
         ->tag('sensiolabs_gotenberg.builder')
     ;
