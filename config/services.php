@@ -12,13 +12,12 @@ use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
-return function (ContainerConfigurator $container): void {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sensiolabs_gotenberg.client', GotenbergClient::class)
@@ -32,7 +31,7 @@ return function (ContainerConfigurator $container): void {
         ->args([
             service(Filesystem::class),
             param('kernel.project_dir'),
-            abstract_arg('base_directory to assets'),
+            abstract_arg('assets_directory to assets'),
         ])
         ->alias(AssetBaseDirFormatter::class, 'sensiolabs_gotenberg.asset.base_dir_formatter')
     ;

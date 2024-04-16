@@ -13,13 +13,25 @@ class SensiolabsGotenbergExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $configuration = new Configuration();
+
+        /** @var array{base_uri: string, http_client: string|null, assets_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
+        $config = $this->processConfiguration($configuration, $configs);
+
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.php');
 
-        $configuration = new Configuration();
-
-        /** @var array{base_uri: string, http_client: string|null, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
-        $config = $this->processConfiguration($configuration, $configs);
+        if ($container->getParameter('kernel.debug') === true) {
+            $loader->load('debug.php');
+            $container->getDefinition('sensiolabs_gotenberg.data_collector')
+                ->replaceArgument(2, [
+                    'html' => $this->cleanUserOptions($config['default_options']['html']),
+                    'url' => $this->cleanUserOptions($config['default_options']['url']),
+                    'markdown' => $this->cleanUserOptions($config['default_options']['markdown']),
+                    'office' => $this->cleanUserOptions($config['default_options']['office']),
+                ])
+            ;
+        }
 
         $container->registerForAutoconfiguration(PdfBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.builder')
@@ -43,7 +55,7 @@ class SensiolabsGotenbergExtension extends Extension
         $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['office'])]);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.asset.base_dir_formatter');
-        $definition->replaceArgument(2, $config['base_directory']);
+        $definition->replaceArgument(2, $config['assets_directory']);
     }
 
     /**

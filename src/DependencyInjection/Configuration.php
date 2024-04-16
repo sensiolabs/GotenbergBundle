@@ -8,7 +8,6 @@ use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Configuration implements ConfigurationInterface
 {
@@ -23,9 +22,9 @@ class Configuration implements ConfigurationInterface
                     ->info('Host of your local Gotenberg API')
                     ->defaultValue('http://localhost:3000')
                 ->end()
-                ->scalarNode('base_directory')
+                ->scalarNode('assets_directory')
                     ->info('Base directory will be used for assets, files, markdown')
-                    ->defaultValue('%kernel.project_dir%')
+                    ->defaultValue('%kernel.project_dir%/assets')
                 ->end()
                 ->scalarNode('http_client')
                     ->info('HTTP Client reference to use. Defaults to "http_client".')

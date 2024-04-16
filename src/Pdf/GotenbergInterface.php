@@ -19,11 +19,23 @@ interface GotenbergInterface
      */
     public function get(string $builder): PdfBuilderInterface;
 
-    public function html(): HtmlPdfBuilder;
+    /**
+     * @return HtmlPdfBuilder
+     */
+    public function html(): PdfBuilderInterface;
 
-    public function url(): UrlPdfBuilder;
+    /**
+     * @return UrlPdfBuilder
+     */
+    public function url(): PdfBuilderInterface;
 
-    public function office(): LibreOfficePdfBuilder;
+    /**
+     * @return LibreOfficePdfBuilder
+     */
+    public function office(): PdfBuilderInterface;
 
-    public function markdown(): MarkdownPdfBuilder;
+    /**
+     * @return MarkdownPdfBuilder
+     */
+    public function markdown(): PdfBuilderInterface;
 }
