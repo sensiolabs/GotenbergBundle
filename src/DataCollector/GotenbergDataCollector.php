@@ -29,6 +29,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     public function collect(Request $request, Response $response, \Throwable|null $exception = null): void
     {
         $this->data['request_total_memory'] = 0;
+        $this->data['request_total_size'] = 0;
         $this->data['request_total_time'] = 0;
         $this->data['request_count'] = 0;
         $this->data['builders'] = [];
@@ -69,10 +70,12 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                 array_map(function (array $request): array {
                     $this->data['request_total_time'] += $request['time'];
                     $this->data['request_total_memory'] += $request['memory'];
+                    $this->data['request_total_size'] += $request['size'] ?? 0;
 
                     return [
                         'time' => $request['time'],
                         'memory' => $request['memory'],
+                        'size' => $this->formatSize($request['size'] ?? 0),
                         'fileName' => $request['fileName'],
                         'calls' => array_map(function (array $call): array {
                             return [
@@ -89,12 +92,30 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     }
 
     /**
+     * @param int<0, max> $size
+     *
+     * @return array{float, string}
+     */
+    private function formatSize(int $size): array
+    {
+        return match (true) {
+            ($size / 1024 < 1) => [$size, 'B'],
+            ($size / (1024 ** 2) < 1) => [round($size / 1024, 2), 'kB'],
+            ($size / (1024 ** 3) < 1) => [round($size / (1024 ** 2), 2), 'MB'],
+            ($size / (1024 ** 4) < 1) => [round($size / (1024 ** 3), 2), 'GB'],
+            ($size / (1024 ** 5) < 1) => [round($size / (1024 ** 4), 2), 'TB'],
+            default => throw new \LogicException('File too big'),
+        };
+    }
+
+    /**
      * @return array<string, array{
      *     'class': string,
      *     'default_options': array<mixed>,
      *     'pdfs': list<array{
      *         'time': float,
      *         'memory': int,
+     *         'size': int<0, max>|null,
      *         'fileName': string,
      *         'calls': list<array{
      *             'method': string,
@@ -121,5 +142,13 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     public function getRequestTotalMemory(): int
     {
         return $this->data['request_total_memory'] ?? 0;
+    }
+
+    /**
+     * @return array{float, string}
+     */
+    public function getRequestTotalSize(): array
+    {
+        return $this->formatSize($this->data['request_total_size'] ?? 0);
     }
 }

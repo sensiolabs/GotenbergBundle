@@ -99,7 +99,7 @@
             <div class="metric-group">
                 <div class="metric">
                     <span class="value">{{ collector.requestCount }}</span>
-                    <span class="label">Total PDFs generated</span>
+                    <span class="label">PDFs generated</span>
                 </div>
                 <div class="metric">
                     <span class="value">{{ '%.0f'|format(collector.requestTotalTime) }} <span class="unit">ms</span></span>
@@ -109,15 +109,25 @@
                     <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span class="unit">MiB</span></span>
                     <span class="label">Total memory</span>
                 </div>
+                <div class="metric">
+                    {% set total_size = collector.requestTotalSize %}
+                    {% set total_size_value = total_size[0] %}
+                    {% set total_size_unit = total_size[1] %}
+
+                    <span class="value">{{ '%.1f'|format(total_size_value) }} <span class="unit">{{ total_size_unit }}</span></span>
+                    <span class="label">Total size</span>
+                </div>
             </div>
         </section>
         <h2>Builders</h2>
         <div class="sf-tabs">
         {% for name, builder in collector.builders %}
+            {% set is_builtin = name in ['html', 'url', 'office', 'markdown'] %}
+
             <div class="tab {{ builder.pdfs|length == 0 ? 'disabled' }}">
                 <h3 class="tab-title">{{ name }} <span class="badge">{{ builder.pdfs|length }}</span></h3>
                 <div class="tab-content">
-                    {% if name in ['html', 'url', 'office', 'markdown'] %}
+                    {% if is_builtin %}
                         <h4>Default Options</h4>
                         {{ dump(builder['default_options']) }}
                     {% endif %}
@@ -133,11 +143,19 @@
                                     <div class="metric-group">
                                         <div class="metric">
                                             <span class="value">{{ '%.0f'|format(request.time) }} <span class="unit">ms</span></span>
-                                            <span class="label">Total execution time</span>
+                                            <span class="label">Generation time</span>
                                         </div>
                                         <div class="metric">
                                             <span class="value">{{ '%.1f'|format(request.memory / 1024 / 1024) }} <span class="unit">MiB</span></span>
-                                            <span class="label">Total memory</span>
+                                            <span class="label">Memory</span>
+                                        </div>
+                                        <div class="metric">
+                                            {% set size = request.size %}
+                                            {% set size_value = size[0] %}
+                                            {% set size_unit = size[1] %}
+
+                                            <span class="value">{{ '%.1f'|format(size_value) }} <span class="unit">{{ size_unit }}</span></span>
+                                            <span class="label">Size</span>
                                         </div>
                                     </div>
                                 </div>
