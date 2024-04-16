@@ -18,7 +18,7 @@ class SensiolabsGotenbergExtension extends Extension
 
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
+        /** @var array{base_uri: string, http_client: string|null, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->registerForAutoconfiguration(PdfBuilderInterface::class)

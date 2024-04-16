@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('http_client')
                     ->info('HTTP Client reference to use. Defaults to "http_client".')
-                    ->defaultNull()
+                    ->defaultValue('http_client')
                 ->end()
                 ->arrayNode('default_options')
                     ->addDefaultsIfNotSet()
