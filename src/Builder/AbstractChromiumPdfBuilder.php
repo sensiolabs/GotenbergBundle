@@ -365,6 +365,21 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Return a 409 Conflict response if the HTTP status code from
+     * the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
+     *
+     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     *
+     * @param array<int, int> $statusCodes
+     */
+    public function failOnHttpStatusCodes(array $statusCodes): static
+    {
+        $this->formFields['failOnHttpStatusCodes'] = $statusCodes;
+
+        return $this;
+    }
+
+    /**
      * Forces Gotenberg to return a 409 Conflict response if there are
      * exceptions in the Chromium console. (default false).
      *
