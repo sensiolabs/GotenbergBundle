@@ -35,7 +35,6 @@ final class ConfigurationTest extends TestCase
         yield 'range a page to generate' => [['default_options' => ['html' => ['native_page_ranges' => '1-12']]]];
         yield 'delay to wait before generate' => [['default_options' => ['html' => ['wait_delay' => '5s', 'wait_for_expression' => 'window.globalVar === "ready"']]]];
         yield 'emulated media type' => [['default_options' => ['html' => ['emulated_media_type' => 'screen']]]];
-        yield 'different user agent' => [['default_options' => ['html' => ['user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1']]]];
         yield 'exception render' => [['default_options' => ['html' => ['fail_on_console_exceptions' => true]]]];
         yield 'pdf format configuration' => [['default_options' => ['html' => ['pdf_format' => 'PDF/A-3b']]]];
         yield 'pdf universal configuration' => [['default_options' => ['html' => ['pdf_universal_access' => true]]]];
@@ -116,6 +115,7 @@ final class ConfigurationTest extends TestCase
         return [
             'base_uri' => 'http://localhost:3000',
             'base_directory' => '%kernel.project_dir%',
+            'http_client' => 'http_client',
             'default_options' => [
                 'html' => [
                     'paper_width' => null,
@@ -133,7 +133,6 @@ final class ConfigurationTest extends TestCase
                     'wait_delay' => null,
                     'wait_for_expression' => null,
                     'emulated_media_type' => null,
-                    'user_agent' => null,
                     'extra_http_headers' => [],
                     'fail_on_console_exceptions' => null,
                     'pdf_format' => null,
@@ -155,7 +154,6 @@ final class ConfigurationTest extends TestCase
                     'wait_delay' => null,
                     'wait_for_expression' => null,
                     'emulated_media_type' => null,
-                    'user_agent' => null,
                     'extra_http_headers' => [],
                     'fail_on_console_exceptions' => null,
                     'pdf_format' => null,
@@ -177,7 +175,6 @@ final class ConfigurationTest extends TestCase
                     'wait_delay' => null,
                     'wait_for_expression' => null,
                     'emulated_media_type' => null,
-                    'user_agent' => null,
                     'extra_http_headers' => [],
                     'fail_on_console_exceptions' => null,
                     'pdf_format' => null,

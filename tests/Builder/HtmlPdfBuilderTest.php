@@ -29,7 +29,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertCount(21, $multipartFormData);
+        self::assertCount(20, $multipartFormData);
 
         self::assertIsArray($multipartFormData[0]);
         self::assertCount(1, $multipartFormData[0]);
@@ -52,11 +52,10 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertSame(['waitDelay' => '10s'], $multipartFormData[13]);
         self::assertSame(['waitForExpression' => 'window.globalVar === "ready"'], $multipartFormData[14]);
         self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[15]);
-        self::assertSame(['userAgent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'], $multipartFormData[16]);
-        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[17]);
-        self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[18]);
-        self::assertSame(['pdfa' => 'PDF/A-1a'], $multipartFormData[19]);
-        self::assertSame(['pdfua' => 'true'], $multipartFormData[20]);
+        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[16]);
+        self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[17]);
+        self::assertSame(['pdfa' => 'PDF/A-1b'], $multipartFormData[18]);
+        self::assertSame(['pdfua' => 'true'], $multipartFormData[19]);
     }
 
     public function testWithTemplate(): void
@@ -189,13 +188,12 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
             'wait_delay' => '10s',
             'wait_for_expression' => 'window.globalVar === "ready"',
             'emulated_media_type' => 'screen',
-            'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML => like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
             'extra_http_headers' => [
                 'MyHeader' => 'Value',
                 'User-Agent' => 'MyValue',
             ],
             'fail_on_console_exceptions' => true,
-            'pdf_format' => 'PDF/A-1a',
+            'pdf_format' => 'PDF/A-1b',
             'pdf_universal_access' => true,
         ];
     }

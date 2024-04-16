@@ -24,7 +24,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('sensiolabs_gotenberg.client', GotenbergClient::class)
         ->args([
             abstract_arg('base_uri to gotenberg API'),
-            service(HttpClientInterface::class),
+            service('sensiolabs_gotenberg.http_client'),
         ])
         ->alias(GotenbergClientInterface::class, 'sensiolabs_gotenberg.client');
 
@@ -57,6 +57,7 @@ return static function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.client'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
             service('twig')->nullOnInvalid(),
+            service('router')->nullOnInvalid(),
         ])
         ->tag('sensiolabs_gotenberg.builder')
     ;

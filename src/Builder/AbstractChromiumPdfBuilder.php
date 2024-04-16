@@ -308,18 +308,6 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * Overrides the default "User-Agent" header.(default None).
-     *
-     * @see https://gotenberg.dev/docs/routes#custom-http-headers
-     */
-    public function userAgent(string $userAgent): static
-    {
-        $this->formFields['userAgent'] = $userAgent;
-
-        return $this;
-    }
-
-    /**
      * Sets extra HTTP headers that Chromium will send when loading the HTML
      * document. (default None). (overrides any previous headers).
      *
@@ -441,7 +429,6 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'wait_delay' => $this->waitDelay($value),
             'wait_for_expression' => $this->waitForExpression($value),
             'emulated_media_type' => $this->emulatedMediaType($value),
-            'user_agent' => $this->userAgent($value),
             'extra_http_headers' => $this->extraHttpHeaders($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
