@@ -15,7 +15,7 @@ class SensiolabsGotenbergExtension extends Extension
     {
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, http_client: string|null, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
+        /** @var array{base_uri: string, http_client: string|null, assets_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
@@ -55,7 +55,7 @@ class SensiolabsGotenbergExtension extends Extension
         $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['office'])]);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.asset.base_dir_formatter');
-        $definition->replaceArgument(2, $config['base_directory']);
+        $definition->replaceArgument(2, $config['assets_directory']);
     }
 
     /**
