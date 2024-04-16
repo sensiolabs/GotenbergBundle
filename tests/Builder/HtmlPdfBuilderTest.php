@@ -6,7 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
+use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Filesystem\Filesystem;
@@ -134,8 +134,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
     public function testInvalidExtraHttpHeaders(): void
     {
-        $this->expectException(ExtraHttpHeadersJsonEncodingException::class);
-        $this->expectExceptionMessage('Could not encode extra HTTP headers into JSON');
+        $this->expectException(JsonEncodingException::class);
+        $this->expectExceptionMessage('Could not encode property "extraHttpHeaders" into JSON');
 
         $client = $this->createMock(GotenbergClientInterface::class);
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);

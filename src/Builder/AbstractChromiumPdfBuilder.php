@@ -320,20 +320,19 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function cookies(array $cookies): static
     {
         $this->formFields['cookies'] = $cookies;
-
         return $this;
     }
 
     /**
-     * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
+     *  Add cookies to store in the Chromium cookie jar.
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
      *
-     * @param array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null} $cookies
+     * @param list<array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null}> $cookies
      */
     public function addCookies(array $cookies): static
     {
-        $this->formFields['cookies'][] = $cookies;
+        $this->formFields['cookies'] = array_merge($this->formFields['cookies'] ?? [], $cookies);
 
         return $this;
     }
@@ -373,6 +372,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
      *
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     *
+     * @param array<int, int> $statusCodes
      */
     public function failOnHttpStatusCodes(array $statusCodes): static
     {

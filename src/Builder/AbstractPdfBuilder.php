@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
-use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
+use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -64,7 +64,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         try {
             $encodedValue = json_encode($value, \JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
-            throw new ExtraHttpHeadersJsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
+            throw new JsonEncodingException(sprintf('Could not encode property "%s" into JSON', $key), previous: $exception);
         }
 
         return [$key => $encodedValue];

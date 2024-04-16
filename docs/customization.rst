@@ -286,19 +286,26 @@ Cookies to store in the Chromium cookie jar.
             ],
         ]);
 
-Or if you add to add cookies from the ones already loaded in the configuration.
+.. warning::
+
+    `cookies` method overrides any previous cookies.
+
+If you want to add cookies from the ones already loaded in the configuration you
+can use `addCookies`.
 
 .. code-block:: php
 
     $twigPdfBuilder
         ->content('path/to/template.html.twig')
         ->addCookies([
-            'name' => 'my_cookie',
-            'value' => 'symfony',
-            'domain' => 'symfony.com',
-            'secure' => true,
-            'httpOnly' => true,
-            'sameSite' => 'Lax',
+            [
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ],
         ]);
 
 .. tip::
