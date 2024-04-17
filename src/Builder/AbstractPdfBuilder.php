@@ -51,7 +51,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
                 return $this->encodeData('failOnHttpStatusCodes', $value);
             },
             'cookies' => function (mixed $value): array {
-                return $this->encodeData('cookies', $value);
+                return $this->encodeData('cookies', array_values($value));
             },
         ];
     }

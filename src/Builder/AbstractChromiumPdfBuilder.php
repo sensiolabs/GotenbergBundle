@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
@@ -316,7 +317,20 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function cookies(array $cookies): static
     {
-        $this->formFields['cookies'] = $cookies;
+        $this->formFields['cookies'] = [];
+
+        foreach ($cookies as $cookie) {
+            $this->setCookie($cookie['name'], $cookie);
+        }
+
+        return $this;
+    }
+
+    public function setCookie(string $key, array $cookie): static
+    {
+        $this->formFields['cookies'] ??= [];
+        $this->formFields['cookies'][$key] = $cookie;
+
         return $this;
     }
 
@@ -327,9 +341,11 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @param list<array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null}> $cookies
      */
-    public function addCookie(array $cookies): static
+    public function addCookies(array $cookies): static
     {
-        $this->formFields['cookies'] = array_merge($this->formFields['cookies'] ?? [], $cookies);
+        foreach ($cookies as $cookie) {
+            $this->setCookie($cookie['name'], $cookie);
+        }
 
         return $this;
     }
@@ -357,7 +373,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @param array<string, string> $headers
      */
-    public function addExtraHttpHeader(array $headers): static
+    public function addExtraHttpHeaders(array $headers): static
     {
         $this->formFields['extraHttpHeaders'] = array_merge($this->formFields['extraHttpHeaders'] ?? [], $headers);
 
