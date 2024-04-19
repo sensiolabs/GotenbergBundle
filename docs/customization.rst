@@ -337,7 +337,7 @@ can use `addCookie`.
 
     $twigPdfBuilder
         ->content('path/to/template.html.twig')
-        ->addCookie([
+        ->addCookies([
             [
                 'name' => 'my_cookie',
                 'value' => 'symfony',
