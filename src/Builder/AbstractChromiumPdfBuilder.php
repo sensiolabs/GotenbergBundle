@@ -313,7 +313,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
      *
-     * @param list<array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null}> $cookies
+     * @param list<array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
      */
     public function cookies(array $cookies): static
     {
@@ -326,6 +326,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @param array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null} $cookie
+     */
     public function setCookie(string $key, array $cookie): static
     {
         $this->formFields['cookies'] ??= [];
@@ -339,7 +342,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
      *
-     * @param list<array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null}> $cookies
+     * @param list<array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
      */
     public function addCookies(array $cookies): static
     {
