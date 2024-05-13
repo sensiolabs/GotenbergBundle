@@ -1,15 +1,15 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Pdf;
+namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
 
-final readonly class Gotenberg implements GotenbergInterface
+final readonly class GotenbergPdf implements GotenbergPdfInterface
 {
     public function __construct(
         private ContainerInterface $container,
@@ -24,9 +24,7 @@ final readonly class Gotenberg implements GotenbergInterface
     /**
      * @param 'html'|'url'|'markdown'|'office' $key
      *
-     * @return (
-     *     $key is 'html' ? HtmlPdfBuilder :
-     *     $key is 'url' ? UrlPdfBuilder :
+     * @return HtmlPdfBuilder     $key is 'url' ? UrlPdfBuilder :
      *     $key is 'office' ? LibreOfficePdfBuilder :
      *     $key is 'markdown' ? MarkdownPdfBuilder :
      *      PdfBuilderInterface

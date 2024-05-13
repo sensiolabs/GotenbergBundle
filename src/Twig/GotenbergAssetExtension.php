@@ -2,7 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Twig;
 
-use Sensiolabs\GotenbergBundle\Builder\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
 use Symfony\Component\Mime\Part\File;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -23,7 +24,7 @@ final class GotenbergAssetExtension extends AbstractExtension
     {
         $builder = $context['_builder'];
 
-        if (!$builder instanceof AbstractChromiumPdfBuilder) {
+        if (!$builder instanceof AbstractChromiumPdfBuilder && !$builder instanceof AbstractChromiumScreenshotBuilder) {
             throw new \LogicException('You need to extend from AbstractChromiumPdfBuilder to use gotenberg_asset function.');
         }
 

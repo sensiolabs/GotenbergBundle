@@ -4,13 +4,13 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\MarkdownBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
-#[CoversClass(MarkdownPdfBuilder::class)]
+#[CoversClass(MarkdownBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
 final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
@@ -20,7 +20,7 @@ final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
         $client = $this->createMock(GotenbergClientInterface::class);
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
 
-        $builder = new MarkdownPdfBuilder($client, $assetBaseDirFormatter);
+        $builder = new MarkdownBuilder($client, $assetBaseDirFormatter);
         $builder
             ->wrapperFile('template.html')
             ->files('assets/file.md')

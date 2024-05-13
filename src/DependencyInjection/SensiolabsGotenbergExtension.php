@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,10 +18,11 @@ class SensiolabsGotenbergExtension extends Extension
 
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, http_client: string|null, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
+        // TODO
+//        /** @var array{base_uri: string, http_client: string|null, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->registerForAutoconfiguration(PdfBuilderInterface::class)
+        $container->registerForAutoconfiguration(BuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.builder')
         ;
 
@@ -31,7 +32,8 @@ class SensiolabsGotenbergExtension extends Extension
         $definition->replaceArgument(0, $config['base_uri']);
 
         $definition = $container->getDefinition('.sensiolabs_gotenberg.builder.html');
-        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['html'])]);
+        $definition->replaceArgument(2, $this->cleanUserOptions($config['default_options']['pdf']['html']));
+        $definition->replaceArgument(3, $this->cleanUserOptions($config['default_options']['screenshot']['html']));
 
         $definition = $container->getDefinition('.sensiolabs_gotenberg.builder.url');
         $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['url'])]);

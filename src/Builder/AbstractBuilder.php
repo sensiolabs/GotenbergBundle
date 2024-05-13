@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\Mime\Part\DataPart;
 
-abstract class AbstractPdfBuilder implements PdfBuilderInterface
+abstract class AbstractBuilder implements BuilderInterface
 {
     /**
      * @var array<string, mixed>
@@ -57,7 +57,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * The Gotenberg API endpoint path.
+     * The GotenbergPdf API endpoint path.
      */
     abstract protected function getEndpoint(): string;
 
@@ -175,7 +175,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         $extension = $file->getExtension();
 
         if (!\in_array($extension, $validExtensions, true)) {
-            throw new \InvalidArgumentException(sprintf('The file extension "%s" is not available in Gotenberg.', $extension));
+            throw new \InvalidArgumentException(sprintf('The file extension "%s" is not available in GotenbergPdf.', $extension));
         }
     }
 }

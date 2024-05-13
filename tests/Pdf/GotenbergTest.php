@@ -5,13 +5,13 @@ namespace Sensiolabs\GotenbergBundle\Tests\Pdf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
-use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
+use Sensiolabs\GotenbergBundle\GotenbergInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdf;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
-#[CoversClass(Gotenberg::class)]
+#[CoversClass(GotenbergPdf::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
 final class GotenbergTest extends KernelTestCase
