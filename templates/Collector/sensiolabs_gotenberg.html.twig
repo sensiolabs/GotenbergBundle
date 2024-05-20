@@ -1,0 +1,186 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block head %}
+    {{ parent() }}
+    <style>
+        details[open] summary ~ * {
+            animation: open 0.3s ease-in-out;
+        }
+
+        @keyframes open {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details summary {
+            width: 100%;
+            padding: 0.5rem 0;
+            border-top: 1px solid var(--h2-border-color);
+            position: relative;
+            cursor: pointer;
+            font-size: 1.25rem;
+            font-weight: 300;
+            list-style: none;
+        }
+
+        details summary:after {
+            content: "+";
+            color: var(--h2-border-color);
+            position: absolute;
+            font-size: 1.75rem;
+            line-height: 0;
+            margin-top: 0.75rem;
+            right: 0;
+            font-weight: 200;
+            transform-origin: center;
+            transition: 200ms linear;
+        }
+        details[open] summary:after {
+            transform: rotate(45deg);
+            font-size: 2rem;
+        }
+        details summary {
+            outline: 0;
+        }
+        details p {
+            font-size: 0.95rem;
+            margin: 0 0 1rem;
+            padding-top: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block toolbar %}
+    {% if collector.requestCount %}
+        {% set icon %}
+            <span class="icon">{{ source('@SensiolabsGotenberg/Icon/gotenberg_logo.png.html') }}</span>
+            {% set status_color = '' %}
+            <span class="sf-toolbar-value"> {{ collector.requestCount }} PDFs</span>
+        {% endset %}
+
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <strong>PDFs Generated</strong>
+                <span>{{ collector.requestCount }}</span>
+            </div>
+        {% endset %}
+
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status_color }) }}
+    {% endif %}
+{% endblock %}
+
+{% block menu %}
+    <span class="label {{ collector.requestCount == 0 ? 'disabled' }}">
+        <span class="icon">{{ source('@SensiolabsGotenberg/Icon/gotenberg_logo.png.html') }}</span>
+        <strong>Gotenberg</strong>
+        {% if collector.requestCount > 0 %}
+            <span class="count">
+                {{ collector.requestCount }}
+            </span>
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Gotenberg</h2>
+    {% if collector.requestCount == 0 %}
+        <div class="empty empty-panel">
+            <p>No requests were made.</p>
+        </div>
+    {% else %}
+        <section class="metrics">
+            <div class="metric-group">
+                <div class="metric">
+                    <span class="value">{{ collector.requestCount }}</span>
+                    <span class="label">PDFs generated</span>
+                </div>
+                <div class="metric">
+                    <span class="value">{{ '%.0f'|format(collector.requestTotalTime) }} <span class="unit">ms</span></span>
+                    <span class="label">Total time</span>
+                </div>
+                <div class="metric">
+                    <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span class="unit">MiB</span></span>
+                    <span class="label">Total memory</span>
+                </div>
+                <div class="metric">
+                    {% set total_size = collector.requestTotalSize %}
+                    {% set total_size_value = total_size[0] %}
+                    {% set total_size_unit = total_size[1] %}
+
+                    <span class="value">{{ '%.1f'|format(total_size_value) }} <span class="unit">{{ total_size_unit }}</span></span>
+                    <span class="label">Total size</span>
+                </div>
+            </div>
+        </section>
+        <h2>Builders</h2>
+        <div class="sf-tabs">
+        {% for name, builder in collector.builders %}
+            {% set is_builtin = name in ['html', 'url', 'office', 'markdown'] %}
+
+            <div class="tab {{ builder.pdfs|length == 0 ? 'disabled' }}">
+                <h3 class="tab-title">{{ name }} <span class="badge">{{ builder.pdfs|length }}</span></h3>
+                <div class="tab-content">
+                    {% if is_builtin %}
+                        <h4>Default Options</h4>
+                        {{ dump(builder['default_options']) }}
+                    {% endif %}
+                    <h4>Requests</h4>
+                    {% for request in builder.pdfs %}
+                        <details>
+                            <summary>
+                                <span class="icon">{{ source('@SensiolabsGotenberg/Icon/file-type-pdf.svg') }}</span>
+                                {{ request.fileName }}
+                            </summary>
+                            <p>
+                                <div class="metrics">
+                                    <div class="metric-group">
+                                        <div class="metric">
+                                            <span class="value">{{ '%.0f'|format(request.time) }} <span class="unit">ms</span></span>
+                                            <span class="label">Generation time</span>
+                                        </div>
+                                        <div class="metric">
+                                            <span class="value">{{ '%.1f'|format(request.memory / 1024 / 1024) }} <span class="unit">MiB</span></span>
+                                            <span class="label">Memory</span>
+                                        </div>
+                                        <div class="metric">
+                                            {% set size = request.size %}
+                                            {% set size_value = size[0] %}
+                                            {% set size_unit = size[1] %}
+
+                                            <span class="value">{{ '%.1f'|format(size_value) }} <span class="unit">{{ size_unit }}</span></span>
+                                            <span class="label">Size</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Method</th>
+                                            <th>Arguments</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for call in request.calls %}
+                                            <tr>
+                                                <td>{{ call.method }}</td>
+                                                <td>{{ profiler_dump(call.stub.value) }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </p>
+                        </details>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+{% endblock %}

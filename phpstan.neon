@@ -6,6 +6,10 @@ parameters:
 		- 'tests'
 	ignoreErrors:
 		-
+			message: "#^Cannot use array destructuring on array\\<int, string\\|null\\>\\|null\\.$#"
+			count: 1
+			path: src/DataCollector/GotenbergDataCollector.php
+		-
 			message: "#^Method Sensiolabs\\\\GotenbergBundle\\\\Tests\\\\Kernel\\:\\:configureContainer\\(\\) is unused\\.$#"
 			count: 1
 			path: tests/Kernel.php

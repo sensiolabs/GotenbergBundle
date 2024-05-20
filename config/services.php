@@ -25,7 +25,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
-return function (ContainerConfigurator $container): void {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sensiolabs_gotenberg.client', GotenbergClient::class)
@@ -39,7 +39,7 @@ return function (ContainerConfigurator $container): void {
         ->args([
             service(Filesystem::class),
             param('kernel.project_dir'),
-            abstract_arg('base_directory to assets'),
+            abstract_arg('assets_directory to assets'),
         ])
         ->alias(AssetBaseDirFormatter::class, 'sensiolabs_gotenberg.asset.base_dir_formatter')
     ;

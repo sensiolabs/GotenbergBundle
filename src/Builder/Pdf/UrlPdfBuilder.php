@@ -32,7 +32,8 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
     }
 
     /**
-     * @param string $name #Route
+     * @param string       $name       #Route
+     * @param array<mixed> $parameters
      */
     public function route(string $name, array $parameters = []): self
     {

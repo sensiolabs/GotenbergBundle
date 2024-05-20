@@ -8,16 +8,24 @@ use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 #[CoversClass(SensiolabsGotenbergExtension::class)]
 #[UsesClass(ContainerBuilder::class)]
 final class SensiolabsGotenbergExtensionTest extends TestCase
 {
+    private function getContainerBuilder(bool $kernelDebug = false): ContainerBuilder
+    {
+        return new ContainerBuilder(new ParameterBag([
+            'kernel.debug' => $kernelDebug,
+        ]));
+    }
+
     public function testGotenbergConfiguredWithValidConfig(): void
     {
         $extension = new SensiolabsGotenbergExtension();
 
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = $this->getContainerBuilder();
         $extension->load(self::getValidConfig(), $containerBuilder);
 
         $list = [
@@ -108,7 +116,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
     {
         $extension = new SensiolabsGotenbergExtension();
 
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = $this->getContainerBuilder();
         $extension->load([], $containerBuilder);
 
         $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg.client');
@@ -121,7 +129,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
     {
         $extension = new SensiolabsGotenbergExtension();
 
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = $this->getContainerBuilder();
         $extension->load([
             ['base_uri' => 'https://sensiolabs.com'],
         ], $containerBuilder);

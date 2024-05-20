@@ -133,11 +133,12 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     {
         if (null !== $preCallback) {
             $result = [];
-            foreach ($preCallback($value) as $key => $value) {
-                $result[] = $this->addToMultipart($key, $value);
 
-                return array_merge(...$result);
+            foreach ($preCallback($value) as $innerKey => $innerValue) {
+                $result[] = $this->addToMultipart($innerKey, $innerValue);
             }
+
+            return array_merge(...$result);
         }
 
         if (\is_bool($value)) {
