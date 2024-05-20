@@ -178,6 +178,9 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         return $this;
     }
 
+    /**
+     * @param array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null} $cookie
+     */
     public function setCookie(string $key, array $cookie): static
     {
         $this->formFields['cookies'] ??= [];

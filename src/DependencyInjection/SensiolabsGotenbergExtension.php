@@ -26,10 +26,10 @@ class SensiolabsGotenbergExtension extends Extension
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
                 ->replaceArgument(2, [
-                    'html' => $this->cleanUserOptions($config['default_options']['html']),
-                    'url' => $this->cleanUserOptions($config['default_options']['url']),
-                    'markdown' => $this->cleanUserOptions($config['default_options']['markdown']),
-                    'office' => $this->cleanUserOptions($config['default_options']['office']),
+                    'html' => $this->cleanUserOptions($config['default_options']['pdf']['html']),
+                    'url' => $this->cleanUserOptions($config['default_options']['pdf']['url']),
+                    'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),
+                    'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
                 ])
             ;
         }
@@ -69,7 +69,7 @@ class SensiolabsGotenbergExtension extends Extension
         $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['screenshot']['markdown'])]);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.asset.base_dir_formatter');
-        $definition->replaceArgument(2, $config['assets_directory']);
+        $definition->replaceArgument(2, $config['base_directory']);
     }
 
     /**

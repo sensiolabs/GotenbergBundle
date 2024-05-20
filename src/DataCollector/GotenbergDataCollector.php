@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\DataCollector;
 
-use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenberg;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -41,8 +41,8 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                 $builder = $builder->getInner();
             }
 
-            if (str_starts_with($id, '.sensiolabs_gotenberg.builder.')) {
-                [$id] = sscanf($id, '.sensiolabs_gotenberg.builder.%s');
+            if (str_starts_with($id, '.sensiolabs_gotenberg.pdf_builder.')) {
+                [$id] = sscanf($id, '.sensiolabs_gotenberg.pdf_builder.%s');
             }
 
             $this->data['builders'][$id] = [

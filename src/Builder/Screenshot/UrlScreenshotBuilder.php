@@ -33,6 +33,7 @@ final class UrlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 
     /**
      * @param string $name #Route
+     * @param array<string, mixed> $parameters
      */
     public function route(string $name, array $parameters = []): self
     {

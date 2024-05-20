@@ -31,7 +31,7 @@ final readonly class GotenbergScreenshot implements GotenbergScreenshotInterface
      */
     private function getInternal(string $key): ScreenshotBuilderInterface
     {
-        return $this->get(".sensiolabs_gotenberg.builder.{$key}");
+        return $this->get(".sensiolabs_gotenberg.screenshot_builder.{$key}");
     }
 
     public function html(): HtmlScreenshotBuilder
