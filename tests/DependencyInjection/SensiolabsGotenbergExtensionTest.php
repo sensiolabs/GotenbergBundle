@@ -116,10 +116,12 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
      * @return array<int, array{
      *          'base_uri': string,
      *          'default_options': array{
-     *              'html': array<string, mixed>,
-     *              'url': array<string, mixed>,
-     *              'markdown': array<string, mixed>,
-     *              'office': array<string, mixed>,
+     *              'pdf': array{
+     *                  'html': array<string, mixed>,
+     *                  'url': array<string, mixed>,
+     *                  'markdown': array<string, mixed>,
+     *                  'office': array<string, mixed>,
+     *              }
      *          }
      *      }>
      */
