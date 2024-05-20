@@ -1,17 +1,18 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Tests\Builder;
+namespace Sensiolabs\GotenbergBundle\Tests\Builder\pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\LibreOfficeBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
-#[CoversClass(LibreOfficeBuilder::class)]
+#[CoversClass(LibreOfficePdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
 final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
@@ -36,7 +37,7 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         $client = $this->createMock(GotenbergClientInterface::class);
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
 
-        $builder = new LibreOfficeBuilder($client, $assetBaseDirFormatter);
+        $builder = new LibreOfficePdfBuilder($client, $assetBaseDirFormatter);
         $builder->files($filePath);
 
         $multipartFormData = $builder->getMultipartFormData();

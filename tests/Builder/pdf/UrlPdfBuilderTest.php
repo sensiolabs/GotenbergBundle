@@ -1,16 +1,16 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Tests\Builder;
+namespace Sensiolabs\GotenbergBundle\Tests\Builder\pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\UrlBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-#[CoversClass(HtmlPdfBuilder::class)]
+#[CoversClass(UrlPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
 final class UrlPdfBuilderTest extends AbstractBuilderTestCase
@@ -20,7 +20,7 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
         $client = $this->createMock(GotenbergClientInterface::class);
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
 
-        $builder = new UrlBuilder($client, $assetBaseDirFormatter);
+        $builder = new UrlPdfBuilder($client, $assetBaseDirFormatter);
         $builder->url('https://google.com');
 
         $multipartFormData = $builder->getMultipartFormData();

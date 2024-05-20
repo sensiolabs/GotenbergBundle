@@ -7,5 +7,5 @@ interface GotenbergClientInterface
     /**
      * @param array<int, array<string, string>> $multipartFormData
      */
-    public function call(string $endpoint, array $multipartFormData): PdfResponse;
+    public function call(string $endpoint, array $multipartFormData): GotenbergResponse;
 }

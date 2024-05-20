@@ -1,13 +1,12 @@
 <?php
 
-use Sensiolabs\GotenbergBundle\Builder\HtmlBuilder;
-use Sensiolabs\GotenbergBundle\Builder\LibreOfficeBuilder;
-use Sensiolabs\GotenbergBundle\Builder\MarkdownBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\UrlBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -15,6 +14,8 @@ use Sensiolabs\GotenbergBundle\Gotenberg;
 use Sensiolabs\GotenbergBundle\GotenbergInterface;
 use Sensiolabs\GotenbergBundle\GotenbergPdf;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
@@ -87,6 +88,37 @@ return function (ContainerConfigurator $container): void {
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 
+    $services->set('.sensiolabs_gotenberg.screenshot_builder.html', HtmlScreenshotBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service('twig')->nullOnInvalid(),
+        ])
+        ->tag('sensiolabs_gotenberg.screenshot_builder')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.screenshot_builder.url', UrlScreenshotBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service('twig')->nullOnInvalid(),
+            service('router')->nullOnInvalid(),
+        ])
+        ->tag('sensiolabs_gotenberg.screenshot_builder')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.screenshot_builder.markdown', MarkdownScreenshotBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service('twig')->nullOnInvalid(),
+        ])
+        ->tag('sensiolabs_gotenberg.screenshot_builder')
+    ;
+
     $services->set('sensiolabs_gotenberg.pdf', GotenbergPdf::class)
         ->args([
             tagged_locator('sensiolabs_gotenberg.pdf_builder'),
@@ -94,15 +126,20 @@ return function (ContainerConfigurator $container): void {
         ->alias(GotenbergPdfInterface::class, 'sensiolabs_gotenberg.pdf')
     ;
 
+    $services->set('sensiolabs_gotenberg.screenshot', GotenbergScreenshot::class)
+        ->args([
+            tagged_locator('sensiolabs_gotenberg.screenshot_builder'),
+        ])
+        ->alias(GotenbergScreenshotInterface::class, 'sensiolabs_gotenberg.screenshot')
+    ;
+
     $services->set('sensiolabs_gotenberg', Gotenberg::class)
         ->args([
             service_locator([
                 GotenbergPdfInterface::class => service(GotenbergPdfInterface::class),
-                //TODO screenshot
-            ])
+                GotenbergScreenshotInterface::class => service(GotenbergScreenshotInterface::class),
+            ]),
         ])
         ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')
     ;
-
-    //TODO for screenshot
 };

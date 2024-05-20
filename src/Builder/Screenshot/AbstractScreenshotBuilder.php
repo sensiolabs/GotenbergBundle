@@ -1,9 +1,9 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Builder;
+namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\PdfResponse;
+use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\Mime\Part\DataPart;
 
-abstract class AbstractBuilder implements BuilderInterface
+abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
 {
     /**
      * @var array<string, mixed>
      */
     protected array $formFields = [];
 
-    private ?string $fileName = null;
+    private string|null $fileName = null;
 
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
@@ -77,7 +77,7 @@ abstract class AbstractBuilder implements BuilderInterface
         return $this;
     }
 
-    public function generate(): PdfResponse
+    public function generate(): GotenbergResponse
     {
         $pdfResponse = $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
 
@@ -129,7 +129,7 @@ abstract class AbstractBuilder implements BuilderInterface
      *
      * @return list<array<string, mixed>>
      */
-    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value, ?\Closure $preCallback = null): array
+    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value, \Closure|null $preCallback = null): array
     {
         if (null !== $preCallback) {
             $result = [];

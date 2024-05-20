@@ -13,8 +13,8 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
-        ?Environment $twig = null,
-        private readonly ?UrlGeneratorInterface $urlGenerator = null,
+        Environment|null $twig = null,
+        private readonly UrlGeneratorInterface|null $urlGenerator = null,
     ) {
         parent::__construct($gotenbergClient, $asset, $twig);
     }

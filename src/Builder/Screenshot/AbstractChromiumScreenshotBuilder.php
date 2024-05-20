@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
-use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
@@ -12,12 +11,12 @@ use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
 
-abstract class AbstractChromiumScreenshotBuilder extends AbstractBuilder
+abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuilder
 {
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
-        private readonly ?Environment $twig = null,
+        private readonly Environment|null $twig = null,
     ) {
         parent::__construct($gotenbergClient, $asset);
     }

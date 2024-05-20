@@ -2,22 +2,20 @@
 
 namespace Sensiolabs\GotenbergBundle;
 
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
 interface GotenbergPdfInterface
 {
     /**
-     * @template T of BuilderInterface
+     * @template T of PdfBuilderInterface
      *
      * @param string|class-string<T> $builder
-     *
-     * @return BuilderInterface
      */
-    public function get(string $builder);
+    public function get(string $builder): PdfBuilderInterface;
 
     public function html(): HtmlPdfBuilder;
 

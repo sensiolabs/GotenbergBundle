@@ -2,7 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,12 +19,15 @@ class SensiolabsGotenbergExtension extends Extension
 
         $configuration = new Configuration();
 
-        // TODO
-//        /** @var array{base_uri: string, http_client: string|null, base_directory: string, default_options: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}} $config */
+        /** @var array{base_uri: string, http_client: string|null, base_directory: string, default_options: array{pdf: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>}, screenshot: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>}}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->registerForAutoconfiguration(BuilderInterface::class)
-            ->addTag('sensiolabs_gotenberg.builder')
+        $container->registerForAutoconfiguration(PdfBuilderInterface::class)
+            ->addTag('sensiolabs_gotenberg.pdf_builder')
+        ;
+
+        $container->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
+            ->addTag('sensiolabs_gotenberg.screenshot_builder')
         ;
 
         $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'] ?? 'http_client', false));
@@ -31,18 +35,26 @@ class SensiolabsGotenbergExtension extends Extension
         $definition = $container->getDefinition('sensiolabs_gotenberg.client');
         $definition->replaceArgument(0, $config['base_uri']);
 
-        $definition = $container->getDefinition('.sensiolabs_gotenberg.builder.html');
-        $definition->replaceArgument(2, $this->cleanUserOptions($config['default_options']['pdf']['html']));
-        $definition->replaceArgument(3, $this->cleanUserOptions($config['default_options']['screenshot']['html']));
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.pdf_builder.html');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['pdf']['html'])]);
 
-        $definition = $container->getDefinition('.sensiolabs_gotenberg.builder.url');
-        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['url'])]);
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.pdf_builder.url');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['pdf']['url'])]);
 
-        $definition = $container->getDefinition('.sensiolabs_gotenberg.builder.markdown');
-        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['markdown'])]);
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.pdf_builder.markdown');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['pdf']['markdown'])]);
 
-        $definition = $container->getDefinition('.sensiolabs_gotenberg.builder.office');
-        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['office'])]);
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.pdf_builder.office');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['pdf']['office'])]);
+
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.screenshot_builder.html');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['screenshot']['html'])]);
+
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.screenshot_builder.url');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['screenshot']['url'])]);
+
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.screenshot_builder.markdown');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['screenshot']['markdown'])]);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.asset.base_dir_formatter');
         $definition->replaceArgument(2, $config['base_directory']);

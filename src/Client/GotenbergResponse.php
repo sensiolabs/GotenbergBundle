@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class PdfResponse extends Response
+class GotenbergResponse extends Response
 {
     public function __construct(public ResponseInterface $response)
     {

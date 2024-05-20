@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -14,8 +13,8 @@ final class UrlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
-        ?Environment $twig = null,
-        private readonly ?UrlGeneratorInterface $urlGenerator = null,
+        Environment|null $twig = null,
+        private readonly UrlGeneratorInterface|null $urlGenerator = null,
     ) {
         parent::__construct($gotenbergClient, $asset, $twig);
     }

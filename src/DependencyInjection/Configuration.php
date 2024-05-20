@@ -33,17 +33,19 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('default_options')
                     ->addDefaultsIfNotSet()
-//                    ->append($this->addUrlNode())
-//                    ->append($this->addMarkdownNode())
-//                    ->append($this->addOfficeNode())
                     ->children()
                         ->arrayNode('pdf')
                             ->addDefaultsIfNotSet()
-                            ->append($this->addHtmlNode())
+                            ->append($this->addPdfHtmlNode())
+                            ->append($this->addPdfUrlNode())
+                            ->append($this->addPdfMarkdownNode())
+                            ->append($this->addPdfOfficeNode())
                         ->end()
                         ->arrayNode('screenshot')
                             ->addDefaultsIfNotSet()
-                            ->append($this->addHtmlScreenshotNode())
+                            ->append($this->addScreenshotHtmlNode())
+                            ->append($this->addScreenshotUrlNode())
+                            ->append($this->addScreenshotMarkdownNode())
                         ->end()
                     ->end()
                 ->end()
@@ -53,7 +55,18 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addUrlNode(): NodeDefinition
+    private function addPdfHtmlNode(): NodeDefinition
+    {
+        $treebuilder = new TreeBuilder('html');
+
+        $treebuilder->getRootNode()->addDefaultsIfNotSet();
+        $children = $treebuilder->getRootNode()->children();
+        $this->addChromiumPdfOptionsNode($children);
+
+        return $children->end();
+    }
+
+    private function addPdfUrlNode(): NodeDefinition
     {
         $treebuilder = new TreeBuilder('url');
 
@@ -64,9 +77,9 @@ class Configuration implements ConfigurationInterface
         return $children->end();
     }
 
-    private function addHtmlNode(): NodeDefinition
+    private function addPdfMarkdownNode(): NodeDefinition
     {
-        $treebuilder = new TreeBuilder('html');
+        $treebuilder = new TreeBuilder('markdown');
 
         $treebuilder->getRootNode()->addDefaultsIfNotSet();
         $children = $treebuilder->getRootNode()->children();
@@ -75,7 +88,7 @@ class Configuration implements ConfigurationInterface
         return $children->end();
     }
 
-    private function addHtmlScreenshotNode(): NodeDefinition
+    private function addScreenshotHtmlNode(): NodeDefinition
     {
         $treebuilder = new TreeBuilder('html');
 
@@ -86,13 +99,24 @@ class Configuration implements ConfigurationInterface
         return $children->end();
     }
 
-    private function addMarkdownNode(): NodeDefinition
+    private function addScreenshotUrlNode(): NodeDefinition
+    {
+        $treebuilder = new TreeBuilder('url');
+
+        $treebuilder->getRootNode()->addDefaultsIfNotSet();
+        $children = $treebuilder->getRootNode()->children();
+        $this->addChromiumScreenshotOptionsNode($children);
+
+        return $children->end();
+    }
+
+    private function addScreenshotMarkdownNode(): NodeDefinition
     {
         $treebuilder = new TreeBuilder('markdown');
 
         $treebuilder->getRootNode()->addDefaultsIfNotSet();
         $children = $treebuilder->getRootNode()->children();
-        $this->addChromiumPdfOptionsNode($children);
+        $this->addChromiumScreenshotOptionsNode($children);
 
         return $children->end();
     }
@@ -346,7 +370,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addOfficeNode(): NodeDefinition
+    private function addPdfOfficeNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('office');
 

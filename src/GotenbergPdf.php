@@ -6,8 +6,8 @@ use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
 
 final readonly class GotenbergPdf implements GotenbergPdfInterface
 {
@@ -22,17 +22,17 @@ final readonly class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office' $key
+     * @param 'html'|'url'|'markdown|office' $key
      *
-     * @return HtmlPdfBuilder     $key is 'url' ? UrlPdfBuilder :
-     *     $key is 'office' ? LibreOfficePdfBuilder :
-     *     $key is 'markdown' ? MarkdownPdfBuilder :
-     *      PdfBuilderInterface
+     * @return ($key is 'markdown' ? MarkdownPdfBuilder :
+     *         $key is 'html' ? HtmlPdfBuilder :
+     *         $key is 'office' ? OfficePdfBuilder
+     *         PdfBuilderInterface
      * )
      */
     private function getInternal(string $key): PdfBuilderInterface
     {
-        return $this->get(".sensiolabs_gotenberg.builder.{$key}");
+        return $this->get(".sensiolabs_gotenberg.pdf_builder.{$key}");
     }
 
     public function html(): HtmlPdfBuilder

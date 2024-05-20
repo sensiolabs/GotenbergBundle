@@ -1,12 +1,14 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Tests\Pdf;
+namespace Sensiolabs\GotenbergBundle\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Gotenberg;
 use Sensiolabs\GotenbergBundle\GotenbergInterface;
 use Sensiolabs\GotenbergBundle\GotenbergPdf;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
@@ -14,7 +16,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[CoversClass(GotenbergPdf::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
-final class GotenbergTest extends KernelTestCase
+final class GotenbergPdfTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void
     {
@@ -22,8 +24,8 @@ final class GotenbergTest extends KernelTestCase
 
         $container = static::getContainer();
 
-        /** @var GotenbergInterface $gotenberg */
-        $gotenberg = $container->get(GotenbergInterface::class);
+        /** @var GotenbergPdfInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergPdfInterface::class);
         $builder = $gotenberg->url();
         $builder
             ->setConfigurations([
@@ -41,8 +43,8 @@ final class GotenbergTest extends KernelTestCase
 
         $container = static::getContainer();
 
-        /** @var GotenbergInterface $gotenberg */
-        $gotenberg = $container->get(GotenbergInterface::class);
+        /** @var GotenbergPdfInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergPdfInterface::class);
         $builder = $gotenberg->html()
             ->setConfigurations([
                 'margin_top' => 3,
@@ -74,12 +76,12 @@ final class GotenbergTest extends KernelTestCase
 
         $container = static::getContainer();
 
-        /** @var GotenbergInterface $gotenberg */
-        $gotenberg = $container->get(GotenbergInterface::class);
+        /** @var GotenbergPdfInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergPdfInterface::class);
 
         $builder = $gotenberg->markdown();
-        $builder->files(__DIR__.'/../Fixtures/assets/file.md');
-        $builder->wrapperFile(__DIR__.'/../Fixtures/files/wrapper.html');
+        $builder->files(__DIR__.'/Fixtures/assets/file.md');
+        $builder->wrapperFile(__DIR__.'/Fixtures/files/wrapper.html');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);
@@ -103,14 +105,14 @@ final class GotenbergTest extends KernelTestCase
 
         $container = static::getContainer();
 
-        /** @var GotenbergInterface $gotenberg */
-        $gotenberg = $container->get(GotenbergInterface::class);
+        /** @var GotenbergPdfInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergPdfInterface::class);
         $builder = $gotenberg->office()
             ->setConfigurations([
                 'native_page_ranges' => '1-5',
             ])
         ;
-        $builder->files(__DIR__.'/../Fixtures/assets/office/document.odt');
+        $builder->files(__DIR__.'/Fixtures/assets/office/document.odt');
         $multipartFormData = $builder->getMultipartFormData();
 
         self::assertCount(2, $multipartFormData);

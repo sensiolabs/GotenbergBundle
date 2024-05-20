@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
@@ -13,12 +12,12 @@ use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
 
-abstract class AbstractChromiumPdfBuilder extends AbstractBuilder
+abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 {
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
-        private readonly ?Environment $twig = null,
+        private readonly Environment|null $twig = null,
     ) {
         parent::__construct($gotenbergClient, $asset);
     }
