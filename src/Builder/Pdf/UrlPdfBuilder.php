@@ -10,6 +10,8 @@ use Twig\Environment;
 
 final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
 {
+    private const ENDPOINT = '/forms/chromium/convert/url';
+
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
@@ -18,8 +20,6 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
     ) {
         parent::__construct($gotenbergClient, $asset, $twig);
     }
-
-    private const ENDPOINT = '/forms/chromium/convert/url';
 
     /**
      * URL of the page you want to convert into PDF.

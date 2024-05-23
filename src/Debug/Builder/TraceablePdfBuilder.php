@@ -42,13 +42,13 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
             $matches = [];
 
             /* @see https://onlinephp.io/c/c2606 */
-            \preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $response->headers->get('Content-Disposition', ''), $matches);
+            preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $response->headers->get('Content-Disposition', ''), $matches);
             $fileName = $matches['fileName'];
         }
 
         $lengthInBytes = null;
         if ($response->headers->has('Content-Length')) {
-            $lengthInBytes = \abs((int) $response->headers->get('Content-Length'));
+            $lengthInBytes = abs((int) $response->headers->get('Content-Length'));
         }
 
         $this->pdfs[] = [

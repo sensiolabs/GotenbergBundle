@@ -23,10 +23,10 @@ final readonly class GotenbergScreenshot implements GotenbergScreenshotInterface
     /**
      * @param 'html'|'url'|'markdown' $key
      *
-     * @return ($key is 'url' ? UrlScreenshotBuilder :
+     * @return ($key is 'html' ? HtmlScreenshotBuilder :
+     *     $key is 'url' ? UrlScreenshotBuilder :
      *     $key is 'markdown' ? MarkdownScreenshotBuilder :
-     *     $key is 'html' ? HtmlScreenshotBuilder :
-     *      ScreenshotBuilderInterface
+     *      ScreenshotBuilderInterface)
      * )
      */
     private function getInternal(string $key): ScreenshotBuilderInterface
@@ -34,17 +34,17 @@ final readonly class GotenbergScreenshot implements GotenbergScreenshotInterface
         return $this->get(".sensiolabs_gotenberg.screenshot_builder.{$key}");
     }
 
-    public function html(): HtmlScreenshotBuilder
+    public function html(): ScreenshotBuilderInterface
     {
         return $this->getInternal('html');
     }
 
-    public function url(): UrlScreenshotBuilder
+    public function url(): ScreenshotBuilderInterface
     {
         return $this->getInternal('url');
     }
 
-    public function markdown(): MarkdownScreenshotBuilder
+    public function markdown(): ScreenshotBuilderInterface
     {
         return $this->getInternal('markdown');
     }

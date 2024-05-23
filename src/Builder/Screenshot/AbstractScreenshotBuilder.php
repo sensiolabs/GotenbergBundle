@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
-use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
+use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -23,7 +23,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     /**
-     * @var array<string, (\Closure(mixed): array<string, array<string|int ,mixed>|non-empty-string|int|float|bool|DataPart>)>
+     * @var array<string, (\Closure(mixed): array<string, array<string|int, mixed>|non-empty-string|int|float|bool|DataPart>)>
      */
     private array $normalizers;
 
@@ -36,7 +36,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 try {
                     $extraHttpHeaders = json_encode($value, \JSON_THROW_ON_ERROR);
                 } catch (\JsonException $exception) {
-                    throw new ExtraHttpHeadersJsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
+                    throw new JsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
                 }
 
                 return ['extraHttpHeaders' => $extraHttpHeaders];
@@ -133,11 +133,12 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
     {
         if (null !== $preCallback) {
             $result = [];
-            foreach ($preCallback($value) as $key => $value) {
-                $result[] = $this->addToMultipart($key, $value);
 
-                return array_merge(...$result);
+            foreach ($preCallback($value) as $innerKey => $innerValue) {
+                $result[] = $this->addToMultipart($innerKey, $innerValue);
             }
+
+            return \array_merge(...$result);
         }
 
         if (\is_bool($value)) {
@@ -158,7 +159,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 $result[] = $this->addToMultipart($key, $nestedValue);
             }
 
-            return array_merge(...$result);
+            return \array_merge(...$result);
         }
 
         return [[
