@@ -22,12 +22,13 @@ final readonly class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown|office' $key
+     * @param 'html'|'url'|'markdown'|'office' $key
      *
-     * @return ($key is 'markdown' ? MarkdownPdfBuilder :
-     *         $key is 'html' ? HtmlPdfBuilder :
-     *         $key is 'office' ? LibreOfficePdfBuilder
-     *         PdfBuilderInterface
+     * @return ($key is 'html' ? HtmlPdfBuilder :
+     *         $key is 'url' ? UrlPdfBuilder :
+     *         $key is 'markdown' ? MarkdownPdfBuilder :
+     *         $key is 'office' ? LibreOfficePdfBuilder :
+     *         PdfBuilderInterface)
      * )
      */
     private function getInternal(string $key): PdfBuilderInterface

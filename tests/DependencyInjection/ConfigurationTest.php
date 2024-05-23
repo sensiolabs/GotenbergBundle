@@ -39,9 +39,9 @@ final class ConfigurationTest extends TestCase
         yield 'pdf format configuration' => [['default_options' => ['pdf' => ['html' => ['pdf_format' => 'PDF/A-3b']]]]];
         yield 'pdf universal configuration' => [['default_options' => ['pdf' => ['html' => ['pdf_universal_access' => true]]]]];
         yield 'both pdf configuration' => [['default_options' => ['pdf' => ['html' => ['pdf_format' => 'PDF/A-3b', 'pdf_universal_access' => true]]]]];
-        yield 'Update accepted status codes from the main page' => [['default_options' => ['html' => ['fail_on_http_status_codes' => [401, 403]]]]];
-        yield 'waits for the network idle' => [['default_options' => ['html' => ['skip_network_idle_event' => true]]]];
-        yield 'add cookies to store' => [['default_options' => ['html' => ['cookies' => [['name' => 'my_cookie', 'value' => 'symfony', 'domain' => 'symfony.com', 'path' => null, 'secure' => true, 'httpOnly' => true, 'sameSite' => 'Lax']]]]]];
+        yield 'Update accepted status codes from the main page' => [['default_options' => ['pdf' => ['html' => ['fail_on_http_status_codes' => [401, 403]]]]]];
+        yield 'waits for the network idle' => [['default_options' => ['pdf' => ['html' => ['skip_network_idle_event' => true]]]]];
+        yield 'add cookies to store' => [['default_options' => ['pdf' => ['html' => ['cookies' => [['name' => 'my_cookie', 'value' => 'symfony', 'domain' => 'symfony.com', 'path' => null, 'secure' => true, 'httpOnly' => true, 'sameSite' => 'Lax']]]]]]];
     }
 
     public function testDefaultConfig(): void
