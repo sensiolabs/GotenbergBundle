@@ -5,7 +5,6 @@ namespace Sensiolabs\GotenbergBundle\Client;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final readonly class GotenbergClient implements GotenbergClientInterface
 {

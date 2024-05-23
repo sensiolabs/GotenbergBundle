@@ -1,12 +1,5 @@
 <?php
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -48,77 +41,6 @@ return static function (ContainerConfigurator $container): void {
         ->tag('twig.extension')
     ;
 
-    $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)
-        ->share(false)
-        ->args([
-            service('sensiolabs_gotenberg.client'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            service('twig')->nullOnInvalid(),
-        ])
-        ->tag('sensiolabs_gotenberg.pdf_builder')
-    ;
-
-    $services->set('.sensiolabs_gotenberg.pdf_builder.url', UrlPdfBuilder::class)
-        ->share(false)
-        ->args([
-            service('sensiolabs_gotenberg.client'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            service('twig')->nullOnInvalid(),
-            service('router')->nullOnInvalid(),
-        ])
-        ->tag('sensiolabs_gotenberg.pdf_builder')
-    ;
-
-    $services->set('.sensiolabs_gotenberg.pdf_builder.markdown', MarkdownPdfBuilder::class)
-        ->share(false)
-        ->args([
-            service('sensiolabs_gotenberg.client'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            service('twig')->nullOnInvalid(),
-        ])
-        ->tag('sensiolabs_gotenberg.pdf_builder')
-    ;
-
-    $services->set('.sensiolabs_gotenberg.pdf_builder.office', LibreOfficePdfBuilder::class)
-        ->share(false)
-        ->args([
-            service('sensiolabs_gotenberg.client'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-        ])
-        ->tag('sensiolabs_gotenberg.pdf_builder')
-    ;
-
-    $services->set('.sensiolabs_gotenberg.screenshot_builder.html', HtmlScreenshotBuilder::class)
-        ->share(false)
-        ->args([
-            service('sensiolabs_gotenberg.client'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            service('twig')->nullOnInvalid(),
-        ])
-        ->tag('sensiolabs_gotenberg.screenshot_builder')
-    ;
-
-    $services->set('.sensiolabs_gotenberg.screenshot_builder.url', UrlScreenshotBuilder::class)
-        ->share(false)
-        ->args([
-            service('sensiolabs_gotenberg.client'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            service('twig')->nullOnInvalid(),
-            service('router')->nullOnInvalid(),
-        ])
-        ->tag('sensiolabs_gotenberg.screenshot_builder')
-    ;
-
-    $services->set('.sensiolabs_gotenberg.screenshot_builder.markdown', MarkdownScreenshotBuilder::class)
-        ->share(false)
-        ->args([
-            service('sensiolabs_gotenberg.client'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            service('twig')->nullOnInvalid(),
-        ])
-        ->tag('sensiolabs_gotenberg.screenshot_builder')
-    ;
-
     $services->set('sensiolabs_gotenberg.pdf', GotenbergPdf::class)
         ->args([
             tagged_locator('sensiolabs_gotenberg.pdf_builder'),
@@ -136,8 +58,8 @@ return static function (ContainerConfigurator $container): void {
     $services->set('sensiolabs_gotenberg', Gotenberg::class)
         ->args([
             service_locator([
-                GotenbergPdfInterface::class => service(GotenbergPdfInterface::class),
-                GotenbergScreenshotInterface::class => service(GotenbergScreenshotInterface::class),
+                GotenbergPdfInterface::class => service('sensiolabs_gotenberg.pdf'),
+                GotenbergScreenshotInterface::class => service('sensiolabs_gotenberg.screenshot'),
             ]),
         ])
         ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')

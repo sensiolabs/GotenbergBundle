@@ -10,7 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-final class TraceableGotenberg implements GotenbergPdfInterface
+final class TraceableGotenbergPdf implements GotenbergPdfInterface
 {
     /**
      * @var list<array{string, TraceablePdfBuilder}>
@@ -38,7 +38,7 @@ final class TraceableGotenberg implements GotenbergPdfInterface
     /**
      * @return HtmlPdfBuilder|TraceablePdfBuilder
      */
-    public function html(): HtmlPdfBuilder
+    public function html(): PdfBuilderInterface
     {
         /** @var HtmlPdfBuilder|TraceablePdfBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->html();
@@ -55,7 +55,7 @@ final class TraceableGotenberg implements GotenbergPdfInterface
     /**
      * @return UrlPdfBuilder|TraceablePdfBuilder
      */
-    public function url(): UrlPdfBuilder
+    public function url(): PdfBuilderInterface
     {
         /** @var UrlPdfBuilder|TraceablePdfBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->url();
@@ -72,7 +72,7 @@ final class TraceableGotenberg implements GotenbergPdfInterface
     /**
      * @return LibreOfficePdfBuilder|TraceablePdfBuilder
      */
-    public function office(): LibreOfficePdfBuilder
+    public function office(): PdfBuilderInterface
     {
         /** @var LibreOfficePdfBuilder|TraceablePdfBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->office();
@@ -89,7 +89,7 @@ final class TraceableGotenberg implements GotenbergPdfInterface
     /**
      * @return MarkdownPdfBuilder|TraceablePdfBuilder
      */
-    public function markdown(): MarkdownPdfBuilder
+    public function markdown(): PdfBuilderInterface
     {
         /** @var MarkdownPdfBuilder|TraceablePdfBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->markdown();
