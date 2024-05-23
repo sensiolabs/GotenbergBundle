@@ -304,6 +304,54 @@ Some websites have dedicated CSS rules for print. Using ``screen`` allows you to
 
     For more information about `emulated Media Type`_.
 
+Cookies
+-------
+
+``default: None``
+
+Cookies to store in the Chromium cookie jar.
+
+.. code-block:: php
+
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->cookies([
+            [
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ],
+        ]);
+
+.. warning::
+
+    `cookies` method overrides any previous cookies.
+
+If you want to add cookies from the ones already loaded in the configuration you
+can use `addCookie`.
+
+.. code-block:: php
+
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->addCookies([
+            [
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ],
+        ]);
+
+.. tip::
+
+    For more information about `cookies`_.
+
 Extra HTTP headers
 ------------------
 
@@ -323,6 +371,23 @@ HTTP headers to send by Chromium while loading the HTML document.
 
     For more information about `custom HTTP headers`_.
 
+Invalid HTTP Status Codes
+-------------------------
+
+``default: [499,599]``
+
+To return a 409 Conflict response if the HTTP status code from the main page is not acceptable..
+
+.. code-block:: php
+
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->failOnHttpStatusCodes([401, 403]);
+
+.. tip::
+
+    For more information about `invalid HTTP Status Codes`_.
+
 Console Exceptions
 ------------------
 
@@ -339,6 +404,25 @@ Return a 409 Conflict response if there are exceptions in the Chromium console.
 .. tip::
 
     For more information about `console Exceptions`_.
+
+Performance Mode
+----------------
+
+``default: false``
+
+Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during conversion.
+However, this often significantly slows down the conversion process.
+Setting this form field to true can greatly enhance the conversion speed.
+
+.. code-block:: php
+
+    $twigPdfBuilder
+        ->content('path/to/template.html.twig')
+        ->skipNetworkIdleEvent();
+
+.. tip::
+
+    For more information about `performance mode`_.
 
 PDF Format
 ----------
@@ -381,6 +465,9 @@ Enable PDF for Universal Access for optimal accessibility.
 .. _delay: https://gotenberg.dev/docs/routes#wait-before-rendering
 .. _wait for expression: https://gotenberg.dev/docs/routes#wait-before-rendering
 .. _emulated Media Type: https://gotenberg.dev/docs/routes#emulated-media-type
+.. _cookies: https://gotenberg.dev/docs/routes#cookies-chromium
 .. _custom HTTP headers: https://gotenberg.dev/docs/routes#custom-http-headers
+.. _invalid HTTP Status Codes: https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
 .. _console Exceptions: https://gotenberg.dev/docs/routes#console-exceptions
+.. _performance mode: https://gotenberg.dev/docs/routes#performance-mode-chromium
 .. _pdf formats: https://gotenberg.dev/docs/routes#pdfa-chromium

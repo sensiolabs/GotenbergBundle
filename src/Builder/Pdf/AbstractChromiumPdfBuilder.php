@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
@@ -308,6 +309,51 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
+     *
+     * @see https://gotenberg.dev/docs/routes#cookies-chromium
+     *
+     * @param list<array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
+     */
+    public function cookies(array $cookies): static
+    {
+        $this->formFields['cookies'] = [];
+
+        foreach ($cookies as $cookie) {
+            $this->setCookie($cookie['name'], $cookie);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null} $cookie
+     */
+    public function setCookie(string $key, array $cookie): static
+    {
+        $this->formFields['cookies'] ??= [];
+        $this->formFields['cookies'][$key] = $cookie;
+
+        return $this;
+    }
+
+    /**
+     *  Add cookies to store in the Chromium cookie jar.
+     *
+     * @see https://gotenberg.dev/docs/routes#cookies-chromium
+     *
+     * @param list<array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
+     */
+    public function addCookies(array $cookies): static
+    {
+        foreach ($cookies as $cookie) {
+            $this->setCookie($cookie['name'], $cookie);
+        }
+
+        return $this;
+    }
+
+    /**
      * Sets extra HTTP headers that Chromium will send when loading the HTML
      * document. (default None). (overrides any previous headers).
      *
@@ -338,6 +384,21 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Return a 409 Conflict response if the HTTP status code from
+     * the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
+     *
+     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     *
+     * @param array<int, int> $statusCodes
+     */
+    public function failOnHttpStatusCodes(array $statusCodes): static
+    {
+        $this->formFields['failOnHttpStatusCodes'] = $statusCodes;
+
+        return $this;
+    }
+
+    /**
      * Forces GotenbergPdf to return a 409 Conflict response if there are
      * exceptions in the Chromium console. (default false).
      *
@@ -346,6 +407,13 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function failOnConsoleExceptions(bool $bool = true): static
     {
         $this->formFields['failOnConsoleExceptions'] = $bool;
+
+        return $this;
+    }
+
+    public function skipNetworkIdleEvent(bool $bool = true): static
+    {
+        $this->formFields['skipNetworkIdleEvent'] = $bool;
 
         return $this;
     }
@@ -429,8 +497,11 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'wait_delay' => $this->waitDelay($value),
             'wait_for_expression' => $this->waitForExpression($value),
             'emulated_media_type' => $this->emulatedMediaType($value),
+            'cookies' => $this->cookies($value),
             'extra_http_headers' => $this->extraHttpHeaders($value),
+            'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
+            'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
