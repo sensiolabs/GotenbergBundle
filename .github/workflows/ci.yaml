@@ -5,6 +5,8 @@ on:
     branches: ['main']
   pull_request:
     branches: ['main']
+  schedule:
+    - cron: '0 0 * * *'
 
 permissions:
   contents: 'read'
@@ -14,6 +16,7 @@ jobs:
   php-cs-fixer:
     name: 'PHP CS Fixer'
     runs-on: 'ubuntu-latest'
+    if: github.event_name != 'schedule'
     steps:
       - uses: 'actions/checkout@v4'
 
@@ -32,6 +35,7 @@ jobs:
   phpstan:
     name: 'PHPStan'
     runs-on: 'ubuntu-latest'
+    if: github.event_name != 'schedule'
     steps:
       - uses: 'actions/checkout@v4'
 
@@ -62,11 +66,8 @@ jobs:
           - 'highest'
         include:
           # LTS
-          - symfony-version: '^5.4'
-            php: '8.2'
-            deps: 'highest'
           - symfony-version: '^6.4'
-            php: '8.2'
+            php: '8.3'
             deps: 'highest'
     env:
       SYMFONY_REQUIRE: '${{ matrix.symfony-version }}'
