@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\PdfResponse;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
-use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
+use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -32,14 +32,8 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         protected readonly AssetBaseDirFormatter $asset,
     ) {
         $this->normalizers = [
-            'extraHttpHeaders' => static function (mixed $value): array {
-                try {
-                    $extraHttpHeaders = json_encode($value, \JSON_THROW_ON_ERROR);
-                } catch (\JsonException $exception) {
-                    throw new ExtraHttpHeadersJsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
-                }
-
-                return ['extraHttpHeaders' => $extraHttpHeaders];
+            'extraHttpHeaders' => function (mixed $value): array {
+                return $this->encodeData('extraHttpHeaders', $value);
             },
             'assets' => static function (array $value): array {
                 return ['files' => $value];
@@ -53,7 +47,27 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
             PdfPart::FooterPart->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
+            'failOnHttpStatusCodes' => function (mixed $value): array {
+                return $this->encodeData('failOnHttpStatusCodes', $value);
+            },
+            'cookies' => function (mixed $value): array {
+                return $this->encodeData('cookies', array_values($value));
+            },
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function encodeData(string $key, mixed $value): array
+    {
+        try {
+            $encodedValue = json_encode($value, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new JsonEncodingException(sprintf('Could not encode property "%s" into JSON', $key), previous: $exception);
+        }
+
+        return [$key => $encodedValue];
     }
 
     /**

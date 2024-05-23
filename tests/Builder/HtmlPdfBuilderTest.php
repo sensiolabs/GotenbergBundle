@@ -6,8 +6,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Enum\PaperSize;
-use Sensiolabs\GotenbergBundle\Exception\ExtraHttpHeadersJsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Filesystem\Filesystem;
@@ -29,7 +29,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertCount(20, $multipartFormData);
+        self::assertCount(23, $multipartFormData);
 
         self::assertIsArray($multipartFormData[0]);
         self::assertCount(1, $multipartFormData[0]);
@@ -52,10 +52,13 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertSame(['waitDelay' => '10s'], $multipartFormData[13]);
         self::assertSame(['waitForExpression' => 'window.globalVar === "ready"'], $multipartFormData[14]);
         self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[15]);
-        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[16]);
-        self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[17]);
-        self::assertSame(['pdfa' => 'PDF/A-1b'], $multipartFormData[18]);
-        self::assertSame(['pdfua' => 'true'], $multipartFormData[19]);
+        self::assertSame(['cookies' => '[{"name":"cook_me","value":"sensio","domain":"sensiolabs.com","secure":true,"httpOnly":true,"sameSite":"Lax"},{"name":"yummy_cookie","value":"choco","domain":"example.com"}]'], $multipartFormData[16]);
+        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"Value","User-Agent":"MyValue"}'], $multipartFormData[17]);
+        self::assertSame(['failOnHttpStatusCodes' => '[401,403]'], $multipartFormData[18]);
+        self::assertSame(['failOnConsoleExceptions' => 'true'], $multipartFormData[19]);
+        self::assertSame(['skipNetworkIdleEvent' => 'true'], $multipartFormData[20]);
+        self::assertSame(['pdfa' => 'PDF/A-1b'], $multipartFormData[21]);
+        self::assertSame(['pdfua' => 'true'], $multipartFormData[22]);
     }
 
     public function testWithTemplate(): void
@@ -151,8 +154,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
     public function testInvalidExtraHttpHeaders(): void
     {
-        $this->expectException(ExtraHttpHeadersJsonEncodingException::class);
-        $this->expectExceptionMessage('Could not encode extra HTTP headers into JSON');
+        $this->expectException(JsonEncodingException::class);
+        $this->expectExceptionMessage('Could not encode property "extraHttpHeaders" into JSON');
 
         $client = $this->createMock(GotenbergClientInterface::class);
         $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
@@ -188,11 +191,28 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
             'wait_delay' => '10s',
             'wait_for_expression' => 'window.globalVar === "ready"',
             'emulated_media_type' => 'screen',
+            'cookies' => [
+                [
+                    'name' => 'cook_me',
+                    'value' => 'sensio',
+                    'domain' => 'sensiolabs.com',
+                    'secure' => true,
+                    'httpOnly' => true,
+                    'sameSite' => 'Lax',
+                ],
+                [
+                    'name' => 'yummy_cookie',
+                    'value' => 'choco',
+                    'domain' => 'example.com',
+                ],
+            ],
             'extra_http_headers' => [
                 'MyHeader' => 'Value',
                 'User-Agent' => 'MyValue',
             ],
+            'fail_on_http_status_codes' => [401, 403],
             'fail_on_console_exceptions' => true,
+            'skip_network_idle_event' => true,
             'pdf_format' => 'PDF/A-1b',
             'pdf_universal_access' => true,
         ];
