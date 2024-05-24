@@ -12,7 +12,7 @@ final readonly class GotenbergClient implements GotenbergClientInterface
     {
     }
 
-    public function call(string $endpoint, array $multipartFormData): PdfResponse
+    public function call(string $endpoint, array $multipartFormData): GotenbergResponse
     {
         $formData = new FormDataPart($multipartFormData);
         $headers = $this->prepareHeaders($formData);
@@ -30,7 +30,7 @@ final readonly class GotenbergClient implements GotenbergClientInterface
             throw new HttpException($response->getStatusCode(), $response->getContent());
         }
 
-        return new PdfResponse($response);
+        return new GotenbergResponse($response);
     }
 
     /**

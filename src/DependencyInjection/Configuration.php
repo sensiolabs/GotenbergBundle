@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Enum\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enum\ScreenshotFormat;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -19,7 +20,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('base_uri')
-                    ->info('Host of your local Gotenberg API')
+                    ->info('Host of your local GotenbergPdf API')
                     ->defaultValue('http://localhost:3000')
                 ->end()
                 ->scalarNode('assets_directory')
@@ -32,10 +33,21 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('default_options')
                     ->addDefaultsIfNotSet()
-                    ->append($this->addHtmlNode())
-                    ->append($this->addUrlNode())
-                    ->append($this->addMarkdownNode())
-                    ->append($this->addOfficeNode())
+                    ->children()
+                        ->arrayNode('pdf')
+                            ->addDefaultsIfNotSet()
+                            ->append($this->addPdfHtmlNode())
+                            ->append($this->addPdfUrlNode())
+                            ->append($this->addPdfMarkdownNode())
+                            ->append($this->addPdfOfficeNode())
+                        ->end()
+                        ->arrayNode('screenshot')
+                            ->addDefaultsIfNotSet()
+                            ->append($this->addScreenshotHtmlNode())
+                            ->append($this->addScreenshotUrlNode())
+                            ->append($this->addScreenshotMarkdownNode())
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;
@@ -43,40 +55,73 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addUrlNode(): NodeDefinition
-    {
-        $treebuilder = new TreeBuilder('url');
-
-        $treebuilder->getRootNode()->addDefaultsIfNotSet();
-        $children = $treebuilder->getRootNode()->children();
-        $this->addChromiumOptionsNode($children);
-
-        return $children->end();
-    }
-
-    private function addHtmlNode(): NodeDefinition
+    private function addPdfHtmlNode(): NodeDefinition
     {
         $treebuilder = new TreeBuilder('html');
 
         $treebuilder->getRootNode()->addDefaultsIfNotSet();
         $children = $treebuilder->getRootNode()->children();
-        $this->addChromiumOptionsNode($children);
+        $this->addChromiumPdfOptionsNode($children);
 
         return $children->end();
     }
 
-    private function addMarkdownNode(): NodeDefinition
+    private function addPdfUrlNode(): NodeDefinition
+    {
+        $treebuilder = new TreeBuilder('url');
+
+        $treebuilder->getRootNode()->addDefaultsIfNotSet();
+        $children = $treebuilder->getRootNode()->children();
+        $this->addChromiumPdfOptionsNode($children);
+
+        return $children->end();
+    }
+
+    private function addPdfMarkdownNode(): NodeDefinition
     {
         $treebuilder = new TreeBuilder('markdown');
 
         $treebuilder->getRootNode()->addDefaultsIfNotSet();
         $children = $treebuilder->getRootNode()->children();
-        $this->addChromiumOptionsNode($children);
+        $this->addChromiumPdfOptionsNode($children);
 
         return $children->end();
     }
 
-    private function addChromiumOptionsNode(NodeBuilder $treeBuilder): void
+    private function addScreenshotHtmlNode(): NodeDefinition
+    {
+        $treebuilder = new TreeBuilder('html');
+
+        $treebuilder->getRootNode()->addDefaultsIfNotSet();
+        $children = $treebuilder->getRootNode()->children();
+        $this->addChromiumScreenshotOptionsNode($children);
+
+        return $children->end();
+    }
+
+    private function addScreenshotUrlNode(): NodeDefinition
+    {
+        $treebuilder = new TreeBuilder('url');
+
+        $treebuilder->getRootNode()->addDefaultsIfNotSet();
+        $children = $treebuilder->getRootNode()->children();
+        $this->addChromiumScreenshotOptionsNode($children);
+
+        return $children->end();
+    }
+
+    private function addScreenshotMarkdownNode(): NodeDefinition
+    {
+        $treebuilder = new TreeBuilder('markdown');
+
+        $treebuilder->getRootNode()->addDefaultsIfNotSet();
+        $children = $treebuilder->getRootNode()->children();
+        $this->addChromiumScreenshotOptionsNode($children);
+
+        return $children->end();
+    }
+
+    private function addChromiumPdfOptionsNode(NodeBuilder $treeBuilder): void
     {
         $treeBuilder
             ->floatNode('paper_width')
@@ -234,7 +279,133 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addOfficeNode(): NodeDefinition
+    private function addChromiumScreenshotOptionsNode(NodeBuilder $treeBuilder): void
+    {
+        $treeBuilder
+            ->integerNode('width')
+                ->info('The device screen width in pixels. - default 800. https://gotenberg.dev/docs/routes#screenshots-route')
+                ->defaultNull()
+            ->end()
+            ->integerNode('height')
+                ->info('The device screen height in pixels. - default 600. https://gotenberg.dev/docs/routes#screenshots-route')
+                ->defaultNull()
+            ->end()
+            ->booleanNode('clip')
+                ->info('Define whether to clip the screenshot according to the device dimensions - default false. https://gotenberg.dev/docs/routes#screenshots-route')
+                ->defaultNull()
+            ->end()
+            ->enumNode('format')
+                ->info('The image compression format, either "png", "jpeg" or "webp" - default png. https://gotenberg.dev/docs/routes#screenshots-route')
+                ->values([ScreenshotFormat::Png->value, ScreenshotFormat::Jpeg->value, ScreenshotFormat::Webp->value])
+                ->defaultNull()
+            ->end()
+            ->integerNode('quality')
+                ->info('The compression quality from range 0 to 100 (jpeg only) - default 100. https://gotenberg.dev/docs/routes#screenshots-route')
+                ->min(0)
+                ->max(100)
+                ->defaultNull()
+            ->end()
+            ->booleanNode('omit_background')
+                ->info('Hide the default white background and allow generating PDFs with transparency - default false. https://gotenberg.dev/docs/routes#page-properties-chromium')
+                ->defaultNull()
+            ->end()
+            ->booleanNode('optimize_for_speed')
+                ->info('Define whether to optimize image encoding for speed, not for resulting size. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium')
+                ->defaultNull()
+            ->end()
+            ->scalarNode('wait_delay')
+                ->info('Duration (e.g, "5s") to wait when loading an HTML document before converting it into PDF - default None. https://gotenberg.dev/docs/routes#wait-before-rendering')
+                ->defaultNull()
+                ->validate()
+                    ->ifTrue(static function ($option): bool {
+                        return !\is_string($option);
+                    })
+                    ->thenInvalid('Invalid value %s')
+                ->end()
+            ->end()
+            ->scalarNode('wait_for_expression')
+                ->info('The JavaScript expression to wait before converting an HTML document into PDF until it returns true - default None. https://gotenberg.dev/docs/routes#wait-before-rendering')
+                ->defaultNull()
+                ->validate()
+                    ->ifTrue(static function ($option) {
+                        return !\is_string($option);
+                    })
+                    ->thenInvalid('Invalid value %s')
+                ->end()
+            ->end()
+            ->enumNode('emulated_media_type')
+                ->info('The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type')
+                ->values([EmulatedMediaType::Screen->value, EmulatedMediaType::Print->value])
+                ->defaultNull()
+            ->end()
+            ->arrayNode('cookies')
+                ->info('Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/routes#cookies-chromium')
+                ->defaultValue([])
+                    ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('name')->end()
+                        ->scalarNode('value')->end()
+                        ->scalarNode('domain')->end()
+                        ->scalarNode('path')
+                            ->defaultNull()
+                        ->end()
+                        ->booleanNode('secure')
+                            ->defaultNull()
+                        ->end()
+                        ->booleanNode('httpOnly')
+                            ->defaultNull()
+                        ->end()
+                        ->enumNode('sameSite')
+                            ->info('Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/routes#cookies-chromium')
+                            ->values(['Strict', 'Lax', 'None'])
+                            ->defaultNull()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+            ->arrayNode('extra_http_headers')
+                ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
+                ->defaultValue([])
+                ->useAttributeAsKey('name')
+                    ->arrayPrototype()
+                        ->children()
+                        ->scalarNode('name')
+                            ->validate()
+                                ->ifTrue(static function ($option) {
+                                    return !\is_string($option);
+                                })
+                                ->thenInvalid('Invalid header name %s')
+                            ->end()
+                        ->end()
+                        ->scalarNode('value')
+                            ->validate()
+                                ->ifTrue(static function ($option) {
+                                    return !\is_string($option);
+                                })
+                                ->thenInvalid('Invalid header value %s')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+            ->arrayNode('fail_on_http_status_codes')
+                ->info('Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium')
+                ->defaultValue([])
+                ->integerPrototype()
+                ->end()
+            ->end()
+            ->booleanNode('fail_on_console_exceptions')
+                ->info('Return a 409 Conflict response if there are exceptions in the Chromium console - default false. https://gotenberg.dev/docs/routes#console-exceptions')
+                ->defaultNull()
+            ->end()
+            ->booleanNode('skip_network_idle_event')
+                ->info('Do not wait for Chromium network to be idle. - default false. https://gotenberg.dev/docs/routes#performance-mode-chromium')
+                ->defaultNull()
+            ->end()
+        ;
+    }
+
+    private function addPdfOfficeNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('office');
 

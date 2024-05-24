@@ -1,12 +1,13 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Tests\Builder;
+namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 

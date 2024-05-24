@@ -15,7 +15,7 @@ final class GotenbergPass implements CompilerPassInterface
             return;
         }
 
-        foreach ($container->findTaggedServiceIds('sensiolabs_gotenberg.builder') as $serviceId => $tags) {
+        foreach ($container->findTaggedServiceIds('sensiolabs_gotenberg.pdf_builder') as $serviceId => $tags) {
             $container->register('debug.'.$serviceId, TraceablePdfBuilder::class)
                 ->setDecoratedService($serviceId)
                 ->setShared(false)

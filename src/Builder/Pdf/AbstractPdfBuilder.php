@@ -1,9 +1,9 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Builder;
+namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\PdfResponse;
+use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -71,7 +71,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * The Gotenberg API endpoint path.
+     * The GotenbergPdf API endpoint path.
      */
     abstract protected function getEndpoint(): string;
 
@@ -91,7 +91,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         return $this;
     }
 
-    public function generate(): PdfResponse
+    public function generate(): GotenbergResponse
     {
         $pdfResponse = $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
 
@@ -190,7 +190,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         $extension = $file->getExtension();
 
         if (!\in_array($extension, $validExtensions, true)) {
-            throw new \InvalidArgumentException(sprintf('The file extension "%s" is not available in Gotenberg.', $extension));
+            throw new \InvalidArgumentException(sprintf('The file extension "%s" is not available in GotenbergPdf.', $extension));
         }
     }
 }

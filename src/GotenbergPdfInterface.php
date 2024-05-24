@@ -1,21 +1,21 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Pdf;
+namespace Sensiolabs\GotenbergBundle;
 
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
-interface GotenbergInterface
+interface GotenbergPdfInterface
 {
     /**
      * @template T of PdfBuilderInterface
      *
      * @param string|class-string<T> $builder
      *
-     * @return ($builder is class-string<T> ? T : PdfBuilderInterface)
+     * @return ($builder is class-string ? T : PdfBuilderInterface)
      */
     public function get(string $builder): PdfBuilderInterface;
 

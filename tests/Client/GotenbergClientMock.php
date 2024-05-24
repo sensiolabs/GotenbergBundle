@@ -3,14 +3,14 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Client;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\Client\PdfResponse;
+use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 final class GotenbergClientMock
 {
-    public static function defaultResponse(): PdfResponse
+    public static function defaultResponse(): GotenbergResponse
     {
         /** @var string $stream */
         $stream = file_get_contents(__DIR__.'/../Fixtures/pdf/simple_pdf.pdf');

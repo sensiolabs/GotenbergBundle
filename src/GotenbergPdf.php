@@ -1,15 +1,15 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Pdf;
+namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
-final readonly class Gotenberg implements GotenbergInterface
+final readonly class GotenbergPdf implements GotenbergPdfInterface
 {
     public function __construct(
         private ContainerInterface $container,
@@ -24,17 +24,16 @@ final readonly class Gotenberg implements GotenbergInterface
     /**
      * @param 'html'|'url'|'markdown'|'office' $key
      *
-     * @return (
-     *     $key is 'html' ? HtmlPdfBuilder :
-     *     $key is 'url' ? UrlPdfBuilder :
-     *     $key is 'office' ? LibreOfficePdfBuilder :
-     *     $key is 'markdown' ? MarkdownPdfBuilder :
-     *      PdfBuilderInterface
+     * @return ($key is 'html' ? HtmlPdfBuilder :
+     *         $key is 'url' ? UrlPdfBuilder :
+     *         $key is 'markdown' ? MarkdownPdfBuilder :
+     *         $key is 'office' ? LibreOfficePdfBuilder :
+     *         PdfBuilderInterface)
      * )
      */
     private function getInternal(string $key): PdfBuilderInterface
     {
-        return $this->get(".sensiolabs_gotenberg.builder.{$key}");
+        return $this->get(".sensiolabs_gotenberg.pdf_builder.{$key}");
     }
 
     public function html(): PdfBuilderInterface

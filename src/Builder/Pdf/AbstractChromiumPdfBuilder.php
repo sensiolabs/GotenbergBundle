@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Builder;
+namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
@@ -8,7 +8,6 @@ use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
@@ -399,7 +398,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
-     * Forces Gotenberg to return a 409 Conflict response if there are
+     * Forces GotenbergPdf to return a 409 Conflict response if there are
      * exceptions in the Chromium console. (default false).
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions

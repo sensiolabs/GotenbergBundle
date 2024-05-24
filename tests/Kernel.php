@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests;
 
-use Sensiolabs\GotenbergBundle\Pdf\GotenbergInterface;
+use Sensiolabs\GotenbergBundle\GotenbergInterface;
 use Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;

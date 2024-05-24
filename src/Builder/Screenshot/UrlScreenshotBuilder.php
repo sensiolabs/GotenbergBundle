@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Builder;
+namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -8,10 +8,8 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
+final class UrlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 {
-    private const ENDPOINT = '/forms/chromium/convert/url';
-
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
@@ -20,6 +18,8 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
     ) {
         parent::__construct($gotenbergClient, $asset, $twig);
     }
+
+    private const ENDPOINT = '/forms/chromium/screenshot/url';
 
     /**
      * URL of the page you want to convert into PDF.
@@ -32,8 +32,8 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
     }
 
     /**
-     * @param string       $name       #Route
-     * @param array<mixed> $parameters
+     * @param string               $name       #Route
+     * @param array<string, mixed> $parameters
      */
     public function route(string $name, array $parameters = []): self
     {
