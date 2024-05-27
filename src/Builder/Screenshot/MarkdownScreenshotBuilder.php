@@ -10,7 +10,7 @@ use Symfony\Component\Mime\Part\File as DataPartFile;
 
 final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 {
-    private const ENDPOINT = '/forms/chromium/convert/markdown';
+    private const ENDPOINT = '/forms/chromium/screenshot/markdown';
 
     /**
      * The HTML file that wraps the markdown content, rendered from a Twig template.

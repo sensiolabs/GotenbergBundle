@@ -12,10 +12,10 @@ final readonly class GotenbergClient implements GotenbergClientInterface
     {
     }
 
-    public function call(string $endpoint, array $multipartFormData): GotenbergResponse
+    public function call(string $endpoint, array $multipartFormData, array $headers = []): GotenbergResponse
     {
         $formData = new FormDataPart($multipartFormData);
-        $headers = $this->prepareHeaders($formData);
+        $headers = \array_merge($headers, $this->prepareHeaders($formData));
 
         $response = $this->client->request(
             'POST',
