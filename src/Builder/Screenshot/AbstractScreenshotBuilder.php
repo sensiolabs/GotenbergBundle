@@ -32,14 +32,8 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
         protected readonly AssetBaseDirFormatter $asset,
     ) {
         $this->normalizers = [
-            'extraHttpHeaders' => static function (mixed $value): array {
-                try {
-                    $extraHttpHeaders = json_encode($value, \JSON_THROW_ON_ERROR);
-                } catch (\JsonException $exception) {
-                    throw new JsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
-                }
-
-                return ['extraHttpHeaders' => $extraHttpHeaders];
+            'extraHttpHeaders' => function (mixed $value): array {
+                return $this->encodeData('extraHttpHeaders', $value);
             },
             'assets' => static function (array $value): array {
                 return ['files' => $value];
@@ -53,7 +47,27 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
             PdfPart::FooterPart->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
+            'failOnHttpStatusCodes' => function (mixed $value): array {
+                return $this->encodeData('failOnHttpStatusCodes', $value);
+            },
+            'cookies' => function (mixed $value): array {
+                return $this->encodeData('cookies', array_values($value));
+            },
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function encodeData(string $key, mixed $value): array
+    {
+        try {
+            $encodedValue = json_encode($value, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new JsonEncodingException(sprintf('Could not encode property "%s" into JSON', $key), previous: $exception);
+        }
+
+        return [$key => $encodedValue];
     }
 
     /**
@@ -138,7 +152,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 $result[] = $this->addToMultipart($innerKey, $innerValue);
             }
 
-            return \array_merge(...$result);
+            return array_merge(...$result);
         }
 
         if (\is_bool($value)) {
@@ -159,7 +173,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 $result[] = $this->addToMultipart($key, $nestedValue);
             }
 
-            return \array_merge(...$result);
+            return array_merge(...$result);
         }
 
         return [[

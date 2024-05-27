@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfPart;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
@@ -88,7 +89,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      */
-    public function quality(string $quality): static
+    public function quality(int $quality): static
     {
         $this->formFields['quality'] = $quality;
 
@@ -352,7 +353,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws ScreenshotPartRenderingException if the template could not be rendered
      */
     protected function withRenderedPart(PdfPart $pdfPart, string $template, array $context = []): static
     {
@@ -363,7 +364,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         try {
             $html = $this->twig->render($template, array_merge($context, ['_builder' => $this]));
         } catch (\Throwable $error) {
-            throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
+            throw new ScreenshotPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
         }
 
         $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
