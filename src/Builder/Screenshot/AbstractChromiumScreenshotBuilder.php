@@ -74,6 +74,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     /**
      * The image compression format, either "png", "jpeg" or "webp". (default png).
      *
+     * @param 'png'|'jpeg'|'webp' $format
+     *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      */
     public function format(string $format): static
@@ -86,9 +88,11 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     /**
      * The compression quality from range 0 to 100 (jpeg only). (default 100).
      *
+     * @param int<0, 100> $quality
+     *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      */
-    public function quality(string $quality): static
+    public function quality(int $quality): static
     {
         $this->formFields['quality'] = $quality;
 

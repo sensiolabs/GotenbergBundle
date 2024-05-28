@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PaperSize;
 use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enum\Part;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enum\Unit;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
@@ -43,7 +44,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
      */
-    public function singlePage(bool $bool): static
+    public function singlePage(bool $bool = true): static
     {
         $this->formFields['singlePage'] = $bool;
 
@@ -441,9 +442,15 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @See https://gotenberg.dev/docs/routes#pdfa-chromium.
      */
-    public function pdfFormat(string $format): static
+    public function pdfFormat(PdfFormat|null $format = null): static
     {
-        $this->formFields['pdfa'] = $format;
+        if (null === $format) {
+            unset($this->formFields['pdfa']);
+
+            return $this;
+        }
+
+        $this->formFields['pdfa'] = $format->value;
 
         return $this;
     }
@@ -497,15 +504,22 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     private function addConfiguration(string $configurationName, mixed $value): void
     {
+        $splitAndParseStringWithUnit = static function (mixed $raw, callable $callback): void {
+            [$value, $unit] = sscanf((string) $raw, '%d%s') ?? throw new \InvalidArgumentException(sprintf('Unexpected value "%s", expected format is "%%d%%s"', $raw));
+
+            $callback((float) $value, Unit::tryFrom((string) $unit) ?? Unit::Inches);
+        };
+
         match ($configurationName) {
-            'pdf_format' => $this->pdfFormat($value),
+            'single_page' => $this->singlePage($value),
+            'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'paper_width' => $this->paperWidth($value),
             'paper_height' => $this->paperHeight($value),
-            'margin_top' => $this->marginTop($value),
-            'margin_bottom' => $this->marginBottom($value),
-            'margin_left' => $this->marginLeft($value),
-            'margin_right' => $this->marginRight($value),
+            'margin_top' => $splitAndParseStringWithUnit($value, $this->marginTop(...)),
+            'margin_bottom' => $splitAndParseStringWithUnit($value, $this->marginBottom(...)),
+            'margin_left' => $splitAndParseStringWithUnit($value, $this->marginLeft(...)),
+            'margin_right' => $splitAndParseStringWithUnit($value, $this->marginRight(...)),
             'prefer_css_page_size' => $this->preferCssPageSize($value),
             'print_background' => $this->printBackground($value),
             'omit_background' => $this->omitBackground($value),
