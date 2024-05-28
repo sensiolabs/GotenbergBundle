@@ -12,12 +12,16 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     private const ENDPOINT = '/forms/libreoffice/convert';
 
     private const AVAILABLE_EXTENSIONS = [
-        'bib', 'doc', 'xml', 'docx', 'fodt', 'html', 'ltx', 'txt', 'odt', 'ott', 'pdb', 'pdf', 'psw', 'rtf', 'sdw',
-        'stw', 'sxw', 'uot', 'vor', 'wps', 'epub', 'png', 'bmp', 'emf', 'eps', 'fodg', 'gif', 'jpg', 'met', 'odd',
-        'otg', 'pbm', 'pct', 'pgm', 'ppm', 'ras', 'std', 'svg', 'svm', 'swf', 'sxd', 'sxw', 'tiff', 'xhtml', 'xpm',
-        'fodp', 'potm', 'pot', 'pptx', 'pps', 'ppt', 'pwp', 'sda', 'sdd', 'sti', 'sxi', 'uop', 'wmf', 'csv', 'dbf',
-        'dif', 'fods', 'ods', 'ots', 'pxl', 'sdc', 'slk', 'stc', 'sxc', 'uos', 'xls', 'xlt', 'xlsx', 'tif', 'jpeg',
-        'odp', 'odg', 'dotx', 'xltx',
+        '123', '602', 'abw', 'bib', 'bmp', 'cdr', 'cgm', 'cmx', 'csv', 'cwk', 'dbf', 'dif', 'doc', 'docm',
+        'docx', 'dot', 'dotm', 'dotx', 'dxf', 'emf', 'eps', 'epub', 'fodg', 'fodp', 'fods', 'fodt', 'fopd',
+        'gif', 'htm', 'html', 'hwp', 'jpeg', 'jpg', 'key', 'ltx', 'lwp', 'mcw', 'met', 'mml', 'mw', 'numbers',
+        'odd', 'odg', 'odm', 'odp', 'ods', 'odt', 'otg', 'oth', 'otp', 'ots', 'ott', 'pages', 'pbm', 'pcd',
+        'pct', 'pcx', 'pdb', 'pdf', 'pgm', 'png', 'pot', 'potm', 'potx', 'ppm', 'pps', 'ppt', 'pptm', 'pptx',
+        'psd', 'psw', 'pub', 'pwp', 'pxl', 'ras', 'rtf', 'sda', 'sdc', 'sdd', 'sdp', 'sdw', 'sgl', 'slk',
+        'smf', 'stc', 'std', 'sti', 'stw', 'svg', 'svm', 'swf', 'sxc', 'sxd', 'sxg', 'sxi', 'sxm', 'sxw',
+        'tga', 'tif', 'tiff', 'txt', 'uof', 'uop', 'uos', 'uot', 'vdx', 'vor', 'vsd', 'vsdm', 'vsdx', 'wb2',
+        'wk1', 'wks', 'wmf', 'wpd', 'wpg', 'wps', 'xbm', 'xhtml', 'xls', 'xlsb', 'xlsm', 'xlsx', 'xlt', 'xltm',
+        'xltx', 'xlw', 'xml', 'xpm', 'zabw',
     ];
 
     /**

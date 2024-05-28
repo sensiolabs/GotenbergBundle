@@ -46,8 +46,8 @@ final class GotenbergPdfTest extends KernelTestCase
         $builder = $gotenberg->html()
             ->setConfigurations([
                 'margin_top' => 3,
-                'margin_bottom' => 1],
-            )
+                'margin_bottom' => 1,
+            ])
         ;
         $builder->contentFile(__DIR__.'/../Fixtures/files/content.html');
         $multipartFormData = $builder->getMultipartFormData();
@@ -55,10 +55,10 @@ final class GotenbergPdfTest extends KernelTestCase
         self::assertCount(3, $multipartFormData);
 
         self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['marginTop' => '3'], $multipartFormData[0]);
+        self::assertSame(['marginTop' => '3in'], $multipartFormData[0]);
 
         self::assertArrayHasKey(1, $multipartFormData);
-        self::assertSame(['marginBottom' => '1'], $multipartFormData[1]);
+        self::assertSame(['marginBottom' => '1in'], $multipartFormData[1]);
 
         self::assertArrayHasKey(2, $multipartFormData);
         self::assertIsArray($multipartFormData[2]);
