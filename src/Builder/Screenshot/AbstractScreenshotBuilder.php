@@ -138,7 +138,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 $result[] = $this->addToMultipart($innerKey, $innerValue);
             }
 
-            return \array_merge(...$result);
+            return array_merge(...$result);
         }
 
         if (\is_bool($value)) {
@@ -159,7 +159,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 $result[] = $this->addToMultipart($key, $nestedValue);
             }
 
-            return \array_merge(...$result);
+            return array_merge(...$result);
         }
 
         return [[
