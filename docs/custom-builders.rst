@@ -42,7 +42,7 @@ Alternatively, you can use the BodyPart enum to rename your file on the fly.
 
 .. code-block:: php
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+    use Sensiolabs\GotenbergBundle\Enum\Part;
     use Symfony\Component\Mime\Part\DataPart;
     use Symfony\Component\Mime\Part\File;
 
@@ -54,7 +54,7 @@ Alternatively, you can use the BodyPart enum to rename your file on the fly.
 
         public function content(string $path): self
         {
-            $dataPart = DataPart::fromPath($path, PdfPart::BodyPart->value);
+            $dataPart = DataPart::fromPath($path, Part::BodyPart->value);
 
             $this->multipartFormData[] = [
                 'files' => $dataPart,
@@ -92,7 +92,7 @@ and use everything you want.
 
 .. code-block:: php
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+    use Sensiolabs\GotenbergBundle\Enum\Part;
     use Symfony\Component\Mime\Part\DataPart;
     use Symfony\Component\Mime\Part\File;
 
@@ -107,7 +107,7 @@ and use everything you want.
 
         public function content(string $path): self
         {
-            $dataPart = DataPart::fromPath($path, PdfPart::BodyPart->value);
+            $dataPart = DataPart::fromPath($path, Part::BodyPart->value);
 
             $this->multipartFormData[] = [
                 'files' => $dataPart,

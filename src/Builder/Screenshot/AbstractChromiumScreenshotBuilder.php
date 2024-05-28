@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Enum\Part;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -278,7 +278,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      */
     public function header(string $template, array $context = []): static
     {
-        return $this->withRenderedPart(PdfPart::HeaderPart, $template, $context);
+        return $this->withRenderedPart(Part::Header, $template, $context);
     }
 
     /**
@@ -289,7 +289,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      */
     public function footer(string $template, array $context = []): static
     {
-        return $this->withRenderedPart(PdfPart::FooterPart, $template, $context);
+        return $this->withRenderedPart(Part::Footer, $template, $context);
     }
 
     /**
@@ -297,7 +297,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      */
     public function headerFile(string $path): static
     {
-        return $this->withPdfPartFile(PdfPart::HeaderPart, $path);
+        return $this->withPdfPartFile(Part::Header, $path);
     }
 
     /**
@@ -305,7 +305,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      */
     public function footerFile(string $path): static
     {
-        return $this->withPdfPartFile(PdfPart::FooterPart, $path);
+        return $this->withPdfPartFile(Part::Footer, $path);
     }
 
     /**
@@ -336,7 +336,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         return $this;
     }
 
-    protected function withPdfPartFile(PdfPart $pdfPart, string $path): static
+    protected function withPdfPartFile(Part $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
             new DataPartFile($this->asset->resolve($path)),
@@ -354,7 +354,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    protected function withRenderedPart(PdfPart $pdfPart, string $template, array $context = []): static
+    protected function withRenderedPart(Part $pdfPart, string $template, array $context = []): static
     {
         if (!$this->twig instanceof Environment) {
             throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));

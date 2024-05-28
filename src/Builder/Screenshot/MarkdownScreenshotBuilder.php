@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
-use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Enum\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Symfony\Component\Mime\Part\DataPart;
@@ -22,7 +22,7 @@ final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
      */
     public function wrapper(string $template, array $context = []): self
     {
-        return $this->withRenderedPart(PdfPart::BodyPart, $template, $context);
+        return $this->withRenderedPart(Part::Body, $template, $context);
     }
 
     /**
@@ -30,7 +30,7 @@ final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
      */
     public function wrapperFile(string $path): self
     {
-        return $this->withPdfPartFile(PdfPart::BodyPart, $path);
+        return $this->withPdfPartFile(Part::Body, $path);
     }
 
     public function files(string ...$paths): self
@@ -50,7 +50,7 @@ final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
+        if (!\array_key_exists(Part::Body->value, $this->formFields)) {
             throw new MissingRequiredFieldException('HTML template is required');
         }
 
