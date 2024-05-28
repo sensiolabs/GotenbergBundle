@@ -467,6 +467,32 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * Resets the metadata.
+     *
+     * @see https://gotenberg.dev/docs/routes#metadata-chromium
+     * @see https://exiftool.org/TagNames/XMP.html#pdf
+     *
+     * @param array<string, mixed> $metadata
+     */
+    public function metadata(array $metadata): static
+    {
+        $this->formFields['metadata'] = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * The metadata to write.
+     */
+    public function addMetadata(string $key, string $value): static
+    {
+        $this->formFields['metadata'] ??= [];
+        $this->formFields['metadata'][$key] = $value;
+
+        return $this;
+    }
+
     protected function withPdfPartFile(Part $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
@@ -534,6 +560,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
+            'metadata' => $this->metadata($value),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

@@ -280,6 +280,7 @@ class Configuration implements ConfigurationInterface
                 ->info('Enable PDF for Universal Access for optimal accessibility - default false. https://gotenberg.dev/docs/routes#console-exceptions')
                 ->defaultNull()
             ->end()
+            ->append($this->addPdfMetadata())
         ;
     }
 
@@ -443,6 +444,30 @@ class Configuration implements ConfigurationInterface
                     ->info('Enable PDF for Universal Access for optimal accessibility - default false. https://gotenberg.dev/docs/routes#console-exceptions')
                     ->defaultNull()
                 ->end()
+                ->append($this->addPdfMetadata())
+            ->end()
+        ;
+    }
+
+    private function addPdfMetadata(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('metadata');
+
+        return $treeBuilder->getRootNode()
+            ->info('The metadata to write. Not all metadata are writable. Consider taking a look at https://exiftool.org/TagNames/XMP.html#pdf for an (exhaustive?) list of available metadata.')
+            ->children()
+                ->scalarNode('Author')->end()
+                ->scalarNode('Copyright')->end()
+                ->scalarNode('CreationDate')->end()
+                ->scalarNode('Creator')->end()
+                ->scalarNode('Keywords')->end()
+                ->booleanNode('Marked')->end()
+                ->scalarNode('ModDate')->end()
+                ->scalarNode('PDFVersion')->end()
+                ->scalarNode('Producer')->end()
+                ->scalarNode('Subject')->end()
+                ->scalarNode('Title')->end()
+                ->enumNode('Trapped')->values(['True', 'False', 'Unknown'])->end()
             ->end()
         ;
     }

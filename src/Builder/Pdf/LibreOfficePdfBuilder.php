@@ -108,6 +108,32 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * Resets the metadata.
+     *
+     * @see https://gotenberg.dev/docs/routes#metadata-chromium
+     * @see https://exiftool.org/TagNames/XMP.html#pdf
+     *
+     * @param array<string, mixed> $metadata
+     */
+    public function metadata(array $metadata): static
+    {
+        $this->formFields['metadata'] = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * The metadata to write.
+     */
+    public function addMetadata(string $key, string $value): static
+    {
+        $this->formFields['metadata'] ??= [];
+        $this->formFields['metadata'][$key] = $value;
+
+        return $this;
+    }
+
     public function getMultipartFormData(): array
     {
         if ([] === ($this->formFields['files'] ?? [])) {
@@ -130,6 +156,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'landscape' => $this->landscape($value),
             'native_page_ranges' => $this->nativePageRanges($value),
             'fail_on_console_exceptions' => $this->merge($value),
+            'metadata' => $this->metadata($value),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
