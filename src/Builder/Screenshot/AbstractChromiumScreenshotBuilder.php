@@ -87,6 +87,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     /**
      * The compression quality from range 0 to 100 (jpeg only). (default 100).
      *
+     * @param int<0, 100> $quality
+     *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      */
     public function quality(int $quality): static
