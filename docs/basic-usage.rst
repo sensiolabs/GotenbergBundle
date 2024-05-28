@@ -46,7 +46,7 @@ Requirements
 Convert an HTML into PDF
 ------------------------
 
-After injecting ``Gotenberg`` you simply need to call the method ``url``,
+After injecting ``GotenbergPdfInterface`` you simply need to call the method ``url``,
 which will return a ``UrlPdfBuilder`` instance.
 
 ``UrlPdfBuilder`` lets you pass the URL of the page you want to convert into PDF
@@ -58,11 +58,11 @@ to the method ``content``.
 
     namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
     class YourController
     {
-        public function yourControllerMethod(Gotenberg $gotenberg): Response
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             $urlPdfBuilder = $gotenberg->url();
             return $urlPdfBuilder
@@ -90,11 +90,11 @@ variables to the templates through the second argument of the methods
 
     namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
     class YourController
     {
-        public function yourControllerMethod(Gotenberg $gotenberg): Response
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             $datas = // Retrieve some datas
 
@@ -129,11 +129,11 @@ that expects the local path of the Markdown file to convert.
 
     namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
     class YourController extends AbstractController
     {
-        public function yourControllerMethod(Gotenberg $gotenberg): Response
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             $markdownBuilder = $gotenberg->markdown();
             return $markdownBuilder
@@ -177,6 +177,8 @@ Markdown file. The twig template that receives your markdown file will look like
 Convert an Office document into PDF
 -----------------------------------
 
+.. TODO extension
+
 To convert an Office file to pdf, just pass the file's path to the ``OfficePdfBuilder::officeFile`` method.
 
 .. code-block:: php
@@ -185,11 +187,11 @@ To convert an Office file to pdf, just pass the file's path to the ``OfficePdfBu
 
     namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
     class YourController
     {
-        public function yourControllerMethod(Gotenberg $gotenberg): Response
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             $office = $gotenberg->office();
             return $office
@@ -219,11 +221,11 @@ dumped into this file.
 
     namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Pdf\Gotenberg;
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
     class YourController
     {
-        public function yourControllerMethod(Gotenberg $gotenberg): Response
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             $datas = // Retrieve some datas
 

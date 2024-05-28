@@ -15,6 +15,9 @@ for Symfony-based projects. Features includes:
 * Generate a PDF file from twig template
 * Generate a PDF file from Markdown
 * Convert an Office document into PDF
+* Generate a Screenshot file from URL
+* Generate a Screenshot file from twig template
+* Generate a Screenshot file from Markdown
 
 Chapters
 --------
