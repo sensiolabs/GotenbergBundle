@@ -47,9 +47,8 @@ final class GotenbergScreenshotTest extends KernelTestCase
         $builder = $gotenberg->html()
             ->setConfigurations([
                 'format' => 'jpeg',
-                'quality' => 50
-            ],
-            )
+                'quality' => 50,
+            ])
         ;
         $builder->contentFile(__DIR__.'/../Fixtures/files/content.html');
         $multipartFormData = $builder->getMultipartFormData();
