@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\Part;
+use Sensiolabs\GotenbergBundle\Enum\ScreenshotFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -74,13 +75,11 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     /**
      * The image compression format, either "png", "jpeg" or "webp". (default png).
      *
-     * @param 'png'|'jpeg'|'webp' $format
-     *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      */
-    public function format(string $format): static
+    public function format(ScreenshotFormat $format): static
     {
-        $this->formFields['format'] = $format;
+        $this->formFields['format'] = $format->value;
 
         return $this;
     }
@@ -381,7 +380,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
             'width' => $this->width($value),
             'height' => $this->height($value),
             'clip' => $this->clip($value),
-            'format' => $this->format($value),
+            'format' => $this->format(ScreenshotFormat::from($value)),
             'quality' => $this->quality($value),
             'omit_background' => $this->omitBackground($value),
             'optimize_for_speed' => $this->optimizeForSpeed($value),
