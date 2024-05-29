@@ -27,7 +27,7 @@ final class ConfigurationTest extends TestCase
     /**
      * @return iterable<string, list<array<string, mixed>>>
      */
-    public static function provideValidHtmlConfiguration(): iterable
+    public static function provideValidPdfHtmlConfiguration(): iterable
     {
         yield 'paper size config' => [['default_options' => ['pdf' => ['html' => ['paper_width' => 33.1, 'paper_height' => 46.8, 'margin_top' => 1, 'margin_bottom' => 1, 'margin_left' => 1, 'margin_right' => 1]]]]];
         yield 'styles config' => [['default_options' => ['pdf' => ['html' => ['prefer_css_page_size' => true, 'print_background' => true, 'omit_background' => true, 'landscape' => true]]]]];
@@ -42,6 +42,25 @@ final class ConfigurationTest extends TestCase
         yield 'Update accepted status codes from the main page' => [['default_options' => ['pdf' => ['html' => ['fail_on_http_status_codes' => [401, 403]]]]]];
         yield 'waits for the network idle' => [['default_options' => ['pdf' => ['html' => ['skip_network_idle_event' => true]]]]];
         yield 'add cookies to store' => [['default_options' => ['pdf' => ['html' => ['cookies' => [['name' => 'my_cookie', 'value' => 'symfony', 'domain' => 'symfony.com', 'path' => null, 'secure' => true, 'httpOnly' => true, 'sameSite' => 'Lax']]]]]]];
+    }
+
+    /**
+     * @return iterable<string, list<array<string, mixed>>>
+     */
+    public static function provideValidScreenshotHtmlConfiguration(): iterable
+    {
+        yield 'screenshot size config' => [['default_options' => ['screenshot' => ['html' => ['width' => 500, 'height' => 500]]]]];
+        yield 'clip config' => [['default_options' => ['screenshot' => ['html' => ['clip' => true]]]]];
+        yield 'screenshot format' => [['default_options' => ['screenshot' => ['html' => ['format' => 'webp']]]]];
+        yield 'quality' => [['default_options' => ['screenshot' => ['html' => ['quality' => 75]]]]];
+        yield 'omit background' => [['default_options' => ['screenshot' => ['html' => ['omit_background' => true]]]]];
+        yield 'optimize for speed' => [['default_options' => ['screenshot' => ['html' => ['optimize_for_speed' => true]]]]];
+        yield 'delay to wait before generate' => [['default_options' => ['screenshot' => ['html' => ['wait_delay' => '5s', 'wait_for_expression' => 'window.globalVar === "ready"']]]]];
+        yield 'emulated media type' => [['default_options' => ['screenshot' => ['html' => ['emulated_media_type' => 'screen']]]]];
+        yield 'add cookies to store' => [['default_options' => ['screenshot' => ['html' => ['cookies' => [['name' => 'my_cookie', 'value' => 'symfony', 'domain' => 'symfony.com', 'path' => null, 'secure' => true, 'httpOnly' => true, 'sameSite' => 'Lax']]]]]]];
+        yield 'Update accepted status codes from the main page' => [['default_options' => ['screenshot' => ['html' => ['fail_on_http_status_codes' => [401, 403]]]]]];
+        yield 'exception render' => [['default_options' => ['screenshot' => ['html' => ['fail_on_console_exceptions' => true]]]]];
+        yield 'performance mode' => [['default_options' => ['screenshot' => ['html' => ['skip_network_idle_event' => true]]]]];
     }
 
     public function testDefaultConfig(): void
@@ -62,15 +81,15 @@ final class ConfigurationTest extends TestCase
         $processor = new Processor();
         $processor->processConfiguration(
             new Configuration(),
-            [['html' => ['native_page_ranges' => $range]]],
+            [['default_options' => ['pdf' => ['html' => ['native_page_ranges' => $range]]]]],
         );
     }
 
     /**
      * @param array<string, array<string, mixed>> $optionConfig
      */
-    #[DataProvider('provideValidHtmlConfiguration')]
-    public function testValidHtmlConfiguration(array $optionConfig): void
+    #[DataProvider('provideValidPdfHtmlConfiguration')]
+    public function testValidPdfHtmlConfiguration(array $optionConfig): void
     {
         $processor = new Processor();
         /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
@@ -102,6 +121,25 @@ final class ConfigurationTest extends TestCase
 
         $config = $this->cleanOptions($config['default_options']['pdf']['html']);
         self::assertEquals(['extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue']], $config);
+    }
+
+    /**
+     * @param array<string, array<string, mixed>> $optionConfig
+     */
+    #[DataProvider('provideValidScreenshotHtmlConfiguration')]
+    public function testValidScreenshotHtmlConfiguration(array $optionConfig): void
+    {
+        $processor = new Processor();
+        /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
+        $config = $processor->processConfiguration(new Configuration(), [
+            [
+                'base_uri' => 'http://gotenberg:3000',
+                ...$optionConfig,
+            ],
+        ]);
+
+        $config = $this->cleanOptions($config['default_options']['screenshot']['html']);
+        self::assertEquals($optionConfig['default_options']['screenshot']['html'], $config);
     }
 
     /**

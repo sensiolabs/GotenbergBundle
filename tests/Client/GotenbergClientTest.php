@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[UsesClass(HeaderBag::class)]
 final class GotenbergClientTest extends TestCase
 {
-    public function testCall(): void
+    public function testPdfCall(): void
     {
         /** @var string $stream */
         $stream = file_get_contents(__DIR__.'/../Fixtures/pdf/simple_pdf.pdf');
@@ -37,5 +37,27 @@ final class GotenbergClientTest extends TestCase
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
         self::assertSame('application/pdf', $response->headers->get('content-type'));
+    }
+
+    public function testScreenshotCall(): void
+    {
+        /** @var string $stream */
+        $stream = file_get_contents(__DIR__.'/../Fixtures/screenshot/SensioLabs.png');
+        $mockResponse = new MockResponse($stream, [
+            'http_code' => Response::HTTP_OK,
+            'response_headers' => [
+                'accept-ranges' => 'bytes',
+                'content-disposition' => 'attachment; filename="SensioLabs.png"',
+                'content-type' => 'image/png',
+            ],
+        ]);
+
+        $mockClient = new MockHttpClient([$mockResponse]);
+
+        $gotenbergClient = new GotenbergClient('http://localhost:3000', $mockClient);
+        $response = $gotenbergClient->call('/forms/chromium/screenshot/url', []);
+
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame('image/png', $response->headers->get('content-type'));
     }
 }
