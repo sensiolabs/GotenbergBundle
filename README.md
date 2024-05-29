@@ -1,22 +1,155 @@
-Gotenberg Bundle
-=============================
+# Gotenberg Bundle
 
-This bundle allows you to generate, stream and save PDF locally.
+## What is it ?
 
-Documentation
--------------
+This bundle allows you to generate, stream and save PDF locally from URL, HTML and Markdown.  
+It can convert any office file into PDF.  
+It also helps you to generate, stream and save screenshot locally from URL, HTML and Markdown.  
 
-The entry point of the documentation can be found in the file `docs/index.rst`
+## How to install
 
-[Read the documentation](docs/index.rst)
+> [!CAUTION]
+> To use this bundle, you first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation).
 
-Credits
--------
+Install the bundle using composer :
+
+```bash
+  composer require sensiolabs/gotenberg-bundle
+```
+
+If not using Symfony Flex, enable the bundle by adding it to the list of
+registered bundles in the ``config/bundles.php`` file of your project:
+
+```php
+    // config/bundles.php
+
+    return [
+        // ...
+        SensioLabs\GotenbergBundle\SensioLabsGotenbergBundle::class => ['all' => true],
+    ];
+
+```
+
+## Basic Usage
+
+### URL
+
+After injecting ``GotenbergPdfInterface`` you simply need to call the method ``url``,
+which will return a ``UrlPdfBuilder`` instance.
+
+``UrlPdfBuilder`` lets you pass the URL of the page you want to convert into PDF
+to the method ``content``.
+
+````php
+    namespace App\Controller;
+
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+    class YourController
+    {
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+        {
+            $urlPdfBuilder = $gotenberg->url();
+            return $urlPdfBuilder
+                ->url('https://sensiolabs.com/fr/')
+                ->generate(); // will return directly a stream response
+        }
+    }
+````
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#url-into-pdf-route).
+
+### Twig
+
+> [!WARNING]  
+> Every twig templates you pass to Gotenberg need to have the following structure.  
+> Even Header or Footer parts.
+> ````html
+>        <!DOCTYPE html>
+>        <html lang="en">
+>          <head>
+>            <meta charset="utf-8" />
+>            <title>My PDF</title>
+>          </head>
+>          <body>
+>            <!-- Your code goes here -->
+>          </body>
+>        </html>
+> ````
+
+````php
+    namespace App\Controller;
+
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+    class YourController
+    {
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+        {
+            $htmlPdfBuilder = $gotenberg->html();
+            return $htmlPdfBuilder
+                ->content('twig_simple_pdf.html.twig', [
+                    'my_var' => 'value'
+                ])
+                ->generate(); // will return directly a stream response
+        }
+    }
+````
+
+If a template needs to link to a static asset (e.g. an image), this bundle provides a gotenberg_asset()
+Twig function to help generate that path.
+
+This function work as [asset() Twig function](https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets) 
+and fetch your assets in the public folder of your application
+If your files are in another folder, you can override the default value of ``assets_directory`` in your
+configuration file ``config/sensiolabs_gotenberg.yml``.
+The path provided can be relative as well as absolute.
+
+````html
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <title>PDF body</title>
+        </head>
+        <body>
+        <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
+        <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
+            <main>
+                <h1>Hello world!</h1>
+            </main>
+        </body>
+    </html>
+````
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#html-file-into-pdf-route).
+
+### Advanced Usage
+
+1. [Configuration](docs/configuration.md)
+2. [Add header / footer]()
+3. [Convert from any following office file]()
+   '123', '602', 'abw', 'bib', 'bmp', 'cdr', 'cgm', 'cmx', 'csv', 'cwk', 'dbf', 'dif', 'doc', 'docm',
+   'docx', 'dot', 'dotm', 'dotx', 'dxf', 'emf', 'eps', 'epub', 'fodg', 'fodp', 'fods', 'fodt', 'fopd',
+   'gif', 'htm', 'html', 'hwp', 'jpeg', 'jpg', 'key', 'ltx', 'lwp', 'mcw', 'met', 'mml', 'mw', 'numbers',
+   'odd', 'odg', 'odm', 'odp', 'ods', 'odt', 'otg', 'oth', 'otp', 'ots', 'ott', 'pages', 'pbm', 'pcd',
+   'pct', 'pcx', 'pdb', 'pdf', 'pgm', 'png', 'pot', 'potm', 'potx', 'ppm', 'pps', 'ppt', 'pptm', 'pptx',
+   'psd', 'psw', 'pub', 'pwp', 'pxl', 'ras', 'rtf', 'sda', 'sdc', 'sdd', 'sdp', 'sdw', 'sgl', 'slk',
+   'smf', 'stc', 'std', 'sti', 'stw', 'svg', 'svm', 'swf', 'sxc', 'sxd', 'sxg', 'sxi', 'sxm', 'sxw',
+   'tga', 'tif', 'tiff', 'txt', 'uof', 'uop', 'uos', 'uot', 'vdx', 'vor', 'vsd', 'vsdm', 'vsdx', 'wb2',
+   'wk1', 'wks', 'wmf', 'wpd', 'wpg', 'wps', 'xbm', 'xhtml', 'xls', 'xlsb', 'xlsm', 'xlsx', 'xlt', 'xltm',
+   'xltx', 'xlw', 'xml', 'xpm', 'zabw'
+4. [Take screenshots]()
+
+## Credits
 
 This bundle was inspired by [Gotenberg PHP](https://github.com/gotenberg/gotenberg-php).
 - [Steven RENAUX](https://github.com/StevenRenaux)
 - [All Contributors](../../contributors)
 
-Licence
--------
+## Licence
+
 MIT License (MIT): see the [License File](LICENSE) for more details.
+
