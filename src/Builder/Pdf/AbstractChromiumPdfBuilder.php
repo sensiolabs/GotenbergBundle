@@ -78,15 +78,10 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    public function paperStandardSize(PaperSizeInterface $paperSize, Unit $unit = Unit::Inches): static
+    public function paperStandardSize(PaperSizeInterface $paperSize): static
     {
-        if ($paperSize instanceof PaperSize && Unit::Inches !== $unit) {
-            // TODO : log warning if unit not inches
-            $unit = Unit::Inches;
-        }
-
-        $this->paperWidth($paperSize->width(), $unit);
-        $this->paperHeight($paperSize->height(), $unit);
+        $this->paperWidth($paperSize->width(), $paperSize->unit());
+        $this->paperHeight($paperSize->height(), $paperSize->unit());
 
         return $this;
     }

@@ -4,16 +4,42 @@ namespace Sensiolabs\GotenbergBundle\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
+use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
+use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
+use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
+use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
+use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\GotenbergPdf;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(GotenbergPdf::class)]
+#[UsesClass(AbstractChromiumPdfBuilder::class)]
+#[UsesClass(AbstractPdfBuilder::class)]
+#[UsesClass(HtmlPdfBuilder::class)]
+#[UsesClass(MarkdownPdfBuilder::class)]
+#[UsesClass(LibreOfficePdfBuilder::class)]
+#[UsesClass(UrlPdfBuilder::class)]
+#[UsesClass(GotenbergClient::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
+#[UsesClass(TraceablePdfBuilder::class)]
+#[UsesClass(TraceableGotenbergPdf::class)]
+#[UsesClass(GotenbergPass::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(SensiolabsGotenbergExtension::class)]
+#[UsesClass(SensiolabsGotenbergBundle::class)]
 final class GotenbergPdfTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void

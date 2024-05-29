@@ -10,6 +10,6 @@ enum Unit: string
     case Points = 'pt';
     case Pixels = 'px';
     case Millimeters = 'mm';
-    case Centimetres = 'cm';
+    case Centimeters = 'cm';
     case Picas = 'pc';
 }

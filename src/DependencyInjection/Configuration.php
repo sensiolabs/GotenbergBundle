@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use function array_map;
 
 class Configuration implements ConfigurationInterface
 {
@@ -204,7 +205,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('emulated_media_type')
                 ->info('The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type')
-                ->values([EmulatedMediaType::Screen->value, EmulatedMediaType::Print->value])
+                ->values(array_map(static fn(EmulatedMediaType $case): string => $case->value, EmulatedMediaType::cases()))
                 ->defaultNull()
             ->end()
             ->arrayNode('cookies')
@@ -273,7 +274,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('pdf_format')
                 ->info('Convert the resulting PDF into the given PDF/A format - default None. https://gotenberg.dev/docs/routes#pdfa-chromium')
-                ->values([PdfFormat::Pdf1b->value, PdfFormat::Pdf2b->value, PdfFormat::Pdf3b->value])
+                ->values(array_map(static fn(PdfFormat $case): string => $case->value, PdfFormat::cases()))
                 ->defaultNull()
             ->end()
             ->booleanNode('pdf_universal_access')
@@ -301,7 +302,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('format')
                 ->info('The image compression format, either "png", "jpeg" or "webp" - default png. https://gotenberg.dev/docs/routes#screenshots-route')
-                ->values([ScreenshotFormat::Png->value, ScreenshotFormat::Jpeg->value, ScreenshotFormat::Webp->value])
+                ->values(array_map(static fn(ScreenshotFormat $case): string => $case->value, ScreenshotFormat::cases()))
                 ->defaultNull()
             ->end()
             ->integerNode('quality')
@@ -340,7 +341,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('emulated_media_type')
                 ->info('The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type')
-                ->values([EmulatedMediaType::Screen->value, EmulatedMediaType::Print->value])
+                ->values(array_map(static fn(EmulatedMediaType $case): string => $case->value, EmulatedMediaType::cases()))
                 ->defaultNull()
             ->end()
             ->arrayNode('cookies')
@@ -437,7 +438,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->enumNode('pdf_format')
                     ->info('Convert the resulting PDF into the given PDF/A format - default None. https://gotenberg.dev/docs/routes#pdfa-chromium')
-                    ->values([PdfFormat::Pdf1b->value, PdfFormat::Pdf2b->value, PdfFormat::Pdf3b->value])
+                    ->values(array_map(static fn(PdfFormat $case): string => $case->value, PdfFormat::cases()))
                     ->defaultNull()
                 ->end()
                 ->booleanNode('pdf_universal_access')

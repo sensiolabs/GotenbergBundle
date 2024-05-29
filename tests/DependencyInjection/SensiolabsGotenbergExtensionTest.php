@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,6 +13,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 #[CoversClass(SensiolabsGotenbergExtension::class)]
 #[UsesClass(ContainerBuilder::class)]
+#[UsesClass(Configuration::class)]
 final class SensiolabsGotenbergExtensionTest extends TestCase
 {
     private function getContainerBuilder(bool $kernelDebug = false): ContainerBuilder

@@ -4,6 +4,10 @@ namespace Sensiolabs\GotenbergBundle\Enum;
 
 enum PaperSize implements PaperSizeInterface
 {
+    case Letter;
+    case Legal;
+    case Tabloid;
+    case Ledger;
     case A0;
     case A1;
     case A2;
@@ -15,6 +19,10 @@ enum PaperSize implements PaperSizeInterface
     public function width(): float
     {
         return match ($this) {
+            PaperSize::Letter => 8.5,
+            PaperSize::Legal => 8.5,
+            PaperSize::Tabloid => 11,
+            PaperSize::Ledger => 17,
             PaperSize::A0 => 33.1,
             PaperSize::A1 => 23.4,
             PaperSize::A2 => 16.54,
@@ -28,6 +36,10 @@ enum PaperSize implements PaperSizeInterface
     public function height(): float
     {
         return match ($this) {
+            PaperSize::Letter => 11,
+            PaperSize::Legal => 14,
+            PaperSize::Tabloid => 17,
+            PaperSize::Ledger => 11,
             PaperSize::A0 => 46.8,
             PaperSize::A1 => 33.1,
             PaperSize::A2 => 23.4,
@@ -36,5 +48,10 @@ enum PaperSize implements PaperSizeInterface
             PaperSize::A5 => 8.27,
             PaperSize::A6 => 5.83,
         };
+    }
+
+    public function unit(): Unit
+    {
+        return Unit::Inches;
     }
 }
