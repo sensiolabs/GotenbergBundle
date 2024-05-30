@@ -19,34 +19,34 @@ enum PaperSize implements PaperSizeInterface
     public function width(): float
     {
         return match ($this) {
-            PaperSize::Letter => 8.5,
-            PaperSize::Legal => 8.5,
-            PaperSize::Tabloid => 11,
-            PaperSize::Ledger => 17,
-            PaperSize::A0 => 33.1,
-            PaperSize::A1 => 23.4,
-            PaperSize::A2 => 16.54,
-            PaperSize::A3 => 11.7,
-            PaperSize::A4 => 8.27,
-            PaperSize::A5 => 5.83,
-            PaperSize::A6 => 4.13,
+            self::Letter => 8.5,
+            self::Legal => 8.5,
+            self::Tabloid => 11,
+            self::Ledger => 17,
+            self::A0 => 33.1,
+            self::A1 => 23.4,
+            self::A2 => 16.54,
+            self::A3 => 11.7,
+            self::A4 => 8.27,
+            self::A5 => 5.83,
+            self::A6 => 4.13,
         };
     }
 
     public function height(): float
     {
         return match ($this) {
-            PaperSize::Letter => 11,
-            PaperSize::Legal => 14,
-            PaperSize::Tabloid => 17,
-            PaperSize::Ledger => 11,
-            PaperSize::A0 => 46.8,
-            PaperSize::A1 => 33.1,
-            PaperSize::A2 => 23.4,
-            PaperSize::A3 => 16.54,
-            PaperSize::A4 => 11.7,
-            PaperSize::A5 => 8.27,
-            PaperSize::A6 => 5.83,
+            self::Letter => 11,
+            self::Legal => 14,
+            self::Tabloid => 17,
+            self::Ledger => 11,
+            self::A0 => 46.8,
+            self::A1 => 33.1,
+            self::A2 => 23.4,
+            self::A3 => 16.54,
+            self::A4 => 11.7,
+            self::A5 => 8.27,
+            self::A6 => 5.83,
         };
     }
 
