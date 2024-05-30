@@ -4,6 +4,8 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enum\PaperSize;
@@ -15,8 +17,11 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(HtmlPdfBuilder::class)]
+#[UsesClass(AbstractChromiumPdfBuilder::class)]
+#[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
+#[UsesClass(PaperSize::class)]
 final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 {
     public function testWithConfigurations(): void
@@ -38,12 +43,12 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
         self::assertSame('index.html', $multipartFormData[0]['files']->getFilename());
 
-        self::assertSame(['paperWidth' => '33.1'], $multipartFormData[1]);
-        self::assertSame(['paperHeight' => '46.8'], $multipartFormData[2]);
-        self::assertSame(['marginTop' => '1'], $multipartFormData[3]);
-        self::assertSame(['marginBottom' => '1'], $multipartFormData[4]);
-        self::assertSame(['marginLeft' => '1'], $multipartFormData[5]);
-        self::assertSame(['marginRight' => '1'], $multipartFormData[6]);
+        self::assertSame(['paperWidth' => '33.1in'], $multipartFormData[1]);
+        self::assertSame(['paperHeight' => '46.8in'], $multipartFormData[2]);
+        self::assertSame(['marginTop' => '1in'], $multipartFormData[3]);
+        self::assertSame(['marginBottom' => '1in'], $multipartFormData[4]);
+        self::assertSame(['marginLeft' => '1in'], $multipartFormData[5]);
+        self::assertSame(['marginRight' => '1in'], $multipartFormData[6]);
         self::assertSame(['preferCssPageSize' => 'true'], $multipartFormData[7]);
         self::assertSame(['printBackground' => 'true'], $multipartFormData[8]);
         self::assertSame(['omitBackground' => 'true'], $multipartFormData[9]);
@@ -116,8 +121,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertArrayHasKey('paperWidth', $multipartFormData[1]);
         self::assertArrayHasKey('paperHeight', $multipartFormData[2]);
 
-        self::assertSame((string) PaperSize::A3->width(), $multipartFormData[1]['paperWidth']);
-        self::assertSame((string) PaperSize::A3->height(), $multipartFormData[2]['paperHeight']);
+        self::assertSame((string) PaperSize::A3->width().'in', $multipartFormData[1]['paperWidth']);
+        self::assertSame((string) PaperSize::A3->height().'in', $multipartFormData[2]['paperHeight']);
     }
 
     public function testWithHeader(): void

@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
-use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Enum\Part;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
@@ -38,20 +38,23 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
             'assets' => static function (array $value): array {
                 return ['files' => $value];
             },
-            PdfPart::HeaderPart->value => static function (DataPart $value): array {
+            Part::Header->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
-            PdfPart::BodyPart->value => static function (DataPart $value): array {
+            Part::Body->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
-            PdfPart::FooterPart->value => static function (DataPart $value): array {
+            Part::Footer->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
             'failOnHttpStatusCodes' => function (mixed $value): array {
                 return $this->encodeData('failOnHttpStatusCodes', $value);
             },
             'cookies' => function (mixed $value): array {
-                return $this->encodeData('cookies', array_values($value));
+                return $this->encodeData('cookies', \array_values($value));
+            },
+            'metadata' => function (mixed $value): array {
+                return $this->encodeData('metadata', $value);
             },
         ];
     }

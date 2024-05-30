@@ -3,8 +3,11 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Enum\PaperSize;
 use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
-use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Enum\Part;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enum\Unit;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -37,6 +40,18 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Define whether to print the entire content in one single page.
+     *
+     * If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
+     */
+    public function singlePage(bool $bool = true): static
+    {
+        $this->formFields['singlePage'] = $bool;
+
+        return $this;
+    }
+
+    /**
      * Overrides the default paper size, in inches.
      *
      * Examples of paper size (width x height):
@@ -55,32 +70,32 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function paperSize(float $width, float $height): static
+    public function paperSize(float $width, float $height, Unit $unit = Unit::Inches): static
     {
-        $this->paperWidth($width);
-        $this->paperHeight($height);
+        $this->paperWidth($width, $unit);
+        $this->paperHeight($height, $unit);
 
         return $this;
     }
 
     public function paperStandardSize(PaperSizeInterface $paperSize): static
     {
-        $this->paperWidth($paperSize->width());
-        $this->paperHeight($paperSize->height());
+        $this->paperWidth($paperSize->width(), $paperSize->unit());
+        $this->paperHeight($paperSize->height(), $paperSize->unit());
 
         return $this;
     }
 
-    public function paperWidth(float $width): static
+    public function paperWidth(float $width, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['paperWidth'] = $width;
+        $this->formFields['paperWidth'] = $width.$unit->value;
 
         return $this;
     }
 
-    public function paperHeight(float $height): static
+    public function paperHeight(float $height, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['paperHeight'] = $height;
+        $this->formFields['paperHeight'] = $height.$unit->value;
 
         return $this;
     }
@@ -90,40 +105,40 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    public function margins(float $top, float $bottom, float $left, float $right): static
+    public function margins(float $top, float $bottom, float $left, float $right, Unit $unit = Unit::Inches): static
     {
-        $this->marginTop($top);
-        $this->marginBottom($bottom);
-        $this->marginLeft($left);
-        $this->marginRight($right);
+        $this->marginTop($top, $unit);
+        $this->marginBottom($bottom, $unit);
+        $this->marginLeft($left, $unit);
+        $this->marginRight($right, $unit);
 
         return $this;
     }
 
-    public function marginTop(float $top): static
+    public function marginTop(float $top, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['marginTop'] = $top;
+        $this->formFields['marginTop'] = $top.$unit->value;
 
         return $this;
     }
 
-    public function marginBottom(float $bottom): static
+    public function marginBottom(float $bottom, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['marginBottom'] = $bottom;
+        $this->formFields['marginBottom'] = $bottom.$unit->value;
 
         return $this;
     }
 
-    public function marginLeft(float $left): static
+    public function marginLeft(float $left, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['marginLeft'] = $left;
+        $this->formFields['marginLeft'] = $left.$unit->value;
 
         return $this;
     }
 
-    public function marginRight(float $right): static
+    public function marginRight(float $right, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['marginRight'] = $right;
+        $this->formFields['marginRight'] = $right.$unit->value;
 
         return $this;
     }
@@ -209,7 +224,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function header(string $template, array $context = []): static
     {
-        return $this->withRenderedPart(PdfPart::HeaderPart, $template, $context);
+        return $this->withRenderedPart(Part::Header, $template, $context);
     }
 
     /**
@@ -220,7 +235,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function footer(string $template, array $context = []): static
     {
-        return $this->withRenderedPart(PdfPart::FooterPart, $template, $context);
+        return $this->withRenderedPart(Part::Footer, $template, $context);
     }
 
     /**
@@ -228,7 +243,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function headerFile(string $path): static
     {
-        return $this->withPdfPartFile(PdfPart::HeaderPart, $path);
+        return $this->withPdfPartFile(Part::Header, $path);
     }
 
     /**
@@ -236,7 +251,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function footerFile(string $path): static
     {
-        return $this->withPdfPartFile(PdfPart::FooterPart, $path);
+        return $this->withPdfPartFile(Part::Footer, $path);
     }
 
     /**
@@ -422,9 +437,15 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @See https://gotenberg.dev/docs/routes#pdfa-chromium.
      */
-    public function pdfFormat(string $format): static
+    public function pdfFormat(PdfFormat|null $format = null): static
     {
-        $this->formFields['pdfa'] = $format;
+        if (null === $format) {
+            unset($this->formFields['pdfa']);
+
+            return $this;
+        }
+
+        $this->formFields['pdfa'] = $format->value;
 
         return $this;
     }
@@ -441,7 +462,33 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    protected function withPdfPartFile(PdfPart $pdfPart, string $path): static
+    /**
+     * Resets the metadata.
+     *
+     * @see https://gotenberg.dev/docs/routes#metadata-chromium
+     * @see https://exiftool.org/TagNames/XMP.html#pdf
+     *
+     * @param array<string, mixed> $metadata
+     */
+    public function metadata(array $metadata): static
+    {
+        $this->formFields['metadata'] = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * The metadata to write.
+     */
+    public function addMetadata(string $key, string $value): static
+    {
+        $this->formFields['metadata'] ??= [];
+        $this->formFields['metadata'][$key] = $value;
+
+        return $this;
+    }
+
+    protected function withPdfPartFile(Part $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
             new DataPartFile($this->asset->resolve($path)),
@@ -459,7 +506,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
-    protected function withRenderedPart(PdfPart $pdfPart, string $template, array $context = []): static
+    protected function withRenderedPart(Part $pdfPart, string $template, array $context = []): static
     {
         if (!$this->twig instanceof Environment) {
             throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
@@ -478,15 +525,22 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     private function addConfiguration(string $configurationName, mixed $value): void
     {
+        $splitAndParseStringWithUnit = static function (mixed $raw, callable $callback): void {
+            [$value, $unit] = sscanf((string) $raw, '%d%s') ?? throw new \InvalidArgumentException(sprintf('Unexpected value "%s", expected format is "%%d%%s"', $raw));
+
+            $callback((float) $value, Unit::tryFrom((string) $unit) ?? Unit::Inches);
+        };
+
         match ($configurationName) {
-            'pdf_format' => $this->pdfFormat($value),
+            'single_page' => $this->singlePage($value),
+            'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'paper_width' => $this->paperWidth($value),
             'paper_height' => $this->paperHeight($value),
-            'margin_top' => $this->marginTop($value),
-            'margin_bottom' => $this->marginBottom($value),
-            'margin_left' => $this->marginLeft($value),
-            'margin_right' => $this->marginRight($value),
+            'margin_top' => $splitAndParseStringWithUnit($value, $this->marginTop(...)),
+            'margin_bottom' => $splitAndParseStringWithUnit($value, $this->marginBottom(...)),
+            'margin_left' => $splitAndParseStringWithUnit($value, $this->marginLeft(...)),
+            'margin_right' => $splitAndParseStringWithUnit($value, $this->marginRight(...)),
             'prefer_css_page_size' => $this->preferCssPageSize($value),
             'print_background' => $this->printBackground($value),
             'omit_background' => $this->omitBackground($value),
@@ -501,6 +555,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
+            'metadata' => $this->metadata($value),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

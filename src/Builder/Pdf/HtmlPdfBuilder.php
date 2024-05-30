@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Enum\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 
@@ -18,7 +18,7 @@ final class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
      */
     public function content(string $template, array $context = []): self
     {
-        return $this->withRenderedPart(PdfPart::BodyPart, $template, $context);
+        return $this->withRenderedPart(Part::Body, $template, $context);
     }
 
     /**
@@ -26,12 +26,12 @@ final class HtmlPdfBuilder extends AbstractChromiumPdfBuilder
      */
     public function contentFile(string $path): self
     {
-        return $this->withPdfPartFile(PdfPart::BodyPart, $path);
+        return $this->withPdfPartFile(Part::Body, $path);
     }
 
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
+        if (!\array_key_exists(Part::Body->value, $this->formFields)) {
             throw new MissingRequiredFieldException('Content is required');
         }
 

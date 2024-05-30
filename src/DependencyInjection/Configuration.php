@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use function array_map;
 
 class Configuration implements ConfigurationInterface
 {
@@ -124,6 +125,10 @@ class Configuration implements ConfigurationInterface
     private function addChromiumPdfOptionsNode(NodeBuilder $treeBuilder): void
     {
         $treeBuilder
+            ->booleanNode('single_page')
+                ->info('Define whether to print the entire content in one single page. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium')
+                ->defaultNull()
+            ->end()
             ->floatNode('paper_width')
                 ->info('Paper width, in inches - default 8.5. https://gotenberg.dev/docs/routes#page-properties-chromium')
                 ->defaultNull()
@@ -132,19 +137,19 @@ class Configuration implements ConfigurationInterface
                 ->info('Paper height, in inches - default 11. https://gotenberg.dev/docs/routes#page-properties-chromium')
                 ->defaultNull()
             ->end()
-            ->floatNode('margin_top')
+            ->scalarNode('margin_top')
                 ->info('Top margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium')
                 ->defaultNull()
             ->end()
-            ->floatNode('margin_bottom')
+            ->scalarNode('margin_bottom')
                 ->info('Bottom margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium')
                 ->defaultNull()
             ->end()
-            ->floatNode('margin_left')
+            ->scalarNode('margin_left')
                 ->info('Left margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium')
                 ->defaultNull()
             ->end()
-            ->floatNode('margin_right')
+            ->scalarNode('margin_right')
                 ->info('Right margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium')
                 ->defaultNull()
             ->end()
@@ -200,7 +205,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('emulated_media_type')
                 ->info('The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type')
-                ->values([EmulatedMediaType::Screen->value, EmulatedMediaType::Print->value])
+                ->values(array_map(static fn(EmulatedMediaType $case): string => $case->value, EmulatedMediaType::cases()))
                 ->defaultNull()
             ->end()
             ->arrayNode('cookies')
@@ -269,13 +274,14 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('pdf_format')
                 ->info('Convert the resulting PDF into the given PDF/A format - default None. https://gotenberg.dev/docs/routes#pdfa-chromium')
-                ->values([PdfFormat::Pdf1b->value, PdfFormat::Pdf2b->value, PdfFormat::Pdf3b->value])
+                ->values(array_map(static fn(PdfFormat $case): string => $case->value, PdfFormat::cases()))
                 ->defaultNull()
             ->end()
             ->booleanNode('pdf_universal_access')
                 ->info('Enable PDF for Universal Access for optimal accessibility - default false. https://gotenberg.dev/docs/routes#console-exceptions')
                 ->defaultNull()
             ->end()
+            ->append($this->addPdfMetadata())
         ;
     }
 
@@ -296,7 +302,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('format')
                 ->info('The image compression format, either "png", "jpeg" or "webp" - default png. https://gotenberg.dev/docs/routes#screenshots-route')
-                ->values([ScreenshotFormat::Png->value, ScreenshotFormat::Jpeg->value, ScreenshotFormat::Webp->value])
+                ->values(array_map(static fn(ScreenshotFormat $case): string => $case->value, ScreenshotFormat::cases()))
                 ->defaultNull()
             ->end()
             ->integerNode('quality')
@@ -335,7 +341,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->enumNode('emulated_media_type')
                 ->info('The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type')
-                ->values([EmulatedMediaType::Screen->value, EmulatedMediaType::Print->value])
+                ->values(array_map(static fn(EmulatedMediaType $case): string => $case->value, EmulatedMediaType::cases()))
                 ->defaultNull()
             ->end()
             ->arrayNode('cookies')
@@ -432,13 +438,37 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->enumNode('pdf_format')
                     ->info('Convert the resulting PDF into the given PDF/A format - default None. https://gotenberg.dev/docs/routes#pdfa-chromium')
-                    ->values([PdfFormat::Pdf1b->value, PdfFormat::Pdf2b->value, PdfFormat::Pdf3b->value])
+                    ->values(array_map(static fn(PdfFormat $case): string => $case->value, PdfFormat::cases()))
                     ->defaultNull()
                 ->end()
                 ->booleanNode('pdf_universal_access')
                     ->info('Enable PDF for Universal Access for optimal accessibility - default false. https://gotenberg.dev/docs/routes#console-exceptions')
                     ->defaultNull()
                 ->end()
+                ->append($this->addPdfMetadata())
+            ->end()
+        ;
+    }
+
+    private function addPdfMetadata(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('metadata');
+
+        return $treeBuilder->getRootNode()
+            ->info('The metadata to write. Not all metadata are writable. Consider taking a look at https://exiftool.org/TagNames/XMP.html#pdf for an (exhaustive?) list of available metadata.')
+            ->children()
+                ->scalarNode('Author')->end()
+                ->scalarNode('Copyright')->end()
+                ->scalarNode('CreationDate')->end()
+                ->scalarNode('Creator')->end()
+                ->scalarNode('Keywords')->end()
+                ->booleanNode('Marked')->end()
+                ->scalarNode('ModDate')->end()
+                ->scalarNode('PDFVersion')->end()
+                ->scalarNode('Producer')->end()
+                ->scalarNode('Subject')->end()
+                ->scalarNode('Title')->end()
+                ->enumNode('Trapped')->values(['True', 'False', 'Unknown'])->end()
             ->end()
         ;
     }

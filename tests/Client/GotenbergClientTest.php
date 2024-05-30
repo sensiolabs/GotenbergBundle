@@ -6,12 +6,14 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
+use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversClass(GotenbergClient::class)]
+#[UsesClass(GotenbergResponse::class)]
 #[UsesClass(MockResponse::class)]
 #[UsesClass(MockHttpClient::class)]
 #[UsesClass(HeaderBag::class)]
