@@ -9,29 +9,16 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enum\Unit;
+use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Filesystem\Filesystem;
 
 #[CoversClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
 class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 {
-    protected static GotenbergClientInterface $gotenbergClient;
-    protected static AssetBaseDirFormatter $assetBaseDirFormatter;
-
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        self::$assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
-    }
-
-    protected function setUp(): void
-    {
-        self::$gotenbergClient = $this->createMock(GotenbergClientInterface::class);
-    }
-
     public static function configurationIsCorrectlySetProvider(): \Generator
     {
         yield 'single_page' => ['single_page', false, [
@@ -131,9 +118,117 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         self::assertEquals($expected, $builder->getMultipartFormData()[0]);
     }
 
-    private function getChromiumPdfBuilder(): AbstractChromiumPdfBuilder
+    public function testPaperSizeAppliesWidthAndHeight(): void
     {
-        return new class(self::$gotenbergClient, self::$assetBaseDirFormatter, self::$twig) extends AbstractChromiumPdfBuilder {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->paperSize(10.0, 50.5, Unit::Centimeters);
+
+        self::assertEquals([
+            ['paperWidth' => '10cm'],
+            ['paperHeight' => '50.5cm'],
+        ], $builder->getMultipartFormData());
+    }
+
+    public function testPaperStandardSizeAppliesCorrectly(): void
+    {
+        $paperStandardSize = new class() implements PaperSizeInterface {
+            public function width(): float
+            {
+                return 10.0;
+            }
+
+            public function height(): float
+            {
+                return 50.5;
+            }
+
+            public function unit(): Unit
+            {
+                return Unit::Pixels;
+            }
+        };
+
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->paperStandardSize($paperStandardSize);
+
+        self::assertEquals([
+            ['paperWidth' => '10px'],
+            ['paperHeight' => '50.5px'],
+        ], $builder->getMultipartFormData());
+    }
+
+    public function testMarginsAppliesCorrectly(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->margins(1.1, 2.2, 3.3, 4.4, Unit::Picas);
+
+        self::assertEquals([
+            ['marginTop' => '1.1pc'],
+            ['marginBottom' => '2.2pc'],
+            ['marginLeft' => '3.3pc'],
+            ['marginRight' => '4.4pc'],
+        ], $builder->getMultipartFormData());
+    }
+
+    public function testPdfFormatCanBeReset(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->pdfFormat(PdfFormat::Pdf1b);
+
+        self::assertEquals([
+            ['pdfa' => 'PDF/A-1b'],
+        ], $builder->getMultipartFormData());
+
+        $builder->pdfFormat(null);
+
+        self::assertEquals([], $builder->getMultipartFormData());
+    }
+
+    public function testHeaderIsCorrectlyRendered(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->header('templates/header.html.twig', ['name' => 'World']);
+
+        $data = $builder->getMultipartFormData()[0];
+
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My Header</title>
+            </head>
+            <body>
+                <h1>Hello World!</h1>
+            </body>
+        </html>
+
+        HTML;
+
+        $this->assertFile($data, 'header.html', $expected);
+    }
+
+    public function testThrowIfTwigNotAvailable(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Twig is required to use "Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder::withRenderedPart" method. Try to run "composer require symfony/twig-bundle".');
+
+        $builder = $this->getChromiumPdfBuilder(false);
+        $builder->header('header.html.twig', ['name' => 'World']);
+    }
+
+    public function testThrowIfTwigTemplateIsInvalid(): void
+    {
+        $this->expectException(PdfPartRenderingException::class);
+        $this->expectExceptionMessage('Could not render template "templates/invalid.html.twig" into PDF part "header.html". Unexpected character "!".');
+
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->header('templates/invalid.html.twig');
+    }
+
+    private function getChromiumPdfBuilder(false|null $twig = null): AbstractChromiumPdfBuilder
+    {
+        return new class(self::$gotenbergClient, self::$assetBaseDirFormatter, null === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
             protected function getEndpoint(): string
             {
                 return '/fake/endpoint';
