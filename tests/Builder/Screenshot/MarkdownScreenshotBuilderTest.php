@@ -4,6 +4,8 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -12,6 +14,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(MarkdownScreenshotBuilder::class)]
+#[UsesClass(AbstractScreenshotBuilder::class)]
+#[UsesClass(AbstractChromiumScreenshotBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
 final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase

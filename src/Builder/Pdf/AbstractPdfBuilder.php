@@ -51,7 +51,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
                 return $this->encodeData('failOnHttpStatusCodes', $value);
             },
             'cookies' => function (mixed $value): array {
-                return $this->encodeData('cookies', \array_values($value));
+                return $this->encodeData('cookies', array_values($value));
             },
             'metadata' => function (mixed $value): array {
                 return $this->encodeData('metadata', $value);
@@ -164,9 +164,19 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
             ]];
         }
 
-        if (\is_int($value) || \is_float($value)) {
+        if (\is_int($value)) {
             return [[
                 $key => (string) $value,
+            ]];
+        }
+
+        if (\is_float($value)) {
+            [$left, $right] = sscanf((string) $value, '%d.%s');
+
+            $right ??= '0';
+
+            return [[
+                $key => "{$left}.{$right}",
             ]];
         }
 
