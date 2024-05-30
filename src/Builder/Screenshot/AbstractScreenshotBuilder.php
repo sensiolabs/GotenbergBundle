@@ -161,9 +161,19 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
             ]];
         }
 
-        if (\is_int($value) || \is_float($value)) {
+        if (\is_int($value)) {
             return [[
                 $key => (string) $value,
+            ]];
+        }
+
+        if (\is_float($value)) {
+            [$left, $right] = sscanf((string) $value, '%d.%s') ?? [$value, ''];
+
+            $right ??= '0';
+
+            return [[
+                $key => "{$left}.{$right}",
             ]];
         }
 

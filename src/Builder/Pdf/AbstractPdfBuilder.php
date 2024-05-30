@@ -171,7 +171,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         }
 
         if (\is_float($value)) {
-            [$left, $right] = sscanf((string) $value, '%d.%s');
+            [$left, $right] = sscanf((string) $value, '%d.%s') ?? [$value, ''];
 
             $right ??= '0';
 
