@@ -17,11 +17,12 @@ abstract class AbstractBuilderTestCase extends TestCase
 
     protected static Environment $twig;
 
+    protected static AssetBaseDirFormatter $assetBaseDirFormatter;
+
     /**
      * @var MockObject&GotenbergClientInterface
      */
-    protected static GotenbergClientInterface $gotenbergClient;
-    protected static AssetBaseDirFormatter $assetBaseDirFormatter;
+    protected GotenbergClientInterface $gotenbergClient;
 
     public static function setUpBeforeClass(): void
     {
@@ -31,7 +32,7 @@ abstract class AbstractBuilderTestCase extends TestCase
 
     protected function setUp(): void
     {
-        self::$gotenbergClient = $this->createMock(GotenbergClientInterface::class);
+        $this->gotenbergClient = $this->createMock(GotenbergClientInterface::class);
     }
 
     /**

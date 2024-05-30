@@ -17,6 +17,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 
 #[CoversClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
+#[UsesClass(Unit::class)]
 class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 {
     public static function configurationIsCorrectlySetProvider(): \Generator
@@ -30,17 +31,8 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         yield 'pdf_universal_access' => ['pdf_universal_access', false, [
             'pdfua' => 'false',
         ]];
-        yield 'paper_width - no units - string' => ['paper_width', '12', [
-            'paperWidth' => '12in',
-        ]];
-        yield 'paper_width - no units - numeric' => ['paper_width', 12, [
-            'paperWidth' => '12in',
-        ]];
-        yield 'paper_width - inches' => ['paper_width', '12in', [
-            'paperWidth' => '12in',
-        ]];
-        yield 'paper_width - cm' => ['paper_width', '12cm', [
-            'paperWidth' => '12cm',
+        yield 'paper_width' => ['paper_width', 10.0, [
+            'paperWidth' => '10in',
         ]];
         yield 'paper_height' => ['paper_height', 10.0, [
             'paperHeight' => '10in',
@@ -226,9 +218,9 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         $builder->header('templates/invalid.html.twig');
     }
 
-    private function getChromiumPdfBuilder(false|null $twig = null): AbstractChromiumPdfBuilder
+    private function getChromiumPdfBuilder(bool $twig = true): AbstractChromiumPdfBuilder
     {
-        return new class(self::$gotenbergClient, self::$assetBaseDirFormatter, null === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
+        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
             protected function getEndpoint(): string
             {
                 return '/fake/endpoint';

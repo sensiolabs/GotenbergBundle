@@ -20,7 +20,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 {
     public function testEndpointIsCorrect(): void
     {
-        self::$gotenbergClient
+        $this->gotenbergClient
             ->expects($this->once())
             ->method('call')
             ->with(
@@ -43,7 +43,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     #[DataProvider('withPlainContentFileProvider')]
     public function testWithPlainContentFile(bool $withTwig): void
     {
-        $builder = $this->getHtmlPdfBuilder(true === $withTwig ? null : false);
+        $builder = $this->getHtmlPdfBuilder($withTwig);
         $builder->contentFile('files/content.html');
 
         $data = $builder->getMultipartFormData()[0];
@@ -101,8 +101,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    private function getHtmlPdfBuilder(false|null $twig = null): HtmlPdfBuilder
+    private function getHtmlPdfBuilder(bool $twig = true): HtmlPdfBuilder
     {
-        return new HtmlPdfBuilder(self::$gotenbergClient, self::$assetBaseDirFormatter, null === $twig ? self::$twig : null);
+        return new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null);
     }
 }

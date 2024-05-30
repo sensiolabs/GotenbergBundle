@@ -20,7 +20,7 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 {
     public function testEndpointIsCorrect(): void
     {
-        self::$gotenbergClient
+        $this->gotenbergClient
             ->expects($this->once())
             ->method('call')
             ->with(
@@ -43,7 +43,7 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
     #[DataProvider('withPlainContentFileProvider')]
     public function testWithPlainContentFile(bool $withTwig): void
     {
-        $builder = $this->getHtmlScreenshotBuilder(true === $withTwig ? null : false);
+        $builder = $this->getHtmlScreenshotBuilder($withTwig);
         $builder->contentFile('files/content.html');
 
         $data = $builder->getMultipartFormData()[0];
@@ -101,8 +101,8 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    private function getHtmlScreenshotBuilder(false|null $twig = null): HtmlScreenshotBuilder
+    private function getHtmlScreenshotBuilder(bool $twig = true): HtmlScreenshotBuilder
     {
-        return new HtmlScreenshotBuilder(self::$gotenbergClient, self::$assetBaseDirFormatter, null === $twig ? self::$twig : null);
+        return new HtmlScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null);
     }
 }
