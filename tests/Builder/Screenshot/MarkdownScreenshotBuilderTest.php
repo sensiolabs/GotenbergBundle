@@ -28,12 +28,12 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
                 $this->anything(),
             )
         ;
-        $builder = $this->getMarkdownScreenshotBuilder();
-        $builder
+
+        $this->getMarkdownScreenshotBuilder()
             ->wrapperFile('files/wrapper.html')
             ->files('assets/file.md')
+            ->generate()
         ;
-        $builder->generate();
     }
 
     public function testMarkdownFile(): void
@@ -61,7 +61,7 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'index.html', expectedContent: $expected);
+        self::assertFile($data, 'index.html', expectedContent: $expected);
     }
 
     public function testRequiredWrapperTemplate(): void

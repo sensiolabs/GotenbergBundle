@@ -26,9 +26,11 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
                 $this->anything(),
             )
         ;
-        $builder = $this->getUrlPdfBuilder();
-        $builder->url('https://google.com');
-        $builder->generate();
+
+        $this->getUrlPdfBuilder()
+            ->url('https://google.com')
+            ->generate()
+        ;
     }
 
     public function testUrl(): void

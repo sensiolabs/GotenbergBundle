@@ -29,6 +29,6 @@ final class GotenbergAssetExtension extends AbstractExtension
 
         $builder->addAsset($path);
 
-        return \basename($path);
+        return basename($path);
     }
 }

@@ -39,9 +39,11 @@ final class UrlScreenshotBuilderTest extends AbstractBuilderTestCase
                 $this->anything(),
             )
         ;
-        $builder = $this->getUrlScreenshotBuilder();
-        $builder->url('https://google.com');
-        $builder->generate();
+
+        $this->getUrlScreenshotBuilder()
+            ->url('https://google.com')
+            ->generate()
+        ;
     }
 
     public function testUrl(): void

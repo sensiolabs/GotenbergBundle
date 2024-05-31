@@ -42,7 +42,7 @@ abstract class AbstractBuilderTestCase extends TestCase
     /**
      * @param array<mixed> $data
      */
-    protected function assertFile(array $data, string $filename, string $contentType = 'text/html', string|null $expectedContent = null): void
+    protected static function assertFile(array $data, string $filename, string $contentType = 'text/html', string|null $expectedContent = null): void
     {
         self::assertArrayHasKey('files', $data);
 
@@ -56,6 +56,6 @@ abstract class AbstractBuilderTestCase extends TestCase
             self::assertSame($expectedContent, $file->getBody());
         }
 
-        \iterator_to_array($file->bodyToIterable()); // Check if path is correct
+        iterator_to_array($file->bodyToIterable()); // Check if path is correct
     }
 }

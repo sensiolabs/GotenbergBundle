@@ -26,6 +26,6 @@ final class UnitTest extends TestCase
     #[DataProvider('itCanBeParsedCorrectlyProvider')]
     public function testItCanBeParsedCorrectly(string|int|float $raw, array $expected): void
     {
-        $this->assertSame($expected, Unit::parse($raw));
+        self::assertSame($expected, Unit::parse($raw));
     }
 }

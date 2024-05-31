@@ -28,12 +28,12 @@ final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
                 $this->anything(),
             )
         ;
-        $builder = $this->getMarkdownPdfBuilder();
-        $builder
+
+        $this->getMarkdownPdfBuilder()
             ->wrapperFile('files/wrapper.html')
             ->files('assets/file.md')
+            ->generate()
         ;
-        $builder->generate();
     }
 
     public function testRequiredWrapperTemplate(): void

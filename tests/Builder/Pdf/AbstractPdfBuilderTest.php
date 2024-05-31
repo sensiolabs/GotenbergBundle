@@ -31,10 +31,10 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
             new MockResponse(),
         ]));
 
-        $builder = $this->getPdfBuilder();
-        $builder->fileName('some_file.png', HeaderUtils::DISPOSITION_ATTACHMENT);
-
-        $response = $builder->generate();
+        $response = $this->getPdfBuilder()
+            ->fileName('some_file.png', HeaderUtils::DISPOSITION_ATTACHMENT)
+            ->generate()
+        ;
 
         self::assertSame('attachment; filename=some_file.png', $response->headers->get('Content-Disposition'));
     }

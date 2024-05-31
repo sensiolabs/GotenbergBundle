@@ -201,7 +201,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'header.html', expectedContent: $expected);
+        self::assertFile($data, 'header.html', expectedContent: $expected);
     }
 
     public function testTwigFooterIsCorrectlyRendered(): void
@@ -225,7 +225,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'footer.html', expectedContent: $expected);
+        self::assertFile($data, 'footer.html', expectedContent: $expected);
     }
 
     public function testPlainFileHeaderIsCorrectlyRendered(): void
@@ -249,7 +249,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'header.html', expectedContent: $expected);
+        self::assertFile($data, 'header.html', expectedContent: $expected);
     }
 
     public function testPlainFileFooterIsCorrectlyRendered(): void
@@ -273,7 +273,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'footer.html', expectedContent: $expected);
+        self::assertFile($data, 'footer.html', expectedContent: $expected);
     }
 
     public function testAssetsCanBeAddedUsingPHP(): void
@@ -290,10 +290,10 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         self::assertCount(2, $data);
 
         $logo = $data[0];
-        $this->assertFile($logo, 'logo.png', 'image/png');
+        self::assertFile($logo, 'logo.png', 'image/png');
 
         $otherLogo = $data[1];
-        $this->assertFile($otherLogo, 'other_logo.png', 'image/png');
+        self::assertFile($otherLogo, 'other_logo.png', 'image/png');
     }
 
     public function testAssetsCanBeAddedUsingTwig(): void
@@ -306,7 +306,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         self::assertCount(2, $data);
 
         $logo = $data[0];
-        $this->assertFile($logo, 'logo.png', 'image/png');
+        self::assertFile($logo, 'logo.png', 'image/png');
     }
 
     public function testAddCookies(): void

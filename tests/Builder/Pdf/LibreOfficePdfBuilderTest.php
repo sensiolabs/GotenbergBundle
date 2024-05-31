@@ -29,9 +29,11 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
                 $this->anything(),
             )
         ;
-        $builder = $this->getLibreOfficePdfBuilder();
-        $builder->files(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx');
-        $builder->generate();
+
+        $this->getLibreOfficePdfBuilder()
+            ->files(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx')
+            ->generate()
+        ;
     }
 
     public static function configurationIsCorrectlySetProvider(): \Generator
@@ -88,7 +90,7 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
 
         $data = $builder->getMultipartFormData()[0];
 
-        $this->assertFile($data, $filename, $contentType);
+        self::assertFile($data, $filename, $contentType);
     }
 
     public function testRequiredFormData(): void
