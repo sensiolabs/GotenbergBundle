@@ -6,6 +6,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
@@ -24,7 +25,7 @@ use Symfony\Component\Mime\Part\File as DataPartFile;
 #[UsesClass(GotenbergResponse::class)]
 final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
 {
-    public function testFilenameOnResponse(): void
+    public function testFilenameIsCorrectlySetOnResponse(): void
     {
         // @phpstan-ignore-next-line
         $this->gotenbergClient = new GotenbergClient('', new MockHttpClient([
@@ -78,6 +79,7 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
     }
 
     #[DataProvider('formFieldsNormalizerProvider')]
+    #[TestDox('Form field "$_dataName" is correctly normalized')]
     public function testFormFieldsNormalizer(mixed $raw, string $key, mixed $expected): void
     {
         $builder = $this->getScreenshotBuilder($raw);
@@ -98,6 +100,7 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
     }
 
     #[DataProvider('nativeNormalizersProvider')]
+    #[TestDox('Native "$_dataName" is correctly normalized')]
     public function testNativeNormalizers(string $key, mixed $raw, mixed $expected): void
     {
         $builder = $this->getScreenshotBuilder([$key => $raw]);
