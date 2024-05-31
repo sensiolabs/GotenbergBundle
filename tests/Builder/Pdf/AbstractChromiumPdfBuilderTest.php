@@ -6,6 +6,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
@@ -104,6 +105,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
      * @param array<mixed> $expected
      */
     #[DataProvider('configurationIsCorrectlySetProvider')]
+    #[TestDox('Configuration "$_dataName" is correctly set')]
     public function testConfigurationIsCorrectlySet(string $key, mixed $value, array $expected): void
     {
         $builder = $this->getChromiumPdfBuilder();
@@ -276,7 +278,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         self::assertFile($data, 'footer.html', expectedContent: $expected);
     }
 
-    public function testAssetsCanBeAddedUsingPHP(): void
+    public function testAssetsCanBeAddedUsingPhp(): void
     {
         $builder = $this->getChromiumPdfBuilder();
         $builder->assets(
@@ -309,7 +311,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         self::assertFile($logo, 'logo.png', 'image/png');
     }
 
-    public function testAddCookies(): void
+    public function testCanAddCookies(): void
     {
         $builder = $this->getChromiumPdfBuilder();
         $builder->addCookies([
@@ -332,7 +334,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         ], $data[0]);
     }
 
-    public function testAddExtraHttpHeaders(): void
+    public function testCanAddExtraHttpHeaders(): void
     {
         $builder = $this->getChromiumPdfBuilder();
         $builder->addExtraHttpHeaders([
@@ -349,7 +351,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         ], $data[0]);
     }
 
-    public function testAddMetadata(): void
+    public function testCanAddMetadata(): void
     {
         $builder = $this->getChromiumPdfBuilder();
         $builder->addMetadata('Author', 'Me');

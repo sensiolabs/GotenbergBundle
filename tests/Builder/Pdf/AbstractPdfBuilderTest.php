@@ -6,6 +6,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
@@ -24,7 +25,7 @@ use Symfony\Component\Mime\Part\File as DataPartFile;
 #[UsesClass(GotenbergResponse::class)]
 final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
 {
-    public function testFilenameOnResponse(): void
+    public function testFilenameIsCorrectlySetOnResponse(): void
     {
         // @phpstan-ignore-next-line
         $this->gotenbergClient = new GotenbergClient('', new MockHttpClient([
@@ -83,6 +84,7 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
     }
 
     #[DataProvider('formFieldsNormalizerProvider')]
+    #[TestDox('Form field "$_dataName" is correctly normalized')]
     public function testFormFieldsNormalizer(mixed $raw, string $key, mixed $expected): void
     {
         $builder = $this->getPdfBuilder($raw);
@@ -103,6 +105,7 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
     }
 
     #[DataProvider('nativeNormalizersProvider')]
+    #[TestDox('Native "$_dataName" is correctly normalized')]
     public function testNativeNormalizers(string $key, mixed $raw, mixed $expected): void
     {
         $builder = $this->getPdfBuilder([$key => $raw]);

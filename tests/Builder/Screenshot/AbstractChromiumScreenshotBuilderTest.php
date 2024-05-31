@@ -6,6 +6,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
@@ -68,6 +69,7 @@ class AbstractChromiumScreenshotBuilderTest extends AbstractBuilderTestCase
      * @param array<mixed> $expected
      */
     #[DataProvider('configurationIsCorrectlySetProvider')]
+    #[TestDox('Configuration "$_dataName" is correctly set')]
     public function testConfigurationIsCorrectlySet(string $key, mixed $value, array $expected): void
     {
         $builder = $this->getChromiumScreenshotBuilder();
