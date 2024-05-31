@@ -3,181 +3,106 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
-use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(HtmlScreenshotBuilder::class)]
+#[UsesClass(AbstractScreenshotBuilder::class)]
+#[UsesClass(AbstractChromiumScreenshotBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(Filesystem::class)]
 final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 {
-    public function testWithConfigurations(): void
+    public function testEndpointIsCorrect(): void
     {
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
-
-        $builder = new HtmlScreenshotBuilder($client, $assetBaseDirFormatter);
-        $builder->contentFile('content.html');
-        $builder->setConfigurations(self::getUserScreenshotConfig());
-
-        $multipartFormData = $builder->getMultipartFormData();
-
-        self::assertCount(16, $multipartFormData);
-
-        self::assertIsArray($multipartFormData[0]);
-        self::assertCount(1, $multipartFormData[0]);
-        self::assertArrayHasKey('files', $multipartFormData[0]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
-        self::assertSame('index.html', $multipartFormData[0]['files']->getFilename());
-
-        self::assertSame(['width' => '1000'], $multipartFormData[1]);
-        self::assertSame(['height' => '500'], $multipartFormData[2]);
-        self::assertSame(['clip' => 'true'], $multipartFormData[3]);
-        self::assertSame(['format' => 'jpeg'], $multipartFormData[4]);
-        self::assertSame(['quality' => '75'], $multipartFormData[5]);
-        self::assertSame(['omitBackground' => 'false'], $multipartFormData[6]);
-        self::assertSame(['optimizeForSpeed' => 'true'], $multipartFormData[7]);
-        self::assertSame(['waitDelay' => '5s'], $multipartFormData[8]);
-        self::assertSame(['waitForExpression' => 'window.globalVar === "ready"'], $multipartFormData[9]);
-        self::assertSame(['emulatedMediaType' => 'screen'], $multipartFormData[10]);
-        self::assertSame(['cookies' => '[{"name":"cook_me","value":"sensio","domain":"sensiolabs.com","secure":true,"httpOnly":true,"sameSite":"Lax"},{"name":"yummy_cookie","value":"choco","domain":"example.com"}]'], $multipartFormData[11]);
-        self::assertSame(['extraHttpHeaders' => '{"MyHeader":"MyValue","User-Agent":"MyValue"}'], $multipartFormData[12]);
-        self::assertSame(['failOnHttpStatusCodes' => '[401,403]'], $multipartFormData[13]);
-        self::assertSame(['failOnConsoleExceptions' => 'false'], $multipartFormData[14]);
-        self::assertSame(['skipNetworkIdleEvent' => 'true'], $multipartFormData[15]);
+        $this->gotenbergClient
+            ->expects($this->once())
+            ->method('call')
+            ->with(
+                $this->equalTo('/forms/chromium/screenshot/html'),
+                $this->anything(),
+                $this->anything(),
+            )
+        ;
+        $builder = $this->getHtmlScreenshotBuilder();
+        $builder->contentFile('files/content.html');
+        $builder->generate();
     }
 
-    public function testWithTemplate(): void
+    public static function withPlainContentFileProvider(): \Generator
     {
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
-
-        $builder = new HtmlScreenshotBuilder($client, $assetBaseDirFormatter, self::$twig);
-        $builder->content('content.html.twig');
-
-        $multipartFormData = $builder->getMultipartFormData();
-
-        self::assertCount(1, $multipartFormData);
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertIsArray($multipartFormData[0]);
-        self::assertArrayHasKey('files', $multipartFormData[0]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
-        self::assertSame('text/html', $multipartFormData[0]['files']->getContentType());
+        yield 'with twig' => [true];
+        yield 'without twig' => [false];
     }
 
-    public function testWithAssets(): void
+    #[DataProvider('withPlainContentFileProvider')]
+    public function testWithPlainContentFile(bool $withTwig): void
     {
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
+        $builder = $this->getHtmlScreenshotBuilder($withTwig);
+        $builder->contentFile('files/content.html');
 
-        $builder = new HtmlScreenshotBuilder($client, $assetBaseDirFormatter);
-        $builder->contentFile('content.html');
-        $builder->assets('assets/logo.png');
+        $data = $builder->getMultipartFormData()[0];
 
-        $multipartFormData = $builder->getMultipartFormData();
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF</title>
+            </head>
+            <body>
+                <h1>Hello world!</h1>
+                <img src="logo.png" />
+            </body>
+        </html>
 
-        self::assertCount(2, $multipartFormData);
+        HTML;
 
-        self::assertArrayHasKey(1, $multipartFormData);
-        self::assertIsArray($multipartFormData[1]);
-        self::assertArrayHasKey('files', $multipartFormData[1]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
-        self::assertSame('image/png', $multipartFormData[1]['files']->getContentType());
+        $this->assertFile($data, 'index.html', $expected);
     }
 
-    public function testWithHeader(): void
+    public function testWithTwigContentFile(): void
     {
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
+        $builder = $this->getHtmlScreenshotBuilder();
+        $builder->content('templates/content.html.twig', ['name' => 'world']);
 
-        $builder = new HtmlScreenshotBuilder($client, $assetBaseDirFormatter);
-        $builder->headerFile('header.html');
-        $builder->contentFile('content.html');
+        $data = $builder->getMultipartFormData()[0];
 
-        $multipartFormData = $builder->getMultipartFormData();
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF</title>
+            </head>
+            <body>
+                <h1>Hello world!</h1>
+                <img src="logo.png" />
+            </body>
+        </html>
 
-        self::assertCount(2, $multipartFormData);
+        HTML;
 
-        self::assertArrayHasKey(1, $multipartFormData);
-        self::assertIsArray($multipartFormData[1]);
-        self::assertArrayHasKey('files', $multipartFormData[1]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
-        self::assertSame('text/html', $multipartFormData[1]['files']->getContentType());
+        $this->assertFile($data, 'index.html', $expected);
     }
 
-    public function testInvalidTwigTemplate(): void
+    public function testRequiredFormData(): void
     {
-        $this->expectException(ScreenshotPartRenderingException::class);
-        $this->expectExceptionMessage('Could not render template "invalid.html.twig" into PDF part "index.html".');
+        $builder = $this->getHtmlScreenshotBuilder();
 
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
-
-        $builder = new HtmlScreenshotBuilder($client, $assetBaseDirFormatter, self::$twig);
-
-        $builder->content('invalid.html.twig');
-    }
-
-    public function testInvalidExtraHttpHeaders(): void
-    {
-        $this->expectException(JsonEncodingException::class);
-        $this->expectExceptionMessage('Could not encode property "extraHttpHeaders" into JSON');
-
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
-
-        $builder = new HtmlScreenshotBuilder($client, $assetBaseDirFormatter);
-        $builder->contentFile('content.html');
-        // @phpstan-ignore-next-line
-        $builder->extraHttpHeaders([
-            'invalid' => tmpfile(),
-        ]);
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('Content is required');
 
         $builder->getMultipartFormData();
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private static function getUserScreenshotConfig(): array
+    private function getHtmlScreenshotBuilder(bool $twig = true): HtmlScreenshotBuilder
     {
-        return [
-            'width' => 1000,
-            'height' => 500,
-            'clip' => true,
-            'format' => 'jpeg',
-            'quality' => 75,
-            'omit_background' => false,
-            'optimize_for_speed' => true,
-            'wait_delay' => '5s',
-            'wait_for_expression' => 'window.globalVar === "ready"',
-            'emulated_media_type' => 'screen',
-            'cookies' => [
-                [
-                    'name' => 'cook_me',
-                    'value' => 'sensio',
-                    'domain' => 'sensiolabs.com',
-                    'secure' => true,
-                    'httpOnly' => true,
-                    'sameSite' => 'Lax',
-                ],
-                [
-                    'name' => 'yummy_cookie',
-                    'value' => 'choco',
-                    'domain' => 'example.com',
-                ],
-            ],
-            'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-            'fail_on_http_status_codes' => [401, 403],
-            'fail_on_console_exceptions' => false,
-            'skip_network_idle_event' => true,
-        ];
+        return new HtmlScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null);
     }
 }

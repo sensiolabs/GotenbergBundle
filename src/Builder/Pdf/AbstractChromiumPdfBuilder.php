@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Enum\PaperSize;
+use Sensiolabs\GotenbergBundle\Enum\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enum\Part;
 use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
@@ -315,9 +315,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
      */
-    public function emulatedMediaType(string $mediaType): static
+    public function emulatedMediaType(EmulatedMediaType $mediaType): static
     {
-        $this->formFields['emulatedMediaType'] = $mediaType;
+        $this->formFields['emulatedMediaType'] = $mediaType->value;
 
         return $this;
     }
@@ -525,22 +525,16 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     private function addConfiguration(string $configurationName, mixed $value): void
     {
-        $splitAndParseStringWithUnit = static function (mixed $raw, callable $callback): void {
-            [$value, $unit] = sscanf((string) $raw, '%d%s') ?? throw new \InvalidArgumentException(sprintf('Unexpected value "%s", expected format is "%%d%%s"', $raw));
-
-            $callback((float) $value, Unit::tryFrom((string) $unit) ?? Unit::Inches);
-        };
-
         match ($configurationName) {
             'single_page' => $this->singlePage($value),
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
-            'paper_width' => $this->paperWidth($value),
-            'paper_height' => $this->paperHeight($value),
-            'margin_top' => $splitAndParseStringWithUnit($value, $this->marginTop(...)),
-            'margin_bottom' => $splitAndParseStringWithUnit($value, $this->marginBottom(...)),
-            'margin_left' => $splitAndParseStringWithUnit($value, $this->marginLeft(...)),
-            'margin_right' => $splitAndParseStringWithUnit($value, $this->marginRight(...)),
+            'paper_width' => $this->paperWidth(...Unit::parse($value)),
+            'paper_height' => $this->paperHeight(...Unit::parse($value)),
+            'margin_top' => $this->marginTop(...Unit::parse($value)),
+            'margin_bottom' => $this->marginBottom(...Unit::parse($value)),
+            'margin_left' => $this->marginLeft(...Unit::parse($value)),
+            'margin_right' => $this->marginRight(...Unit::parse($value)),
             'prefer_css_page_size' => $this->preferCssPageSize($value),
             'print_background' => $this->printBackground($value),
             'omit_background' => $this->omitBackground($value),
@@ -549,7 +543,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'native_page_ranges' => $this->nativePageRanges($value),
             'wait_delay' => $this->waitDelay($value),
             'wait_for_expression' => $this->waitForExpression($value),
-            'emulated_media_type' => $this->emulatedMediaType($value),
+            'emulated_media_type' => $this->emulatedMediaType(EmulatedMediaType::from($value)),
             'cookies' => $this->cookies($value),
             'extra_http_headers' => $this->extraHttpHeaders($value),
             'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
