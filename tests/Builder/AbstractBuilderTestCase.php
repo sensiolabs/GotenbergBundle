@@ -38,15 +38,18 @@ abstract class AbstractBuilderTestCase extends TestCase
     /**
      * @param array<mixed> $data
      */
-    protected function assertFile(array $data, string $filename, string $expectedContent): void
+    protected function assertFile(array $data, string $filename, string $contentType = 'text/html', string|null $expectedContent = null): void
     {
         self::assertArrayHasKey('files', $data);
 
         $file = $data['files'];
 
         self::assertInstanceOf(DataPart::class, $file);
-
-        self::assertSame($expectedContent, $file->getBody());
         self::assertSame($filename, $file->getFilename());
+        self::assertSame($contentType, $file->getContentType());
+
+        if (null !== $expectedContent) {
+            self::assertSame($expectedContent, $file->getBody());
+        }
     }
 }

@@ -63,7 +63,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'index.html', $expected);
+        $this->assertFile($data, 'index.html', expectedContent: $expected);
     }
 
     public function testWithTwigContentFile(): void
@@ -88,7 +88,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'index.html', $expected);
+        $this->assertFile($data, 'index.html', expectedContent: $expected);
     }
 
     public function testRequiredFormData(): void

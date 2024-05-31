@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
@@ -63,9 +64,9 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * Convert the resulting PDF into the given PDF/A format.
      */
-    public function pdfFormat(string $format): self
+    public function pdfFormat(PdfFormat $format): self
     {
-        $this->formFields['pdfa'] = $format;
+        $this->formFields['pdfa'] = $format->value;
 
         return $this;
     }
@@ -151,11 +152,11 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     private function addConfiguration(string $configurationName, mixed $value): void
     {
         match ($configurationName) {
-            'pdf_format' => $this->pdfFormat($value),
+            'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'landscape' => $this->landscape($value),
             'native_page_ranges' => $this->nativePageRanges($value),
-            'fail_on_console_exceptions' => $this->merge($value),
+            'merge' => $this->merge($value),
             'metadata' => $this->metadata($value),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };

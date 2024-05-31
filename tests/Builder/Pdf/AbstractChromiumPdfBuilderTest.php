@@ -197,7 +197,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'header.html', $expected);
+        $this->assertFile($data, 'header.html', expectedContent: $expected);
     }
 
     public function testThrowIfTwigNotAvailable(): void

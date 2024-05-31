@@ -7,49 +7,102 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(LibreOfficePdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(Filesystem::class)]
 final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
 {
     private const OFFICE_DOCUMENTS_DIR = 'assets/office';
 
-    /**
-     * @return array<string, list<string>>
-     */
-    public static function provideValidOfficeFiles(): iterable
+    public function testEndpointIsCorrect(): void
     {
-        yield 'odt' => [self::OFFICE_DOCUMENTS_DIR.'/document.odt', 'application/vnd.oasis.opendocument.text'];
-        yield 'docx' => [self::OFFICE_DOCUMENTS_DIR.'/document_1.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-        yield 'html' => [self::OFFICE_DOCUMENTS_DIR.'/document_2.html', 'text/html'];
-        yield 'xslx' => [self::OFFICE_DOCUMENTS_DIR.'/document_3.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
-        yield 'pptx' => [self::OFFICE_DOCUMENTS_DIR.'/document_4.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+        $this->gotenbergClient
+            ->expects($this->once())
+            ->method('call')
+            ->with(
+                $this->equalTo('/forms/libreoffice/convert'),
+                $this->anything(),
+                $this->anything(),
+            )
+        ;
+        $builder = $this->getLibreOfficePdfBuilder();
+        $builder->files(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx');
+        $builder->generate();
+    }
+
+    public static function configurationIsCorrectlySetProvider(): \Generator
+    {
+        yield 'pdf_format' => ['pdf_format', 'PDF/A-1b', [
+            'pdfa' => 'PDF/A-1b',
+        ]];
+        yield 'pdf_universal_access' => ['pdf_universal_access', false, [
+            'pdfua' => 'false',
+        ]];
+        yield 'landscape' => ['landscape', false, [
+            'landscape' => 'false',
+        ]];
+        yield 'native_page_ranges' => ['native_page_ranges', '1-10', [
+            'nativePageRanges' => '1-10',
+        ]];
+        yield 'merge' => ['merge', false, [
+            'merge' => 'false',
+        ]];
+        yield 'metadata' => ['metadata', ['Author' => 'SensioLabs'], [
+            'metadata' => '{"Author":"SensioLabs"}',
+        ]];
+    }
+
+    /**
+     * @param array<mixed> $expected
+     */
+    #[DataProvider('configurationIsCorrectlySetProvider')]
+    public function testConfigurationIsCorrectlySet(string $key, mixed $value, array $expected): void
+    {
+        $builder = $this->getLibreOfficePdfBuilder();
+        $builder->setConfigurations([
+            $key => $value,
+        ]);
+        $builder->files(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx');
+
+        self::assertEquals($expected, $builder->getMultipartFormData()[0]);
+    }
+
+    public static function provideValidOfficeFiles(): \Generator
+    {
+        yield 'odt' => [self::OFFICE_DOCUMENTS_DIR.'/document.odt', 'application/vnd.oasis.opendocument.text', 'document.odt'];
+        yield 'docx' => [self::OFFICE_DOCUMENTS_DIR.'/document_1.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'document_1.docx'];
+        yield 'html' => [self::OFFICE_DOCUMENTS_DIR.'/document_2.html', 'text/html', 'document_2.html'];
+        yield 'xslx' => [self::OFFICE_DOCUMENTS_DIR.'/document_3.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'document_3.xlsx'];
+        yield 'pptx' => [self::OFFICE_DOCUMENTS_DIR.'/document_4.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'document_4.pptx'];
     }
 
     #[DataProvider('provideValidOfficeFiles')]
-    public function testOfficeFiles(string $filePath, string $contentType): void
+    public function testOfficeFiles(string $filePath, string $contentType, string $filename): void
     {
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
-
-        $builder = new LibreOfficePdfBuilder($client, $assetBaseDirFormatter);
+        $builder = $this->getLibreOfficePdfBuilder();
         $builder->files($filePath);
 
-        $multipartFormData = $builder->getMultipartFormData();
+        $data = $builder->getMultipartFormData()[0];
 
-        self::assertCount(1, $multipartFormData);
+        $this->assertFile($data, $filename, $contentType);
+    }
 
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertIsArray($multipartFormData[0]);
-        self::assertArrayHasKey('files', $multipartFormData[0]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
-        self::assertSame($contentType, $multipartFormData[0]['files']->getContentType());
+    public function testRequiredFormData(): void
+    {
+        $builder = $this->getLibreOfficePdfBuilder();
+
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one office file is required');
+
+        $builder->getMultipartFormData();
+    }
+
+    private function getLibreOfficePdfBuilder(): LibreOfficePdfBuilder
+    {
+        return new LibreOfficePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter);
     }
 }

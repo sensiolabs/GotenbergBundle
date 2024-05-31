@@ -7,24 +7,33 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Filesystem\Filesystem;
 
 #[CoversClass(UrlPdfBuilder::class)]
 #[UsesClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(Filesystem::class)]
 final class UrlPdfBuilderTest extends AbstractBuilderTestCase
 {
+    public function testEndpointIsCorrect(): void
+    {
+        $this->gotenbergClient
+            ->expects($this->once())
+            ->method('call')
+            ->with(
+                $this->equalTo('/forms/chromium/convert/url'),
+                $this->anything(),
+                $this->anything(),
+            )
+        ;
+        $builder = $this->getUrlPdfBuilder();
+        $builder->url('https://google.com');
+        $builder->generate();
+    }
+
     public function testUrl(): void
     {
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
-
-        $builder = new UrlPdfBuilder($client, $assetBaseDirFormatter);
+        $builder = $this->getUrlPdfBuilder();
         $builder->url('https://google.com');
 
         $multipartFormData = $builder->getMultipartFormData();
@@ -32,5 +41,20 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
         self::assertCount(1, $multipartFormData);
         self::assertArrayHasKey(0, $multipartFormData);
         self::assertSame(['url' => 'https://google.com'], $multipartFormData[0]);
+    }
+
+    public function testRequiredFormData(): void
+    {
+        $builder = $this->getUrlPdfBuilder();
+
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('URL is required');
+
+        $builder->getMultipartFormData();
+    }
+
+    private function getUrlPdfBuilder(): UrlPdfBuilder
+    {
+        return new UrlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter);
     }
 }

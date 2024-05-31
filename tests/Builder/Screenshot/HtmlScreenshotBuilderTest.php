@@ -13,8 +13,8 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 
 #[CoversClass(HtmlScreenshotBuilder::class)]
-#[UsesClass(AbstractScreenshotBuilder::class)]
 #[UsesClass(AbstractChromiumScreenshotBuilder::class)]
+#[UsesClass(AbstractScreenshotBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 {
@@ -63,7 +63,7 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'index.html', $expected);
+        $this->assertFile($data, 'index.html', expectedContent: $expected);
     }
 
     public function testWithTwigContentFile(): void
@@ -88,7 +88,7 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'index.html', $expected);
+        $this->assertFile($data, 'index.html', expectedContent: $expected);
     }
 
     public function testRequiredFormData(): void
