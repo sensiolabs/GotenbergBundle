@@ -13,11 +13,15 @@ use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enum\Unit;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 
 #[CoversClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(Unit::class)]
+#[UsesClass(AssetBaseDirFormatter::class)]
+#[UsesClass(GotenbergAssetExtension::class)]
 class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 {
     public static function configurationIsCorrectlySetProvider(): \Generator
@@ -176,7 +180,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         self::assertEquals([], $builder->getMultipartFormData());
     }
 
-    public function testHeaderIsCorrectlyRendered(): void
+    public function testTwigHeaderIsCorrectlyRendered(): void
     {
         $builder = $this->getChromiumPdfBuilder();
         $builder->header('templates/header.html.twig', ['name' => 'World']);
@@ -198,6 +202,164 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         HTML;
 
         $this->assertFile($data, 'header.html', expectedContent: $expected);
+    }
+
+    public function testTwigFooterIsCorrectlyRendered(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->footer('templates/footer.html.twig', ['name' => 'World']);
+
+        $data = $builder->getMultipartFormData()[0];
+
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My Footer</title>
+            </head>
+            <body>
+                <h1>Hello World!</h1>
+            </body>
+        </html>
+
+        HTML;
+
+        $this->assertFile($data, 'footer.html', expectedContent: $expected);
+    }
+
+    public function testPlainFileHeaderIsCorrectlyRendered(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->headerFile('files/header.html');
+
+        $data = $builder->getMultipartFormData()[0];
+
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My Header</title>
+            </head>
+            <body>
+                <h1>Hello Header</h1>
+            </body>
+        </html>
+
+        HTML;
+
+        $this->assertFile($data, 'header.html', expectedContent: $expected);
+    }
+
+    public function testPlainFileFooterIsCorrectlyRendered(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->footerFile('files/footer.html');
+
+        $data = $builder->getMultipartFormData()[0];
+
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My Footer</title>
+            </head>
+            <body>
+                <h1>Hello Footer</h1>
+            </body>
+        </html>
+
+        HTML;
+
+        $this->assertFile($data, 'footer.html', expectedContent: $expected);
+    }
+
+    public function testAssetsCanBeAddedUsingPHP(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->assets(
+            self::FIXTURE_DIR.'/assets/logo.png',
+            self::FIXTURE_DIR.'/assets/logo.png',
+            self::FIXTURE_DIR.'/assets/other_logo.png',
+        );
+
+        $data = $builder->getMultipartFormData();
+
+        self::assertCount(2, $data);
+
+        $logo = $data[0];
+        $this->assertFile($logo, 'logo.png', 'image/png');
+
+        $otherLogo = $data[1];
+        $this->assertFile($otherLogo, 'other_logo.png', 'image/png');
+    }
+
+    public function testAssetsCanBeAddedUsingTwig(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->header('templates/header_with_asset.html.twig', ['name' => 'World']);
+
+        $data = $builder->getMultipartFormData();
+
+        self::assertCount(2, $data);
+
+        $logo = $data[0];
+        $this->assertFile($logo, 'logo.png', 'image/png');
+    }
+
+    public function testAddCookies(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->addCookies([
+            [
+                'name' => 'MyCookie',
+                'value' => 'Chocolate',
+                'domain' => 'sensiolabs.com',
+            ],
+            [
+                'name' => 'MyCookie',
+                'value' => 'Vanilla',
+                'domain' => 'sensiolabs.com',
+            ],
+        ]);
+
+        $data = $builder->getMultipartFormData();
+
+        self::assertEquals([
+            'cookies' => '[{"name":"MyCookie","value":"Vanilla","domain":"sensiolabs.com"}]',
+        ], $data[0]);
+    }
+
+    public function testAddExtraHttpHeaders(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->addExtraHttpHeaders([
+            'MyHeader' => 'SomeValue',
+        ]);
+        $builder->addExtraHttpHeaders([
+            'MyHeader' => 'SomeOtherValue',
+        ]);
+
+        $data = $builder->getMultipartFormData();
+
+        self::assertEquals([
+            'extraHttpHeaders' => '{"MyHeader":"SomeOtherValue"}',
+        ], $data[0]);
+    }
+
+    public function testAddMetadata(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->addMetadata('Author', 'Me');
+        $builder->addMetadata('Author', 'SensioLabs');
+
+        $data = $builder->getMultipartFormData();
+
+        self::assertEquals([
+            'metadata' => '{"Author":"SensioLabs"}',
+        ], $data[0]);
     }
 
     public function testThrowIfTwigNotAvailable(): void

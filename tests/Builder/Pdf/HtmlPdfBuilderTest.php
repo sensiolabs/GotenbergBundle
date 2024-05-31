@@ -11,11 +11,13 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 
 #[CoversClass(HtmlPdfBuilder::class)]
 #[UsesClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
+#[UsesClass(GotenbergAssetExtension::class)]
 final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 {
     public function testEndpointIsCorrect(): void
