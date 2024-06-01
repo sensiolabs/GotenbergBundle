@@ -9,6 +9,7 @@ $finder = (new PhpCsFixer\Finder())
 ;
 
 return (new PhpCsFixer\Config())
+    ->setUsingCache(false)
     ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,

@@ -236,6 +236,91 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         self::assertSame('https://sensiolabs.com', $arguments[0]);
     }
 
+    public function testDataCollectorIsNotEnabledWhenKernelDebugIsFalse(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
+        $extension->load([
+            ['base_uri' => 'https://sensiolabs.com'],
+        ], $containerBuilder);
+
+        self::assertNotContains('sensiolabs_gotenberg.data_collector', $containerBuilder->getServiceIds());
+    }
+
+    public function testDataCollectorIsEnabledWhenKernelDebugIsTrue(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder(kernelDebug: true);
+        $extension->load([
+            ['base_uri' => 'https://sensiolabs.com'],
+        ], $containerBuilder);
+
+        self::assertContains('sensiolabs_gotenberg.data_collector', $containerBuilder->getServiceIds());
+    }
+
+    public function testDataCollectorIsProperlyConfiguredIfEnabled(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder(kernelDebug: true);
+        $extension->load([[
+            'base_uri' => 'https://sensiolabs.com',
+            'default_options' => [
+                'pdf' => [
+                    'html' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs HTML',
+                        ],
+                    ],
+                    'url' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs URL',
+                        ],
+                    ],
+                    'markdown' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs MARKDOWN',
+                        ],
+                    ],
+                    'office' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs OFFICE',
+                        ],
+                    ],
+                ],
+            ],
+        ]], $containerBuilder);
+
+        $dataCollector = $containerBuilder->getDefinition('sensiolabs_gotenberg.data_collector');
+        self::assertNotNull($dataCollector);
+
+        $dataCollectorOptions = $dataCollector->getArguments()[2];
+        self::assertEquals([
+            'html' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs HTML',
+                ],
+            ],
+            'url' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs URL',
+                ],
+            ],
+            'markdown' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs MARKDOWN',
+                ],
+            ],
+            'office' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs OFFICE',
+                ],
+            ],
+        ], $dataCollectorOptions);
+    }
+
     /**
      * @return array<int, array{
      *          'base_uri': string,
