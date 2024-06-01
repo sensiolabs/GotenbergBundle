@@ -11,11 +11,13 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 
 #[CoversClass(HtmlPdfBuilder::class)]
 #[UsesClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
+#[UsesClass(GotenbergAssetExtension::class)]
 final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 {
     public function testEndpointIsCorrect(): void
@@ -29,9 +31,11 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
                 $this->anything(),
             )
         ;
-        $builder = $this->getHtmlPdfBuilder();
-        $builder->contentFile('files/content.html');
-        $builder->generate();
+
+        $this->getHtmlPdfBuilder()
+            ->contentFile('files/content.html')
+            ->generate()
+        ;
     }
 
     public static function withPlainContentFileProvider(): \Generator
@@ -63,7 +67,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'index.html', $expected);
+        self::assertFile($data, 'index.html', expectedContent: $expected);
     }
 
     public function testWithTwigContentFile(): void
@@ -88,7 +92,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         HTML;
 
-        $this->assertFile($data, 'index.html', $expected);
+        self::assertFile($data, 'index.html', expectedContent: $expected);
     }
 
     public function testRequiredFormData(): void

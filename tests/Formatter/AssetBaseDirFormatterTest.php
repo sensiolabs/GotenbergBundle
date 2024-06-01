@@ -4,6 +4,7 @@ namespace Formatter;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,7 +25,8 @@ final class AssetBaseDirFormatterTest extends TestCase
     }
 
     #[DataProvider('generateBaseDirectoryAndPath')]
-    public function testResolveWithAbsolutePath(string $path, string $baseDirectory, string $expectedResult): void
+    #[TestDox('Resolve path when "$_dataName"')]
+    public function testResolvePathCorrectly(string $path, string $baseDirectory, string $expectedResult): void
     {
         $filesystem = new Filesystem();
         $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, __DIR__.'/../Fixtures', $baseDirectory);

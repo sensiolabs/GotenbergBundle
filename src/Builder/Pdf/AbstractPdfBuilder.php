@@ -23,7 +23,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     /**
-     * @var array<string, (\Closure(mixed): array<string, array<string|int ,mixed>|non-empty-string|int|float|bool|DataPart>)>
+     * @var array<string, (\Closure(mixed): array<string, array<string|int, mixed>|non-empty-string|int|float|bool|DataPart>)>
      */
     private array $normalizers;
 
