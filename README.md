@@ -49,8 +49,7 @@ to the method ``content``.
     {
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
-            $urlPdfBuilder = $gotenberg->url();
-            return $urlPdfBuilder
+            return $gotenberg->url()
                 ->url('https://sensiolabs.com/fr/')
                 ->generate() // will return directly a stream response
              ;
