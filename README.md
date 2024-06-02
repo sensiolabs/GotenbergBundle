@@ -52,7 +52,8 @@ to the method ``content``.
             $urlPdfBuilder = $gotenberg->url();
             return $urlPdfBuilder
                 ->url('https://sensiolabs.com/fr/')
-                ->generate(); // will return directly a stream response
+                ->generate() // will return directly a stream response
+             ;
         }
     }
 ````
@@ -87,12 +88,12 @@ to the method ``content``.
     {
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
-            $htmlPdfBuilder = $gotenberg->html();
-            return $htmlPdfBuilder
+            return $gotenberg->html()
                 ->content('twig_simple_pdf.html.twig', [
                     'my_var' => 'value'
                 ])
-                ->generate(); // will return directly a stream response
+                ->generate() // will return directly a stream response
+             ;
         }
     }
 ````
@@ -101,7 +102,7 @@ If a template needs to link to a static asset (e.g. an image), this bundle provi
 Twig function to help generate that path.
 
 This function work as [asset() Twig function](https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets) 
-and fetch your assets in the public folder of your application
+and fetch your assets in the `assets` folder of your application
 If your files are in another folder, you can override the default value of ``assets_directory`` in your
 configuration file ``config/sensiolabs_gotenberg.yml``.
 The path provided can be relative as well as absolute.
@@ -114,10 +115,10 @@ The path provided can be relative as well as absolute.
             <title>PDF body</title>
         </head>
         <body>
-        <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
-        <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
             <main>
-                <h1>Hello world!</h1>
+               <h1>Hello world!</h1>
+               <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
+               <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
             </main>
         </body>
     </html>
@@ -129,8 +130,10 @@ The path provided can be relative as well as absolute.
 ### Advanced Usage
 
 1. [Configuration](docs/configuration.md)
-2. [Add header / footer]()
-3. [Convert from any following office file]()
+2. [Working with assets](docs/assets.md)
+3. [Router integration](docs/router.md)
+4. [Add header / footer]()
+5. [Convert from any following office file]()  
    '123', '602', 'abw', 'bib', 'bmp', 'cdr', 'cgm', 'cmx', 'csv', 'cwk', 'dbf', 'dif', 'doc', 'docm',
    'docx', 'dot', 'dotm', 'dotx', 'dxf', 'emf', 'eps', 'epub', 'fodg', 'fodp', 'fods', 'fodt', 'fopd',
    'gif', 'htm', 'html', 'hwp', 'jpeg', 'jpg', 'key', 'ltx', 'lwp', 'mcw', 'met', 'mml', 'mw', 'numbers',
@@ -141,7 +144,7 @@ The path provided can be relative as well as absolute.
    'tga', 'tif', 'tiff', 'txt', 'uof', 'uop', 'uos', 'uot', 'vdx', 'vor', 'vsd', 'vsdm', 'vsdx', 'wb2',
    'wk1', 'wks', 'wmf', 'wpd', 'wpg', 'wps', 'xbm', 'xhtml', 'xls', 'xlsb', 'xlsm', 'xlsx', 'xlt', 'xltm',
    'xltx', 'xlw', 'xml', 'xpm', 'zabw'
-4. [Take screenshots]()
+6. [The profiler]()
 
 ## Credits
 

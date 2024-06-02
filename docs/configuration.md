@@ -3,15 +3,15 @@
 The default configuration for the bundle looks like :
 
 > [!WARNING]  
-> If you don't configure anything, the defaults values on Gotenberg API
-> will be used.
+> If you don't configure anything or configure null / [], 
+> the defaults values on Gotenberg API will be used.
 
 ````yaml
 # app/config/sensiolabs_gotenberg.yml
 
 sensiolabs_gotenberg:
     base_uri: 'http://localhost:3000'
-    assets_directory: '%kernel.project_dir%'
+    assets_directory: '%kernel.project_dir%/assets'
     http_client: null # Defaults to 'http_client'
     default_options:
         pdf:
