@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('%kernel.project_dir%/assets')
                 ->end()
                 ->scalarNode('http_client')
-                    ->info('HTTP Client reference to use. Defaults to "http_client".')
+                    ->info('HTTP Client reference to use.')
                     ->defaultValue('http_client')
                 ->end()
                 ->arrayNode('default_options')

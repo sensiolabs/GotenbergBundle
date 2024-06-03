@@ -199,7 +199,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             foreach ($builder as $builderName => $expectedConfig) {
                 $gotenbergDefinition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
                 $methodCalls = $gotenbergDefinition->getMethodCalls();
-                $setConfiguration = $methodCalls[0];
+                $setConfiguration = $methodCalls[1];
 
                 $config = $setConfiguration[1][0];
 

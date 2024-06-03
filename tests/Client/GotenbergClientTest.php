@@ -44,7 +44,7 @@ final class GotenbergClientTest extends TestCase
         self::assertSame('http://localhost:3000/some/url', $mockResponse->getRequestUrl());
 
         $requestHeaders = array_reduce($mockResponse->getRequestOptions()['headers'], function (array $carry, string $header): array {
-            [$key, $value] = \explode(': ', $header, 2);
+            [$key, $value] = explode(': ', $header, 2);
 
             $carry[$key] ??= [];
             $carry[$key][] = $value;

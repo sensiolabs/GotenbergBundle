@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
+use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Enum\Part;
@@ -13,6 +14,8 @@ use Symfony\Component\Mime\Part\DataPart;
 
 abstract class AbstractPdfBuilder implements PdfBuilderInterface
 {
+    protected LoggerInterface|null $logger = null;
+
     /**
      * @var array<string, mixed>
      */
@@ -59,6 +62,11 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
         ];
     }
 
+    public function setLogger(LoggerInterface|null $logger): void
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -96,6 +104,10 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
     public function generate(): GotenbergResponse
     {
+        $this->logger?->debug('Generating PDF file using {sensiolabs_gotenberg.builder} builder.', [
+            'sensiolabs_gotenberg.builder' => $this::class,
+        ]);
+
         $pdfResponse = $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
 
         if (null !== $this->fileName) {
@@ -125,6 +137,9 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
             $preCallback = null;
 
             if (\array_key_exists($key, $this->normalizers)) {
+                $this->logger?->debug('Normalizer found for key {sensiolabs_gotenberg.key}.', [
+                    'sensiolabs_gotenberg.key' => $key,
+                ]);
                 $preCallback = $this->normalizers[$key](...);
             }
 
