@@ -44,14 +44,7 @@ final class GotenbergClientTest extends TestCase
         self::assertSame('http://localhost:3000/some/url', $mockResponse->getRequestUrl());
 
         $requestHeaders = array_reduce($mockResponse->getRequestOptions()['headers'], function (array $carry, string $header): array {
-            /** @see https://onlinephp.io/c/8de64 */
-            $matches = null;
-            preg_match('#^(?P<key>[^:]+):\s?(?P<value>.*)$#', $header, $matches);
-
-            [
-                'key' => $key,
-                'value' => $value,
-            ] = $matches;
+            [$key, $value] = \explode(': ', $header, 2);
 
             $carry[$key] ??= [];
             $carry[$key][] = $value;
@@ -67,8 +60,7 @@ final class GotenbergClientTest extends TestCase
 
         self::assertMatchesRegularExpression('#^multipart/form-data; boundary=(?P<boundary>.*)$#', $requestContentType);
 
-        /** @see https://onlinephp.io/c/e8233 */
-        $matches = null;
+        /* @see https://onlinephp.io/c/e8233 */
         preg_match('#^multipart/form-data; boundary=(?P<boundary>.*)$#', $requestContentType, $matches);
         $boundary = $matches['boundary'];
 
