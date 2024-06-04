@@ -523,7 +523,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    private function addConfiguration(string $configurationName, mixed $value): void
+    protected function addConfiguration(string $configurationName, mixed $value): void
     {
         match ($configurationName) {
             'single_page' => $this->singlePage($value),

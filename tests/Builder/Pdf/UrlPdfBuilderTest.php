@@ -50,7 +50,7 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
         $builder = $this->getUrlPdfBuilder();
 
         $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('URL is required');
+        $this->expectExceptionMessage('URL (or route) is required');
 
         $builder->getMultipartFormData();
     }
