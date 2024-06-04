@@ -38,13 +38,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
             'assets' => static function (array $value): array {
                 return ['files' => $value];
             },
-            Part::Header->value => static function (DataPart $value): array {
-                return ['files' => $value];
-            },
             Part::Body->value => static function (DataPart $value): array {
-                return ['files' => $value];
-            },
-            Part::Footer->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
             'failOnHttpStatusCodes' => function (mixed $value): array {
