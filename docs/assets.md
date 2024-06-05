@@ -4,8 +4,8 @@ You can add assets in several ways, and it's available for most builders.
 
 |            |         HTML         |        URL         |      Markdown      | Libre Office |
 |:----------:|:--------------------:|:------------------:|:------------------:|:------------:|
-|    PDF     |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     :X:      |
-| Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     :X:      |
+|    PDF     |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     :x:      |
+| Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     :x:      |
 
 > [!WARNING]  
 > By default the assets are fetch in the `assets` folder of your application.
