@@ -3,8 +3,8 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Enum\Part;
-use Sensiolabs\GotenbergBundle\Enum\ScreenshotFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\Part;
+use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;

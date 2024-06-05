@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
-use Sensiolabs\GotenbergBundle\Enum\Unit;
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\GotenbergPdf;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;

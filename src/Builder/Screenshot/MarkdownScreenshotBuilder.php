@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
-use Sensiolabs\GotenbergBundle\Enum\Part;
+use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Symfony\Component\Mime\Part\DataPart;

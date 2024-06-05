@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
