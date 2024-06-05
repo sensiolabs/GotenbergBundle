@@ -34,6 +34,7 @@ return static function (ContainerConfigurator $container): void {
             service('router')->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setRequestContext', [service('.sensiolabs_gotenberg.request_context')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 

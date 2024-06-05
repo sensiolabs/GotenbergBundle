@@ -52,18 +52,8 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
             'files', $dataPart,
         ];
 
-        yield 'header.html' => [
-            ['header.html' => $dataPart = new DataPart(new DataPartFile(self::FIXTURE_DIR.'/files/header.html'))],
-            'files', $dataPart,
-        ];
-
         yield 'index.html' => [
             ['index.html' => $dataPart = new DataPart(new DataPartFile(self::FIXTURE_DIR.'/files/index.html'))],
-            'files', $dataPart,
-        ];
-
-        yield 'footer.html' => [
-            ['footer.html' => $dataPart = new DataPart(new DataPartFile(self::FIXTURE_DIR.'/files/footer.html'))],
             'files', $dataPart,
         ];
 
@@ -114,8 +104,6 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
      * @param array{
      *     'extraHttpHeaders'?: array<string, string>,
      *     'assets'?: array<string, DataPart>,
-     *     'header.html'?: DataPart,
-     *     'footer.html'?: DataPart,
      *     'index.html'?: DataPart,
      *     'failOnHttpStatusCodes'?: list<int>,
      *     'cookies'?: list<array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}>,
