@@ -27,6 +27,7 @@ return static function (ContainerConfigurator $container): void {
             service('twig')->nullOnInvalid(),
             service('router')->nullOnInvalid(),
         ])
+        ->call('setRequestContext', [service('.sensiolabs_gotenberg.request_context')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.screenshot_builder')
     ;
 
