@@ -4,8 +4,8 @@ namespace Sensiolabs\GotenbergBundle\Tests\Enum;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Enum\PaperSize;
-use Sensiolabs\GotenbergBundle\Enum\Unit;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 
 #[CoversClass(PaperSize::class)]
 final class PaperSizeTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Enum;
+namespace Sensiolabs\GotenbergBundle\Enumeration;
 
 enum PaperSize implements PaperSizeInterface
 {

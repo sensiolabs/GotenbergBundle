@@ -2,9 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Enum\EmulatedMediaType;
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
-use Sensiolabs\GotenbergBundle\Enum\ScreenshotFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
