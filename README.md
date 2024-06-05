@@ -132,7 +132,8 @@ The path provided can be relative as well as absolute.
 2. [Working with assets](docs/assets.md)
 3. [Router integration](docs/router.md)
 4. [Add header / footer](docs/header-footer.md)
-5. [Convert from any following office file](docs/office.md) (available extensions for conversion below) 
+5. [Convert from any following office file](docs/office.md) (available extensions for conversion below)
+   
    `123`, `602`, `abw`, `bib`, `bmp`, `cdr`, `cgm`, `cmx`, `csv`, `cwk`, `dbf`, `dif`, `doc`, `docm`,
    `docx`, `dot`, `dotm`, `dotx`, `dxf`, `emf`, `eps`, `epub`, `fodg`, `fodp`, `fods`, `fodt`, `fopd`,
    `gif`, `htm`, `html`, `hwp`, `jpeg`, `jpg`, `key`, `ltx`, `lwp`, `mcw`, `met`, `mml`, `mw`, `numbers`,
