@@ -31,6 +31,14 @@ class Configuration implements ConfigurationInterface
                     ->info('HTTP Client reference to use. Defaults to "http_client".')
                     ->defaultValue('http_client')
                 ->end()
+                ->arrayNode('request_context')
+                    ->info('Override the request Gotenberg will make to call one of your routes.')
+                    ->children()
+                        ->scalarNode('base_uri')
+                            ->info('Used only when using `->route()`. Overrides the guessed `base_url` from the request. May be useful in CLI.')
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('default_options')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -76,16 +84,6 @@ class Configuration implements ConfigurationInterface
         $treebuilder
             ->getRootNode()
             ->addDefaultsIfNotSet()
-            ->children()
-                ->arrayNode('request_context')
-                    ->info('Override the request Gotenberg will make to call one of your routes.')
-                    ->children()
-                        ->scalarNode('base_url')
-                            ->info('Used only when using `->route()`. Overrides the guessed `base_url` from the request. May be useful in CLI.')
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
         ;
 
         $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
@@ -128,16 +126,6 @@ class Configuration implements ConfigurationInterface
         $treebuilder
             ->getRootNode()
             ->addDefaultsIfNotSet()
-            ->children()
-                ->arrayNode('request_context')
-                    ->info('Override the request Gotenberg will make to call one of your routes.')
-                    ->children()
-                        ->scalarNode('base_url')
-                            ->info('Used only when using `->route()`. Overrides the guessed `base_url` from the request. May be useful in CLI.')
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
         ;
 
         $this->addChromiumScreenshotOptionsNode($treebuilder->getRootNode());

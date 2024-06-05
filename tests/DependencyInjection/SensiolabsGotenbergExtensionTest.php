@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
@@ -199,13 +200,61 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             foreach ($builder as $builderName => $expectedConfig) {
                 $gotenbergDefinition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
                 $methodCalls = $gotenbergDefinition->getMethodCalls();
-                $setConfiguration = $methodCalls[0];
 
-                $config = $setConfiguration[1][0];
+                $indexedMethodCalls = [];
+                foreach ($methodCalls as $methodCall) {
+                    [$name, $arguments] = $methodCall;
+                    $indexedMethodCalls[$name] ??= [];
+                    $indexedMethodCalls[$name][] = $arguments;
+                }
 
-                self::assertSame($expectedConfig, $config);
+                self::assertArrayHasKey('setConfigurations', $indexedMethodCalls);
+                self::assertCount(1, $indexedMethodCalls['setConfigurations']);
+
+                $config = $indexedMethodCalls['setConfigurations'][0];
+
+                self::assertSame([$expectedConfig], $config);
             }
         }
+    }
+
+    public static function urlBuildersCanChangeTheirRequestContextProvider(): \Generator
+    {
+        yield '.sensiolabs_gotenberg.pdf_builder.url' => ['.sensiolabs_gotenberg.pdf_builder.url'];
+        yield '.sensiolabs_gotenberg.screenshot_builder.url' => ['.sensiolabs_gotenberg.screenshot_builder.url'];
+    }
+
+    #[DataProvider('urlBuildersCanChangeTheirRequestContextProvider')]
+    public function testUrlBuildersCanChangeTheirRequestContext(string $serviceName): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder();
+        self::assertNotContains('.sensiolabs_gotenberg.request_context', $containerBuilder->getServiceIds());
+
+        $extension->load([[
+            'request_context' => [
+                'base_uri' => 'https://sensiolabs.com',
+            ],
+        ]], $containerBuilder);
+
+        self::assertContains('.sensiolabs_gotenberg.request_context', $containerBuilder->getServiceIds());
+
+        $requestContextDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.request_context');
+        self::assertSame('https://sensiolabs.com', $requestContextDefinition->getArgument(0));
+
+        $urlBuilderDefinition = $containerBuilder->getDefinition($serviceName);
+        self::assertCount(2, $urlBuilderDefinition->getMethodCalls());
+
+        $indexedMethodCalls = [];
+        foreach ($urlBuilderDefinition->getMethodCalls() as $methodCall) {
+            [$name, $arguments] = $methodCall;
+            $indexedMethodCalls[$name] ??= [];
+            $indexedMethodCalls[$name][] = $arguments;
+        }
+
+        self::assertArrayHasKey('setRequestContext', $indexedMethodCalls);
+        self::assertCount(1, $indexedMethodCalls['setRequestContext']);
     }
 
     public function testGotenbergClientConfiguredWithDefaultConfig(): void

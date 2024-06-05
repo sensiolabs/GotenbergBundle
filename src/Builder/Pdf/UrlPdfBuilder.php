@@ -26,12 +26,9 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
         $this->addNormalizer('route', $this->generateUrlFromRoute(...));
     }
 
-    /**
-     * @param array{base_url: string} $requestContext
-     */
-    public function setRequestContext(array $requestContext): self
+    public function setRequestContext(RequestContext|null $requestContext = null): self
     {
-        $this->requestContext = RequestContext::fromUri($requestContext['base_url']);
+        $this->requestContext = $requestContext;
 
         return $this;
     }
@@ -91,19 +88,15 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
             throw new MissingRequiredFieldException('URL (or route) is required');
         }
 
+        if (\array_key_exists('url', $this->formFields) && \array_key_exists('route', $this->formFields)) {
+            throw new MissingRequiredFieldException('Provide only one of ["route", "url"] parameter. Not both.');
+        }
+
         return parent::getMultipartFormData();
     }
 
     protected function getEndpoint(): string
     {
         return self::ENDPOINT;
-    }
-
-    protected function addConfiguration(string $configurationName, mixed $value): void
-    {
-        match ($configurationName) {
-            'request_context' => $this->setRequestContext($value),
-            default => parent::addConfiguration($configurationName, $value),
-        };
     }
 }
