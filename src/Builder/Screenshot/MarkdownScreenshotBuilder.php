@@ -2,15 +2,15 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
-use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 
 final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 {
-    private const ENDPOINT = '/forms/chromium/convert/markdown';
+    private const ENDPOINT = '/forms/chromium/screenshot/markdown';
 
     /**
      * The HTML file that wraps the markdown content, rendered from a Twig template.
@@ -18,11 +18,11 @@ final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws ScreenshotPartRenderingException if the template could not be rendered
      */
     public function wrapper(string $template, array $context = []): self
     {
-        return $this->withRenderedPart(PdfPart::BodyPart, $template, $context);
+        return $this->withRenderedPart(Part::Body, $template, $context);
     }
 
     /**
@@ -30,7 +30,7 @@ final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
      */
     public function wrapperFile(string $path): self
     {
-        return $this->withPdfPartFile(PdfPart::BodyPart, $path);
+        return $this->withScreenshotPartFile(Part::Body, $path);
     }
 
     public function files(string ...$paths): self
@@ -50,7 +50,7 @@ final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists(PdfPart::BodyPart->value, $this->formFields)) {
+        if (!\array_key_exists(Part::Body->value, $this->formFields)) {
             throw new MissingRequiredFieldException('HTML template is required');
         }
 

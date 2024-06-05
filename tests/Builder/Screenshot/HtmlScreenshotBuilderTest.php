@@ -1,24 +1,22 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
+namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 
-#[CoversClass(HtmlPdfBuilder::class)]
-#[UsesClass(AbstractChromiumPdfBuilder::class)]
-#[UsesClass(AbstractPdfBuilder::class)]
+#[CoversClass(HtmlScreenshotBuilder::class)]
+#[UsesClass(AbstractChromiumScreenshotBuilder::class)]
+#[UsesClass(AbstractScreenshotBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(GotenbergAssetExtension::class)]
-final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
+final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 {
     public function testEndpointIsCorrect(): void
     {
@@ -26,13 +24,13 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
             ->expects($this->once())
             ->method('call')
             ->with(
-                $this->equalTo('/forms/chromium/convert/html'),
+                $this->equalTo('/forms/chromium/screenshot/html'),
                 $this->anything(),
                 $this->anything(),
             )
         ;
 
-        $this->getHtmlPdfBuilder()
+        $this->getHtmlScreenshotBuilder()
             ->contentFile('files/content.html')
             ->generate()
         ;
@@ -47,7 +45,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
     #[DataProvider('withPlainContentFileProvider')]
     public function testWithPlainContentFile(bool $withTwig): void
     {
-        $builder = $this->getHtmlPdfBuilder($withTwig);
+        $builder = $this->getHtmlScreenshotBuilder($withTwig);
         $builder->contentFile('files/content.html');
 
         $data = $builder->getMultipartFormData()[0];
@@ -72,7 +70,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
     public function testWithTwigContentFile(): void
     {
-        $builder = $this->getHtmlPdfBuilder();
+        $builder = $this->getHtmlScreenshotBuilder();
         $builder->content('templates/content.html.twig', ['name' => 'world']);
 
         $data = $builder->getMultipartFormData()[0];
@@ -97,7 +95,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
     public function testRequiredFormData(): void
     {
-        $builder = $this->getHtmlPdfBuilder();
+        $builder = $this->getHtmlScreenshotBuilder();
 
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('Content is required');
@@ -105,8 +103,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    private function getHtmlPdfBuilder(bool $twig = true): HtmlPdfBuilder
+    private function getHtmlScreenshotBuilder(bool $twig = true): HtmlScreenshotBuilder
     {
-        return new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null);
+        return new HtmlScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null);
     }
 }

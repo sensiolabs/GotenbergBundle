@@ -3,9 +3,10 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Enumeration\Part;
+use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
-use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
@@ -76,9 +77,9 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      */
-    public function format(string $format): static
+    public function format(ScreenshotFormat $format): static
     {
-        $this->formFields['format'] = $format;
+        $this->formFields['format'] = $format->value;
 
         return $this;
     }
@@ -86,9 +87,11 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     /**
      * The compression quality from range 0 to 100 (jpeg only). (default 100).
      *
+     * @param int<0, 100> $quality
+     *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      */
-    public function quality(string $quality): static
+    public function quality(int $quality): static
     {
         $this->formFields['quality'] = $quality;
 
@@ -96,7 +99,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     }
 
     /**
-     * Hides default white background and allows generating PDFs with
+     * Hides default white background and allows generating screenshot with
      * transparency. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
@@ -122,7 +125,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
 
     /**
      * Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML
-     * document before converting it to PDF. (default None).
+     * document before converting it to screenshot. (default None).
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
      */
@@ -135,7 +138,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
 
     /**
      * Sets the JavaScript expression to wait before converting an HTML
-     * document to PDF until it returns true. (default None).
+     * document to screenshot until it returns true. (default None).
      *
      * For instance: "window.status === 'ready'".
      *
@@ -251,7 +254,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     }
 
     /**
-     * Forces GotenbergPdf to return a 409 Conflict response if there are
+     * Forces GotenbergScreenshot to return a 409 Conflict response if there are
      * exceptions in the Chromium console. (default false).
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
@@ -268,44 +271,6 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         $this->formFields['skipNetworkIdleEvent'] = $bool;
 
         return $this;
-    }
-
-    /**
-     * @param string               $template #Template
-     * @param array<string, mixed> $context
-     *
-     * @throws PdfPartRenderingException if the template could not be rendered
-     */
-    public function header(string $template, array $context = []): static
-    {
-        return $this->withRenderedPart(PdfPart::HeaderPart, $template, $context);
-    }
-
-    /**
-     * @param string               $template #Template
-     * @param array<string, mixed> $context
-     *
-     * @throws PdfPartRenderingException if the template could not be rendered
-     */
-    public function footer(string $template, array $context = []): static
-    {
-        return $this->withRenderedPart(PdfPart::FooterPart, $template, $context);
-    }
-
-    /**
-     * HTML file containing the header. (default None).
-     */
-    public function headerFile(string $path): static
-    {
-        return $this->withPdfPartFile(PdfPart::HeaderPart, $path);
-    }
-
-    /**
-     * HTML file containing the footer. (default None).
-     */
-    public function footerFile(string $path): static
-    {
-        return $this->withPdfPartFile(PdfPart::FooterPart, $path);
     }
 
     /**
@@ -336,14 +301,14 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         return $this;
     }
 
-    protected function withPdfPartFile(PdfPart $pdfPart, string $path): static
+    protected function withScreenshotPartFile(Part $screenshotPart, string $path): static
     {
         $dataPart = new DataPart(
             new DataPartFile($this->asset->resolve($path)),
-            $pdfPart->value,
+            $screenshotPart->value,
         );
 
-        $this->formFields[$pdfPart->value] = $dataPart;
+        $this->formFields[$screenshotPart->value] = $dataPart;
 
         return $this;
     }
@@ -352,9 +317,9 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws ScreenshotPartRenderingException if the template could not be rendered
      */
-    protected function withRenderedPart(PdfPart $pdfPart, string $template, array $context = []): static
+    protected function withRenderedPart(Part $screenshotPart, string $template, array $context = []): static
     {
         if (!$this->twig instanceof Environment) {
             throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
@@ -363,10 +328,10 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         try {
             $html = $this->twig->render($template, array_merge($context, ['_builder' => $this]));
         } catch (\Throwable $error) {
-            throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
+            throw new ScreenshotPartRenderingException(sprintf('Could not render template "%s" into Screenshot part "%s". %s', $template, $screenshotPart->value, $error->getMessage()), previous: $error);
         }
 
-        $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
+        $this->formFields[$screenshotPart->value] = new DataPart($html, $screenshotPart->value, 'text/html');
 
         return $this;
     }
@@ -377,7 +342,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
             'width' => $this->width($value),
             'height' => $this->height($value),
             'clip' => $this->clip($value),
-            'format' => $this->format($value),
+            'format' => $this->format(ScreenshotFormat::from($value)),
             'quality' => $this->quality($value),
             'omit_background' => $this->omitBackground($value),
             'optimize_for_speed' => $this->optimizeForSpeed($value),

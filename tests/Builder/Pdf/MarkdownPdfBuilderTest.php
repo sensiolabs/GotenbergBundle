@@ -4,44 +4,66 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(MarkdownPdfBuilder::class)]
+#[UsesClass(AbstractChromiumPdfBuilder::class)]
+#[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(Filesystem::class)]
 final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
 {
-    public function testMarkdownFile(): void
+    public function testEndpointIsCorrect(): void
     {
-        $client = $this->createMock(GotenbergClientInterface::class);
-        $assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
+        $this->gotenbergClient
+            ->expects($this->once())
+            ->method('call')
+            ->with(
+                $this->equalTo('/forms/chromium/convert/markdown'),
+                $this->anything(),
+                $this->anything(),
+            )
+        ;
 
-        $builder = new MarkdownPdfBuilder($client, $assetBaseDirFormatter);
+        $this->getMarkdownPdfBuilder()
+            ->wrapperFile('files/wrapper.html')
+            ->files('assets/file.md')
+            ->generate()
+        ;
+    }
+
+    public function testRequiredWrapperTemplate(): void
+    {
+        $builder = $this->getMarkdownPdfBuilder();
         $builder
-            ->wrapperFile('template.html')
             ->files('assets/file.md')
         ;
 
-        $multipartFormData = $builder->getMultipartFormData();
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('HTML template is required');
 
-        self::assertCount(2, $multipartFormData);
+        $builder->getMultipartFormData();
+    }
 
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertIsArray($multipartFormData[0]);
-        self::assertArrayHasKey('files', $multipartFormData[0]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
-        self::assertSame('index.html', $multipartFormData[0]['files']->getFilename());
+    public function testRequiredMarkdownFile(): void
+    {
+        $builder = $this->getMarkdownPdfBuilder();
+        $builder
+            ->wrapperFile('files/wrapper.html')
+        ;
 
-        self::assertArrayHasKey(1, $multipartFormData);
-        self::assertIsArray($multipartFormData[1]);
-        self::assertArrayHasKey('files', $multipartFormData[1]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
-        self::assertSame('file.md', $multipartFormData[1]['files']->getFilename());
-        self::assertSame('text/markdown', $multipartFormData[1]['files']->getContentType());
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one markdown file is required');
+
+        $builder->getMultipartFormData();
+    }
+
+    private function getMarkdownPdfBuilder(bool $twig = true): MarkdownPdfBuilder
+    {
+        return new MarkdownPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null);
     }
 }

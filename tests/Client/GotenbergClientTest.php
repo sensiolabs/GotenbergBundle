@@ -6,18 +6,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
+use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
-use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversClass(GotenbergClient::class)]
-#[UsesClass(MockResponse::class)]
-#[UsesClass(MockHttpClient::class)]
-#[UsesClass(HeaderBag::class)]
+#[UsesClass(GotenbergResponse::class)]
 final class GotenbergClientTest extends TestCase
 {
-    public function testCall(): void
+    public function testCallIsCorrectlyFormatted(): void
     {
         /** @var string $stream */
         $stream = file_get_contents(__DIR__.'/../Fixtures/pdf/simple_pdf.pdf');
@@ -32,8 +30,45 @@ final class GotenbergClientTest extends TestCase
 
         $mockClient = new MockHttpClient([$mockResponse]);
 
+        $multipartFormData = [
+            [
+                'url' => 'https://google.com',
+            ],
+        ];
+
         $gotenbergClient = new GotenbergClient('http://localhost:3000', $mockClient);
-        $response = $gotenbergClient->call('/forms/chromium/convert/url', []);
+        $response = $gotenbergClient->call('/some/url', $multipartFormData, ['SomeHeader' => 'SomeValue']);
+
+        self::assertSame(1, $mockClient->getRequestsCount());
+        self::assertSame('POST', $mockResponse->getRequestMethod());
+        self::assertSame('http://localhost:3000/some/url', $mockResponse->getRequestUrl());
+
+        $requestHeaders = array_reduce($mockResponse->getRequestOptions()['headers'], static function (array $carry, string $header): array {
+            [$key, $value] = explode(': ', $header, 2);
+
+            $carry[$key] ??= [];
+            $carry[$key][] = $value;
+
+            return $carry;
+        }, []);
+
+        self::assertArrayHasKey('SomeHeader', $requestHeaders);
+        self::assertSame('SomeValue', $requestHeaders['SomeHeader'][0]);
+
+        self::assertArrayHasKey('content-type', $requestHeaders);
+        $requestContentType = $requestHeaders['content-type'][0];
+
+        self::assertMatchesRegularExpression('#^multipart/form-data; boundary=(?P<boundary>.*)$#', $requestContentType);
+
+        /* @see https://onlinephp.io/c/e8233 */
+        preg_match('#^multipart/form-data; boundary=(?P<boundary>.*)$#', $requestContentType, $matches);
+        $boundary = $matches['boundary'];
+
+        $requestBody = $mockResponse->getRequestOptions()['body'];
+        self::assertSame(
+            "--{$boundary}\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\nContent-Disposition: form-data; name=\"url\"\r\n\r\nhttps://google.com\r\n--{$boundary}--\r\n",
+            $requestBody,
+        );
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
         self::assertSame('application/pdf', $response->headers->get('content-type'));

@@ -4,16 +4,44 @@ namespace Sensiolabs\GotenbergBundle\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
+use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
+use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
+use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
+use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
+use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\GotenbergPdf;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(GotenbergPdf::class)]
+#[UsesClass(AbstractChromiumPdfBuilder::class)]
+#[UsesClass(AbstractPdfBuilder::class)]
+#[UsesClass(HtmlPdfBuilder::class)]
+#[UsesClass(MarkdownPdfBuilder::class)]
+#[UsesClass(LibreOfficePdfBuilder::class)]
+#[UsesClass(UrlPdfBuilder::class)]
+#[UsesClass(GotenbergClient::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
+#[UsesClass(TraceablePdfBuilder::class)]
+#[UsesClass(TraceableGotenbergPdf::class)]
+#[UsesClass(GotenbergPass::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(SensiolabsGotenbergExtension::class)]
+#[UsesClass(SensiolabsGotenbergBundle::class)]
+#[UsesClass(Unit::class)]
 final class GotenbergPdfTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void
@@ -46,8 +74,8 @@ final class GotenbergPdfTest extends KernelTestCase
         $builder = $gotenberg->html()
             ->setConfigurations([
                 'margin_top' => 3,
-                'margin_bottom' => 1],
-            )
+                'margin_bottom' => 1,
+            ])
         ;
         $builder->contentFile(__DIR__.'/../Fixtures/files/content.html');
         $multipartFormData = $builder->getMultipartFormData();
@@ -55,10 +83,10 @@ final class GotenbergPdfTest extends KernelTestCase
         self::assertCount(3, $multipartFormData);
 
         self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['marginTop' => '3'], $multipartFormData[0]);
+        self::assertSame(['marginTop' => '3in'], $multipartFormData[0]);
 
         self::assertArrayHasKey(1, $multipartFormData);
-        self::assertSame(['marginBottom' => '1'], $multipartFormData[1]);
+        self::assertSame(['marginBottom' => '1in'], $multipartFormData[1]);
 
         self::assertArrayHasKey(2, $multipartFormData);
         self::assertIsArray($multipartFormData[2]);

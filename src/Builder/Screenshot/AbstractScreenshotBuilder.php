@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
-use Sensiolabs\GotenbergBundle\Enum\PdfPart;
+use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
@@ -32,28 +32,36 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
         protected readonly AssetBaseDirFormatter $asset,
     ) {
         $this->normalizers = [
-            'extraHttpHeaders' => static function (mixed $value): array {
-                try {
-                    $extraHttpHeaders = json_encode($value, \JSON_THROW_ON_ERROR);
-                } catch (\JsonException $exception) {
-                    throw new JsonEncodingException('Could not encode extra HTTP headers into JSON', previous: $exception);
-                }
-
-                return ['extraHttpHeaders' => $extraHttpHeaders];
+            'extraHttpHeaders' => function (mixed $value): array {
+                return $this->encodeData('extraHttpHeaders', $value);
             },
             'assets' => static function (array $value): array {
                 return ['files' => $value];
             },
-            PdfPart::HeaderPart->value => static function (DataPart $value): array {
+            Part::Body->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
-            PdfPart::BodyPart->value => static function (DataPart $value): array {
-                return ['files' => $value];
+            'failOnHttpStatusCodes' => function (mixed $value): array {
+                return $this->encodeData('failOnHttpStatusCodes', $value);
             },
-            PdfPart::FooterPart->value => static function (DataPart $value): array {
-                return ['files' => $value];
+            'cookies' => function (mixed $value): array {
+                return $this->encodeData('cookies', array_values($value));
             },
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function encodeData(string $key, mixed $value): array
+    {
+        try {
+            $encodedValue = json_encode($value, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new JsonEncodingException(sprintf('Could not encode property "%s" into JSON', $key), previous: $exception);
+        }
+
+        return [$key => $encodedValue];
     }
 
     /**
@@ -138,7 +146,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 $result[] = $this->addToMultipart($innerKey, $innerValue);
             }
 
-            return \array_merge(...$result);
+            return array_merge(...$result);
         }
 
         if (\is_bool($value)) {
@@ -147,9 +155,19 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
             ]];
         }
 
-        if (\is_int($value) || \is_float($value)) {
+        if (\is_int($value)) {
             return [[
                 $key => (string) $value,
+            ]];
+        }
+
+        if (\is_float($value)) {
+            [$left, $right] = sscanf((string) $value, '%d.%s') ?? [$value, ''];
+
+            $right ??= '0';
+
+            return [[
+                $key => "{$left}.{$right}",
             ]];
         }
 
@@ -159,7 +177,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 $result[] = $this->addToMultipart($key, $nestedValue);
             }
 
-            return \array_merge(...$result);
+            return array_merge(...$result);
         }
 
         return [[

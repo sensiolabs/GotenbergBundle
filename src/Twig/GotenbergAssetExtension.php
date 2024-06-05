@@ -4,7 +4,6 @@ namespace Sensiolabs\GotenbergBundle\Twig;
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
-use Symfony\Component\Mime\Part\File;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -30,6 +29,6 @@ final class GotenbergAssetExtension extends AbstractExtension
 
         $builder->addAsset($path);
 
-        return (new File($path))->getFilename();
+        return basename($path);
     }
 }
