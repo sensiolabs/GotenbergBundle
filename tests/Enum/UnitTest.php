@@ -5,7 +5,7 @@ namespace Enum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Enum\Unit;
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 
 #[CoversClass(Unit::class)]
 final class UnitTest extends TestCase

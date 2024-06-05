@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
-use Sensiolabs\GotenbergBundle\Enum\Part;
+use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
@@ -38,13 +38,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
             'assets' => static function (array $value): array {
                 return ['files' => $value];
             },
-            Part::Header->value => static function (DataPart $value): array {
-                return ['files' => $value];
-            },
             Part::Body->value => static function (DataPart $value): array {
-                return ['files' => $value];
-            },
-            Part::Footer->value => static function (DataPart $value): array {
                 return ['files' => $value];
             },
             'failOnHttpStatusCodes' => function (mixed $value): array {

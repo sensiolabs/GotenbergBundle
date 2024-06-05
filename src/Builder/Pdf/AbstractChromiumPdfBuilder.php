@@ -3,11 +3,11 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Enum\EmulatedMediaType;
-use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
-use Sensiolabs\GotenbergBundle\Enum\Part;
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
-use Sensiolabs\GotenbergBundle\Enum\Unit;
+use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\Part;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;

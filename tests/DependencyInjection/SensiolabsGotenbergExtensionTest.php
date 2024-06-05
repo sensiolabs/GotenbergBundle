@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
