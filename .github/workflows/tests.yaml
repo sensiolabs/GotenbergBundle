@@ -1,4 +1,4 @@
-name: 'CI'
+name: 'Tests'
 
 on:
   push:
@@ -12,44 +12,6 @@ permissions:
   contents: 'read'
 
 jobs:
-
-  php-cs-fixer:
-    name: 'PHP CS Fixer'
-    runs-on: 'ubuntu-latest'
-    if: github.event_name != 'schedule'
-    steps:
-      - uses: 'actions/checkout@v4'
-
-      - name: 'Setup PHP'
-        uses: 'shivammathur/setup-php@v2'
-        with:
-          php-version: '8.3'
-          coverage: 'none'
-
-      - name: 'Install dependencies'
-        uses: 'ramsey/composer-install@v3'
-
-      - name: 'Run PHP CS Fixer'
-        run: 'php vendor/bin/php-cs-fixer check -v'
-
-  phpstan:
-    name: 'PHPStan'
-    runs-on: 'ubuntu-latest'
-    if: github.event_name != 'schedule'
-    steps:
-      - uses: 'actions/checkout@v4'
-
-      - name: 'Setup PHP'
-        uses: 'shivammathur/setup-php@v2'
-        with:
-          php-version: '8.3'
-          coverage: 'none'
-
-      - name: 'Install dependencies'
-        uses: 'ramsey/composer-install@v3'
-
-      - name: 'Run PHPStan'
-        run: 'php vendor/bin/phpstan'
 
   test:
     name: 'Build and Test - PHP ${{ matrix.php }} - Symfony ${{ matrix.symfony-version }} ${{ matrix.deps }}'
