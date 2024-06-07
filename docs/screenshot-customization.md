@@ -3,11 +3,11 @@
 ## Available functions
 
 ### Render
-[width](#width)
-[height](#height)
-[clip](#clip)
-[quality](#quality)
-[omitBackground](#omitBackground)
+[width](#width)  
+[height](#height)  
+[clip](#clip)  
+[quality](#quality)  
+[omitBackground](#omitBackground)  
 
 ### Style
 [assets](assets.md)  
