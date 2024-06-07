@@ -32,13 +32,17 @@ registered bundles in the ``config/bundles.php`` file of your project:
 
 ## Basic Usage
 
-### URL
+### PDF
+
+You can generate a PDF locally from URL, HTML and Markdown.
+
+#### URL
 
 After injecting ``GotenbergPdfInterface`` you simply need to call the method ``url``,
 which will return a ``UrlPdfBuilder`` instance.
 
 ``UrlPdfBuilder`` lets you pass the URL of the page you want to convert into PDF
-to the method ``content``.
+to the method ``url``.
 
 ````php
     namespace App\Controller;
@@ -60,7 +64,7 @@ to the method ``content``.
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#url-into-pdf-route).
 
-### Twig
+#### Twig
 
 > [!WARNING]  
 > Every twig templates you pass to Gotenberg need to have the following structure.  
@@ -126,6 +130,64 @@ The path provided can be relative as well as absolute.
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#html-file-into-pdf-route).
 
+### Screenshot
+
+You can generate a screenshot locally from URL, HTML and Markdown.
+
+#### URL
+
+After injecting ``GotenbergScreenshotInterface`` you simply need to call the method ``url``,
+which will return a ``UrlScreenshotBuilder`` instance.
+
+``UrlScreenshotBuilder`` lets you pass the URL of the page you want to convert into screenshot
+to the method ``url``.
+
+````php
+    namespace App\Controller;
+
+    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+    class YourController
+    {
+        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+        {
+            return $gotenberg->url()
+                ->url('https://sensiolabs.com/fr/')
+                ->generate()
+             ;
+        }
+    }
+````
+#### Twig
+
+After injecting ``GotenbergScreenshotInterface`` you simply need to call the method ``html``,
+which will return a ``HtmlScreenshotBuilder`` instance.
+
+``HtmlScreenshotBuilder`` lets you pass the content of the page you want to convert into screenshot
+to the method ``content``.
+
+````php
+    namespace App\Controller;
+
+    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+    class YourController
+    {
+        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+        {
+            return $gotenberg->html()
+                ->content('twig_simple_pdf.html.twig', [
+                    'my_var' => 'value'
+                ])
+                ->generate()
+             ;
+        }
+    }
+````
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#screenshots-route).
+
 ### Advanced Usage
 
 1. [Configuration](docs/configuration.md)
@@ -144,7 +206,7 @@ The path provided can be relative as well as absolute.
    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
 6. [PDF customization](docs/pdf-customization.md)
-7. [Screenshot customization]()
+7. [Screenshot customization](docs/screenshot-customization.md)
 8. [The profiler]()
 
 ## Credits

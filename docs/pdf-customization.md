@@ -856,7 +856,8 @@ configuration.
 ````php
     namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+    use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
     class YourController
     {
@@ -883,7 +884,7 @@ Enable PDF for Universal Access for optimal accessibility.
 ````php
     namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
     class YourController
     {
