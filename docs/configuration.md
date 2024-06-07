@@ -87,6 +87,8 @@ sensiolabs_gotenberg:
             office:
                 landscape: null                     # false
                 native_page_ranges: null            # All pages
+                export_form_fields: null            # true
+                single_page_sheets: null            # false
                 merge: null                         # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
