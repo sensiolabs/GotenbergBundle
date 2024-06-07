@@ -50,6 +50,12 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         yield 'native_page_ranges' => ['native_page_ranges', '1-10', [
             'nativePageRanges' => '1-10',
         ]];
+        yield 'export_form_fields' => ['export_form_fields', true, [
+            'exportFormFields' => 'true',
+        ]];
+        yield 'single_page_sheets' => ['single_page_sheets', false, [
+            'singlePageSheets' => 'false',
+        ]];
         yield 'merge' => ['merge', false, [
             'merge' => 'false',
         ]];
