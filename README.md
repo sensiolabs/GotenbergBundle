@@ -193,8 +193,8 @@ to the method ``content``.
 1. [Configuration](docs/configuration.md)
 2. [Working with assets](docs/assets.md)
 3. [Router integration](docs/router.md)
-4. [Add header / footer](docs/header-footer.md)
-5. [Convert from any following office file](docs/office.md) (available extensions for conversion below)
+4. [Add header / footer](docs/header-footer.md) (available for PDF and every builder except LibreOffice)  
+5. [Convert office file and customization](docs/office.md) (available extensions for conversion below)
    
    `123`, `602`, `abw`, `bib`, `bmp`, `cdr`, `cgm`, `cmx`, `csv`, `cwk`, `dbf`, `dif`, `doc`, `docm`,
    `docx`, `dot`, `dotm`, `dotx`, `dxf`, `emf`, `eps`, `epub`, `fodg`, `fodp`, `fods`, `fodt`, `fopd`,
@@ -206,9 +206,12 @@ to the method ``content``.
    `tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
-6. [PDF customization](docs/pdf-customization.md)
+6. [PDF customization](docs/pdf-customization.md) (available for every builder except LibreOffice)  
 7. [Screenshot customization](docs/screenshot-customization.md)
-8. [The profiler]()
+
+### Profiler
+
+You aldo have a profiler dashboard to help you during your development.
 
 ## Credits
 
