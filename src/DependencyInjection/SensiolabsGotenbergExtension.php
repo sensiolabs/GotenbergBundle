@@ -73,6 +73,9 @@ class SensiolabsGotenbergExtension extends Extension
         $definition = $container->getDefinition('.sensiolabs_gotenberg.pdf_builder.office');
         $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['pdf']['office'])]);
 
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.pdf_builder.convert');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['pdf']['convert'])]);
+
         $definition = $container->getDefinition('.sensiolabs_gotenberg.screenshot_builder.html');
         $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['screenshot']['html'])]);
 

@@ -168,6 +168,10 @@ final class ConfigurationTest extends TestCase
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                     ],
+                    'convert' => [
+                        'pdf_format' => null,
+                        'pdf_universal_access' => null,
+                    ],
                 ],
                 'screenshot' => [
                     'html' => [
