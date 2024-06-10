@@ -21,9 +21,9 @@ You may have the possibility to convert Office files into PDF.
 > As assets files, by default the office files are fetch in the assets folder of
 > your application.  
 > If your office files are in another folder, you can override the default value
-> of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
+> of `assets_directory` in your configuration file `config/sensiolabs_gotenberg.yml`.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -38,12 +38,12 @@ You may have the possibility to convert Office files into PDF.
              ;
         }
     }
-````
+```
 
 You have the possibility to add more than one file, but you will generate
 a ZIP folder instead of PDF.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -54,11 +54,11 @@ a ZIP folder instead of PDF.
         {
             return $gotenberg->office()
                 ->files('document_one.txt', 'document_two.odt')
-                ->generate() // will return zip folder with two PDF files
+                ->generate() // will download a zip file with two PDF files
              ;
         }
     }
-````
+```
 
 ## Merge
 
@@ -66,7 +66,7 @@ Default: `false`
 
 With the `merge()` function you can merge multiple office files into a PDF.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -77,12 +77,12 @@ With the `merge()` function you can merge multiple office files into a PDF.
         {
             return $gotenberg->office()
                 ->files('document_one.txt', 'document_two.odt')
-                ->merge()
+                ->merge() // is same as ->merge(true)
                 ->generate()
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#merge-libreoffice).
@@ -93,7 +93,7 @@ Default: `false`
 
 Set the PDF orientation to landscape.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -104,12 +104,12 @@ Set the PDF orientation to landscape.
         {
             return $gotenberg->office()
                 ->files('document.txt')
-                ->landscape()
+                ->landscape() // is same as `->landscape(true)`
                 ->generate()
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
@@ -118,9 +118,9 @@ Set the PDF orientation to landscape.
 
 Default: `All pages generated`
 
-Page ranges to print (e.g. 1-5, 8, 11-13).
+Page ranges to print (e.g. `'1-5, 8, 11-13'`).
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -136,7 +136,7 @@ Page ranges to print (e.g. 1-5, 8, 11-13).
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
@@ -148,7 +148,7 @@ Default: `true`
 Set whether to export the form fields or to use the inputted/selected content 
 of the fields.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -159,12 +159,12 @@ of the fields.
         {
             return $gotenberg->office()
                 ->files('document.txt')
-                ->exportFormFields()
+                ->exportFormFields() // is same as `->exportFormFields(false)`
                 ->generate()
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
@@ -175,7 +175,7 @@ Default: `false`
 
 Set whether to render the entire spreadsheet as a single page.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -186,12 +186,12 @@ Set whether to render the entire spreadsheet as a single page.
         {
             return $gotenberg->office()
                 ->files('document.txt')
-                ->singlePageSheets()
+                ->singlePageSheets()  // is same as `->singlePageSheets(true)`
                 ->generate()
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
@@ -202,7 +202,7 @@ Default: `None`
 
 Convert the resulting PDF into the given PDF/A format.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -218,7 +218,7 @@ Convert the resulting PDF into the given PDF/A format.
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-libreoffice).
@@ -229,7 +229,7 @@ Default: `false`
 
 Enable PDF for Universal Access for optimal accessibility.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -240,12 +240,12 @@ Enable PDF for Universal Access for optimal accessibility.
         {
             return $gotenberg->office()
                 ->files('document.txt')
-                ->pdfUniversalAccess()
+                ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
                 ->generate()
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-libreoffice).
@@ -256,7 +256,7 @@ Default: `None`
 
 The metadata to write (JSON format).
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -272,7 +272,7 @@ The metadata to write (JSON format).
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#metadata-libreoffice).

@@ -4,8 +4,8 @@ You can add assets in several ways, and it's available for most builders.
 
 |            |         HTML         |        URL         |      Markdown      | Libre Office |
 |:----------:|:--------------------:|:------------------:|:------------------:|:------------:|
-|    PDF     |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     :x:      |
-| Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     :x:      |
+|    PDF     |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     N/A      |
+| Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     N/A      |
 
 > [!WARNING]  
 > By default the assets are fetch in the `assets` folder of your application.
@@ -15,12 +15,12 @@ You can add assets in several ways, and it's available for most builders.
 
 ## Twig file
 
-gotenberg_asset() Twig function will help you to generate an asset path.  
+`{{ gotenberg_asset() }}` Twig function will help you to generate an asset path.  
 This function work as [asset() Twig function](https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets).
 
 You can provide an absolute path.
 
-````html
+```html
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -32,11 +32,11 @@ You can provide an absolute path.
             <img src="{{ gotenberg_asset('img/admin.jpeg') }}" alt="Admin"/>
         </body>
     </html>
-````
+```
 
 The path provided can be relative as well.
 
-````html
+```html
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -48,11 +48,11 @@ The path provided can be relative as well.
             <img src="{{ gotenberg_asset('../public/img/admin.jpeg') }}" alt="Admin"/>
         </body>
     </html>
-````
+```
 
 And in your controller nothing needs to be changed.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -67,7 +67,7 @@ And in your controller nothing needs to be changed.
              ;
         }
     }
-````
+```
 
 ## HTML file
 
@@ -76,7 +76,7 @@ add some assets as below.
 
 The only requirement is that their paths in the HTML file are on the root level.
 
-````html
+```html
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -88,11 +88,11 @@ The only requirement is that their paths in the HTML file are on the root level.
             <img src="admin.jpeg" />
         </body>
     </html>
-````
+```
 
-All you need to do is to add the path of the asset file to `addAsset()` function.
+All you need to do is to add the path of the asset file to either `assets(...string)` or `addAsset(string)` function.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -111,11 +111,11 @@ All you need to do is to add the path of the asset file to `addAsset()` function
             ;
         }
     }
-````
+```
 
 Relative path work as well.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -134,12 +134,12 @@ Relative path work as well.
             ;
         }
     }
-````
+```
 
 In some cases you want to add an asset in your HTML in a specific condition.
 You can do it with `addAsset()` function to add an asset to the current asset list.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -159,7 +159,6 @@ You can do it with `addAsset()` function to add an asset to the current asset li
             ;
         }
     }
-````
+```
 
-In the example above ceo.jpeg, admin.jpeg and developer.jpeg will be loaded into 
-the PDF file.
+In the example above `ceo.jpeg`, `admin.jpeg` and `developer.jpeg` will be loaded into 

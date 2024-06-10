@@ -4,11 +4,18 @@ With `UrlPdfBuilder` or `UrlScreenshotBuilder` you can use the `route()` functio
 This function allow you to use a route of your application to make a PDF or a Screenshot.
 
 > [!WARNING]  
-> You must provide a URL accessible by Gotenberg with a public Host.
+> You must provide a URL accessible by Gotenberg with a public Host.  
+> Or configure `sensiolabs_gotenberg.yaml`
+> ```yaml
+> # config/packages/sensiolabs_gotenberg.yaml
+> sensiolabs_gotenberg:
+>   request_context:
+>       base_uri: 'http://host.docker.internal:3000'
+> ```
 
 ## PDF
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -26,11 +33,11 @@ This function allow you to use a route of your application to make a PDF or a Sc
             ;
         }
     }
-````
+```
 
 ## Screenshot
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -48,4 +55,4 @@ This function allow you to use a route of your application to make a PDF or a Sc
             ;
         }
     }
-````
+```

@@ -44,7 +44,7 @@ which will return a ``UrlPdfBuilder`` instance.
 ``UrlPdfBuilder`` lets you pass the URL of the page you want to convert into PDF
 to the method ``url``.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -59,7 +59,7 @@ to the method ``url``.
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#url-into-pdf-route).
@@ -69,7 +69,7 @@ to the method ``url``.
 > [!WARNING]  
 > Every twig templates you pass to Gotenberg need to have the following structure.  
 > Even Header or Footer parts.
-> ````html
+> ```html
 >        <!DOCTYPE html>
 >        <html lang="en">
 >          <head>
@@ -80,9 +80,9 @@ to the method ``url``.
 >            <!-- Your code goes here -->
 >          </body>
 >        </html>
-> ````
+> ```
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -99,10 +99,10 @@ to the method ``url``.
              ;
         }
     }
-````
+```
 
-If a template needs to link to a static asset (e.g. an image), this bundle provides a gotenberg_asset()
-Twig function to help generate that path.
+If a template needs to link to a static asset (e.g. an image), this bundle provides a `{{ gotenberg_asset() }}`
+Twig function to generate the correct path AND add it to the builder automatically.
 
 This function work as [asset() Twig function](https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets) 
 and fetch your assets in the `assets` folder of your application
@@ -110,7 +110,7 @@ If your files are in another folder, you can override the default value of ``ass
 configuration file ``config/sensiolabs_gotenberg.yml``.
 The path provided can be relative as well as absolute.
 
-````html
+```html
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -125,7 +125,7 @@ The path provided can be relative as well as absolute.
             </main>
         </body>
     </html>
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#html-file-into-pdf-route).
@@ -142,7 +142,7 @@ which will return a ``UrlScreenshotBuilder`` instance.
 ``UrlScreenshotBuilder`` lets you pass the URL of the page you want to convert into screenshot
 to the method ``url``.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -157,7 +157,7 @@ to the method ``url``.
              ;
         }
     }
-````
+```
 #### Twig
 
 After injecting ``GotenbergScreenshotInterface`` you simply need to call the method ``html``,
@@ -166,7 +166,7 @@ which will return a ``HtmlScreenshotBuilder`` instance.
 ``HtmlScreenshotBuilder`` lets you pass the content of the page you want to convert into screenshot
 to the method ``content``.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -183,7 +183,7 @@ to the method ``content``.
              ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#screenshots-route).
@@ -211,7 +211,7 @@ to the method ``content``.
 
 ### Profiler
 
-You aldo have a profiler dashboard to help you during your development.
+Comes with a built-in profiler panel to help you during your development.
 
 ## Credits
 

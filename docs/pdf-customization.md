@@ -58,7 +58,7 @@ Default: `8.5 inches x 11 inches`
 You can override the default paper size with `height`, `width` and `unit`.   
 `unit` is optional but by default in inches.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\Unit;
@@ -77,7 +77,7 @@ You can override the default paper size with `height`, `width` and `unit`.
             ;
         }
     }
-````
+```
 
 ### paperStandardSize
 
@@ -85,7 +85,7 @@ Default: `8.5 inches x 11 inches`
 
 You can override the default paper size with standard paper size.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
@@ -104,45 +104,31 @@ You can override the default paper size with standard paper size.
             ;
         }
     }
-````
+```
 
 Or if you want you can create your own paper size values, you just need to
 implement `PaperSizeInterface`.
 
-````php
+```php
 use Sensiolabs\GotenbergBundle\Enum\PaperSizeInterface;
 
-enum PdfSize implements PaperSizeInterface
+class MyInvoiceSize implements PaperSizeInterface
 {
-    case Letter;
-    case Legal;
-    case Tabloid;
-    case Ledger;
-
-    public function width(): float
+   public function width(): float
     {
-        return match ($this) {
-            PdfSize::Letter, PdfSize::Legal => 8.5,
-            PdfSize::Tabloid => 11,
-            PdfSize::Ledger => 17,
-        };
+        return 12;
     }
-
     public function height(): float
     {
-        return match ($this) {
-            PdfSize::Letter, PdfSize::Ledger => 11,
-            PdfSize::Legal => 14,
-            PdfSize::Tabloid => 17,
-        };
+        return 200;
     }
     
-        public function unit(): Unit
+    public function unit(): Unit
     {
         return Unit::Inches;
     }
 }
-````
+```
 
 ### paperWidth
 
@@ -151,7 +137,7 @@ Default: `8.5 inches`
 You can override the default `width` and `unit`.   
 `unit` is optional but by default in inches.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\Unit;
@@ -170,7 +156,7 @@ You can override the default `width` and `unit`.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-chromium).
@@ -182,7 +168,7 @@ Default: `11 inches`
 You can override the default `height` and `unit`.   
 `unit` is optional but by default in inches.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\Unit;
@@ -201,20 +187,20 @@ You can override the default `height` and `unit`.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-chromium).
 
 ### margins
 
-Default: `0.39 inches * 4`
+Default: `0.39 inches` on all four sides
 
 You can override the default margins, with the arguments `top`, `bottom`, `right`, 
 `left` and `unit`.   
 `unit` is optional but by default in inches.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\Unit;
@@ -233,12 +219,12 @@ You can override the default margins, with the arguments `top`, `bottom`, `right
             ;
         }
     }
-````
+```
 
 Or you can override all margins individually with respective `unit`.   
 `unit` is always optional but by default in inches.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\Unit;
@@ -260,7 +246,7 @@ Or you can override all margins individually with respective `unit`.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-chromium).
@@ -271,7 +257,7 @@ default: `false`
 
 Define whether to prefer page size as defined by CSS.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -289,7 +275,7 @@ Define whether to prefer page size as defined by CSS.
             ;
         }
     }
-````
+```
 
 ### printBackground
 
@@ -297,7 +283,7 @@ default: `false`
 
 Print the background graphics.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -315,7 +301,7 @@ Print the background graphics.
             ;
         }
     }
-````
+```
 
 ### omitBackground
 
@@ -323,7 +309,7 @@ default: `false`
 
 Hide the default white background and allow generating PDFs with transparency.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -341,7 +327,7 @@ Hide the default white background and allow generating PDFs with transparency.
             ;
         }
     }
-````
+```
 
 ### landscape
 
@@ -349,7 +335,7 @@ default: `false`
 
 Set the paper orientation to landscape.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -367,7 +353,7 @@ Set the paper orientation to landscape.
             ;
         }
     }
-````
+```
 
 ### scale
 
@@ -375,7 +361,7 @@ default: `1.0`
 
 The scale of the page rendering.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -393,7 +379,7 @@ The scale of the page rendering.
             ;
         }
     }
-````
+```
 
 ### nativePageRanges
 
@@ -401,7 +387,7 @@ default: `All pages`
 
 Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -419,13 +405,13 @@ Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.
             ;
         }
     }
-````
+```
 ## Additional content
 
 > [!WARNING]  
 > Every Header or Footer templates you pass to Gotenberg need to have
 > the following structure.
-> ````html
+> ```html
 >        <!DOCTYPE html>
 >        <html lang="en">
 >          <head>
@@ -436,7 +422,7 @@ Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.
 >            <!-- Your code goes here -->
 >          </body>
 >        </html>
-> ````
+> ```
 >
 > Some other limitations exist about header and footer.  
 > For more information about [Header and Footer](https://gotenberg.dev/docs/routes#header-footer-chromium).
@@ -446,7 +432,7 @@ Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.
 You may have the possibility to add header or footer twig templates
 to your generated PDF.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -470,7 +456,7 @@ to your generated PDF.
             ;
         }
     }
-````
+```
 
 ### headerFile and footerFile
 
@@ -480,7 +466,7 @@ to your generated PDF.
 > If your  HTML files are in another folder, you can override the default value
 > of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -498,11 +484,11 @@ to your generated PDF.
             ;
         }
     }
-````
+```
 
 Relative path work as well.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -520,7 +506,7 @@ Relative path work as well.
             ;
         }
     }
-````
+```
 
 ## Request
 
@@ -533,7 +519,7 @@ access to the page\'s code, you may want to wait a certain amount of
 time to make sure Chromium has fully rendered the page you\'re trying to
 generate.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -549,7 +535,7 @@ generate.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium).
@@ -558,7 +544,7 @@ generate.
 
 You may also wait until a given JavaScript expression.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -574,7 +560,7 @@ You may also wait until a given JavaScript expression.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium).
@@ -586,7 +572,7 @@ default: `print`
 Some websites have dedicated CSS rules for print. Using `screen` allows
 you to force the \"standard\" CSS rules.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
@@ -603,7 +589,7 @@ you to force the \"standard\" CSS rules.
             ;
         }
     }
-````
+```
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#emulated-media-type-chromium).
 
@@ -613,7 +599,7 @@ default: `None`
 
 Cookies to store in the Chromium cookie jar.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -636,7 +622,7 @@ Cookies to store in the Chromium cookie jar.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#cookies-chromium).
@@ -646,7 +632,7 @@ Cookies to store in the Chromium cookie jar.
 If you want to add cookies and delete the ones already loaded in the
 configuration .
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -669,14 +655,14 @@ configuration .
             ;
         }
     }
-````
+```
 
 ### addCookies
 
 If you want to add cookies from the ones already loaded in the
 configuration.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -699,7 +685,7 @@ configuration.
             ;
         }
     }
-````
+```
 
 ### extraHttpHeaders
 
@@ -707,7 +693,7 @@ default: `None`
 
 HTTP headers to send by Chromium while loading the HTML document.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -725,7 +711,7 @@ HTTP headers to send by Chromium while loading the HTML document.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#custom-http-headers-chromium).
@@ -737,7 +723,7 @@ default: `None`
 If you want to add headers from the ones already loaded in the
 configuration.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -755,7 +741,7 @@ configuration.
             ;
         }
     }
-````
+```
 
 ### failOnHttpStatusCodes
 
@@ -764,7 +750,7 @@ default: `[499,599]`
 To return a 409 Conflict response if the HTTP status code from the main
 page is not acceptable.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -780,7 +766,7 @@ page is not acceptable.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium).
@@ -792,7 +778,7 @@ default: `false`
 Return a 409 Conflict response if there are exceptions in the Chromium
 console.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -808,7 +794,7 @@ console.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#console-exceptions-chromium).
@@ -822,7 +808,7 @@ the majority of the page is rendered during conversion. However, this
 often significantly slows down the conversion process. Setting this form
 field to true can greatly enhance the conversion speed.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -838,7 +824,7 @@ field to true can greatly enhance the conversion speed.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#performance-mode-chromium).
@@ -853,7 +839,7 @@ Convert the resulting PDF into the given PDF/A format.
 If set to `null`, remove format from the ones already loaded in the
 configuration.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
@@ -870,7 +856,7 @@ configuration.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-chromium).
@@ -881,7 +867,7 @@ default: `false`
 
 Enable PDF for Universal Access for optimal accessibility.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -897,7 +883,7 @@ Enable PDF for Universal Access for optimal accessibility.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-chromium).

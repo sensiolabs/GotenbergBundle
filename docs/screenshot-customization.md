@@ -38,7 +38,7 @@ Default: `800 pixels`
 
 The device screen width in pixels.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -56,7 +56,7 @@ The device screen width in pixels.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#screenshots-route).
@@ -67,7 +67,7 @@ Default: `600 pixels`
 
 The device screen height in pixels.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -85,7 +85,7 @@ The device screen height in pixels.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#screenshots-route).
@@ -96,7 +96,7 @@ Default: `false`
 
 Define whether to clip the screenshot according to the device dimensions.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -114,7 +114,7 @@ Define whether to clip the screenshot according to the device dimensions.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#screenshots-route).
@@ -125,7 +125,7 @@ Default: `100`
 
 The compression quality from range 0 to 100 (jpeg only).
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
@@ -145,7 +145,7 @@ The compression quality from range 0 to 100 (jpeg only).
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#screenshots-route).
@@ -156,7 +156,7 @@ default: `false`
 
 Hide the default white background and allow generating screenshots with transparency.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -174,7 +174,7 @@ Hide the default white background and allow generating screenshots with transpar
             ;
         }
     }
-````
+```
 
 ## Request
 
@@ -184,7 +184,7 @@ default: `false`
 
 Define whether to optimize image encoding for speed, not for resulting size.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -202,7 +202,7 @@ Define whether to optimize image encoding for speed, not for resulting size.
             ;
         }
     }
-````
+```
 
 ### waitDelay
 
@@ -213,7 +213,7 @@ access to the page\'s code, you may want to wait a certain amount of
 time to make sure Chromium has fully rendered the page you\'re trying to
 generate.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -229,7 +229,7 @@ generate.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium).
@@ -238,7 +238,7 @@ generate.
 
 You may also wait until a given JavaScript expression.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -254,7 +254,7 @@ You may also wait until a given JavaScript expression.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium).
@@ -266,7 +266,7 @@ default: `print`
 Some websites have dedicated CSS rules for print. Using `screen` allows
 you to force the \"standard\" CSS rules.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
@@ -283,7 +283,7 @@ you to force the \"standard\" CSS rules.
             ;
         }
     }
-````
+```
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#emulated-media-type-chromium).
 
@@ -293,7 +293,7 @@ default: `None`
 
 Cookies to store in the Chromium cookie jar.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -316,7 +316,7 @@ Cookies to store in the Chromium cookie jar.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#cookies-chromium).
@@ -326,7 +326,7 @@ Cookies to store in the Chromium cookie jar.
 If you want to add cookies and delete the ones already loaded in the
 configuration .
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -349,14 +349,14 @@ configuration .
             ;
         }
     }
-````
+```
 
 ### addCookies
 
 If you want to add cookies from the ones already loaded in the
 configuration.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -379,7 +379,7 @@ configuration.
             ;
         }
     }
-````
+```
 
 ### extraHttpHeaders
 
@@ -387,7 +387,7 @@ default: `None`
 
 HTTP headers to send by Chromium while loading the HTML document.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -405,7 +405,7 @@ HTTP headers to send by Chromium while loading the HTML document.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#custom-http-headers-chromium).
@@ -417,7 +417,7 @@ default: `None`
 If you want to add headers from the ones already loaded in the
 configuration.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -435,7 +435,7 @@ configuration.
             ;
         }
     }
-````
+```
 
 ### failOnHttpStatusCodes
 
@@ -444,7 +444,7 @@ default: `[499,599]`
 To return a 409 Conflict response if the HTTP status code from the main
 page is not acceptable.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -460,7 +460,7 @@ page is not acceptable.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium).
@@ -472,7 +472,7 @@ default: `false`
 Return a 409 Conflict response if there are exceptions in the Chromium
 console.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -488,7 +488,7 @@ console.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#console-exceptions-chromium).
@@ -502,7 +502,7 @@ the majority of the page is rendered during conversion. However, this
 often significantly slows down the conversion process. Setting this form
 field to true can greatly enhance the conversion speed.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -518,7 +518,7 @@ field to true can greatly enhance the conversion speed.
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#performance-mode-chromium).
@@ -531,7 +531,7 @@ default: `png`
 
 The image compression format, either "png", "jpeg" or "webp".
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
@@ -548,7 +548,7 @@ The image compression format, either "png", "jpeg" or "webp".
             ;
         }
     }
-````
+```
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#screenshots-route).

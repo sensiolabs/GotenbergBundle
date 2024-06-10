@@ -3,19 +3,24 @@
 The default configuration for the bundle looks like :
 
 > [!WARNING]  
-> If you don't configure anything or configure null / [], 
+> If you don't configure anything or configure `null` / `[]`, 
 > the defaults values on Gotenberg API will be used.
 
-````yaml
+```yaml
 # app/config/sensiolabs_gotenberg.yml
 
 sensiolabs_gotenberg:
     base_uri: 'http://localhost:3000'
     assets_directory: '%kernel.project_dir%/assets'
-    http_client: null # Defaults to 'http_client'
+    http_client: 'http_client'
+    # Override the request Gotenberg will make to call one of your routes.
+    request_context:
+        # Used only when using `->route()`. Overrides the guessed `base_url` from the request. May be useful in CLI.
+        base_uri: null                              # None
     default_options:
         pdf:
             html:
+                single_page: null                   # false
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
                 margin_top: null                    # 0.39
@@ -38,7 +43,9 @@ sensiolabs_gotenberg:
                 skip_network_idle_event: null       # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
+                metadata: null                      # None
             url:
+                single_page: null                   # false
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
                 margin_top: null                    # 0.39
@@ -61,7 +68,9 @@ sensiolabs_gotenberg:
                 skip_network_idle_event: null       # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
+                metadata: null                      # None
             markdown:
+                single_page: null                   # false
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
                 margin_top: null                    # 0.39
@@ -84,6 +93,7 @@ sensiolabs_gotenberg:
                 skip_network_idle_event: null       # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
+                metadata: null                      # None
             office:
                 landscape: null                     # false
                 native_page_ranges: null            # All pages
@@ -92,6 +102,7 @@ sensiolabs_gotenberg:
                 merge: null                         # false
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
+                metadata: null                      # None
         screenshot:
             html:
                 width: null                         # 800
@@ -141,7 +152,7 @@ sensiolabs_gotenberg:
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
                 skip_network_idle_event: null       # false
-````
+```
 
 > [!TIP]
 > For more information about the [PDF properties](https://gotenberg.dev/docs/routes#page-properties-chromium) 
@@ -151,7 +162,7 @@ sensiolabs_gotenberg:
 
 HTTP headers to send by Chromium while loading the HTML document.
 
-````yaml
+```yaml
 sensiolabs_gotenberg:
     base_uri: 'http://localhost:3000'
     default_options:
@@ -159,7 +170,7 @@ sensiolabs_gotenberg:
             html:
                 extra_http_headers:
                     - { name: 'My-Header', value: 'MyValue' }
-````
+```
 
 > [!TIP]
 > For more information about [custom HTTP headers](https://gotenberg.dev/docs/routes#custom-http-headers).
@@ -169,14 +180,14 @@ sensiolabs_gotenberg:
 To return a 409 Conflict response if the HTTP status code from the main
 page is not acceptable.
 
-````yaml
+```yaml
 sensiolabs_gotenberg:
     base_uri: 'http://localhost:3000'
     default_options:
         pdf:
             html:
                 fail_on_http_status_codes: [401, 403]
-````
+```
 > [!TIP]
 > For more information about [Invalid HTTP Status Codes](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium).
 
@@ -184,7 +195,7 @@ sensiolabs_gotenberg:
 
 Cookies to store in the Chromium cookie jar.
 
-```` yaml
+``` yaml
 sensiolabs_gotenberg:
     base_uri: 'http://localhost:3000'
     default_options:
@@ -193,7 +204,7 @@ sensiolabs_gotenberg:
                 cookies:
                     - { name: 'yummy_cookie', value: 'choco', domain: 'example.com' }
                     - { name: 'my_cookie', value: 'symfony', domain: 'symfony.com', secure: true, httpOnly: true, sameSite: 'Lax'  }
-````
+```
 
 > [!TIP]
 > For more information about [cookies](https://gotenberg.dev/docs/routes#cookies-chromium).

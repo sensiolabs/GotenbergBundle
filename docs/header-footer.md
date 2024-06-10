@@ -2,15 +2,15 @@
 
 You may have the possibility to add header or footer to your generated PDF.
 
-|            |          HTML          |          URL          |       Markdown        | Libre Office |
-|:----------:|:----------------------:|:---------------------:|:---------------------:|:------------:|
-|    PDF     |   :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |     :X:      |
-| Screenshot |          :X:           |          :X:          |          :X:          |     :X:      |
+|            |        HTML        |        URL         |      Markdown      | Libre Office |
+|:----------:|:------------------:|:------------------:|:------------------:|:------------:|
+|    PDF     | :white_check_mark: | :white_check_mark: | :white_check_mark: |     :x:      |
+| Screenshot |        :x:         |        :x:         |        :x:         |     :x:      |
 
 > [!WARNING]  
 > Every Header or Footer templates you pass to Gotenberg need to have 
-> the following structure.
-> ````html
+> the following structure. It cannot be only the body but the full HTML template structure.
+> ```html
 >        <!DOCTYPE html>
 >        <html lang="en">
 >          <head>
@@ -21,14 +21,14 @@ You may have the possibility to add header or footer to your generated PDF.
 >            <!-- Your code goes here -->
 >          </body>
 >        </html>
-> ````
+> ```
 >
 > Some other limitations exist about header and footer.  
 > For more information about [Header and Footer](https://gotenberg.dev/docs/routes#header-footer-chromium).
 
 ## Twig file
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -52,7 +52,7 @@ You may have the possibility to add header or footer to your generated PDF.
             ;
         }
     }
-````
+```
 
 ## HTML file
 
@@ -62,7 +62,7 @@ You may have the possibility to add header or footer to your generated PDF.
 > If your  HTML files are in another folder, you can override the default value 
 > of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -73,18 +73,18 @@ You may have the possibility to add header or footer to your generated PDF.
         {
             return $gotenberg
                 ->html()
-                ->contentFile('content.html')
                 ->headerFile('header.html')
+                ->contentFile('content.html')
                 ->footerFile('footer.html')
                 ->generate()
             ;
         }
     }
-````
+```
 
 Relative path work as well.
 
-````php
+```php
     namespace App\Controller;
 
     use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -95,11 +95,11 @@ Relative path work as well.
         {
             return $gotenberg
                 ->html()
-                ->contentFile('../templates/html/content.html')
                 ->headerFile('../templates/html/header.html')
+                ->contentFile('../templates/html/content.html')
                 ->footerFile('../templates/html/footer.html')
                 ->generate()
             ;
         }
     }
-````
+```
