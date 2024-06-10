@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
+use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
@@ -13,6 +14,8 @@ use Symfony\Component\Mime\Part\DataPart;
 
 abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
 {
+    protected LoggerInterface|null $logger = null;
+
     /**
      * @var array<string, mixed>
      */
@@ -48,6 +51,11 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 return $this->encodeData('cookies', array_values($value));
             },
         ];
+    }
+
+    public function setLogger(LoggerInterface|null $logger): void
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -87,6 +95,10 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
 
     public function generate(): GotenbergResponse
     {
+        $this->logger?->debug('Generating Screenshot file using {sensiolabs_gotenberg.builder} builder.', [
+            'sensiolabs_gotenberg.builder' => $this::class,
+        ]);
+
         $pdfResponse = $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData());
 
         if (null !== $this->fileName) {

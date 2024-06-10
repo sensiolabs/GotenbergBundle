@@ -52,6 +52,7 @@
     },
     "suggest": {
         "symfony/monolog-bundle": "Enables logging througout the generating process.",
-        "symfony/twig-bundle": "Allows you to use Twig to render templates into PDF"
+        "symfony/twig-bundle": "Allows you to use Twig to render templates into PDF",
+        "monolog/monolog": "Enables logging througout the generating process."
     }
 }

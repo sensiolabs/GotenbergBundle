@@ -6,9 +6,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final readonly class GotenbergClient implements GotenbergClientInterface
+final class GotenbergClient implements GotenbergClientInterface
 {
-    public function __construct(private string $gotenbergBaseUri, private HttpClientInterface $client)
+    public function __construct(private readonly string $gotenbergBaseUri, private readonly HttpClientInterface $client)
     {
     }
 
