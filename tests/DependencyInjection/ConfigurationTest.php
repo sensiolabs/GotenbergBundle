@@ -164,6 +164,8 @@ final class ConfigurationTest extends TestCase
                     'office' => [
                         'landscape' => null,
                         'native_page_ranges' => null,
+                        'export_form_fields' => null,
+                        'single_page_sheets' => null,
                         'merge' => null,
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
