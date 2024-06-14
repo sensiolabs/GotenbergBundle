@@ -8,7 +8,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 
-final class ConvertPdfBuilder extends AbstractFormatPdfBuilder
+final class ConvertPdfBuilder extends AbstractPdfBuilder
 {
     private const ENDPOINT = '/forms/pdfengines/convert';
 
@@ -22,6 +22,26 @@ final class ConvertPdfBuilder extends AbstractFormatPdfBuilder
         foreach ($configurations as $property => $value) {
             $this->addConfiguration($property, $value);
         }
+
+        return $this;
+    }
+
+    /**
+     * Convert the resulting PDF into the given PDF/A format.
+     */
+    public function pdfFormat(PdfFormat $format): self
+    {
+        $this->formFields['pdfa'] = $format->value;
+
+        return $this;
+    }
+
+    /**
+     * Enable PDF for Universal Access for optimal accessibility.
+     */
+    public function pdfUniversalAccess(bool $bool = true): self
+    {
+        $this->formFields['pdfua'] = $bool;
 
         return $this;
     }

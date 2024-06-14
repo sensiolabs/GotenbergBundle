@@ -49,8 +49,6 @@ class Configuration implements ConfigurationInterface
                             ->append($this->addPdfMarkdownNode())
                             ->append($this->addPdfOfficeNode())
                             ->append($this->addPdfConvertNode())
-//                            ->append($this->addPdfMetadataNode())
-//                            ->append($this->addPdfMergeNode())
                         ->end()
                         ->arrayNode('screenshot')
                             ->addDefaultsIfNotSet()

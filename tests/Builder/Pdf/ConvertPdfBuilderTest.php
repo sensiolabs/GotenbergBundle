@@ -5,14 +5,14 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractFormatPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 
 #[CoversClass(ConvertPdfBuilder::class)]
-#[UsesClass(AbstractFormatPdfBuilder::class)]
+#[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
 {
