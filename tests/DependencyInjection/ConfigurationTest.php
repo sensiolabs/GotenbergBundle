@@ -74,6 +74,7 @@ final class ConfigurationTest extends TestCase
      *              'url': array<string, mixed>,
      *              'markdown': array<string, mixed>,
      *              'office': array<string, mixed>,
+     *              'convert': array<string, mixed>,
      *          }
      *     }
      * }

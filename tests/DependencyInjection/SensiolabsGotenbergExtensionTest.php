@@ -342,6 +342,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'Author' => 'SensioLabs OFFICE',
                         ],
                     ],
+                    'convert' => [
+                        'pdf_format' => 'PDF/A-2b',
+                    ],
                 ],
             ],
         ]], $containerBuilder);
@@ -370,6 +373,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'metadata' => [
                     'Author' => 'SensioLabs OFFICE',
                 ],
+            ],
+            'convert' => [
+                'pdf_format' => 'PDF/A-2b',
             ],
         ], $dataCollectorOptions);
     }
