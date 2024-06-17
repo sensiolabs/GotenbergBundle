@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
@@ -38,4 +39,9 @@ interface GotenbergPdfInterface
      * @return MarkdownPdfBuilder
      */
     public function markdown(): PdfBuilderInterface;
+
+    /**
+     * @return MergePdfBuilder
+     */
+    public function merge(): PdfBuilderInterface;
 }

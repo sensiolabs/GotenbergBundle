@@ -48,6 +48,7 @@ class Configuration implements ConfigurationInterface
                             ->append($this->addPdfUrlNode())
                             ->append($this->addPdfMarkdownNode())
                             ->append($this->addPdfOfficeNode())
+                            ->append($this->addPdfMergeNode())
                         ->end()
                         ->arrayNode('screenshot')
                             ->addDefaultsIfNotSet()
@@ -509,6 +510,35 @@ class Configuration implements ConfigurationInterface
                     ->defaultNull()
                 ->end()
                 ->append($this->addPdfMetadata())
+            ->end()
+        ;
+    }
+
+    private function addPdfMergeNode(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('merge');
+        $this->addPdfFormat($treeBuilder->getRootNode());
+        $treeBuilder->getRootNode()
+            ->append($this->addPdfMetadata())
+        ->end();
+
+        return $treeBuilder->getRootNode();
+    }
+
+    private function addPdfFormat(ArrayNodeDefinition $parent): void
+    {
+        $parent
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->enumNode('pdf_format')
+                    ->info('Convert PDF into the given PDF/A format - default None.')
+                    ->values(array_map(static fn (PdfFormat $case): string => $case->value, PdfFormat::cases()))
+                    ->defaultNull()
+                ->end()
+                ->booleanNode('pdf_universal_access')
+                    ->info('Enable PDF for Universal Access for optimal accessibility - default false.')
+                    ->defaultNull()
+                ->end()
             ->end()
         ;
     }
