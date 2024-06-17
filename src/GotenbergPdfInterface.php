@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle;
 
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -38,4 +39,9 @@ interface GotenbergPdfInterface
      * @return MarkdownPdfBuilder
      */
     public function markdown(): PdfBuilderInterface;
+
+    /**
+     * @return ConvertPdfBuilder
+     */
+    public function convert(): PdfBuilderInterface;
 }
