@@ -317,7 +317,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function emulatedMediaType(EmulatedMediaType $mediaType): static
     {
-        $this->formFields['emulatedMediaType'] = $mediaType->value;
+        $this->formFields['emulatedMediaType'] = $mediaType;
 
         return $this;
     }
@@ -445,7 +445,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             return $this;
         }
 
-        $this->formFields['pdfa'] = $format->value;
+        $this->formFields['pdfa'] = $format;
 
         return $this;
     }
@@ -526,6 +526,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     protected function addConfiguration(string $configurationName, mixed $value): void
     {
         match ($configurationName) {
+            'header' => $this->header(...$value),
+            'footer' => $this->footer(...$value),
             'single_page' => $this->singlePage($value),
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),

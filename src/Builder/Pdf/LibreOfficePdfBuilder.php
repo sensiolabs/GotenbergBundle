@@ -86,7 +86,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      */
     public function pdfFormat(PdfFormat $format): self
     {
-        $this->formFields['pdfa'] = $format->value;
+        $this->formFields['pdfa'] = $format;
 
         return $this;
     }
