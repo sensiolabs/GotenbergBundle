@@ -26,7 +26,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     /**
-     * @var array<string, (\Closure(mixed): array<string, array<string|int, mixed>|non-empty-string|int|float|bool|DataPart>)>
+     * @var array<string, (\Closure(mixed): array<string, array<string|int, mixed>|non-empty-string|\Stringable|int|float|bool|\BackedEnum|DataPart>)>
      */
     private array $normalizers;
 
@@ -157,11 +157,11 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @param array<int|string, mixed>|string|int|float|bool|DataPart $value
+     * @param array<int|string, mixed>|string|\Stringable|int|float|bool|\BackedEnum|DataPart $value
      *
      * @return list<array<string, mixed>>
      */
-    private function addToMultipart(string $key, array|string|int|float|bool|DataPart $value, \Closure|null $preCallback = null): array
+    private function addToMultipart(string $key, array|string|\Stringable|int|float|bool|\BackedEnum|DataPart $value, \Closure|null $preCallback = null): array
     {
         if (null !== $preCallback) {
             $result = [];
@@ -192,6 +192,18 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
 
             return [[
                 $key => "{$left}.{$right}",
+            ]];
+        }
+
+        if ($value instanceof \BackedEnum) {
+            return [[
+                $key => (string) $value->value,
+            ]];
+        }
+
+        if ($value instanceof \Stringable) {
+            return [[
+                $key => (string) $value,
             ]];
         }
 

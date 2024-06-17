@@ -79,7 +79,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      */
     public function format(ScreenshotFormat $format): static
     {
-        $this->formFields['format'] = $format->value;
+        $this->formFields['format'] = $format;
 
         return $this;
     }

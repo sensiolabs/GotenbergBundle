@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -65,6 +66,11 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
         yield 'cookies' => [
             ['cookies' => ['MyCookie' => ['name' => 'MyCookieName', 'value' => 'Chocolate', 'domain' => 'sensiolabs.com']]],
             'cookies', '[{"name":"MyCookieName","value":"Chocolate","domain":"sensiolabs.com"}]',
+        ];
+
+        yield 'using BackedEnum' => [
+            ['backed_enum' => PdfFormat::Pdf3b],
+            'backed_enum', 'PDF/A-3b',
         ];
     }
 
