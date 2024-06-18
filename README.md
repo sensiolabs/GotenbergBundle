@@ -215,7 +215,7 @@ to the method ``content``.
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
 6. [PDF customization](docs/pdf/customization.md) (available for every builder except LibreOffice)
 
-### Screenshot
+#### Screenshot
 
 1. [HTML Builder](docs/screenshot/html-builder.md)
 2. [Markdown Builder](docs/screenshot/markdown-builder.md)
