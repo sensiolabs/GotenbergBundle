@@ -202,8 +202,7 @@ to the method ``content``.
 2. [HTML Builder](docs/pdf/html-builder.md)
 3. [Markdown Builder](docs/pdf/markdown-builder.md)
 4. [Url Builder](docs/pdf/url-builder.md)
-5. [Office Builder](docs/pdf/office-builder.md) (available extensions for conversion below)
-   
+5. [Office Builder](docs/pdf/office-builder.md) (available extensions for conversion below)  
    `123`, `602`, `abw`, `bib`, `bmp`, `cdr`, `cgm`, `cmx`, `csv`, `cwk`, `dbf`, `dif`, `doc`, `docm`,
    `docx`, `dot`, `dotm`, `dotx`, `dxf`, `emf`, `eps`, `epub`, `fodg`, `fodp`, `fods`, `fodt`, `fopd`,
    `gif`, `htm`, `html`, `hwp`, `jpeg`, `jpg`, `key`, `ltx`, `lwp`, `mcw`, `met`, `mml`, `mw`, `numbers`,
@@ -214,7 +213,6 @@ to the method ``content``.
    `tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
-
 6. [PDF customization](docs/pdf/customization) (available for every builder except LibreOffice)
 
 ### Screenshot
