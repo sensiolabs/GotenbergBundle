@@ -8,10 +8,10 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 
-final readonly class GotenbergScreenshot implements GotenbergScreenshotInterface
+final class GotenbergScreenshot implements GotenbergScreenshotInterface
 {
     public function __construct(
-        private ContainerInterface $container,
+        private readonly ContainerInterface $container,
     ) {
     }
 
@@ -23,10 +23,11 @@ final readonly class GotenbergScreenshot implements GotenbergScreenshotInterface
     /**
      * @param 'html'|'url'|'markdown' $key
      *
-     * @return ($key is 'html' ? HtmlScreenshotBuilder :
-     *     $key is 'url' ? UrlScreenshotBuilder :
-     *     $key is 'markdown' ? MarkdownScreenshotBuilder :
-     *      ScreenshotBuilderInterface)
+     * @return (
+     *   $key is 'html' ? HtmlScreenshotBuilder :
+     *   $key is 'url' ? UrlScreenshotBuilder :
+     *   $key is 'markdown' ? MarkdownScreenshotBuilder :
+     *   ScreenshotBuilderInterface
      * )
      */
     private function getInternal(string $key): ScreenshotBuilderInterface
