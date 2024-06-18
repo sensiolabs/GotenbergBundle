@@ -2,11 +2,6 @@
 
 You may have the possibility to add header or footer to your generated PDF.
 
-|            |        HTML        |        URL         |      Markdown      | Libre Office |
-|:----------:|:------------------:|:------------------:|:------------------:|:------------:|
-|    PDF     | :white_check_mark: | :white_check_mark: | :white_check_mark: |     :x:      |
-| Screenshot |        :x:         |        :x:         |        :x:         |     :x:      |
-
 > [!WARNING]  
 > Every Header or Footer templates you pass to Gotenberg need to have 
 > the following structure. It cannot be only the body but the full HTML template structure.

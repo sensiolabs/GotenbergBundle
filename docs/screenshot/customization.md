@@ -10,8 +10,8 @@
 [omitBackground](#omitBackground)  
 
 ### Style
-[assets](assets.md)  
-[addAsset](assets.md)
+[assets](../assets.md)  
+[addAsset](../assets.md)
 
 ### Request
 [optimizeForSpeed](#optimizeForSpeed)

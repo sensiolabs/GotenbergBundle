@@ -3,7 +3,7 @@
 > [!NOTE]  
 > All of these functions are available for `HtmlPdfBuilder`, `UrlPdfBuilder` and
 > `MarkdownPdfBuilder`.  
-> To customize `LibreOfficePdfBuilder` see the related [documentation](office.md).
+> To customize `LibreOfficePdfBuilder` see the related [documentation](office-builder.md).
 
 ## Available functions
 
@@ -29,8 +29,8 @@
 [headerFile and footerFile](#headerfile-and-footerfile)   
 
 ### Style
-[assets](assets.md)  
-[addAsset](assets.md)  
+[assets](../assets.md)  
+[addAsset](../assets.md)  
 
 ### Request
 [waitDelay](#waitDelay)  

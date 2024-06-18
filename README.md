@@ -2,9 +2,12 @@
 
 ## What is it ?
 
-This bundle allows you to generate, stream and save PDF locally from URL, HTML and Markdown.  
-It can convert any office file into PDF.  
-It also helps you to generate, stream and save screenshot locally from URL, HTML and Markdown.  
+This bundle allows you to generate, stream and save PDF locally from URL, HTML, Markdown or any 
+Office file. Different options are available depending on the source.
+
+It also helps you to generate, stream and save images locally from URL, HTML and Markdown using 
+a screenshot.
+
 
 ## How to install
 
@@ -192,9 +195,14 @@ to the method ``content``.
 
 1. [Configuration](docs/configuration.md)
 2. [Working with assets](docs/assets.md)
-3. [Router integration](docs/router.md)
-4. [Add header / footer](docs/header-footer.md) (available for PDF and every builder except LibreOffice)  
-5. [Convert office file and customization](docs/office.md) (available extensions for conversion below)
+
+#### PDF
+
+1. [Add header / footer](docs/pdf/header-footer.md)
+2. [HTML Builder](docs/pdf/html-builder.md)
+3. [Markdown Builder](docs/pdf/markdown-builder.md)
+4. [Url Builder](docs/pdf/url-builder.md)
+5. [Office Builder](docs/pdf/office-builder.md) (available extensions for conversion below)
    
    `123`, `602`, `abw`, `bib`, `bmp`, `cdr`, `cgm`, `cmx`, `csv`, `cwk`, `dbf`, `dif`, `doc`, `docm`,
    `docx`, `dot`, `dotm`, `dotx`, `dxf`, `emf`, `eps`, `epub`, `fodg`, `fodp`, `fods`, `fodt`, `fopd`,
@@ -206,8 +214,15 @@ to the method ``content``.
    `tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
-6. [PDF customization](docs/pdf-customization.md) (available for every builder except LibreOffice)  
-7. [Screenshot customization](docs/screenshot-customization.md)
+
+6. [PDF customization](docs/pdf/customization) (available for every builder except LibreOffice)
+
+### Screenshot
+
+1. [HTML Builder](docs/screenshot/html-builder.md)
+2. [Markdown Builder](docs/screenshot/markdown-builder.md)
+3. [Url Builder](docs/screenshot/url-builder.md)
+4. [Screenshot customization](docs/screenshot/customization)
 
 ### Profiler
 
