@@ -12,16 +12,37 @@ You can add assets in several ways, and it's available for most builders.
 > If your assets files are in another folder, you can override the 
 > default value of `assets_directory` in your configuration file 
 > `config/sensiolabs_gotenberg.yml`.
-> 
+>
 > The asset path resolution depends on certain criteria:
-> - If an absolute path is provided in `{{ gotenberg_asset() }}`, `assets()` 
+> - If an absolute path is provided in `{{ gotenberg_asset() }}`, `assets()`
 > or `addAsset`, this path will be applied and not the one in the configuration file.
-> 
+>
+> - If a path is provided in `{{ gotenberg_asset() }}`, `assets()`
+> or `addAsset`, it will be treated as a relative path from the `assets_directory` configuration.
+>
 > - If an absolute path is provided in the configuration file (`assets_directory`), the path applied
 > in `{{ gotenberg_asset() }}`, `assets()` or `addAsset` will have `assets_directory` as base path.
-> 
+>
 > - If a relative path is provided in the configuration file (`assets_directory`), the path applied
 > will have the root of the project as base path followed by the path from the configuration file.
+>
+> <details>
+>     <summary>Examples</summary>
+>
+> ```php
+> // Without sensiolabs_gotenberg.assets_directory:
+> $builder->addAsset('/some/absolute/path/img.png'); // (string) '/some/absolute/path/img.png'
+> 
+> // Without sensiolabs_gotenberg.assets_directory:
+> $builder->addAsset('some/relative/img.png'); // (string) '%kernel.project_dir%/assets/some/relative/img.png'
+> 
+> // With sensiolabs_gotenberg.assets_directory: '/some/absolute/path'
+> $builder->addAsset('./some/relative/img.png'); // (string) '/some/absolute/path/some/relative/img.png'
+> 
+> // With sensiolabs_gotenberg.assets_directory: '/some/relative/path'
+> $builder->addAsset('./also/relative/img.png'); // (string) '%kernel.project_dir%/assets/path/some/relative/path/also/relative/img.png'
+> ```
+> </details>
 
 ## Twig file
 
