@@ -141,4 +141,4 @@ Required to generate a screenshot from Markdown builder. You can pass several fi
 ## Customization
 
 > [!TIP]
-> For more information go to [screenshot customization](customization).
+> For more information go to [screenshot customization](customization.md).

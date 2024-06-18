@@ -88,4 +88,4 @@ Required to generate a PDF from Markdown builder. You can pass several files wit
 ## Customization
 
 > [!TIP]
-> For more information go to [PDF customization](customization).
+> For more information go to [PDF customization](customization.md).

@@ -213,14 +213,14 @@ to the method ``content``.
    `tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
-6. [PDF customization](docs/pdf/customization) (available for every builder except LibreOffice)
+6. [PDF customization](docs/pdf/customization.md) (available for every builder except LibreOffice)
 
 ### Screenshot
 
 1. [HTML Builder](docs/screenshot/html-builder.md)
 2. [Markdown Builder](docs/screenshot/markdown-builder.md)
 3. [Url Builder](docs/screenshot/url-builder.md)
-4. [Screenshot customization](docs/screenshot/customization)
+4. [Screenshot customization](docs/screenshot/customization.md)
 
 ### Profiler
 

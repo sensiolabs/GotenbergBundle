@@ -71,4 +71,4 @@ The Twig file to convert into screenshot.
 ## Customization
 
 > [!TIP]
-> For more information go to [screenshot customization](customization).
+> For more information go to [screenshot customization](customization.md).

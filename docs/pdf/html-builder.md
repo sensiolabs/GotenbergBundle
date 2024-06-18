@@ -71,4 +71,4 @@ The Twig file to convert into PDF.
 ## Customization
 
 > [!TIP]
-> For more information go to [PDF customization](customization).
+> For more information go to [PDF customization](customization.md).
