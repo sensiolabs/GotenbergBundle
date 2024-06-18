@@ -39,8 +39,8 @@ You can add assets in several ways, and it's available for most builders.
 > // With sensiolabs_gotenberg.assets_directory: '/some/absolute/path'
 > $builder->addAsset('./some/relative/img.png'); // (string) '/some/absolute/path/some/relative/img.png'
 > 
-> // With sensiolabs_gotenberg.assets_directory: '/some/relative/path'
-> $builder->addAsset('./also/relative/img.png'); // (string) '%kernel.project_dir%/assets/path/some/relative/path/also/relative/img.png'
+> // With sensiolabs_gotenberg.assets_directory: 'some/relative/path'
+> $builder->addAsset('./also/relative/img.png'); // (string) '%kernel.project_dir%/assets/some/relative/path/also/relative/img.png'
 > ```
 > </details>
 
