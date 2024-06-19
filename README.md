@@ -193,16 +193,16 @@ to the method ``content``.
 
 ### Advanced Usage
 
-1. [Configuration](docs/configuration.md)
-2. [Working with assets](docs/assets.md)
+1. [Configuration](./docs/configuration.md)
+2. [Working with assets](./docs/assets.md)
 
 #### PDF
 
-1. [Add header / footer](docs/pdf/header-footer.md)
-2. [HTML Builder](docs/pdf/html-builder.md)
-3. [Markdown Builder](docs/pdf/markdown-builder.md)
-4. [Url Builder](docs/pdf/url-builder.md)
-5. [Office Builder](docs/pdf/office-builder.md) (available extensions for conversion below)  
+1. [Add header / footer](./docs/pdf/header-footer.md)
+2. [HTML Builder](./docs/pdf/html-builder.md)
+3. [Markdown Builder](./docs/pdf/markdown-builder.md)
+4. [Url Builder](./docs/pdf/url-builder.md)
+5. [Office Builder](./docs/pdf/office-builder.md) (available extensions for conversion below)  
    `123`, `602`, `abw`, `bib`, `bmp`, `cdr`, `cgm`, `cmx`, `csv`, `cwk`, `dbf`, `dif`, `doc`, `docm`,
    `docx`, `dot`, `dotm`, `dotx`, `dxf`, `emf`, `eps`, `epub`, `fodg`, `fodp`, `fods`, `fodt`, `fopd`,
    `gif`, `htm`, `html`, `hwp`, `jpeg`, `jpg`, `key`, `ltx`, `lwp`, `mcw`, `met`, `mml`, `mw`, `numbers`,
@@ -213,14 +213,14 @@ to the method ``content``.
    `tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
-6. [PDF customization](docs/pdf/customization.md) (available for every builder except LibreOffice)
+6. [PDF customization](./docs/pdf/customization.md) (available for every builder except LibreOffice)
 
 #### Screenshot
 
-1. [HTML Builder](docs/screenshot/html-builder.md)
-2. [Markdown Builder](docs/screenshot/markdown-builder.md)
-3. [Url Builder](docs/screenshot/url-builder.md)
-4. [Screenshot customization](docs/screenshot/customization.md)
+1. [HTML Builder](./docs/screenshot/html-builder.md)
+2. [Markdown Builder](./docs/screenshot/markdown-builder.md)
+3. [Url Builder](./docs/screenshot/url-builder.md)
+4. [Screenshot customization](./docs/screenshot/customization.md)
 
 ### Profiler
 
