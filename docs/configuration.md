@@ -208,3 +208,21 @@ sensiolabs_gotenberg:
 
 > [!TIP]
 > For more information about [cookies](https://gotenberg.dev/docs/routes#cookies-chromium).
+
+## Metadata
+
+Metadata for the generated document.
+
+``` yaml
+sensiolabs_gotenberg:
+    base_uri: 'http://localhost:3000'
+    default_options:
+        pdf:
+            html:
+                metadata:
+                    Author: Sensiolabs
+                    Subject: Gotenberg
+```
+
+> [!TIP]
+> For more information about [metadata](https://gotenberg.dev/docs/routes#metadata-chromium).

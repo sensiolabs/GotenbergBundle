@@ -46,6 +46,8 @@
 [skipNetworkIdleEvent](#skipNetworkIdleEvent)  
 
 ### Formatting
+[metadata](#metadata)
+[addMetadata](#addMetadata)
 [pdfFormat](#pdfFormat)  
 [pdfUniversalAccess](#pdfUniversalAccess)  
 
@@ -69,7 +71,7 @@ You can override the default paper size with `height`, `width` and `unit`.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->paperSize(21, 29.7, Unit::Centimeters)
@@ -96,7 +98,7 @@ You can override the default paper size with standard paper size.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->paperStandardSize(PaperSize::A4)
@@ -148,7 +150,7 @@ You can override the default `width` and `unit`.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->paperWidth(15, Unit::Inches)
@@ -179,7 +181,7 @@ You can override the default `height` and `unit`.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->paperHeight(15, Unit::Inches)
@@ -211,7 +213,7 @@ You can override the default margins, with the arguments `top`, `bottom`, `right
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->margins(1, 2, 3, 4, Unit::Inches)
@@ -235,7 +237,7 @@ Or you can override all margins individually with respective `unit`.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->marginTop(4, Unit::Points)
@@ -267,7 +269,7 @@ Define whether to prefer page size as defined by CSS.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->preferCssPageSize()
@@ -293,7 +295,7 @@ Print the background graphics.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->printBackground()
@@ -319,7 +321,7 @@ Hide the default white background and allow generating PDFs with transparency.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->omitBackground()
@@ -345,7 +347,7 @@ Set the paper orientation to landscape.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->landscape()
@@ -371,7 +373,7 @@ The scale of the page rendering.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->scale(2.5)
@@ -397,7 +399,7 @@ Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.
         public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
         {
             return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->nativePageRanges('1-5')
@@ -443,10 +445,10 @@ to your generated PDF.
         {
             return $gotenberg
                 ->html()
-                ->content('twig_simple_pdf.html.twig', [
+                ->header('header.html.twig', [
                     'my_var' => 'value'
                 ])
-                ->header('header.html.twig', [
+                ->content('content.html.twig', [
                     'my_var' => 'value'
                 ])
                 ->footer('footer.html.twig', [
@@ -477,8 +479,8 @@ to your generated PDF.
         {
             return $gotenberg
                 ->html()
-                ->contentFile('content.html')
                 ->headerFile('header.html')
+                ->contentFile('content.html')
                 ->footerFile('footer.html')
                 ->generate()
             ;
@@ -499,8 +501,8 @@ Relative path work as well.
         {
             return $gotenberg
                 ->html()
-                ->contentFile('../templates/html/content.html')
                 ->headerFile('../templates/html/header.html')
+                ->contentFile('../templates/html/content.html')
                 ->footerFile('../templates/html/footer.html')
                 ->generate()
             ;
@@ -530,6 +532,9 @@ generate.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->waitDelay('5s')
                 ->generate()
             ;
@@ -555,6 +560,9 @@ You may also wait until a given JavaScript expression.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->waitForExpression("window.globalVar === 'ready'")
                 ->generate()
             ;
@@ -584,6 +592,9 @@ you to force the \"standard\" CSS rules.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->emulatedMediaType(EmulatedMediaType::Screen)
                 ->generate()
             ;
@@ -610,6 +621,9 @@ Cookies to store in the Chromium cookie jar.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->cookies([[
                     'name' => 'my_cookie',
                     'value' => 'symfony',
@@ -643,6 +657,9 @@ configuration .
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->setCookie([
                     'name' => 'my_cookie',
                     'value' => 'symfony',
@@ -673,6 +690,9 @@ configuration.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->addCookies([[
                     'name' => 'my_cookie',
                     'value' => 'symfony',
@@ -704,6 +724,9 @@ HTTP headers to send by Chromium while loading the HTML document.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->extraHttpHeaders([
                     'MyHeader' => 'MyValue'
                 ])
@@ -734,6 +757,9 @@ configuration.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->addExtraHttpHeaders([
                     'MyHeader' => 'MyValue'
                 ])
@@ -761,6 +787,9 @@ page is not acceptable.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->failOnHttpStatusCodes([401, 403])
                 ->generate()
             ;
@@ -789,6 +818,9 @@ console.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->failOnConsoleExceptions()
                 ->generate()
             ;
@@ -819,6 +851,9 @@ field to true can greatly enhance the conversion speed.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->skipNetworkIdleEvent()
                 ->generate()
             ;
@@ -830,6 +865,63 @@ field to true can greatly enhance the conversion speed.
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#performance-mode-chromium).
 
 ## Formatting
+
+### metadata
+
+Default: `None`
+
+Resets the configuration metadata and add new ones to write.
+
+```php
+    namespace App\Controller;
+
+    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+    class YourController
+    {
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+        {
+            return $gotenberg
+                ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
+                ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
+                ->generate()
+             ;
+        }
+    }
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#metadata-chromium).
+
+### addMetadata
+
+Default: `None`
+
+If you want to add metadata from the ones already loaded in the configuration.
+
+```php
+    namespace App\Controller;
+
+    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+    class YourController
+    {
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+        {
+            return $gotenberg
+                ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
+                ->addMetadata('key', 'value')
+                ->generate()
+             ;
+        }
+    }
+```
 
 ### pdfFormat
 
@@ -851,6 +943,9 @@ configuration.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->pdfFormat(PdfFormat::Pdf1b)
                 ->generate()
             ;
@@ -878,6 +973,9 @@ Enable PDF for Universal Access for optimal accessibility.
         {
             return $gotenberg
                 ->html()
+                ->content('content.html.twig', [
+                    'my_var' => 'value'
+                ])
                 ->pdfUniversalAccess()
                 ->generate()
             ;

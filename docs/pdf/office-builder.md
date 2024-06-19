@@ -60,7 +60,7 @@ a ZIP folder instead of PDF.
     }
 ```
 
-## Merge
+## merge
 
 Default: `false`
 
@@ -87,7 +87,7 @@ With the `merge()` function you can merge multiple office files into a PDF.
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#merge-libreoffice).
 
-## Landscape
+## landscape
 
 Default: `false`
 
@@ -114,7 +114,7 @@ Set the PDF orientation to landscape.
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## Native page ranges
+## nativePageRanges
 
 Default: `All pages generated`
 
@@ -141,7 +141,7 @@ Page ranges to print (e.g. `'1-5, 8, 11-13'`).
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## Export form fields
+## exportFormFields
 
 Default: `true`
 
@@ -169,7 +169,7 @@ of the fields.
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## Single page sheets
+## singlePageSheets
 
 Default: `false`
 
@@ -196,7 +196,7 @@ Set whether to render the entire spreadsheet as a single page.
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## PDF format
+## pdfFormat
 
 Default: `None`
 
@@ -223,7 +223,7 @@ Convert the resulting PDF into the given PDF/A format.
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-libreoffice).
 
-## PDF universal access
+## pdfUniversalAccess
 
 Default: `false`
 
@@ -250,11 +250,11 @@ Enable PDF for Universal Access for optimal accessibility.
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-libreoffice).
 
-## Metadata
+## metatada
 
 Default: `None`
 
-The metadata to write (JSON format).
+Resets the configuration metadata and add new ones to write.
 
 ```php
     namespace App\Controller;
@@ -267,7 +267,31 @@ The metadata to write (JSON format).
         {
             return $gotenberg->office()
                 ->files('document.txt')
-                ->metadata(['Author' => 'SensioLabs'])
+                ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
+                ->generate()
+             ;
+        }
+    }
+```
+
+## addMetadata
+
+Default: `None`
+
+If you want to add metadata from the ones already loaded in the configuration.
+
+```php
+    namespace App\Controller;
+
+    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+    class YourController
+    {
+        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+        {
+            return $gotenberg->office()
+                ->files('document.txt')
+                ->addMetadata('key', 'value')
                 ->generate()
              ;
         }
