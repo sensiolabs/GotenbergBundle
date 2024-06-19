@@ -21,8 +21,8 @@ You may have the possibility to merge several PDF document.
         {
             return $gotenberg->merge()
                 ->files(
-                'document.pdf',
-                'document_2.pdf',
+                    'document.pdf',
+                    'document_2.pdf',
                 )
                 ->generate()
              ;
