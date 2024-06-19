@@ -39,9 +39,13 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->append($this->addNamedWebhookDefinition())
                 ->arrayNode('default_options')
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->scalarNode('webhook')
+                            ->info('Webhook configuration name.')
+                        ->end()
                         ->arrayNode('pdf')
                             ->addDefaultsIfNotSet()
                             ->append($this->addPdfHtmlNode())
@@ -74,6 +78,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
+        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
 
         return $treebuilder->getRootNode();
     }
@@ -88,6 +93,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
+        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
 
         return $treebuilder->getRootNode();
     }
@@ -102,6 +108,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
+        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
 
         return $treebuilder->getRootNode();
     }
@@ -116,6 +123,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $this->addChromiumScreenshotOptionsNode($treebuilder->getRootNode());
+        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
 
         return $treebuilder->getRootNode();
     }
@@ -130,6 +138,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $this->addChromiumScreenshotOptionsNode($treebuilder->getRootNode());
+        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
 
         return $treebuilder->getRootNode();
     }
@@ -144,6 +153,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $this->addChromiumScreenshotOptionsNode($treebuilder->getRootNode());
+        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
 
         return $treebuilder->getRootNode();
     }
@@ -562,6 +572,98 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('Subject')->end()
                 ->scalarNode('Title')->end()
                 ->enumNode('Trapped')->values(['True', 'False', 'Unknown'])->end()
+            ->end()
+        ;
+    }
+
+    private function addNamedWebhookDefinition(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('webhook');
+
+        return $treeBuilder->getRootNode()
+                ->defaultValue([])
+                ->useAttributeAsKey('name')
+                ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('name')
+                            ->validate()
+                                ->ifTrue(static function ($option) {
+                                    return !\is_string($option);
+                                })
+                                ->thenInvalid('Invalid header name %s')
+                            ->end()
+                        ->end()
+                        ->append($this->addWebhookConfigurationNode('success'))
+                        ->append($this->addWebhookConfigurationNode('error'))
+                    ->end()
+                    ->validate()
+                        ->ifTrue(static function ($option): bool {
+                            return !isset($option['success']);
+                        })
+                        ->thenInvalid('Invalid webhook configuration : At least a "success" key is required.')
+                    ->end()
+                ->end();
+    }
+
+    private function addWebhookDeclarationNode(ArrayNodeDefinition $parent): void
+    {
+        $parent
+            ->children()
+                ->arrayNode('webhook')
+                    ->info('Webhook configuration name or definition.')
+                    ->beforeNormalization()
+                        ->ifString()
+                            ->then(static function (string $v): array {
+                                return ['config_name' => $v];
+                            })
+                    ->end()
+                    ->children()
+                        ->append($this->addWebhookConfigurationNode('success'))
+                        ->append($this->addWebhookConfigurationNode('error'))
+                        ->scalarNode('config_name')
+                            ->info('The name of the webhook configuration to use.')
+                        ->end()
+                    ->end()
+                    ->validate()
+                        ->ifTrue(static function ($option): bool {
+                            return !isset($option['config_name']) && !isset($option['success']);
+                        })
+                        ->thenInvalid('Invalid webhook configuration : either reference an existing webhook configuration or declare a new one with "success" and optionally "error" keys.')
+                    ->end()
+                ->end();
+    }
+
+    private function addWebhookConfigurationNode(string $name): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder($name);
+
+        return $treeBuilder->getRootNode()
+            ->children()
+                ->scalarNode('url')
+                    ->info('The URL to call.')
+                ->end()
+                ->variableNode('route')
+                    ->info('Route configuration.')
+                    ->beforeNormalization()
+                        ->ifArray()
+                            ->then(function (array $v): array {
+                                return [$v[0], $v[1] ?? []];
+                            })
+                        ->ifString()
+                            ->then(function (string $v): array {
+                                return [$v, []];
+                            })
+                    ->end()
+                    ->validate()
+                        ->ifTrue(function ($v): bool {
+                            return !\is_array($v) || \count($v) !== 2 || !\is_string($v[0]) || !\is_array($v[1]);
+                        })
+                        ->thenInvalid('The "route" parameter must be a string or an array containing a string and an array.')
+                    ->end()
+                ->end()
+                ->scalarNode('webhook')
+                    ->info('The name of the webhook configuration to use.')
+                ->end()
             ->end()
         ;
     }

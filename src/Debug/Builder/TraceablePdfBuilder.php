@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
+use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -62,6 +63,22 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         ++$this->totalGenerated;
 
         return $response;
+    }
+
+    public function generateAsync(): string
+    {
+        if (!$this->inner instanceof AsyncBuilderInterface) {
+            throw new \LogicException(sprintf('The inner builder of %s must implement %s.', self::class, AsyncBuilderInterface::class));
+        }
+
+        $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
+        ++self::$count;
+
+        $swEvent = $this->stopwatch->start($name, 'gotenberg.generate_pdf');
+        $gotenbergTrace = $this->inner->generateAsync();
+        $swEvent->stop();
+
+        return $gotenbergTrace;
     }
 
     /**

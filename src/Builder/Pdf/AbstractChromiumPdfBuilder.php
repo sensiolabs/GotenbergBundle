@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
@@ -21,8 +22,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
         private readonly Environment|null $twig = null,
+        WebhookConfigurationRegistry|null $webhookConfigurationRegistry = null,
     ) {
-        parent::__construct($gotenbergClient, $asset);
+        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);
     }
 
     /**
@@ -552,6 +554,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             'metadata' => $this->metadata($value),
+            'webhook' => null,
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

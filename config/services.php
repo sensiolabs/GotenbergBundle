@@ -2,6 +2,7 @@
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Gotenberg;
 use Sensiolabs\GotenbergBundle\GotenbergInterface;
@@ -9,7 +10,11 @@ use Sensiolabs\GotenbergBundle\GotenbergPdf;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\RemoteEvent\ErrorPayloadConverter;
+use Sensiolabs\GotenbergBundle\RemoteEvent\SuccessPayloadConverter;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
+use Sensiolabs\GotenbergBundle\Webhook\ErrorWebhookRequestParser;
+use Sensiolabs\GotenbergBundle\Webhook\SuccessWebhookRequestParser;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
@@ -64,4 +69,29 @@ return static function (ContainerConfigurator $container): void {
         ])
         ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')
     ;
+
+    $services->set('sensiolabs_gotenberg.webhook.success_payload_converter', SuccessPayloadConverter::class)
+        ->tag('webhook.payload_converter');
+    $services->set('sensiolabs_gotenberg.webhook.error_payload_converter', ErrorPayloadConverter::class)
+        ->tag('webhook.payload_converter');
+    $services->set('sensiolabs_gotenberg.webhook.success_request_parser', SuccessWebhookRequestParser::class)
+        ->args([
+            service('sensiolabs_gotenberg.webhook.success_payload_converter'),
+        ])
+        ->tag('webhook.request_parser')
+        ->call('setLogger', [service('logger')])
+    ;
+    $services->set('sensiolabs_gotenberg.webhook.error_request_parser', ErrorWebhookRequestParser::class)
+        ->args([
+            service('sensiolabs_gotenberg.webhook.error_payload_converter'),
+        ])
+        ->tag('webhook.request_parser')
+        ->call('setLogger', [service('logger')])
+    ;
+
+    $services->set('.sensiolabs_gotenberg.webhook_configuration_registry', WebhookConfigurationRegistry::class)
+        ->args([
+            service('router'),
+            service('.sensiolabs_gotenberg.request_context')->nullOnInvalid(),
+        ]);
 };

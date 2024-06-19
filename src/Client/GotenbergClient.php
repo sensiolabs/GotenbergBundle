@@ -26,7 +26,7 @@ final class GotenbergClient implements GotenbergClientInterface
             ],
         );
 
-        if (200 !== $response->getStatusCode()) {
+        if (!\in_array($response->getStatusCode(), [200, 204], true)) {
             throw new HttpException($response->getStatusCode(), $response->getContent());
         }
 
