@@ -213,7 +213,8 @@ to the method ``content``.
    `tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
-6. [PDF customization](./docs/pdf/customization.md) (available for every builder except LibreOffice)
+6. [Merge Builder](./docs/pdf/merge-builder.md)
+7. [PDF customization](./docs/pdf/customization.md) (available for every builder except LibreOffice and Merge)
 
 #### Screenshot
 
