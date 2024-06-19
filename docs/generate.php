@@ -8,19 +8,16 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
 
-require_once dirname(__DIR__).'/vendor/autoload.php';
+require_once \dirname(__DIR__).'/vendor/autoload.php';
 
-define('EXCLUDED_METHODS', [
-    '__construct',
-    'setLogger',
-    'setConfigurations',
-    'generate',
-    'getMultipartFormData',
-]);
-
-/** @var array<string, non-empty-list<class-string>> $builders */
-$builders = [
+/**
+ * @var array<string, non-empty-list<class-string>>
+ */
+const BUILDERS = [
     'Pdf' => [
         HtmlPdfBuilder::class,
         UrlPdfBuilder::class,
@@ -32,6 +29,14 @@ $builders = [
         UrlScreenshotBuilder::class,
         MarkdownScreenshotBuilder::class,
     ],
+];
+
+const EXCLUDED_METHODS = [
+    '__construct',
+    'setLogger',
+    'setConfigurations',
+    'generate',
+    'getMultipartFormData',
 ];
 
 function parseMethodSignature(ReflectionMethod $method): string
@@ -71,66 +76,77 @@ function parseDocComment(string $rawDocComment): string
             continue;
         }
 
-        $result .= $line . "\n";
+        $result .= $line."\n";
     }
 
     return $result;
 }
 
-/**
- * @param class-string $builder
- */
 function parseBuilder(ReflectionClass $builder): string
 {
     $markdown = '';
 
     $builderName = $builder->getShortName();
     $markdown .= "{$builderName}\n";
-    $markdown .= str_repeat('=', strlen($builderName)) . "\n\n";
+    $markdown .= str_repeat('=', \strlen($builderName))."\n\n";
 
     foreach ($builder->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-        if (in_array($method->getName(), EXCLUDED_METHODS, true) === true) {
+        if (\in_array($method->getName(), EXCLUDED_METHODS, true) === true) {
             continue;
         }
 
         $methodSignature = parseMethodSignature($method);
-        $docComment = parseDocComment($method->getDocComment());
+        $docComment = parseDocComment($method->getDocComment() ?: '');
 
         $markdown .= <<<"MARKDOWN"
-        * `{$methodSignature}`: 
+        * `{$methodSignature}`:
         {$docComment}
-        
-        MARKDOWN;
 
+        MARKDOWN;
     }
 
     return $markdown;
 }
 
-$summary = <<<MARKDOWN
-Builders
-========
-
-MARKDOWN;
-
-foreach ($builders as $type => $builderClasses) {
-    $directory = __DIR__."/{$type}";
-
-    if (!@mkdir($directory, recursive: true) && !is_dir($directory)) {
-        throw new \RuntimeException(sprintf('Directory "%s" was not created', $directory));
-    }
-
-    $summary .= "# {$type}\n\n";
-
-    foreach ($builderClasses as $pdfBuilder) {
-        $reflectionClass = new ReflectionClass($pdfBuilder);
-
-        $markdown = parseBuilder($reflectionClass);
-        file_put_contents("{$directory}/{$reflectionClass->getShortName()}.md", $markdown);
-
-        $summary .= "* [{$reflectionClass->getShortName()}](./{$type}/{$reflectionClass->getShortName()}.md)\n";
-    }
-    $summary .= "\n";
-
-    file_put_contents(__DIR__ . '/Builders.md', $summary);
+function saveFile(InputInterface $input, string $filename, string $contents): void
+{
+    file_put_contents($filename, $contents);
 }
+
+$application = new Application();
+$application->register('generate')
+    ->setCode(function (InputInterface $input) {
+        $summary = <<<MARKDOWN
+        Builders
+        ========
+
+        MARKDOWN;
+
+        foreach (BUILDERS as $type => $builderClasses) {
+            $directory = __DIR__."/{$type}";
+
+            if (!@mkdir($directory, recursive: true) && !is_dir($directory)) {
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $directory));
+            }
+
+            $summary .= "# {$type}\n\n";
+
+            foreach ($builderClasses as $pdfBuilder) {
+                $reflectionClass = new ReflectionClass($pdfBuilder);
+
+                $markdown = parseBuilder($reflectionClass);
+                saveFile($input, "{$directory}/{$reflectionClass->getShortName()}.md", $markdown);
+
+                $summary .= "* [{$reflectionClass->getShortName()}](./{$type}/{$reflectionClass->getShortName()}.md)\n";
+            }
+            $summary .= "\n";
+
+            saveFile($input, __DIR__.'/Builders.md', $summary);
+        }
+
+        return Command::SUCCESS;
+    })
+;
+
+$application->setDefaultCommand('generate');
+$application->run();
