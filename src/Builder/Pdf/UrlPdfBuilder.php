@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,8 +21,9 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
         AssetBaseDirFormatter $asset,
         Environment|null $twig = null,
         private readonly UrlGeneratorInterface|null $urlGenerator = null,
+        WebhookConfigurationRegistry|null $webhookConfigurationRegistry = null,
     ) {
-        parent::__construct($gotenbergClient, $asset, $twig);
+        parent::__construct($gotenbergClient, $asset, $twig, $webhookConfigurationRegistry);
 
         $this->addNormalizer('route', $this->generateUrlFromRoute(...));
     }

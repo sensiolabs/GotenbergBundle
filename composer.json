@@ -42,7 +42,8 @@
         "symfony/monolog-bundle": "^3.10",
         "symfony/stopwatch": "^6.4 || ^7.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
-        "symfony/var-dumper": "^6.4 || ^7.0"
+        "symfony/var-dumper": "^6.4 || ^7.0",
+        "symfony/webhook": "^6.4 || ^7.0"
     },
     "config": {
         "allow-plugins": {
