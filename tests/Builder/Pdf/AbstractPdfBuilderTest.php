@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -80,6 +81,11 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
         yield 'metadata' => [
             ['metadata' => ['Author' => 'SensioLabs']],
             'metadata', '{"Author":"SensioLabs"}',
+        ];
+
+        yield 'using BackedEnum' => [
+            ['backed_enum' => PdfFormat::Pdf3b],
+            'backed_enum', 'PDF/A-3b',
         ];
     }
 

@@ -22,12 +22,13 @@ final readonly class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge' $key
      *
      * @return ($key is 'html' ? HtmlPdfBuilder :
      *         $key is 'url' ? UrlPdfBuilder :
      *         $key is 'markdown' ? MarkdownPdfBuilder :
      *         $key is 'office' ? LibreOfficePdfBuilder :
+     *         $key is 'merge' ? MergePdfBuilder :
      *         PdfBuilderInterface)
      * )
      */
@@ -54,5 +55,10 @@ final readonly class GotenbergPdf implements GotenbergPdfInterface
     public function markdown(): PdfBuilderInterface
     {
         return $this->getInternal('markdown');
+    }
+
+    public function merge(): PdfBuilderInterface
+    {
+        return $this->getInternal('merge');
     }
 }

@@ -48,6 +48,7 @@ class Configuration implements ConfigurationInterface
                             ->append($this->addPdfUrlNode())
                             ->append($this->addPdfMarkdownNode())
                             ->append($this->addPdfOfficeNode())
+                            ->append($this->addPdfMergeNode())
                         ->end()
                         ->arrayNode('screenshot')
                             ->addDefaultsIfNotSet()
@@ -151,6 +152,32 @@ class Configuration implements ConfigurationInterface
     {
         $parent
             ->children()
+                ->arrayNode('header')
+                    ->info('Add default header to the builder.')
+                    ->children()
+                        ->scalarNode('template')
+                            ->info('Default header twig template to apply.')
+                            ->defaultNull()
+                        ->end()
+                        ->scalarNode('context')
+                            ->info('Default context for header twig template.')
+                            ->defaultValue([])
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('footer')
+                    ->info('Add default footer to the builder.')
+                    ->children()
+                        ->scalarNode('template')
+                            ->info('Default footer twig template to apply.')
+                            ->defaultNull()
+                        ->end()
+                        ->scalarNode('context')
+                            ->info('Default context for footer twig template.')
+                            ->defaultValue([])
+                        ->end()
+                    ->end()
+                ->end()
                 ->booleanNode('single_page')
                     ->info('Define whether to print the entire content in one single page. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium')
                     ->defaultNull()
@@ -483,6 +510,35 @@ class Configuration implements ConfigurationInterface
                     ->defaultNull()
                 ->end()
                 ->append($this->addPdfMetadata())
+            ->end()
+        ;
+    }
+
+    private function addPdfMergeNode(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('merge');
+        $this->addPdfFormat($treeBuilder->getRootNode());
+        $treeBuilder->getRootNode()
+            ->append($this->addPdfMetadata())
+        ->end();
+
+        return $treeBuilder->getRootNode();
+    }
+
+    private function addPdfFormat(ArrayNodeDefinition $parent): void
+    {
+        $parent
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->enumNode('pdf_format')
+                    ->info('Convert PDF into the given PDF/A format - default None.')
+                    ->values(array_map(static fn (PdfFormat $case): string => $case->value, PdfFormat::cases()))
+                    ->defaultNull()
+                ->end()
+                ->booleanNode('pdf_universal_access')
+                    ->info('Enable PDF for Universal Access for optimal accessibility - default false.')
+                    ->defaultNull()
+                ->end()
             ->end()
         ;
     }
