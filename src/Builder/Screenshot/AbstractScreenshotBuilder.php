@@ -2,14 +2,17 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
+use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderTrait;
 use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Mime\Part\DataPart;
 
-abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
+abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface, AsyncBuilderInterface
 {
+    use AsyncBuilderTrait;
     use DefaultBuilderTrait;
 
     public function __construct(

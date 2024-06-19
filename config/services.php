@@ -2,6 +2,8 @@
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistry;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Gotenberg;
 use Sensiolabs\GotenbergBundle\GotenbergInterface;
@@ -62,5 +64,14 @@ return static function (ContainerConfigurator $container): void {
             ]),
         ])
         ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.webhook_configuration_registry', WebhookConfigurationRegistry::class)
+        ->args([
+            service('router'),
+            service('.sensiolabs_gotenberg.request_context')->nullOnInvalid(),
+        ])
+        ->tag('sensiolabs_gotenberg.webhook_configuration_registry')
+        ->alias(WebhookConfigurationRegistryInterface::class, '.sensiolabs_gotenberg.webhook_configuration_registry')
     ;
 };
