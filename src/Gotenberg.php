@@ -4,10 +4,10 @@ namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
 
-final readonly class Gotenberg implements GotenbergInterface
+final class Gotenberg implements GotenbergInterface
 {
     public function __construct(
-        private ContainerInterface $container,
+        private readonly ContainerInterface $container,
     ) {
     }
 

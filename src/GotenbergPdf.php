@@ -9,10 +9,10 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
-final readonly class GotenbergPdf implements GotenbergPdfInterface
+final class GotenbergPdf implements GotenbergPdfInterface
 {
     public function __construct(
-        private ContainerInterface $container,
+        private readonly ContainerInterface $container,
     ) {
     }
 
@@ -22,14 +22,16 @@ final readonly class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'convert' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert' $key
      *
-     * @return ($key is 'html' ? HtmlPdfBuilder :
-     *         $key is 'url' ? UrlPdfBuilder :
-     *         $key is 'markdown' ? MarkdownPdfBuilder :
-     *         $key is 'office' ? LibreOfficePdfBuilder :
-     *         $key is 'convert' ? ConvertPdfBuilder :
-     *         PdfBuilderInterface)
+     * @return (
+     *   $key is 'html' ? HtmlPdfBuilder :
+     *   $key is 'url' ? UrlPdfBuilder :
+     *   $key is 'markdown' ? MarkdownPdfBuilder :
+     *   $key is 'office' ? LibreOfficePdfBuilder :
+     *   $key is 'merge' ? MergePdfBuilder :
+     *   $key is 'convert' ? ConvertPdfBuilder :
+     *   PdfBuilderInterface
      * )
      */
     private function getInternal(string $key): PdfBuilderInterface
@@ -55,6 +57,11 @@ final readonly class GotenbergPdf implements GotenbergPdfInterface
     public function markdown(): PdfBuilderInterface
     {
         return $this->getInternal('markdown');
+    }
+
+    public function merge(): PdfBuilderInterface
+    {
+        return $this->getInternal('merge');
     }
 
     public function convert(): PdfBuilderInterface

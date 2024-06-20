@@ -74,6 +74,7 @@ final class ConfigurationTest extends TestCase
      *              'url': array<string, mixed>,
      *              'markdown': array<string, mixed>,
      *              'office': array<string, mixed>,
+     *              'merge': array<string, mixed>,
      *              'convert': array<string, mixed>,
      *          }
      *     }
@@ -165,7 +166,13 @@ final class ConfigurationTest extends TestCase
                     'office' => [
                         'landscape' => null,
                         'native_page_ranges' => null,
+                        'export_form_fields' => null,
+                        'single_page_sheets' => null,
                         'merge' => null,
+                        'pdf_format' => null,
+                        'pdf_universal_access' => null,
+                    ],
+                    'merge' => [
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                     ],

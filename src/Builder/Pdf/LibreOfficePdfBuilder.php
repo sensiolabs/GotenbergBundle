@@ -62,11 +62,31 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Set whether to export the form fields or to use the inputted/selected content of the fields.
+     */
+    public function exportFormFields(bool $bool = false): self
+    {
+        $this->formFields['exportFormFields'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Set whether to render the entire spreadsheet as a single page.
+     */
+    public function singlePageSheets(bool $bool = true): self
+    {
+        $this->formFields['singlePageSheets'] = $bool;
+
+        return $this;
+    }
+
+    /**
      * Convert the resulting PDF into the given PDF/A format.
      */
     public function pdfFormat(PdfFormat $format): self
     {
-        $this->formFields['pdfa'] = $format->value;
+        $this->formFields['pdfa'] = $format;
 
         return $this;
     }
@@ -156,6 +176,8 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'landscape' => $this->landscape($value),
             'native_page_ranges' => $this->nativePageRanges($value),
+            'export_form_fields' => $this->exportFormFields($value),
+            'single_page_sheets' => $this->singlePageSheets($value),
             'merge' => $this->merge($value),
             'metadata' => $this->metadata($value),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),

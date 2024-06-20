@@ -1,0 +1,6 @@
+/docs export-ignore
+/tests export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/phpstan.neon export-ignore
+/phpunit.xml export-ignore
+/.git* export-ignore

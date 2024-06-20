@@ -4,12 +4,15 @@ namespace Sensiolabs\GotenbergBundle\Formatter;
 
 use Symfony\Component\Filesystem\Filesystem;
 
-final readonly class AssetBaseDirFormatter
+final class AssetBaseDirFormatter
 {
-    private string $baseDir;
+    private readonly string $baseDir;
 
-    public function __construct(private Filesystem $filesystem, private string $projectDir, string $baseDir)
-    {
+    public function __construct(
+        private readonly Filesystem $filesystem,
+        private readonly string $projectDir,
+        string $baseDir,
+    ) {
         $this->baseDir = rtrim($baseDir, '/');
     }
 

@@ -118,6 +118,10 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'pdf_format' => 'PDF/A-1b',
                     'pdf_universal_access' => true,
                 ],
+                'merge' => [
+                    'pdf_format' => 'PDF/A-3b',
+                    'pdf_universal_access' => true,
+                ],
                 'convert' => [
                     'pdf_format' => 'PDF/A-2b',
                     'pdf_universal_access' => true,
@@ -342,6 +346,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'Author' => 'SensioLabs OFFICE',
                         ],
                     ],
+                    'merge' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs MERGE',
+                        ],
+                    ],
                     'convert' => [
                         'pdf_format' => 'PDF/A-2b',
                     ],
@@ -374,6 +383,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'Author' => 'SensioLabs OFFICE',
                 ],
             ],
+            'merge' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs MERGE',
+                ],
+            ],
             'convert' => [
                 'pdf_format' => 'PDF/A-2b',
             ],
@@ -389,6 +403,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
      *                  'url': array<string, mixed>,
      *                  'markdown': array<string, mixed>,
      *                  'office': array<string, mixed>,
+     *                  'merge': array<string, mixed>,
      *                  'convert': array<string, mixed>,
      *              },
      *              'screenshot': array{
@@ -488,6 +503,10 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'native_page_ranges' => '1-2',
                             'merge' => true,
                             'pdf_format' => PdfFormat::Pdf1b->value,
+                            'pdf_universal_access' => true,
+                        ],
+                        'merge' => [
+                            'pdf_format' => PdfFormat::Pdf3b->value,
                             'pdf_universal_access' => true,
                         ],
                         'convert' => [
