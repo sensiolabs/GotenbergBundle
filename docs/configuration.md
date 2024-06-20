@@ -103,6 +103,10 @@ sensiolabs_gotenberg:
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
                 metadata: null                      # None
+            merge:
+                pdf_format: null                    # None
+                pdf_universal_access: null          # false
+                metadata: null                      # None
         screenshot:
             html:
                 width: null                         # 800
