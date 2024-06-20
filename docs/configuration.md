@@ -20,6 +20,12 @@ sensiolabs_gotenberg:
     default_options:
         pdf:
             html:
+                header:
+                    template: null                  # None
+                    context: null                   # None
+                footer:
+                    template: null                  # None
+                    context: null                   # None
                 single_page: null                   # false
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
@@ -45,6 +51,12 @@ sensiolabs_gotenberg:
                 pdf_universal_access: null          # false
                 metadata: null                      # None
             url:
+                header:
+                    template: null                  # None
+                    context: null                   # None
+                footer:
+                    template: null                  # None
+                    context: null                   # None
                 single_page: null                   # false
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
@@ -70,6 +82,12 @@ sensiolabs_gotenberg:
                 pdf_universal_access: null          # false
                 metadata: null                      # None
             markdown:
+                header:
+                    template: null                  # None
+                    context: null                   # None
+                footer:
+                    template: null                  # None
+                    context: null                   # None
                 single_page: null                   # false
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
