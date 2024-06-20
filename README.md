@@ -37,7 +37,7 @@ registered bundles in the ``config/bundles.php`` file of your project:
 
 ### PDF
 
-You can generate a PDF locally from URL, HTML and Markdown.
+You can generate a PDF locally from URL, HTML, Markdown or any Office files.
 
 #### URL
 
