@@ -7,8 +7,7 @@ You may have the possibility to merge several PDF document.
 > [!WARNING]  
 > As assets files, by default the PDF files are fetch in the assets folder of
 > your application.  
-> If your office files are in another folder, you can override the default value
-> of `assets_directory` in your configuration file `config/sensiolabs_gotenberg.yml`.
+> For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php
     namespace App\Controller;

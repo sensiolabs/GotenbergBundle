@@ -25,8 +25,7 @@ The HTML file to convert into PDF.
 > [!WARNING]  
 > As assets files, by default the HTML files are fetch in the assets folder of
 > your application.  
-> If your  HTML files are in another folder, you can override the default value
-> of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
+> For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php
     namespace App\Controller;

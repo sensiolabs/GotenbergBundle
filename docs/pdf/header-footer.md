@@ -54,8 +54,7 @@ You may have the possibility to add header or footer to your generated PDF.
 > [!WARNING]  
 > As assets files, by default the HTML files are fetch in the assets folder of 
 > your application.  
-> If your  HTML files are in another folder, you can override the default value 
-> of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
+> For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php
     namespace App\Controller;
@@ -77,7 +76,7 @@ You may have the possibility to add header or footer to your generated PDF.
     }
 ```
 
-Relative path work as well.
+Relative path works as well.
 
 ```php
     namespace App\Controller;
