@@ -8,8 +8,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class GotenbergClient implements GotenbergClientInterface
 {
-    public function __construct(private readonly string $gotenbergBaseUri, private readonly HttpClientInterface $client)
-    {
+    public function __construct(
+        private readonly string $gotenbergBaseUri,
+        private readonly HttpClientInterface $client,
+    ) {
     }
 
     public function call(string $endpoint, array $multipartFormData, array $headers = []): GotenbergResponse
