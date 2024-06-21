@@ -26,7 +26,7 @@ Then
 
 sensiolabs_gotenberg:
     assets_directory: '%kernel.project_dir%/assets'
-    http_client: 'gotenberg.client'
+    http_client: 'gotenberg.client' # Required and must have a `base_uri`.
     # Override the request Gotenberg will make to call one of your routes.
     request_context:
         # Used only when using `->route()`. Overrides the guessed `base_url` from the request. May be useful in CLI.

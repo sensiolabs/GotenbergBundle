@@ -241,6 +241,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         self::assertNotContains('.sensiolabs_gotenberg.request_context', $containerBuilder->getServiceIds());
 
         $extension->load([[
+            'http_client' => 'http_client',
             'request_context' => [
                 'base_uri' => 'https://sensiolabs.com',
             ],
@@ -270,7 +271,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $extension = new SensiolabsGotenbergExtension();
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
-        $extension->load([], $containerBuilder);
+        $extension->load([[
+            'http_client' => 'http_client',
+        ]], $containerBuilder);
 
         self::assertNotContains('sensiolabs_gotenberg.data_collector', $containerBuilder->getServiceIds());
     }
@@ -280,7 +283,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $extension = new SensiolabsGotenbergExtension();
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: true);
-        $extension->load([], $containerBuilder);
+        $extension->load([[
+            'http_client' => 'http_client',
+        ]], $containerBuilder);
 
         self::assertContains('sensiolabs_gotenberg.data_collector', $containerBuilder->getServiceIds());
     }
@@ -291,6 +296,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: true);
         $extension->load([[
+            'http_client' => 'http_client',
             'default_options' => [
                 'pdf' => [
                     'html' => [
@@ -384,6 +390,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
     {
         return [
             [
+                'http_client' => 'http_client',
                 'default_options' => [
                     'pdf' => [
                         'html' => [
