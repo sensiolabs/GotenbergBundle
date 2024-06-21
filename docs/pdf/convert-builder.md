@@ -9,6 +9,11 @@ You may have the possibility to convert several PDF document.
 > your application.  
 > For more information about path resolution go to [assets documentation](../assets.md).
 
+
+> [!WARNING]  
+> If you provide multiple PDF files you will get ZIP folder containing all the converted PDF.
+
+
 ```php
     namespace App\Controller;
 
