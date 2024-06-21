@@ -1,0 +1,54 @@
+name: 'Tests'
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: 'read'
+
+jobs:
+
+  test:
+    name: 'Build and Test - PHP ${{ matrix.php }} - Symfony ${{ matrix.symfony-version }} ${{ matrix.deps }}'
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        symfony-version:
+          - '^7.0'
+        php:
+          - '8.2'
+          - '8.3'
+        deps:
+          - 'lowest'
+          - 'highest'
+        include:
+          # LTS
+          - symfony-version: '^6.4'
+            php: '8.3'
+            deps: 'highest'
+    env:
+      SYMFONY_REQUIRE: '${{ matrix.symfony-version }}'
+    steps:
+      - uses: 'actions/checkout@v4'
+
+      - name: 'Setup PHP'
+        uses: 'shivammathur/setup-php@v2'
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: 'none'
+
+      - name: 'Validate composer.json and composer.lock'
+        run: 'composer validate --strict'
+
+      - name: 'Install dependencies'
+        uses: 'ramsey/composer-install@v3'
+        with:
+          dependency-versions: '${{ matrix.deps }}'
+
+      - name: 'Run test suite'
+        run: 'php vendor/bin/phpunit'

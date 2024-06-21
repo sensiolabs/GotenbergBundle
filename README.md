@@ -1,5 +1,12 @@
 # Gotenberg Bundle
 
+[![Latest Version](https://img.shields.io/github/release/sensiolabs/gotenberg-bundle.svg?style=flat-square)](https://github.com/sensiolabs/gotenberg-bundle/releases)
+[![Total Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/downloads)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
+[![Monthly Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/d/monthly.png)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENCE)
+[![Static analysis](https://github.com/sensiolabs/gotenberg-bundle/actions/workflows/static.yml/badge.svg?branch=main)](https://github.com/sensiolabs/gotenberg-bundle/actions/workflows/static.yaml?query=branch%3Amain)
+[![Tests](https://github.com/sensiolabs/gotenberg-bundle/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/sensiolabs/gotenberg-bundle/actions/workflows/tests.yaml?query=branch%3Amain)
+
 ## What is it ?
 
 This bundle allows you to generate, stream and save PDF locally from URL, HTML, Markdown or any 
