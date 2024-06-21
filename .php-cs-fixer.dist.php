@@ -15,10 +15,7 @@ return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        'array_indentation' => true,
         'blank_line_between_import_groups' => false,
-        'compact_nullable_type_declaration' => true,
-        'fully_qualified_strict_types' => true,
         'native_function_invocation' => true,
         'no_superfluous_elseif' => true,
         'no_useless_else' => true,

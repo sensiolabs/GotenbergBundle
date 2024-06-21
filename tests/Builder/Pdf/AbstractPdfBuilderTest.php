@@ -29,7 +29,7 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
     public function testFilenameIsCorrectlySetOnResponse(): void
     {
         // @phpstan-ignore-next-line
-        $this->gotenbergClient = new GotenbergClient('', new MockHttpClient([
+        $this->gotenbergClient = new GotenbergClient(new MockHttpClient([
             new MockResponse(),
         ]));
 

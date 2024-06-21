@@ -49,10 +49,9 @@ final class ConfigurationTest extends TestCase
     public function testWithExtraHeadersConfiguration(): void
     {
         $processor = new Processor();
-        /** @var array{'base_uri': string,'default_options': array<string, mixed>} $config */
+        /** @var array{'default_options': array<string, mixed>} $config */
         $config = $processor->processConfiguration(new Configuration(), [
             [
-                'base_uri' => 'http://gotenberg:3000',
                 'default_options' => [
                     'pdf' => [
                         'html' => ['extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']]],
@@ -67,7 +66,6 @@ final class ConfigurationTest extends TestCase
 
     /**
      * @return array{
-     *     'base_uri': string,
      *     'default_options': array{
      *         'pdf': array{
      *              'html': array<string, mixed>,
@@ -82,7 +80,6 @@ final class ConfigurationTest extends TestCase
     private static function getBundleDefaultConfig(): array
     {
         return [
-            'base_uri' => 'http://localhost:3000',
             'assets_directory' => '%kernel.project_dir%/assets',
             'http_client' => 'http_client',
             'default_options' => [
