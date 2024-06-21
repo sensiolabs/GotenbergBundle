@@ -45,6 +45,7 @@ class Configuration implements ConfigurationInterface
                             ->append($this->addPdfMarkdownNode())
                             ->append($this->addPdfOfficeNode())
                             ->append($this->addPdfMergeNode())
+                            ->append($this->addPdfConvertNode())
                         ->end()
                         ->arrayNode('screenshot')
                             ->addDefaultsIfNotSet()
@@ -321,18 +322,11 @@ class Configuration implements ConfigurationInterface
                     ->info('Do not wait for Chromium network to be idle. - default false. https://gotenberg.dev/docs/routes#performance-mode-chromium')
                     ->defaultNull()
                 ->end()
-                ->enumNode('pdf_format')
-                    ->info('Convert the resulting PDF into the given PDF/A format - default None. https://gotenberg.dev/docs/routes#pdfa-chromium')
-                    ->values(array_map(static fn (PdfFormat $case): string => $case->value, PdfFormat::cases()))
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('pdf_universal_access')
-                    ->info('Enable PDF for Universal Access for optimal accessibility - default false. https://gotenberg.dev/docs/routes#console-exceptions')
-                    ->defaultNull()
-                ->end()
                 ->append($this->addPdfMetadata())
             ->end()
         ;
+
+        $this->addPdfFormat($parent);
     }
 
     private function addChromiumScreenshotOptionsNode(ArrayNodeDefinition $parent): void
@@ -467,7 +461,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('office');
 
-        return $treeBuilder->getRootNode()
+        $treeBuilder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
                 ->booleanNode('landscape')
@@ -496,18 +490,21 @@ class Configuration implements ConfigurationInterface
                     ->info('Merge alphanumerically the resulting PDFs. - default false. https://gotenberg.dev/docs/routes#merge-libreoffice')
                     ->defaultNull()
                 ->end()
-                ->enumNode('pdf_format')
-                    ->info('Convert the resulting PDF into the given PDF/A format - default None. https://gotenberg.dev/docs/routes#pdfa-chromium')
-                    ->values(array_map(static fn (PdfFormat $case): string => $case->value, PdfFormat::cases()))
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('pdf_universal_access')
-                    ->info('Enable PDF for Universal Access for optimal accessibility - default false. https://gotenberg.dev/docs/routes#console-exceptions')
-                    ->defaultNull()
-                ->end()
                 ->append($this->addPdfMetadata())
             ->end()
         ;
+
+        $this->addPdfFormat($treeBuilder->getRootNode());
+
+        return $treeBuilder->getRootNode();
+    }
+
+    private function addPdfConvertNode(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('convert');
+        $this->addPdfFormat($treeBuilder->getRootNode());
+
+        return $treeBuilder->getRootNode();
     }
 
     private function addPdfMergeNode(): NodeDefinition

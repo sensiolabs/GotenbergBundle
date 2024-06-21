@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -23,7 +24,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -31,6 +32,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'markdown' ? MarkdownPdfBuilder :
      *   $key is 'office' ? LibreOfficePdfBuilder :
      *   $key is 'merge' ? MergePdfBuilder :
+     *   $key is 'convert' ? ConvertPdfBuilder :
      *   PdfBuilderInterface
      * )
      */
@@ -62,5 +64,10 @@ final class GotenbergPdf implements GotenbergPdfInterface
     public function merge(): PdfBuilderInterface
     {
         return $this->getInternal('merge');
+    }
+
+    public function convert(): PdfBuilderInterface
+    {
+        return $this->getInternal('convert');
     }
 }

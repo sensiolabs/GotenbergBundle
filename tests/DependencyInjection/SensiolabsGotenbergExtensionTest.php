@@ -122,6 +122,10 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'pdf_format' => 'PDF/A-3b',
                     'pdf_universal_access' => true,
                 ],
+                'convert' => [
+                    'pdf_format' => 'PDF/A-2b',
+                    'pdf_universal_access' => true,
+                ],
             ],
             'screenshot' => [
                 'html' => [
@@ -314,6 +318,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'Author' => 'SensioLabs MERGE',
                         ],
                     ],
+                    'convert' => [
+                        'pdf_format' => 'PDF/A-2b',
+                    ],
                 ],
             ],
         ]], $containerBuilder);
@@ -348,6 +355,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'Author' => 'SensioLabs MERGE',
                 ],
             ],
+            'convert' => [
+                'pdf_format' => 'PDF/A-2b',
+            ],
         ], $dataCollectorOptions);
     }
 
@@ -360,6 +370,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
      *                  'markdown': array<string, mixed>,
      *                  'office': array<string, mixed>,
      *                  'merge': array<string, mixed>,
+     *                  'convert': array<string, mixed>,
      *              },
      *              'screenshot': array{
      *                  'html': array<string, mixed>,
@@ -461,6 +472,10 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         ],
                         'merge' => [
                             'pdf_format' => PdfFormat::Pdf3b->value,
+                            'pdf_universal_access' => true,
+                        ],
+                        'convert' => [
+                            'pdf_format' => PdfFormat::Pdf2b->value,
                             'pdf_universal_access' => true,
                         ],
                     ],
