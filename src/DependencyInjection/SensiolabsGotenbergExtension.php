@@ -18,7 +18,7 @@ class SensiolabsGotenbergExtension extends Extension
     {
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, http_client: string|null, request_context?: array{base_uri?: string}, assets_directory: string, default_options: array{pdf: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>, merge: array<string, mixed>}, screenshot: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>}}} $config */
+        /** @var array{base_uri: string, http_client: string|null, request_context?: array{base_uri?: string}, assets_directory: string, default_options: array{pdf: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>, merge: array<string, mixed>, convert: array<string, mixed>}, screenshot: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>}}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
@@ -35,6 +35,7 @@ class SensiolabsGotenbergExtension extends Extension
                     'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),
                     'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
                     'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
+                    'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
                 ])
             ;
         }
@@ -73,6 +74,9 @@ class SensiolabsGotenbergExtension extends Extension
 
         $definition = $container->getDefinition('.sensiolabs_gotenberg.pdf_builder.merge');
         $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['pdf']['merge'])]);
+
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.pdf_builder.convert');
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['pdf']['convert'])]);
 
         $definition = $container->getDefinition('.sensiolabs_gotenberg.screenshot_builder.html');
         $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config['default_options']['screenshot']['html'])]);

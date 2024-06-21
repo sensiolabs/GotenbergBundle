@@ -6,13 +6,27 @@ The default configuration for the bundle looks like :
 > If you don't configure anything or configure `null` / `[]`, 
 > the defaults values on Gotenberg API will be used.
 
+Assuming you have the following client configured.
+
 ```yaml
-# app/config/sensiolabs_gotenberg.yml
+
+# app/config/framework.yaml
+
+framework:
+    http_client:
+        scoped_clients:
+            gotenberg.client:
+                base_uri: 'http://localhost:3000'
+```
+
+Then
+
+```yaml
+# app/config/sensiolabs_gotenberg.yaml
 
 sensiolabs_gotenberg:
-    base_uri: 'http://localhost:3000'
     assets_directory: '%kernel.project_dir%/assets'
-    http_client: 'http_client'
+    http_client: 'gotenberg.client'
     # Override the request Gotenberg will make to call one of your routes.
     request_context:
         # Used only when using `->route()`. Overrides the guessed `base_url` from the request. May be useful in CLI.
@@ -125,6 +139,9 @@ sensiolabs_gotenberg:
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
                 metadata: null                      # None
+            convert:
+                pdf_format: null                    # None
+                pdf_universal_access: null          # false
         screenshot:
             html:
                 width: null                         # 800
@@ -186,7 +203,6 @@ HTTP headers to send by Chromium while loading the HTML document.
 
 ```yaml
 sensiolabs_gotenberg:
-    base_uri: 'http://localhost:3000'
     default_options:
         pdf:
             html:
@@ -204,7 +220,6 @@ page is not acceptable.
 
 ```yaml
 sensiolabs_gotenberg:
-    base_uri: 'http://localhost:3000'
     default_options:
         pdf:
             html:
@@ -219,7 +234,6 @@ Cookies to store in the Chromium cookie jar.
 
 ``` yaml
 sensiolabs_gotenberg:
-    base_uri: 'http://localhost:3000'
     default_options:
         pdf:
             html:
@@ -237,7 +251,6 @@ Metadata for the generated document.
 
 ``` yaml
 sensiolabs_gotenberg:
-    base_uri: 'http://localhost:3000'
     default_options:
         pdf:
             html:

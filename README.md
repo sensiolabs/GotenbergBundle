@@ -221,7 +221,8 @@ to the method ``content``.
    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
 6. [Merge Builder](./docs/pdf/merge-builder.md)
-7. [PDF customization](./docs/pdf/customization.md) (available for every builder except LibreOffice and Merge)
+7. [Convert Builder](./docs/pdf/convert-builder.md)
+8. [PDF customization](./docs/pdf/customization.md) (available for every builder except LibreOffice and Merge)
 
 #### Screenshot
 
