@@ -7,6 +7,9 @@
 [![Static analysis](https://github.com/sensiolabs/GotenbergBundle/actions/workflows/static.yml/badge.svg?branch=main)](https://github.com/sensiolabs/GotenbergBundle/actions/workflows/static.yml?query=branch%3Amain)
 [![Tests](https://github.com/sensiolabs/GotenbergBundle/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/sensiolabs/GotenbergBundle/actions/workflows/tests.yml?query=branch%3Amain)
 
+> [!WARNING]  
+> This Bundle is experimental and subject to change in a future release.
+
 ## What is it ?
 
 This bundle allows you to generate, stream and save PDF locally from URL, HTML, Markdown or any 
