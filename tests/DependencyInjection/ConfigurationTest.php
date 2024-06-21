@@ -17,10 +17,24 @@ final class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(
             new Configuration(),
-            [],
+            [[
+                'http_client' => 'http_client',
+            ]],
         );
 
         self::assertEquals(self::getBundleDefaultConfig(), $config);
+    }
+
+    public function testHttpClientIsRequired(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The child config "http_client" under "sensiolabs_gotenberg" must be configured: HTTP Client reference to use. (Must have a base_uri)');
+
+        $processor = new Processor();
+        $processor->processConfiguration(
+            new Configuration(),
+            [],
+        );
     }
 
     /**
@@ -52,6 +66,7 @@ final class ConfigurationTest extends TestCase
         /** @var array{'default_options': array<string, mixed>} $config */
         $config = $processor->processConfiguration(new Configuration(), [
             [
+                'http_client' => 'http_client',
                 'default_options' => [
                     'pdf' => [
                         'html' => ['extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']]],
