@@ -23,7 +23,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.client', GotenbergClient::class)
         ->args([
-            abstract_arg('base_uri to gotenberg API'),
             service('sensiolabs_gotenberg.http_client'),
         ])
         ->alias(GotenbergClientInterface::class, 'sensiolabs_gotenberg.client');

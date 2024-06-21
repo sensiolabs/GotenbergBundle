@@ -9,7 +9,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 final class GotenbergClient implements GotenbergClientInterface
 {
     public function __construct(
-        private readonly string $gotenbergBaseUri,
         private readonly HttpClientInterface $client,
     ) {
     }
@@ -21,7 +20,7 @@ final class GotenbergClient implements GotenbergClientInterface
 
         $response = $this->client->request(
             'POST',
-            rtrim($this->gotenbergBaseUri, '/').$endpoint,
+            $endpoint,
             [
                 'headers' => $headers,
                 'body' => $formData->bodyToString(),

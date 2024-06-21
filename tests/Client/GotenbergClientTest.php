@@ -28,7 +28,7 @@ final class GotenbergClientTest extends TestCase
             ],
         ]);
 
-        $mockClient = new MockHttpClient([$mockResponse]);
+        $mockClient = new MockHttpClient([$mockResponse], baseUri: 'http://localhost:3000');
 
         $multipartFormData = [
             [
@@ -36,7 +36,7 @@ final class GotenbergClientTest extends TestCase
             ],
         ];
 
-        $gotenbergClient = new GotenbergClient('http://localhost:3000', $mockClient);
+        $gotenbergClient = new GotenbergClient($mockClient);
         $response = $gotenbergClient->call('/some/url', $multipartFormData, ['SomeHeader' => 'SomeValue']);
 
         self::assertSame(1, $mockClient->getRequestsCount());

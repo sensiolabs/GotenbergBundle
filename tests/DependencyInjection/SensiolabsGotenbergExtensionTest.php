@@ -261,42 +261,12 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         self::assertCount(1, $indexedMethodCalls['setRequestContext']);
     }
 
-    public function testGotenbergClientConfiguredWithDefaultConfig(): void
-    {
-        $extension = new SensiolabsGotenbergExtension();
-
-        $containerBuilder = $this->getContainerBuilder();
-        $extension->load([], $containerBuilder);
-
-        $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg.client');
-        $arguments = $gotenbergDefinition->getArguments();
-
-        self::assertSame('http://localhost:3000', $arguments[0]);
-    }
-
-    public function testGotenbergClientConfiguredWithValidConfig(): void
-    {
-        $extension = new SensiolabsGotenbergExtension();
-
-        $containerBuilder = $this->getContainerBuilder();
-        $extension->load([
-            ['base_uri' => 'https://sensiolabs.com'],
-        ], $containerBuilder);
-
-        $gotenbergDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg.client');
-        $arguments = $gotenbergDefinition->getArguments();
-
-        self::assertSame('https://sensiolabs.com', $arguments[0]);
-    }
-
     public function testDataCollectorIsNotEnabledWhenKernelDebugIsFalse(): void
     {
         $extension = new SensiolabsGotenbergExtension();
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
-        $extension->load([
-            ['base_uri' => 'https://sensiolabs.com'],
-        ], $containerBuilder);
+        $extension->load([], $containerBuilder);
 
         self::assertNotContains('sensiolabs_gotenberg.data_collector', $containerBuilder->getServiceIds());
     }
@@ -306,9 +276,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $extension = new SensiolabsGotenbergExtension();
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: true);
-        $extension->load([
-            ['base_uri' => 'https://sensiolabs.com'],
-        ], $containerBuilder);
+        $extension->load([], $containerBuilder);
 
         self::assertContains('sensiolabs_gotenberg.data_collector', $containerBuilder->getServiceIds());
     }
@@ -319,7 +287,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: true);
         $extension->load([[
-            'base_uri' => 'https://sensiolabs.com',
             'default_options' => [
                 'pdf' => [
                     'html' => [
@@ -386,7 +353,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
     /**
      * @return array<int, array{
-     *          'base_uri': string,
      *          'default_options': array{
      *              'pdf': array{
      *                  'html': array<string, mixed>,
@@ -407,7 +373,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
     {
         return [
             [
-                'base_uri' => 'http://localhost:3000',
                 'default_options' => [
                     'pdf' => [
                         'html' => [

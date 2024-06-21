@@ -28,10 +28,10 @@ class GotenbergPassTest extends TestCase
 
         $pdfTaggedService = new Definition(PdfBuilderInterface::class);
         $pdfTaggedService->addTag('sensiolabs_gotenberg.pdf_builder');
-        $container->setDefinition('service.pdf_tagged', $pdfTaggedService);
+        $container->setDefinition('.service.pdf_tagged', $pdfTaggedService);
 
         $someRandomService = new Definition(\stdClass::class);
-        $container->setDefinition('service.random', $someRandomService);
+        $container->setDefinition('.service.random', $someRandomService);
 
         return $container;
     }
@@ -63,11 +63,11 @@ class GotenbergPassTest extends TestCase
 
         $newServiceIds = $container->getServiceIds();
         self::assertNotSame($serviceIds, $newServiceIds);
-        self::assertContains('service.pdf_tagged', $newServiceIds);
-        self::assertContains('debug.service.pdf_tagged', $newServiceIds);
-        self::assertNotContains('debug.service.random', $newServiceIds);
+        self::assertContains('.service.pdf_tagged', $newServiceIds);
+        self::assertContains('.debug.service.pdf_tagged', $newServiceIds);
+        self::assertNotContains('.debug.service.random', $newServiceIds);
 
-        $traceablePdfTaggedService = $container->getDefinition('debug.service.pdf_tagged');
+        $traceablePdfTaggedService = $container->getDefinition('.debug.service.pdf_tagged');
         self::assertNotNull($traceablePdfTaggedService);
         self::assertSame(TraceablePdfBuilder::class, $traceablePdfTaggedService->getClass());
 
