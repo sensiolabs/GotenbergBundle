@@ -1,6 +1,6 @@
 # Gotenberg Bundle
 
-[![Latest Version](https://img.shields.io/github/release/sensiolabs/gotenberg-bundle.svg?style=flat-square)](https://github.com/sensiolabs/gotenberg-bundle/releases)
+[![Latest Version](https://img.shields.io/github/release/sensiolabs/GotenbergBundle.svg?style=flat-square)](https://github.com/sensiolabs/GotenbergBundle/releases)
 [![Total Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/downloads)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
 [![Monthly Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/d/monthly.png)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENCE)
