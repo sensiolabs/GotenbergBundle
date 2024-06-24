@@ -10,6 +10,8 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
+use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
@@ -26,6 +28,8 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(GotenbergClient::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
+#[UsesClass(TraceableScreenshotBuilder::class)]
+#[UsesClass(TraceableGotenbergScreenshot::class)]
 final class GotenbergScreenshotTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void

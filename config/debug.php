@@ -2,6 +2,7 @@
 
 use Sensiolabs\GotenbergBundle\DataCollector\GotenbergDataCollector;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
+use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
@@ -11,8 +12,15 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_lo
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
-    $services->set('sensiolabs_gotenberg.traceable', TraceableGotenbergPdf::class)
+    $services->set('sensiolabs_gotenberg.traceable_pdf', TraceableGotenbergPdf::class)
         ->decorate('sensiolabs_gotenberg.pdf')
+        ->args([
+            new Reference('.inner'),
+        ])
+    ;
+
+    $services->set('sensiolabs_gotenberg.traceable_screenshot', TraceableGotenbergScreenshot::class)
+        ->decorate('sensiolabs_gotenberg.screenshot')
         ->args([
             new Reference('.inner'),
         ])
