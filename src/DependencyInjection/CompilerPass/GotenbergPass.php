@@ -23,7 +23,7 @@ final class GotenbergPass implements CompilerPassInterface
         }
 
         foreach ($container->findTaggedServiceIds('sensiolabs_gotenberg.pdf_builder') as $serviceId => $tags) {
-            $container->register('.debug.'.\ltrim($serviceId, '.'), TraceablePdfBuilder::class)
+            $container->register('.debug.'.ltrim($serviceId, '.'), TraceablePdfBuilder::class)
                 ->setDecoratedService($serviceId)
                 ->setShared(false)
                 ->setArguments([
@@ -41,7 +41,7 @@ final class GotenbergPass implements CompilerPassInterface
         }
 
         foreach ($container->findTaggedServiceIds('sensiolabs_gotenberg.screenshot_builder') as $serviceId => $tags) {
-            $container->register('.debug.'.\ltrim($serviceId, '.'), TraceableScreenshotBuilder::class)
+            $container->register('.debug.'.ltrim($serviceId, '.'), TraceableScreenshotBuilder::class)
                 ->setDecoratedService($serviceId)
                 ->setShared(false)
                 ->setArguments([

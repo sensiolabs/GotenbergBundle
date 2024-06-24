@@ -16,12 +16,12 @@ use Symfony\Component\VarDumper\Cloner\Data;
 final class GotenbergDataCollector extends DataCollector implements LateDataCollectorInterface
 {
     /**
-     * @param ServiceLocator<PdfBuilderInterface> $builders
+     * @param ServiceLocator<PdfBuilderInterface> $pdfBuilders
      * @param array<mixed>                        $defaultOptions
      */
     public function __construct(
-        private readonly TraceableGotenbergPdf $traceableGotenberg,
-        private readonly ServiceLocator $builders,
+        private readonly TraceableGotenbergPdf $traceableGotenbergPdf,
+        private readonly ServiceLocator $pdfBuilders,
         private readonly array $defaultOptions,
     ) {
     }
@@ -34,8 +34,8 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
         $this->data['request_count'] = 0;
         $this->data['builders'] = [];
 
-        foreach ($this->builders->getProvidedServices() as $id => $type) {
-            $builder = $this->builders->get($id);
+        foreach ($this->pdfBuilders->getProvidedServices() as $id => $type) {
+            $builder = $this->pdfBuilders->get($id);
 
             if ($builder instanceof TraceablePdfBuilder) {
                 $builder = $builder->getInner();
@@ -64,7 +64,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
          * @var string              $id
          * @var TraceablePdfBuilder $builder
          */
-        foreach ($this->traceableGotenberg->getBuilders() as [$id, $builder]) {
+        foreach ($this->traceableGotenbergPdf->getBuilders() as [$id, $builder]) {
             $this->data['builders'][$id]['pdfs'] = array_merge(
                 $this->data['builders'][$id]['pdfs'],
                 array_map(function (array $request): array {
@@ -110,18 +110,18 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 
     /**
      * @return array<string, array{
-     *     'class': string,
-     *     'default_options': array<mixed>,
-     *     'pdfs': list<array{
-     *         'time': float,
-     *         'memory': int,
-     *         'size': int<0, max>|null,
-     *         'fileName': string,
-     *         'calls': list<array{
-     *             'method': string,
-     *             'stub': Data
-     *         }>
-     *     }>
+     *      'class': string,
+     *      'default_options': array<mixed>,
+     *      'pdfs': list<array{
+     *          'time': float,
+     *          'memory': int,
+     *          'size': int<0, max>|null,
+     *          'fileName': string,
+     *          'calls': list<array{
+     *              'method': string,
+     *              'stub': Data
+     *          }>
+     *      }>
      * }>
      */
     public function getBuilders(): array
