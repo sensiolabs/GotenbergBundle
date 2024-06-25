@@ -3,8 +3,10 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Psr\Log\LoggerInterface;
+use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -12,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\Mime\Part\DataPart;
 
-abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
+abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface, AsyncBuilderInterface
 {
     protected LoggerInterface|null $logger = null;
 
@@ -29,10 +31,18 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
      * @var array<string, (\Closure(mixed): array<string, array<string|int, mixed>|non-empty-string|\Stringable|int|float|bool|\BackedEnum|DataPart>)>
      */
     private array $normalizers;
+    private string $webhookUrl;
+    private string $errorWebhookUrl;
+    /**
+     * @var array<string, mixed>
+     */
+    private array $webhookExtraHeaders = [];
+    private \Closure $operationIdGenerator;
 
     public function __construct(
         protected readonly GotenbergClientInterface $gotenbergClient,
         protected readonly AssetBaseDirFormatter $asset,
+        protected readonly WebhookConfigurationRegistryInterface|null $webhookConfigurationRegistry = null,
     ) {
         $this->normalizers = [
             'extraHttpHeaders' => function (mixed $value): array {
@@ -51,6 +61,8 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
                 return $this->encodeData('cookies', array_values($value));
             },
         ];
+
+        $this->operationIdGenerator = fn () => uniqid('gotenberg_', true);
     }
 
     public function setLogger(LoggerInterface|null $logger): void
@@ -113,6 +125,63 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
         }
 
         return $pdfResponse;
+    }
+
+    public function generateAsync(): string
+    {
+        $operationId = ($this->operationIdGenerator)();
+        $this->logger?->debug('Generating PDF file async with operation id {sensiolabs_gotenberg.operation_id} using {sensiolabs_gotenberg.builder} builder.', [
+            'sensiolabs_gotenberg.operation_id' => $operationId,
+            'sensiolabs_gotenberg.builder' => $this::class,
+        ]);
+
+        $this->webhookExtraHeaders['X-Gotenberg-Operation-Id'] = $operationId;
+        $headers = [
+            'Gotenberg-Webhook-Url' => $this->webhookUrl,
+            'Gotenberg-Webhook-Error-Url' => $this->errorWebhookUrl,
+            'Gotenberg-Webhook-Extra-Http-Headers' => json_encode($this->webhookExtraHeaders, \JSON_THROW_ON_ERROR),
+        ];
+        if (null !== $this->fileName) {
+            $headers['Gotenberg-Output-Filename'] = basename($this->fileName, '.pdf');
+        }
+        $this->gotenbergClient->call($this->getEndpoint(), $this->getMultipartFormData(), $headers);
+
+        return $operationId;
+    }
+
+    public function webhookConfiguration(string $webhook): static
+    {
+        if (null === $this->webhookConfigurationRegistry) {
+            throw new \LogicException('The WebhookConfigurationRegistry is not available.');
+        }
+        $webhookConfiguration = $this->webhookConfigurationRegistry->get($webhook);
+
+        return $this->webhookUrls($webhookConfiguration['success'], $webhookConfiguration['error']);
+    }
+
+    public function webhookUrls(string $successWebhook, string|null $errorWebhook = null): static
+    {
+        $this->webhookUrl = $successWebhook;
+        $this->errorWebhookUrl = $errorWebhook ?? $successWebhook;
+
+        return $this;
+    }
+
+    /**
+     * @param array<string, mixed> $extraHeaders
+     */
+    public function webhookExtraHeaders(array $extraHeaders): static
+    {
+        $this->webhookExtraHeaders = array_merge($this->webhookExtraHeaders, $extraHeaders);
+
+        return $this;
+    }
+
+    public function operationIdGenerator(\Closure $operationIdGenerator): static
+    {
+        $this->operationIdGenerator = $operationIdGenerator;
+
+        return $this;
     }
 
     /**

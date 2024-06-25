@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -22,6 +23,7 @@ return static function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.client'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
             service('twig')->nullOnInvalid(),
+            service(WebhookConfigurationRegistryInterface::class)->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
@@ -34,6 +36,7 @@ return static function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
             service('twig')->nullOnInvalid(),
             service('router')->nullOnInvalid(),
+            service(WebhookConfigurationRegistryInterface::class)->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
         ->call('setRequestContext', [service('.sensiolabs_gotenberg.request_context')->nullOnInvalid()])
@@ -46,6 +49,7 @@ return static function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.client'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
             service('twig')->nullOnInvalid(),
+            service(WebhookConfigurationRegistryInterface::class)->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
@@ -56,6 +60,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('sensiolabs_gotenberg.client'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service(WebhookConfigurationRegistryInterface::class)->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
@@ -66,6 +71,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('sensiolabs_gotenberg.client'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service(WebhookConfigurationRegistryInterface::class)->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
@@ -76,6 +82,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('sensiolabs_gotenberg.client'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service(WebhookConfigurationRegistryInterface::class)->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')

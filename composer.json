@@ -42,7 +42,8 @@
         "symfony/monolog-bundle": "^3.10",
         "symfony/stopwatch": "^6.4 || ^7.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
-        "symfony/var-dumper": "^6.4 || ^7.0"
+        "symfony/var-dumper": "^6.4 || ^7.0",
+        "symfony/webhook": "^6.4 || ^7.0"
     },
     "config": {
         "allow-plugins": {
@@ -53,6 +54,7 @@
     "suggest": {
         "symfony/monolog-bundle": "Enables logging througout the generating process.",
         "symfony/twig-bundle": "Allows you to use Twig to render templates into PDF",
-        "monolog/monolog": "Enables logging througout the generating process."
+        "monolog/monolog": "Enables logging througout the generating process.",
+        "symfony/wenhook": "Easily manage your webhooks to generate PDFs asynchronously."
     }
 }
