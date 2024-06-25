@@ -125,7 +125,6 @@ final class ConfigurationTest extends TestCase
 
     /**
      * @return array{
-     *     'base_uri': string,
      *     'assets_directory': string,
      *     'http_client': string,
      *     'webhook': array<void>,

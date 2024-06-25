@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
-use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfigurationRegistry;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -42,7 +42,7 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface, 
     public function __construct(
         protected readonly GotenbergClientInterface $gotenbergClient,
         protected readonly AssetBaseDirFormatter $asset,
-        protected readonly WebhookConfigurationRegistry|null $webhookConfigurationRegistry = null,
+        protected readonly WebhookConfigurationRegistryInterface|null $webhookConfigurationRegistry = null,
     ) {
         $this->normalizers = [
             'extraHttpHeaders' => function (mixed $value): array {
@@ -149,42 +149,39 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface, 
         return $operationId;
     }
 
-    public function withWebhookConfiguration(string $webhook): static
+    public function webhookConfiguration(string $webhook): static
     {
         if (null === $this->webhookConfigurationRegistry) {
             throw new \LogicException('The WebhookConfigurationRegistry is not available.');
         }
         $webhookConfiguration = $this->webhookConfigurationRegistry->get($webhook);
 
-        return $this->withWebhookUrls($webhookConfiguration['success'], $webhookConfiguration['error']);
+        return $this->webhookUrls($webhookConfiguration['success'], $webhookConfiguration['error']);
     }
 
-    public function withWebhookUrls(string $successWebhook, string|null $errorWebhook = null): static
+    public function webhookUrls(string $successWebhook, string|null $errorWebhook = null): static
     {
-        $clone = clone $this;
-        $clone->webhookUrl = $successWebhook;
-        $clone->errorWebhookUrl = $errorWebhook ?? $successWebhook;
+        $this->webhookUrl = $successWebhook;
+        $this->errorWebhookUrl = $errorWebhook ?? $successWebhook;
 
-        return $clone;
+        return $this;
     }
 
     /**
      * @param array<string, mixed> $extraHeaders
      */
-    public function withWebhookExtraHeaders(array $extraHeaders): static
+    public function webhookExtraHeaders(array $extraHeaders): static
     {
-        $clone = clone $this;
-        $clone->webhookExtraHeaders = array_merge($this->webhookExtraHeaders, $extraHeaders);
+        $this->webhookExtraHeaders = array_merge($this->webhookExtraHeaders, $extraHeaders);
 
-        return $clone;
+        return $this;
     }
 
-    public function withOperationIdGenerator(\Closure $operationIdGenerator): static
+    public function operationIdGenerator(\Closure $operationIdGenerator): static
     {
-        $clone = clone $this;
-        $clone->operationIdGenerator = $operationIdGenerator;
+        $this->operationIdGenerator = $operationIdGenerator;
 
-        return $clone;
+        return $this;
     }
 
     /**

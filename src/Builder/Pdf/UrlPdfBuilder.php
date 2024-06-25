@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfigurationRegistry;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

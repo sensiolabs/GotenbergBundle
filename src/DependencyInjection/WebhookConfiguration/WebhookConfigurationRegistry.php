@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\DependencyInjection;
+namespace Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
@@ -10,7 +10,7 @@ use Symfony\Component\Routing\RequestContext;
  *
  * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string|int, mixed>}, webhook?: string}
  */
-final class WebhookConfigurationRegistry
+final class WebhookConfigurationRegistry implements WebhookConfigurationRegistryInterface
 {
     /**
      * @var array<string, array{success: string, error: string}>

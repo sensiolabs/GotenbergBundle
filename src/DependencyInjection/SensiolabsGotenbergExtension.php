@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -11,6 +12,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Webhook\Controller\WebhookController;
 
 /**
  * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string, mixed>}, webhook?: string}
@@ -43,12 +45,21 @@ class SensiolabsGotenbergExtension extends Extension
             ;
         }
 
+        // TODO: Not sure how to test if the component is installed
+        if (class_exists(WebhookController::class)) {
+            $loader->load('webhook.php');
+        }
+
         $container->registerForAutoconfiguration(PdfBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.pdf_builder')
         ;
 
         $container->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.screenshot_builder')
+        ;
+
+        $container->registerForAutoconfiguration(WebhookConfigurationRegistryInterface::class)
+            ->addTag('sensiolabs_gotenberg.webhook_configuration_registry')
         ;
 
         $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'] ?? 'http_client', false));
@@ -123,7 +134,7 @@ class SensiolabsGotenbergExtension extends Extension
         }
 
         if (null === $webhookConfig) {
-            $definition->addMethodCall('withWebhookConfiguration', [$defaultWebhookName], true);
+            $definition->addMethodCall('webhookConfiguration', [$defaultWebhookName], true);
 
             return;
         }
@@ -135,6 +146,6 @@ class SensiolabsGotenbergExtension extends Extension
             $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')
                 ->addMethodCall('add', [$name, $webhookConfig]);
         }
-        $definition->addMethodCall('withWebhookConfiguration', [$name], true);
+        $definition->addMethodCall('webhookConfiguration', [$name], true);
     }
 }

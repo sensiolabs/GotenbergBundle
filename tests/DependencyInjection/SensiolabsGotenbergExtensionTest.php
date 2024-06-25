@@ -374,7 +374,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $extension = new SensiolabsGotenbergExtension();
 
         $containerBuilder = $this->getContainerBuilder();
-        $extension->load([], $containerBuilder);
+        $extension->load([['http_client' => 'http_client']], $containerBuilder);
 
         self::assertEmpty($containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')->getMethodCalls());
 
@@ -391,7 +391,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         foreach ($buildersIds as $builderId) {
             $builderDefinition = $containerBuilder->getDefinition($builderId);
             $methodCalls = $builderDefinition->getMethodCalls();
-            self::assertNotContains('withWebhookConfiguration', $methodCalls);
+            self::assertNotContains('webhookConfiguration', $methodCalls);
         }
     }
 
@@ -401,6 +401,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
         $containerBuilder = $this->getContainerBuilder();
         $extension->load([[
+            'http_client' => 'http_client',
             'webhook' => [
                 'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
                 'bar' => ['success' => ['webhook' => 'my_webhook'], 'error' => ['webhook' => 'my_error_webhook']],
@@ -433,7 +434,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         array_map(static function (string $builderId, string $expectedConfigurationName) use ($containerBuilder): void {
             foreach ($containerBuilder->getDefinition($builderId)->getMethodCalls() as $methodCall) {
                 [$name, $arguments] = $methodCall;
-                if ('withWebhookConfiguration' === $name) {
+                if ('webhookConfiguration' === $name) {
                     self::assertSame($expectedConfigurationName, $arguments[0]);
 
                     return;

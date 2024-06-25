@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
@@ -18,8 +19,9 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
         private readonly Environment|null $twig = null,
+        WebhookConfigurationRegistryInterface|null $webhookConfigurationRegistry = null,
     ) {
-        parent::__construct($gotenbergClient, $asset);
+        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);
     }
 
     /**
