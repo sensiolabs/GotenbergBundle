@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
@@ -156,7 +157,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
      */
-    public function emulatedMediaType(string $mediaType): static
+    public function emulatedMediaType(EmulatedMediaType $mediaType): static
     {
         $this->formFields['emulatedMediaType'] = $mediaType;
 

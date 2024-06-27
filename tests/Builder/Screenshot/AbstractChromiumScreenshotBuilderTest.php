@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 
 #[CoversClass(AbstractChromiumScreenshotBuilder::class)]
@@ -45,7 +46,7 @@ class AbstractChromiumScreenshotBuilderTest extends AbstractBuilderTestCase
         yield 'wait_for_expression' => ['wait_for_expression', "window.status === 'ready'", [
             'waitForExpression' => "window.status === 'ready'",
         ]];
-        yield 'emulated_media_type' => ['emulated_media_type', 'screen', [
+        yield 'emulated_media_type' => ['emulated_media_type', EmulatedMediaType::Screen, [
             'emulatedMediaType' => 'screen',
         ]];
         yield 'cookies' => ['cookies', [['name' => 'MyCookie', 'value' => 'raspberry']], [
