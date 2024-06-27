@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration;
 
 /**
- * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string|int, mixed>}, webhook?: string}
+ * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string|int, mixed>}}
  */
 interface WebhookConfigurationRegistryInterface
 {

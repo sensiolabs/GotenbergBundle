@@ -655,9 +655,6 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The "route" parameter must be a string or an array containing a string and an array.')
                     ->end()
                 ->end()
-                ->scalarNode('webhook')
-                    ->info('The name of the webhook configuration to use.')
-                ->end()
             ->end()
         ;
     }

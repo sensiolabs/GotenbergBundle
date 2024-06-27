@@ -8,7 +8,7 @@ use Symfony\Component\Routing\RequestContext;
 /**
  * @internal
  *
- * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string|int, mixed>}, webhook?: string}
+ * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string|int, mixed>}}
  */
 final class WebhookConfigurationRegistry implements WebhookConfigurationRegistryInterface
 {
@@ -69,9 +69,6 @@ final class WebhookConfigurationRegistry implements WebhookConfigurationRegistry
         }
         if (isset($webhookDefinition['route'])) {
             return $this->urlGenerator->generate($webhookDefinition['route'][0], $webhookDefinition['route'][1], UrlGeneratorInterface::ABSOLUTE_URL);
-        }
-        if (isset($webhookDefinition['webhook'])) {
-            return $this->urlGenerator->generate('_webhook_controller', ['type' => $webhookDefinition['webhook']], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         throw new \InvalidArgumentException('Invalid webhook configuration');

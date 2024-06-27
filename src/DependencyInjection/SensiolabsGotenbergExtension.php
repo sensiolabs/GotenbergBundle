@@ -12,10 +12,9 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Webhook\Controller\WebhookController;
 
 /**
- * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string, mixed>}, webhook?: string}
+ * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string, mixed>}}
  */
 class SensiolabsGotenbergExtension extends Extension
 {
@@ -43,11 +42,6 @@ class SensiolabsGotenbergExtension extends Extension
                     'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
                 ])
             ;
-        }
-
-        // TODO: Not sure how to test if the component is installed
-        if (class_exists(WebhookController::class)) {
-            $loader->load('webhook.php');
         }
 
         $container->registerForAutoconfiguration(PdfBuilderInterface::class)

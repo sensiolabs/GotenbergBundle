@@ -404,7 +404,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             'http_client' => 'http_client',
             'webhook' => [
                 'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
-                'bar' => ['success' => ['webhook' => 'my_webhook'], 'error' => ['webhook' => 'my_error_webhook']],
                 'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
             ],
             'default_options' => [
@@ -444,14 +443,13 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
         $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
         $methodCalls = $webhookConfigurationRegistryDefinition->getMethodCalls();
-        self::assertCount(4, $methodCalls);
+        self::assertCount(3, $methodCalls);
         foreach ($methodCalls as $methodCall) {
             [$name, $arguments] = $methodCall;
             self::assertSame('add', $name);
-            self::assertContains($arguments[0], ['foo', 'bar', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config']);
+            self::assertContains($arguments[0], ['foo', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config']);
             self::assertSame(match ($arguments[0]) {
                 'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => ['simple_route', []]]],
-                'bar' => ['success' => ['webhook' => 'my_webhook'], 'error' => ['webhook' => 'my_error_webhook']],
                 'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
                 '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']],
                 default => self::fail('Unexpected webhook configuration'),
@@ -490,7 +488,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'http_client' => 'http_client',
                 'webhook' => [
                     'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
-                    'bar' => ['success' => ['webhook' => 'my_webhook'], 'error' => ['webhook' => 'my_error_webhook']],
                     'baz' => ['success' => ['url' => 'https://sensiolabs.com/single-url-webhook']],
                 ],
                 'default_options' => [

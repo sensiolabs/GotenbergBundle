@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 
 /**
- * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string|int, mixed>}, webhook?: string}
+ * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string|int, mixed>}}
  */
 #[CoversClass(WebhookConfigurationRegistry::class)]
 final class WebhookConfigurationRegistryTest extends TestCase
@@ -56,10 +56,6 @@ final class WebhookConfigurationRegistryTest extends TestCase
             ['success' => ['route' => ['test_route_success', ['param' => 'value']]], 'error' => ['route' => ['test_route_error', ['param' => 'value']]]],
             ['success' => 'http://localhost/test_route?param=value', 'error' => 'http://localhost/test_route?param=value'],
         ];
-        yield 'full definition with webhook' => [
-            ['success' => ['webhook' => 'my_success_webhook'], 'error' => ['webhook' => 'my_error_webhook']],
-            ['success' => 'http://localhost/webhook/success', 'error' => 'http://localhost/webhook/error'],
-        ];
         yield 'partial definition with urls' => [
             ['success' => ['url' => 'http://example.com/success']],
             ['success' => 'http://example.com/success', 'error' => 'http://example.com/success'],
@@ -70,22 +66,10 @@ final class WebhookConfigurationRegistryTest extends TestCase
             ],
             ['success' => 'http://localhost/test_route?param=value', 'error' => 'http://localhost/test_route?param=value'],
         ];
-        yield 'partial definition with webhook' => [
-            ['success' => ['webhook' => 'my_success_webhook']],
-            ['success' => 'http://localhost/webhook/success', 'error' => 'http://localhost/webhook/success'],
-        ];
         yield 'mixed definition with url and route' => [
             ['success' => ['url' => 'http://example.com/success'], 'error' => ['route' => ['test_route_error', ['param' => 'value']]],
             ],
             ['success' => 'http://example.com/success', 'error' => 'http://localhost/test_route?param=value'],
-        ];
-        yield 'mixed definition with url and webhook' => [
-            ['success' => ['url' => 'http://example.com/success'], 'error' => ['webhook' => 'my_error_webhook']],
-            ['success' => 'http://example.com/success', 'error' => 'http://localhost/webhook/error'],
-        ];
-        yield 'mixed definition with route and webhook' => [
-            ['success' => ['route' => ['test_route_success', ['param' => 'value']]], 'error' => ['webhook' => 'my_error_webhook']],
-            ['success' => 'http://localhost/test_route?param=value', 'error' => 'http://localhost/webhook/error'],
         ];
     }
 
