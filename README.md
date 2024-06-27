@@ -257,6 +257,7 @@ MIT License (MIT): see the [License File](LICENSE) for more details.
    It may be because Gotenberg is trying to access an invalid URL (when using the `->url()` or `->route()` modes).
    For example if Gotenberg tries to access a page on `https://localhost:8001` but the SSL is a local provided one. Then Chromium won't be able to authorize access to the website.
    To fix this you can update your Gotenberg docker service as followed :
+
    ```diff
    --- a/compose.yaml
    +++ b/compose.yaml
@@ -272,6 +273,7 @@ MIT License (MIT): see the [License File](LICENSE) for more details.
    It can also be because from Gotenberg <abbr title="Point of View">PoV</abbr> the URL of your Symfony app is not reachable.
    Let's say you are using [symfony CLI](https://symfony.com/download) to run your project locally with Gotenberg running in Docker.
    You need to configure the request_context like so :
+
    ```diff
    --- a/config/packages/gotenberg.yaml
    +++ b/config/packages/gotenberg.yaml
