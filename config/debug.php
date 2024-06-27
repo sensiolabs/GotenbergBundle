@@ -32,6 +32,6 @@ return static function (ContainerConfigurator $container): void {
             tagged_locator('sensiolabs_gotenberg.pdf_builder'),
             abstract_arg('All default options will be set through the configuration.'),
         ])
-        ->tag('data_collector', ['template' => '@SensiolabsGotenberg/Collector/sensiolabs_gotenberg.html.twig', 'id' => 'sensiolabs_gotenberg'])
+        ->tag('data_collector', ['template' => '@SensiolabsGotenberg/Collector/sensiolabs_gotenberg_2.html.twig', 'id' => 'sensiolabs_gotenberg'])
     ;
 };
