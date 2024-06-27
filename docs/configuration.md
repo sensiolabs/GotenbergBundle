@@ -226,6 +226,10 @@ sensiolabs_gotenberg:
                 fail_on_http_status_codes: [401, 403]
 ```
 > [!TIP]
+> A X99 entry means every HTTP status codes between X00 and X99 (e.g., 499 means every HTTP status codes between 400 and 499).
+> `fail_on_http_status_codes: [499, 599]` would fail on any 4XX or 5XX code. 
+
+> [!TIP]
 > For more information about [Invalid HTTP Status Codes](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium).
 
 ## Cookies
