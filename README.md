@@ -243,9 +243,43 @@ Comes with a built-in profiler panel to help you during your development.
 This bundle was inspired by [Gotenberg PHP](https://github.com/gotenberg/gotenberg-php).
 - [Steven RENAUX](https://github.com/StevenRenaux)
 - [Adrien ROCHES](https://github.com/Neirda24)
+- [Hubert LENOIR](https://github.com/Jean-Beru)
 - [All Contributors](../../contributors)
 
 ## Licence
 
 MIT License (MIT): see the [License File](LICENSE) for more details.
 
+## FAQ
+
+<details>
+   <summary>My PDF / Screenshot is blank but I have no errors !</summary>
+   It may be because Gotenberg is trying to access an invalid URL (when using the `->url()` or `->route()` modes).
+   For example if Gotenberg tries to access a page on `https://localhost:8001` but the SSL is a local provided one. Then Chromium won't be able to authorize access to the website.
+   To fix this you can update your Gotenberg docker service as followed :
+   ```diff
+   --- a/compose.yaml
+   +++ b/compose.yaml
+   @@ -1,6 +1,9 @@
+    services:
+      gotenberg:
+        image: 'gotenberg/gotenberg:8'
+   +    command:
+   +      - 'gotenberg'
+   +      - '--chromium-ignore-certificate-errors'
+   ```
+
+   It can also be because from Gotenberg <abbr title="Point of View">PoV</abbr> the URL of your Symfony app is not reachable.
+   Let's say you are using [symfony CLI](https://symfony.com/download) to run your project locally with Gotenberg running in Docker.
+   You need to configure the request_context like so :
+   ```diff
+   --- a/config/packages/gotenberg.yaml
+   +++ b/config/packages/gotenberg.yaml
+   @@ -6,5 +6,5 @@ framework:
+    
+    sensiolabs_gotenberg:
+        http_client: 'gotenberg.client'
+   +    request_context:
+   +        base_uri: 'http://host.docker.internal:8000' # 8000 is the port Symfony CLI is running my app on.
+   ```
+</details>
