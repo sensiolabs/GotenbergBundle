@@ -1,6 +1,6 @@
 # Gotenberg Bundle
 
-[![Latest Version](https://img.shields.io/github/release/sensiolabs/gotenberg-bundle.svg?style=flat-square)](https://github.com/sensiolabs/gotenberg-bundle/releases)
+[![Latest Version](https://img.shields.io/github/release/sensiolabs/GotenbergBundle.svg?style=flat-square)](https://github.com/sensiolabs/GotenbergBundle/releases)
 [![Total Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/downloads)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
 [![Monthly Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/d/monthly.png)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENCE)
@@ -27,20 +27,19 @@ a screenshot.
 Install the bundle using composer :
 
 ```bash
-  composer require sensiolabs/gotenberg-bundle
+composer require sensiolabs/gotenberg-bundle
 ```
 
 If not using Symfony Flex, enable the bundle by adding it to the list of
 registered bundles in the ``config/bundles.php`` file of your project:
 
 ```php
-    // config/bundles.php
+// config/bundles.php
 
-    return [
-        // ...
-        SensioLabs\GotenbergBundle\SensioLabsGotenbergBundle::class => ['all' => true],
-    ];
-
+return [
+    // ...
+    SensioLabs\GotenbergBundle\SensioLabsGotenbergBundle::class => ['all' => true],
+];
 ```
 
 ## Basic Usage
@@ -58,20 +57,20 @@ which will return a ``UrlPdfBuilder`` instance.
 to the method ``url``.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->url()
-                ->url('https://sensiolabs.com/fr/')
-                ->generate() // will return directly a stream response
-             ;
-        }
+        return $gotenberg->url()
+            ->url('https://sensiolabs.com/fr/')
+            ->generate() // will return directly a stream response
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -83,35 +82,35 @@ to the method ``url``.
 > Every twig templates you pass to Gotenberg need to have the following structure.  
 > Even Header or Footer parts.
 > ```html
->        <!DOCTYPE html>
->        <html lang="en">
->          <head>
->            <meta charset="utf-8" />
->            <title>My PDF</title>
->          </head>
->          <body>
->            <!-- Your code goes here -->
->          </body>
->        </html>
+> <!DOCTYPE html>
+> <html lang="en">
+>     <head>
+>         <meta charset="utf-8" />
+>         <title>My PDF</title>
+>     </head>
+>     <body>
+>         <!-- Your code goes here -->
+>     </body>
+> </html>
 > ```
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->generate() // will return directly a stream response
-             ;
-        }
+        return $gotenberg->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->generate() // will return directly a stream response
+        ;
     }
+}
 ```
 
 If a template needs to link to a static asset (e.g. an image), this bundle provides a `{{ gotenberg_asset() }}`
@@ -124,20 +123,20 @@ configuration file ``config/sensiolabs_gotenberg.yml``.
 The path provided can be relative as well as absolute.
 
 ```html
-    <!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="utf-8" />
-            <title>PDF body</title>
-        </head>
-        <body>
-            <main>
-               <h1>Hello world!</h1>
-               <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
-               <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
-            </main>
-        </body>
-    </html>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>PDF body</title>
+    </head>
+    <body>
+        <main>
+            <h1>Hello world!</h1>
+            <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
+             <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
+         </main>
+    </body>
+</html>
 ```
 
 > [!TIP]
@@ -156,20 +155,20 @@ which will return a ``UrlScreenshotBuilder`` instance.
 to the method ``url``.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->url()
-                ->url('https://sensiolabs.com/fr/')
-                ->generate()
-             ;
-        }
+        return $gotenberg->url()
+             ->url('https://sensiolabs.com/fr/')
+             ->generate()
+        ;
     }
+}
 ```
 #### Twig
 
@@ -180,22 +179,22 @@ which will return a ``HtmlScreenshotBuilder`` instance.
 to the method ``content``.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->generate()
-             ;
-        }
+        return $gotenberg->html()
+            ->content('twig_simple_pdf.html.twig', [
+                 'my_var' => 'value'
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -243,9 +242,45 @@ Comes with a built-in profiler panel to help you during your development.
 This bundle was inspired by [Gotenberg PHP](https://github.com/gotenberg/gotenberg-php).
 - [Steven RENAUX](https://github.com/StevenRenaux)
 - [Adrien ROCHES](https://github.com/Neirda24)
+- [Hubert LENOIR](https://github.com/Jean-Beru)
 - [All Contributors](../../contributors)
 
 ## Licence
 
 MIT License (MIT): see the [License File](LICENSE) for more details.
 
+## FAQ
+
+<details>
+   <summary>My PDF / Screenshot is blank but I have no errors !</summary>
+   It may be because Gotenberg is trying to access an invalid URL (when using the `->url()` or `->route()` modes).
+   For example if Gotenberg tries to access a page on `https://localhost:8001` but the SSL is a local provided one. Then Chromium won't be able to authorize access to the website.
+   To fix this you can update your Gotenberg docker service as followed :
+
+   ```diff
+   --- a/compose.yaml
+   +++ b/compose.yaml
+   @@ -1,6 +1,9 @@
+    services:
+      gotenberg:
+        image: 'gotenberg/gotenberg:8'
+   +    command:
+   +      - 'gotenberg'
+   +      - '--chromium-ignore-certificate-errors'
+   ```
+
+   It can also be because from Gotenberg <abbr title="Point of View">PoV</abbr> the URL of your Symfony app is not reachable.
+   Let's say you are using [symfony CLI](https://symfony.com/download) to run your project locally with Gotenberg running in Docker.
+   You need to configure the request_context like so :
+
+   ```diff
+   --- a/config/packages/gotenberg.yaml
+   +++ b/config/packages/gotenberg.yaml
+   @@ -6,5 +6,5 @@ framework:
+    
+    sensiolabs_gotenberg:
+        http_client: 'gotenberg.client'
+   +    request_context:
+   +        base_uri: 'http://host.docker.internal:8000' # 8000 is the port Symfony CLI is running my app on.
+   ```
+</details>

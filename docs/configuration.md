@@ -26,7 +26,7 @@ Then
 
 sensiolabs_gotenberg:
     assets_directory: '%kernel.project_dir%/assets'
-    http_client: 'gotenberg.client'
+    http_client: 'gotenberg.client' # Required and must have a `base_uri`.
     # Override the request Gotenberg will make to call one of your routes.
     request_context:
         # Used only when using `->route()`. Overrides the guessed `base_url` from the request. May be useful in CLI.
@@ -225,6 +225,10 @@ sensiolabs_gotenberg:
             html:
                 fail_on_http_status_codes: [401, 403]
 ```
+> [!TIP]
+> A X99 entry means every HTTP status codes between X00 and X99 (e.g., 499 means every HTTP status codes between 400 and 499).
+> `fail_on_http_status_codes: [499, 599]` would fail on any 4XX or 5XX code. 
+
 > [!TIP]
 > For more information about [Invalid HTTP Status Codes](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium).
 
