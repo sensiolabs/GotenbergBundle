@@ -87,6 +87,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'skip_network_idle_event' => false,
                     'pdf_format' => PdfFormat::Pdf2b->value,
                     'pdf_universal_access' => false,
+                    'cookies' => [],
                 ],
                 'markdown' => [
                     'paper_width' => 30,
@@ -110,6 +111,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'skip_network_idle_event' => true,
                     'pdf_format' => PdfFormat::Pdf3b->value,
                     'pdf_universal_access' => true,
+                    'cookies' => [],
                 ],
                 'office' => [
                     'landscape' => false,
@@ -303,16 +305,25 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         'metadata' => [
                             'Author' => 'SensioLabs HTML',
                         ],
+                        'cookies' => [],
+                        'extra_http_headers' => [],
+                        'fail_on_http_status_codes' => [],
                     ],
                     'url' => [
                         'metadata' => [
                             'Author' => 'SensioLabs URL',
                         ],
+                        'cookies' => [],
+                        'extra_http_headers' => [],
+                        'fail_on_http_status_codes' => [],
                     ],
                     'markdown' => [
                         'metadata' => [
                             'Author' => 'SensioLabs MARKDOWN',
                         ],
+                        'cookies' => [],
+                        'extra_http_headers' => [],
+                        'fail_on_http_status_codes' => [],
                     ],
                     'office' => [
                         'metadata' => [
@@ -340,16 +351,25 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'metadata' => [
                     'Author' => 'SensioLabs HTML',
                 ],
+                'cookies' => [],
+                'extra_http_headers' => [],
+                'fail_on_http_status_codes' => [],
             ],
             'url' => [
                 'metadata' => [
                     'Author' => 'SensioLabs URL',
                 ],
+                'cookies' => [],
+                'extra_http_headers' => [],
+                'fail_on_http_status_codes' => [],
             ],
             'markdown' => [
                 'metadata' => [
                     'Author' => 'SensioLabs MARKDOWN',
                 ],
+                'cookies' => [],
+                'extra_http_headers' => [],
+                'fail_on_http_status_codes' => [],
             ],
             'office' => [
                 'metadata' => [

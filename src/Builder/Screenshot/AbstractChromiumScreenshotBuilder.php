@@ -173,6 +173,12 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      */
     public function cookies(array $cookies): static
     {
+        if ([] === $cookies) {
+            unset($this->formFields['cookies']);
+
+            return $this;
+        }
+
         $this->formFields['cookies'] = [];
 
         foreach ($cookies as $cookie) {
@@ -219,6 +225,12 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      */
     public function extraHttpHeaders(array $headers): static
     {
+        if ([] === $headers) {
+            unset($this->formFields['extraHttpHeaders']);
+
+            return $this;
+        }
+
         $this->formFields['extraHttpHeaders'] = $headers;
 
         return $this;
@@ -234,6 +246,10 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      */
     public function addExtraHttpHeaders(array $headers): static
     {
+        if ([] === $headers) {
+            return $this;
+        }
+
         $this->formFields['extraHttpHeaders'] = array_merge($this->formFields['extraHttpHeaders'] ?? [], $headers);
 
         return $this;
