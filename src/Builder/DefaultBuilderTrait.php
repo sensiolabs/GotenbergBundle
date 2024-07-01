@@ -27,7 +27,7 @@ trait DefaultBuilderTrait
     /**
      * @var array<string, (\Closure(mixed): array<string, array<string|int, mixed>|string|\Stringable|int|float|bool|\BackedEnum|DataPart>)>
      */
-    private array $normalizers;
+    private array $normalizers = [];
 
     private string|null $fileName = null;
 
