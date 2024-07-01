@@ -34,7 +34,7 @@ final class UrlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
     }
 
     /**
-     * URL of the page you want to convert into PDF.
+     * URL of the page you want to screenshot.
      */
     public function url(string $url): self
     {

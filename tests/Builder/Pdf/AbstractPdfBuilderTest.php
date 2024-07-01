@@ -145,7 +145,7 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
                 $this->formFields = $formFields;
             }
 
-            public function setConfigurations(array $configurations): AbstractPdfBuilder
+            public function setConfigurations(array $configurations): static
             {
                 return $this;
             }

@@ -1,4 +1,5 @@
 parameters:
+	phpVersion: 80100
 	level: 8
 	paths:
 		- 'config'
@@ -37,3 +38,7 @@ parameters:
 			message: "#^Method Sensiolabs\\\\GotenbergBundle\\\\Tests\\\\Kernel\\:\\:configureContainer\\(\\) is unused\\.$#"
 			count: 1
 			path: tests/Kernel.php
+		- # Fixed when requiring 8.2
+			message: "#^Parameter \\#1 \\$iterator of function iterator_to_array expects Traversable, iterable given\\.$#"
+			count: 1
+			path: tests/Builder/AbstractBuilderTestCase.php
