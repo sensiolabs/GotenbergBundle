@@ -11,11 +11,13 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 
 #[CoversClass(HtmlScreenshotBuilder::class)]
 #[UsesClass(AbstractChromiumScreenshotBuilder::class)]
 #[UsesClass(AbstractScreenshotBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
+#[UsesClass(GotenbergAssetExtension::class)]
 final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 {
     public function testEndpointIsCorrect(): void
