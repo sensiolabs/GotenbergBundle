@@ -331,6 +331,10 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function cookies(array $cookies): static
     {
+        if ([] === $cookies) {
+            return $this;
+        }
+
         $this->formFields['cookies'] = [];
 
         foreach ($cookies as $cookie) {
@@ -377,6 +381,10 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function extraHttpHeaders(array $headers): static
     {
+        if ([] === $headers) {
+            return $this;
+        }
+
         $this->formFields['extraHttpHeaders'] = $headers;
 
         return $this;
@@ -392,6 +400,10 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function addExtraHttpHeaders(array $headers): static
     {
+        if ([] === $headers) {
+            return $this;
+        }
+
         $this->formFields['extraHttpHeaders'] = array_merge($this->formFields['extraHttpHeaders'] ?? [], $headers);
 
         return $this;

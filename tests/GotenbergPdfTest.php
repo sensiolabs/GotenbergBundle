@@ -60,7 +60,11 @@ final class GotenbergPdfTest extends KernelTestCase
             ->url('https://google.com')
         ;
 
-        self::assertSame([['nativePageRanges' => '1-5'], ['url' => 'https://google.com']], $builder->getMultipartFormData());
+        self::assertSame([
+            ['failOnHttpStatusCodes' => '[499,599]'],
+            ['nativePageRanges' => '1-5'],
+            ['url' => 'https://google.com'],
+        ], $builder->getMultipartFormData());
     }
 
     public function testHtmlBuilderFactory(): void
@@ -80,20 +84,23 @@ final class GotenbergPdfTest extends KernelTestCase
         $builder->contentFile(__DIR__.'/../Fixtures/files/content.html');
         $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertCount(3, $multipartFormData);
+        self::assertCount(4, $multipartFormData);
 
         self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['marginTop' => '3in'], $multipartFormData[0]);
+        self::assertSame(['failOnHttpStatusCodes' => '[499,599]'], $multipartFormData[0]);
 
         self::assertArrayHasKey(1, $multipartFormData);
-        self::assertSame(['marginBottom' => '1in'], $multipartFormData[1]);
+        self::assertSame(['marginTop' => '3in'], $multipartFormData[1]);
 
         self::assertArrayHasKey(2, $multipartFormData);
-        self::assertIsArray($multipartFormData[2]);
-        self::assertCount(1, $multipartFormData[2]);
-        self::assertArrayHasKey('files', $multipartFormData[2]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[2]['files']);
-        self::assertSame('index.html', $multipartFormData[2]['files']->getFilename());
+        self::assertSame(['marginBottom' => '1in'], $multipartFormData[2]);
+
+        self::assertArrayHasKey(3, $multipartFormData);
+        self::assertIsArray($multipartFormData[3]);
+        self::assertCount(1, $multipartFormData[3]);
+        self::assertArrayHasKey('files', $multipartFormData[3]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[3]['files']);
+        self::assertSame('index.html', $multipartFormData[3]['files']->getFilename());
     }
 
     public function testMarkdownBuilderFactory(): void
@@ -110,19 +117,19 @@ final class GotenbergPdfTest extends KernelTestCase
         $builder->wrapperFile(__DIR__.'/Fixtures/files/wrapper.html');
         $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertCount(2, $multipartFormData);
-
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertIsArray($multipartFormData[0]);
-        self::assertArrayHasKey('files', $multipartFormData[0]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[0]['files']);
-        self::assertSame('file.md', $multipartFormData[0]['files']->getFilename());
+        self::assertCount(3, $multipartFormData);
 
         self::assertArrayHasKey(1, $multipartFormData);
         self::assertIsArray($multipartFormData[1]);
         self::assertArrayHasKey('files', $multipartFormData[1]);
         self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
-        self::assertSame('index.html', $multipartFormData[1]['files']->getFilename());
+        self::assertSame('file.md', $multipartFormData[1]['files']->getFilename());
+
+        self::assertArrayHasKey(2, $multipartFormData);
+        self::assertIsArray($multipartFormData[2]);
+        self::assertArrayHasKey('files', $multipartFormData[2]);
+        self::assertInstanceOf(DataPart::class, $multipartFormData[2]['files']);
+        self::assertSame('index.html', $multipartFormData[2]['files']->getFilename());
     }
 
     public function testOfficeBuilderFactory(): void
