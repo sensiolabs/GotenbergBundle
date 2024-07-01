@@ -24,7 +24,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
     public function __construct(
         private readonly PdfBuilderInterface $inner,
-        private readonly Stopwatch $stopwatch,
+        private readonly Stopwatch|null $stopwatch,
     ) {
     }
 
@@ -33,9 +33,9 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
 
-        $swEvent = $this->stopwatch->start($name, 'gotenberg.generate_pdf');
+        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_pdf');
         $response = $this->inner->generate();
-        $swEvent->stop();
+        $swEvent?->stop();
 
         $fileName = 'Unknown.pdf';
         if ($response->headers->has('Content-Disposition')) {
@@ -53,8 +53,8 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
         $this->pdfs[] = [
             'calls' => $this->calls,
-            'time' => $swEvent->getDuration(),
-            'memory' => $swEvent->getMemory(),
+            'time' => $swEvent?->getDuration() ?? -1,
+            'memory' => $swEvent?->getMemory() ?? -1,
             'size' => $lengthInBytes,
             'fileName' => $fileName,
         ];
