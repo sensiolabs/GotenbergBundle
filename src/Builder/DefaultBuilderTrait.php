@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Log\LoggerInterface;
@@ -106,6 +104,14 @@ trait DefaultBuilderTrait
         $multipartFormData = [];
 
         foreach ($this->formFields as $key => $value) {
+            if (null === $value) {
+                $this->logger?->debug('Key {sensiolabs_gotenberg.key} is null, skipping.', [
+                    'sensiolabs_gotenberg.key' => $key,
+                ]);
+
+                continue;
+            }
+
             $preCallback = null;
 
             if (\array_key_exists($key, $this->normalizers)) {
@@ -115,7 +121,7 @@ trait DefaultBuilderTrait
                 $preCallback = $this->normalizers[$key](...);
             }
 
-            foreach ($this->addToMultipart($key, $value, $preCallback) as $multiPart) {
+            foreach ($this->convertToMultipartItems($key, $value, $preCallback) as $multiPart) {
                 $multipartFormData[] = $multiPart;
             }
         }
@@ -128,13 +134,13 @@ trait DefaultBuilderTrait
      *
      * @return list<array<string, mixed>>
      */
-    private function addToMultipart(string $key, array|string|\Stringable|int|float|bool|\BackedEnum|DataPart $value, \Closure|null $preCallback = null): array
+    private function convertToMultipartItems(string $key, array|string|\Stringable|int|float|bool|\BackedEnum|DataPart $value, \Closure|null $preCallback = null): array
     {
         if (null !== $preCallback) {
             $result = [];
 
             foreach ($preCallback($value) as $innerKey => $innerValue) {
-                $result[] = $this->addToMultipart($innerKey, $innerValue);
+                $result[] = $this->convertToMultipartItems($innerKey, $innerValue);
             }
 
             return array_merge(...$result);
@@ -177,7 +183,7 @@ trait DefaultBuilderTrait
         if (\is_array($value)) {
             $result = [];
             foreach ($value as $nestedValue) {
-                $result[] = $this->addToMultipart($key, $nestedValue);
+                $result[] = $this->convertToMultipartItems($key, $nestedValue);
             }
 
             return array_merge(...$result);
