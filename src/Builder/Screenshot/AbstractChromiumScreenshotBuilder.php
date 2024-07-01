@@ -174,6 +174,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     public function cookies(array $cookies): static
     {
         if ([] === $cookies) {
+            unset($this->formFields['cookies']);
+
             return $this;
         }
 
@@ -224,6 +226,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     public function extraHttpHeaders(array $headers): static
     {
         if ([] === $headers) {
+            unset($this->formFields['extraHttpHeaders']);
+
             return $this;
         }
 

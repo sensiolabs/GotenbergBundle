@@ -332,6 +332,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function cookies(array $cookies): static
     {
         if ([] === $cookies) {
+            unset($this->formFields['cookies']);
+
             return $this;
         }
 
@@ -382,6 +384,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function extraHttpHeaders(array $headers): static
     {
         if ([] === $headers) {
+            unset($this->formFields['extraHttpHeaders']);
+
             return $this;
         }
 
