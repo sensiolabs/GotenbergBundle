@@ -30,7 +30,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      *
      * @param array<string, mixed> $configurations
      */
-    public function setConfigurations(array $configurations): self
+    public function setConfigurations(array $configurations): static
     {
         foreach ($configurations as $property => $value) {
             $this->addConfiguration($property, $value);

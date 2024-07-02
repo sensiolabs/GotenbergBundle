@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class GotenbergPass implements CompilerPassInterface
@@ -28,7 +29,7 @@ final class GotenbergPass implements CompilerPassInterface
                 ->setShared(false)
                 ->setArguments([
                     '$inner' => new Reference('.inner'),
-                    '$stopwatch' => new Reference('debug.stopwatch'),
+                    '$stopwatch' => new Reference('debug.stopwatch', ContainerInterface::NULL_ON_INVALID_REFERENCE),
                 ])
             ;
         }

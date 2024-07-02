@@ -101,10 +101,6 @@ class SensiolabsGotenbergExtension extends Extension
     private function cleanUserOptions(array $userConfigurations): array
     {
         return array_filter($userConfigurations, static function ($config): bool {
-            if (\is_array($config)) {
-                return 0 !== \count($config);
-            }
-
             return null !== $config;
         });
     }
