@@ -49,7 +49,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
                             'path' => $cookie->getPath(),
                             'secure' => $cookie->isSecure(),
                             'httpOnly' => $cookie->isHttpOnly(),
-                            'sameSite' => $cookie->getSameSite(),
+                            'sameSite' => null !== ($sameSite = $cookie->getSameSite()) ? \ucfirst(\strtolower($sameSite)) : null,
                         ];
 
                         continue;
