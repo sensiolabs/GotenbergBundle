@@ -49,7 +49,7 @@ trait DefaultBuilderTrait
     /**
      * @return array<string, mixed>
      */
-    private function encodeData(string $key, mixed $value): array
+    protected function encodeData(string $key, mixed $value): array
     {
         try {
             $encodedValue = json_encode($value, \JSON_THROW_ON_ERROR);
