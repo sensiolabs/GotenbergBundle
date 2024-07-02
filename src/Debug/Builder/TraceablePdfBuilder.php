@@ -9,7 +9,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class TraceablePdfBuilder implements PdfBuilderInterface
 {
     /**
-     * @var list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
+     * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
      */
     private array $pdfs = [];
 
@@ -53,8 +53,8 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
         $this->pdfs[] = [
             'calls' => $this->calls,
-            'time' => $swEvent?->getDuration() ?? -1,
-            'memory' => $swEvent?->getMemory() ?? -1,
+            'time' => $swEvent?->getDuration(),
+            'memory' => $swEvent?->getMemory(),
             'size' => $lengthInBytes,
             'fileName' => $fileName,
         ];
@@ -85,7 +85,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
+     * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getPdfs(): array
     {
