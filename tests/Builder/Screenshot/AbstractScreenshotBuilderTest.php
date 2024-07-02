@@ -82,7 +82,7 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
                 $this->formFields = $formFields;
             }
 
-            public function setConfigurations(array $configurations): AbstractScreenshotBuilder
+            public function setConfigurations(array $configurations): static
             {
                 return $this;
             }

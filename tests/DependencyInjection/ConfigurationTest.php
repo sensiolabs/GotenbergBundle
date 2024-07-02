@@ -76,7 +76,10 @@ final class ConfigurationTest extends TestCase
         ]);
 
         $config = $this->cleanOptions($config['default_options']['pdf']['html']);
-        self::assertEquals(['extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue']], $config);
+        self::assertEquals([
+            'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+            'fail_on_http_status_codes' => ['499', '599'],
+        ], $config);
     }
 
     /**
@@ -119,7 +122,7 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [],
+                        'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'pdf_format' => null,
@@ -144,7 +147,7 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [],
+                        'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'pdf_format' => null,
@@ -169,7 +172,7 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [],
+                        'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'pdf_format' => null,
@@ -207,7 +210,7 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [],
+                        'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                     ],
@@ -224,7 +227,7 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [],
+                        'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                     ],
@@ -241,7 +244,7 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [],
+                        'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                     ],
