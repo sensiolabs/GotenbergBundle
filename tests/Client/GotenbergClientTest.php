@@ -71,6 +71,6 @@ final class GotenbergClientTest extends TestCase
         );
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        self::assertSame('application/pdf', $response->headers->get('content-type'));
+        self::assertSame('application/pdf', $response->getHeaders()['content-type']);
     }
 }

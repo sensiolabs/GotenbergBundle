@@ -6,9 +6,12 @@ use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
+use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mime\Part\DataPart;
 
 trait DefaultBuilderTrait
@@ -32,6 +35,9 @@ trait DefaultBuilderTrait
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     protected LoggerInterface|null $logger = null;
+
+    /** @var ProcessorInterface<mixed>|null */
+    private ProcessorInterface|null $processor = null;
 
     public function setLogger(LoggerInterface|null $logger): void
     {
@@ -67,6 +73,16 @@ trait DefaultBuilderTrait
     {
         $this->fileName = $fileName;
         $this->headerDisposition = $headerDisposition;
+
+        return $this;
+    }
+
+    /**
+     * @param ProcessorInterface<mixed> $processor
+     */
+    public function processor(ProcessorInterface $processor): self
+    {
+        $this->processor = $processor;
 
         return $this;
     }
@@ -194,25 +210,61 @@ trait DefaultBuilderTrait
         ]];
     }
 
-    private function doCall(): GotenbergResponse
+    public function generate(): GotenbergResponse
     {
-        $this->logger?->debug('Generating file using {sensiolabs_gotenberg.builder} builder.', [
+        if (null === $this->processor) {
+            throw new ProcessorException(sprintf('No processors found when using the "%s" method. Maybe did you forget to add it or want to use the "generateResponse" instead?', __METHOD__));
+        }
+
+        $this->logger?->debug('Processing file using {sensiolabs_gotenberg.builder} builder.', [
             'sensiolabs_gotenberg.builder' => $this::class,
         ]);
 
         $response = $this->client->call($this->getEndpoint(), $this->getMultipartFormData());
 
-        if (null !== $this->fileName) {
-            $disposition = HeaderUtils::makeDisposition(
-                $this->headerDisposition,
-                $this->fileName,
-            );
-
-            $response
-                ->headers->set('Content-Disposition', $disposition)
-            ;
+        $generator = $this->getProcessorGenerator($response);
+        foreach ($response->getStream() as $chunk) {
+            $generator->send($chunk);
         }
 
-        return $response;
+        return $response->withProcessorResult($generator->getReturn());
+    }
+
+    public function generateResponse(): StreamedResponse
+    {
+        $this->logger?->debug('Streaming file using {sensiolabs_gotenberg.builder} builder.', [
+            'sensiolabs_gotenberg.builder' => $this::class,
+        ]);
+
+        $response = $this->client->call($this->getEndpoint(), $this->getMultipartFormData());
+
+        // See https://symfony.com/doc/current/components/http_foundation.html#streaming-a-json-response
+        $headers = $response->getHeaders() + ['X-Accel-Buffering' => 'no'];
+        if (null !== $this->fileName) {
+            $headers['Content-Disposition'] = HeaderUtils::makeDisposition($this->headerDisposition, $this->fileName);
+        }
+
+        return new StreamedResponse(
+            function () use ($response): void {
+                $generator = $this->getProcessorGenerator($response);
+
+                foreach ($response->getStream() as $chunk) {
+                    $generator->send($chunk);
+                    echo $chunk->getContent();
+                    flush();
+                }
+            },
+            $response->getStatusCode(),
+            $headers,
+        );
+    }
+
+    private function getProcessorGenerator(GotenbergResponse $response): \Generator
+    {
+        if (null === $this->processor) {
+            return function (): \Generator { yield; };
+        }
+
+        return ($this->processor)($this->fileName ?? $response->getFileName());
     }
 }

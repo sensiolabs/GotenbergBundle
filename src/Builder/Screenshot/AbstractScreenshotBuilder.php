@@ -39,8 +39,8 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
         ];
     }
 
-    public function generate(): GotenbergResponse
-    {
-        return $this->doCall();
-    }
+    //    public function generate(): GotenbergResponse
+    //    {
+    //        return $this->doCall();
+    //    }
 }
