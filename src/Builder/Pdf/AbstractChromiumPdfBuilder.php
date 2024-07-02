@@ -57,7 +57,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
                             'path' => $cookie->getPath(),
                             'secure' => $cookie->isSecure(),
                             'httpOnly' => $cookie->isHttpOnly(),
-                            'sameSite' => null !== ($sameSite = $cookie->getSameSite()) ? \ucfirst(\strtolower($sameSite)) : null,
+                            'sameSite' => null !== ($sameSite = $cookie->getSameSite()) ? ucfirst(strtolower($sameSite)) : null,
                         ];
 
                         continue;
