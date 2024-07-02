@@ -12,14 +12,12 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
-use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\File as DataPartFile;
 
 #[CoversClass(AbstractScreenshotBuilder::class)]
 #[UsesClass(GotenbergClient::class)]
@@ -39,50 +37,6 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
         ;
 
         self::assertSame('attachment; filename=some_file.png', $response->headers->get('Content-Disposition'));
-    }
-
-    public static function formFieldsNormalizerProvider(): \Generator
-    {
-        yield 'extraHttpHeaders' => [
-            ['extraHttpHeaders' => ['MyHeader' => 'SomeValue']],
-            'extraHttpHeaders', '{"MyHeader":"SomeValue"}',
-        ];
-
-        yield 'assets' => [
-            ['assets' => ['logo.png' => $dataPart = new DataPart(new DataPartFile(self::FIXTURE_DIR.'/assets/logo.png'))]],
-            'files', $dataPart,
-        ];
-
-        yield 'index.html' => [
-            ['index.html' => $dataPart = new DataPart(new DataPartFile(self::FIXTURE_DIR.'/files/index.html'))],
-            'files', $dataPart,
-        ];
-
-        yield 'failOnHttpStatusCodes' => [
-            ['failOnHttpStatusCodes' => [499, 500]],
-            'failOnHttpStatusCodes', '[499,500]',
-        ];
-
-        yield 'cookies' => [
-            ['cookies' => ['MyCookie' => ['name' => 'MyCookieName', 'value' => 'Chocolate', 'domain' => 'sensiolabs.com']]],
-            'cookies', '[{"name":"MyCookieName","value":"Chocolate","domain":"sensiolabs.com"}]',
-        ];
-
-        yield 'using BackedEnum' => [
-            ['backed_enum' => PdfFormat::Pdf3b],
-            'backed_enum', 'PDF/A-3b',
-        ];
-    }
-
-    #[DataProvider('formFieldsNormalizerProvider')]
-    #[TestDox('Form field "$_dataName" is correctly normalized')]
-    public function testFormFieldsNormalizer(mixed $raw, string $key, mixed $expected): void
-    {
-        $builder = $this->getScreenshotBuilder($raw);
-        $data = $builder->getMultipartFormData()[0];
-
-        self::assertArrayHasKey($key, $data);
-        self::assertSame($expected, $data[$key]);
     }
 
     public static function nativeNormalizersProvider(): \Generator

@@ -5,7 +5,6 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
-use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\HttpFoundation\File\File;
@@ -28,34 +27,13 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     /**
      * @var array<string, (\Closure(mixed): array<string, array<string|int, mixed>|non-empty-string|\Stringable|int|float|bool|\BackedEnum|DataPart>)>
      */
-    private array $normalizers;
+    private array $normalizers = [];
 
     public function __construct(
         protected readonly GotenbergClientInterface $gotenbergClient,
         protected readonly AssetBaseDirFormatter $asset,
     ) {
         $this->normalizers = [
-            'extraHttpHeaders' => function (mixed $value): array {
-                return $this->encodeData('extraHttpHeaders', $value);
-            },
-            'assets' => static function (array $value): array {
-                return ['files' => $value];
-            },
-            Part::Header->value => static function (DataPart $value): array {
-                return ['files' => $value];
-            },
-            Part::Body->value => static function (DataPart $value): array {
-                return ['files' => $value];
-            },
-            Part::Footer->value => static function (DataPart $value): array {
-                return ['files' => $value];
-            },
-            'failOnHttpStatusCodes' => function (mixed $value): array {
-                return $this->encodeData('failOnHttpStatusCodes', $value);
-            },
-            'cookies' => function (mixed $value): array {
-                return $this->encodeData('cookies', array_values($value));
-            },
             'metadata' => function (mixed $value): array {
                 return $this->encodeData('metadata', $value);
             },
@@ -70,7 +48,7 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
     /**
      * @return array<string, mixed>
      */
-    private function encodeData(string $key, mixed $value): array
+    protected function encodeData(string $key, mixed $value): array
     {
         try {
             $encodedValue = json_encode($value, \JSON_THROW_ON_ERROR);
