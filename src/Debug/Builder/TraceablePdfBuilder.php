@@ -9,7 +9,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class TraceablePdfBuilder implements PdfBuilderInterface
 {
     /**
-     * @var list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
+     * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
      */
     private array $pdfs = [];
 
@@ -24,7 +24,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
     public function __construct(
         private readonly PdfBuilderInterface $inner,
-        private readonly Stopwatch $stopwatch,
+        private readonly Stopwatch|null $stopwatch,
     ) {
     }
 
@@ -33,9 +33,9 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
 
-        $swEvent = $this->stopwatch->start($name, 'gotenberg.generate_pdf');
+        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_pdf');
         $response = $this->inner->generate();
-        $swEvent->stop();
+        $swEvent?->stop();
 
         $fileName = 'Unknown.pdf';
         if ($response->headers->has('Content-Disposition')) {
@@ -53,8 +53,8 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
         $this->pdfs[] = [
             'calls' => $this->calls,
-            'time' => $swEvent->getDuration(),
-            'memory' => $swEvent->getMemory(),
+            'time' => $swEvent?->getDuration(),
+            'memory' => $swEvent?->getMemory(),
             'size' => $lengthInBytes,
             'fileName' => $fileName,
         ];
@@ -85,7 +85,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
+     * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getPdfs(): array
     {
