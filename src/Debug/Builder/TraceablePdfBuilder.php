@@ -87,7 +87,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     /**
      * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
-    public function getPdfs(): array
+    public function getFiles(): array
     {
         return $this->pdfs;
     }

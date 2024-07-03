@@ -55,6 +55,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
             'calls' => $this->calls,
             'time' => $swEvent->getDuration(),
             'memory' => $swEvent->getMemory(),
+            'status' => $response->getStatusCode(),
             'size' => $lengthInBytes,
             'fileName' => $fileName,
         ];
@@ -87,7 +88,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
     /**
      * @return list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
-    public function getScreenshots(): array
+    public function getFiles(): array
     {
         return $this->screenshots;
     }

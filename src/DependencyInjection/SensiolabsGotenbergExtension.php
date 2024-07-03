@@ -29,7 +29,7 @@ class SensiolabsGotenbergExtension extends Extension
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
-                ->replaceArgument(2, [
+                ->replaceArgument(3, [
                     'html' => $this->cleanUserOptions($config['default_options']['pdf']['html']),
                     'url' => $this->cleanUserOptions($config['default_options']['pdf']['url']),
                     'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),

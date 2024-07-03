@@ -345,7 +345,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $dataCollector = $containerBuilder->getDefinition('sensiolabs_gotenberg.data_collector');
         self::assertNotNull($dataCollector);
 
-        $dataCollectorOptions = $dataCollector->getArguments()[2];
+        $dataCollectorOptions = $dataCollector->getArguments()[3];
         self::assertEquals([
             'html' => [
                 'metadata' => [
