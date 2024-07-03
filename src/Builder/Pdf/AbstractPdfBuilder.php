@@ -24,9 +24,4 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
             },
         ];
     }
-
-    //    public function generate(): GotenbergResponse
-    //    {
-    //        return $this->doCall();
-    //    }
 }
