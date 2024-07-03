@@ -10,24 +10,24 @@ You can add assets in several ways, and it's available for most builders.
 > [!WARNING]  
 > As a reminder, we can only load assets in the content. And not in Header or Footer.  
 > For more information about [Header and Footer restriction](https://gotenberg.dev/docs/routes#header-footer-chromium)
-> 
+>
 > By default the assets are fetch in the `assets` folder of your application.
-> If your assets files are in another folder, you can override the 
-> default value of `assets_directory` in your configuration file 
+> If your assets files are in another folder, you can override the
+> default value of `assets_directory` in your configuration file
 > `config/sensiolabs_gotenberg.yml`.
 >
 > The asset path resolution depends on certain criteria:
 > - If an absolute path is provided in `{{ gotenberg_asset() }}`, `assets()`
-> or `addAsset`, this path will be applied and not the one in the configuration file.
+    > or `addAsset`, this path will be applied and not the one in the configuration file.
 >
 > - If a path is provided in `{{ gotenberg_asset() }}`, `assets()`
-> or `addAsset`, it will be treated as a relative path from the `assets_directory` configuration.
+    > or `addAsset`, it will be treated as a relative path from the `assets_directory` configuration.
 >
 > - If an absolute path is provided in the configuration file (`assets_directory`), the path applied
-> in `{{ gotenberg_asset() }}`, `assets()` or `addAsset` will have `assets_directory` as base path.
+    > in `{{ gotenberg_asset() }}`, `assets()` or `addAsset` will have `assets_directory` as base path.
 >
 > - If a relative path is provided in the configuration file (`assets_directory`), the path applied
-> will have the root of the project as base path followed by the path from the configuration file.
+    > will have the root of the project as base path followed by the path from the configuration file.
 >
 > <details>
 >     <summary>Examples</summary>
@@ -49,7 +49,8 @@ You can add assets in several ways, and it's available for most builders.
 
 ## Twig file
 
-`{{ gotenberg_asset() }}` Twig function will help you to generate an asset path.  
+            ->build()
+            ->streamResponse()n asset path.  
 This function work as [asset() Twig function](https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets).
 
 You can provide an absolute path.
@@ -96,8 +97,9 @@ class YourController
     public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
         return $gotenberg->html()
-            ->content('twig_simple_pdf.html.twig')
-            ->generate()
+            ->content('t
+            ->build()
+            ->streamResponse()
          ;
     }
 }
@@ -141,7 +143,8 @@ class YourController
                 'img/ceo.jpeg',
                 'img/admin.jpeg'
             )
-            ->generate()
+            ->build()
+            ->streamResponse()
         ;
     }
 }
@@ -164,7 +167,8 @@ class YourController
                 '../img/ceo.jpeg',
                 '../img/admin.jpeg'
             )
-            ->generate()
+            ->build()
+            ->streamResponse()
         ;
     }
 }
@@ -188,8 +192,9 @@ class YourController
                 '../img/ceo.jpeg',
                 '../img/admin.jpeg'
             )
-            ->addAsset('../img/developer.jpeg') 
-            ->generate()
+            ->addAsset('
+            ->build()
+            ->streamResponse()
         ;
     }
 }

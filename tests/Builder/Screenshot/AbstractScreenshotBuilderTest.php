@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -33,7 +34,8 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
 
         $response = $this->getScreenshotBuilder()
             ->fileName('some_file.png', HeaderUtils::DISPOSITION_ATTACHMENT)
-            ->generateResponse()
+            ->build()
+            ->streamResponse()
         ;
 
         self::assertSame('attachment; filename=some_file.png', $response->headers->get('Content-Disposition'));
@@ -72,7 +74,7 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
      */
     private function getScreenshotBuilder(array $formFields = []): AbstractScreenshotBuilder
     {
-        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, $formFields) extends AbstractScreenshotBuilder {
+        return (new class($this->gotenbergClient, self::$assetBaseDirFormatter, $formFields) extends AbstractScreenshotBuilder {
             /**
              * @param array<mixed> $formFields
              */
@@ -91,6 +93,8 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
             {
                 return '/fake/endpoint';
             }
-        };
+        })
+            ->processor(new NullProcessor())
+        ;
     }
 }

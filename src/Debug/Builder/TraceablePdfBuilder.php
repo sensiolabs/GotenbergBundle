@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
+use Sensiolabs\GotenbergBundle\Builder\GotenbergResult;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 final class TraceablePdfBuilder implements PdfBuilderInterface
@@ -28,13 +28,13 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     ) {
     }
 
-    public function generate(): GotenbergResponse
+    public function build(): GotenbergResult
     {
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
 
         $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_pdf');
-        $response = $this->inner->generate();
+        $response = $this->inner->build();
         $swEvent?->stop();
 
         $this->pdfs[] = [

@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -33,7 +34,7 @@ final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
         $this->getMarkdownPdfBuilder()
             ->wrapperFile('files/wrapper.html')
             ->files('assets/file.md')
-            ->generate()
+            ->build()
         ;
     }
 
@@ -65,6 +66,8 @@ final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getMarkdownPdfBuilder(bool $twig = true): MarkdownPdfBuilder
     {
-        return new MarkdownPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null);
+        return (new MarkdownPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null))
+            ->processor(new NullProcessor())
+        ;
     }
 }

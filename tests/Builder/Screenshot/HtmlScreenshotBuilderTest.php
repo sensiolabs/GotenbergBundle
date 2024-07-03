@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -35,7 +36,7 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 
         $this->getHtmlScreenshotBuilder()
             ->contentFile('files/content.html')
-            ->generate()
+            ->build()
         ;
     }
 
@@ -108,6 +109,8 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 
     private function getHtmlScreenshotBuilder(bool $twig = true): HtmlScreenshotBuilder
     {
-        return new HtmlScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null);
+        return (new HtmlScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null))
+            ->processor(new NullProcessor())
+        ;
     }
 }

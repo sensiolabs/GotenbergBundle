@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 
 #[CoversClass(ConvertPdfBuilder::class)]
@@ -33,7 +34,7 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
         $this->getConvertPdfBuilder()
             ->files(self::PDF_DOCUMENTS_DIR.'/document.pdf')
             ->pdfUniversalAccess()
-            ->generate()
+            ->build()
         ;
     }
 
@@ -88,6 +89,8 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getConvertPdfBuilder(): ConvertPdfBuilder
     {
-        return new ConvertPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter);
+        return (new ConvertPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter))
+            ->processor(new NullProcessor())
+        ;
     }
 }

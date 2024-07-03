@@ -35,7 +35,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         $this->getHtmlPdfBuilder()
             ->contentFile('files/content.html')
-            ->generate()
+            ->build()
         ;
     }
 
@@ -108,6 +108,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getHtmlPdfBuilder(bool $twig = true): HtmlPdfBuilder
     {
-        return new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null);
+        return (new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null))
+            ->processor(new NullProcessor())
+        ;
     }
 }

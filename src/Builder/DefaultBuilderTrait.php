@@ -4,14 +4,13 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mime\Part\DataPart;
 
 trait DefaultBuilderTrait
@@ -80,7 +79,7 @@ trait DefaultBuilderTrait
     /**
      * @param ProcessorInterface<mixed> $processor
      */
-    public function processor(ProcessorInterface $processor): self
+    public function processor(ProcessorInterface $processor): static
     {
         $this->processor = $processor;
 
@@ -210,7 +209,7 @@ trait DefaultBuilderTrait
         ]];
     }
 
-    public function generate(): GotenbergResponse
+    public function build(): GotenbergResult
     {
         if (null === $this->processor) {
             throw new ProcessorException(sprintf('No processors found when using the "%s" method. Maybe did you forget to add it or want to use the "generateResponse" instead?', __METHOD__));
@@ -222,49 +221,13 @@ trait DefaultBuilderTrait
 
         $response = $this->client->call($this->getEndpoint(), $this->getMultipartFormData());
 
-        $generator = $this->getProcessorGenerator($response);
-        foreach ($response->getStream() as $chunk) {
-            $generator->send($chunk);
-        }
+        $processor = $this->processor ?? new NullProcessor();
 
-        return $response->withProcessorResult($generator->getReturn());
-    }
-
-    public function generateResponse(): StreamedResponse
-    {
-        $this->logger?->debug('Streaming file using {sensiolabs_gotenberg.builder} builder.', [
-            'sensiolabs_gotenberg.builder' => $this::class,
-        ]);
-
-        $response = $this->client->call($this->getEndpoint(), $this->getMultipartFormData());
-
-        // See https://symfony.com/doc/current/components/http_foundation.html#streaming-a-json-response
-        $headers = $response->getHeaders() + ['X-Accel-Buffering' => 'no'];
-        if (null !== $this->fileName) {
-            $headers['Content-Disposition'] = HeaderUtils::makeDisposition($this->headerDisposition, $this->fileName);
-        }
-
-        return new StreamedResponse(
-            function () use ($response): void {
-                $generator = $this->getProcessorGenerator($response);
-
-                foreach ($response->getStream() as $chunk) {
-                    $generator->send($chunk);
-                    echo $chunk->getContent();
-                    flush();
-                }
-            },
-            $response->getStatusCode(),
-            $headers,
+        return new GotenbergResult(
+            $response,
+            $processor($this->fileName ?? $response->getFileName()),
+            $this->headerDisposition,
+            $this->fileName,
         );
-    }
-
-    private function getProcessorGenerator(GotenbergResponse $response): \Generator
-    {
-        if (null === $this->processor) {
-            return function (): \Generator { yield; };
-        }
-
-        return ($this->processor)($this->fileName ?? $response->getFileName());
     }
 }

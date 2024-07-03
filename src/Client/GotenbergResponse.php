@@ -12,8 +12,7 @@ class GotenbergResponse
     public function __construct(
         private readonly ResponseStreamInterface $stream,
         private readonly int $statusCode,
-        private readonly array $headers = [],
-        private mixed $processorResult = null,
+        private readonly array $headers,
     ) {
     }
 
@@ -59,18 +58,5 @@ class GotenbergResponse
         }
 
         return null;
-    }
-
-    public function getProcessorResult(): mixed
-    {
-        return $this->processorResult;
-    }
-
-    public function withProcessorResult(mixed $result): self
-    {
-        $clone = clone $this;
-        $clone->processorResult = $result;
-
-        return $clone;
     }
 }

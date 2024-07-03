@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -30,7 +31,7 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
 
         $this->getUrlPdfBuilder()
             ->url('https://google.com')
-            ->generate()
+            ->build()
         ;
     }
 
@@ -58,6 +59,8 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getUrlPdfBuilder(): UrlPdfBuilder
     {
-        return new UrlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack());
+        return (new UrlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack()))
+            ->processor(new NullProcessor())
+        ;
     }
 }
