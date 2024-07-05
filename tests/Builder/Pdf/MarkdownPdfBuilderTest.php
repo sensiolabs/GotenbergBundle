@@ -34,7 +34,7 @@ final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
         $this->getMarkdownPdfBuilder()
             ->wrapperFile('files/wrapper.html')
             ->files('assets/file.md')
-            ->build()
+            ->generate()
         ;
     }
 

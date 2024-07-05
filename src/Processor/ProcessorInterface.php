@@ -10,7 +10,7 @@ use Symfony\Contracts\HttpClient\ChunkInterface;
 interface ProcessorInterface
 {
     /**
-     * @return \Generator<int, null, ChunkInterface, T>
+     * @return \Generator<int, void, ChunkInterface, T>
      */
     public function __invoke(string|null $fileName): \Generator;
 }

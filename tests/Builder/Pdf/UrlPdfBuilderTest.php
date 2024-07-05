@@ -31,7 +31,7 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
 
         $this->getUrlPdfBuilder()
             ->url('https://google.com')
-            ->build()
+            ->generate()
         ;
     }
 

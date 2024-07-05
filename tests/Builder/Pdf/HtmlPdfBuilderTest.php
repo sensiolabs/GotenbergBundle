@@ -35,7 +35,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
         $this->getHtmlPdfBuilder()
             ->contentFile('files/content.html')
-            ->build()
+            ->generate()
         ;
     }
 

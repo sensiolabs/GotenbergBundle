@@ -10,7 +10,7 @@ use Symfony\Contracts\HttpClient\ChunkInterface;
 final class CallbackProcessor implements ProcessorInterface
 {
     /**
-     * @param \Closure(ChunkInterface): void $callback
+     * @param (\Closure(ChunkInterface): void) $callback
      */
     public function __construct(
         private readonly \Closure $callback,

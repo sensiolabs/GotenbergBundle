@@ -36,7 +36,7 @@ final class MergePdfBuilderTest extends AbstractBuilderTestCase
                 self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf',
                 self::PDF_DOCUMENTS_DIR.'/simple_pdf_1.pdf',
             )
-            ->build()
+            ->generate()
         ;
     }
 

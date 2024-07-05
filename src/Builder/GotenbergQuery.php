@@ -3,12 +3,16 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
-use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Contracts\HttpClient\ChunkInterface;
 
-class GotenbergResult
+class GotenbergQuery
 {
+    /**
+     * @param \Generator<int, void, ChunkInterface, mixed> $processorGenerator
+     */
     public function __construct(
         protected readonly GotenbergResponse $response,
         protected readonly \Generator $processorGenerator,
@@ -22,10 +26,7 @@ class GotenbergResult
         return $this->response->getStatusCode();
     }
 
-    /**
-     * @return array<string, mixed> $headers
-     */
-    public function getHeaders(): array
+    public function getHeaders(): ResponseHeaderBag
     {
         return $this->response->getHeaders();
     }
@@ -36,20 +37,11 @@ class GotenbergResult
     }
 
     /**
-     * @return int<0, max>|null
+     * @return non-negative-int|null
      */
     public function getContentLength(): int|null
     {
         return $this->response->getContentLength();
-    }
-
-    public function getProcessorResult(): mixed
-    {
-        //        if (!$this->processorGenerator->valid()) {
-        //            throw new ProcessorException('Gotenberg response has not been processed yet.');
-        //        }
-
-        return $this->processorGenerator->getReturn();
     }
 
     public function process(): mixed
@@ -58,15 +50,15 @@ class GotenbergResult
             $this->processorGenerator->send($chunk);
         }
 
-        return $this->getProcessorResult();
+        return $this->processorGenerator->getReturn();
     }
 
-    public function streamResponse(): StreamedResponse
+    public function stream(): StreamedResponse
     {
-        // See https://symfony.com/doc/current/components/http_foundation.html#streaming-a-json-response
-        $headers = $this->response->getHeaders() + ['X-Accel-Buffering' => 'no'];
+        $headers = $this->getHeaders();
+        $headers->set('X-Accel-Buffering', 'no'); // See https://symfony.com/doc/current/components/http_foundation.html#streaming-a-json-response
         if (null !== $this->fileName) {
-            $headers['Content-Disposition'] = HeaderUtils::makeDisposition($this->disposition, $this->fileName);
+            $headers->set('Content-Disposition', HeaderUtils::makeDisposition($this->disposition, $this->fileName));
         }
 
         return new StreamedResponse(
@@ -78,7 +70,7 @@ class GotenbergResult
                 }
             },
             $this->response->getStatusCode(),
-            $headers,
+            $headers->all(),
         );
     }
 }

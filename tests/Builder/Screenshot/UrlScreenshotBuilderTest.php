@@ -44,7 +44,7 @@ final class UrlScreenshotBuilderTest extends AbstractBuilderTestCase
 
         $this->getUrlScreenshotBuilder()
             ->url('https://google.com')
-            ->build()
+            ->generate()
         ;
     }
 

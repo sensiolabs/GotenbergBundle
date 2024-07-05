@@ -36,7 +36,7 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 
         $this->getHtmlScreenshotBuilder()
             ->contentFile('files/content.html')
-            ->build()
+            ->generate()
         ;
     }
 

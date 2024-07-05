@@ -34,7 +34,7 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
         $this->getConvertPdfBuilder()
             ->files(self::PDF_DOCUMENTS_DIR.'/document.pdf')
             ->pdfUniversalAccess()
-            ->build()
+            ->generate()
         ;
     }
 

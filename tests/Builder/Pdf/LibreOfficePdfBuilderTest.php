@@ -33,7 +33,7 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
 
         $this->getLibreOfficePdfBuilder()
             ->files(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx')
-            ->build()
+            ->generate()
         ;
     }
 

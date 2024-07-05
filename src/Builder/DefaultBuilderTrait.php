@@ -5,9 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
-use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -35,8 +33,8 @@ trait DefaultBuilderTrait
 
     protected LoggerInterface|null $logger = null;
 
-    /** @var ProcessorInterface<mixed>|null */
-    private ProcessorInterface|null $processor = null;
+    /** @var ProcessorInterface<mixed> */
+    private ProcessorInterface $processor;
 
     public function setLogger(LoggerInterface|null $logger): void
     {
@@ -209,23 +207,15 @@ trait DefaultBuilderTrait
         ]];
     }
 
-    public function build(): GotenbergResult
+    public function generate(): GotenbergQuery
     {
-        if (null === $this->processor) {
-            throw new ProcessorException(sprintf('No processors found when using the "%s" method. Maybe did you forget to add it or want to use the "generateResponse" instead?', __METHOD__));
-        }
-
         $this->logger?->debug('Processing file using {sensiolabs_gotenberg.builder} builder.', [
             'sensiolabs_gotenberg.builder' => $this::class,
         ]);
 
-        $response = $this->client->call($this->getEndpoint(), $this->getMultipartFormData());
-
-        $processor = $this->processor ?? new NullProcessor();
-
-        return new GotenbergResult(
-            $response,
-            $processor($this->fileName ?? $response->getFileName()),
+        return new GotenbergQuery(
+            $this->client->call($this->getEndpoint(), $this->getMultipartFormData()),
+            ($this->processor)($this->fileName),
             $this->headerDisposition,
             $this->fileName,
         );

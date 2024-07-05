@@ -34,7 +34,7 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
         $this->getMarkdownScreenshotBuilder()
             ->wrapperFile('files/wrapper.html')
             ->files('assets/file.md')
-            ->build()
+            ->generate()
         ;
     }
 

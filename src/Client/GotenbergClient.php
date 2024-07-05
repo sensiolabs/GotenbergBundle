@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Client;
 
 use Sensiolabs\GotenbergBundle\Exception\ClientException;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -31,7 +32,7 @@ final class GotenbergClient implements GotenbergClientInterface
             throw new ClientException($response->getContent(false), $response->getStatusCode());
         }
 
-        return new GotenbergResponse($this->client->stream($response), $response->getStatusCode(), $response->getHeaders());
+        return new GotenbergResponse($this->client->stream($response), $response->getStatusCode(), new ResponseHeaderBag($response->getHeaders()));
     }
 
     /**

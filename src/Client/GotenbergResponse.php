@@ -2,17 +2,15 @@
 
 namespace Sensiolabs\GotenbergBundle\Client;
 
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 class GotenbergResponse
 {
-    /**
-     * @param array<string, mixed> $headers
-     */
     public function __construct(
         private readonly ResponseStreamInterface $stream,
         private readonly int $statusCode,
-        private readonly array $headers,
+        private readonly ResponseHeaderBag $headers,
     ) {
     }
 
@@ -26,17 +24,14 @@ class GotenbergResponse
         return $this->statusCode;
     }
 
-    /**
-     * @return array<string, mixed> $headers
-     */
-    public function getHeaders(): array
+    public function getHeaders(): ResponseHeaderBag
     {
         return $this->headers;
     }
 
     public function getFileName(): string|null
     {
-        $disposition = $this->headers['content-disposition'][0] ?? '';
+        $disposition = $this->headers->get('content-disposition', '');
         if ('' !== $disposition) {
             /* @see https://onlinephp.io/c/c2606 */
             preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $disposition, $matches);
@@ -48,11 +43,11 @@ class GotenbergResponse
     }
 
     /**
-     * @return int<0, max>|null
+     * @return non-negative-int|null
      */
     public function getContentLength(): int|null
     {
-        $length = $this->headers['content-length'][0] ?? null;
+        $length = $this->headers->get('content-length');
         if (null !== $length) {
             return abs((int) $length);
         }

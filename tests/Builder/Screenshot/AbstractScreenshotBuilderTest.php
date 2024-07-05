@@ -34,8 +34,8 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
 
         $response = $this->getScreenshotBuilder()
             ->fileName('some_file.png', HeaderUtils::DISPOSITION_ATTACHMENT)
-            ->build()
-            ->streamResponse()
+            ->generate()
+            ->stream()
         ;
 
         self::assertSame('attachment; filename=some_file.png', $response->headers->get('Content-Disposition'));
