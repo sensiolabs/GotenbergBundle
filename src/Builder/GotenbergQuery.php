@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -46,6 +47,10 @@ class GotenbergQuery
 
     public function process(): mixed
     {
+        if (!$this->response->getStream()->valid()) {
+            throw new ProcessorException('Already processed query.');
+        }
+
         foreach ($this->response->getStream() as $chunk) {
             $this->processorGenerator->send($chunk);
         }
@@ -63,6 +68,10 @@ class GotenbergQuery
 
         return new StreamedResponse(
             function (): void {
+                if (!$this->response->getStream()->valid()) {
+                    throw new ProcessorException('Already processed query.');
+                }
+
                 foreach ($this->response->getStream() as $chunk) {
                     $this->processorGenerator->send($chunk);
                     echo $chunk->getContent();
