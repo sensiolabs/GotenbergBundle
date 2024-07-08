@@ -6,6 +6,7 @@ use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -33,8 +34,8 @@ trait DefaultBuilderTrait
 
     protected LoggerInterface|null $logger = null;
 
-    /** @var ProcessorInterface<mixed> */
-    private ProcessorInterface $processor;
+    /** @var ProcessorInterface<mixed>|null */
+    private ProcessorInterface|null $processor;
 
     public function setLogger(LoggerInterface|null $logger): void
     {
@@ -213,9 +214,11 @@ trait DefaultBuilderTrait
             'sensiolabs_gotenberg.builder' => $this::class,
         ]);
 
+        $processor = $this->processor ?? new NullProcessor();
+
         return new GotenbergQuery(
             $this->client->call($this->getEndpoint(), $this->getMultipartFormData()),
-            ($this->processor)($this->fileName),
+            $processor($this->fileName),
             $this->headerDisposition,
             $this->fileName,
         );

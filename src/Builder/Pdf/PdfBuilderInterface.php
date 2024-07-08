@@ -7,7 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\GotenbergQuery;
 interface PdfBuilderInterface
 {
     /**
-     * Generates the PDF and returns the response.
+     * Generates the PDF and returns the query.
      */
     public function generate(): GotenbergQuery;
 }
