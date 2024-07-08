@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 
 interface GotenbergPdfInterface
 {
@@ -45,6 +46,11 @@ interface GotenbergPdfInterface
      * @return MergePdfBuilder
      */
     public function merge(): PdfBuilderInterface;
+
+    /**
+     * @return WriteMetadataPdfBuilder
+     */
+    public function writeMetadata(): PdfBuilderInterface;
 
     /**
      * @return ConvertPdfBuilder

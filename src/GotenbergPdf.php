@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 
 final class GotenbergPdf implements GotenbergPdfInterface
 {
@@ -24,7 +25,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'write_metadata'|'convert' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -32,6 +33,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'markdown' ? MarkdownPdfBuilder :
      *   $key is 'office' ? LibreOfficePdfBuilder :
      *   $key is 'merge' ? MergePdfBuilder :
+     *   $key is 'write_metadata' ? WriteMetadataPdfBuilder :
      *   $key is 'convert' ? ConvertPdfBuilder :
      *   PdfBuilderInterface
      * )
@@ -64,6 +66,11 @@ final class GotenbergPdf implements GotenbergPdfInterface
     public function merge(): PdfBuilderInterface
     {
         return $this->getInternal('merge');
+    }
+
+    public function writeMetadata(): PdfBuilderInterface
+    {
+        return $this->getInternal('write_metadata');
     }
 
     public function convert(): PdfBuilderInterface
