@@ -3,68 +3,19 @@
 {% block head %}
     {{ parent() }}
     <style>
-        details[open] summary ~ * {
-            animation: open 0.3s ease-in-out;
+        .icon {
+            font-size: 18px;
         }
-
-        @keyframes open {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-
-        details summary::-webkit-details-marker {
+        .file-details {
             display: none;
         }
-
-        details summary {
-            width: 100%;
-            padding: 0.5rem 0;
-            position: relative;
-            cursor: pointer;
-            font-size: 1.25rem;
-            font-weight: 300;
-            list-style: none;
+        .file-details:has(.sf-toggle-visible) {
+            display: table-row;
         }
-
-        details summary:after {
-            content: "+";
-            color: var(--h2-border-color);
-            position: absolute;
-            font-size: 1.75rem;
-            line-height: 0;
-            margin-top: 0.75rem;
-            right: 0;
-            font-weight: 200;
-            transform-origin: center;
-            transition: 200ms linear;
-        }
-
-        details[open] summary:after {
-            transform: rotate(45deg);
-            font-size: 2rem;
-        }
-
-        details summary {
-            outline: 0;
-        }
-
-        details p {
-            font-size: 0.95rem;
-            margin: 0 0 1rem;
-            padding-top: 1rem;
-        }
-
-        details[open] {
-            padding-bottom: 20px
-        }
-
-        details:not(:first-of-type) {
-            border-top: 1px solid var(--h2-border-color);
-            padding-top: 10px;
+        .file-info .unit {
+            color: var(--metric-unit-color);
+            margin-left: -2px;
+            font-size: calc(var(--font-size-body) - 2px);
         }
     </style>
 {% endblock %}
@@ -112,7 +63,8 @@
                 <span class="label">Total time</span>
             </div>
             <div class="metric">
-                <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span class="unit">MiB</span></span>
+            <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span
+                        class="unit">MiB</span></span>
                 <span class="label">Total memory</span>
             </div>
             <div class="metric">
@@ -127,84 +79,107 @@
         </div>
     </section>
     <h2>Files</h2>
-    {% for index, file in collector.files %}
-        <details>
-            <summary style="">
-                <span class="icon">
-                    {% if file.type == 'pdf' %}
-                        {{ source('@SensiolabsGotenberg/Icon/file-type-pdf.svg') }}
-                    {% elseif file.type == 'screenshot' %}
-                        {{ source('@SensiolabsGotenberg/Icon/file-type-screenshot.svg') }}
-                    {% endif %}
-                </span>
-                {{ file.fileName }}
-            </summary>
-            <div class="metrics">
-                <div class="metric-group">
-                    <div class="metric">
-                        <span class="value">{{ '%.0f'|format(file.time) }} <span class="unit">ms</span></span>
-                        <span class="label">Generation time</span>
-                    </div>
-                    <div class="metric">
-                        <span class="value">{{ '%.1f'|format(file.memory / 1024 / 1024) }}  <span
-                                    class="unit">MiB</span></span>
-                        <span class="label">Memory</span>
-                    </div>
-                    <div class="metric">
-                        {% set size = file.size %}
-                        {% set size_value = size[0] %}
-                        {% set size_unit = size[1] %}
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>File</th>
+            <th>Time</th>
+            <th>Memory</th>
+            <th>Size</th>
+            <th>Builder</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for index, file in collector.files %}
+            <tr class="file-info">
+                <td class="font-normal">
+                        <span class="icon">
+                            {% if file.type == 'pdf' %}
+                                {{ source('@SensiolabsGotenberg/Icon/file-type-pdf.svg') }}
+                            {% elseif file.type == 'screenshot' %}
+                                {{ source('@SensiolabsGotenberg/Icon/file-type-screenshot.svg') }}
+                            {% endif %}
+                        </span>
+                </td>
+                <td class="font-normal">
+                    {{ file.fileName }}
+                    <div>
 
-                        <span class="value">{{ '%.1f'|format(size_value) }} <span
-                                    class="unit">{{ size_unit }}</span></span>
-                        <span class="label">Size</span>
+                    <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#method-calls-{{ index }}"
+                       data-toggle-alt-content="Hide method calls">View method calls</a>
+                    <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#configuration-{{ index }}"
+                       data-toggle-alt-content="Hide context">View context</a>
                     </div>
-                    <div class="metric">
-                        <span class="value">{{ file.builderClass|abbr_class }}</span>
-                        <span class="label">Builder class</span>
+                </td>
+                <td class="font-normal">
+                    <span class="value">
+                        {{ '%.0f'|format(file.time) }}
+                        <span class="unit">ms</span>
+                    </span>
+                </td>
+                <td class="font-normal">
+                    <span class="value">
+                        {{ '%.1f'|format(file.memory / 1024 / 1024) }}
+                        <span class="unit">MiB</span>
+                    </span>
+                </td>
+                <td class="font-normal">
+                    {% set size = file.size %}
+                    {% set size_value = size[0] %}
+                    {% set size_unit = size[1] %}
+
+                    <span class="value">
+                        {{ '%.1f'|format(size_value) }}
+                        <span class="unit">{{ size_unit }}</span>
+                    </span>
+                </td>
+                <td class="font-normal">
+                    <span class="value">{{ file.builderClass|abbr_class }}</span>
+                </td>
+            </tr>
+            <tr class="file-details">
+                <td></td>
+                <td colspan="5">
+                    <div id="method-calls-{{ index }}" class="sf-toggle-hidden">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Arguments</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for call in file.calls %}
+                                <tr>
+                                    <td>{{ call.method }}</td>
+                                    <td>{{ profiler_dump(call.stub.value, maxDepth=2) }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>
-            <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#method-calls-{{ index }}"
-               data-toggle-alt-content="Hide method calls">View method calls</a>
-            <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#context-{{ index }}"
-               data-toggle-alt-content="Hide context">View context</a>
-            <div id="method-calls-{{ index }}">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Method</th>
-                        <th>Arguments</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for call in file.calls %}
-                        <tr>
-                            <td>{{ call.method }}</td>
-                            <td>{{ profiler_dump(call.stub.value, maxDepth=2) }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div id="context-{{ index }}">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Context</th>
-                        <th>Value</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for context, value in file.context %}
-                        <tr>
-                            <td>{{ context }}</td>
-                            <td>{{ profiler_dump(value, maxDepth=5) }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </details>
-    {% endfor %}
+                    <div id="configuration-{{ index }}" class="sf-toggle-hidden">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Configuration</th>
+                                <th>Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for configuration, value in file.configuration %}
+                                <tr>
+                                    <td>{{ configuration }}</td>
+                                    <td>{{ profiler_dump(value, maxDepth=5) }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        <tbody>
+    </table>
 {% endblock %}

@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\DataCollector;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
@@ -77,17 +76,13 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     private function lateCollectFiles(array $builders, string $type): void
     {
         foreach ($builders as [$id, $builder]) {
-            if ($builder->getInner() instanceof AbstractPdfBuilder) {
-                dump($builder->getInner()->getMultipartFormData());
-            }
-
             foreach ($builder->getFiles() as $request) {
                 $this->data['request_total_time'] += $request['time'];
                 $this->data['request_total_memory'] += $request['memory'];
                 $this->data['request_total_size'] += $request['size'] ?? 0;
                 $this->data['files'][] = [
                     'builderClass' => $builder->getInner()::class,
-                    'context' => [
+                    'configuration' => [
                         'options' => $this->cloneVar([]),
                         'default_options' => $this->cloneVar($this->defaultOptions[$id] ?? []),
                     ],
@@ -136,17 +131,17 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 
     /**
      * @return list<array{
-     *      'builderClass': string,
-     *      'type': string,
-     *      'time': float,
-     *      'memory': int,
-     *      'size': int<0, max>|null,
-     *      'fileName': string,
-     *      context: array<string, array<mixed, mixed>>,
-     *      'calls': list<array{
-     *           'method': string,
-     *           'stub': Data
-     *       }>
+     *      builderClass: string,
+     *      type: string,
+     *      time: float,
+     *      memory: int,
+     *      size: int<0, max>|null,
+     *      fileName: string,
+     *      configuration: array<string, array<mixed, mixed>>,
+     *      calls: list<array{
+     *          method: string,
+     *          stub: Data,
+     *      }>
      * }>
      */
     public function getFiles(): array
