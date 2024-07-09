@@ -208,7 +208,7 @@ trait DefaultBuilderTrait
         ]];
     }
 
-    public function generate(): GotenbergQuery
+    public function generate(): GotenbergFileResult
     {
         $this->logger?->debug('Processing file using {sensiolabs_gotenberg.builder} builder.', [
             'sensiolabs_gotenberg.builder' => $this::class,
@@ -216,7 +216,7 @@ trait DefaultBuilderTrait
 
         $processor = $this->processor ?? new NullProcessor();
 
-        return new GotenbergQuery(
+        return new GotenbergFileResult(
             $this->client->call($this->getEndpoint(), $this->getMultipartFormData()),
             $processor($this->fileName),
             $this->headerDisposition,

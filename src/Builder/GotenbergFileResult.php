@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Contracts\HttpClient\ChunkInterface;
 
-class GotenbergQuery
+class GotenbergFileResult
 {
     /**
      * @param \Generator<int, void, ChunkInterface, mixed> $processorGenerator
