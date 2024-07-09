@@ -39,23 +39,23 @@ Default: `800 pixels`
 The device screen width in pixels.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->width(600)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->width(600)
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -68,23 +68,23 @@ Default: `600 pixels`
 The device screen height in pixels.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->height(600)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->height(600)
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -97,23 +97,23 @@ Default: `false`
 Define whether to clip the screenshot according to the device dimensions.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->clip()
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->clip()
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -126,25 +126,25 @@ Default: `100`
 The compression quality from range 0 to 100 (jpeg only).
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->quality(50)
-                ->format(ScreenshotFormat::Jpeg)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->quality(50)
+            ->format(ScreenshotFormat::Jpeg)
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -157,23 +157,23 @@ default: `false`
 Hide the default white background and allow generating screenshots with transparency.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->omitBackground()
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->omitBackground()
+            ->generate()
+        ;
     }
+}
 ```
 
 ## Request
@@ -185,23 +185,23 @@ default: `false`
 Define whether to optimize image encoding for speed, not for resulting size.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('twig_simple_pdf.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->optimizeForSpeed(true)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->optimizeForSpeed(true)
+            ->generate()
+        ;
     }
+}
 ```
 
 ### waitDelay
@@ -214,21 +214,21 @@ time to make sure Chromium has fully rendered the page you\'re trying to
 generate.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->waitDelay('5s')
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->waitDelay('5s')
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -239,21 +239,21 @@ generate.
 You may also wait until a given JavaScript expression.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->waitForExpression("window.globalVar === 'ready'")
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->waitForExpression("window.globalVar === 'ready'")
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -267,22 +267,22 @@ Some websites have dedicated CSS rules for print. Using `screen` allows
 you to force the \"standard\" CSS rules.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->emulatedMediaType(EmulatedMediaType::Screen)
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->emulatedMediaType(EmulatedMediaType::Screen)
+            ->generate()
+        ;
     }
+}
 ```
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#emulated-media-type-chromium).
@@ -294,28 +294,28 @@ default: `None`
 Cookies to store in the Chromium cookie jar.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->cookies([[
-                    'name' => 'my_cookie',
-                    'value' => 'symfony',
-                    'domain' => 'symfony.com',
-                    'secure' => true,
-                    'httpOnly' => true,
-                    'sameSite' => 'Lax',
-                ]])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->cookies([[
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ]])
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -327,28 +327,28 @@ If you want to add cookies and delete the ones already loaded in the
 configuration .
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->setCookie([
-                    'name' => 'my_cookie',
-                    'value' => 'symfony',
-                    'domain' => 'symfony.com',
-                    'secure' => true,
-                    'httpOnly' => true,
-                    'sameSite' => 'Lax',
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->setCookie([
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 ### addCookies
@@ -357,28 +357,28 @@ If you want to add cookies from the ones already loaded in the
 configuration.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->addCookies([[
-                    'name' => 'my_cookie',
-                    'value' => 'symfony',
-                    'domain' => 'symfony.com',
-                    'secure' => true,
-                    'httpOnly' => true,
-                    'sameSite' => 'Lax',
-                ]])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->addCookies([[
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ]])
+            ->generate()
+        ;
     }
+}
 ```
 
 ### extraHttpHeaders
@@ -388,23 +388,23 @@ default: `None`
 HTTP headers to send by Chromium while loading the HTML document.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->extraHttpHeaders([
-                    'MyHeader' => 'MyValue'
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->extraHttpHeaders([
+                'MyHeader' => 'MyValue'
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -418,23 +418,23 @@ If you want to add headers from the ones already loaded in the
 configuration.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->addExtraHttpHeaders([
-                    'MyHeader' => 'MyValue'
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->addExtraHttpHeaders([
+                'MyHeader' => 'MyValue'
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 ### failOnHttpStatusCodes
@@ -445,21 +445,21 @@ To return a 409 Conflict response if the HTTP status code from the main
 page is not acceptable.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->failOnHttpStatusCodes([401, 403])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->failOnHttpStatusCodes([401, 403])
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -473,21 +473,21 @@ Return a 409 Conflict response if there are exceptions in the Chromium
 console.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->failOnConsoleExceptions()
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->failOnConsoleExceptions()
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -503,21 +503,21 @@ often significantly slows down the conversion process. Setting this form
 field to true can greatly enhance the conversion speed.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->skipNetworkIdleEvent()
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->skipNetworkIdleEvent()
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -532,22 +532,22 @@ default: `png`
 The image compression format, either "png", "jpeg" or "webp".
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->format(ScreenshotFormat::Webp)
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->format(ScreenshotFormat::Webp)
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]

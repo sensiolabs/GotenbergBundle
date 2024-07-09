@@ -23,40 +23,40 @@ You may have the possibility to convert Office files into PDF.
 > For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->generate() // will return directly a stream response
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->generate() // will return directly a stream response
+         ;
     }
+}
 ```
 
 You have the possibility to add more than one file, but you will generate
 a ZIP folder instead of PDF.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document_one.txt', 'document_two.odt')
-                ->generate() // will download a zip file with two PDF files
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document_one.txt', 'document_two.odt')
+            ->generate() // will download a zip file with two PDF files
+         ;
     }
+}
 ```
 
 ## merge
@@ -66,21 +66,21 @@ Default: `false`
 With the `merge()` function you can merge multiple office files into a PDF.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document_one.txt', 'document_two.odt')
-                ->merge() // is same as ->merge(true)
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document_one.txt', 'document_two.odt')
+            ->merge() // is same as ->merge(true)
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -93,21 +93,21 @@ Default: `false`
 Set the PDF orientation to landscape.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->landscape() // is same as `->landscape(true)`
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->landscape() // is same as `->landscape(true)`
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -120,21 +120,21 @@ Default: `All pages generated`
 Page ranges to print (e.g. `'1-5, 8, 11-13'`).
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->nativePageRanges('1-5')
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->nativePageRanges('1-5')
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -148,21 +148,21 @@ Set whether to export the form fields or to use the inputted/selected content
 of the fields.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->exportFormFields() // is same as `->exportFormFields(false)`
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportFormFields() // is same as `->exportFormFields(false)`
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -175,21 +175,21 @@ Default: `false`
 Set whether to render the entire spreadsheet as a single page.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->singlePageSheets()  // is same as `->singlePageSheets(true)`
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->singlePageSheets()  // is same as `->singlePageSheets(true)`
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -202,21 +202,21 @@ Default: `None`
 Convert the resulting PDF into the given PDF/A format.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->pdfFormat(PdfFormat::Pdf1b)
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->pdfFormat(PdfFormat::Pdf1b)
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -229,21 +229,21 @@ Default: `false`
 Enable PDF for Universal Access for optimal accessibility.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -256,21 +256,21 @@ Default: `None`
 Resets the configuration metadata and add new ones to write.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
+            ->generate()
+         ;
     }
+}
 ```
 
 ## addMetadata
@@ -280,21 +280,21 @@ Default: `None`
 If you want to add metadata from the ones already loaded in the configuration.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->office()
-                ->files('document.txt')
-                ->addMetadata('key', 'value')
-                ->generate()
-             ;
-        }
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->addMetadata('key', 'value')
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
