@@ -29,20 +29,20 @@ The HTML file to convert into screenshot.
 > of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->contentFile('../templates/content.html')
-                ->generate()
-             ;
-        }
+        return $gotenberg->html()
+            ->contentFile('../templates/content.html')
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Twig content
@@ -50,22 +50,22 @@ The HTML file to convert into screenshot.
 The Twig file to convert into screenshot.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->generate()
-             ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Customization

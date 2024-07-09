@@ -7,20 +7,20 @@ You may have the possibility to generate a PDF from a URL.
 URL of the page you want to convert into PDF.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->url()
-                ->url('https://sensiolabs.com/fr/')
-                ->generate()
-             ;
-        }
+        return $gotenberg->url()
+            ->url('https://sensiolabs.com/fr/')
+            ->generate()
+         ;
     }
+}
 ```
 
 ## route
@@ -39,22 +39,22 @@ Route of the page you want to convert into PDF.
 
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->url()
-                ->route('home', [
-                    'my_var' => 'value'
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg->url()
+            ->route('home', [
+                'my_var' => 'value'
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 ## Files
@@ -62,27 +62,27 @@ Route of the page you want to convert into PDF.
 Required to generate a PDF from Markdown builder. You can pass several files with that method.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->markdown()
-                ->wrapper('wrapper.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->files(
-                    'header.md', 
-                    'content.md', 
-                    'footer.md',
-                )
-                ->generate()
-             ;
-        }
+        return $gotenberg->markdown()
+            ->wrapper('wrapper.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->files(
+                'header.md', 
+                'content.md', 
+                'footer.md',
+            )
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Customization

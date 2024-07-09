@@ -28,20 +28,20 @@ The HTML file to convert into PDF.
 > For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->contentFile('../templates/content.html')
-                ->generate()
-             ;
-        }
+        return $gotenberg->html()
+            ->contentFile('../templates/content.html')
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Twig content
@@ -49,22 +49,22 @@ The HTML file to convert into PDF.
 The Twig file to convert into PDF.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->generate()
-             ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Customization

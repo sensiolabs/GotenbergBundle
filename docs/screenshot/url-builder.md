@@ -7,20 +7,20 @@ You may have the possibility to generate a screenshot from a URL.
 URL of the page you want to convert into screenshot.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->url()
-                ->url('https://sensiolabs.com/fr/')
-                ->generate()
-             ;
-        }
+        return $gotenberg->url()
+            ->url('https://sensiolabs.com/fr/')
+            ->generate()
+         ;
     }
+}
 ```
 
 ## route
@@ -39,22 +39,22 @@ Route of the page you want to convert into screenshot.
 
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->url()
-                ->route('home', [
-                    'my_var' => 'value'
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg->url()
+            ->route('home', [
+                'my_var' => 'value'
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 ## Files
@@ -62,27 +62,27 @@ Route of the page you want to convert into screenshot.
 Required to generate a screenshot from Markdown builder. You can pass several files with that method.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->markdown()
-                ->wrapper('wrapper.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->files(
-                    'header.md', 
-                    'content.md', 
-                    'footer.md',
-                )
-                ->generate()
-             ;
-        }
+        return $gotenberg->markdown()
+            ->wrapper('wrapper.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->files(
+                'header.md', 
+                'content.md', 
+                'footer.md',
+            )
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Customization

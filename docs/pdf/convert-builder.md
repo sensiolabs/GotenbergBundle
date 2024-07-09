@@ -15,23 +15,23 @@ You may have the possibility to convert several PDF document.
 
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->convert()
-                ->files(
-                    'document.pdf',
-                    'document_2.pdf',
-                )
-                ->generate()
-             ;
-        }
+        return $gotenberg->convert()
+            ->files(
+                'document.pdf',
+                'document_2.pdf',
+            )
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -44,24 +44,24 @@ Default: `None`
 Convert the resulting PDF into the given PDF/A format.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->convert()
-               ->files(
-                    'document.pdf',
-                    'document_2.pdf',
-                )
-                ->pdfFormat(PdfFormat::Pdf1b)
-                ->generate()
-             ;
-        }
+        return $gotenberg->convert()
+           ->files(
+                'document.pdf',
+                'document_2.pdf',
+            )
+            ->pdfFormat(PdfFormat::Pdf1b)
+            ->generate()
+         ;
     }
+}
 ```
 
 ## pdfUniversalAccess
@@ -71,22 +71,22 @@ Default: `false`
 Enable PDF for Universal Access for optimal accessibility.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->convert()
-               ->files(
-                    'document.pdf',
-                    'document_2.pdf',
-                )
-                ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
-                ->generate()
-             ;
-        }
+        return $gotenberg->convert()
+           ->files(
+                'document.pdf',
+                'document_2.pdf',
+            )
+            ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
+            ->generate()
+         ;
     }
+}
 ```

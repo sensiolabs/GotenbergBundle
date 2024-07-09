@@ -35,34 +35,34 @@ The HTML file to wrap markdown file into screenshot.
 > The HTML template that receives your markdown file will look like this.
 
 ```html
-    <!doctype html>
-    <html lang="en">
-            <head>
-                <meta charset="utf-8">
-                <title>My screenshot</title>
-            </head>
-        <body>
-            {{ toHTML "content.md" }}
-        </body>
-    </html>
+<!doctype html>
+<html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <title>My screenshot</title>
+        </head>
+    <body>
+        {{ toHTML "content.md" }}
+    </body>
+</html>
 ```
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->markdown()
-                ->wrapperFile('../templates/wrapper.html')
-                ->files('content.md')
-                ->generate()
-             ;
-        }
+        return $gotenberg->markdown()
+            ->wrapperFile('../templates/wrapper.html')
+            ->files('content.md')
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Twig wrapper
@@ -74,40 +74,40 @@ The Twig file to convert into screenshot.
 > The twig template that receives your markdown file will look like this.
 
 ```html
-    <!doctype html>
-    <html lang="en">
-            <head>
-                <meta charset="utf-8">
-                <title>My screenshot</title>
-            </head>
-        <body>
-            {% verbatim %}
-                {{ toHTML "content.md" }}
-            {% endverbatim %}
-        </body>
-    </html>
+<!doctype html>
+<html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <title>My screenshot</title>
+        </head>
+    <body>
+        {% verbatim %}
+            {{ toHTML "content.md" }}
+        {% endverbatim %}
+    </body>
+</html>
 ```
 Gotenberg expects an HTML template containing the directive {{ toHTML "filename.md" }}. 
 To prevent any conflict, you may want to use the [verbatim](https://twig.symfony.com/doc/3.x/tags/verbatim.html) tag to encapsulate the directive.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->markdown()
-                ->wrapper('wrapper.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->files('content.md')
-                ->generate()
-             ;
-        }
+        return $gotenberg->markdown()
+            ->wrapper('wrapper.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->files('content.md')
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Files
@@ -115,27 +115,27 @@ To prevent any conflict, you may want to use the [verbatim](https://twig.symfony
 Required to generate a screenshot from Markdown builder. You can pass several files with that method.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-        {
-            return $gotenberg->markdown()
-                ->wrapper('wrapper.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->files(
-                    'header.md', 
-                    'content.md', 
-                    'footer.md',
-                )
-                ->generate()
-             ;
-        }
+        return $gotenberg->markdown()
+            ->wrapper('wrapper.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->files(
+                'header.md', 
+                'content.md', 
+                'footer.md',
+            )
+            ->generate()
+         ;
     }
+}
 ```
 
 ## Customization

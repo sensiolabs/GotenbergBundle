@@ -61,24 +61,24 @@ You can override the default paper size with `height`, `width` and `unit`.
 `unit` is optional but by default in inches.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\Unit;
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->paperSize(21, 29.7, Unit::Centimeters)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->paperSize(21, 29.7, Unit::Centimeters)
+            ->generate()
+        ;
     }
+}
 ```
 
 ### paperStandardSize
@@ -88,24 +88,24 @@ Default: `8.5 inches x 11 inches`
 You can override the default paper size with standard paper size.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->paperStandardSize(PaperSize::A4)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->paperStandardSize(PaperSize::A4)
+            ->generate()
+        ;
     }
+}
 ```
 
 Or if you want you can create your own paper size values, you just need to
@@ -140,24 +140,24 @@ You can override the default `width` and `unit`.
 `unit` is optional but by default in inches.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\Unit;
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->paperWidth(15, Unit::Inches)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->paperWidth(15, Unit::Inches)
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -171,24 +171,24 @@ You can override the default `height` and `unit`.
 `unit` is optional but by default in inches.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\Unit;
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->paperHeight(15, Unit::Inches)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->paperHeight(15, Unit::Inches)
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -203,51 +203,51 @@ You can override the default margins, with the arguments `top`, `bottom`, `right
 `unit` is optional but by default in inches.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\Unit;
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->margins(1, 2, 3, 4, Unit::Inches)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->margins(1, 2, 3, 4, Unit::Inches)
+            ->generate()
+        ;
     }
+}
 ```
 
 Or you can override all margins individually with respective `unit`.   
 `unit` is always optional but by default in inches.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\Unit;
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->marginTop(4, Unit::Points)
-                ->marginBottom(4, Unit::Pixels)
-                ->marginLeft(4, Unit::Picas)
-                ->marginRight(4, Unit::Millimeters)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->marginTop(4, Unit::Points)
+            ->marginBottom(4, Unit::Pixels)
+            ->marginLeft(4, Unit::Picas)
+            ->marginRight(4, Unit::Millimeters)
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -260,23 +260,23 @@ default: `false`
 Define whether to prefer page size as defined by CSS.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->preferCssPageSize()
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->preferCssPageSize()
+            ->generate()
+        ;
     }
+}
 ```
 
 ### printBackground
@@ -286,23 +286,23 @@ default: `false`
 Print the background graphics.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->printBackground()
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->printBackground()
+            ->generate()
+        ;
     }
+}
 ```
 
 ### omitBackground
@@ -312,23 +312,23 @@ default: `false`
 Hide the default white background and allow generating PDFs with transparency.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->omitBackground()
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->omitBackground()
+            ->generate()
+        ;
     }
+}
 ```
 
 ### landscape
@@ -338,23 +338,23 @@ default: `false`
 Set the paper orientation to landscape.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->landscape()
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->landscape()
+            ->generate()
+        ;
     }
+}
 ```
 
 ### scale
@@ -364,23 +364,23 @@ default: `1.0`
 The scale of the page rendering.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->scale(2.5)
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->scale(2.5)
+            ->generate()
+        ;
     }
+}
 ```
 
 ### nativePageRanges
@@ -390,23 +390,23 @@ default: `All pages`
 Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-    
-    class YourController
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->nativePageRanges('1-5')
-                ->generate()
-            ;
-        }
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->nativePageRanges('1-5')
+            ->generate()
+        ;
     }
+}
 ```
 ## Additional content
 
@@ -435,29 +435,29 @@ You may have the possibility to add header or footer twig templates
 to your generated PDF.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->header('header.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->footer('footer.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->header('header.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->footer('footer.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 ### headerFile and footerFile
@@ -469,45 +469,45 @@ to your generated PDF.
 > of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->headerFile('header.html')
-                ->contentFile('content.html')
-                ->footerFile('footer.html')
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->headerFile('header.html')
+            ->contentFile('content.html')
+            ->footerFile('footer.html')
+            ->generate()
+        ;
     }
+}
 ```
 
 Relative path work as well.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->headerFile('../templates/html/header.html')
-                ->contentFile('../templates/html/content.html')
-                ->footerFile('../templates/html/footer.html')
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->headerFile('../templates/html/header.html')
+            ->contentFile('../templates/html/content.html')
+            ->footerFile('../templates/html/footer.html')
+            ->generate()
+        ;
     }
+}
 ```
 
 ## Request
@@ -522,24 +522,24 @@ time to make sure Chromium has fully rendered the page you\'re trying to
 generate.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->waitDelay('5s')
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->waitDelay('5s')
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -550,24 +550,24 @@ generate.
 You may also wait until a given JavaScript expression.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->waitForExpression("window.globalVar === 'ready'")
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->waitForExpression("window.globalVar === 'ready'")
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -581,25 +581,25 @@ Some websites have dedicated CSS rules for print. Using `screen` allows
 you to force the \"standard\" CSS rules.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->emulatedMediaType(EmulatedMediaType::Screen)
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->emulatedMediaType(EmulatedMediaType::Screen)
+            ->generate()
+        ;
     }
+}
 ```
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#emulated-media-type-chromium).
@@ -611,31 +611,31 @@ default: `None`
 Cookies to store in the Chromium cookie jar.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->cookies([[
-                    'name' => 'my_cookie',
-                    'value' => 'symfony',
-                    'domain' => 'symfony.com',
-                    'secure' => true,
-                    'httpOnly' => true,
-                    'sameSite' => 'Lax',
-                ]])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->cookies([[
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ]])
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -647,31 +647,31 @@ If you want to add cookies and delete the ones already loaded in the
 configuration .
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->setCookie([
-                    'name' => 'my_cookie',
-                    'value' => 'symfony',
-                    'domain' => 'symfony.com',
-                    'secure' => true,
-                    'httpOnly' => true,
-                    'sameSite' => 'Lax',
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->setCookie([
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 ### addCookies
@@ -680,31 +680,31 @@ If you want to add cookies from the ones already loaded in the
 configuration.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->addCookies([[
-                    'name' => 'my_cookie',
-                    'value' => 'symfony',
-                    'domain' => 'symfony.com',
-                    'secure' => true,
-                    'httpOnly' => true,
-                    'sameSite' => 'Lax',
-                ]])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->addCookies([[
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ]])
+            ->generate()
+        ;
     }
+}
 ```
 
 ### extraHttpHeaders
@@ -714,26 +714,26 @@ default: `None`
 HTTP headers to send by Chromium while loading the HTML document.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->extraHttpHeaders([
-                    'MyHeader' => 'MyValue'
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->extraHttpHeaders([
+                'MyHeader' => 'MyValue'
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -747,26 +747,26 @@ If you want to add headers from the ones already loaded in the
 configuration.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->addExtraHttpHeaders([
-                    'MyHeader' => 'MyValue'
-                ])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->addExtraHttpHeaders([
+                'MyHeader' => 'MyValue'
+            ])
+            ->generate()
+        ;
     }
+}
 ```
 
 ### failOnHttpStatusCodes
@@ -777,24 +777,24 @@ To return a 409 Conflict response if the HTTP status code from the main
 page is not acceptable.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->failOnHttpStatusCodes([401, 403])
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->failOnHttpStatusCodes([401, 403])
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -808,24 +808,24 @@ Return a 409 Conflict response if there are exceptions in the Chromium
 console.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->failOnConsoleExceptions()
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->failOnConsoleExceptions()
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -841,24 +841,24 @@ often significantly slows down the conversion process. Setting this form
 field to true can greatly enhance the conversion speed.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->skipNetworkIdleEvent()
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->skipNetworkIdleEvent()
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -873,24 +873,24 @@ Default: `None`
 Resets the configuration metadata and add new ones to write.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
-                ->generate()
-             ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
+            ->generate()
+         ;
     }
+}
 ```
 
 > [!TIP]
@@ -903,24 +903,24 @@ Default: `None`
 If you want to add metadata from the ones already loaded in the configuration.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->addMetadata('key', 'value')
-                ->generate()
-             ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->addMetadata('key', 'value')
+            ->generate()
+         ;
     }
+}
 ```
 
 ### pdfFormat
@@ -932,25 +932,25 @@ If set to `null`, remove format from the ones already loaded in the
 configuration.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->pdfFormat(PdfFormat::Pdf1b)
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->pdfFormat(PdfFormat::Pdf1b)
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
@@ -963,24 +963,24 @@ default: `false`
 Enable PDF for Universal Access for optimal accessibility.
 
 ```php
-    namespace App\Controller;
+namespace App\Controller;
 
-    use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-    class YourController
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-        {
-            return $gotenberg
-                ->html()
-                ->content('content.html.twig', [
-                    'my_var' => 'value'
-                ])
-                ->pdfUniversalAccess()
-                ->generate()
-            ;
-        }
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->pdfUniversalAccess()
+            ->generate()
+        ;
     }
+}
 ```
 
 > [!TIP]
