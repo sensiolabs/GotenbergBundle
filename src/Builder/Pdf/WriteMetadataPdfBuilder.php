@@ -72,6 +72,10 @@ final class WriteMetadataPdfBuilder extends AbstractPdfBuilder
             throw new MissingRequiredFieldException('At least one PDF file is required');
         }
 
+        if ([] === ($this->formFields['metadata'] ?? [])) {
+            throw new MissingRequiredFieldException('At least one metadata field is required');
+        }
+
         return parent::getMultipartFormData();
     }
 

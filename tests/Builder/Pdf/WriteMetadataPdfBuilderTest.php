@@ -35,6 +35,7 @@ final class WriteMetadataPdfBuilderTest extends AbstractBuilderTestCase
                 self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf',
                 self::PDF_DOCUMENTS_DIR.'/simple_pdf_1.pdf',
             )
+            ->metadata(['Author' => 'Sensiolabs'])
             ->generate()
         ;
     }
@@ -64,12 +65,27 @@ final class WriteMetadataPdfBuilderTest extends AbstractBuilderTestCase
         self::assertEquals($expected, $builder->getMultipartFormData()[0]);
     }
 
-    public function testRequiredFormData(): void
+    public function testRequiredFilesFormFields(): void
     {
         $builder = $this->getWriteMetadataPdfBuilder();
+        $builder->metadata(['Author' => 'Sensiolabs']);
 
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('At least one PDF file is required');
+
+        $builder->getMultipartFormData();
+    }
+
+    public function testRequiredMetadataFormFields(): void
+    {
+        $builder = $this->getWriteMetadataPdfBuilder();
+        $builder->files(
+            self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf',
+            self::PDF_DOCUMENTS_DIR.'/simple_pdf_1.pdf',
+        );
+
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one metadata field is required');
 
         $builder->getMultipartFormData();
     }
