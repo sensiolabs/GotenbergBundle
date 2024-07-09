@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
+use Sensiolabs\GotenbergBundle\Builder\CookieAwareTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
@@ -9,18 +10,43 @@ use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 use Twig\Environment;
 
 abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuilder
 {
+    use CookieAwareTrait;
+
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
+        private readonly RequestStack $requestStack,
         private readonly Environment|null $twig = null,
     ) {
         parent::__construct($gotenbergClient, $asset);
+
+        $normalizers = [
+            'extraHttpHeaders' => function (mixed $value): array {
+                return $this->encodeData('extraHttpHeaders', $value);
+            },
+            'assets' => static function (array $value): array {
+                return ['files' => $value];
+            },
+            Part::Body->value => static function (DataPart $value): array {
+                return ['files' => $value];
+            },
+            'failOnHttpStatusCodes' => function (mixed $value): array {
+                return $this->encodeData('failOnHttpStatusCodes', $value);
+            },
+            'cookies' => fn (mixed $value): array => $this->cookieNormalizer($value, $this->encodeData(...)),
+        ];
+
+        foreach ($normalizers as $key => $normalizer) {
+            $this->addNormalizer($key, $normalizer);
+        }
     }
 
     /**
@@ -35,6 +61,27 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         }
 
         return $this;
+    }
+
+    /**
+     * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
+     */
+    public function cookies(array $cookies): static
+    {
+        return $this->withCookies($this->formFields, $cookies);
+    }
+
+    /**
+     * @param Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null} $cookie
+     */
+    public function setCookie(string $key, Cookie|array $cookie): static
+    {
+        return $this->withCookie($this->formFields, $key, $cookie);
+    }
+
+    public function forwardCookie(string $name): static
+    {
+        return $this->forwardCookieFromRequest($this->requestStack->getCurrentRequest(), $name, $this->logger);
     }
 
     /**
@@ -160,57 +207,6 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     public function emulatedMediaType(EmulatedMediaType $mediaType): static
     {
         $this->formFields['emulatedMediaType'] = $mediaType;
-
-        return $this;
-    }
-
-    /**
-     * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
-     *
-     * @see https://gotenberg.dev/docs/routes#cookies-chromium
-     *
-     * @param list<array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null}> $cookies
-     */
-    public function cookies(array $cookies): static
-    {
-        if ([] === $cookies) {
-            unset($this->formFields['cookies']);
-
-            return $this;
-        }
-
-        $this->formFields['cookies'] = [];
-
-        foreach ($cookies as $cookie) {
-            $this->setCookie($cookie['name'], $cookie);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null} $cookie
-     */
-    public function setCookie(string $key, array $cookie): static
-    {
-        $this->formFields['cookies'] ??= [];
-        $this->formFields['cookies'][$key] = $cookie;
-
-        return $this;
-    }
-
-    /**
-     *  Add cookies to store in the Chromium cookie jar.
-     *
-     * @see https://gotenberg.dev/docs/routes#cookies-chromium
-     *
-     * @param list<array{name: string, value: string, domain: string, path: string|null, secure: bool|null, httpOnly: bool|null, sameSite: 'Strict'|'Lax'|null}> $cookies
-     */
-    public function addCookies(array $cookies): static
-    {
-        foreach ($cookies as $cookie) {
-            $this->setCookie($cookie['name'], $cookie);
-        }
 
         return $this;
     }

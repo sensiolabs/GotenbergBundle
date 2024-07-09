@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 #[CoversClass(MarkdownScreenshotBuilder::class)]
 #[UsesClass(AbstractChromiumScreenshotBuilder::class)]
@@ -92,6 +93,6 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
 
     private function getMarkdownScreenshotBuilder(bool $twig = true): MarkdownScreenshotBuilder
     {
-        return new MarkdownScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null);
+        return new MarkdownScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null);
     }
 }

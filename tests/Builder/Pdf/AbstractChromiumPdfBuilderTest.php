@@ -17,6 +17,7 @@ use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 #[CoversClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
@@ -384,7 +385,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getChromiumPdfBuilder(bool $twig = true): AbstractChromiumPdfBuilder
     {
-        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
+        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
             protected function getEndpoint(): string
             {
                 return '/fake/endpoint';

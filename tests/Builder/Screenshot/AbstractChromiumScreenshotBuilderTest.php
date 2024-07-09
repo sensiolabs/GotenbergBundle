@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuil
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 #[CoversClass(AbstractChromiumScreenshotBuilder::class)]
 #[UsesClass(AbstractScreenshotBuilder::class)]
@@ -83,7 +84,7 @@ class AbstractChromiumScreenshotBuilderTest extends AbstractBuilderTestCase
 
     private function getChromiumScreenshotBuilder(bool $twig = true): AbstractChromiumScreenshotBuilder
     {
-        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, true === $twig ? self::$twig : null) extends AbstractChromiumScreenshotBuilder {
+        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null) extends AbstractChromiumScreenshotBuilder {
             protected function getEndpoint(): string
             {
                 return '/fake/endpoint';
