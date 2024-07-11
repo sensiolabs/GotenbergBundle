@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
@@ -118,6 +119,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['merge', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return WriteMetadataPdfBuilder|TraceablePdfBuilder
+     */
+    public function writeMetadata(): PdfBuilderInterface
+    {
+        /** @var WriteMetadataPdfBuilder|TraceablePdfBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->writeMetadata();
+
+        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['write_metadata', $traceableBuilder];
 
         return $traceableBuilder;
     }

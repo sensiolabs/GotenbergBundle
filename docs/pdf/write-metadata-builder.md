@@ -1,6 +1,6 @@
-# Merge Builder
+# Write metadata Builder
 
-You may have the possibility to merge several PDF documents.
+You may have the possibility to write metadata within several PDF documents.
 
 ## Basic usage
 
@@ -18,7 +18,7 @@ class YourController
 {
     public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        return $gotenberg->merge()
+        return $gotenberg->writeMetadata()
             ->files(
                 'document.pdf',
                 'document_2.pdf',
@@ -30,61 +30,11 @@ class YourController
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#merge-pdfs-route).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#read-pdf-metadata-route).
 
-## pdfFormat
-
-Default: `None`
-
-Convert the resulting PDF into the given PDF/A format.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->merge()
-           ->files(
-                'document.pdf',
-                'document_2.pdf',
-            )
-            ->pdfFormat(PdfFormat::Pdf1b)
-            ->generate()
-         ;
-    }
-}
-```
-
-## pdfUniversalAccess
-
-Default: `false`
-
-Enable PDF for Universal Access for optimal accessibility.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->merge()
-           ->files(
-                'document.pdf',
-                'document_2.pdf',
-            )
-            ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
-            ->generate()
-         ;
-    }
-}
-```
+> [!TIP]
+> Not all metadata are writable. Consider taking a look at https://exiftool.org/TagNames/XMP.html#pdf
+> for an (exhaustive?) list of available metadata.
 
 ## metatada
 
@@ -101,7 +51,7 @@ class YourController
 {
     public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        return $gotenberg->merge()
+        return $gotenberg->writeMetadata()
            ->files(
                 'document.pdf',
                 'document_2.pdf',
@@ -128,7 +78,7 @@ class YourController
 {
     public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        return $gotenberg->merge()
+        return $gotenberg->writeMetadata()
            ->files(
                 'document.pdf',
                 'document_2.pdf',

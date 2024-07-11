@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -65,6 +66,16 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->set('.sensiolabs_gotenberg.pdf_builder.merge', MergePdfBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+        ])
+        ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->tag('sensiolabs_gotenberg.pdf_builder')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.pdf_builder.write_metadata', WriteMetadataPdfBuilder::class)
         ->share(false)
         ->args([
             service('sensiolabs_gotenberg.client'),

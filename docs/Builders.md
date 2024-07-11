@@ -6,6 +6,8 @@ Builders
 * [UrlPdfBuilder](./Pdf/UrlPdfBuilder.md)
 * [MarkdownPdfBuilder](./Pdf/MarkdownPdfBuilder.md)
 * [LibreOfficePdfBuilder](./Pdf/LibreOfficePdfBuilder.md)
+* [MergePdfBuilder](./Pdf/MergePdfBuilder.md)
+* [WriteMetadataPdfBuilder](./Pdf/WriteMetadataPdfBuilder.md)
 
 # Screenshot
 
