@@ -3,24 +3,29 @@
 namespace Sensiolabs\GotenbergBundle\DataCollector;
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
+use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
+use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\LateDataCollectorInterface;
 use Symfony\Component\VarDumper\Caster\ArgsStub;
+use Symfony\Component\VarDumper\Caster\CutArrayStub;
 use Symfony\Component\VarDumper\Cloner\Data;
 
 final class GotenbergDataCollector extends DataCollector implements LateDataCollectorInterface
 {
     /**
-     * @param ServiceLocator<PdfBuilderInterface> $builders
-     * @param array<mixed>                        $defaultOptions
+     * @param ServiceLocator<PdfBuilderInterface|ScreenshotBuilderInterface> $builders
+     * @param array<mixed>                                                   $defaultOptions
      */
     public function __construct(
-        private readonly TraceableGotenbergPdf $traceableGotenberg,
+        private readonly TraceableGotenbergPdf $traceableGotenbergPdf,
+        private readonly TraceableGotenbergScreenshot $traceableGotenbergScreenshot,
         private readonly ServiceLocator $builders,
         private readonly array $defaultOptions,
     ) {
@@ -37,18 +42,19 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
         foreach ($this->builders->getProvidedServices() as $id => $type) {
             $builder = $this->builders->get($id);
 
-            if ($builder instanceof TraceablePdfBuilder) {
+            if ($builder instanceof TraceablePdfBuilder || $builder instanceof TraceableScreenshotBuilder) {
                 $builder = $builder->getInner();
             }
 
             if (str_starts_with($id, '.sensiolabs_gotenberg.pdf_builder.')) {
                 [$id] = sscanf($id, '.sensiolabs_gotenberg.pdf_builder.%s');
+            } elseif (str_starts_with($id, '.sensiolabs_gotenberg.screenshot_builder.')) {
+                [$id] = sscanf($id, '.sensiolabs_gotenberg.screenshot_builder.%s') ?? [$id];
             }
 
             $this->data['builders'][$id] = [
                 'class' => $builder::class,
                 'default_options' => $this->defaultOptions[$id] ?? [],
-                'pdfs' => [],
             ];
         }
     }
@@ -60,34 +66,49 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 
     public function lateCollect(): void
     {
-        /**
-         * @var string              $id
-         * @var TraceablePdfBuilder $builder
-         */
-        foreach ($this->traceableGotenberg->getBuilders() as [$id, $builder]) {
-            $this->data['builders'][$id]['pdfs'] = array_merge(
-                $this->data['builders'][$id]['pdfs'],
-                array_map(function (array $request): array {
-                    $this->data['request_total_time'] += $request['time'];
-                    $this->data['request_total_memory'] += $request['memory'];
-                    $this->data['request_total_size'] += $request['size'] ?? 0;
+        $this->lateCollectFiles($this->traceableGotenbergPdf->getBuilders(), 'pdf');
+        $this->lateCollectFiles($this->traceableGotenbergScreenshot->getBuilders(), 'screenshot');
+    }
 
-                    return [
-                        'time' => $request['time'],
-                        'memory' => $request['memory'],
-                        'size' => $this->formatSize($request['size'] ?? 0),
-                        'fileName' => $request['fileName'],
-                        'calls' => array_map(function (array $call): array {
-                            return [
-                                'method' => $call['method'],
-                                'stub' => $this->cloneVar(new ArgsStub($call['arguments'], $call['method'], $call['class'])),
-                            ];
-                        }, $request['calls']),
-                    ];
-                }, $builder->getPdfs()),
-            );
+    /**
+     * @param list<array{string, TraceablePdfBuilder|TraceableScreenshotBuilder}> $builders
+     */
+    private function lateCollectFiles(array $builders, string $type): void
+    {
+        foreach ($builders as [$id, $builder]) {
+            foreach ($builder->getFiles() as $request) {
+                $this->data['request_total_time'] += $request['time'];
+                $this->data['request_total_memory'] += $request['memory'];
+                $this->data['request_total_size'] += $request['size'] ?? 0;
+                $this->data['files'][] = [
+                    'builderClass' => $builder->getInner()::class,
+                    'configuration' => [
+                        'options' => $this->cloneVar([]),
+                        'default_options' => $this->cloneVar($this->defaultOptions[$id] ?? []),
+                    ],
+                    'type' => $type,
+                    'time' => $request['time'],
+                    'memory' => $request['memory'],
+                    'size' => $this->formatSize($request['size'] ?? 0),
+                    'fileName' => $request['fileName'],
+                    'calls' => array_map(function (array $call): array {
+                        $args = array_map(function (mixed $arg): mixed {
+                            if (\is_array($arg)) {
+                                return new CutArrayStub($arg, array_keys($arg));
+                            }
 
-            $this->data['request_count'] += \count($builder->getPdfs());
+                            return $arg;
+                        }, $call['arguments']);
+
+                        return [
+                            'method' => $call['method'],
+                            'stub' => $this->cloneVar(new ArgsStub($args, $call['method'], $call['class'])),
+                        ];
+                    }, $request['calls']),
+                ];
+            }
+
+            $this->data['request_count'] += \count($builder->getFiles());
         }
     }
 
@@ -109,24 +130,23 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     }
 
     /**
-     * @return array<string, array{
-     *     'class': string,
-     *     'default_options': array<mixed>,
-     *     'pdfs': list<array{
-     *         'time': float,
-     *         'memory': int,
-     *         'size': int<0, max>|null,
-     *         'fileName': string,
-     *         'calls': list<array{
-     *             'method': string,
-     *             'stub': Data
-     *         }>
-     *     }>
+     * @return list<array{
+     *      builderClass: string,
+     *      type: string,
+     *      time: float,
+     *      memory: int,
+     *      size: int<0, max>|null,
+     *      fileName: string,
+     *      configuration: array<string, array<mixed, mixed>>,
+     *      calls: list<array{
+     *          method: string,
+     *          stub: Data,
+     *      }>
      * }>
      */
-    public function getBuilders(): array
+    public function getFiles(): array
     {
-        return $this->data['builders'] ?? [];
+        return $this->data['files'] ?? [];
     }
 
     public function getRequestCount(): int

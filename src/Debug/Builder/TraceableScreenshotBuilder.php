@@ -2,19 +2,19 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-final class TraceablePdfBuilder implements PdfBuilderInterface
+final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
 {
     /**
-     * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
+     * @var list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
      */
-    private array $pdfs = [];
+    private array $screenshots = [];
 
     /**
-     * @var list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>
+     * @var list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>
      */
     private array $calls = [];
 
@@ -23,8 +23,8 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     private static int $count = 0;
 
     public function __construct(
-        private readonly PdfBuilderInterface $inner,
-        private readonly Stopwatch|null $stopwatch,
+        private readonly ScreenshotBuilderInterface $inner,
+        private readonly Stopwatch $stopwatch,
     ) {
     }
 
@@ -33,11 +33,11 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
 
-        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_pdf');
+        $swEvent = $this->stopwatch->start($name, 'gotenberg.generate_screenshot');
         $response = $this->inner->generate();
-        $swEvent?->stop();
+        $swEvent->stop();
 
-        $fileName = 'Unknown.pdf';
+        $fileName = 'Unknown';
         if ($response->headers->has('Content-Disposition')) {
             $matches = [];
 
@@ -51,10 +51,11 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
             $lengthInBytes = abs((int) $response->headers->get('Content-Length'));
         }
 
-        $this->pdfs[] = [
+        $this->screenshots[] = [
             'calls' => $this->calls,
-            'time' => $swEvent?->getDuration(),
-            'memory' => $swEvent?->getMemory(),
+            'time' => $swEvent->getDuration(),
+            'memory' => $swEvent->getMemory(),
+            'status' => $response->getStatusCode(),
             'size' => $lengthInBytes,
             'fileName' => $fileName,
         ];
@@ -85,14 +86,14 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
+     * @return list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getFiles(): array
     {
-        return $this->pdfs;
+        return $this->screenshots;
     }
 
-    public function getInner(): PdfBuilderInterface
+    public function getInner(): ScreenshotBuilderInterface
     {
         return $this->inner;
     }
