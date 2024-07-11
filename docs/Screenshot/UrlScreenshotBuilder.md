@@ -4,7 +4,7 @@ UrlScreenshotBuilder
 * `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
 
 * `url(string $url)`:
-URL of the page you want to convert into PDF.
+URL of the page you want to screenshot.
 
 * `route(string $name, array $parameters)`:
 
@@ -39,7 +39,7 @@ Sets the JavaScript expression to wait before converting an HTML
 document to screenshot until it returns true. (default None).
 For instance: "window.status === 'ready'".
 
-* `emulatedMediaType(string $mediaType)`:
+* `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
 * `cookies(array $cookies)`:
@@ -75,3 +75,4 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 Adds a file, like an image, font, stylesheet, and so on.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+

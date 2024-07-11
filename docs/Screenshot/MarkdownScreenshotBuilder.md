@@ -40,7 +40,7 @@ Sets the JavaScript expression to wait before converting an HTML
 document to screenshot until it returns true. (default None).
 For instance: "window.status === 'ready'".
 
-* `emulatedMediaType(string $mediaType)`:
+* `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
 * `cookies(array $cookies)`:
