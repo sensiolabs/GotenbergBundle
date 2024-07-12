@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Symfony\Component\HttpFoundation\RequestStack;

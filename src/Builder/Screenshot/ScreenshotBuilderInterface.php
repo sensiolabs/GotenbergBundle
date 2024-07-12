@@ -7,7 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 interface ScreenshotBuilderInterface
 {
     /**
-     * Generates the Screenshot and returns the query.
+     * Generates the Screenshot and returns the result.
      */
     public function generate(): GotenbergFileResult;
 }

@@ -24,6 +24,7 @@ class YourController
                 'document_2.pdf',
             )
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -54,6 +55,7 @@ class YourController
             )
             ->pdfFormat(PdfFormat::Pdf1b)
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -81,6 +83,7 @@ class YourController
             )
             ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -108,6 +111,7 @@ class YourController
             )
             ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -135,6 +139,7 @@ class YourController
             )
             ->addMetadata('key', 'value')
             ->generate()
+            ->stream()
          ;
     }
 }

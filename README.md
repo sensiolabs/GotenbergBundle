@@ -67,7 +67,7 @@ class YourController
     {
         return $gotenberg->url()
             ->url('https://sensiolabs.com/fr/')
-            ->generate()
+            ->build()
             ->stream() // will return directly a stream response
         ;
     }
@@ -108,7 +108,7 @@ class YourController
             ->content('twig_simple_pdf.html.twig', [
                 'my_var' => 'value'
             ])
-            ->generate()
+            ->build()
             ->stream() // will return directly a stream response
         ;
     }
@@ -167,7 +167,7 @@ class YourController
     {
         return $gotenberg->url()
              ->url('https://sensiolabs.com/fr/')
-             ->generate()
+             ->build()
              ->stream()
         ;
     }
@@ -194,7 +194,7 @@ class YourController
             ->content('twig_simple_pdf.html.twig', [
                  'my_var' => 'value'
             ])
-            ->generate()
+            ->build()
             ->stream()
         ;
     }
