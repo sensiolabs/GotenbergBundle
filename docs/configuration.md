@@ -127,14 +127,31 @@ sensiolabs_gotenberg:
                 pdf_universal_access: null          # false
                 metadata: null                      # None
             office:
-                landscape: null                     # false
-                native_page_ranges: null            # All pages
-                export_form_fields: null            # true
-                single_page_sheets: null            # false
-                merge: null                         # false
-                pdf_format: null                    # None
-                pdf_universal_access: null          # false
-                metadata: null                      # None
+                landscape: null                             # false
+                native_page_ranges: null                    # All pages
+                export_form_fields: null                    # true
+                single_page_sheets: null                    # false
+                merge: null                                 # false
+                pdf_format: null                            # None
+                pdf_universal_access: null                  # false
+                metadata: null                              # None
+                allow_duplicate_field_names: null           # false
+                export_bookmarks: null                      # true
+                export_bookmarks_to_pdf_destination: null   # false
+                export_placeholders: null                   # false
+                export_notes: null                          # false
+                export_notes_pages: null                    # false
+                export_only_notes_pages: null               # false
+                export_notes_in_margin: null                # false
+                convert_ooo_target_to_pdf_target: null      # false
+                export_links_relative_fsys: null            # false
+                export_hidden_slides: null                  # false
+                skip_empty_pages: null                      # false
+                add_original_document_as_stream: null       # false
+                lossless_image_compression: null            # false
+                quality: null                               # 90
+                reduce_image_resolution: null               # false
+                max_image_resolution: null                  # 300
             merge:
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
