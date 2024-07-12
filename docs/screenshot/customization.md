@@ -21,6 +21,7 @@
 [cookies](#cookies)  
 [setCookie](#setCookie)  
 [addCookies](#addCookies)  
+[userAgent](#userAgent)  
 [extraHttpHeaders](#extraHttpHeaders)  
 [addExtraHttpHeaders](#addExtraHttpHeaders)  
 [failOnHttpStatusCodes](#failOnHttpStatusCodes)  
@@ -375,6 +376,30 @@ class YourController
                 'httpOnly' => true,
                 'sameSite' => 'Lax',
             ]])
+            ->generate()
+        ;
+    }
+}
+```
+
+### userAgent()
+
+default: `None`
+
+Override the default User-Agent HTTP header.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->userAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)')
             ->generate()
         ;
     }
