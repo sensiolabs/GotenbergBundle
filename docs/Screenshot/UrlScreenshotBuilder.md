@@ -4,9 +4,15 @@ UrlScreenshotBuilder
 * `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
 
 * `url(string $url)`:
-URL of the page you want to convert into PDF.
+URL of the page you want to screenshot.
 
 * `route(string $name, array $parameters)`:
+
+* `cookies(array $cookies)`:
+
+* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
+
+* `forwardCookie(string $name)`:
 
 * `width(int $width)`:
 The device screen width in pixels. (Default 800).
@@ -39,16 +45,8 @@ Sets the JavaScript expression to wait before converting an HTML
 document to screenshot until it returns true. (default None).
 For instance: "window.status === 'ready'".
 
-* `emulatedMediaType(string $mediaType)`:
+* `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
-
-* `cookies(array $cookies)`:
-Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
-
-* `setCookie(string $key, array $cookie)`:
-
-* `addCookies(array $cookies)`:
-Add cookies to store in the Chromium cookie jar.
 
 * `extraHttpHeaders(array $headers)`:
 Sets extra HTTP headers that Chromium will send when loading the HTML
@@ -75,3 +73,7 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 Adds a file, like an image, font, stylesheet, and so on.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `addCookies(array $cookies)`:
+Add cookies to store in the Chromium cookie jar.
+

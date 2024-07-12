@@ -9,6 +9,12 @@ The HTML file that wraps the markdown content.
 
 * `files(string $paths)`:
 
+* `cookies(array $cookies)`:
+
+* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
+
+* `forwardCookie(string $name)`:
+
 * `singlePage(bool $bool)`:
 Define whether to print the entire content in one single page.
 If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
@@ -92,14 +98,6 @@ For instance: "window.status === 'ready'".
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
-* `cookies(array $cookies)`:
-Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
-
-* `setCookie(string $key, array $cookie)`:
-
-* `addCookies(array $cookies)`:
-Add cookies to store in the Chromium cookie jar.
-
 * `extraHttpHeaders(array $headers)`:
 Sets extra HTTP headers that Chromium will send when loading the HTML
 document. (default None). (overrides any previous headers).
@@ -131,4 +129,7 @@ Resets the metadata.
 The metadata to write.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `addCookies(array $cookies)`:
+Add cookies to store in the Chromium cookie jar.
 
