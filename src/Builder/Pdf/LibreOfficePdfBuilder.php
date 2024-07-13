@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
+use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -64,7 +65,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * Set whether to export the form fields or to use the inputted/selected content of the fields.
      */
-    public function exportFormFields(bool $bool = false): self
+    public function doNotExportFormFields(bool $bool = false): self
     {
         $this->formFields['exportFormFields'] = $bool;
 
@@ -168,7 +169,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * Specify if bookmarks are exported to PDF.
      */
-    public function exportBookmarks(bool $bool = false): self
+    public function doNotExportBookmarks(bool $bool = false): self
     {
         $this->formFields['exportBookmarks'] = $bool;
 
@@ -297,6 +298,8 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
 
     /**
      * Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.
+     *
+     * @param int<0, 100> $quality
      */
     public function quality(int $quality): self
     {
@@ -318,7 +321,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
      */
-    public function maxImageResolution(int $resolution): self
+    public function maxImageResolution(ImageResolutionDPI $resolution): self
     {
         $this->formFields['maxImageResolution'] = $resolution;
 
@@ -346,12 +349,12 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'landscape' => $this->landscape($value),
             'native_page_ranges' => $this->nativePageRanges($value),
-            'export_form_fields' => $this->exportFormFields($value),
+            'do_not_export_form_fields' => $this->doNotExportFormFields($value),
             'single_page_sheets' => $this->singlePageSheets($value),
             'merge' => $this->merge($value),
             'metadata' => $this->metadata($value),
             'allow_duplicate_field_names' => $this->allowDuplicateFieldNames($value),
-            'export_bookmarks' => $this->exportBookmarks($value),
+            'do_not_export_bookmarks' => $this->doNotExportBookmarks($value),
             'export_bookmarks_to_pdf_destination' => $this->exportBookmarksToPdfDestination($value),
             'export_placeholders' => $this->exportPlaceholders($value),
             'export_notes' => $this->exportNotes($value),
@@ -366,7 +369,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'lossless_image_compression' => $this->losslessImageCompression($value),
             'quality' => $this->quality($value),
             'reduce_image_resolution' => $this->reduceImageResolution($value),
-            'max_image_resolution' => $this->maxImageResolution($value),
+            'max_image_resolution' => $this->maxImageResolution(ImageResolutionDPI::from($value)),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

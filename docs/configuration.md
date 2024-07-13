@@ -129,14 +129,14 @@ sensiolabs_gotenberg:
             office:
                 landscape: null                             # false
                 native_page_ranges: null                    # All pages
-                export_form_fields: null                    # true
+                do_not_export_form_fields: null             # true
                 single_page_sheets: null                    # false
                 merge: null                                 # false
                 pdf_format: null                            # None
                 pdf_universal_access: null                  # false
                 metadata: null                              # None
                 allow_duplicate_field_names: null           # false
-                export_bookmarks: null                      # true
+                do_not_export_bookmarks: null               # true
                 export_bookmarks_to_pdf_destination: null   # false
                 export_placeholders: null                   # false
                 export_notes: null                          # false

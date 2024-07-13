@@ -50,7 +50,7 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         yield 'native_page_ranges' => ['native_page_ranges', '1-10', [
             'nativePageRanges' => '1-10',
         ]];
-        yield 'export_form_fields' => ['export_form_fields', true, [
+        yield 'do_not_export_form_fields' => ['do_not_export_form_fields', true, [
             'exportFormFields' => 'true',
         ]];
         yield 'single_page_sheets' => ['single_page_sheets', false, [
@@ -65,7 +65,7 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         yield 'allow_duplicate_field_names' => ['allow_duplicate_field_names', false, [
             'allowDuplicateFieldNames' => 'false',
         ]];
-        yield 'export_bookmarks' => ['export_bookmarks', true, [
+        yield 'do_not_export_bookmarks' => ['do_not_export_bookmarks', true, [
             'exportBookmarks' => 'true',
         ]];
         yield 'export_bookmarks_to_pdf_destination' => ['export_bookmarks_to_pdf_destination', false, [

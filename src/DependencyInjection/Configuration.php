@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -479,7 +480,7 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('Invalid range values, the range value format need to look like e.g 1-20.')
                     ->end()
                 ->end()
-                ->booleanNode('export_form_fields')
+                ->booleanNode('do_not_export_form_fields')
                     ->info('Set whether to export the form fields or to use the inputted/selected content of the fields. - default true. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
                     ->defaultNull()
                 ->end()
@@ -496,7 +497,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Specify whether multiple form fields exported are allowed to have the same field name. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
                     ->defaultNull()
                 ->end()
-                ->booleanNode('export_bookmarks')
+                ->booleanNode('do_not_export_bookmarks')
                     ->info('Specify if bookmarks are exported to PDF. - default true. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
                     ->defaultNull()
                 ->end()
@@ -550,14 +551,17 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->integerNode('quality')
                     ->info('Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100. - default 90. https://gotenberg.dev/docs/routes#images-libreoffice')
+                    ->min(0)
+                    ->max(100)
                     ->defaultNull()
                 ->end()
                 ->booleanNode('reduce_image_resolution')
                     ->info('Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution. - default false. https://gotenberg.dev/docs/routes#images-libreoffice')
                     ->defaultNull()
                 ->end()
-                ->integerNode('max_image_resolution')
+                ->enumNode('max_image_resolution')
                     ->info('If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200. - default 300. https://gotenberg.dev/docs/routes#images-libreoffice')
+                    ->values(array_map(static fn (ImageResolutionDPI $case): int => $case->value, ImageResolutionDPI::cases()))
                     ->defaultNull()
                 ->end()
             ->end()

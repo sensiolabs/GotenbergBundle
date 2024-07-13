@@ -140,7 +140,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## exportFormFields
+## doNotExportFormFields
 
 Default: `true`
 
@@ -158,7 +158,7 @@ class YourController
     {
         return $gotenberg->office()
             ->files('document.txt')
-            ->exportFormFields() // is same as `->exportFormFields(false)`
+            ->doNotExportFormFields() // is same as `->doNotExportFormFields(false)`
             ->generate()
          ;
     }
@@ -327,7 +327,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## exportBookmarks
+## doNotExportBookmarks
 
 Default: `true`
 
@@ -344,7 +344,7 @@ class YourController
     {
         return $gotenberg->office()
             ->files('document.txt')
-            ->exportBookmarks()  // is same as `->exportBookmarks(false)`
+            ->doNotExportBookmarks()  // is same as `->doNotExportBookmarks(false)`
             ->generate()
          ;
     }
@@ -741,6 +741,7 @@ If the form field reduceImageResolution is set to true, tell if all images will 
 ```php
 namespace App\Controller;
 
+use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
 class YourController
@@ -749,7 +750,7 @@ class YourController
     {
         return $gotenberg->office()
             ->files('document.txt')
-            ->maxImageResolution(150)
+            ->maxImageResolution(ImageResolutionDPI::DPI300)
             ->generate()
          ;
     }
