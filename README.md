@@ -31,8 +31,12 @@ composer require sensiolabs/gotenberg-bundle
 
 If you accept the Symfony Flex recipe during installation, the bundle is registered, the configuration
 skeleton file is created, the .env file is updated with `GOTENBERG_DSN` and dockerfile is also created
-to get a gotenberg image, you need to configure the ports related to `GOTENBERG_DSN` in your .env file. 
-You can now adapt the configuration to your needs.
+to get the [gotenberg image](https://hub.docker.com/r/gotenberg/gotenberg), you need to configure the ports 
+related to `GOTENBERG_DSN` in your .env file.  
+The host could be updated too since it's localhost by default.
+If your script is run in a container, the host will be `gotenberg`.
+
+You can now adapt the configuration file to your needs.
 
 ### Without Symfony Flex
 
