@@ -21,17 +21,25 @@ a screenshot.
 
 ## How to install
 
-> [!CAUTION]
-> To use this bundle, you first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation).
-
 Install the bundle using composer :
 
 ```bash
 composer require sensiolabs/gotenberg-bundle
 ```
 
-If not using Symfony Flex, enable the bundle by adding it to the list of
-registered bundles in the ``config/bundles.php`` file of your project:
+### With Symfony Flex
+
+If you accept the Symfony Flex recipe during installation, the bundle is registered, the configuration
+skeleton file is created, the .env file is updated with `GOTENBERG_DSN` and dockerfile is also created
+to get a gotenberg image, you need to configure the ports related to `GOTENBERG_DSN` in your .env file. 
+You can now adapt the configuration to your needs.
+
+### Without Symfony Flex
+
+> [!CAUTION]
+> To use this bundle, you first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation).
+
+Enable the bundle by adding it to the list of registered bundles in the ``config/bundles.php`` file of your project:
 
 ```php
 // config/bundles.php
