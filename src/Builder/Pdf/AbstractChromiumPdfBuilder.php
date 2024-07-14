@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -380,9 +381,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      */
-    public function userAgent(string $userAgent): static
+    public function userAgent(string|UserAgent $userAgent): static
     {
-        $this->formFields['userAgent'] = $userAgent;
+        $this->formFields['userAgent'] = \is_string($userAgent) ? $userAgent : $userAgent->value;
 
         return $this;
     }

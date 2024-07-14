@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -216,9 +217,9 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      */
-    public function userAgent(string $userAgent): static
+    public function userAgent(string|UserAgent $userAgent): static
     {
-        $this->formFields['userAgent'] = $userAgent;
+        $this->formFields['userAgent'] = \is_string($userAgent) ? $userAgent : $userAgent->value;
 
         return $this;
     }

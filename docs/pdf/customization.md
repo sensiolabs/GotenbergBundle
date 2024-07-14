@@ -717,6 +717,7 @@ Override the default User-Agent HTTP header.
 ```php
 namespace App\Controller;
 
+use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
 class YourController
@@ -725,7 +726,7 @@ class YourController
     {
         return $gotenberg
             ->html()
-            ->userAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)')
+            ->userAgent(UserAgent::AndroidChrome) // You can also pass a string if the enum doesn't fit your need
             ->generate()
         ;
     }
