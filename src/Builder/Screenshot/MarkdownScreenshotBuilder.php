@@ -38,7 +38,6 @@ final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
         $this->formFields['files'] = [];
 
         foreach ($paths as $path) {
-            $path = (string) $path;
             $this->assertFileExtension($path, ['md']);
 
             $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
