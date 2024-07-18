@@ -5,6 +5,8 @@ parameters:
 		- 'config'
 		- 'src'
 		- 'tests'
+	excludePaths:
+		- tests/Builder/DefaultBuilderTraitTest.php
 	ignoreErrors:
 		-
 			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
