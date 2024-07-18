@@ -1,13 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
@@ -23,6 +22,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[CoversClass(AbstractPdfBuilder::class)]
 #[UsesClass(GotenbergClient::class)]
 #[UsesClass(GotenbergResponse::class)]
+#[UsesClass(GotenbergFileResult::class)]
 final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
 {
     public function testFilenameIsCorrectlySetOnResponse(): void

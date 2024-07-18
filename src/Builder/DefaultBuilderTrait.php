@@ -96,7 +96,7 @@ trait DefaultBuilderTrait
     abstract public function setConfigurations(array $configurations): static;
 
     /**
-     * @param non-empty-list<string> $validExtensions
+     * @param non-empty-list<string> $validExtensions eg: ['png', 'jpeg']
      */
     protected function assertFileExtension(string $path, array $validExtensions): void
     {

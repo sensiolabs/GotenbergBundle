@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -15,6 +16,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 #[CoversClass(MergePdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
+#[UsesClass(GotenbergFileResult::class)]
 final class MergePdfBuilderTest extends AbstractBuilderTestCase
 {
     private const PDF_DOCUMENTS_DIR = 'pdf';

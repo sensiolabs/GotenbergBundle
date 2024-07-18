@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 #[UsesClass(AbstractChromiumScreenshotBuilder::class)]
 #[UsesClass(AbstractScreenshotBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
+#[UsesClass(GotenbergFileResult::class)]
 final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
 {
     public function testEndpointIsCorrect(): void

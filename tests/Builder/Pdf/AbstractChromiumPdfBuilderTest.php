@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,10 +11,12 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 #[CoversClass(AbstractChromiumPdfBuilder::class)]
@@ -118,6 +118,17 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         ]);
 
         self::assertEquals($expected, $builder->getMultipartFormData()[0]);
+    }
+
+    public function testConfigurationNotFoundThrowError(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+
+        $this->expectException(InvalidBuilderConfiguration::class);
+
+        $builder->setConfigurations([
+            'fake' => 'value',
+        ]);
     }
 
     public function testPaperSizeAppliesWidthAndHeight(): void
@@ -338,6 +349,25 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         ], $data[0]);
     }
 
+    public function testCanForwardCookies(): void
+    {
+        $request = new Request();
+        $request->headers->set('Host', 'sensiolabs.com');
+        $request->cookies->set('MyCookie', 'Chocolate');
+
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $builder = $this->getChromiumPdfBuilder(requestStack: $requestStack);
+        $builder->forwardCookie('MyCookie');
+
+        $data = $builder->getMultipartFormData();
+
+        self::assertEquals([
+            'cookies' => '[{"name":"MyCookie","value":"Chocolate","domain":"sensiolabs.com"}]',
+        ], $data[0]);
+    }
+
     public function testCanAddExtraHttpHeaders(): void
     {
         $builder = $this->getChromiumPdfBuilder();
@@ -353,6 +383,34 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         self::assertEquals([
             'extraHttpHeaders' => '{"MyHeader":"SomeOtherValue"}',
         ], $data[0]);
+    }
+
+    public function testAddExtraHttpHeadersDoesNothingIfEmpty(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+
+        $data = $builder->getMultipartFormData();
+        $dataCount = \count($data);
+
+        $builder->addExtraHttpHeaders([]);
+        self::assertCount(max($dataCount - 1, 0), $builder->getMultipartFormData());
+    }
+
+    public function testCanResetExtraHttpHeaders(): void
+    {
+        $builder = $this->getChromiumPdfBuilder();
+        $builder->addExtraHttpHeaders([
+            'MyHeader' => 'SomeValue',
+        ]);
+
+        $data = $builder->getMultipartFormData();
+
+        $dataCount = \count($data);
+
+        $builder->extraHttpHeaders([]);
+
+        $data = $builder->getMultipartFormData();
+        self::assertCount($dataCount - 1, $data);
     }
 
     public function testCanAddMetadata(): void
@@ -386,9 +444,9 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         $builder->header('templates/invalid.html.twig');
     }
 
-    private function getChromiumPdfBuilder(bool $twig = true): AbstractChromiumPdfBuilder
+    private function getChromiumPdfBuilder(bool $twig = true, RequestStack $requestStack = new RequestStack()): AbstractChromiumPdfBuilder
     {
-        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
+        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, $requestStack, true === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
             protected function getEndpoint(): string
             {
                 return '/fake/endpoint';
