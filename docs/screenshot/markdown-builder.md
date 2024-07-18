@@ -60,6 +60,7 @@ class YourController
             ->wrapperFile('../templates/wrapper.html')
             ->files('content.md')
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -105,6 +106,7 @@ class YourController
             ])
             ->files('content.md')
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -133,6 +135,7 @@ class YourController
                 'footer.md',
             )
             ->generate()
+            ->stream()
          ;
     }
 }

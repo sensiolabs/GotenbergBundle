@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 
 #[CoversClass(LibreOfficePdfBuilder::class)]
@@ -111,6 +112,8 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
 
     private function getLibreOfficePdfBuilder(): LibreOfficePdfBuilder
     {
-        return new LibreOfficePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter);
+        return (new LibreOfficePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter))
+            ->processor(new NullProcessor())
+        ;
     }
 }

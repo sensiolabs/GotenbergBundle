@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuil
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
@@ -71,12 +72,14 @@ final class UrlScreenshotBuilderTest extends AbstractBuilderTestCase
 
     private function getUrlScreenshotBuilder(bool $twig = true): UrlScreenshotBuilder
     {
-        return new UrlScreenshotBuilder(
+        return (new UrlScreenshotBuilder(
             $this->gotenbergClient,
             self::$assetBaseDirFormatter,
             new RequestStack(),
             true === $twig ? self::$twig : null,
             $this->router,
-        );
+        ))
+            ->processor(new NullProcessor())
+        ;
     }
 }

@@ -48,6 +48,7 @@ class YourController
                 'my_var' => 'value'
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -75,6 +76,7 @@ class YourController
             ->contentFile('content.html')
             ->footerFile('footer.html')
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -97,6 +99,7 @@ class YourController
             ->contentFile('../templates/html/content.html')
             ->footerFile('../templates/html/footer.html')
             ->generate()
+            ->stream()
         ;
     }
 }

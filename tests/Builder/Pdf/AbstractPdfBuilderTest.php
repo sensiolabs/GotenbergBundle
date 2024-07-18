@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -34,6 +35,7 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
         $response = $this->getPdfBuilder()
             ->fileName('some_file.png', HeaderUtils::DISPOSITION_ATTACHMENT)
             ->generate()
+            ->stream()
         ;
 
         self::assertSame('attachment; filename=some_file.png', $response->headers->get('Content-Disposition'));
@@ -74,7 +76,7 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
      */
     private function getPdfBuilder(array $formFields = []): AbstractPdfBuilder
     {
-        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, $formFields) extends AbstractPdfBuilder {
+        return (new class($this->gotenbergClient, self::$assetBaseDirFormatter, $formFields) extends AbstractPdfBuilder {
             /**
              * @param array<mixed> $formFields
              */
@@ -93,6 +95,8 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
             {
                 return '/fake/endpoint';
             }
-        };
+        })
+            ->processor(new NullProcessor())
+        ;
     }
 }

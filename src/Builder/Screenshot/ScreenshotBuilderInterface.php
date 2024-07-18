@@ -2,12 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 
 interface ScreenshotBuilderInterface
 {
     /**
-     * Generates the Screenshot and returns the response.
+     * Generates the Screenshot and returns the result.
      */
-    public function generate(): GotenbergResponse;
+    public function generate(): GotenbergFileResult;
 }
