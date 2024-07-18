@@ -96,6 +96,9 @@ For instance: "window.status === 'ready'".
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
+* `userAgent(string $userAgent)`:
+Override the default User-Agent HTTP header. (default None).
+
 * `extraHttpHeaders(array $headers)`:
 Sets extra HTTP headers that Chromium will send when loading the HTML
 document. (default None). (overrides any previous headers).
