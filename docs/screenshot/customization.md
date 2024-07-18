@@ -399,7 +399,7 @@ class YourController
     {
         return $gotenberg
             ->html()
-            ->userAgent(UserAgent::AndroidChrome) // You can also pass a string if the enum doesn't fit your need
+            ->userAgent(UserAgent::AndroidChrome) // You can pass any string. This class is just a helper.
             ->generate()
         ;
     }
