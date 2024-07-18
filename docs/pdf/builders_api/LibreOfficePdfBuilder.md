@@ -1,5 +1,4 @@
-LibreOfficePdfBuilder
-=====================
+# LibreOfficePdfBuilder
 
 * `landscape(bool $bool)`:
 Sets the paper orientation to landscape.
@@ -33,4 +32,6 @@ Resets the metadata.
 The metadata to write.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
