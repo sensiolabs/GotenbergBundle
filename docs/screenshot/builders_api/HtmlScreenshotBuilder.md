@@ -1,5 +1,5 @@
 # HtmlScreenshotBuilder
-cs
+
 * `content(string $template, array $context)`:
 
 * `contentFile(string $path)`:

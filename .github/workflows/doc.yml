@@ -33,9 +33,7 @@ jobs:
         run: |
           DIFF=$(git diff --name-only)
           if [[ $DIFF != '' ]]; then
-            echo "::warning::Builders API documentation is not up to date:"
+            echo "::warning::Builders API documentation is not up to date. Please run \"php ./docs/generate.php\""
             echo "::warning::$DIFF"
-            echo "::warning::Please run \"php ./docs/generate.php\""
             exit 1
           fi
-
