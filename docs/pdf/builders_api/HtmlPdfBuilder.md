@@ -1,13 +1,15 @@
-MarkdownPdfBuilder
-==================
+# HtmlPdfBuilder
 
-* `wrapper(string $template, array $context)`:
-The HTML file that wraps the markdown content, rendered from a Twig template.
+* `content(string $template, array $context)`:
 
-* `wrapperFile(string $path)`:
-The HTML file that wraps the markdown content.
+* `contentFile(string $path)`:
+The HTML file to convert into PDF.
 
-* `files(string $paths)`:
+* `cookies(array $cookies)`:
+
+* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
+
+* `forwardCookie(string $name)`:
 
 * `singlePage(bool $bool)`:
 Define whether to print the entire content in one single page.
@@ -92,14 +94,6 @@ For instance: "window.status === 'ready'".
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
-* `cookies(array $cookies)`:
-Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
-
-* `setCookie(string $key, array $cookie)`:
-
-* `addCookies(array $cookies)`:
-Add cookies to store in the Chromium cookie jar.
-
 * `extraHttpHeaders(array $headers)`:
 Sets extra HTTP headers that Chromium will send when loading the HTML
 document. (default None). (overrides any previous headers).
@@ -131,4 +125,9 @@ Resets the metadata.
 The metadata to write.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
+
+* `addCookies(array $cookies)`:
+Add cookies to store in the Chromium cookie jar.
 
