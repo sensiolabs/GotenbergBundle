@@ -21,6 +21,7 @@
 [cookies](#cookies)  
 [setCookie](#setCookie)  
 [addCookies](#addCookies)  
+[userAgent](#userAgent)  
 [extraHttpHeaders](#extraHttpHeaders)  
 [addExtraHttpHeaders](#addExtraHttpHeaders)  
 [failOnHttpStatusCodes](#failOnHttpStatusCodes)  
@@ -388,6 +389,30 @@ class YourController
             ]])
             ->generate()
             ->stream()
+        ;
+    }
+}
+```
+
+### userAgent()
+
+default: `None`
+
+Override the default User-Agent HTTP header.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->userAgent(UserAgent::AndroidChrome) // You can pass any string. This class is just a helper.
+            ->generate()
         ;
     }
 }

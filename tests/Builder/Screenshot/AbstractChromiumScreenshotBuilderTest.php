@@ -53,6 +53,9 @@ class AbstractChromiumScreenshotBuilderTest extends AbstractBuilderTestCase
         yield 'cookies' => ['cookies', [['name' => 'MyCookie', 'value' => 'raspberry']], [
             'cookies' => '[{"name":"MyCookie","value":"raspberry"}]',
         ]];
+        yield 'user_agent' => ['user_agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)', [
+            'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)',
+        ]];
         yield 'extra_http_headers' => ['extra_http_headers', ['MyHeader' => 'SomeValue'], [
             'extraHttpHeaders' => '{"MyHeader":"SomeValue"}',
         ]];

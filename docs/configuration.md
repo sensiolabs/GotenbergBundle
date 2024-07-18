@@ -57,6 +57,7 @@ sensiolabs_gotenberg:
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 cookies: null                       # None
+                user_agent: null                    # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
@@ -88,6 +89,7 @@ sensiolabs_gotenberg:
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 cookies: null                       # None
+                user_agent: null                    # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
@@ -119,6 +121,7 @@ sensiolabs_gotenberg:
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 cookies: null                       # None
+                user_agent: null                    # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
@@ -155,6 +158,7 @@ sensiolabs_gotenberg:
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 cookies: null                       # None
+                user_agent: null                    # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
@@ -171,6 +175,7 @@ sensiolabs_gotenberg:
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 cookies: null                       # None
+                user_agent: null                    # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
@@ -187,6 +192,7 @@ sensiolabs_gotenberg:
                 wait_for_expression: null           # None
                 emulated_media_type: null           # 'print'
                 cookies: null                       # None
+                user_agent: null                    # None
                 extra_http_headers: null            # None
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false

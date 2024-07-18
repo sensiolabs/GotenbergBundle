@@ -39,6 +39,7 @@
 [cookies](#cookies)  
 [setCookie](#setCookie)  
 [addCookies](#addCookies)  
+[userAgent](#userAgent)  
 [extraHttpHeaders](#extraHttpHeaders)  
 [addExtraHttpHeaders](#addExtraHttpHeaders)  
 [failOnHttpStatusCodes](#failOnHttpStatusCodes)  
@@ -728,6 +729,31 @@ class YourController
 }
 ```
 
+### userAgent()
+
+default: `None`
+
+Override the default User-Agent HTTP header.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->userAgent(UserAgent::AndroidChrome) // You can pass any string. This class is just a helper.
+            ->generate()
+        ;
+    }
+}
+```
+
 ### extraHttpHeaders
 
 default: `None`
@@ -1015,4 +1041,3 @@ class YourController
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-chromium).
-
