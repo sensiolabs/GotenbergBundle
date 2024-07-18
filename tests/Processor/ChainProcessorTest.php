@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sensiolabs\GotenbergBundle\Tests\Processor;
 
 use PHPUnit\Framework\Attributes\CoversClass;
