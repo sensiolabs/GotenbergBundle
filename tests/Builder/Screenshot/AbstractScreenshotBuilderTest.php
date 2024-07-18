@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
@@ -23,6 +24,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[CoversClass(AbstractScreenshotBuilder::class)]
 #[UsesClass(GotenbergClient::class)]
 #[UsesClass(GotenbergResponse::class)]
+#[UsesClass(GotenbergFileResult::class)]
 final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
 {
     public function testFilenameIsCorrectlySetOnResponse(): void

@@ -12,7 +12,7 @@ use Symfony\Component\HttpClient\Chunk\DataChunk;
 use Symfony\Component\HttpClient\Chunk\FirstChunk;
 use Symfony\Component\HttpClient\Chunk\LastChunk;
 
-#[CoversClass(ChainProcessorTest::class)]
+#[CoversClass(ChainProcessor::class)]
 class ChainProcessorTest extends TestCase
 {
     public function testProcess(): void
