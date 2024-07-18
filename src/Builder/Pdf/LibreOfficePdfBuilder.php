@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
+use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -64,7 +65,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * Set whether to export the form fields or to use the inputted/selected content of the fields.
      */
-    public function exportFormFields(bool $bool = false): self
+    public function doNotExportFormFields(bool $bool = false): self
     {
         $this->formFields['exportFormFields'] = $bool;
 
@@ -137,7 +138,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
      *
      * @param array<string, mixed> $metadata
      */
-    public function metadata(array $metadata): static
+    public function metadata(array $metadata): self
     {
         $this->formFields['metadata'] = $metadata;
 
@@ -147,10 +148,182 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * The metadata to write.
      */
-    public function addMetadata(string $key, string $value): static
+    public function addMetadata(string $key, string $value): self
     {
         $this->formFields['metadata'] ??= [];
         $this->formFields['metadata'][$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Specify whether multiple form fields exported are allowed to have the same field name.
+     */
+    public function allowDuplicateFieldNames(bool $bool = true): self
+    {
+        $this->formFields['allowDuplicateFieldNames'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify if bookmarks are exported to PDF.
+     */
+    public function doNotExportBookmarks(bool $bool = false): self
+    {
+        $this->formFields['exportBookmarks'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
+     */
+    public function exportBookmarksToPdfDestination(bool $bool = true): self
+    {
+        $this->formFields['exportBookmarksToPdfDestination'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Export the placeholders fields visual markings only. The exported placeholder is ineffective.
+     */
+    public function exportPlaceholders(bool $bool = true): self
+    {
+        $this->formFields['exportPlaceholders'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify if notes are exported to PDF.
+     */
+    public function exportNotes(bool $bool = true): self
+    {
+        $this->formFields['exportNotes'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.
+     */
+    public function exportNotesPages(bool $bool = true): self
+    {
+        $this->formFields['exportNotesPages'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify, if the form field exportNotesPages is set to true, if only notes pages are exported to PDF.
+     */
+    public function exportOnlyNotesPages(bool $bool = true): self
+    {
+        $this->formFields['exportOnlyNotesPages'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify if notes in margin are exported to PDF.
+     */
+    public function exportNotesInMargin(bool $bool = true): self
+    {
+        $this->formFields['exportNotesInMargin'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.
+     */
+    public function convertOooTargetToPdfTarget(bool $bool = true): self
+    {
+        $this->formFields['convertOooTargetToPdfTarget'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.
+     */
+    public function exportLinksRelativeFsys(bool $bool = true): self
+    {
+        $this->formFields['exportLinksRelativeFsys'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Export, for LibreOffice Impress, slides that are not included in slide shows.
+     */
+    public function exportHiddenSlides(bool $bool = true): self
+    {
+        $this->formFields['exportHiddenSlides'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.
+     */
+    public function skipEmptyPages(bool $bool = true): self
+    {
+        $this->formFields['skipEmptyPages'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.
+     */
+    public function addOriginalDocumentAsStream(bool $bool = true): self
+    {
+        $this->formFields['addOriginalDocumentAsStream'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.
+     */
+    public function losslessImageCompression(bool $bool = true): self
+    {
+        $this->formFields['losslessImageCompression'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.
+     *
+     * @param int<0, 100> $quality
+     */
+    public function quality(int $quality): self
+    {
+        $this->formFields['quality'] = $quality;
+
+        return $this;
+    }
+
+    /**
+     * Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution.
+     */
+    public function reduceImageResolution(bool $bool = true): self
+    {
+        $this->formFields['reduceImageResolution'] = $bool;
+
+        return $this;
+    }
+
+    /**
+     * If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
+     */
+    public function maxImageResolution(ImageResolutionDPI $resolution): self
+    {
+        $this->formFields['maxImageResolution'] = $resolution;
 
         return $this;
     }
@@ -176,10 +349,27 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'landscape' => $this->landscape($value),
             'native_page_ranges' => $this->nativePageRanges($value),
-            'export_form_fields' => $this->exportFormFields($value),
+            'do_not_export_form_fields' => $this->doNotExportFormFields($value),
             'single_page_sheets' => $this->singlePageSheets($value),
             'merge' => $this->merge($value),
             'metadata' => $this->metadata($value),
+            'allow_duplicate_field_names' => $this->allowDuplicateFieldNames($value),
+            'do_not_export_bookmarks' => $this->doNotExportBookmarks($value),
+            'export_bookmarks_to_pdf_destination' => $this->exportBookmarksToPdfDestination($value),
+            'export_placeholders' => $this->exportPlaceholders($value),
+            'export_notes' => $this->exportNotes($value),
+            'export_notes_pages' => $this->exportNotesPages($value),
+            'export_only_notes_pages' => $this->exportOnlyNotesPages($value),
+            'export_notes_in_margin' => $this->exportNotesInMargin($value),
+            'convert_ooo_target_to_pdf_target' => $this->convertOooTargetToPdfTarget($value),
+            'export_links_relative_fsys' => $this->exportLinksRelativeFsys($value),
+            'export_hidden_slides' => $this->exportHiddenSlides($value),
+            'skip_empty_pages' => $this->skipEmptyPages($value),
+            'add_original_document_as_stream' => $this->addOriginalDocumentAsStream($value),
+            'lossless_image_compression' => $this->losslessImageCompression($value),
+            'quality' => $this->quality($value),
+            'reduce_image_resolution' => $this->reduceImageResolution($value),
+            'max_image_resolution' => $this->maxImageResolution(ImageResolutionDPI::from($value)),
             default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

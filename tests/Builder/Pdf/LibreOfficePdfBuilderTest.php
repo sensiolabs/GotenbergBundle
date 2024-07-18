@@ -51,7 +51,7 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         yield 'native_page_ranges' => ['native_page_ranges', '1-10', [
             'nativePageRanges' => '1-10',
         ]];
-        yield 'export_form_fields' => ['export_form_fields', true, [
+        yield 'do_not_export_form_fields' => ['do_not_export_form_fields', true, [
             'exportFormFields' => 'true',
         ]];
         yield 'single_page_sheets' => ['single_page_sheets', false, [
@@ -62,6 +62,57 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         ]];
         yield 'metadata' => ['metadata', ['Author' => 'SensioLabs'], [
             'metadata' => '{"Author":"SensioLabs"}',
+        ]];
+        yield 'allow_duplicate_field_names' => ['allow_duplicate_field_names', false, [
+            'allowDuplicateFieldNames' => 'false',
+        ]];
+        yield 'do_not_export_bookmarks' => ['do_not_export_bookmarks', true, [
+            'exportBookmarks' => 'true',
+        ]];
+        yield 'export_bookmarks_to_pdf_destination' => ['export_bookmarks_to_pdf_destination', false, [
+            'exportBookmarksToPdfDestination' => 'false',
+        ]];
+        yield 'export_placeholders' => ['export_placeholders', false, [
+            'exportPlaceholders' => 'false',
+        ]];
+        yield 'export_notes' => ['export_notes', false, [
+            'exportNotes' => 'false',
+        ]];
+        yield 'export_notes_pages' => ['export_notes_pages', false, [
+            'exportNotesPages' => 'false',
+        ]];
+        yield 'export_only_notes_pages' => ['export_only_notes_pages', false, [
+            'exportOnlyNotesPages' => 'false',
+        ]];
+        yield 'export_notes_in_margin' => ['export_notes_in_margin', false, [
+            'exportNotesInMargin' => 'false',
+        ]];
+        yield 'convert_ooo_target_to_pdf_target' => ['convert_ooo_target_to_pdf_target', false, [
+            'convertOooTargetToPdfTarget' => 'false',
+        ]];
+        yield 'export_links_relative_fsys' => ['export_links_relative_fsys', false, [
+            'exportLinksRelativeFsys' => 'false',
+        ]];
+        yield 'export_hidden_slides' => ['export_hidden_slides', false, [
+            'exportHiddenSlides' => 'false',
+        ]];
+        yield 'skip_empty_pages' => ['skip_empty_pages', false, [
+            'skipEmptyPages' => 'false',
+        ]];
+        yield 'add_original_document_as_stream' => ['add_original_document_as_stream', false, [
+            'addOriginalDocumentAsStream' => 'false',
+        ]];
+        yield 'lossless_image_compression' => ['lossless_image_compression', false, [
+            'losslessImageCompression' => 'false',
+        ]];
+        yield 'quality' => ['quality', 90, [
+            'quality' => 90,
+        ]];
+        yield 'reduce_image_resolution' => ['reduce_image_resolution', false, [
+            'reduceImageResolution' => 'false',
+        ]];
+        yield 'max_image_resolution' => ['max_image_resolution', 300, [
+            'maxImageResolution' => 300,
         ]];
     }
 
