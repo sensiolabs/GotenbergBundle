@@ -1,5 +1,4 @@
-UrlPdfBuilder
-=============
+# UrlPdfBuilder
 
 * `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
 
@@ -128,6 +127,8 @@ Resets the metadata.
 The metadata to write.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

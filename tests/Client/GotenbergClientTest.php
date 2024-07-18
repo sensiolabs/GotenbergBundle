@@ -24,6 +24,7 @@ final class GotenbergClientTest extends TestCase
             'response_headers' => [
                 'accept-ranges' => 'bytes',
                 'content-disposition' => 'attachment; filename="simple_pdf.pdf"',
+                'content-length' => \strlen($stream),
                 'content-type' => 'application/pdf',
             ],
         ]);
@@ -71,6 +72,8 @@ final class GotenbergClientTest extends TestCase
         );
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        self::assertSame('application/pdf', $response->headers->get('content-type'));
+        self::assertSame('application/pdf', $response->getHeaders()->get('content-type'));
+        self::assertSame('simple_pdf.pdf', $response->getFileName());
+        self::assertSame(13624, $response->getContentLength());
     }
 }

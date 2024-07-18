@@ -2,12 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 
 interface PdfBuilderInterface
 {
     /**
-     * Generates the PDF and returns the response.
+     * Generates the PDF and returns the result.
      */
-    public function generate(): GotenbergResponse;
+    public function generate(): GotenbergFileResult;
 }

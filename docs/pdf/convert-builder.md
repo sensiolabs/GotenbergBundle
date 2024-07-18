@@ -29,6 +29,7 @@ class YourController
                 'document_2.pdf',
             )
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -59,6 +60,7 @@ class YourController
             )
             ->pdfFormat(PdfFormat::Pdf1b)
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -86,6 +88,7 @@ class YourController
             )
             ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
             ->generate()
+            ->stream()
          ;
     }
 }

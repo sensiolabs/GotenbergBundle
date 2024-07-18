@@ -1,5 +1,4 @@
-LibreOfficePdfBuilder
-=====================
+# LibreOfficePdfBuilder
 
 * `landscape(bool $bool)`:
 Sets the paper orientation to landscape.
@@ -84,4 +83,6 @@ Specify if the resolution of each image is reduced to the resolution specified b
 If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 

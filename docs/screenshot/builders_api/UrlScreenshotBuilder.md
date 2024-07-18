@@ -1,5 +1,4 @@
-UrlScreenshotBuilder
-====================
+# UrlScreenshotBuilder
 
 * `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
 
@@ -73,6 +72,8 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 Adds a file, like an image, font, stylesheet, and so on.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

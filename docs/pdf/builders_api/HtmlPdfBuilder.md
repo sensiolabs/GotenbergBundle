@@ -1,13 +1,9 @@
-MarkdownPdfBuilder
-==================
+# HtmlPdfBuilder
 
-* `wrapper(string $template, array $context)`:
-The HTML file that wraps the markdown content, rendered from a Twig template.
+* `content(string $template, array $context)`:
 
-* `wrapperFile(string $path)`:
-The HTML file that wraps the markdown content.
-
-* `files(string $paths)`:
+* `contentFile(string $path)`:
+The HTML file to convert into PDF.
 
 * `cookies(array $cookies)`:
 
@@ -129,6 +125,8 @@ Resets the metadata.
 The metadata to write.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

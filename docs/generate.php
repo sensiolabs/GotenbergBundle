@@ -87,8 +87,7 @@ function parseBuilder(ReflectionClass $builder): string
     $markdown = '';
 
     $builderName = $builder->getShortName();
-    $markdown .= "{$builderName}\n";
-    $markdown .= str_repeat('=', \strlen($builderName))."\n\n";
+    $markdown .= "# {$builderName}\n\n";
 
     foreach ($builder->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
         if (\in_array($method->getName(), EXCLUDED_METHODS, true) === true) {
@@ -116,20 +115,17 @@ function saveFile(InputInterface $input, string $filename, string $contents): vo
 $application = new Application();
 $application->register('generate')
     ->setCode(function (InputInterface $input) {
-        $summary = <<<MARKDOWN
-        Builders
-        ========
-
-        MARKDOWN;
+        $summary = "# Builders API\n\n";
 
         foreach (BUILDERS as $type => $builderClasses) {
-            $directory = __DIR__."/{$type}";
+            $subDirectory = strtolower($type).'/builders_api';
+            $directory = __DIR__.'/'.$subDirectory;
 
             if (!@mkdir($directory, recursive: true) && !is_dir($directory)) {
                 throw new RuntimeException(sprintf('Directory "%s" was not created', $directory));
             }
 
-            $summary .= "# {$type}\n\n";
+            $summary .= "## {$type}\n\n";
 
             foreach ($builderClasses as $pdfBuilder) {
                 $reflectionClass = new ReflectionClass($pdfBuilder);
@@ -137,11 +133,11 @@ $application->register('generate')
                 $markdown = parseBuilder($reflectionClass);
                 saveFile($input, "{$directory}/{$reflectionClass->getShortName()}.md", $markdown);
 
-                $summary .= "* [{$reflectionClass->getShortName()}](./{$type}/{$reflectionClass->getShortName()}.md)\n";
+                $summary .= "* [{$reflectionClass->getShortName()}](./{$subDirectory}/{$reflectionClass->getShortName()}.md)\n";
             }
             $summary .= "\n";
 
-            saveFile($input, __DIR__.'/Builders.md', $summary);
+            saveFile($input, __DIR__.'/builders_api.md', $summary);
         }
 
         return Command::SUCCESS;

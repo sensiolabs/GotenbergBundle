@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -108,6 +109,8 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getHtmlPdfBuilder(bool $twig = true): HtmlPdfBuilder
     {
-        return new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null);
+        return (new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null))
+            ->processor(new NullProcessor())
+        ;
     }
 }
