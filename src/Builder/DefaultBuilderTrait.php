@@ -4,9 +4,10 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\Mime\Part\DataPart;
@@ -32,6 +33,9 @@ trait DefaultBuilderTrait
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     protected LoggerInterface|null $logger = null;
+
+    /** @var ProcessorInterface<mixed>|null */
+    private ProcessorInterface|null $processor;
 
     public function setLogger(LoggerInterface|null $logger): void
     {
@@ -67,6 +71,16 @@ trait DefaultBuilderTrait
     {
         $this->fileName = $fileName;
         $this->headerDisposition = $headerDisposition;
+
+        return $this;
+    }
+
+    /**
+     * @param ProcessorInterface<mixed> $processor
+     */
+    public function processor(ProcessorInterface $processor): static
+    {
+        $this->processor = $processor;
 
         return $this;
     }
@@ -194,25 +208,19 @@ trait DefaultBuilderTrait
         ]];
     }
 
-    private function doCall(): GotenbergResponse
+    public function generate(): GotenbergFileResult
     {
-        $this->logger?->debug('Generating file using {sensiolabs_gotenberg.builder} builder.', [
+        $this->logger?->debug('Processing file using {sensiolabs_gotenberg.builder} builder.', [
             'sensiolabs_gotenberg.builder' => $this::class,
         ]);
 
-        $response = $this->client->call($this->getEndpoint(), $this->getMultipartFormData());
+        $processor = $this->processor ?? new NullProcessor();
 
-        if (null !== $this->fileName) {
-            $disposition = HeaderUtils::makeDisposition(
-                $this->headerDisposition,
-                $this->fileName,
-            );
-
-            $response
-                ->headers->set('Content-Disposition', $disposition)
-            ;
-        }
-
-        return $response;
+        return new GotenbergFileResult(
+            $this->client->call($this->getEndpoint(), $this->getMultipartFormData()),
+            $processor($this->fileName),
+            $this->headerDisposition,
+            $this->fileName,
+        );
     }
 }

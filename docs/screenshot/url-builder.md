@@ -18,6 +18,7 @@ class YourController
         return $gotenberg->url()
             ->url('https://sensiolabs.com/fr/')
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -52,6 +53,7 @@ class YourController
                 'my_var' => 'value'
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -80,6 +82,7 @@ class YourController
                 'footer.md',
             )
             ->generate()
+            ->stream()
          ;
     }
 }

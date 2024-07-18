@@ -39,6 +39,7 @@ class YourController
         return $gotenberg->html()
             ->contentFile('../templates/content.html')
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -62,6 +63,7 @@ class YourController
                 'my_var' => 'value'
             ])
             ->generate()
+            ->stream()
          ;
     }
 }

@@ -1,0 +1,39 @@
+name: 'Documentation'
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+permissions:
+  contents: 'read'
+
+jobs:
+
+  builders-api:
+    name: 'Builders API'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: 'actions/checkout@v4'
+
+      - name: 'Setup PHP'
+        uses: 'shivammathur/setup-php@v2'
+        with:
+          php-version: '8.3'
+          coverage: 'none'
+
+      - name: 'Install dependencies'
+        uses: 'ramsey/composer-install@v3'
+
+      - name: 'Generate builder API doc'
+        run: 'php ./docs/generate.php'
+
+      - name: 'Check documentation'
+        run: |
+          DIFF=$(git diff --name-only)
+          if [[ $DIFF != '' ]]; then
+            echo "::warning::Builders API documentation is not up to date. Please run \"php ./docs/generate.php\""
+            echo "::warning::$DIFF"
+            exit 1
+          fi

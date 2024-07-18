@@ -33,7 +33,8 @@ class YourController
     {
         return $gotenberg->office()
             ->files('document.txt')
-            ->generate() // will return directly a stream response
+            ->generate()
+            ->stream() // will return directly a stream response
          ;
     }
 }
@@ -53,7 +54,8 @@ class YourController
     {
         return $gotenberg->office()
             ->files('document_one.txt', 'document_two.odt')
-            ->generate() // will download a zip file with two PDF files
+            ->generate()
+            ->stream() // will download a zip file with two PDF files
          ;
     }
 }
@@ -78,6 +80,7 @@ class YourController
             ->files('document_one.txt', 'document_two.odt')
             ->merge() // is same as ->merge(true)
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -105,6 +108,7 @@ class YourController
             ->files('document.txt')
             ->landscape() // is same as `->landscape(true)`
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -132,6 +136,7 @@ class YourController
             ->files('document.txt')
             ->nativePageRanges('1-5')
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -160,6 +165,7 @@ class YourController
             ->files('document.txt')
             ->exportFormFields() // is same as `->exportFormFields(false)`
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -187,6 +193,7 @@ class YourController
             ->files('document.txt')
             ->singlePageSheets()  // is same as `->singlePageSheets(true)`
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -214,6 +221,7 @@ class YourController
             ->files('document.txt')
             ->pdfFormat(PdfFormat::Pdf1b)
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -241,6 +249,7 @@ class YourController
             ->files('document.txt')
             ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -268,6 +277,7 @@ class YourController
             ->files('document.txt')
             ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -292,6 +302,7 @@ class YourController
             ->files('document.txt')
             ->addMetadata('key', 'value')
             ->generate()
+            ->stream()
          ;
     }
 }

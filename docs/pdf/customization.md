@@ -77,6 +77,7 @@ class YourController
             ])
             ->paperSize(21, 29.7, Unit::Centimeters)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -104,6 +105,7 @@ class YourController
             ])
             ->paperStandardSize(PaperSize::A4)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -156,6 +158,7 @@ class YourController
             ])
             ->paperWidth(15, Unit::Inches)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -187,6 +190,7 @@ class YourController
             ])
             ->paperHeight(15, Unit::Inches)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -219,6 +223,7 @@ class YourController
             ])
             ->margins(1, 2, 3, 4, Unit::Inches)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -246,6 +251,7 @@ class YourController
             ->marginLeft(4, Unit::Picas)
             ->marginRight(4, Unit::Millimeters)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -275,6 +281,7 @@ class YourController
             ])
             ->preferCssPageSize()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -301,6 +308,7 @@ class YourController
             ])
             ->printBackground()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -327,6 +335,7 @@ class YourController
             ])
             ->omitBackground()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -353,6 +362,7 @@ class YourController
             ])
             ->landscape()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -379,6 +389,7 @@ class YourController
             ])
             ->scale(2.5)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -405,6 +416,7 @@ class YourController
             ])
             ->nativePageRanges('1-5')
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -456,6 +468,7 @@ class YourController
                 'my_var' => 'value'
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -484,6 +497,7 @@ class YourController
             ->contentFile('content.html')
             ->footerFile('footer.html')
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -506,6 +520,7 @@ class YourController
             ->contentFile('../templates/html/content.html')
             ->footerFile('../templates/html/footer.html')
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -538,6 +553,7 @@ class YourController
             ])
             ->waitDelay('5s')
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -566,6 +582,7 @@ class YourController
             ])
             ->waitForExpression("window.globalVar === 'ready'")
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -598,6 +615,7 @@ class YourController
             ])
             ->emulatedMediaType(EmulatedMediaType::Screen)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -634,6 +652,7 @@ class YourController
                 'sameSite' => 'Lax',
             ]])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -670,6 +689,7 @@ class YourController
                 'sameSite' => 'Lax',
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -703,6 +723,7 @@ class YourController
                 'sameSite' => 'Lax',
             ]])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -757,6 +778,7 @@ class YourController
                 'MyHeader' => 'MyValue'
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -790,6 +812,7 @@ class YourController
                 'MyHeader' => 'MyValue'
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -818,6 +841,7 @@ class YourController
             ])
             ->failOnHttpStatusCodes([401, 403])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -849,6 +873,7 @@ class YourController
             ])
             ->failOnConsoleExceptions()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -882,6 +907,7 @@ class YourController
             ])
             ->skipNetworkIdleEvent()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -914,6 +940,7 @@ class YourController
             ])
             ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -944,6 +971,7 @@ class YourController
             ])
             ->addMetadata('key', 'value')
             ->generate()
+            ->stream()
          ;
     }
 }
@@ -974,6 +1002,7 @@ class YourController
             ])
             ->pdfFormat(PdfFormat::Pdf1b)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -1004,6 +1033,7 @@ class YourController
             ])
             ->pdfUniversalAccess()
             ->generate()
+            ->stream()
         ;
     }
 }

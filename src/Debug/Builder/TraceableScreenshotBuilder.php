@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
+use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
@@ -28,7 +28,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
     ) {
     }
 
-    public function generate(): GotenbergResponse
+    public function generate(): GotenbergFileResult
     {
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
@@ -38,17 +38,17 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         $swEvent->stop();
 
         $fileName = 'Unknown';
-        if ($response->headers->has('Content-Disposition')) {
+        if ($response->getHeaders()->has('Content-Disposition')) {
             $matches = [];
 
             /* @see https://onlinephp.io/c/c2606 */
-            preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $response->headers->get('Content-Disposition', ''), $matches);
+            preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $response->getHeaders()->get('Content-Disposition', ''), $matches);
             $fileName = $matches['fileName'];
         }
 
         $lengthInBytes = null;
-        if ($response->headers->has('Content-Length')) {
-            $lengthInBytes = abs((int) $response->headers->get('Content-Length'));
+        if ($response->getHeaders()->has('Content-Length')) {
+            $lengthInBytes = abs((int) $response->getHeaders()->get('Content-Length'));
         }
 
         $this->screenshots[] = [

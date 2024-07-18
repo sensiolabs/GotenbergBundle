@@ -1,5 +1,4 @@
-MarkdownPdfBuilder
-==================
+# MarkdownPdfBuilder
 
 * `wrapper(string $template, array $context)`:
 The HTML file that wraps the markdown content, rendered from a Twig template.
@@ -98,9 +97,6 @@ For instance: "window.status === 'ready'".
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
-* `userAgent(string $userAgent)`:
-Override the default User-Agent HTTP header. (default None).
-
 * `extraHttpHeaders(array $headers)`:
 Sets extra HTTP headers that Chromium will send when loading the HTML
 document. (default None). (overrides any previous headers).
@@ -132,6 +128,8 @@ Resets the metadata.
 The metadata to write.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

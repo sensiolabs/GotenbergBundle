@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 
 #[CoversClass(MergePdfBuilder::class)]
@@ -82,6 +83,8 @@ final class MergePdfBuilderTest extends AbstractBuilderTestCase
 
     private function getMergePdfBuilder(): MergePdfBuilder
     {
-        return new MergePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter);
+        return (new MergePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter))
+            ->processor(new NullProcessor())
+        ;
     }
 }

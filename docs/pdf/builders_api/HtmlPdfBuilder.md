@@ -1,12 +1,9 @@
-UrlPdfBuilder
-=============
+# HtmlPdfBuilder
 
-* `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
+* `content(string $template, array $context)`:
 
-* `url(string $url)`:
-URL of the page you want to convert into PDF.
-
-* `route(string $name, array $parameters)`:
+* `contentFile(string $path)`:
+The HTML file to convert into PDF.
 
 * `cookies(array $cookies)`:
 
@@ -97,9 +94,6 @@ For instance: "window.status === 'ready'".
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
-* `userAgent(string $userAgent)`:
-Override the default User-Agent HTTP header. (default None).
-
 * `extraHttpHeaders(array $headers)`:
 Sets extra HTTP headers that Chromium will send when loading the HTML
 document. (default None). (overrides any previous headers).
@@ -131,6 +125,8 @@ Resets the metadata.
 The metadata to write.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

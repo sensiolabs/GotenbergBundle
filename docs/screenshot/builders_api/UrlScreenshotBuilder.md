@@ -1,13 +1,11 @@
-MarkdownScreenshotBuilder
-=========================
+# UrlScreenshotBuilder
 
-* `wrapper(string $template, array $context)`:
-The HTML file that wraps the markdown content, rendered from a Twig template.
+* `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
 
-* `wrapperFile(string $path)`:
-The HTML file that wraps the markdown content.
+* `url(string $url)`:
+URL of the page you want to screenshot.
 
-* `files(string $paths)`:
+* `route(string $name, array $parameters)`:
 
 * `cookies(array $cookies)`:
 
@@ -49,9 +47,6 @@ For instance: "window.status === 'ready'".
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
-* `userAgent(string $userAgent)`:
-Override the default User-Agent HTTP header. (default None).
-
 * `extraHttpHeaders(array $headers)`:
 Sets extra HTTP headers that Chromium will send when loading the HTML
 document. (default None). (overrides any previous headers).
@@ -77,6 +72,8 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 Adds a file, like an image, font, stylesheet, and so on.
 
 * `fileName(string $fileName, string $headerDisposition)`:
+
+* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

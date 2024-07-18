@@ -54,6 +54,7 @@ class YourController
             ])
             ->width(600)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -83,6 +84,7 @@ class YourController
             ])
             ->height(600)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -112,6 +114,7 @@ class YourController
             ])
             ->clip()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -143,6 +146,7 @@ class YourController
             ->quality(50)
             ->format(ScreenshotFormat::Jpeg)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -172,6 +176,7 @@ class YourController
             ])
             ->omitBackground()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -200,6 +205,7 @@ class YourController
             ])
             ->optimizeForSpeed(true)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -227,6 +233,7 @@ class YourController
             ->html()
             ->waitDelay('5s')
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -252,6 +259,7 @@ class YourController
             ->html()
             ->waitForExpression("window.globalVar === 'ready'")
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -281,6 +289,7 @@ class YourController
             ->html()
             ->emulatedMediaType(EmulatedMediaType::Screen)
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -314,6 +323,7 @@ class YourController
                 'sameSite' => 'Lax',
             ]])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -347,6 +357,7 @@ class YourController
                 'sameSite' => 'Lax',
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -377,6 +388,7 @@ class YourController
                 'sameSite' => 'Lax',
             ]])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -427,6 +439,7 @@ class YourController
                 'MyHeader' => 'MyValue'
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -457,6 +470,7 @@ class YourController
                 'MyHeader' => 'MyValue'
             ])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -482,6 +496,7 @@ class YourController
             ->html()
             ->failOnHttpStatusCodes([401, 403])
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -510,6 +525,7 @@ class YourController
             ->html()
             ->failOnConsoleExceptions()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -540,6 +556,7 @@ class YourController
             ->html()
             ->skipNetworkIdleEvent()
             ->generate()
+            ->stream()
         ;
     }
 }
@@ -570,6 +587,7 @@ class YourController
             ->html()
             ->format(ScreenshotFormat::Webp)
             ->generate()
+            ->stream()
         ;
     }
 }

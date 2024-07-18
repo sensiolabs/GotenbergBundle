@@ -4,7 +4,6 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 
 abstract class AbstractPdfBuilder implements PdfBuilderInterface
@@ -23,10 +22,5 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
                 return $this->encodeData('metadata', $value);
             },
         ];
-    }
-
-    public function generate(): GotenbergResponse
-    {
-        return $this->doCall();
     }
 }
