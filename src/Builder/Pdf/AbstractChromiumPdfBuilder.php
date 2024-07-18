@@ -379,11 +379,13 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     /**
      * Override the default User-Agent HTTP header. (default None).
      *
+     * @param UserAgent::*|string $userAgent
+     *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      */
-    public function userAgent(string|UserAgent $userAgent): static
+    public function userAgent(string $userAgent): static
     {
-        $this->formFields['userAgent'] = \is_string($userAgent) ? $userAgent : $userAgent->value;
+        $this->formFields['userAgent'] = $userAgent;
 
         return $this;
     }
