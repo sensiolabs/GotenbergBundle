@@ -1,6 +1,6 @@
 <?php
 
-namespace Formatter;
+namespace Sensiolabs\GotenbergBundle\Tests\Formatter;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;

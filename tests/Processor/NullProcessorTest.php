@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Processor;
+namespace Sensiolabs\GotenbergBundle\Tests\Processor;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
