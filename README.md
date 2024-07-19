@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/github/release/sensiolabs/GotenbergBundle.svg?style=flat-square)](https://github.com/sensiolabs/GotenbergBundle/releases)
 [![Total Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/downloads)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
-[![Monthly Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/d/monthly.png)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
+[![Monthly Downloads](https://poser.pugx.org/sensiolabs/gotenberg-bundle/d/monthly)](https://packagist.org/packages/sensiolabs/gotenberg-bundle)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENCE)
 [![Static analysis](https://github.com/sensiolabs/GotenbergBundle/actions/workflows/static.yml/badge.svg?branch=main)](https://github.com/sensiolabs/GotenbergBundle/actions/workflows/static.yml?query=branch%3Amain)
 [![Tests](https://github.com/sensiolabs/GotenbergBundle/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/sensiolabs/GotenbergBundle/actions/workflows/tests.yml?query=branch%3Amain)
