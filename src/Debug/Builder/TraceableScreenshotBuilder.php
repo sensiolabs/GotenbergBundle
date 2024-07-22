@@ -24,7 +24,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
 
     public function __construct(
         private readonly ScreenshotBuilderInterface $inner,
-        private readonly Stopwatch $stopwatch,
+        private readonly Stopwatch|null $stopwatch,
     ) {
     }
 
@@ -33,14 +33,14 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
 
-        $swEvent = $this->stopwatch->start($name, 'gotenberg.generate_screenshot');
+        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_screenshot');
         $response = $this->inner->generate();
-        $swEvent->stop();
+        $swEvent?->stop();
 
         $this->screenshots[] = [
             'calls' => $this->calls,
-            'time' => $swEvent->getDuration(),
-            'memory' => $swEvent->getMemory(),
+            'time' => $swEvent?->getDuration(),
+            'memory' => $swEvent?->getMemory(),
             'status' => $response->getStatusCode(),
             'size' => $response->getContentLength(),
             'fileName' => $response->getFileName(),

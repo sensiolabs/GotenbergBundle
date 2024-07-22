@@ -59,12 +59,20 @@
                 <span class="label">Files generated</span>
             </div>
             <div class="metric">
-                <span class="value">{{ '%.0f'|format(collector.requestTotalTime) }} <span class="unit">ms</span></span>
+                {% if collector.requestTotalTime == 0 %}
+                    <span class="value" title="To enable elapsed time tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
+                {% else %}
+                    <span class="value">{{ '%.0f'|format(collector.requestTotalTime) }} <span class="unit">ms</span></span>
+                {% endif %}
                 <span class="label">Total time</span>
             </div>
             <div class="metric">
-            <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span
-                        class="unit">MiB</span></span>
+                {% if collector.requestTotalMemory == 0 %}
+                    <span class="value" title="To enable memory usage tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
+                {% else %}
+                    <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span
+                                class="unit">MiB</span></span>
+                {% endif %}
                 <span class="label">Total memory</span>
             </div>
             <div class="metric">
@@ -113,16 +121,18 @@
                     </div>
                 </td>
                 <td class="font-normal">
-                    <span class="value">
-                        {{ '%.0f'|format(file.time) }}
-                        <span class="unit">ms</span>
-                    </span>
+                    {% if file.time == 0 %}
+                        <span class="value" title="To enable elapsed time tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
+                    {% else %}
+                        <span class="value">{{ '%.0f'|format(file.time) }} <span class="unit">ms</span></span>
+                    {% endif %}
                 </td>
                 <td class="font-normal">
-                    <span class="value">
-                        {{ '%.1f'|format(file.memory / 1024 / 1024) }}
-                        <span class="unit">MiB</span>
-                    </span>
+                    {% if file.memory == 0 %}
+                        <span class="value" title="To enable memory usage tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
+                    {% else %}
+                        <span class="value">{{ '%.1f'|format(file.memory / 1024 / 1024) }} <span class="unit">MiB</span></span>
+                    {% endif %}
                 </td>
                 <td class="font-normal">
                     {% set size = file.size %}
