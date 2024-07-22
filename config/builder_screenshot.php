@@ -3,6 +3,7 @@
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -22,6 +23,7 @@ return static function (ContainerConfigurator $container): void {
             service('twig')->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.screenshot_builder')
     ;
 
@@ -35,6 +37,7 @@ return static function (ContainerConfigurator $container): void {
             service('router')->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->call('setRequestContext', [service('.sensiolabs_gotenberg.request_context')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.screenshot_builder')
     ;
@@ -48,6 +51,7 @@ return static function (ContainerConfigurator $container): void {
             service('twig')->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.screenshot_builder')
     ;
 };
