@@ -9,7 +9,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
 {
     /**
-     * @var list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
+     * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
      */
     private array $screenshots = [];
 
