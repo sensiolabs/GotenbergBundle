@@ -59,7 +59,7 @@
                 <span class="label">Files generated</span>
             </div>
             <div class="metric">
-                {% if collector.requestTotalTime == 0 %}
+                {% if collector.requestTotalTime is null %}
                     <span class="value" title="To enable elapsed time tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
                 {% else %}
                     <span class="value">{{ '%.0f'|format(collector.requestTotalTime) }} <span class="unit">ms</span></span>
@@ -67,7 +67,7 @@
                 <span class="label">Total time</span>
             </div>
             <div class="metric">
-                {% if collector.requestTotalMemory == 0 %}
+                {% if collector.requestTotalMemory is null %}
                     <span class="value" title="To enable memory usage tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
                 {% else %}
                     <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span
@@ -121,14 +121,14 @@
                     </div>
                 </td>
                 <td class="font-normal">
-                    {% if file.time == 0 %}
+                    {% if file.time is null %}
                         <span class="value" title="To enable elapsed time tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
                     {% else %}
                         <span class="value">{{ '%.0f'|format(file.time) }} <span class="unit">ms</span></span>
                     {% endif %}
                 </td>
                 <td class="font-normal">
-                    {% if file.memory == 0 %}
+                    {% if file.memory is null %}
                         <span class="value" title="To enable memory usage tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
                     {% else %}
                         <span class="value">{{ '%.1f'|format(file.memory / 1024 / 1024) }} <span class="unit">MiB</span></span>
