@@ -58,7 +58,7 @@ trait DefaultBuilderTrait
         try {
             $encodedValue = json_encode($value, \JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
-            throw new JsonEncodingException(sprintf('Could not encode property "%s" into JSON', $key), previous: $exception);
+            throw new JsonEncodingException(\sprintf('Could not encode property "%s" into JSON', $key), previous: $exception);
         }
 
         return [$key => $encodedValue];
@@ -104,7 +104,7 @@ trait DefaultBuilderTrait
         $extension = $file->getExtension();
 
         if (!\in_array($extension, $validExtensions, true)) {
-            throw new \InvalidArgumentException(sprintf('The file extension "%s" is not valid in this context.', $extension));
+            throw new \InvalidArgumentException(\sprintf('The file extension "%s" is not valid in this context.', $extension));
         }
     }
 

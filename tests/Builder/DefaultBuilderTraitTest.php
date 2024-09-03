@@ -47,7 +47,7 @@ class DefaultBuilderTraitTest extends TestCase
 
         yield 'any BackedEnum' => [PdfFormat::Pdf2b, [['key' => 'PDF/A-2b']]];
 
-        yield 'any Stringable' => [new class() implements \Stringable {
+        yield 'any Stringable' => [new class implements \Stringable {
             public function __toString(): string
             {
                 return __FUNCTION__;
@@ -109,7 +109,7 @@ class DefaultBuilderTraitTest extends TestCase
 
     private function getBuilder(): object
     {
-        return new class() {
+        return new class {
             use DefaultBuilderTrait {
                 addNormalizer as public;
                 encodeData as public;

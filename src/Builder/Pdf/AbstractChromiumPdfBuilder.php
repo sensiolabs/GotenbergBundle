@@ -542,13 +542,13 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     protected function withRenderedPart(Part $pdfPart, string $template, array $context = []): static
     {
         if (!$this->twig instanceof Environment) {
-            throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
+            throw new \LogicException(\sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
         }
 
         try {
             $html = $this->twig->render($template, array_merge($context, ['_builder' => $this]));
         } catch (\Throwable $error) {
-            throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
+            throw new PdfPartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
         }
 
         $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
@@ -586,7 +586,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             'metadata' => $this->metadata($value),
-            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
 }

@@ -32,10 +32,8 @@ class GotenbergResponse
     public function getFileName(): string|null
     {
         $disposition = $this->headers->get('content-disposition', '');
-        if ('' !== $disposition) {
-            /* @see https://onlinephp.io/c/c2606 */
-            preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $disposition, $matches);
-
+        /* @see https://onlinephp.io/c/c2606 */
+        if (1 === preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $disposition, $matches)) {
             return $matches['fileName'];
         }
 

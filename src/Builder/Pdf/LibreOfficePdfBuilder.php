@@ -370,7 +370,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'quality' => $this->quality($value),
             'reduce_image_resolution' => $this->reduceImageResolution($value),
             'max_image_resolution' => $this->maxImageResolution(ImageResolutionDPI::from($value)),
-            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
 }

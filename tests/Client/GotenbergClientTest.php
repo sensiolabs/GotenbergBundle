@@ -63,7 +63,7 @@ final class GotenbergClientTest extends TestCase
 
         /* @see https://onlinephp.io/c/e8233 */
         preg_match('#^multipart/form-data; boundary=(?P<boundary>.*)$#', $requestContentType, $matches);
-        $boundary = $matches['boundary'];
+        $boundary = $matches['boundary'] ?? '';
 
         $requestBody = $mockResponse->getRequestOptions()['body'];
         self::assertSame(

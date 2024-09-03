@@ -350,13 +350,13 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     protected function withRenderedPart(Part $screenshotPart, string $template, array $context = []): static
     {
         if (!$this->twig instanceof Environment) {
-            throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
+            throw new \LogicException(\sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
         }
 
         try {
             $html = $this->twig->render($template, array_merge($context, ['_builder' => $this]));
         } catch (\Throwable $error) {
-            throw new ScreenshotPartRenderingException(sprintf('Could not render template "%s" into Screenshot part "%s". %s', $template, $screenshotPart->value, $error->getMessage()), previous: $error);
+            throw new ScreenshotPartRenderingException(\sprintf('Could not render template "%s" into Screenshot part "%s". %s', $template, $screenshotPart->value, $error->getMessage()), previous: $error);
         }
 
         $this->formFields[$screenshotPart->value] = new DataPart($html, $screenshotPart->value, 'text/html');
@@ -383,7 +383,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
             'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
-            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method exists in class "%s" to configured it.', $configurationName, static::class)),
+            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method exists in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
 }
