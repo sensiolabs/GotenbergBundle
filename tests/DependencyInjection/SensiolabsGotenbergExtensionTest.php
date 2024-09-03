@@ -29,7 +29,8 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $extension = new SensiolabsGotenbergExtension();
 
         $containerBuilder = $this->getContainerBuilder();
-        $extension->load(self::getValidConfig(), $containerBuilder);
+        $validConfig = self::getValidConfig();
+        $extension->load($validConfig, $containerBuilder);
 
         $list = [
             'pdf' => [
@@ -64,6 +65,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'skip_network_idle_event' => true,
                     'pdf_format' => 'PDF/A-1b',
                     'pdf_universal_access' => true,
+                    'webhook' => ['config_name' => 'bar'],
                 ],
                 'url' => [
                     'paper_width' => 21,
@@ -255,7 +257,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         self::assertSame('https://sensiolabs.com', $requestContextDefinition->getArgument(0));
 
         $urlBuilderDefinition = $containerBuilder->getDefinition($serviceName);
-        self::assertCount(3, $urlBuilderDefinition->getMethodCalls());
+        self::assertCount(4, $urlBuilderDefinition->getMethodCalls());
 
         $indexedMethodCalls = [];
         foreach ($urlBuilderDefinition->getMethodCalls() as $methodCall) {
@@ -387,9 +389,102 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         ], $dataCollectorOptions);
     }
 
+    public function testBuilderWebhookConfiguredWithDefaultConfiguration(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder();
+        $extension->load([['http_client' => 'http_client']], $containerBuilder);
+
+        self::assertEmpty($containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')->getMethodCalls());
+
+        $buildersIds = [
+            '.sensiolabs_gotenberg.pdf_builder.html',
+            '.sensiolabs_gotenberg.pdf_builder.url',
+            '.sensiolabs_gotenberg.pdf_builder.markdown',
+            '.sensiolabs_gotenberg.pdf_builder.office',
+            '.sensiolabs_gotenberg.screenshot_builder.html',
+            '.sensiolabs_gotenberg.screenshot_builder.url',
+            '.sensiolabs_gotenberg.screenshot_builder.markdown',
+        ];
+
+        foreach ($buildersIds as $builderId) {
+            $builderDefinition = $containerBuilder->getDefinition($builderId);
+            $methodCalls = $builderDefinition->getMethodCalls();
+            self::assertNotContains('webhookConfiguration', $methodCalls);
+        }
+    }
+
+    public function testBuilderWebhookConfiguredWithValidConfiguration(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder();
+        $extension->load([[
+            'http_client' => 'http_client',
+            'webhook' => [
+                'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
+                'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
+            ],
+            'default_options' => [
+                'webhook' => 'foo',
+                'pdf' => [
+                    'html' => ['webhook' => 'bar'],
+                    'url' => ['webhook' => 'baz'],
+                    'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
+                ],
+                'screenshot' => [
+                    'html' => ['webhook' => 'foo'],
+                    'url' => ['webhook' => 'bar'],
+                    'markdown' => ['webhook' => 'baz'],
+                ],
+            ],
+        ]], $containerBuilder);
+
+        $expectedConfigurationMapping = [
+            '.sensiolabs_gotenberg.pdf_builder.html' => 'bar',
+            '.sensiolabs_gotenberg.pdf_builder.url' => 'baz',
+            '.sensiolabs_gotenberg.pdf_builder.markdown' => '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config',
+            '.sensiolabs_gotenberg.pdf_builder.office' => 'foo',
+            '.sensiolabs_gotenberg.screenshot_builder.html' => 'foo',
+            '.sensiolabs_gotenberg.screenshot_builder.url' => 'bar',
+            '.sensiolabs_gotenberg.screenshot_builder.markdown' => 'baz',
+        ];
+        array_map(static function (string $builderId, string $expectedConfigurationName) use ($containerBuilder): void {
+            foreach ($containerBuilder->getDefinition($builderId)->getMethodCalls() as $methodCall) {
+                [$name, $arguments] = $methodCall;
+                if ('webhookConfiguration' === $name) {
+                    self::assertSame($expectedConfigurationName, $arguments[0]);
+
+                    return;
+                }
+            }
+        }, array_keys($expectedConfigurationMapping), array_values($expectedConfigurationMapping));
+
+        $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
+        $methodCalls = $webhookConfigurationRegistryDefinition->getMethodCalls();
+        self::assertCount(3, $methodCalls);
+        foreach ($methodCalls as $methodCall) {
+            [$name, $arguments] = $methodCall;
+            self::assertSame('add', $name);
+            self::assertContains($arguments[0], ['foo', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config']);
+            self::assertSame(match ($arguments[0]) {
+                'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => ['simple_route', []]]],
+                'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
+                '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']],
+                default => self::fail('Unexpected webhook configuration'),
+            }, $arguments[1]);
+        }
+    }
+
     /**
      * @return array<int, array{
+     *          'webhook': array<string, array{
+     *              'success': array{'url'?: string, 'route'?: string|array{0: string, 1: list<mixed>}, 'webhook'?: string},
+     *              'error'?: array{'url'?: string, 'route'?: string|array{0: string, 1: list<mixed>}, 'webhook'?: string}
+     *          }>,
      *          'default_options': array{
+     *              'webhook': string,
      *              'pdf': array{
      *                  'html': array<string, mixed>,
      *                  'url': array<string, mixed>,
@@ -411,7 +506,12 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         return [
             [
                 'http_client' => 'http_client',
+                'webhook' => [
+                    'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
+                    'baz' => ['success' => ['url' => 'https://sensiolabs.com/single-url-webhook']],
+                ],
                 'default_options' => [
+                    'webhook' => 'foo',
                     'pdf' => [
                         'html' => [
                             'paper_width' => 33.1,
@@ -443,6 +543,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'skip_network_idle_event' => true,
                             'pdf_format' => PdfFormat::Pdf1b->value,
                             'pdf_universal_access' => true,
+                            'webhook' => 'bar',
                         ],
                         'url' => [
                             'paper_width' => 21,
@@ -466,6 +567,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'skip_network_idle_event' => false,
                             'pdf_format' => PdfFormat::Pdf2b->value,
                             'pdf_universal_access' => false,
+                            //                            'webhook' => ['success' => '']
                         ],
                         'markdown' => [
                             'paper_width' => 30,

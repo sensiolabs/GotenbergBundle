@@ -25,6 +25,7 @@ return static function (ContainerConfigurator $container): void {
             service('twig')->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 
@@ -38,6 +39,7 @@ return static function (ContainerConfigurator $container): void {
             service('router')->nullOnInvalid(),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->call('setRequestContext', [service('.sensiolabs_gotenberg.request_context')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
@@ -50,6 +52,7 @@ return static function (ContainerConfigurator $container): void {
             service('request_stack'),
             service('twig')->nullOnInvalid(),
         ])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
@@ -61,6 +64,7 @@ return static function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 
@@ -71,6 +75,7 @@ return static function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 
@@ -81,6 +86,7 @@ return static function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
         ])
         ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->call('setWebhookConfigurationRegistry', [service('.sensiolabs_gotenberg.webhook_configuration_registry')->nullOnInvalid()])
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 };

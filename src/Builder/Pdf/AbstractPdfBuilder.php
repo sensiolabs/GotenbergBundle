@@ -2,12 +2,15 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
+use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderTrait;
 use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 
-abstract class AbstractPdfBuilder implements PdfBuilderInterface
+abstract class AbstractPdfBuilder implements PdfBuilderInterface, AsyncBuilderInterface
 {
+    use AsyncBuilderTrait;
     use DefaultBuilderTrait;
 
     public function __construct(
