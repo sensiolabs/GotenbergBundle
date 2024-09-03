@@ -72,7 +72,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
+     * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getFiles(): array
     {
