@@ -144,7 +144,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 
     public function testPaperStandardSizeAppliesCorrectly(): void
     {
-        $paperStandardSize = new class() implements PaperSizeInterface {
+        $paperStandardSize = new class implements PaperSizeInterface {
             public function width(): float
             {
                 return 10.0;

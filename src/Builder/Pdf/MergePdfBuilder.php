@@ -107,7 +107,7 @@ final class MergePdfBuilder extends AbstractPdfBuilder
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'metadata' => $this->metadata($value),
-            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, self::class)),
+            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, self::class)),
         };
     }
 }

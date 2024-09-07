@@ -54,7 +54,7 @@ final class UrlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
     public function route(string $name, array $parameters = []): self
     {
         if (null === $this->urlGenerator) {
-            throw new \LogicException(sprintf('Router is required to use "%s" method. Try to run "composer require symfony/routing".', __METHOD__));
+            throw new \LogicException(\sprintf('Router is required to use "%s" method. Try to run "composer require symfony/routing".', __METHOD__));
         }
 
         $this->formFields['route'] = [$name, $parameters];

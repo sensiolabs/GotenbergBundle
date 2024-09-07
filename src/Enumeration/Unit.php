@@ -20,7 +20,7 @@ enum Unit: string
      */
     public static function parse(string|int|float $raw, self $defaultUnit = self::Inches): array
     {
-        [$value, $unit] = sscanf((string) $raw, '%f%s') ?? throw new \InvalidArgumentException(sprintf('Unexpected value "%s", expected format is "%%f%%s"', $raw));
+        [$value, $unit] = sscanf((string) $raw, '%f%s') ?? throw new \InvalidArgumentException(\sprintf('Unexpected value "%s", expected format is "%%f%%s"', $raw));
 
         return [(float) $value, self::tryFrom((string) $unit) ?? $defaultUnit];
     }

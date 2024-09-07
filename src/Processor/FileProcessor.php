@@ -44,7 +44,7 @@ final class FileProcessor implements ProcessorInterface
 
             return new \SplFileInfo($path);
         } catch (\Throwable $t) {
-            throw new ProcessorException(sprintf('Unable to write to "%s".', $fileName), previous : $t);
+            throw new ProcessorException(\sprintf('Unable to write to "%s".', $fileName), previous : $t);
         } finally {
             fclose($resource);
         }
