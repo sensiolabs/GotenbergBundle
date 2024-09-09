@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Symfony\Component\Filesystem\Filesystem;
@@ -25,6 +26,11 @@ abstract class AbstractBuilderTestCase extends TestCase
      */
     protected GotenbergClientInterface $gotenbergClient;
 
+    /**
+     * @var MockObject&WebhookConfigurationRegistryInterface
+     */
+    protected WebhookConfigurationRegistryInterface $webhookConfigurationRegistry;
+
     public static function setUpBeforeClass(): void
     {
         self::$twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
@@ -37,6 +43,7 @@ abstract class AbstractBuilderTestCase extends TestCase
     protected function setUp(): void
     {
         $this->gotenbergClient = $this->createMock(GotenbergClientInterface::class);
+        $this->webhookConfigurationRegistry = $this->createMock(WebhookConfigurationRegistryInterface::class);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistry;
-use Sensiolabs\GotenbergBundle\Exception\WebhookConfigurationException;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 
 trait AsyncBuilderTrait
 {
@@ -15,7 +15,7 @@ trait AsyncBuilderTrait
      */
     private array $webhookExtraHeaders = [];
     private \Closure $operationIdGenerator;
-    private WebhookConfigurationRegistry|null $webhookConfigurationRegistry = null;
+    private WebhookConfigurationRegistryInterface $webhookConfigurationRegistry;
 
     public function generateAsync(): string
     {
@@ -48,9 +48,6 @@ trait AsyncBuilderTrait
 
     public function webhookConfiguration(string $webhook): static
     {
-        if (null === $this->webhookConfigurationRegistry) {
-            throw new WebhookConfigurationException('The WebhookConfigurationRegistry is not available.');
-        }
         $webhookConfiguration = $this->webhookConfigurationRegistry->get($webhook);
 
         return $this->webhookUrls($webhookConfiguration['success'], $webhookConfiguration['error']);

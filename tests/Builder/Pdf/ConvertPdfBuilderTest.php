@@ -91,7 +91,7 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getConvertPdfBuilder(): ConvertPdfBuilder
     {
-        return (new ConvertPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter))
+        return (new ConvertPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry))
             ->processor(new NullProcessor())
         ;
     }

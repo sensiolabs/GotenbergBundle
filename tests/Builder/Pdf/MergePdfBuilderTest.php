@@ -85,7 +85,7 @@ final class MergePdfBuilderTest extends AbstractBuilderTestCase
 
     private function getMergePdfBuilder(): MergePdfBuilder
     {
-        return (new MergePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter))
+        return (new MergePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry))
             ->processor(new NullProcessor())
         ;
     }

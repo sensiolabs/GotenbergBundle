@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Builder\CookieAwareTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
@@ -26,8 +27,9 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         AssetBaseDirFormatter $asset,
         private readonly RequestStack $requestStack,
         private readonly Environment|null $twig = null,
+        WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
     ) {
-        parent::__construct($gotenbergClient, $asset);
+        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);
 
         $normalizers = [
             'extraHttpHeaders' => function (mixed $value): array {

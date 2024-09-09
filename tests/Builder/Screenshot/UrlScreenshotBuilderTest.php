@@ -80,6 +80,7 @@ final class UrlScreenshotBuilderTest extends AbstractBuilderTestCase
             new RequestStack(),
             true === $twig ? self::$twig : null,
             $this->router,
+            $this->webhookConfigurationRegistry,
         ))
             ->processor(new NullProcessor())
         ;

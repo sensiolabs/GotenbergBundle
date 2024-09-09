@@ -446,7 +446,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getChromiumPdfBuilder(bool $twig = true, RequestStack $requestStack = new RequestStack()): AbstractChromiumPdfBuilder
     {
-        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, $requestStack, true === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
+        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, $requestStack, true === $twig ? self::$twig : null, $this->webhookConfigurationRegistry) extends AbstractChromiumPdfBuilder {
             protected function getEndpoint(): string
             {
                 return '/fake/endpoint';

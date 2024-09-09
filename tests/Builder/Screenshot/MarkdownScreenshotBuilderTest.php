@@ -96,7 +96,7 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
 
     private function getMarkdownScreenshotBuilder(bool $twig = true): MarkdownScreenshotBuilder
     {
-        return (new MarkdownScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null))
+        return (new MarkdownScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null, $this->webhookConfigurationRegistry))
             ->processor(new NullProcessor())
         ;
     }

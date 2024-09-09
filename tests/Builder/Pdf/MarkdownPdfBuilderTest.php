@@ -68,7 +68,7 @@ final class MarkdownPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getMarkdownPdfBuilder(bool $twig = true): MarkdownPdfBuilder
     {
-        return (new MarkdownPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null))
+        return (new MarkdownPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null, $this->webhookConfigurationRegistry))
             ->processor(new NullProcessor())
         ;
     }

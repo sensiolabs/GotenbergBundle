@@ -85,7 +85,7 @@ class AbstractChromiumScreenshotBuilderTest extends AbstractBuilderTestCase
 
     private function getChromiumScreenshotBuilder(bool $twig = true): AbstractChromiumScreenshotBuilder
     {
-        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null) extends AbstractChromiumScreenshotBuilder {
+        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null, $this->webhookConfigurationRegistry) extends AbstractChromiumScreenshotBuilder {
             protected function getEndpoint(): string
             {
                 return '/fake/endpoint';

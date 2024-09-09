@@ -257,7 +257,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         self::assertSame('https://sensiolabs.com', $requestContextDefinition->getArgument(0));
 
         $urlBuilderDefinition = $containerBuilder->getDefinition($serviceName);
-        self::assertCount(4, $urlBuilderDefinition->getMethodCalls());
+        self::assertCount(3, $urlBuilderDefinition->getMethodCalls());
 
         $indexedMethodCalls = [];
         foreach ($urlBuilderDefinition->getMethodCalls() as $methodCall) {

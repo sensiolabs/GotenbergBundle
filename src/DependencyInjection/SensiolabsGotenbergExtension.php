@@ -4,7 +4,6 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
-use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -50,10 +49,6 @@ class SensiolabsGotenbergExtension extends Extension
 
         $container->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.screenshot_builder')
-        ;
-
-        $container->registerForAutoconfiguration(WebhookConfigurationRegistryInterface::class)
-            ->addTag('sensiolabs_gotenberg.webhook_configuration_registry')
         ;
 
         $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'] ?? 'http_client', false));
