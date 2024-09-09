@@ -9,7 +9,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
 {
     /**
-     * @var list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
+     * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
      */
     private array $screenshots = [];
 
@@ -24,7 +24,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
 
     public function __construct(
         private readonly ScreenshotBuilderInterface $inner,
-        private readonly Stopwatch $stopwatch,
+        private readonly Stopwatch|null $stopwatch,
     ) {
     }
 
@@ -33,14 +33,14 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
 
-        $swEvent = $this->stopwatch->start($name, 'gotenberg.generate_screenshot');
+        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_screenshot');
         $response = $this->inner->generate();
-        $swEvent->stop();
+        $swEvent?->stop();
 
         $this->screenshots[] = [
             'calls' => $this->calls,
-            'time' => $swEvent->getDuration(),
-            'memory' => $swEvent->getMemory(),
+            'time' => $swEvent?->getDuration(),
+            'memory' => $swEvent?->getMemory(),
             'status' => $response->getStatusCode(),
             'size' => $response->getContentLength(),
             'fileName' => $response->getFileName(),
@@ -72,7 +72,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float, 'memory': int, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
+     * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getFiles(): array
     {
