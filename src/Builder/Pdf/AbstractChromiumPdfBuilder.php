@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 use Sensiolabs\GotenbergBundle\Builder\CookieAwareTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
@@ -564,6 +565,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'single_page' => $this->singlePage($value),
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
+            'paper_size' => $this->paperStandardSize(PaperSize::from($value)),
             'paper_width' => $this->paperWidth(...Unit::parse($value)),
             'paper_height' => $this->paperHeight(...Unit::parse($value)),
             'margin_top' => $this->marginTop(...Unit::parse($value)),

@@ -105,6 +105,7 @@ final class ConfigurationTest extends TestCase
                 'pdf' => [
                     'html' => [
                         'single_page' => null,
+                        'paper_size' => null,
                         'paper_width' => null,
                         'paper_height' => null,
                         'margin_top' => null,
@@ -131,6 +132,7 @@ final class ConfigurationTest extends TestCase
                     ],
                     'url' => [
                         'single_page' => null,
+                        'paper_size' => null,
                         'paper_width' => null,
                         'paper_height' => null,
                         'margin_top' => null,
@@ -157,6 +159,7 @@ final class ConfigurationTest extends TestCase
                     ],
                     'markdown' => [
                         'single_page' => null,
+                        'paper_size' => null,
                         'paper_width' => null,
                         'paper_height' => null,
                         'margin_top' => null,

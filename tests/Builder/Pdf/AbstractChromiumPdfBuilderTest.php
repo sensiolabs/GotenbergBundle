@@ -29,79 +29,83 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
     public static function configurationIsCorrectlySetProvider(): \Generator
     {
         yield 'single_page' => ['single_page', false, [
-            'singlePage' => 'false',
+            ['singlePage' => 'false'],
         ]];
         yield 'pdf_format - A-1b' => ['pdf_format', 'PDF/A-1b', [
-            'pdfa' => 'PDF/A-1b',
+            ['pdfa' => 'PDF/A-1b'],
         ]];
         yield 'pdf_universal_access' => ['pdf_universal_access', false, [
-            'pdfua' => 'false',
+            ['pdfua' => 'false'],
+        ]];
+        yield 'paper_size' => ['paper_size', 'A4', [
+            ['paperWidth' => '8.27in'],
+            ['paperHeight' => '11.7in'],
         ]];
         yield 'paper_width' => ['paper_width', 10.0, [
-            'paperWidth' => '10in',
+            ['paperWidth' => '10in'],
         ]];
         yield 'paper_height' => ['paper_height', 10.0, [
-            'paperHeight' => '10in',
+            ['paperHeight' => '10in'],
         ]];
         yield 'margin_top' => ['margin_top', 10.0, [
-            'marginTop' => '10in',
+            ['marginTop' => '10in'],
         ]];
         yield 'margin_bottom' => ['margin_bottom', 10.0, [
-            'marginBottom' => '10in',
+            ['marginBottom' => '10in'],
         ]];
         yield 'margin_left' => ['margin_left', 10.0, [
-            'marginLeft' => '10in',
+            ['marginLeft' => '10in'],
         ]];
         yield 'margin_right' => ['margin_right', 10.0, [
-            'marginRight' => '10in',
+            ['marginRight' => '10in'],
         ]];
         yield 'prefer_css_page_size' => ['prefer_css_page_size', false, [
-            'preferCssPageSize' => 'false',
+            ['preferCssPageSize' => 'false'],
         ]];
         yield 'print_background' => ['print_background', false, [
-            'printBackground' => 'false',
+            ['printBackground' => 'false'],
         ]];
         yield 'omit_background' => ['omit_background', false, [
-            'omitBackground' => 'false',
+            ['omitBackground' => 'false'],
         ]];
         yield 'landscape' => ['landscape', false, [
-            'landscape' => 'false',
+            ['landscape' => 'false'],
         ]];
         yield 'scale' => ['scale', 2.0, [
-            'scale' => '2.0',
+            ['scale' => '2.0'],
         ]];
         yield 'native_page_ranges' => ['native_page_ranges', '1-10', [
-            'nativePageRanges' => '1-10',
+            ['nativePageRanges' => '1-10'],
         ]];
         yield 'wait_delay' => ['wait_delay', '3ms', [
-            'waitDelay' => '3ms',
+            ['waitDelay' => '3ms'],
         ]];
         yield 'wait_for_expression' => ['wait_for_expression', "window.status === 'ready'", [
-            'waitForExpression' => "window.status === 'ready'",
+            ['waitForExpression' => "window.status === 'ready'"],
         ]];
         yield 'emulated_media_type' => ['emulated_media_type', 'screen', [
-            'emulatedMediaType' => 'screen',
+            ['emulatedMediaType' => 'screen'],
         ]];
         yield 'cookies' => ['cookies', [['name' => 'MyCookie', 'value' => 'raspberry']], [
-            'cookies' => '[{"name":"MyCookie","value":"raspberry"}]',
+            ['cookies' => '[{"name":"MyCookie","value":"raspberry"}]'],
         ]];
         yield 'user_agent' => ['user_agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)', [
-            'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)',
+            ['userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)'],
         ]];
         yield 'extra_http_headers' => ['extra_http_headers', ['MyHeader' => 'SomeValue'], [
-            'extraHttpHeaders' => '{"MyHeader":"SomeValue"}',
+            ['extraHttpHeaders' => '{"MyHeader":"SomeValue"}'],
         ]];
         yield 'fail_on_http_status_codes' => ['fail_on_http_status_codes', [499, 500], [
-            'failOnHttpStatusCodes' => '[499,500]',
+            ['failOnHttpStatusCodes' => '[499,500]'],
         ]];
         yield 'fail_on_console_exceptions' => ['fail_on_console_exceptions', false, [
-            'failOnConsoleExceptions' => 'false',
+            ['failOnConsoleExceptions' => 'false'],
         ]];
         yield 'skip_network_idle_event' => ['skip_network_idle_event', false, [
-            'skipNetworkIdleEvent' => 'false',
+            ['skipNetworkIdleEvent' => 'false'],
         ]];
         yield 'metadata' => ['metadata', ['Author' => 'SensioLabs'], [
-            'metadata' => '{"Author":"SensioLabs"}',
+            ['metadata' => '{"Author":"SensioLabs"}'],
         ]];
     }
 
@@ -117,7 +121,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
             $key => $value,
         ]);
 
-        self::assertEquals($expected, $builder->getMultipartFormData()[0]);
+        self::assertEquals($expected, $builder->getMultipartFormData());
     }
 
     public function testConfigurationNotFoundThrowError(): void

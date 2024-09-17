@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -179,6 +180,11 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->booleanNode('single_page')
                     ->info('Define whether to print the entire content in one single page. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium')
+                    ->defaultNull()
+                ->end()
+                ->enumNode('paper_size')
+                    ->info('Paper width and paper height, in inches - default 8.5 and 11. https://gotenberg.dev/docs/routes#page-properties-chromium')
+                    ->values(array_map(static fn (PaperSize $case): string => $case->value, PaperSize::cases()))
                     ->defaultNull()
                 ->end()
                 ->scalarNode('paper_width')
