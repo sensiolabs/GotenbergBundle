@@ -342,6 +342,12 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->append($this->addPdfMetadata())
             ->end()
+            ->validate()
+                ->ifTrue(function ($v) {
+                    return isset($v['paper_standard_size']) && (isset($v['paper_height']) || isset($v['paper_width']));
+                })
+                ->thenInvalid('You cannot use "paper_standard_size" when "paper_height", "paper_width" or both are set".')
+            ->end()
         ;
 
         $this->addPdfFormat($parent);
