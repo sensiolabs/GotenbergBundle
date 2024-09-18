@@ -41,6 +41,7 @@ sensiolabs_gotenberg:
                     template: null                  # None
                     context: null                   # None
                 single_page: null                   # false
+                paper_standard_size: null           # None
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
                 margin_top: null                    # 0.39
@@ -73,6 +74,7 @@ sensiolabs_gotenberg:
                     template: null                  # None
                     context: null                   # None
                 single_page: null                   # false
+                paper_standard_size: null           # None
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
                 margin_top: null                    # 0.39
@@ -105,6 +107,7 @@ sensiolabs_gotenberg:
                     template: null                  # None
                     context: null                   # None
                 single_page: null                   # false
+                paper_standard_size: null           # None
                 paper_width: null                   # 8.5
                 paper_height: null                  # 11
                 margin_top: null                    # 0.39

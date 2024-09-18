@@ -37,7 +37,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         yield 'pdf_universal_access' => ['pdf_universal_access', false, [
             ['pdfua' => 'false'],
         ]];
-        yield 'paper_size' => ['paper_size', 'A4', [
+        yield 'paper_standard_size' => ['paper_standard_size', 'A4', [
             ['paperWidth' => '8.27in'],
             ['paperHeight' => '11.7in'],
         ]];

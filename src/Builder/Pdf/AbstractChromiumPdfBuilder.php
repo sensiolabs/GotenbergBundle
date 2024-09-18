@@ -565,7 +565,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'single_page' => $this->singlePage($value),
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
-            'paper_size' => $this->paperStandardSize(PaperSize::from($value)),
+            'paper_standard_size' => $this->paperStandardSize(PaperSize::from($value)),
             'paper_width' => $this->paperWidth(...Unit::parse($value)),
             'paper_height' => $this->paperHeight(...Unit::parse($value)),
             'margin_top' => $this->marginTop(...Unit::parse($value)),
