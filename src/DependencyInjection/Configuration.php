@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -181,6 +182,11 @@ class Configuration implements ConfigurationInterface
                     ->info('Define whether to print the entire content in one single page. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium')
                     ->defaultNull()
                 ->end()
+                ->enumNode('paper_standard_size')
+                    ->info('The standard paper size to use, either "letter", "legal", "tabloid", "ledger", "A0", "A1", "A2", "A3", "A4", "A5", "A6" - default None.')
+                    ->values(array_map(static fn (PaperSize $case): string => $case->value, PaperSize::cases()))
+                    ->defaultNull()
+                ->end()
                 ->scalarNode('paper_width')
                     ->info('Paper width, in inches - default 8.5. https://gotenberg.dev/docs/routes#page-properties-chromium')
                     ->defaultNull()
@@ -335,6 +341,12 @@ class Configuration implements ConfigurationInterface
                     ->defaultNull()
                 ->end()
                 ->append($this->addPdfMetadata())
+            ->end()
+            ->validate()
+                ->ifTrue(function ($v) {
+                    return isset($v['paper_standard_size']) && (isset($v['paper_height']) || isset($v['paper_width']));
+                })
+                ->thenInvalid('You cannot use "paper_standard_size" when "paper_height", "paper_width" or both are set".')
             ->end()
         ;
 

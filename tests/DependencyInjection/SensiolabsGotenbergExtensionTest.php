@@ -34,8 +34,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $list = [
             'pdf' => [
                 'html' => [
-                    'paper_width' => 33.1,
-                    'paper_height' => 46.8,
+                    'paper_standard_size' => 'A4',
                     'margin_top' => 1,
                     'margin_bottom' => 1,
                     'margin_left' => 1,
@@ -414,8 +413,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'default_options' => [
                     'pdf' => [
                         'html' => [
-                            'paper_width' => 33.1,
-                            'paper_height' => 46.8,
+                            'paper_standard_size' => 'A4',
                             'margin_top' => 1,
                             'margin_bottom' => 1,
                             'margin_left' => 1,
