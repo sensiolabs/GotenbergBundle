@@ -83,6 +83,53 @@ final class ConfigurationTest extends TestCase
     }
 
     /**
+     * @return iterable<string, array<array-key, array<string, string>>>
+     */
+    public static function providePaperSizesConfigurations(): iterable
+    {
+        yield 'with paper_width' => [
+            [
+                'paper_standard_size' => 'A4',
+                'paper_width' => '21cm',
+            ],
+        ];
+        yield 'with paper_height' => [
+            [
+                'paper_standard_size' => 'A4',
+                'paper_height' => '29.7cm',
+            ],
+        ];
+        yield 'with paper_width and paper_height' => [
+            [
+                'paper_standard_size' => 'A4',
+                'paper_width' => '21cm',
+                'paper_height' => '29.7cm',
+            ],
+        ];
+    }
+
+    /**
+     * @param array<string, string> $configuration
+     */
+    #[DataProvider('providePaperSizesConfigurations')]
+    public function testExceptionOnPaperSizesConfigurations(array $configuration): void
+    {
+        self::expectException(InvalidConfigurationException::class);
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => [
+                    'pdf' => [
+                        'html' => $configuration,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * @return array{
      *     'default_options': array{
      *         'pdf': array{
