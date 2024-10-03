@@ -100,9 +100,9 @@ class SensiolabsGotenbergExtension extends Extension
      */
     private function cleanUserOptions(array $userConfigurations): array
     {
-        return array_filter($userConfigurations, static function ($config): bool {
-            return null !== $config;
-        });
+        return array_filter($userConfigurations, static function ($config, $configName): bool {
+            return null !== $config && 'webhook' !== $configName;
+        }, \ARRAY_FILTER_USE_BOTH);
     }
 
     /**

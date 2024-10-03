@@ -65,7 +65,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'skip_network_idle_event' => true,
                     'pdf_format' => 'PDF/A-1b',
                     'pdf_universal_access' => true,
-                    'webhook' => ['config_name' => 'bar'],
                 ],
                 'url' => [
                     'paper_width' => 21,

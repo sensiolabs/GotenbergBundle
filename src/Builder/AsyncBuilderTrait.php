@@ -14,6 +14,9 @@ trait AsyncBuilderTrait
      * @var array<string, mixed>
      */
     private array $webhookExtraHeaders = [];
+    /**
+     * @var \Closure(): string
+     */
     private \Closure $operationIdGenerator;
     private WebhookConfigurationRegistryInterface $webhookConfigurationRegistry;
 
@@ -32,7 +35,8 @@ trait AsyncBuilderTrait
             'Gotenberg-Webhook-Extra-Http-Headers' => json_encode($this->webhookExtraHeaders, \JSON_THROW_ON_ERROR),
         ];
         if (null !== $this->fileName) {
-            $headers['Gotenberg-Output-Filename'] = basename($this->fileName, '.pdf');
+            // Gotenberg will add the extension to the file name (e.g. filename : "file.pdf" => generated file : "file.pdf.pdf").
+            $headers['Gotenberg-Output-Filename'] = $this->fileName;
         }
         $this->client->call($this->getEndpoint(), $this->getMultipartFormData(), $headers);
 
@@ -71,6 +75,9 @@ trait AsyncBuilderTrait
         return $this;
     }
 
+    /**
+     * @param \Closure(): string $operationIdGenerator
+     */
     public function operationIdGenerator(\Closure $operationIdGenerator): static
     {
         $this->operationIdGenerator = $operationIdGenerator;

@@ -673,17 +673,17 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('name')
                             ->validate()
-                                ->ifTrue(static function ($option) {
+                                ->ifTrue(static function (mixed $option): bool {
                                     return !\is_string($option);
                                 })
-                                ->thenInvalid('Invalid header name %s')
+                                ->thenInvalid('Invalid webhook configuration name %s')
                             ->end()
                         ->end()
                         ->append($this->addWebhookConfigurationNode('success'))
                         ->append($this->addWebhookConfigurationNode('error'))
                     ->end()
                     ->validate()
-                        ->ifTrue(static function ($option): bool {
+                        ->ifTrue(static function (mixed $option): bool {
                             return !isset($option['success']);
                         })
                         ->thenInvalid('Invalid webhook configuration : At least a "success" key is required.')
