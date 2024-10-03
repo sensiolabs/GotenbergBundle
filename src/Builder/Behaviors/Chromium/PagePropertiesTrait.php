@@ -1,0 +1,276 @@
+<?php
+
+namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
+
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
+use Sensiolabs\GotenbergBundle\Client\BodyBag;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+/**
+ * @see https://gotenberg.dev/docs/routes#page-properties-chromium.
+ */
+trait PagePropertiesTrait
+{
+    abstract protected function getBodyBag(): BodyBag;
+
+    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
+    {
+        $bodyOptionsResolver
+            ->define('singlePage')
+            ->info('Define whether to print the entire content in one single page.')
+            ->allowedTypes('bool')
+        ;
+        $bodyOptionsResolver
+            ->define('paperWidth')
+            ->info('Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
+            ->normalize(NormalizerFactory::unit())
+        ;
+        $bodyOptionsResolver
+            ->define('paperHeight')
+            ->info('Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
+            ->normalize(NormalizerFactory::unit())
+        ;
+        $bodyOptionsResolver
+            ->define('marginTop')
+            ->info('Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
+            ->normalize(NormalizerFactory::unit())
+        ;
+        $bodyOptionsResolver
+            ->define('marginBottom')
+            ->info('Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
+            ->normalize(NormalizerFactory::unit())
+        ;
+        $bodyOptionsResolver
+            ->define('marginLeft')
+            ->info('Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
+            ->normalize(NormalizerFactory::unit())
+        ;
+        $bodyOptionsResolver
+            ->define('marginRight')
+            ->info('Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
+            ->normalize(NormalizerFactory::unit())
+        ;
+        $bodyOptionsResolver
+            ->define('preferCssPageSize')
+            ->info('Define whether to prefer page size as defined by CSS.')
+            ->allowedTypes('bool')
+        ;
+        $bodyOptionsResolver
+            ->define('printBackground')
+            ->info('Print the background graphics.')
+            ->allowedTypes('bool')
+        ;
+        $bodyOptionsResolver
+            ->define('omitBackground')
+            ->info('Hide the default white background and allow generating PDFs with transparency.')
+            ->allowedTypes('bool')
+        ;
+        $bodyOptionsResolver
+            ->define('landscape')
+            ->info('Set the paper orientation to landscape.')
+            ->allowedTypes('bool')
+        ;
+        $bodyOptionsResolver
+            ->define('scale')
+            ->info('The scale of the page rendering.')
+            ->allowedTypes('int', 'float')
+            ->normalize(NormalizerFactory::scale())
+        ;
+        $bodyOptionsResolver
+            ->define('nativePageRanges')
+            ->info("Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.")
+            ->allowedValues(ValidatorFactory::range())
+        ;
+    }
+
+    /**
+     * Define whether to print the entire content in one single page.
+     *
+     * If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
+     */
+    public function singlePage(bool $bool = true): static
+    {
+        $this->getBodyBag()->set('singlePage', $bool);
+
+        return $this;
+    }
+
+    /**
+     * Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     */
+    public function paperWidth(float $width, Unit $unit = Unit::Inches): static
+    {
+        $this->getBodyBag()->set('paperWidth', $width.$unit->value);
+
+        return $this;
+    }
+
+    /**
+     * Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     */
+    public function paperHeight(float $height, Unit $unit = Unit::Inches): static
+    {
+        $this->getBodyBag()->set('paperHeight', $height.$unit->value);
+
+        return $this;
+    }
+
+    /**
+     * Overrides the default paper size, in inches.
+     *
+     * Examples of paper size (width x height):
+     *
+     * Letter - 8.5 x 11 (default)
+     * Legal - 8.5 x 14
+     * Tabloid - 11 x 17
+     * Ledger - 17 x 11
+     * A0 - 33.1 x 46.8
+     * A1 - 23.4 x 33.1
+     * A2 - 16.54 x 23.4
+     * A3 - 11.7 x 16.54
+     * A4 - 8.27 x 11.7
+     * A5 - 5.83 x 8.27
+     * A6 - 4.13 x 5.83
+     */
+    public function paperSize(float $width, float $height, Unit $unit = Unit::Inches): static
+    {
+        $this->paperWidth($width, $unit);
+        $this->paperHeight($height, $unit);
+
+        return $this;
+    }
+
+    public function paperStandardSize(PaperSizeInterface $paperSize): static
+    {
+        $this->paperWidth($paperSize->width(), $paperSize->unit());
+        $this->paperHeight($paperSize->height(), $paperSize->unit());
+
+        return $this;
+    }
+
+    /**
+     * Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     */
+    public function marginTop(float $top, Unit $unit = Unit::Inches): static
+    {
+        $this->getBodyBag()->set('marginTop', $top.$unit->value);
+
+        return $this;
+    }
+
+    /**
+     * Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     */
+    public function marginBottom(float $bottom, Unit $unit = Unit::Inches): static
+    {
+        $this->getBodyBag()->set('marginBottom', $bottom.$unit->value);
+
+        return $this;
+    }
+
+    /**
+     * Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     */
+    public function marginLeft(float $left, Unit $unit = Unit::Inches): static
+    {
+        $this->getBodyBag()->set('marginLeft', $left.$unit->value);
+
+        return $this;
+    }
+
+    /**
+     * Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     */
+    public function marginRight(float $right, Unit $unit = Unit::Inches): static
+    {
+        $this->getBodyBag()->set('marginRight', $right.$unit->value);
+
+        return $this;
+    }
+
+    /**
+     * Overrides the default margins (e.g., 0.39), in inches.
+     */
+    public function margins(float $top, float $bottom, float $left, float $right, Unit $unit = Unit::Inches): static
+    {
+        $this->marginTop($top, $unit);
+        $this->marginBottom($bottom, $unit);
+        $this->marginLeft($left, $unit);
+        $this->marginRight($right, $unit);
+
+        return $this;
+    }
+
+    /**
+     * Define whether to prefer page size as defined by CSS. (Default false).
+     */
+    public function preferCssPageSize(bool $bool): static
+    {
+        $this->getBodyBag()->set('preferCssPageSize', $bool);
+
+        return $this;
+    }
+
+    /**
+     * Define whether the document outline should be embedded into the PDF.
+     */
+    public function generateDocumentOutline(bool $bool): static
+    {
+        $this->getBodyBag()->set('generateDocumentOutline', $bool);
+
+        return $this;
+    }
+
+    /**
+     * Prints the background graphics. (Default false).
+     */
+    public function printBackground(bool $bool): static
+    {
+        $this->getBodyBag()->set('printBackground', $bool);
+
+        return $this;
+    }
+
+    /**
+     * Hide the default white background and allow generating PDFs with transparency.
+     */
+    public function omitBackground(bool $bool): static
+    {
+        $this->getBodyBag()->set('omitBackground', $bool);
+
+        return $this;
+    }
+
+    /**
+     * Set the paper orientation to landscape. (Default false).
+     */
+    public function landscape(bool $bool = true): static
+    {
+        $this->getBodyBag()->set('landscape', $bool);
+
+        return $this;
+    }
+
+    /**
+     * The scale of the page rendering (e.g., 1.0). (Default 1.0).
+     */
+    public function scale(float $scale): static
+    {
+        $this->getBodyBag()->set('scale', $scale);
+
+        return $this;
+    }
+
+    /**
+     * Page ranges to print, e.g., '1-5, 8, 11-13'. (default All pages).
+     */
+    public function nativePageRanges(string $ranges): static
+    {
+        $this->getBodyBag()->set('nativePageRanges', $ranges);
+
+        return $this;
+    }
+}

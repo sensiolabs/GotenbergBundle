@@ -2,12 +2,14 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
+// use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
+// use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+// use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
@@ -54,14 +56,64 @@ class SensiolabsGotenbergExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
-        $loader->load('builder_pdf.php');
-        $loader->load('builder_screenshot.php');
+
+        // Services
         $loader->load('services.php');
 
-        if (false === $config['controller_listener']) {
-            $container->removeDefinition('sensiolabs_gotenberg.http_kernel.stream_builder');
+        // Builders
+        $loader->load('builder.php');
+        $loader->load('builder_pdf.php');
+        $loader->load('builder_screenshot.php');
+        $container
+            ->registerForAutoconfiguration(PdfBuilderInterface::class)
+            ->addTag('sensiolabs_gotenberg.pdf_builder')
+        ;
+        $container
+            ->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
+            ->addTag('sensiolabs_gotenberg.screenshot_builder')
+        ;
+
+        // Configurators
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.html')
+            ->replaceArgument(0, $this->cleanUserOptions($config['default_options']['pdf']['html']))
+        ;
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.merge')
+            ->replaceArgument(0, $this->cleanUserOptions($config['default_options']['pdf']['merge']))
+        ;
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.screenshot_builder_configurator.html')
+            ->replaceArgument(0, $this->cleanUserOptions($config['default_options']['screenshot']['html']))
+        ;
+
+        // HTTP Client
+        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'] ?? 'http_client', false));
+
+        // Request context
+        $baseUri = $config['request_context']['base_uri'] ?? null;
+        if (null !== $baseUri) {
+            $container
+                ->register('.sensiolabs_gotenberg.request_context', RequestContext::class)
+                ->setFactory([RequestContext::class, 'fromUri'])
+                ->setArguments([$baseUri])
+            ;
         }
 
+        // Asset base dir formatter
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.asset.base_dir_formatter')
+            ->replaceArgument(1, $config['assets_directory'])
+        ;
+
+        //		$loader->load('builder_pdf.php');
+        //        $loader->load('builder_screenshot.php');
+        //        $loader->load('services.php');
+        //
+        //        if (false === $config['controller_listener']) {
+        //            $container->removeDefinition('sensiolabs_gotenberg.http_kernel.stream_builder');
+        //        }
+        //
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
@@ -76,54 +128,54 @@ class SensiolabsGotenbergExtension extends Extension
                 ])
             ;
         }
-
-        $container->registerForAutoconfiguration(PdfBuilderInterface::class)
-            ->addTag('sensiolabs_gotenberg.pdf_builder')
-        ;
-
-        $container->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
-            ->addTag('sensiolabs_gotenberg.screenshot_builder')
-        ;
-
-        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'], false));
-
-        $baseUri = $config['request_context']['base_uri'] ?? null;
-
-        if (null !== $baseUri) {
-            $requestContextDefinition = new Definition(RequestContext::class);
-            $requestContextDefinition->setFactory([RequestContext::class, 'fromUri']);
-            $requestContextDefinition->setArguments([$baseUri]);
-
-            $container->setDefinition('.sensiolabs_gotenberg.request_context', $requestContextDefinition);
-        }
-
-        foreach ($config['webhook'] as $name => $configuration) {
-            $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')
-                ->addMethodCall('add', [$name, $configuration]);
-        }
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.html', $config['default_options']['pdf']['html']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.url', $config['default_options']['pdf']['url']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.markdown', $config['default_options']['pdf']['markdown']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.office', $config['default_options']['pdf']['office']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.merge', $config['default_options']['pdf']['merge']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.convert', $config['default_options']['pdf']['convert']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.split', $config['default_options']['pdf']['split']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.html', $config['default_options']['screenshot']['html']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.url', $config['default_options']['screenshot']['url']);
-
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.markdown', $config['default_options']['screenshot']['markdown']);
-
-        $definition = $container->getDefinition('.sensiolabs_gotenberg.asset.base_dir_formatter');
-        $definition->replaceArgument(1, $config['assets_directory']);
+        //
+        //        $container->registerForAutoconfiguration(PdfBuilderInterface::class)
+        //            ->addTag('sensiolabs_gotenberg.pdf_builder')
+        //        ;
+        //
+        //        $container->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
+        //            ->addTag('sensiolabs_gotenberg.screenshot_builder')
+        //        ;
+        //
+        //        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'], false));
+        //
+        //        $baseUri = $config['request_context']['base_uri'] ?? null;
+        //
+        //        if (null !== $baseUri) {
+        //            $requestContextDefinition = new Definition(RequestContext::class);
+        //            $requestContextDefinition->setFactory([RequestContext::class, 'fromUri']);
+        //            $requestContextDefinition->setArguments([$baseUri]);
+        //
+        //            $container->setDefinition('.sensiolabs_gotenberg.request_context', $requestContextDefinition);
+        //        }
+        //
+        //        foreach ($config['webhook'] as $name => $configuration) {
+        //            $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')
+        //                ->addMethodCall('add', [$name, $configuration]);
+        //        }
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.html', $config['default_options']['pdf']['html']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.url', $config['default_options']['pdf']['url']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.markdown', $config['default_options']['pdf']['markdown']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.office', $config['default_options']['pdf']['office']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.merge', $config['default_options']['pdf']['merge']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.convert', $config['default_options']['pdf']['convert']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.split', $config['default_options']['pdf']['split']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.html', $config['default_options']['screenshot']['html']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.url', $config['default_options']['screenshot']['url']);
+        //
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.markdown', $config['default_options']['screenshot']['markdown']);
+        //
+        //        $definition = $container->getDefinition('.sensiolabs_gotenberg.asset.base_dir_formatter');
+        //        $definition->replaceArgument(1, $config['assets_directory']);
     }
 
     /**

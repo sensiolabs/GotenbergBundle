@@ -2,17 +2,16 @@
 
 namespace Sensiolabs\GotenbergBundle\Twig;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 
 /**
  * @internal
  */
 final class GotenbergAssetRuntime
 {
-    private AbstractChromiumPdfBuilder|AbstractChromiumScreenshotBuilder|null $builder = null;
+    private BuilderInterface|null $builder = null;
 
-    public function setBuilder(AbstractChromiumPdfBuilder|AbstractChromiumScreenshotBuilder|null $builder): void
+    public function setBuilder(BuilderInterface|null $builder): void
     {
         $this->builder = $builder;
     }
