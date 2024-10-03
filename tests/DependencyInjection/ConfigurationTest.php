@@ -2,21 +2,62 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
-#[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {
+    /**
+     * @param array<'pdf'|'screenshot', list<class-string<BuilderInterface>>> $builders
+     */
+    public static function getWithBuilders(array $builders): Configuration
+    {
+        $builderStack = new BuilderStack();
+
+        foreach ($builders as $type => $builderList) {
+            foreach ($builderList as $builderClass) {
+                $builderStack->push($builderClass);
+            }
+        }
+
+        return new Configuration($builderStack->getConfigNode());
+    }
+
     public function testDefaultConfigIsCorrect(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(
-            new Configuration(),
+            self::getWithBuilders([
+                'pdf' => [
+                    ConvertPdfBuilder::class,
+                    HtmlPdfBuilder::class,
+                    LibreOfficePdfBuilder::class,
+                    MarkdownPdfBuilder::class,
+                    MergePdfBuilder::class,
+                    UrlPdfBuilder::class,
+                    SplitPdfBuilder::class,
+                ],
+                'screenshot' => [
+                    HtmlScreenshotBuilder::class,
+                    MarkdownScreenshotBuilder::class,
+                    UrlScreenshotBuilder::class,
+                ],
+            ]),
             [[
                 'http_client' => 'http_client',
             ]],
@@ -32,7 +73,7 @@ final class ConfigurationTest extends TestCase
 
         $processor = new Processor();
         $processor->processConfiguration(
-            new Configuration(),
+            new Configuration([]),
             [],
         );
     }
@@ -55,7 +96,7 @@ final class ConfigurationTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $processor = new Processor();
         $processor->processConfiguration(
-            new Configuration(),
+            self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]),
             [['default_options' => ['pdf' => ['html' => ['native_page_ranges' => $range]]]]],
         );
     }
@@ -81,7 +122,7 @@ final class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         /** @var array{'default_options': array<string, mixed>} $config */
-        $config = $processor->processConfiguration(new Configuration(), [
+        $config = $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
             [
                 'http_client' => 'http_client',
                 'default_options' => [
@@ -95,7 +136,6 @@ final class ConfigurationTest extends TestCase
         $config = $this->cleanOptions($config['default_options']['pdf']['html']);
         self::assertEquals([
             'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyAgent'],
-            'fail_on_http_status_codes' => ['499', '599'],
         ], $config);
     }
 
@@ -103,7 +143,7 @@ final class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         /** @var array{'default_options': array<string, mixed>} $config */
-        $config = $processor->processConfiguration(new Configuration(), [
+        $config = $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
             [
                 'http_client' => 'http_client',
                 'default_options' => [
@@ -129,55 +169,7 @@ final class ConfigurationTest extends TestCase
                     'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
                 ],
             ],
-            'fail_on_http_status_codes' => ['499', '599'],
         ], $config);
-    }
-
-    /**
-     * @return iterable<string, array<array-key, array<string, string>>>
-     */
-    public static function providePaperSizesConfigurations(): iterable
-    {
-        yield 'with paper_width' => [
-            [
-                'paper_standard_size' => 'A4',
-                'paper_width' => '21cm',
-            ],
-        ];
-        yield 'with paper_height' => [
-            [
-                'paper_standard_size' => 'A4',
-                'paper_height' => '29.7cm',
-            ],
-        ];
-        yield 'with paper_width and paper_height' => [
-            [
-                'paper_standard_size' => 'A4',
-                'paper_width' => '21cm',
-                'paper_height' => '29.7cm',
-            ],
-        ];
-    }
-
-    /**
-     * @param array<string, string> $configuration
-     */
-    #[DataProvider('providePaperSizesConfigurations')]
-    public function testExceptionOnPaperSizesConfigurations(array $configuration): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-
-        $processor = new Processor();
-        $processor->processConfiguration(new Configuration(), [
-            [
-                'http_client' => 'http_client',
-                'default_options' => [
-                    'pdf' => [
-                        'html' => $configuration,
-                    ],
-                ],
-            ],
-        ]);
     }
 
     /**
@@ -219,7 +211,7 @@ final class ConfigurationTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $processor = new Processor();
         $processor->processConfiguration(
-            new Configuration(),
+            new Configuration([]),
             $config,
         );
     }
@@ -272,17 +264,51 @@ final class ConfigurationTest extends TestCase
                         'cookies' => [],
                         'user_agent' => null,
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [499, 599],
+                        'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
                         'fail_on_resource_loading_failed' => null,
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
-                        'download_from' => [],
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'url' => [
                         'single_page' => null,
@@ -306,7 +332,7 @@ final class ConfigurationTest extends TestCase
                         'cookies' => [],
                         'user_agent' => null,
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [499, 599],
+                        'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
                         'fail_on_resource_loading_failed' => null,
                         'fail_on_console_exceptions' => null,
@@ -317,6 +343,40 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'markdown' => [
                         'single_page' => null,
@@ -340,7 +400,7 @@ final class ConfigurationTest extends TestCase
                         'cookies' => [],
                         'user_agent' => null,
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [499, 599],
+                        'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
                         'fail_on_resource_loading_failed' => null,
                         'fail_on_console_exceptions' => null,
@@ -351,6 +411,40 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'office' => [
                         'password' => null,
@@ -382,21 +476,118 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'flatten' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
+                        'update_indexes' => null,
                     ],
                     'merge' => [
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
+                        'flatten' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
                     ],
                     'convert' => [
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
                     ],
                     'split' => [
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'pdf_universal_access' => null,
+                        'pdf_format' => null,
+                        'download_from' => [],
+                        'flatten' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
                     ],
                 ],
                 'screenshot' => [
@@ -414,12 +605,32 @@ final class ConfigurationTest extends TestCase
                         'cookies' => [],
                         'user_agent' => null,
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [499, 599],
+                        'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
                         'fail_on_resource_loading_failed' => null,
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'url' => [
                         'width' => null,
@@ -435,12 +646,32 @@ final class ConfigurationTest extends TestCase
                         'cookies' => [],
                         'user_agent' => null,
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [499, 599],
+                        'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
                         'fail_on_resource_loading_failed' => null,
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'markdown' => [
                         'width' => null,
@@ -456,12 +687,32 @@ final class ConfigurationTest extends TestCase
                         'cookies' => [],
                         'user_agent' => null,
                         'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [499, 599],
+                        'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
                         'fail_on_resource_loading_failed' => null,
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                 ],
             ],
@@ -475,12 +726,18 @@ final class ConfigurationTest extends TestCase
      */
     private function cleanOptions(array $userConfigurations): array
     {
-        return array_filter($userConfigurations, static function ($config): bool {
-            if (\is_array($config)) {
-                return 0 !== \count($config);
-            }
+        foreach ($userConfigurations as $key => $value) {
+            if (\is_array($value)) {
+                $userConfigurations[$key] = $this->cleanOptions($value);
 
-            return null !== $config;
-        });
+                if ([] === $userConfigurations[$key]) {
+                    unset($userConfigurations[$key]);
+                }
+            } elseif (null === $value) {
+                unset($userConfigurations[$key]);
+            }
+        }
+
+        return $userConfigurations;
     }
 }

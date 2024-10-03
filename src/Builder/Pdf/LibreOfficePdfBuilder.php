@@ -2,17 +2,27 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
-use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\LibreOfficeTrait;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\File as DataPartFile;
 
-final class LibreOfficePdfBuilder extends AbstractPdfBuilder
+/**
+ * @see https://gotenberg.dev/docs/routes#convert-with-libreoffice
+ */
+#[SemanticNode('office')]
+final class LibreOfficePdfBuilder extends AbstractBuilder
 {
-    private const ENDPOINT = '/forms/libreoffice/convert';
+    use AssetBaseDirFormatterAwareTrait;
+    use LibreOfficeTrait;
+
+    public const ENDPOINT = '/forms/libreoffice/convert';
 
     private const AVAILABLE_EXTENSIONS = [
         '123', '602', 'abw', 'bib', 'bmp', 'cdr', 'cgm', 'cmx', 'csv', 'cwk', 'dbf', 'dif', 'doc', 'docm',
@@ -28,367 +38,21 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     ];
 
     /**
-     * To set configurations by an array of configurations.
-     *
-     * @param array<string, mixed> $configurations
-     */
-    public function setConfigurations(array $configurations): static
-    {
-        foreach ($configurations as $property => $value) {
-            $this->addConfiguration($property, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set the password for opening the source file.
-     */
-    public function password(#[\SensitiveParameter] string $password): self
-    {
-        $this->formFields['password'] = $password;
-
-        return $this;
-    }
-
-    /**
-     * Sets the paper orientation to landscape.
-     */
-    public function landscape(bool $bool = true): self
-    {
-        $this->formFields['landscape'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Page ranges to print, e.g., '1-4' - empty means all pages.
-     *
-     * If multiple files are provided, the page ranges will be applied independently to each file.
-     */
-    public function nativePageRanges(string $range): self
-    {
-        $this->formFields['nativePageRanges'] = $range;
-
-        return $this;
-    }
-
-    /**
-     * Set whether to export the form fields or to use the inputted/selected content of the fields.
-     */
-    public function doNotExportFormFields(bool $bool = false): self
-    {
-        $this->formFields['exportFormFields'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Set whether to render the entire spreadsheet as a single page.
-     */
-    public function singlePageSheets(bool $bool = true): self
-    {
-        $this->formFields['singlePageSheets'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Convert the resulting PDF into the given PDF/A format.
-     */
-    public function pdfFormat(PdfFormat $format): self
-    {
-        $this->formFields['pdfa'] = $format;
-
-        return $this;
-    }
-
-    /**
-     * Enable PDF for Universal Access for optimal accessibility.
-     */
-    public function pdfUniversalAccess(bool $bool = true): self
-    {
-        $this->formFields['pdfua'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Merge alphanumerically the resulting PDFs.
-     */
-    public function merge(bool $bool = true): self
-    {
-        $this->formFields['merge'] = $bool;
-
-        return $this;
-    }
-
-    /**
      * Adds office files to convert (overrides any previous files).
      */
     public function files(string|\Stringable ...$paths): self
     {
-        $this->formFields['files'] = [];
-
         foreach ($paths as $path) {
             $path = (string) $path;
-            $this->assertFileExtension($path, self::AVAILABLE_EXTENSIONS);
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            ValidatorFactory::filesExtension([$info], self::AVAILABLE_EXTENSIONS);
 
-            $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
-
-            $this->formFields['files'][$path] = $dataPart;
+            $files[$path] = $info;
         }
 
-        return $this;
-    }
-
-    /**
-     * Resets the metadata.
-     *
-     * @see https://gotenberg.dev/docs/routes#metadata-chromium
-     * @see https://exiftool.org/TagNames/XMP.html#pdf
-     *
-     * @param array<string, mixed> $metadata
-     */
-    public function metadata(array $metadata): self
-    {
-        $this->formFields['metadata'] = $metadata;
+        $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
-    }
-
-    /**
-     * The metadata to write.
-     */
-    public function addMetadata(string $key, string $value): self
-    {
-        $this->formFields['metadata'] ??= [];
-        $this->formFields['metadata'][$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Specify whether multiple form fields exported are allowed to have the same field name.
-     */
-    public function allowDuplicateFieldNames(bool $bool = true): self
-    {
-        $this->formFields['allowDuplicateFieldNames'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify if bookmarks are exported to PDF.
-     */
-    public function doNotExportBookmarks(bool $bool = false): self
-    {
-        $this->formFields['exportBookmarks'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
-     */
-    public function exportBookmarksToPdfDestination(bool $bool = true): self
-    {
-        $this->formFields['exportBookmarksToPdfDestination'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Export the placeholders fields visual markings only. The exported placeholder is ineffective.
-     */
-    public function exportPlaceholders(bool $bool = true): self
-    {
-        $this->formFields['exportPlaceholders'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify if notes are exported to PDF.
-     */
-    public function exportNotes(bool $bool = true): self
-    {
-        $this->formFields['exportNotes'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.
-     */
-    public function exportNotesPages(bool $bool = true): self
-    {
-        $this->formFields['exportNotesPages'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify, if the form field exportNotesPages is set to true, if only notes pages are exported to PDF.
-     */
-    public function exportOnlyNotesPages(bool $bool = true): self
-    {
-        $this->formFields['exportOnlyNotesPages'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify if notes in margin are exported to PDF.
-     */
-    public function exportNotesInMargin(bool $bool = true): self
-    {
-        $this->formFields['exportNotesInMargin'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.
-     */
-    public function convertOooTargetToPdfTarget(bool $bool = true): self
-    {
-        $this->formFields['convertOooTargetToPdfTarget'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.
-     */
-    public function exportLinksRelativeFsys(bool $bool = true): self
-    {
-        $this->formFields['exportLinksRelativeFsys'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Export, for LibreOffice Impress, slides that are not included in slide shows.
-     */
-    public function exportHiddenSlides(bool $bool = true): self
-    {
-        $this->formFields['exportHiddenSlides'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.
-     */
-    public function skipEmptyPages(bool $bool = true): self
-    {
-        $this->formFields['skipEmptyPages'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.
-     */
-    public function addOriginalDocumentAsStream(bool $bool = true): self
-    {
-        $this->formFields['addOriginalDocumentAsStream'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.
-     */
-    public function losslessImageCompression(bool $bool = true): self
-    {
-        $this->formFields['losslessImageCompression'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.
-     *
-     * @param int<0, 100> $quality
-     */
-    public function quality(int $quality): self
-    {
-        $this->formFields['quality'] = $quality;
-
-        return $this;
-    }
-
-    /**
-     * Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution.
-     */
-    public function reduceImageResolution(bool $bool = true): self
-    {
-        $this->formFields['reduceImageResolution'] = $bool;
-
-        return $this;
-    }
-
-    /**
-     * If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
-     */
-    public function maxImageResolution(ImageResolutionDPI $resolution): self
-    {
-        $this->formFields['maxImageResolution'] = $resolution;
-
-        return $this;
-    }
-
-    /**
-     * Either intervals or pages. (default None).
-     *
-     * @see https://gotenberg.dev/docs/routes#split-libreoffice
-     */
-    public function splitMode(SplitMode|null $splitMode = null): static
-    {
-        if (null === $splitMode) {
-            unset($this->formFields['splitMode']);
-
-            return $this;
-        }
-
-        $this->formFields['splitMode'] = $splitMode;
-
-        return $this;
-    }
-
-    /**
-     * Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
-     *
-     * @see https://gotenberg.dev/docs/routes#split-libreoffice
-     */
-    public function splitSpan(string $splitSpan): static
-    {
-        $this->formFields['splitSpan'] = $splitSpan;
-
-        return $this;
-    }
-
-    /**
-     * Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
-     *
-     * @see https://gotenberg.dev/docs/routes#split-libreoffice
-     */
-    public function splitUnify(bool $bool = true): static
-    {
-        $this->formFields['splitUnify'] = $bool;
-
-        return $this;
-    }
-
-    public function getMultipartFormData(): array
-    {
-        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
-            throw new MissingRequiredFieldException('At least one office file is required');
-        }
-
-        return parent::getMultipartFormData();
     }
 
     protected function getEndpoint(): string
@@ -396,40 +60,25 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
         return self::ENDPOINT;
     }
 
-    private function addConfiguration(string $configurationName, mixed $value): void
+    protected function validatePayloadBody(): void
     {
-        match ($configurationName) {
-            'password' => $this->password($value),
-            'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
-            'pdf_universal_access' => $this->pdfUniversalAccess($value),
-            'landscape' => $this->landscape($value),
-            'native_page_ranges' => $this->nativePageRanges($value),
-            'do_not_export_form_fields' => $this->doNotExportFormFields($value),
-            'single_page_sheets' => $this->singlePageSheets($value),
-            'merge' => $this->merge($value),
-            'metadata' => $this->metadata($value),
-            'allow_duplicate_field_names' => $this->allowDuplicateFieldNames($value),
-            'do_not_export_bookmarks' => $this->doNotExportBookmarks($value),
-            'export_bookmarks_to_pdf_destination' => $this->exportBookmarksToPdfDestination($value),
-            'export_placeholders' => $this->exportPlaceholders($value),
-            'export_notes' => $this->exportNotes($value),
-            'export_notes_pages' => $this->exportNotesPages($value),
-            'export_only_notes_pages' => $this->exportOnlyNotesPages($value),
-            'export_notes_in_margin' => $this->exportNotesInMargin($value),
-            'convert_ooo_target_to_pdf_target' => $this->convertOooTargetToPdfTarget($value),
-            'export_links_relative_fsys' => $this->exportLinksRelativeFsys($value),
-            'export_hidden_slides' => $this->exportHiddenSlides($value),
-            'skip_empty_pages' => $this->skipEmptyPages($value),
-            'add_original_document_as_stream' => $this->addOriginalDocumentAsStream($value),
-            'lossless_image_compression' => $this->losslessImageCompression($value),
-            'quality' => $this->quality($value),
-            'reduce_image_resolution' => $this->reduceImageResolution($value),
-            'max_image_resolution' => $this->maxImageResolution(ImageResolutionDPI::from($value)),
-            'download_from' => $this->downloadFrom($value),
-            'split_mode' => $this->splitMode(SplitMode::from($value)),
-            'split_span' => $this->splitSpan($value),
-            'split_unify' => $this->splitUnify($value),
-            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
-        };
+        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('At least one office file is required.');
+        }
+
+        if ($this->getBodyBag()->get('splitUnify') === true && $this->getBodyBag()->get('splitMode') === SplitMode::Intervals) {
+            throw new InvalidBuilderConfiguration('"splitUnify" can only be at "true" with "pages" mode for "splitMode".');
+        }
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
+    }
+
+    public static function type(): string
+    {
+        return 'pdf';
     }
 }

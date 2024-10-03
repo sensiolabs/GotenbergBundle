@@ -2,17 +2,17 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug;
 
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
 final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
 {
     /**
-     * @var list<array{string, TraceableScreenshotBuilder}>
+     * @var list<array{string, TraceableBuilder}>
      */
     private array $builders = [];
 
@@ -21,11 +21,11 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
     ) {
     }
 
-    public function get(string $builder): ScreenshotBuilderInterface
+    public function get(string $builder): BuilderInterface
     {
         $traceableBuilder = $this->inner->get($builder);
 
-        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -35,14 +35,14 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
     }
 
     /**
-     * @return HtmlScreenshotBuilder|TraceableScreenshotBuilder
+     * @return HtmlScreenshotBuilder|TraceableBuilder
      */
-    public function html(): ScreenshotBuilderInterface
+    public function html(): BuilderInterface
     {
-        /** @var HtmlScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
+        /** @var HtmlScreenshotBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->html();
 
-        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -52,14 +52,14 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
     }
 
     /**
-     * @return UrlScreenshotBuilder|TraceableScreenshotBuilder
+     * @return UrlScreenshotBuilder|TraceableBuilder
      */
-    public function url(): ScreenshotBuilderInterface
+    public function url(): BuilderInterface
     {
-        /** @var UrlScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
+        /** @var UrlScreenshotBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->url();
 
-        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -69,14 +69,14 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
     }
 
     /**
-     * @return MarkdownScreenshotBuilder|TraceableScreenshotBuilder
+     * @return MarkdownScreenshotBuilder|TraceableBuilder
      */
-    public function markdown(): ScreenshotBuilderInterface
+    public function markdown(): BuilderInterface
     {
-        /** @var MarkdownScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
+        /** @var MarkdownScreenshotBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->markdown();
 
-        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -86,7 +86,7 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
     }
 
     /**
-     * @return list<array{string, TraceableScreenshotBuilder}>
+     * @return list<array{string, TraceableBuilder}>
      */
     public function getBuilders(): array
     {

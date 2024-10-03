@@ -2,102 +2,49 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
-use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\SplitTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\File as DataPartFile;
 
 /**
- * Split `n` pdf files.
+ * @see https://gotenberg.dev/docs/routes#split-pdfs-route
  */
-final class SplitPdfBuilder extends AbstractPdfBuilder
+#[SemanticNode('split')]
+final class SplitPdfBuilder extends AbstractBuilder
 {
-    private const ENDPOINT = '/forms/pdfengines/split';
+    use AssetBaseDirFormatterAwareTrait;
+    use DownloadFromTrait;
+    use FlattenTrait;
+    use MetadataTrait;
+    use PdfFormatTrait;
+    use SplitTrait;
+    use WebhookTrait;
 
-    /**
-     * To set configurations by an array of configurations.
-     *
-     * @param array<string, mixed> $configurations
-     */
-    public function setConfigurations(array $configurations): static
-    {
-        foreach ($configurations as $property => $value) {
-            $this->addConfiguration($property, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Either intervals or pages. (default None).
-     *
-     * @see https://gotenberg.dev/docs/routes#split-pdfs-route
-     */
-    public function splitMode(SplitMode|null $splitMode = null): self
-    {
-        if (null === $splitMode) {
-            unset($this->formFields['splitMode']);
-
-            return $this;
-        }
-
-        $this->formFields['splitMode'] = $splitMode;
-
-        return $this;
-    }
-
-    /**
-     * Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
-     *
-     * @see https://gotenberg.dev/docs/routes#split-pdfs-route
-     */
-    public function splitSpan(string $splitSpan): self
-    {
-        $this->formFields['splitSpan'] = $splitSpan;
-
-        return $this;
-    }
-
-    /**
-     * Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
-     *
-     * @see https://gotenberg.dev/docs/routes#split-pdfs-route
-     */
-    public function splitUnify(bool $bool = true): self
-    {
-        $this->formFields['splitUnify'] = $bool;
-
-        return $this;
-    }
+    public const ENDPOINT = '/forms/pdfengines/split';
 
     public function files(string|\Stringable ...$paths): self
     {
-        $this->formFields['files'] = [];
-
         foreach ($paths as $path) {
             $path = (string) $path;
-            $this->assertFileExtension($path, ['pdf']);
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            ValidatorFactory::filesExtension([$info], ['pdf']);
 
-            $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
-
-            $this->formFields['files'][$path] = $dataPart;
+            $files[$path] = $info;
         }
+
+        $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
-    }
-
-    public function getMultipartFormData(): array
-    {
-        if (!\array_key_exists('splitMode', $this->formFields) || !\array_key_exists('splitSpan', $this->formFields)) {
-            throw new MissingRequiredFieldException('"splitMode" and "splitSpan" must be provided.');
-        }
-
-        if ([] === ($this->formFields['files'] ?? [])) {
-            throw new MissingRequiredFieldException('At least one PDF file is required');
-        }
-
-        return parent::getMultipartFormData();
     }
 
     protected function getEndpoint(): string
@@ -105,13 +52,29 @@ final class SplitPdfBuilder extends AbstractPdfBuilder
         return self::ENDPOINT;
     }
 
-    private function addConfiguration(string $configurationName, mixed $value): void
+    protected function validatePayloadBody(): void
     {
-        match ($configurationName) {
-            'split_mode' => $this->splitMode(SplitMode::from($value)),
-            'split_span' => $this->splitSpan($value),
-            'split_unify' => $this->splitUnify($value),
-            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
-        };
+        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('At least one PDF file is required.');
+        }
+
+        if ($this->getBodyBag()->get('splitMode') === null) {
+            throw new MissingRequiredFieldException('Field "splitMode" must be provided.');
+        }
+
+        if ($this->getBodyBag()->get('splitSpan') === null) {
+            throw new MissingRequiredFieldException('Field "splitSpan" must be provided.');
+        }
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
+    }
+
+    public static function type(): string
+    {
+        return 'pdf';
     }
 }

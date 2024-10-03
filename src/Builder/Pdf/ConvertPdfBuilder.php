@@ -2,77 +2,43 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
-use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\File as DataPartFile;
 
-final class ConvertPdfBuilder extends AbstractPdfBuilder
+/**
+ * @see https://gotenberg.dev/docs/routes#convert-into-pdfa--pdfua-route
+ */
+#[SemanticNode('convert')]
+final class ConvertPdfBuilder extends AbstractBuilder
 {
-    private const ENDPOINT = '/forms/pdfengines/convert';
+    use AssetBaseDirFormatterAwareTrait;
+    use DownloadFromTrait;
+    use PdfFormatTrait;
+    use WebhookTrait;
 
-    /**
-     * To set configurations by an array of configurations.
-     *
-     * @param array<string, mixed> $configurations
-     */
-    public function setConfigurations(array $configurations): static
-    {
-        foreach ($configurations as $property => $value) {
-            $this->addConfiguration($property, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Convert the resulting PDF into the given PDF/A format.
-     */
-    public function pdfFormat(PdfFormat $format): self
-    {
-        $this->formFields['pdfa'] = $format->value;
-
-        return $this;
-    }
-
-    /**
-     * Enable PDF for Universal Access for optimal accessibility.
-     */
-    public function pdfUniversalAccess(bool $bool = true): self
-    {
-        $this->formFields['pdfua'] = $bool;
-
-        return $this;
-    }
+    public const ENDPOINT = '/forms/pdfengines/convert';
 
     public function files(string|\Stringable ...$paths): self
     {
-        $this->formFields['files'] = [];
-
         foreach ($paths as $path) {
             $path = (string) $path;
-            $this->assertFileExtension($path, ['pdf']);
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            ValidatorFactory::filesExtension([$info], ['pdf']);
 
-            $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
-
-            $this->formFields['files'][$path] = $dataPart;
+            $files[$path] = $info;
         }
+
+        $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
-    }
-
-    public function getMultipartFormData(): array
-    {
-        if (!\array_key_exists('pdfa', $this->formFields) && !\array_key_exists('pdfua', $this->formFields)) {
-            throw new MissingRequiredFieldException('At least "pdfa" or "pdfua" must be provided.');
-        }
-
-        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
-            throw new MissingRequiredFieldException('At least one PDF file is required');
-        }
-
-        return parent::getMultipartFormData();
     }
 
     protected function getEndpoint(): string
@@ -80,13 +46,25 @@ final class ConvertPdfBuilder extends AbstractPdfBuilder
         return self::ENDPOINT;
     }
 
-    private function addConfiguration(string $configurationName, mixed $value): void
+    protected function validatePayloadBody(): void
     {
-        match ($configurationName) {
-            'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
-            'pdf_universal_access' => $this->pdfUniversalAccess($value),
-            'download_from' => $this->downloadFrom($value),
-            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
-        };
+        if ($this->getBodyBag()->get('pdfa') === null && $this->getBodyBag()->get('pdfua') === null) {
+            throw new MissingRequiredFieldException('At least "pdfa" or "pdfua" must be provided.');
+        }
+
+        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('At least one PDF file is required.');
+        }
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
+    }
+
+    public static function type(): string
+    {
+        return 'pdf';
     }
 }

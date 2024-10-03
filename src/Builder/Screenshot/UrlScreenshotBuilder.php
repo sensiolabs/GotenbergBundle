@@ -2,32 +2,46 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumScreenshotTrait;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
-use Twig\Environment;
 
-final class UrlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
+/**
+ * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+ */
+#[SemanticNode('url')]
+final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
-    private const ENDPOINT = '/forms/chromium/screenshot/url';
+    use ChromiumScreenshotTrait;
+
+    public const ENDPOINT = '/forms/chromium/screenshot/url';
 
     private RequestContext|null $requestContext = null;
 
-    public function __construct(
-        GotenbergClientInterface $gotenbergClient,
-        AssetBaseDirFormatter $asset,
-        WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
-        RequestStack $requestStack,
-        Environment|null $twig = null,
-        private readonly UrlGeneratorInterface|null $urlGenerator = null,
-    ) {
-        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry, $requestStack, $twig);
+    /**
+     * URL of the page you want to convert into PDF.
+     */
+    public function url(string $url): self
+    {
+        $this->getBodyBag()->set('url', $url);
 
-        $this->addNormalizer('route', $this->generateUrlFromRoute(...));
+        return $this;
+    }
+
+    /**
+     * @param string       $name       #Route
+     * @param array<mixed> $parameters
+     */
+    public function route(string $name, array $parameters = []): self
+    {
+        $this->getBodyBag()->set('route', [$name, $parameters]);
+
+        return $this;
     }
 
     public function setRequestContext(RequestContext|null $requestContext = null): self
@@ -37,70 +51,30 @@ final class UrlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
         return $this;
     }
 
-    /**
-     * URL of the page you want to screenshot.
-     */
-    public function url(string $url): self
-    {
-        $this->formFields['url'] = $url;
-
-        return $this;
-    }
-
-    /**
-     * @param string       $name       #Route
-     * @param array<mixed> $parameters
-     *
-     * @phpstan-assert !null $this->urlGenerator
-     */
-    public function route(string $name, array $parameters = []): self
-    {
-        if (null === $this->urlGenerator) {
-            throw new \LogicException(\sprintf('Router is required to use "%s" method. Try to run "composer require symfony/routing".', __METHOD__));
-        }
-
-        $this->formFields['route'] = [$name, $parameters];
-
-        return $this;
-    }
-
-    /**
-     * @param array{string, array<mixed>} $value
-     *
-     * @return array{url: string}
-     */
-    private function generateUrlFromRoute(array $value): array
-    {
-        [$route, $parameters] = $value;
-
-        $requestContext = $this->urlGenerator->getContext();
-
-        if (null !== $this->requestContext) {
-            $this->urlGenerator->setContext($this->requestContext);
-        }
-
-        try {
-            return ['url' => $this->urlGenerator->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL)];
-        } finally {
-            $this->urlGenerator->setContext($requestContext);
-        }
-    }
-
-    public function getMultipartFormData(): array
-    {
-        if (!\array_key_exists('url', $this->formFields) && !\array_key_exists('route', $this->formFields)) {
-            throw new MissingRequiredFieldException('URL (or route) is required');
-        }
-
-        if (\array_key_exists('url', $this->formFields) && \array_key_exists('route', $this->formFields)) {
-            throw new MissingRequiredFieldException('Provide only one of ["route", "url"] parameter. Not both.');
-        }
-
-        return parent::getMultipartFormData();
-    }
-
     protected function getEndpoint(): string
     {
         return self::ENDPOINT;
+    }
+
+    protected function validatePayloadBody(): void
+    {
+        if ($this->getBodyBag()->get('url') === null && $this->getBodyBag()->get('route') === null) {
+            throw new MissingRequiredFieldException('"url" (or "route") is required');
+        }
+
+        if ($this->getBodyBag()->get('url') !== null && $this->getBodyBag()->get('route') !== null) {
+            throw new MissingRequiredFieldException('Provide only one of ["route", "url"] parameter. Not both.');
+        }
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeRoute(): \Generator
+    {
+        yield 'route' => NormalizerFactory::route($this->requestContext, $this->getUrlGenerator());
+    }
+
+    public static function type(): string
+    {
+        return 'screenshot';
     }
 }

@@ -2,48 +2,37 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumScreenshotTrait;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 
-final class HtmlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
+/**
+ * @see https://gotenberg.dev/docs/routes#screenshots-route
+ */
+#[SemanticNode('html')]
+final class HtmlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
-    private const ENDPOINT = '/forms/chromium/screenshot/html';
+    use ChromiumScreenshotTrait;
 
-    /**
-     * @param string               $template #Template
-     * @param array<string, mixed> $context
-     *
-     * @package Behavior\\Content
-     *
-     * @throws ScreenshotPartRenderingException if the template could not be rendered
-     */
-    public function content(string $template, array $context = []): self
-    {
-        return $this->withRenderedPart(Part::Body, $template, $context);
-    }
-
-    /**
-     * The HTML file to convert into Screenshot.
-     *
-     * @package Behavior\\Content
-     */
-    public function contentFile(string $path): self
-    {
-        return $this->withScreenshotPartFile(Part::Body, $path);
-    }
-
-    public function getMultipartFormData(): array
-    {
-        if (!\array_key_exists(Part::Body->value, $this->formFields) && [] === ($this->formFields['downloadFrom'] ?? [])) {
-            throw new MissingRequiredFieldException('Content is required');
-        }
-
-        return parent::getMultipartFormData();
-    }
+    public const ENDPOINT = '/forms/chromium/screenshot/html';
 
     protected function getEndpoint(): string
     {
         return self::ENDPOINT;
+    }
+
+    protected function validatePayloadBody(): void
+    {
+        if ($this->getBodyBag()->get(Part::Body->value) === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('Content is required');
+        }
+    }
+
+    public static function type(): string
+    {
+        return 'screenshot';
     }
 }

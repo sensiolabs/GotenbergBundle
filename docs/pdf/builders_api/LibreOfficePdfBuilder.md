@@ -1,5 +1,8 @@
 # LibreOfficePdfBuilder
 
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#convert-with-libreoffice](https://gotenberg.dev/docs/routes#convert-with-libreoffice)
+
 ### addMetadata(string $key, string $value)
 The metadata to write.
 
@@ -16,11 +19,13 @@ Specify that the target documents with .od[tpgs] extension, will have that exten
 Specify if bookmarks are exported to PDF.
 
 ### doNotExportFormFields(bool $bool)
-Set whether to export the form fields or to use the inputted/selected content of the fields.
+Specify whether form fields are exported as widgets or only their fixed print representation is exported.
+
+### doNotUpdateIndexes(bool $bool)
+Specify whether to update the indexes before conversion, keeping in mind that doing so might result in missing links in the final PDF.
 
 ### downloadFrom(array $downloadFrom)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
+Sets download from to download each entry (file) in parallel (default None).<br />(URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 ### exportBookmarksToPdfDestination(bool $bool)
 Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
@@ -49,13 +54,18 @@ Export the placeholders fields visual markings only. The exported placeholder is
 ### files(Stringable|string $paths)
 Adds office files to convert (overrides any previous files).
 
+### flatten(bool $bool)
+Flattening a PDF combines all its contents into a single layer. (default false).
+
+### getBodyBag()
+### getHeadersBag()
 ### landscape(bool $bool)
-Sets the paper orientation to landscape.
+Set the paper orientation to landscape.
 
 ### losslessImageCompression(bool $bool)
 Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.
 
-### maxImageResolution(Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)
+### maxImageResolution(?Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)
 If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
 
 ### merge(bool $bool)
@@ -66,19 +76,22 @@ Resets the metadata.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#metadata-chromium](https://gotenberg.dev/docs/routes#metadata-chromium)
+> See: [https://gotenberg.dev/docs/routes#metadata-libreoffice](https://gotenberg.dev/docs/routes#metadata-libreoffice)
+> See: [https://gotenberg.dev/docs/routes#write-pdf-metadata-route](https://gotenberg.dev/docs/routes#write-pdf-metadata-route)
+> See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
 > See: [https://exiftool.org/TagNames/XMP.html#pdf ](https://exiftool.org/TagNames/XMP.html#pdf )
 
-### nativePageRanges(string $range)
-Page ranges to print, e.g., '1-4' - empty means all pages.<br /><br />If multiple files are provided, the page ranges will be applied independently to each file.
+### nativePageRanges(string $ranges)
+Page ranges to print, e.g., '1-4' - empty means all pages.
 
 ### password(string $password)
 Set the password for opening the source file.
 
-### pdfFormat(Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)
+### pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)
 Convert the resulting PDF into the given PDF/A format.
 
 ### pdfUniversalAccess(bool $bool)
-Enable PDF for Universal Access for optimal accessibility.
+Enable PDF for Universal Access for optimal accessibility. (default false).
 
 ### quality(int $quality)
 Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.<br />
@@ -87,44 +100,24 @@ Specify the quality of the JPG export. A higher value produces a higher-quality 
 Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution.
 
 ### singlePageSheets(bool $bool)
-Set whether to render the entire spreadsheet as a single page.
+Ignore each sheet’s paper size, print ranges and shown/hidden status and puts every sheet (even hidden sheets) on exactly one page.
 
 ### skipEmptyPages(bool $bool)
 Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.
 
 ### splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)
-Either intervals or pages. (default None).<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+Either intervals or pages. (default None).
 
 ### splitSpan(string $splitSpan)
-Either the intervals or the page ranges to extract, depending on the selected mode. (default None).<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
 
 ### splitUnify(bool $bool)
-Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).<br />
+Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
-
-### errorWebhookUrl(?string $url, ?string $method)
-Sets the webhook for cases of error.<br />Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-### webhookConfiguration(string $name)
-Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
-
-### webhookExtraHeaders(array $extraHeaders)
-Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.<br />
-
+### type()
+### webhook(array $webhook)
+### webhookErrorRoute(string $route, array $parameters, ?string $method)
+### webhookErrorUrl(string $url, ?string $method)
+### webhookExtraHeaders(array $extraHttpHeaders)
+### webhookRoute(string $route, array $parameters, ?string $method)
 ### webhookUrl(string $url, ?string $method)
-Sets the webhook for cases of success.<br />Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-

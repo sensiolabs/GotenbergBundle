@@ -2,68 +2,86 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
-use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\File as DataPartFile;
 
-final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
+/**
+ * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
+ */
+#[SemanticNode('markdown')]
+final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
-    private const ENDPOINT = '/forms/chromium/convert/markdown';
-
-    /**
-     * The HTML file that wraps the markdown content, rendered from a Twig template.
-     *
-     * @param string               $template #Template
-     * @param array<string, mixed> $context
-     *
-     * @throws PdfPartRenderingException if the template could not be rendered
-     */
-    public function wrapper(string $template, array $context = []): self
-    {
-        return $this->withRenderedPart(Part::Body, $template, $context);
+    use ChromiumPdfTrait {
+        content as wrapper;
+        contentFile as wrapperFile;
     }
 
-    /**
-     * The HTML file that wraps the markdown content.
-     */
-    public function wrapperFile(string $path): self
-    {
-        return $this->withPdfPartFile(Part::Body, $path);
-    }
+    public const ENDPOINT = '/forms/chromium/convert/markdown';
 
+    /**
+     * Add Markdown into a PDF.
+     *
+     * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+     */
     public function files(string|\Stringable ...$paths): self
     {
-        $this->formFields['files'] = [];
-
         foreach ($paths as $path) {
             $path = (string) $path;
-            $this->assertFileExtension($path, ['md']);
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            ValidatorFactory::filesExtension([$info], ['md']);
 
-            $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
-
-            $this->formFields['files'][$path] = $dataPart;
+            $files[$path] = $info;
         }
+
+        $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
     }
 
-    public function getMultipartFormData(): array
+    /**
+     * @param array<string, mixed> $context
+     */
+    public function content(string $template, array $context = []): void
     {
-        if (!\array_key_exists(Part::Body->value, $this->formFields)) {
-            throw new MissingRequiredFieldException('HTML template is required');
-        }
+        throw new \BadMethodCallException('Use wrapper() instead of content().');
+    }
 
-        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
-            throw new MissingRequiredFieldException('At least one markdown file is required');
-        }
-
-        return parent::getMultipartFormData();
+    public function contentFile(string $path): void
+    {
+        throw new \BadMethodCallException('Use wrapperFile() instead of contentFile().');
     }
 
     protected function getEndpoint(): string
     {
         return self::ENDPOINT;
+    }
+
+    protected function validatePayloadBody(): void
+    {
+        if ($this->getBodyBag()->get(Part::Body->value) === null) {
+            throw new MissingRequiredFieldException('HTML template is required');
+        }
+
+        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('At least one markdown file is required.');
+        }
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
+    }
+
+    public static function type(): string
+    {
+        return 'pdf';
     }
 }

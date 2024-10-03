@@ -2,165 +2,150 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
-use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Mime\Part\DataPart;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\SplitTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
-#[CoversClass(SplitPdfBuilder::class)]
-#[UsesClass(AbstractPdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(GotenbergFileResult::class)]
-final class SplitPdfBuilderTest extends AbstractBuilderTestCase
+/**
+ * @extends GotenbergBuilderTestCase<SplitPdfBuilder>
+ */
+final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
 {
-    private const PDF_DOCUMENTS_DIR = 'pdf';
+    /** @use DownloadFromTestCaseTrait<SplitPdfBuilder> */
+    use DownloadFromTestCaseTrait;
 
-    public function testEndpointIsCorrect(): void
+    /** @use FlattenTestCaseTrait<SplitPdfBuilder> */
+    use FlattenTestCaseTrait;
+
+    /** @use MetadataTestCaseTrait<SplitPdfBuilder> */
+    use MetadataTestCaseTrait;
+
+    /** @use PdfFormatTestCaseTrait<SplitPdfBuilder> */
+    use PdfFormatTestCaseTrait;
+
+    /** @use SplitTestCaseTrait<SplitPdfBuilder> */
+    use SplitTestCaseTrait;
+
+    /** @use WebhookTestCaseTrait<SplitPdfBuilder> */
+    use WebhookTestCaseTrait;
+
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): SplitPdfBuilder
     {
-        $this->gotenbergClient
-            ->expects($this->once())
-            ->method('call')
-            ->with(
-                $this->equalTo('/forms/pdfengines/split'),
-                $this->anything(),
-                $this->anything(),
-            )
+        return new SplitPdfBuilder($client, $dependencies);
+    }
+
+    /**
+     * @param SplitPdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): SplitPdfBuilder
+    {
+        return $builder
+            ->files('pdf/simple_pdf.pdf')
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1-2')
+        ;
+    }
+
+    public function testAddFilesAsContent(): void
+    {
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1-2')
+            ->generate()
         ;
 
-        $this->getSplitPdfBuilder()
-            ->files(self::PDF_DOCUMENTS_DIR.'/multi_page.pdf')
+        $this->assertGotenbergEndpoint('/forms/pdfengines/split');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+    }
+
+    public function testWithStringableObject(): void
+    {
+        $class = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'pdf/simple_pdf.pdf';
+            }
+        };
+
+        $this->getBuilder()
+            ->files($class)
             ->splitMode(SplitMode::Pages)
-            ->splitSpan('1')
+            ->splitSpan('1-2')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/pdfengines/split');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+    }
+
+    public function testFilesExtensionRequirement(): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
+
+        $this->getBuilder()
+            ->files('b.png')
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1-2')
             ->generate()
         ;
     }
 
-    public static function configurationIsCorrectlySetProvider(): \Generator
+    public function testRequiredSplitModeField(): void
     {
-        yield 'split_mode' => [
-            [
-                'split_mode' => 'pages',
-                'split_span' => '1',
-            ],
-            [
-                'splitMode' => 'pages',
-            ],
-        ];
-        yield 'split_span' => [
-            [
-                'split_span' => '1',
-                'split_mode' => 'pages',
-            ],
-            [
-                'splitSpan' => '1',
-            ],
-        ];
-        yield 'split_unify' => [
-            [
-                'split_unify' => true,
-                'split_span' => '1',
-                'split_mode' => 'pages',
-            ],
-            [
-                'splitUnify' => true,
-            ],
-        ];
-    }
-
-    /**
-     * @param array<mixed> $configurations
-     * @param array<mixed> $expected
-     */
-    #[DataProvider('configurationIsCorrectlySetProvider')]
-    public function testConfigurationIsCorrectlySet(array $configurations, array $expected): void
-    {
-        $builder = $this->getSplitPdfBuilder();
-        $builder->setConfigurations($configurations);
-        $builder->files(self::PDF_DOCUMENTS_DIR.'/multi_page.pdf');
-
-        self::assertEquals($expected, $builder->getMultipartFormData()[0]);
-    }
-
-    public function testRequiredFormData(): void
-    {
-        $builder = $this->getSplitPdfBuilder();
-
         $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('"splitMode" and "splitSpan" must be provided.');
+        $this->expectExceptionMessage('Field "splitMode" must be provided.');
 
-        $builder->getMultipartFormData();
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
+            ->splitSpan('1-2')
+            ->generate()
+        ;
     }
 
-    public function testRequiredFile(): void
+    public function testRequiredSplitSpanField(): void
     {
-        $builder = $this->getSplitPdfBuilder()
-            ->splitMode(SplitMode::Pages)
-            ->splitSpan('1')
-        ;
-
         $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('At least one PDF file is required');
+        $this->expectExceptionMessage('Field "splitSpan" must be provided.');
 
-        $builder->getMultipartFormData();
-    }
-
-    public function testStringableObject(): void
-    {
-        $supportedFilePath = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
-            public function __construct(private string $directory)
-            {
-            }
-
-            public function __toString(): string
-            {
-                return $this->directory.'/simple_pdf.pdf';
-            }
-        };
-
-        $builder = $this->getSplitPdfBuilder();
-        $builder
-            ->files($supportedFilePath)
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
             ->splitMode(SplitMode::Pages)
-            ->splitSpan('1')
+            ->generate()
         ;
-
-        $data = $builder->getMultipartFormData();
-
-        /* @var DataPart $dataPart */
-        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
     }
 
-    public function testSplFileInfoObject(): void
+    public function testRequiredFileContent(): void
     {
-        $supportedFilePath = new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf');
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one PDF file is required.');
 
-        $builder = $this->getSplitPdfBuilder();
-        $builder
-            ->files($supportedFilePath)
+        $this->getBuilder()
             ->splitMode(SplitMode::Pages)
-            ->splitSpan('1')
+            ->splitSpan('1-2')
+            ->generate()
         ;
-
-        $data = $builder->getMultipartFormData();
-
-        /* @var DataPart $dataPart */
-        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
     }
 
-    private function getSplitPdfBuilder(): SplitPdfBuilder
+    public function testRequirementMissingFile(): void
     {
-        return (new SplitPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry))
-            ->processor(new NullProcessor())
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one PDF file is required.');
+
+        $this->getBuilder()
+            ->generate()
         ;
     }
 }

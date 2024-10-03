@@ -2,102 +2,52 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
-use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\File as DataPartFile;
 
 /**
- * Merge `n` pdf files into a single one.
+ * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
-final class MergePdfBuilder extends AbstractPdfBuilder
+#[SemanticNode('merge')]
+final class MergePdfBuilder extends AbstractBuilder
 {
-    private const ENDPOINT = '/forms/pdfengines/merge';
+    use AssetBaseDirFormatterAwareTrait;
+    use DownloadFromTrait;
+    use FlattenTrait;
+    use MetadataTrait;
+    use PdfFormatTrait;
+    use WebhookTrait;
+
+    public const ENDPOINT = '/forms/pdfengines/merge';
 
     /**
-     * To set configurations by an array of configurations.
+     * Add PDF files to merge.
      *
-     * @param array<string, mixed> $configurations
+     * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
      */
-    public function setConfigurations(array $configurations): static
-    {
-        foreach ($configurations as $property => $value) {
-            $this->addConfiguration($property, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Convert the resulting PDF into the given PDF/A format.
-     */
-    public function pdfFormat(PdfFormat $format): self
-    {
-        $this->formFields['pdfa'] = $format->value;
-
-        return $this;
-    }
-
-    /**
-     * Enable PDF for Universal Access for optimal accessibility.
-     */
-    public function pdfUniversalAccess(bool $bool = true): self
-    {
-        $this->formFields['pdfua'] = $bool;
-
-        return $this;
-    }
-
     public function files(string|\Stringable ...$paths): self
     {
-        $this->formFields['files'] = [];
-
         foreach ($paths as $path) {
             $path = (string) $path;
-            $this->assertFileExtension($path, ['pdf']);
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            ValidatorFactory::filesExtension([$info], ['pdf']);
 
-            $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
-
-            $this->formFields['files'][$path] = $dataPart;
+            $files[$path] = $info;
         }
 
-        return $this;
-    }
-
-    /**
-     * Resets the metadata.
-     *
-     * @see https://gotenberg.dev/docs/routes#metadata-chromium
-     * @see https://exiftool.org/TagNames/XMP.html#pdf
-     *
-     * @param array<string, mixed> $metadata
-     */
-    public function metadata(array $metadata): static
-    {
-        $this->formFields['metadata'] = $metadata;
+        $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
-    }
-
-    /**
-     * The metadata to write.
-     */
-    public function addMetadata(string $key, string $value): static
-    {
-        $this->formFields['metadata'] ??= [];
-        $this->formFields['metadata'][$key] = $value;
-
-        return $this;
-    }
-
-    public function getMultipartFormData(): array
-    {
-        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
-            throw new MissingRequiredFieldException('At least one PDF file is required');
-        }
-
-        return parent::getMultipartFormData();
     }
 
     protected function getEndpoint(): string
@@ -105,14 +55,21 @@ final class MergePdfBuilder extends AbstractPdfBuilder
         return self::ENDPOINT;
     }
 
-    private function addConfiguration(string $configurationName, mixed $value): void
+    protected function validatePayloadBody(): void
     {
-        match ($configurationName) {
-            'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
-            'pdf_universal_access' => $this->pdfUniversalAccess($value),
-            'metadata' => $this->metadata($value),
-            'download_from' => $this->downloadFrom($value),
-            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, self::class)),
-        };
+        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('At least one PDF file is required.');
+        }
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
+    }
+
+    public static function type(): string
+    {
+        return 'pdf';
     }
 }

@@ -2,141 +2,107 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
-use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Mime\Part\DataPart;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
-#[CoversClass(ConvertPdfBuilder::class)]
-#[UsesClass(AbstractPdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(GotenbergFileResult::class)]
-final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
+/**
+ * @extends GotenbergBuilderTestCase<ConvertPdfBuilder>
+ */
+final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
 {
-    private const PDF_DOCUMENTS_DIR = 'assets/pdf';
+    /** @use DownloadFromTestCaseTrait<ConvertPdfBuilder> */
+    use DownloadFromTestCaseTrait;
 
-    public function testEndpointIsCorrect(): void
+    /** @use PdfFormatTestCaseTrait<ConvertPdfBuilder> */
+    use PdfFormatTestCaseTrait;
+
+    /** @use WebhookTestCaseTrait<ConvertPdfBuilder> */
+    use WebhookTestCaseTrait;
+
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): ConvertPdfBuilder
     {
-        $this->gotenbergClient
-            ->expects($this->once())
-            ->method('call')
-            ->with(
-                $this->equalTo('/forms/pdfengines/convert'),
-                $this->anything(),
-                $this->anything(),
-            )
+        return new ConvertPdfBuilder($client, $dependencies);
+    }
+
+    /**
+     * @param ConvertPdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): ConvertPdfBuilder
+    {
+        return $builder
+            ->files('pdf/simple_pdf.pdf')
+            ->pdfUniversalAccess()
+        ;
+    }
+
+    public function testAddFilesAsContent(): void
+    {
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
+            ->pdfUniversalAccess()
+            ->generate()
         ;
 
-        $this->getConvertPdfBuilder()
-            ->files(self::PDF_DOCUMENTS_DIR.'/document.pdf')
+        $this->assertGotenbergEndpoint('/forms/pdfengines/convert');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+    }
+
+    public function testWithStringableObject(): void
+    {
+        $class = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'pdf/simple_pdf.pdf';
+            }
+        };
+
+        $this->getBuilder()
+            ->files($class)
+            ->pdfUniversalAccess()
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/pdfengines/convert');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+    }
+
+    public function testRequiredConfiguration(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least "pdfa" or "pdfua" must be provided.');
+
+        $this->getBuilder()
+            ->generate()
+        ;
+    }
+
+    public function testRequiredFileContent(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one PDF file is required.');
+
+        $this->getBuilder()
             ->pdfUniversalAccess()
             ->generate()
         ;
     }
 
-    public static function configurationIsCorrectlySetProvider(): \Generator
+    public function testFilesExtensionRequirement(): void
     {
-        yield 'pdf_format' => ['pdf_format', 'PDF/A-1b', [
-            'pdfa' => 'PDF/A-1b',
-        ]];
-        yield 'pdf_universal_access' => ['pdf_universal_access', false, [
-            'pdfua' => 'false',
-        ]];
-    }
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
-    /**
-     * @param array<mixed> $expected
-     */
-    #[DataProvider('configurationIsCorrectlySetProvider')]
-    public function testConfigurationIsCorrectlySet(string $key, mixed $value, array $expected): void
-    {
-        $builder = $this->getConvertPdfBuilder();
-        $builder->setConfigurations([
-            $key => $value,
-        ]);
-        $builder->files(self::PDF_DOCUMENTS_DIR.'/document.pdf');
-
-        self::assertEquals($expected, $builder->getMultipartFormData()[0]);
-    }
-
-    public function testRequiredFormat(): void
-    {
-        $builder = $this->getConvertPdfBuilder();
-        $builder
-            ->files(self::PDF_DOCUMENTS_DIR.'/document.pdf')
-        ;
-
-        $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('At least "pdfa" or "pdfua" must be provided.');
-
-        $builder->getMultipartFormData();
-    }
-
-    public function testWithStringableObject(): void
-    {
-        $stringable = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
-            public function __construct(private string $directory)
-            {
-            }
-
-            public function __toString(): string
-            {
-                return $this->directory.'/document.pdf';
-            }
-        };
-
-        $builder = $this->getConvertPdfBuilder();
-        $builder
-            ->files($stringable)
-            ->pdfUniversalAccess()
-        ;
-
-        $data = $builder->getMultipartFormData();
-
-        /* @var DataPart $dataPart */
-        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $stringable), $dataPart->getFilename());
-    }
-
-    public function testSplFileInfoObject(): void
-    {
-        $splFileInfo = new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/document.pdf');
-
-        $builder = $this->getConvertPdfBuilder();
-        $builder
-            ->files($splFileInfo)
-            ->pdfUniversalAccess()
-        ;
-
-        $data = $builder->getMultipartFormData();
-
-        /* @var DataPart $dataPart */
-        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $splFileInfo), $dataPart->getFilename());
-    }
-
-    public function testRequiredPdfFile(): void
-    {
-        $builder = $this->getConvertPdfBuilder();
-        $builder->pdfUniversalAccess();
-
-        $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('At least one PDF file is required');
-
-        $builder->getMultipartFormData();
-    }
-
-    private function getConvertPdfBuilder(): ConvertPdfBuilder
-    {
-        return (new ConvertPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry))
-            ->processor(new NullProcessor())
+        $this->getBuilder()
+            ->files('b.png')
+            ->generate()
         ;
     }
 }

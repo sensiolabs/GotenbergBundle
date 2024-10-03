@@ -2,48 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
-use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
-use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
-use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
-use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
-use Sensiolabs\GotenbergBundle\Enumeration\Unit;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\GotenbergPdf;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-use Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle;
-use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Mime\Part\DataPart;
 
-#[CoversClass(GotenbergPdf::class)]
-#[UsesClass(AbstractChromiumPdfBuilder::class)]
-#[UsesClass(AbstractPdfBuilder::class)]
-#[UsesClass(HtmlPdfBuilder::class)]
-#[UsesClass(MarkdownPdfBuilder::class)]
-#[UsesClass(LibreOfficePdfBuilder::class)]
-#[UsesClass(UrlPdfBuilder::class)]
-#[UsesClass(GotenbergClient::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(Filesystem::class)]
-#[UsesClass(TraceablePdfBuilder::class)]
-#[UsesClass(TraceableGotenbergPdf::class)]
-#[UsesClass(GotenbergPass::class)]
-#[UsesClass(Configuration::class)]
-#[UsesClass(SensiolabsGotenbergExtension::class)]
-#[UsesClass(SensiolabsGotenbergBundle::class)]
-#[UsesClass(Unit::class)]
-#[UsesClass(WebhookConfigurationRegistry::class)]
 final class GotenbergPdfTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void
@@ -55,19 +19,14 @@ final class GotenbergPdfTest extends KernelTestCase
         /** @var GotenbergPdfInterface $gotenberg */
         $gotenberg = $container->get(GotenbergPdfInterface::class);
         $builder = $gotenberg->url();
-        $builder
-            ->setConfigurations([
-                'native_page_ranges' => '1-5',
-            ])
-            ->url('https://google.com')
-        ;
+        $builder->nativePageRanges('1-5');
 
-        self::assertSame([
-            ['failOnHttpStatusCodes' => '[499,599]'],
-            ['failOnResourceHttpStatusCodes' => '[]'],
-            ['nativePageRanges' => '1-5'],
-            ['url' => 'https://google.com'],
-        ], $builder->getMultipartFormData());
+        $data = $builder->getBodyBag()->all();
+
+        self::assertCount(1, $data);
+
+        self::assertArrayHasKey('nativePageRanges', $data);
+        self::assertSame('1-5', $data['nativePageRanges']);
     }
 
     public function testHtmlBuilderFactory(): void
@@ -78,35 +37,21 @@ final class GotenbergPdfTest extends KernelTestCase
 
         /** @var GotenbergPdfInterface $gotenberg */
         $gotenberg = $container->get(GotenbergPdfInterface::class);
-        $builder = $gotenberg->html()
-            ->setConfigurations([
-                'margin_top' => 3,
-                'margin_bottom' => 1,
-            ])
+        $builder = $gotenberg->html();
+        $builder
+            ->marginTop(3)
+            ->marginBottom(1)
         ;
-        $builder->contentFile(__DIR__.'/../Fixtures/files/content.html');
-        $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertCount(5, $multipartFormData);
+        $data = $builder->getBodyBag()->all();
 
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['failOnHttpStatusCodes' => '[499,599]'], $multipartFormData[0]);
+        self::assertCount(2, $data);
 
-        self::assertArrayHasKey(1, $multipartFormData);
-        self::assertSame(['failOnResourceHttpStatusCodes' => '[]'], $multipartFormData[1]);
+        self::assertArrayHasKey('marginTop', $data);
+        self::assertSame('3in', $data['marginTop']);
 
-        self::assertArrayHasKey(2, $multipartFormData);
-        self::assertSame(['marginTop' => '3in'], $multipartFormData[2]);
-
-        self::assertArrayHasKey(3, $multipartFormData);
-        self::assertSame(['marginBottom' => '1in'], $multipartFormData[3]);
-
-        self::assertArrayHasKey(4, $multipartFormData);
-        self::assertIsArray($multipartFormData[4]);
-        self::assertCount(1, $multipartFormData[4]);
-        self::assertArrayHasKey('files', $multipartFormData[4]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[4]['files']);
-        self::assertSame('index.html', $multipartFormData[4]['files']->getFilename());
+        self::assertArrayHasKey('marginBottom', $data);
+        self::assertSame('1in', $data['marginBottom']);
     }
 
     public function testMarkdownBuilderFactory(): void
@@ -121,24 +66,36 @@ final class GotenbergPdfTest extends KernelTestCase
         $builder = $gotenberg->markdown();
         $builder->files(__DIR__.'/Fixtures/assets/file.md');
         $builder->wrapperFile(__DIR__.'/Fixtures/files/wrapper.html');
-        $multipartFormData = $builder->getMultipartFormData();
+        $data = $builder->getBodyBag()->all();
 
-        self::assertCount(4, $multipartFormData);
+        self::assertCount(2, $data);
 
-        self::assertArrayHasKey(2, $multipartFormData);
-        self::assertIsArray($multipartFormData[2]);
-        self::assertArrayHasKey('files', $multipartFormData[2]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[2]['files']);
-        self::assertSame('file.md', $multipartFormData[2]['files']->getFilename());
+        self::assertArrayHasKey('files', $data);
+        self::assertIsArray($data['files']);
 
-        self::assertArrayHasKey(3, $multipartFormData);
-        self::assertIsArray($multipartFormData[3]);
-        self::assertArrayHasKey('files', $multipartFormData[3]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[3]['files']);
-        self::assertSame('index.html', $multipartFormData[3]['files']->getFilename());
+        $file = array_shift($data['files']);
+        self::assertInstanceOf(\SplFileInfo::class, $file);
+        self::assertSame('file.md', $file->getFilename());
+
+        self::assertArrayHasKey('index.html', $data);
+        self::assertInstanceOf(\SplFileInfo::class, $data['index.html']);
+        self::assertSame('wrapper.html', $data['index.html']->getFilename());
     }
 
-    public function testOfficeBuilderFactory(): void
+    /**
+     * @return iterable<string, array<int, string>>
+     */
+    public static function provideFileToConvert(): iterable
+    {
+        yield 'convert odt file' => [__DIR__.'/Fixtures/assets/office/document.odt', 'document.odt'];
+        yield 'convert docx file' => [__DIR__.'/Fixtures/assets/office/document_1.docx', 'document_1.docx'];
+        yield 'convert html file' => [__DIR__.'/Fixtures/assets/office/document_2.html', 'document_2.html'];
+        yield 'convert xlsx file' => [__DIR__.'/Fixtures/assets/office/document_3.xlsx', 'document_3.xlsx'];
+        yield 'convert pptx file' => [__DIR__.'/Fixtures/assets/office/document_4.pptx', 'document_4.pptx'];
+    }
+
+    #[DataProvider('provideFileToConvert')]
+    public function testOfficeBuilderFactory(string $path, string $filename): void
     {
         self::bootKernel();
 
@@ -146,23 +103,139 @@ final class GotenbergPdfTest extends KernelTestCase
 
         /** @var GotenbergPdfInterface $gotenberg */
         $gotenberg = $container->get(GotenbergPdfInterface::class);
-        $builder = $gotenberg->office()
-            ->setConfigurations([
-                'native_page_ranges' => '1-5',
-            ])
-        ;
-        $builder->files(__DIR__.'/Fixtures/assets/office/document.odt');
-        $multipartFormData = $builder->getMultipartFormData();
 
-        self::assertCount(2, $multipartFormData);
+        $builder = $gotenberg->office();
+        $builder->files($path);
+        $data = $builder->getBodyBag()->all();
 
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['nativePageRanges' => '1-5'], $multipartFormData[0]);
+        self::assertCount(1, $data);
 
-        self::assertArrayHasKey(1, $multipartFormData);
-        self::assertIsArray($multipartFormData[1]);
-        self::assertArrayHasKey('files', $multipartFormData[1]);
-        self::assertInstanceOf(DataPart::class, $multipartFormData[1]['files']);
-        self::assertSame('document.odt', $multipartFormData[1]['files']->getFilename());
+        self::assertArrayHasKey('files', $data);
+        self::assertIsArray($data['files']);
+
+        $firstFile = array_shift($data['files']);
+        self::assertInstanceOf(\SplFileInfo::class, $firstFile);
+        self::assertSame($filename, $firstFile->getFilename());
+    }
+
+    public function testMergeBuilderFactory(): void
+    {
+        self::bootKernel();
+
+        $container = static::getContainer();
+
+        /** @var GotenbergPdfInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergPdfInterface::class);
+
+        $builder = $gotenberg->merge();
+        $builder->files(
+            __DIR__.'/Fixtures/assets/pdf/document.pdf',
+            __DIR__.'/Fixtures/assets/pdf/other_document.pdf',
+        );
+        $builder->pdfUniversalAccess();
+        $data = $builder->getBodyBag()->all();
+
+        self::assertCount(2, $data);
+
+        self::assertArrayHasKey('files', $data);
+        self::assertIsArray($data['files']);
+
+        $firstFile = array_shift($data['files']);
+        self::assertInstanceOf(\SplFileInfo::class, $firstFile);
+        self::assertSame('document.pdf', $firstFile->getFilename());
+
+        $lastFile = array_pop($data['files']);
+        self::assertInstanceOf(\SplFileInfo::class, $lastFile);
+        self::assertSame('other_document.pdf', $lastFile->getFilename());
+
+        self::assertArrayHasKey('pdfua', $data);
+        self::assertTrue($data['pdfua']);
+    }
+
+    public function testConvertBuilderFactory(): void
+    {
+        self::bootKernel();
+
+        $container = static::getContainer();
+
+        /** @var GotenbergPdfInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergPdfInterface::class);
+
+        $builder = $gotenberg->convert();
+        $builder->files(__DIR__.'/Fixtures/assets/pdf/document.pdf');
+        $builder->pdfFormat(PdfFormat::Pdf1b);
+        $data = $builder->getBodyBag()->all();
+
+        self::assertCount(2, $data);
+
+        self::assertArrayHasKey('files', $data);
+        self::assertIsArray($data['files']);
+
+        $firstFile = array_shift($data['files']);
+        self::assertInstanceOf(\SplFileInfo::class, $firstFile);
+        self::assertSame('document.pdf', $firstFile->getFilename());
+
+        self::assertArrayHasKey('pdfa', $data);
+        self::assertSame(PdfFormat::Pdf1b, $data['pdfa']);
+    }
+
+    public function testSplitBuilderFactory(): void
+    {
+        self::bootKernel();
+
+        $container = static::getContainer();
+
+        /** @var GotenbergPdfInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergPdfInterface::class);
+
+        $builder = $gotenberg->split();
+        $builder->files(__DIR__.'/Fixtures/assets/pdf/document.pdf');
+        $builder->splitMode(SplitMode::Pages);
+        $builder->splitSpan('1-2');
+        $builder->splitUnify();
+
+        $data = $builder->getBodyBag()->all();
+
+        self::assertCount(4, $data);
+
+        self::assertArrayHasKey('files', $data);
+        self::assertIsArray($data['files']);
+
+        $firstFile = array_shift($data['files']);
+        self::assertInstanceOf(\SplFileInfo::class, $firstFile);
+        self::assertSame('document.pdf', $firstFile->getFilename());
+
+        self::assertArrayHasKey('splitMode', $data);
+        self::assertSame(SplitMode::Pages, $data['splitMode']);
+
+        self::assertArrayHasKey('splitSpan', $data);
+        self::assertSame('1-2', $data['splitSpan']);
+
+        self::assertArrayHasKey('splitUnify', $data);
+        self::assertTrue($data['splitUnify']);
+    }
+
+    public function testFlattenBuilderFactory(): void
+    {
+        self::bootKernel();
+
+        $container = static::getContainer();
+
+        /** @var GotenbergPdfInterface $gotenberg */
+        $gotenberg = $container->get(GotenbergPdfInterface::class);
+
+        $builder = $gotenberg->flatten();
+        $builder->files(__DIR__.'/Fixtures/assets/pdf/document.pdf');
+
+        $data = $builder->getBodyBag()->all();
+
+        self::assertCount(1, $data);
+
+        self::assertArrayHasKey('files', $data);
+        self::assertIsArray($data['files']);
+
+        $firstFile = array_shift($data['files']);
+        self::assertInstanceOf(\SplFileInfo::class, $firstFile);
+        self::assertSame('document.pdf', $firstFile->getFilename());
     }
 }
