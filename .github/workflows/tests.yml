@@ -51,7 +51,7 @@ jobs:
           dependency-versions: '${{ matrix.deps }}'
 
       - name: 'Validate dependencies'
-        run: './vendor/bin/composer-dependency-analyser'
+        run: './vendor/bin/composer-dependency-analyser --show-all-usages'
 
       - name: 'Run test suite'
         run: 'php vendor/bin/phpunit'
