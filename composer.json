@@ -23,14 +23,15 @@
     "require": {
         "php": ">=8.1",
         "ext-json": "*",
+        "psr/container": "^2.0",
+        "psr/log": "^3.0",
         "symfony/config": "^6.4 || ^7.0",
         "symfony/dependency-injection": "^6.4 || ^7.0",
         "symfony/filesystem": "^6.4 || ^7.0",
-        "symfony/http-client": "^6.4 || ^7.0",
+        "symfony/http-client-contracts": "^3.5",
         "symfony/http-foundation": "^6.4 || ^7.0",
         "symfony/http-kernel": "^6.4 || ^7.0",
-        "symfony/mime": "^6.4 || ^7.0",
-        "symfony/string": "^6.4 || ^7.0"
+        "symfony/mime": "^6.4 || ^7.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.41",
@@ -40,10 +41,13 @@
         "phpunit/phpunit": "^10.4",
         "shipmonk/composer-dependency-analyser": "^1.7",
         "symfony/framework-bundle": "^6.4 || ^7.0",
+        "symfony/http-client": "^7.1",
         "symfony/monolog-bundle": "^3.10",
+        "symfony/routing": "^7.1",
         "symfony/stopwatch": "^6.4 || ^7.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
-        "symfony/var-dumper": "^6.4 || ^7.0"
+        "symfony/var-dumper": "^6.4 || ^7.0",
+        "twig/twig": "^3.14"
     },
     "config": {
         "allow-plugins": {
