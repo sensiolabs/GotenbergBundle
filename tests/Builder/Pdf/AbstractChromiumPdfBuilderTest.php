@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 #[UsesClass(Unit::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(GotenbergAssetExtension::class)]
+#[UsesClass(PaperSize::class)]
 class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 {
     public static function configurationIsCorrectlySetProvider(): \Generator

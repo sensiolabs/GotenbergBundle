@@ -182,6 +182,7 @@ final class ConfigurationTest extends TestCase
         return [
             'assets_directory' => '%kernel.project_dir%/assets',
             'http_client' => 'http_client',
+            'controller_listener' => true,
             'default_options' => [
                 'pdf' => [
                     'html' => [

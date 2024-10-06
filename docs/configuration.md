@@ -26,6 +26,7 @@ Then
 
 sensiolabs_gotenberg:
     assets_directory: '%kernel.project_dir%/assets'
+    controller_listener: true # Will convert any GotenbergFileResult to stream automatically as a controller return.
     http_client: 'gotenberg.client' # Required and must have a `base_uri`.
     # Override the request Gotenberg will make to call one of your routes.
     request_context:
@@ -301,6 +302,13 @@ sensiolabs_gotenberg:
 
 > [!TIP]
 > For more information about [metadata](https://gotenberg.dev/docs/routes#metadata-chromium).
+
+## Controller Listener
+
+Whenever a controller returns something other than a `Response` object, the [`kernel.view`](https://symfony.com/doc/current/reference/events.html#kernel-view) event is fired.
+That listener listen to this event and detects if it is a `GotenbergFileResult` object. If so it automatically calls the `->stream()` method to convert it to a Response object.
+
+Enabled byd efault but can be disabled via the `sensiolabs_gotenberg.controller_listener` configuration.
 
 ## download from
 
