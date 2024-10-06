@@ -21,6 +21,9 @@ abstract class AbstractPdfBuilder implements PdfBuilderInterface
             'metadata' => function (mixed $value): array {
                 return $this->encodeData('metadata', $value);
             },
+            'downloadFrom' => function (mixed $value): array {
+                return $this->encodeData('downloadFrom', $value);
+            },
         ];
     }
 }

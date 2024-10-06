@@ -522,6 +522,31 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * Sets download from to download each entry (file) in parallel (default None).
+     * (URLs MUST return a Content-Disposition header with a filename parameter.).
+     *
+     * @see https://gotenberg.dev/docs/routes#download-from
+     *
+     * @param list<array{url: string, extraHttpHeaders: array<string, string>}> $downloadFrom
+     */
+    public function downloadFrom(array $downloadFrom): static
+    {
+        if ([] === $downloadFrom) {
+            unset($this->formFields['downloadFrom']);
+
+            return $this;
+        }
+
+        $this->formFields['downloadFrom'] = [];
+
+        foreach ($downloadFrom as $file) {
+            $this->formFields['downloadFrom'][] = $file;
+        }
+
+        return $this;
+    }
+
     protected function withPdfPartFile(Part $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
@@ -588,7 +613,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             'metadata' => $this->metadata($value),
-            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+            'download_from' => $this->downloadFrom($value),
+            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
 }

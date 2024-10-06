@@ -41,6 +41,16 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Set the password for opening the source file.
+     */
+    public function password(string $password): self
+    {
+        $this->formFields['password'] = $password;
+
+        return $this;
+    }
+
+    /**
      * Sets the paper orientation to landscape.
      */
     public function landscape(bool $bool = true): self
@@ -330,11 +340,36 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
 
     public function getMultipartFormData(): array
     {
-        if ([] === ($this->formFields['files'] ?? [])) {
+        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
             throw new MissingRequiredFieldException('At least one office file is required');
         }
 
         return parent::getMultipartFormData();
+    }
+
+    /**
+     * Sets download from to download each entry (file) in parallel (default None).
+     * (URLs MUST return a Content-Disposition header with a filename parameter.).
+     *
+     * @see https://gotenberg.dev/docs/routes#download-from
+     *
+     * @param list<array{url: string, extraHttpHeaders: array<string, string>}> $downloadFrom
+     */
+    public function downloadFrom(array $downloadFrom): self
+    {
+        if ([] === $downloadFrom) {
+            unset($this->formFields['downloadFrom']);
+
+            return $this;
+        }
+
+        $this->formFields['downloadFrom'] = [];
+
+        foreach ($downloadFrom as $file) {
+            $this->formFields['downloadFrom'][] = $file;
+        }
+
+        return $this;
     }
 
     protected function getEndpoint(): string
@@ -345,6 +380,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     private function addConfiguration(string $configurationName, mixed $value): void
     {
         match ($configurationName) {
+            'password' => $this->password($value),
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'landscape' => $this->landscape($value),
@@ -370,6 +406,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'quality' => $this->quality($value),
             'reduce_image_resolution' => $this->reduceImageResolution($value),
             'max_image_resolution' => $this->maxImageResolution(ImageResolutionDPI::from($value)),
+            'download_from' => $this->downloadFrom($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

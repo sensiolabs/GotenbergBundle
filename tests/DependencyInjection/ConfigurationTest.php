@@ -82,6 +82,40 @@ final class ConfigurationTest extends TestCase
         ], $config);
     }
 
+    public function testWithDownloadFromConfiguration(): void
+    {
+        $processor = new Processor();
+        /** @var array{'default_options': array<string, mixed>} $config */
+                $config = $processor->processConfiguration(new Configuration(), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => [
+                    'pdf' => [
+                        'html' => [
+                            'download_from' => [
+                                [
+                                    'url' => 'http://url/to/file.com',
+                                    'extraHttpHeaders' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $config = $this->cleanOptions($config['default_options']['pdf']['html']);
+        self::assertEquals([
+            'download_from' => [
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                ],
+            ],
+            'fail_on_http_status_codes' => ['499', '599'],
+        ], $config);
+    }
+
     /**
      * @return iterable<string, array<array-key, array<string, string>>>
      */
@@ -176,6 +210,7 @@ final class ConfigurationTest extends TestCase
                         'skip_network_idle_event' => null,
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
+                        'download_from' => [],
                     ],
                     'url' => [
                         'single_page' => null,
@@ -203,6 +238,7 @@ final class ConfigurationTest extends TestCase
                         'skip_network_idle_event' => null,
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
+                        'download_from' => [],
                     ],
                     'markdown' => [
                         'single_page' => null,
@@ -230,8 +266,10 @@ final class ConfigurationTest extends TestCase
                         'skip_network_idle_event' => null,
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
+                        'download_from' => [],
                     ],
                     'office' => [
+                        'password' => null,
                         'landscape' => null,
                         'native_page_ranges' => null,
                         'do_not_export_form_fields' => null,
@@ -256,14 +294,17 @@ final class ConfigurationTest extends TestCase
                         'quality' => null,
                         'reduce_image_resolution' => null,
                         'max_image_resolution' => null,
+                        'download_from' => [],
                     ],
                     'merge' => [
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
+                        'download_from' => [],
                     ],
                     'convert' => [
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
+                        'download_from' => [],
                     ],
                 ],
                 'screenshot' => [
@@ -284,6 +325,7 @@ final class ConfigurationTest extends TestCase
                         'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
+                        'download_from' => [],
                     ],
                     'url' => [
                         'width' => null,
@@ -302,6 +344,7 @@ final class ConfigurationTest extends TestCase
                         'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
+                        'download_from' => [],
                     ],
                     'markdown' => [
                         'width' => null,
@@ -320,6 +363,7 @@ final class ConfigurationTest extends TestCase
                         'fail_on_http_status_codes' => [499, 599],
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
+                        'download_from' => [],
                     ],
                 ],
             ],

@@ -771,19 +771,69 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#images-libreoffice).
 
+### download from
 
+To download files resource from URLs.
 
+```php
+namespace App\Controller;
 
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->office()
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' =>
+                    [
+                        'MyHeader' => 'MyValue',
+                    ],
+                ],
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' => 
+                    [
+                        'MyHeaderOne' => 'MyValue',
+                        'MyHeaderTwo' => 'MyValue',
+                    ],
+                ],
+            ])
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
 
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#download-from).
 
+## password
 
+Default: `None`
 
+	Set the password for opening the source file.
 
+```php
+namespace App\Controller;
 
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
-
-
-
-
-
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->password('My password')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
