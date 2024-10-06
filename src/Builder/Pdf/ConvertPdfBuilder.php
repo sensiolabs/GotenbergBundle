@@ -67,11 +67,36 @@ final class ConvertPdfBuilder extends AbstractPdfBuilder
             throw new MissingRequiredFieldException('At least "pdfa" or "pdfua" must be provided.');
         }
 
-        if ([] === ($this->formFields['files'] ?? [])) {
+        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
             throw new MissingRequiredFieldException('At least one PDF file is required');
         }
 
         return parent::getMultipartFormData();
+    }
+
+    /**
+     * Sets download from to download each entry (file) in parallel (default None).
+     * (URLs MUST return a Content-Disposition header with a filename parameter.).
+     *
+     * @see https://gotenberg.dev/docs/routes#download-from
+     *
+     * @param list<array{url: string, extraHttpHeaders: array<string, string>}> $downloadFrom
+     */
+    public function downloadFrom(array $downloadFrom): static
+    {
+        if ([] === $downloadFrom) {
+            unset($this->formFields['downloadFrom']);
+
+            return $this;
+        }
+
+        $this->formFields['downloadFrom'] = [];
+
+        foreach ($downloadFrom as $file) {
+            $this->formFields['downloadFrom'][] = $file;
+        }
+
+        return $this;
     }
 
     protected function getEndpoint(): string
@@ -84,6 +109,7 @@ final class ConvertPdfBuilder extends AbstractPdfBuilder
         match ($configurationName) {
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
+            'download_from' => $this->downloadFrom($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

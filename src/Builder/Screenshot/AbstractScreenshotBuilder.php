@@ -35,6 +35,9 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
             'cookies' => function (mixed $value): array {
                 return $this->encodeData('cookies', array_values($value));
             },
+            'downloadFrom' => function (mixed $value): array {
+                return $this->encodeData('downloadFrom', $value);
+            },
         ];
     }
 }

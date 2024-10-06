@@ -130,6 +130,10 @@ Resets the metadata.
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
 
+* `downloadFrom(array $downloadFrom)`:
+Sets download from to download each entry (file) in parallel (default None).
+(URLs MUST return a Content-Disposition header with a filename parameter.).
+
 * `fileName(string $fileName, string $headerDisposition)`:
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:

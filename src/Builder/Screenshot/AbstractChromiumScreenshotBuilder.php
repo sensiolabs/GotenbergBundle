@@ -329,6 +329,31 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         return $this;
     }
 
+    /**
+     * Sets download from to download each entry (file) in parallel (default None).
+     * (URLs MUST return a Content-Disposition header with a filename parameter.).
+     *
+     * @see https://gotenberg.dev/docs/routes#download-from
+     *
+     * @param list<array{url: string, extraHttpHeaders: array<string, string>}> $downloadFrom
+     */
+    public function downloadFrom(array $downloadFrom): static
+    {
+        if ([] === $downloadFrom) {
+            unset($this->formFields['downloadFrom']);
+
+            return $this;
+        }
+
+        $this->formFields['downloadFrom'] = [];
+
+        foreach ($downloadFrom as $file) {
+            $this->formFields['downloadFrom'][] = $file;
+        }
+
+        return $this;
+    }
+
     protected function withScreenshotPartFile(Part $screenshotPart, string $path): static
     {
         $dataPart = new DataPart(
@@ -383,6 +408,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
             'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
+            'download_from' => $this->downloadFrom($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method exists in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

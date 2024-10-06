@@ -31,7 +31,7 @@ final class HtmlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 
     public function getMultipartFormData(): array
     {
-        if (!\array_key_exists(Part::Body->value, $this->formFields)) {
+        if (!\array_key_exists(Part::Body->value, $this->formFields) && [] === ($this->formFields['downloadFrom'] ?? [])) {
             throw new MissingRequiredFieldException('Content is required');
         }
 
