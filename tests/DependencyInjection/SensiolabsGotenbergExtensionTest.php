@@ -573,4 +573,29 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             ],
         ];
     }
+
+    public function testControllerListenerIsEnabledByDefault(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
+        $extension->load([[
+            'http_client' => 'http_client',
+        ]], $containerBuilder);
+
+        self::assertContains('sensiolabs_gotenberg.http_kernel.stream_builder', $containerBuilder->getServiceIds());
+    }
+
+    public function testControllerListenerCanBeDisabled(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
+        $extension->load([[
+            'http_client' => 'http_client',
+            'controller_listener' => false,
+        ]], $containerBuilder);
+
+        self::assertNotContains('sensiolabs_gotenberg.http_kernel.stream_builder', $containerBuilder->getServiceIds());
+    }
 }
