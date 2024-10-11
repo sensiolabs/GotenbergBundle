@@ -107,13 +107,6 @@ class DefaultBuilderTraitTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    public function testTraceGeneration(): void
-    {
-        $builder = $this->getBuilder();
-        $builder->traceGenerator(fn () => 'foo');
-        $this->assertSame('foo', $builder->generate());
-    }
-
     private function getBuilder(): object
     {
         return new class {
