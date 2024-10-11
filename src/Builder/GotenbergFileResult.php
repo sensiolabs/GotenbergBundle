@@ -45,6 +45,11 @@ class GotenbergFileResult
         return $this->response->getContentLength();
     }
 
+    public function getTrace(): string
+    {
+        return $this->response->getHeaders()->get('Gotenberg-Trace', '');
+    }
+
     public function process(): mixed
     {
         if (!$this->response->getStream()->valid()) {
