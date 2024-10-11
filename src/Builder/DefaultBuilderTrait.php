@@ -215,7 +215,8 @@ trait DefaultBuilderTrait
 
     public function generate(): GotenbergFileResult
     {
-        $trace = ($this->traceGenerator ?? self::defaultTraceGenerator(...))();
+        $this->traceGenerator ??= $this::defaultTraceGenerator(...);
+        $trace = ($this->traceGenerator)();
         $headers = ['Gotenberg-Trace' => $trace];
 
         $this->logger?->debug('Processing file with trace "{sensiolabs_gotenberg.trace}" using {sensiolabs_gotenberg.builder} builder.', [
