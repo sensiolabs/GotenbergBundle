@@ -41,6 +41,11 @@ trait DownloadFromTrait
         return $this;
     }
 
+    /**
+     * @param array<string, array{url: string, extraHttpHeaders?: array<string, string>}> $value
+     *
+     * @return list<array{url: string, extraHttpHeaders?: array<string, string>}>
+     */
     private function downloadFromNormalizer(array $value, callable $encoder): array
     {
         $downloadsFrom = array_values($value);

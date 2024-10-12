@@ -5,9 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
 use Sensiolabs\GotenbergBundle\Builder\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Symfony\Component\Mime\Part\DataPart;
 
 abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
 {

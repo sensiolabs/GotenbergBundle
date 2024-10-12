@@ -589,7 +589,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             'metadata' => $this->metadata($value),
             'download_from' => $this->downloadFrom($value),
-            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
 }

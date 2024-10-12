@@ -86,7 +86,7 @@ final class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         /** @var array{'default_options': array<string, mixed>} $config */
-                $config = $processor->processConfiguration(new Configuration(), [
+        $config = $processor->processConfiguration(new Configuration(), [
             [
                 'http_client' => 'http_client',
                 'default_options' => [
