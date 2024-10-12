@@ -43,7 +43,7 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
     /**
      * Set the password for opening the source file.
      */
-    public function password(string $password): self
+    public function password(#[\SensitiveParameter] string $password): self
     {
         $this->formFields['password'] = $password;
 
@@ -345,31 +345,6 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
         }
 
         return parent::getMultipartFormData();
-    }
-
-    /**
-     * Sets download from to download each entry (file) in parallel (default None).
-     * (URLs MUST return a Content-Disposition header with a filename parameter.).
-     *
-     * @see https://gotenberg.dev/docs/routes#download-from
-     *
-     * @param list<array{url: string, extraHttpHeaders: array<string, string>}> $downloadFrom
-     */
-    public function downloadFrom(array $downloadFrom): self
-    {
-        if ([] === $downloadFrom) {
-            unset($this->formFields['downloadFrom']);
-
-            return $this;
-        }
-
-        $this->formFields['downloadFrom'] = [];
-
-        foreach ($downloadFrom as $file) {
-            $this->formFields['downloadFrom'][] = $file;
-        }
-
-        return $this;
     }
 
     protected function getEndpoint(): string

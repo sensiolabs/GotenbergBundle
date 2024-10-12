@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
+use Sensiolabs\GotenbergBundle\Builder\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
@@ -11,6 +12,7 @@ use Symfony\Component\Mime\Part\DataPart;
 abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
 {
     use DefaultBuilderTrait;
+    use DownloadFromTrait;
 
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
@@ -20,24 +22,15 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface
         $this->asset = $asset;
 
         $this->normalizers = [
-            'extraHttpHeaders' => function (mixed $value): array {
-                return $this->encodeData('extraHttpHeaders', $value);
-            },
-            'assets' => static function (array $value): array {
-                return ['files' => $value];
-            },
-            Part::Body->value => static function (DataPart $value): array {
-                return ['files' => $value];
-            },
-            'failOnHttpStatusCodes' => function (mixed $value): array {
-                return $this->encodeData('failOnHttpStatusCodes', $value);
-            },
-            'cookies' => function (mixed $value): array {
-                return $this->encodeData('cookies', array_values($value));
-            },
-            'downloadFrom' => function (mixed $value): array {
-                return $this->encodeData('downloadFrom', $value);
-            },
+            'downloadFrom' => fn (array $value): array => $this->downloadFromNormalizer($value, $this->encodeData(...)),
         ];
+    }
+
+    /**
+     * @param list<array{url: string, extraHttpHeaders: array<string, string>}> $downloadFrom
+     */
+    public function downloadFrom(array $downloadFrom): static
+    {
+        return $this->withDownloadFrom($this->formFields, $downloadFrom);
     }
 }

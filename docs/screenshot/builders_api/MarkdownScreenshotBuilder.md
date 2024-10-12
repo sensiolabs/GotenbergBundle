@@ -76,12 +76,12 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 Adds a file, like an image, font, stylesheet, and so on.
 
 * `downloadFrom(array $downloadFrom)`:
-Sets download from to download each entry (file) in parallel (default None).
-(URLs MUST return a Content-Disposition header with a filename parameter.).
 
 * `fileName(string $fileName, string $headerDisposition)`:
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
+
+* `withDownloadFrom(array $formFields, array $downloadFrom)`:
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

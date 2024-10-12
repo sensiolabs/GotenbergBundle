@@ -312,6 +312,9 @@ Enabled byd efault but can be disabled via the `sensiolabs_gotenberg.controller_
 
 ## download from
 
+> [!WARNING]  
+> URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
+
 To download files resource from URLs.
 
 ``` yaml

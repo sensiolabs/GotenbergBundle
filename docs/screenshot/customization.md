@@ -189,6 +189,9 @@ class YourController
 
 ### download from
 
+> [!WARNING]  
+> URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
+
 To download files resource from URLs.
 
 ```php

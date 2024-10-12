@@ -259,7 +259,7 @@ class Configuration implements ConfigurationInterface
                     ->info('The JavaScript expression to wait before converting an HTML document into PDF until it returns true - default None. https://gotenberg.dev/docs/routes#wait-before-rendering')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return !\is_string($option);
                         })
                         ->thenInvalid('Invalid value %s')
@@ -299,7 +299,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return !\is_string($option);
                         })
                         ->thenInvalid('Invalid value %s')
@@ -324,7 +324,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->addDownloadFrom())
             ->end()
             ->validate()
-                ->ifTrue(function ($v) {
+                ->ifTrue(function ($v): bool {
                     return isset($v['paper_standard_size']) && (isset($v['paper_height']) || isset($v['paper_width']));
                 })
                 ->thenInvalid('You cannot use "paper_standard_size" when "paper_height", "paper_width" or both are set".')
@@ -383,7 +383,7 @@ class Configuration implements ConfigurationInterface
                     ->info('The JavaScript expression to wait before converting an HTML document into PDF until it returns true - default None. https://gotenberg.dev/docs/routes#wait-before-rendering')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return !\is_string($option);
                         })
                         ->thenInvalid('Invalid value %s')
@@ -423,7 +423,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return !\is_string($option);
                         })
                         ->thenInvalid('Invalid value %s')
@@ -647,7 +647,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                  ->scalarNode('name')
                                     ->validate()
-                                        ->ifTrue(static function ($option) {
+                                        ->ifTrue(static function ($option): bool {
                                             return !\is_string($option);
                                         })
                                         ->thenInvalid('Invalid header name %s')
@@ -655,7 +655,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->scalarNode('value')
                                     ->validate()
-                                        ->ifTrue(static function ($option) {
+                                        ->ifTrue(static function ($option): bool {
                                             return !\is_string($option);
                                         })
                                         ->thenInvalid('Invalid header value %s')
@@ -681,7 +681,7 @@ class Configuration implements ConfigurationInterface
                 ->children()
                     ->scalarNode('name')
                         ->validate()
-                            ->ifTrue(static function ($option) {
+                            ->ifTrue(static function ($option): bool {
                                 return !\is_string($option);
                             })
                             ->thenInvalid('Invalid header name %s')
@@ -689,7 +689,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('value')
                         ->validate()
-                            ->ifTrue(static function ($option) {
+                            ->ifTrue(static function ($option): bool {
                                 return !\is_string($option);
                             })
                             ->thenInvalid('Invalid header value %s')
