@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 #[CoversClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(Unit::class)]
+#[UsesClass(PaperSize::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(GotenbergAssetExtension::class)]
 #[UsesClass(PaperSize::class)]
