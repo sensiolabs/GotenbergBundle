@@ -20,7 +20,7 @@ trait DownloadFromTrait
      * @param array{downloadFrom?: array<string, array{url: string, extraHttpHeaders?: array<string, string>}>} $formFields
      * @param list<array{url: string, extraHttpHeaders?: array<string, string>}>                                $downloadFrom
      */
-    public function withDownloadFrom(array &$formFields, array $downloadFrom): static
+    private function withDownloadFrom(array &$formFields, array $downloadFrom): static
     {
         if ([] === $downloadFrom) {
             unset($formFields['downloadFrom']);
