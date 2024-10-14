@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Symfony\Component\Mime\Part\DataPart;
 
 trait DownloadFromTrait
 {
@@ -44,7 +45,7 @@ trait DownloadFromTrait
     /**
      * @param array<string, array{url: string, extraHttpHeaders?: array<string, string>}> $value
      *
-     * @return list<array{url: string, extraHttpHeaders?: array<string, string>}>
+     * @return array<string, array<string|int, mixed>|string|\Stringable|int|float|bool|\BackedEnum|DataPart>
      */
     private function downloadFromNormalizer(array $value, callable $encoder): array
     {
