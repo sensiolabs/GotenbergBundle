@@ -135,8 +135,6 @@ The metadata to write.
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
-* `withDownloadFrom(array $formFields, array $downloadFrom)`:
-
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.
 

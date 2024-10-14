@@ -91,5 +91,3 @@ If the form field reduceImageResolution is set to true, tell if all images will 
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
-* `withDownloadFrom(array $formFields, array $downloadFrom)`:
-
