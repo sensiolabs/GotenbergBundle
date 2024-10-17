@@ -54,7 +54,7 @@ final class MarkdownPdfBuilder extends AbstractChromiumPdfBuilder
             throw new MissingRequiredFieldException('HTML template is required');
         }
 
-        if ([] === ($this->formFields['files'] ?? [])) {
+        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
             throw new MissingRequiredFieldException('At least one markdown file is required');
         }
 

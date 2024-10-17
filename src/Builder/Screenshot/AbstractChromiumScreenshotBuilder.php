@@ -383,6 +383,7 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
             'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
+            'download_from' => $this->downloadFrom($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method exists in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
