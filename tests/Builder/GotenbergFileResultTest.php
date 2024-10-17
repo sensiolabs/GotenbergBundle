@@ -6,24 +6,24 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\BuilderOld\GotenbergFileResult;
+use Sensiolabs\GotenbergBundle\Client\GotenbergFileResponse;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 #[CoversClass(GotenbergFileResult::class)]
-#[UsesClass(GotenbergResponse::class)]
+#[UsesClass(GotenbergFileResponse::class)]
 final class GotenbergFileResultTest extends TestCase
 {
-    private GotenbergResponse $response;
+    private GotenbergFileResponse $response;
     /** \Generator<int, void, ChunkInterface, string> */
     private \Generator $processorGenerator;
 
     protected function setUp(): void
     {
         $client = new MockHttpClient(new MockResponse(['a', 'b', 'c']));
-        $this->response = new GotenbergResponse(
+        $this->response = new GotenbergFileResponse(
             $client->stream($client->request('GET', '/')),
             200,
             new ResponseHeaderBag(),

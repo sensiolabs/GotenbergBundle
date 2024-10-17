@@ -2,8 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Twig;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -23,8 +22,8 @@ final class GotenbergAssetExtension extends AbstractExtension
     {
         $builder = $context['_builder'];
 
-        if (!$builder instanceof AbstractChromiumPdfBuilder && !$builder instanceof AbstractChromiumScreenshotBuilder) {
-            throw new \LogicException('You need to extend from AbstractChromiumPdfBuilder to use gotenberg_asset function.');
+        if (!$builder instanceof AbstractBuilder) {
+            throw new \LogicException(\sprintf('You need to extend from "%s" to use gotenberg_asset function.', AbstractBuilder::class));
         }
 
         $builder->addAsset($path);

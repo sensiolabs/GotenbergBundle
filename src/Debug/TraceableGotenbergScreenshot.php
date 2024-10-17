@@ -2,10 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug;
 
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 

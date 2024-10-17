@@ -4,8 +4,12 @@ namespace Sensiolabs\GotenbergBundle\Client;
 
 use Sensiolabs\GotenbergBundle\Exception\ClientException;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Mime\Header\Headers;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 final class GotenbergClient implements GotenbergClientInterface
 {
@@ -14,39 +18,43 @@ final class GotenbergClient implements GotenbergClientInterface
     ) {
     }
 
-    public function call(string $endpoint, array $multipartFormData, array $headers = []): GotenbergResponse
+    public function call(string $endpoint, BodyBag $bodyBag, HeadersBag $headersBag): ResponseInterface
     {
-        $formData = new FormDataPart($multipartFormData);
-        $headers = array_merge($headers, $this->prepareHeaders($formData));
+        $headers = $headersBag->resolve();
+        $formDataPart = $bodyBag->resolve();
 
-        $response = $this->client->request(
-            'POST',
-            $endpoint,
-            [
-                'headers' => $headers,
-                'body' => $formData->bodyToString(),
-            ],
-        );
+        $this->combineHeaders($headers, $formDataPart);
 
-        if (200 !== $response->getStatusCode()) {
-            throw new ClientException($response->getContent(false), $response->getStatusCode());
+        try {
+            $response = $this->client->request(
+                'POST',
+                $endpoint,
+                [
+                    'headers' => $headers->toArray(),
+                    'body' => $formDataPart->bodyToString(),
+                ],
+            );
+
+            if (!\in_array($response->getStatusCode(), [200, 204], true)) {
+                throw new ClientException($response->getContent(false), $response->getStatusCode());
+            }
+
+            return $response;
+        } catch (ExceptionInterface $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
-
-        return new GotenbergResponse($this->client->stream($response), $response->getStatusCode(), new ResponseHeaderBag($response->getHeaders()));
     }
 
-    /**
-     * @return array<string|int, mixed>
-     */
-    private function prepareHeaders(FormDataPart $dataPart): array
+    public function stream(ResponseInterface $response): ResponseStreamInterface
     {
-        $preparedHeaders = $dataPart->getPreparedHeaders();
+        return $this->client->stream($response);
+    }
 
-        $headers = [];
-        foreach ($preparedHeaders->getNames() as $header) {
-            $headers[$header] = $preparedHeaders->get($header)?->getBodyAsString();
+
+    private function combineHeaders(Headers $headers, FormDataPart $dataPart): void
+    {
+        foreach ($dataPart->getPreparedHeaders()->all() as $header) {
+            $headers->add($header);
         }
-
-        return $headers;
     }
 }

@@ -6,7 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
+use Sensiolabs\GotenbergBundle\BuilderOld\DefaultBuilderTrait;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;

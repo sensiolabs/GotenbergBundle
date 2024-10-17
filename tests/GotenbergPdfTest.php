@@ -4,12 +4,12 @@ namespace Sensiolabs\GotenbergBundle\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;

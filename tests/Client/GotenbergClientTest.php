@@ -6,13 +6,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\Client\GotenbergFileResponse;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversClass(GotenbergClient::class)]
-#[UsesClass(GotenbergResponse::class)]
+#[UsesClass(GotenbergFileResponse::class)]
 final class GotenbergClientTest extends TestCase
 {
     public function testCallIsCorrectlyFormatted(): void

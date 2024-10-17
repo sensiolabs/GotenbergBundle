@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\DataCollector;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;

@@ -4,10 +4,10 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\GotenbergFileResult;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;

@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
+use Sensiolabs\GotenbergBundle\BuilderOld\GotenbergFileResult;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface

@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\UrlScreenshotBuilder;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

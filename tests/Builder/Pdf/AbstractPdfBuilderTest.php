@@ -6,11 +6,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\GotenbergFileResult;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\AbstractPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\Client\GotenbergFileResponse;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
@@ -21,7 +21,7 @@ use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(AbstractPdfBuilder::class)]
 #[UsesClass(GotenbergClient::class)]
-#[UsesClass(GotenbergResponse::class)]
+#[UsesClass(GotenbergFileResponse::class)]
 #[UsesClass(GotenbergFileResult::class)]
 final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
 {
