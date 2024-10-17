@@ -308,9 +308,9 @@ sensiolabs_gotenberg:
 Whenever a controller returns something other than a `Response` object, the [`kernel.view`](https://symfony.com/doc/current/reference/events.html#kernel-view) event is fired.
 That listener listen to this event and detects if it is a `GotenbergFileResult` object. If so it automatically calls the `->stream()` method to convert it to a Response object.
 
-Enabled byd efault but can be disabled via the `sensiolabs_gotenberg.controller_listener` configuration.
+Enabled by default but can be disabled via the `sensiolabs_gotenberg.controller_listener` configuration.
 
-## download from
+## Download from
 
 > [!WARNING]  
 > URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
