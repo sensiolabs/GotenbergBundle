@@ -323,7 +323,7 @@ sensiolabs_gotenberg:
         pdf:
             html:
                 download_from:
-                    - url: 'http://url/to/file.com'
+                    - url: 'http://example.com/url/to/file''
                       extraHttpHeaders:
                           - name: 'MyHeader'
                             value: 'MyValue'

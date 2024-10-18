@@ -547,14 +547,14 @@ class YourController
             ->html()
             ->downloadFrom([
                 [
-                    'url' => 'http://url/to/file.com',
+                    'url' => 'http://example.com/url/to/file',
                     'extraHttpHeaders' =>
                     [
                         'MyHeader' => 'MyValue',
                     ],
                 ],
                 [
-                    'url' => 'http://url/to/file.com',
+                    'url' => 'http://example.com/url/to/file',
                     'extraHttpHeaders' => 
                     [
                         'MyHeaderOne' => 'MyValue',

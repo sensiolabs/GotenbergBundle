@@ -49,11 +49,6 @@ trait DownloadFromTrait
      */
     private function downloadFromNormalizer(array $value, callable $encoder): array
     {
-        $downloadsFrom = array_values($value);
-        $data = [];
-
-        array_push($data, ...$downloadsFrom);
-
-        return $encoder('downloadFrom', $data);
+        return $encoder('downloadFrom', array_values($value));
     }
 }
