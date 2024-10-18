@@ -116,6 +116,9 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         yield 'max_image_resolution' => ['max_image_resolution', 300, [
             'maxImageResolution' => 300,
         ]];
+        yield 'password' => ['password', 'My password', [
+            'password' => 'My password',
+        ]];
     }
 
     /**
