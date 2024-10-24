@@ -8,8 +8,8 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RequestContext;
 
 /**
@@ -21,13 +21,17 @@ class SensiolabsGotenbergExtension extends Extension
     {
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, http_client: string|null, request_context?: array{base_uri?: string}, assets_directory: string, webhook: array<string, array{success: WebhookDefinition, error?: WebhookDefinition}>, default_options: array{pdf: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>, merge: array<string, mixed>, convert: array<string, mixed>}, screenshot: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>}, webhook?: string}} $config */
+        /** @var array{base_uri: string, http_client: string, controller_listener: bool, request_context?: array{base_uri?: string}, assets_directory: string, webhook: array<string, array{success: WebhookDefinition, error?: WebhookDefinition}>, default_options: array{pdf: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>, merge: array<string, mixed>, convert: array<string, mixed>}, screenshot: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>}, webhook?: string}} $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('builder_pdf.php');
         $loader->load('builder_screenshot.php');
         $loader->load('services.php');
+
+        if (false === $config['controller_listener']) {
+            $container->removeDefinition('sensiolabs_gotenberg.http_kernel.stream_builder');
+        }
 
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
@@ -51,7 +55,7 @@ class SensiolabsGotenbergExtension extends Extension
             ->addTag('sensiolabs_gotenberg.screenshot_builder')
         ;
 
-        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'] ?? 'http_client', false));
+        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'], false));
 
         $baseUri = $config['request_context']['base_uri'] ?? null;
         $defaultWebhookConfig = $config['default_options']['webhook'] ?? null;
@@ -92,11 +96,9 @@ class SensiolabsGotenbergExtension extends Extension
     }
 
     /**
-     * @template T of array<string, mixed>
+     * @param array<string, mixed> $userConfigurations
      *
-     * @param T $userConfigurations
-     *
-     * @return array<key-of<T>, value-of<T>>
+     * @return array<string, mixed>
      */
     private function cleanUserOptions(array $userConfigurations): array
     {

@@ -35,8 +35,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $list = [
             'pdf' => [
                 'html' => [
-                    'paper_width' => 33.1,
-                    'paper_height' => 46.8,
+                    'paper_standard_size' => 'A4',
                     'margin_top' => 1,
                     'margin_bottom' => 1,
                     'margin_left' => 1,
@@ -513,8 +512,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'webhook' => 'foo',
                     'pdf' => [
                         'html' => [
-                            'paper_width' => 33.1,
-                            'paper_height' => 46.8,
+                            'paper_standard_size' => 'A4',
                             'margin_top' => 1,
                             'margin_bottom' => 1,
                             'margin_left' => 1,
@@ -675,5 +673,30 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    public function testControllerListenerIsEnabledByDefault(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
+        $extension->load([[
+            'http_client' => 'http_client',
+        ]], $containerBuilder);
+
+        self::assertContains('sensiolabs_gotenberg.http_kernel.stream_builder', $containerBuilder->getServiceIds());
+    }
+
+    public function testControllerListenerCanBeDisabled(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
+        $extension->load([[
+            'http_client' => 'http_client',
+            'controller_listener' => false,
+        ]], $containerBuilder);
+
+        self::assertNotContains('sensiolabs_gotenberg.http_kernel.stream_builder', $containerBuilder->getServiceIds());
     }
 }

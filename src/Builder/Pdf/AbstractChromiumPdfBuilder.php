@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\CookieAwareTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
@@ -28,8 +29,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
         private readonly RequestStack $requestStack,
-        private readonly Environment|null $twig = null,
         WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
+        private readonly Environment|null $twig = null,
     ) {
         parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);
 
@@ -544,13 +545,13 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     protected function withRenderedPart(Part $pdfPart, string $template, array $context = []): static
     {
         if (!$this->twig instanceof Environment) {
-            throw new \LogicException(sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
+            throw new \LogicException(\sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
         }
 
         try {
             $html = $this->twig->render($template, array_merge($context, ['_builder' => $this]));
         } catch (\Throwable $error) {
-            throw new PdfPartRenderingException(sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
+            throw new PdfPartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $pdfPart->value, $error->getMessage()), previous: $error);
         }
 
         $this->formFields[$pdfPart->value] = new DataPart($html, $pdfPart->value, 'text/html');
@@ -566,6 +567,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'single_page' => $this->singlePage($value),
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
+            'paper_standard_size' => $this->paperStandardSize(PaperSize::from($value)),
             'paper_width' => $this->paperWidth(...Unit::parse($value)),
             'paper_height' => $this->paperHeight(...Unit::parse($value)),
             'margin_top' => $this->marginTop(...Unit::parse($value)),
@@ -588,7 +590,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             'metadata' => $this->metadata($value),
-            default => throw new InvalidBuilderConfiguration(sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
+            default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }
 }

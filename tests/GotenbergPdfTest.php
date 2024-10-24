@@ -16,6 +16,7 @@ use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
+use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\GotenbergPdf;
@@ -42,6 +43,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(SensiolabsGotenbergExtension::class)]
 #[UsesClass(SensiolabsGotenbergBundle::class)]
 #[UsesClass(Unit::class)]
+#[UsesClass(WebhookConfigurationRegistry::class)]
 final class GotenbergPdfTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void

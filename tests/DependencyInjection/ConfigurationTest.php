@@ -83,6 +83,53 @@ final class ConfigurationTest extends TestCase
     }
 
     /**
+     * @return iterable<string, array<array-key, array<string, string>>>
+     */
+    public static function providePaperSizesConfigurations(): iterable
+    {
+        yield 'with paper_width' => [
+            [
+                'paper_standard_size' => 'A4',
+                'paper_width' => '21cm',
+            ],
+        ];
+        yield 'with paper_height' => [
+            [
+                'paper_standard_size' => 'A4',
+                'paper_height' => '29.7cm',
+            ],
+        ];
+        yield 'with paper_width and paper_height' => [
+            [
+                'paper_standard_size' => 'A4',
+                'paper_width' => '21cm',
+                'paper_height' => '29.7cm',
+            ],
+        ];
+    }
+
+    /**
+     * @param array<string, string> $configuration
+     */
+    #[DataProvider('providePaperSizesConfigurations')]
+    public function testExceptionOnPaperSizesConfigurations(array $configuration): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => [
+                    'pdf' => [
+                        'html' => $configuration,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * @return \Generator<string, array{array{array<string, array<string|int, mixed>>}}>
      */
     public static function invalidWebhookConfigurationProvider(): \Generator
@@ -149,10 +196,12 @@ final class ConfigurationTest extends TestCase
             'assets_directory' => '%kernel.project_dir%/assets',
             'http_client' => 'http_client',
             'webhook' => [],
+            'controller_listener' => true,
             'default_options' => [
                 'pdf' => [
                     'html' => [
                         'single_page' => null,
+                        'paper_standard_size' => null,
                         'paper_width' => null,
                         'paper_height' => null,
                         'margin_top' => null,
@@ -179,6 +228,7 @@ final class ConfigurationTest extends TestCase
                     ],
                     'url' => [
                         'single_page' => null,
+                        'paper_standard_size' => null,
                         'paper_width' => null,
                         'paper_height' => null,
                         'margin_top' => null,
@@ -205,6 +255,7 @@ final class ConfigurationTest extends TestCase
                     ],
                     'markdown' => [
                         'single_page' => null,
+                        'paper_standard_size' => null,
                         'paper_width' => null,
                         'paper_height' => null,
                         'margin_top' => null,

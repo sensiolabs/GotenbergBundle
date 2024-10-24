@@ -38,27 +38,13 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         $response = $this->inner->generate();
         $swEvent?->stop();
 
-        $fileName = 'Unknown';
-        if ($response->getHeaders()->has('Content-Disposition')) {
-            $matches = [];
-
-            /* @see https://onlinephp.io/c/c2606 */
-            preg_match('#[^;]*;\sfilename="?(?P<fileName>[^"]*)"?#', $response->getHeaders()->get('Content-Disposition', ''), $matches);
-            $fileName = $matches['fileName'];
-        }
-
-        $lengthInBytes = null;
-        if ($response->getHeaders()->has('Content-Length')) {
-            $lengthInBytes = abs((int) $response->getHeaders()->get('Content-Length'));
-        }
-
         $this->screenshots[] = [
             'calls' => $this->calls,
             'time' => $swEvent?->getDuration(),
             'memory' => $swEvent?->getMemory(),
             'status' => $response->getStatusCode(),
-            'size' => $lengthInBytes,
-            'fileName' => $fileName,
+            'size' => $response->getContentLength(),
+            'fileName' => $response->getFileName(),
         ];
 
         ++$this->totalGenerated;

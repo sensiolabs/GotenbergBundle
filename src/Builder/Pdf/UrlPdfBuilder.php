@@ -21,11 +21,11 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
         RequestStack $requestStack,
+        WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
         Environment|null $twig = null,
         private readonly UrlGeneratorInterface|null $urlGenerator = null,
-        WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
     ) {
-        parent::__construct($gotenbergClient, $asset, $requestStack, $twig, $webhookConfigurationRegistry);
+        parent::__construct($gotenbergClient, $asset, $requestStack, $webhookConfigurationRegistry, $twig);
 
         $this->addNormalizer('route', $this->generateUrlFromRoute(...));
     }
@@ -56,7 +56,7 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
     public function route(string $name, array $parameters = []): self
     {
         if (null === $this->urlGenerator) {
-            throw new \LogicException(sprintf('Router is required to use "%s" method. Try to run "composer require symfony/routing".', __METHOD__));
+            throw new \LogicException(\sprintf('Router is required to use "%s" method. Try to run "composer require symfony/routing".', __METHOD__));
         }
 
         $this->formFields['route'] = [$name, $parameters];

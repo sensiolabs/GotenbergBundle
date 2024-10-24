@@ -122,7 +122,7 @@ $application->register('generate')
             $directory = __DIR__.'/'.$subDirectory;
 
             if (!@mkdir($directory, recursive: true) && !is_dir($directory)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $directory));
+                throw new RuntimeException(\sprintf('Directory "%s" was not created', $directory));
             }
 
             $summary .= "## {$type}\n\n";

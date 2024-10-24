@@ -4,6 +4,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
+use Sensiolabs\GotenbergBundle\EventListener\ProcessBuilderOnControllerResponse;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Gotenberg;
 use Sensiolabs\GotenbergBundle\GotenbergInterface;
@@ -64,6 +65,10 @@ return static function (ContainerConfigurator $container): void {
             ]),
         ])
         ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')
+    ;
+
+    $services->set('sensiolabs_gotenberg.http_kernel.stream_builder', ProcessBuilderOnControllerResponse::class)
+        ->tag('kernel.event_listener', ['method' => 'streamBuilder', 'event' => 'kernel.view'])
     ;
 
     $services->set('.sensiolabs_gotenberg.webhook_configuration_registry', WebhookConfigurationRegistry::class)

@@ -47,7 +47,7 @@ final class GotenbergPass implements CompilerPassInterface
                 ->setShared(false)
                 ->setArguments([
                     '$inner' => new Reference('.inner'),
-                    '$stopwatch' => new Reference('debug.stopwatch'),
+                    '$stopwatch' => new Reference('debug.stopwatch', ContainerInterface::NULL_ON_INVALID_REFERENCE),
                 ])
             ;
         }
