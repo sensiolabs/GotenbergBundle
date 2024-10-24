@@ -55,7 +55,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
     public function generateAsync(): string
     {
         if (!$this->inner instanceof AsyncBuilderInterface) {
-            throw new \LogicException(sprintf('The inner builder of %s must implement %s.', self::class, AsyncBuilderInterface::class));
+            throw new \LogicException(\sprintf('The inner builder of %s must implement %s.', self::class, AsyncBuilderInterface::class));
         }
 
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;

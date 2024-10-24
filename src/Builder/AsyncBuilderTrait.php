@@ -2,22 +2,27 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistry;
-use Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration\WebhookConfigurationRegistryInterface;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 
 trait AsyncBuilderTrait
 {
     use DefaultBuilderTrait;
+
     private string $webhookUrl;
+
     private string $errorWebhookUrl;
+
     /**
      * @var array<string, mixed>
      */
     private array $webhookExtraHeaders = [];
+
     /**
-     * @var \Closure(): string
+     * @var (\Closure(): string)
      */
     private \Closure $operationIdGenerator;
+
     private WebhookConfigurationRegistryInterface $webhookConfigurationRegistry;
 
     public function generateAsync(): string
@@ -54,7 +59,13 @@ trait AsyncBuilderTrait
     {
         $webhookConfiguration = $this->webhookConfigurationRegistry->get($webhook);
 
-        return $this->webhookUrls($webhookConfiguration['success'], $webhookConfiguration['error']);
+        $result = $this->webhookUrls($webhookConfiguration['success'], $webhookConfiguration['error']);
+
+        if (\array_key_exists('extra_http_headers', $webhookConfiguration)) {
+            $result = $result->webhookExtraHeaders($webhookConfiguration['extra_http_headers']);
+        }
+
+        return $result;
     }
 
     public function webhookUrls(string $successWebhook, string|null $errorWebhook = null): static
@@ -76,7 +87,7 @@ trait AsyncBuilderTrait
     }
 
     /**
-     * @param \Closure(): string $operationIdGenerator
+     * @param (\Closure(): string) $operationIdGenerator
      */
     public function operationIdGenerator(\Closure $operationIdGenerator): static
     {

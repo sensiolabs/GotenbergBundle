@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\DependencyInjection\WebhookConfiguration;
+namespace Sensiolabs\GotenbergBundle\Webhook;
 
 use Sensiolabs\GotenbergBundle\Exception\WebhookConfigurationException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -9,12 +9,16 @@ use Symfony\Component\Routing\RequestContext;
 /**
  * @internal
  *
- * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string|int, mixed>}}
+ * @phpstan-import-type WebhookDefinition from WebhookConfigurationRegistryInterface
  */
 final class WebhookConfigurationRegistry implements WebhookConfigurationRegistryInterface
 {
     /**
-     * @var array<string, array{success: string, error: string}>
+     * @var array<string, array{
+     *     success: string,
+     *     error: string,
+     *     extra_http_headers?: array<string, mixed>
+     * }>
      */
     private array $configurations = [];
 
@@ -25,7 +29,7 @@ final class WebhookConfigurationRegistry implements WebhookConfigurationRegistry
     }
 
     /**
-     * @param array{success: WebhookDefinition, error?: WebhookDefinition} $configuration
+     * @param array{success: WebhookDefinition, error?: WebhookDefinition, extra_http_headers?: array<string, mixed>} $configuration
      */
     public function add(string $name, array $configuration): void
     {
@@ -40,19 +44,23 @@ final class WebhookConfigurationRegistry implements WebhookConfigurationRegistry
             if (isset($configuration['error'])) {
                 $error = $this->processWebhookConfiguration($configuration['error']);
             }
-            $this->configurations[$name] = ['success' => $success, 'error' => $error];
+
+            $namedConfiguration = ['success' => $success, 'error' => $error];
+
+            if (\array_key_exists('extra_http_headers', $configuration) && [] !== $configuration['extra_http_headers']) {
+                $namedConfiguration['extra_http_headers'] = $configuration['extra_http_headers'];
+            }
+
+            $this->configurations[$name] = $namedConfiguration;
         } finally {
             $this->urlGenerator->setContext($requestContext);
         }
     }
 
-    /**
-     * @return array{success: string, error: string}
-     */
     public function get(string $name): array
     {
         if (!\array_key_exists($name, $this->configurations)) {
-            throw new WebhookConfigurationException(sprintf('Webhook configuration "%s" not found.', $name));
+            throw new WebhookConfigurationException("Webhook configuration \"{$name}\" not found.");
         }
 
         return $this->configurations[$name];
@@ -61,13 +69,14 @@ final class WebhookConfigurationRegistry implements WebhookConfigurationRegistry
     /**
      * @param WebhookDefinition $webhookDefinition
      *
-     * @throws \InvalidArgumentException
+     * @throws WebhookConfigurationException
      */
     private function processWebhookConfiguration(array $webhookDefinition): string
     {
         if (isset($webhookDefinition['url'])) {
             return $webhookDefinition['url'];
         }
+
         if (isset($webhookDefinition['route'])) {
             return $this->urlGenerator->generate($webhookDefinition['route'][0], $webhookDefinition['route'][1], UrlGeneratorInterface::ABSOLUTE_URL);
         }

@@ -467,9 +467,9 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             self::assertSame('add', $name);
             self::assertContains($arguments[0], ['foo', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config']);
             self::assertSame(match ($arguments[0]) {
-                'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => ['simple_route', []]]],
-                'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
-                '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']],
+                'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => ['simple_route', []]], 'extra_http_headers' => []],
+                'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]], 'extra_http_headers' => []],
+                '.sensiolabs_gotenberg.pdf_builder.markdown_webhook_config' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly'], 'extra_http_headers' => []],
                 default => self::fail('Unexpected webhook configuration'),
             }, $arguments[1]);
         }
