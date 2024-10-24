@@ -129,6 +129,18 @@ Resets the metadata.
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
 
+* `generateAsync()`:
+
+* `setWebhookConfigurationRegistry(Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry $registry)`:
+
+* `webhookConfiguration(string $webhook)`:
+
+* `webhookUrls(string $successWebhook, ?string $errorWebhook)`:
+
+* `webhookExtraHeaders(array $extraHeaders)`:
+
+* `operationIdGenerator(Closure $operationIdGenerator)`:
+
 * `fileName(string $fileName, string $headerDisposition)`:
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:

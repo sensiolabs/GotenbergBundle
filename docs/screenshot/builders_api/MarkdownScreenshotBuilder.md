@@ -75,6 +75,18 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 * `addAsset(string $path)`:
 Adds a file, like an image, font, stylesheet, and so on.
 
+* `generateAsync()`:
+
+* `setWebhookConfigurationRegistry(Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry $registry)`:
+
+* `webhookConfiguration(string $webhook)`:
+
+* `webhookUrls(string $successWebhook, ?string $errorWebhook)`:
+
+* `webhookExtraHeaders(array $extraHeaders)`:
+
+* `operationIdGenerator(Closure $operationIdGenerator)`:
+
 * `fileName(string $fileName, string $headerDisposition)`:
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
