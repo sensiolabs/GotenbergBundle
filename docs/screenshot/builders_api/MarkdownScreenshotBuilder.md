@@ -75,6 +75,8 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 * `addAsset(string $path)`:
 Adds a file, like an image, font, stylesheet, and so on.
 
+* `downloadFrom(array $downloadFrom)`:
+
 * `fileName(string $fileName, string $headerDisposition)`:
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:

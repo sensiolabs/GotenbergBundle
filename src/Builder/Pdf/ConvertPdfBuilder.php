@@ -67,7 +67,7 @@ final class ConvertPdfBuilder extends AbstractPdfBuilder
             throw new MissingRequiredFieldException('At least "pdfa" or "pdfua" must be provided.');
         }
 
-        if ([] === ($this->formFields['files'] ?? [])) {
+        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
             throw new MissingRequiredFieldException('At least one PDF file is required');
         }
 
@@ -84,6 +84,7 @@ final class ConvertPdfBuilder extends AbstractPdfBuilder
         match ($configurationName) {
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
+            'download_from' => $this->downloadFrom($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

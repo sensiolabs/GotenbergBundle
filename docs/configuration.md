@@ -67,6 +67,7 @@ sensiolabs_gotenberg:
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
                 metadata: null                      # None
+                download_from: null                 # None
             url:
                 header:
                     template: null                  # None
@@ -100,6 +101,7 @@ sensiolabs_gotenberg:
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
                 metadata: null                      # None
+                download_from: null                 # None
             markdown:
                 header:
                     template: null                  # None
@@ -133,6 +135,7 @@ sensiolabs_gotenberg:
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
                 metadata: null                      # None
+                download_from: null                 # None
             office:
                 landscape: null                             # false
                 native_page_ranges: null                    # All pages
@@ -159,13 +162,17 @@ sensiolabs_gotenberg:
                 quality: null                               # 90
                 reduce_image_resolution: null               # false
                 max_image_resolution: null                  # 300
+                password: null                              # None
+                download_from: null                         # None
             merge:
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
                 metadata: null                      # None
+                download_from: null                 # None
             convert:
                 pdf_format: null                    # None
                 pdf_universal_access: null          # false
+                download_from: null                 # None
         screenshot:
             html:
                 width: null                         # 800
@@ -184,6 +191,7 @@ sensiolabs_gotenberg:
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
                 skip_network_idle_event: null       # false
+                download_from: null                 # None
             url:
                 width: null                         # 800
                 height: null                        # 600
@@ -201,6 +209,7 @@ sensiolabs_gotenberg:
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
                 skip_network_idle_event: null       # false
+                download_from: null                 # None
             markdown:
                 width: null                         # 800
                 height: null                        # 600
@@ -218,6 +227,7 @@ sensiolabs_gotenberg:
                 fail_on_http_status_codes: null     # [499-599]
                 fail_on_console_exceptions: null    # false
                 skip_network_idle_event: null       # false
+                download_from: null                 # None
 ```
 
 > [!TIP]
@@ -298,4 +308,30 @@ sensiolabs_gotenberg:
 Whenever a controller returns something other than a `Response` object, the [`kernel.view`](https://symfony.com/doc/current/reference/events.html#kernel-view) event is fired.
 That listener listen to this event and detects if it is a `GotenbergFileResult` object. If so it automatically calls the `->stream()` method to convert it to a Response object.
 
-Enabled byd efault but can be disabled via the `sensiolabs_gotenberg.controller_listener` configuration.
+Enabled by default but can be disabled via the `sensiolabs_gotenberg.controller_listener` configuration.
+
+## Download from
+
+> [!WARNING]  
+> URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
+
+To download files resource from URLs.
+
+``` yaml
+sensiolabs_gotenberg:
+    default_options:
+        pdf:
+            html:
+                download_from:
+                    - url: 'http://example.com/url/to/file''
+                      extraHttpHeaders:
+                          - name: 'MyHeader'
+                            value: 'MyValue'
+                          - name: 'User-Agent'
+                            value: 'MyValue'
+
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#download-from).
+

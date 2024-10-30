@@ -9,6 +9,9 @@
 [quality](#quality)  
 [omitBackground](#omitBackground)  
 
+### Additional content
+[download from](#download-from)
+
 ### Style
 [assets](../assets.md)  
 [addAsset](../assets.md)
@@ -181,6 +184,53 @@ class YourController
     }
 }
 ```
+
+## Additional content
+
+### download from
+
+> [!WARNING]  
+> URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
+
+To download files resource from URLs.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->downloadFrom([
+                [
+                    'url' => 'http://example.com/url/to/file',
+                    'extraHttpHeaders' =>
+                    [
+                        'MyHeader' => 'MyValue',
+                    ],
+                ],
+                [
+                    'url' => 'http://example.com/url/to/file',
+                    'extraHttpHeaders' => 
+                    [
+                        'MyHeaderOne' => 'MyValue',
+                        'MyHeaderTwo' => 'MyValue',
+                    ],
+                ],
+            ])
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#download-from).
 
 ## Request
 

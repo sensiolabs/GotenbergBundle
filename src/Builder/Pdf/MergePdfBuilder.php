@@ -89,7 +89,7 @@ final class MergePdfBuilder extends AbstractPdfBuilder
 
     public function getMultipartFormData(): array
     {
-        if ([] === ($this->formFields['files'] ?? [])) {
+        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
             throw new MissingRequiredFieldException('At least one PDF file is required');
         }
 
@@ -107,6 +107,7 @@ final class MergePdfBuilder extends AbstractPdfBuilder
             'pdf_format' => $this->pdfFormat(PdfFormat::from($value)),
             'pdf_universal_access' => $this->pdfUniversalAccess($value),
             'metadata' => $this->metadata($value),
+            'download_from' => $this->downloadFrom($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, self::class)),
         };
     }
