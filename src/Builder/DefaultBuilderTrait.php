@@ -37,6 +37,11 @@ trait DefaultBuilderTrait
     /** @var ProcessorInterface<mixed>|null */
     private ProcessorInterface|null $processor;
 
+    /**
+     * @var \Closure(): string
+     */
+    private \Closure $traceGenerator;
+
     public function setLogger(LoggerInterface|null $logger): void
     {
         $this->logger = $logger;
@@ -210,17 +215,39 @@ trait DefaultBuilderTrait
 
     public function generate(): GotenbergFileResult
     {
-        $this->logger?->debug('Processing file using {sensiolabs_gotenberg.builder} builder.', [
+        $this->traceGenerator ??= $this::defaultTraceGenerator(...);
+        $trace = ($this->traceGenerator)();
+        $headers = ['Gotenberg-Trace' => $trace];
+
+        $this->logger?->debug('Processing file with trace "{sensiolabs_gotenberg.trace}" using {sensiolabs_gotenberg.builder} builder.', [
+            'sensiolabs_gotenberg.trace' => $trace,
             'sensiolabs_gotenberg.builder' => $this::class,
         ]);
 
         $processor = $this->processor ?? new NullProcessor();
 
         return new GotenbergFileResult(
-            $this->client->call($this->getEndpoint(), $this->getMultipartFormData()),
+            $this->client->call($this->getEndpoint(), $this->getMultipartFormData(), $headers),
             $processor($this->fileName),
             $this->headerDisposition,
             $this->fileName,
         );
+    }
+
+    /**
+     * Sets the callable that will generate the trace ID for each operation.
+     *
+     * @param \Closure(): string $traceGenerator
+     */
+    public function traceGenerator(\Closure $traceGenerator): static
+    {
+        $this->traceGenerator = $traceGenerator;
+
+        return $this;
+    }
+
+    protected static function defaultTraceGenerator(): string
+    {
+        return bin2hex(random_bytes(16)).microtime(true);
     }
 }
