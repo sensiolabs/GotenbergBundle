@@ -18,22 +18,10 @@ trait AsyncBuilderTrait
      */
     private array $webhookExtraHeaders = [];
 
-    /**
-     * @var (\Closure(): string)
-     */
-    private \Closure $operationIdGenerator;
-
     private WebhookConfigurationRegistryInterface $webhookConfigurationRegistry;
 
-    public function generateAsync(): string
+    public function generateAsync(): void
     {
-        $operationId = ($this->operationIdGenerator ?? self::defaultOperationIdGenerator(...))();
-        $this->logger?->debug('Generating a file asynchronously with operation id {sensiolabs_gotenberg.operation_id} using {sensiolabs_gotenberg.builder} builder.', [
-            'sensiolabs_gotenberg.operation_id' => $operationId,
-            'sensiolabs_gotenberg.builder' => $this::class,
-        ]);
-
-        $this->webhookExtraHeaders['X-Gotenberg-Operation-Id'] = $operationId;
         $headers = [
             'Gotenberg-Webhook-Url' => $this->webhookUrl,
             'Gotenberg-Webhook-Error-Url' => $this->errorWebhookUrl,
@@ -44,8 +32,6 @@ trait AsyncBuilderTrait
             $headers['Gotenberg-Output-Filename'] = $this->fileName;
         }
         $this->client->call($this->getEndpoint(), $this->getMultipartFormData(), $headers);
-
-        return $operationId;
     }
 
     public function setWebhookConfigurationRegistry(WebhookConfigurationRegistry $registry): static
@@ -84,20 +70,5 @@ trait AsyncBuilderTrait
         $this->webhookExtraHeaders = array_merge($this->webhookExtraHeaders, $extraHeaders);
 
         return $this;
-    }
-
-    /**
-     * @param (\Closure(): string) $operationIdGenerator
-     */
-    public function operationIdGenerator(\Closure $operationIdGenerator): static
-    {
-        $this->operationIdGenerator = $operationIdGenerator;
-
-        return $this;
-    }
-
-    protected static function defaultOperationIdGenerator(): string
-    {
-        return 'gotenberg_'.bin2hex(random_bytes(16)).microtime(true);
     }
 }

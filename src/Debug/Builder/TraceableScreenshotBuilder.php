@@ -52,7 +52,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         return $response;
     }
 
-    public function generateAsync(): string
+    public function generateAsync(): void
     {
         if (!$this->inner instanceof AsyncBuilderInterface) {
             throw new \LogicException(\sprintf('The inner builder of %s must implement %s.', self::class, AsyncBuilderInterface::class));
@@ -62,7 +62,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         ++self::$count;
 
         $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_screenshot');
-        $operationId = $this->inner->generateAsync();
+        $this->inner->generateAsync();
         $swEvent?->stop();
 
         $this->screenshots[] = [
@@ -74,8 +74,6 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         ];
 
         ++$this->totalGenerated;
-
-        return $operationId;
     }
 
     /**

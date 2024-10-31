@@ -7,5 +7,5 @@ interface AsyncBuilderInterface
     /**
      * Generates a file asynchronously.
      */
-    public function generateAsync(): string;
+    public function generateAsync(): void;
 }
