@@ -92,8 +92,6 @@ If the form field reduceImageResolution is set to true, tell if all images will 
 
 * `webhookExtraHeaders(array $extraHeaders)`:
 
-* `operationIdGenerator(Closure $operationIdGenerator)`:
-
 * `fileName(string $fileName, string $headerDisposition)`:
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:

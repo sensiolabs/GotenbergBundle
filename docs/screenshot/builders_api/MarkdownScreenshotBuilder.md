@@ -85,8 +85,6 @@ Adds a file, like an image, font, stylesheet, and so on.
 
 * `webhookExtraHeaders(array $extraHeaders)`:
 
-* `operationIdGenerator(Closure $operationIdGenerator)`:
-
 * `fileName(string $fileName, string $headerDisposition)`:
 
 * `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
