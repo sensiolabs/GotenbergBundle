@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sensiolabs\GotenbergBundle\EventListener;
 
 use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
