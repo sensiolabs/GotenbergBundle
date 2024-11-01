@@ -8,6 +8,9 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 
+/**
+ * Merge `n` pdf files into a single one.
+ */
 final class MergePdfBuilder extends AbstractPdfBuilder
 {
     private const ENDPOINT = '/forms/pdfengines/merge';

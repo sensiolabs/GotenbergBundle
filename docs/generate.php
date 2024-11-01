@@ -1,9 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
@@ -23,6 +25,8 @@ const BUILDERS = [
         UrlPdfBuilder::class,
         MarkdownPdfBuilder::class,
         LibreOfficePdfBuilder::class,
+        MergePdfBuilder::class,
+        ConvertPdfBuilder::class,
     ],
     'Screenshot' => [
         HtmlScreenshotBuilder::class,
@@ -36,6 +40,7 @@ const EXCLUDED_METHODS = [
     'setLogger',
     'setConfigurations',
     'generate',
+    'generateAsync',
     'getMultipartFormData',
 ];
 
@@ -59,7 +64,7 @@ function parseDocComment(string $rawDocComment): string
 {
     $result = '';
 
-    $lines = explode("\n", $rawDocComment);
+    $lines = explode("\n", trim($rawDocComment, "\n"));
     array_shift($lines);
     array_pop($lines);
 
@@ -89,13 +94,28 @@ function parseBuilder(ReflectionClass $builder): string
     $builderName = $builder->getShortName();
     $markdown .= "# {$builderName}\n\n";
 
+    $builderComment = $builder->getDocComment();
+
+    if (false !== $builderComment) {
+        $markdown .= parseDocComment($builderComment) . "\n";
+    }
+
+    $methods = [];
+    foreach ($builder->getInterfaces() as $interface) {
+        foreach ($interface->getMethods() as $method) {
+            if (($method->getDocComment() ?: '') !== '') {
+                $methods[$method->getName()] = parseDocComment($method->getDocComment());
+            }
+        }
+    }
+
     foreach ($builder->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
         if (\in_array($method->getName(), EXCLUDED_METHODS, true) === true) {
             continue;
         }
 
         $methodSignature = parseMethodSignature($method);
-        $docComment = parseDocComment($method->getDocComment() ?: '');
+        $docComment = parseDocComment($methods[$method->getShortName()] ?? $method->getDocComment() ?: '');
 
         $markdown .= <<<"MARKDOWN"
         * `{$methodSignature}`:
@@ -118,7 +138,7 @@ $application->register('generate')
         $summary = "# Builders API\n\n";
 
         foreach (BUILDERS as $type => $builderClasses) {
-            $subDirectory = strtolower($type).'/builders_api';
+            $subDirectory = "{$type}/builders_api";
             $directory = __DIR__.'/'.$subDirectory;
 
             if (!@mkdir($directory, recursive: true) && !is_dir($directory)) {
