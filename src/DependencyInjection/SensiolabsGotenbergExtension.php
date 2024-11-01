@@ -69,7 +69,7 @@ class SensiolabsGotenbergExtension extends Extension
         }
 
         foreach ($config['webhook'] as $name => $configuration) {
-            $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')
+            $container->getDefinition('sensiolabs_gotenberg.webhook_configuration_registry')
                 ->addMethodCall('add', [$name, $configuration]);
         }
 
@@ -130,7 +130,7 @@ class SensiolabsGotenbergExtension extends Extension
             $name = $webhookConfig['config_name'];
         } else {
             $name = $serviceId.'_webhook_config';
-            $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')
+            $container->getDefinition('sensiolabs_gotenberg.webhook_configuration_registry')
                 ->addMethodCall('add', [$name, $webhookConfig]);
         }
         $definition->addMethodCall('webhookConfiguration', [$name], true);

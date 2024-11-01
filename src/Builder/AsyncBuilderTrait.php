@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 
 trait AsyncBuilderTrait
@@ -22,9 +22,15 @@ trait AsyncBuilderTrait
 
     public function generateAsync(): void
     {
+        if (!isset($this->webhookUrl)) {
+            throw new MissingRequiredFieldException('->webhookUrls() was never called.');
+        }
+
+        $errorWebhookUrl = $this->errorWebhookUrl ?? $this->webhookUrl;
+
         $headers = [
             'Gotenberg-Webhook-Url' => $this->webhookUrl,
-            'Gotenberg-Webhook-Error-Url' => $this->errorWebhookUrl,
+            'Gotenberg-Webhook-Error-Url' => $errorWebhookUrl,
             'Gotenberg-Webhook-Extra-Http-Headers' => json_encode($this->webhookExtraHeaders, \JSON_THROW_ON_ERROR),
         ];
         if (null !== $this->fileName) {
@@ -34,13 +40,9 @@ trait AsyncBuilderTrait
         $this->client->call($this->getEndpoint(), $this->getMultipartFormData(), $headers);
     }
 
-    public function setWebhookConfigurationRegistry(WebhookConfigurationRegistry $registry): static
-    {
-        $this->webhookConfigurationRegistry = $registry;
-
-        return $this;
-    }
-
+    /**
+     * Providing an existing $webhook from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
+     */
     public function webhookConfiguration(string $webhook): static
     {
         $webhookConfiguration = $this->webhookConfigurationRegistry->get($webhook);
@@ -54,6 +56,9 @@ trait AsyncBuilderTrait
         return $result;
     }
 
+    /**
+     * Allows to set both $successWebhook and $errorWebhook URLs. If $errorWebhook is not provided, it will fallback to $successWebhook one.
+     */
     public function webhookUrls(string $successWebhook, string|null $errorWebhook = null): static
     {
         $this->webhookUrl = $successWebhook;
@@ -63,6 +68,8 @@ trait AsyncBuilderTrait
     }
 
     /**
+     * Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
+     *
      * @param array<string, mixed> $extraHeaders
      */
     public function webhookExtraHeaders(array $extraHeaders): static

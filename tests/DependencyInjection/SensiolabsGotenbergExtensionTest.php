@@ -415,7 +415,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $containerBuilder = $this->getContainerBuilder();
         $extension->load([['http_client' => 'http_client']], $containerBuilder);
 
-        self::assertEmpty($containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')->getMethodCalls());
+        self::assertEmpty($containerBuilder->getDefinition('sensiolabs_gotenberg.webhook_configuration_registry')->getMethodCalls());
 
         $buildersIds = [
             '.sensiolabs_gotenberg.pdf_builder.html',
@@ -480,7 +480,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             }
         }, array_keys($expectedConfigurationMapping), array_values($expectedConfigurationMapping));
 
-        $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
+        $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg.webhook_configuration_registry');
         $methodCalls = $webhookConfigurationRegistryDefinition->getMethodCalls();
         self::assertCount(3, $methodCalls);
         foreach ($methodCalls as $methodCall) {
