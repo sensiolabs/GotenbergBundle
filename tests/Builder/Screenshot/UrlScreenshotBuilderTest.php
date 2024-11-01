@@ -77,8 +77,8 @@ final class UrlScreenshotBuilderTest extends AbstractBuilderTestCase
         return (new UrlScreenshotBuilder(
             $this->gotenbergClient,
             self::$assetBaseDirFormatter,
-            new RequestStack(),
             $this->webhookConfigurationRegistry,
+            new RequestStack(),
             true === $twig ? self::$twig : null,
             $this->router,
         ))

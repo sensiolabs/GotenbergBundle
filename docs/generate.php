@@ -97,13 +97,13 @@ function parseBuilder(ReflectionClass $builder): string
     $builderComment = $builder->getDocComment();
 
     if (false !== $builderComment) {
-        $markdown .= parseDocComment($builderComment) . "\n";
+        $markdown .= parseDocComment($builderComment)."\n";
     }
 
     $methods = [];
     foreach ($builder->getInterfaces() as $interface) {
         foreach ($interface->getMethods() as $method) {
-            if (($method->getDocComment() ?: '') !== '') {
+            if ('' !== ($method->getDocComment() ?: '')) {
                 $methods[$method->getName()] = parseDocComment($method->getDocComment());
             }
         }

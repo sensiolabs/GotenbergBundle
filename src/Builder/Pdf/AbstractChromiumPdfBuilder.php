@@ -28,8 +28,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
-        private readonly RequestStack $requestStack,
         WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
+        private readonly RequestStack $requestStack,
         private readonly Environment|null $twig = null,
     ) {
         parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);

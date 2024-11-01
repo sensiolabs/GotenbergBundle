@@ -9,7 +9,6 @@ use Sensiolabs\GotenbergBundle\Builder\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
-use Symfony\Component\Mime\Part\DataPart;
 
 abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface, AsyncBuilderInterface
 {

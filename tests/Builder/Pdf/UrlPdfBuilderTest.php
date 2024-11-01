@@ -132,7 +132,14 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getUrlPdfBuilder(UrlGeneratorInterface|null $urlGenerator = null): UrlPdfBuilder
     {
-        return (new UrlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), $this->webhookConfigurationRegistry, null, $urlGenerator))
+        return (new UrlPdfBuilder(
+            $this->gotenbergClient,
+            self::$assetBaseDirFormatter,
+            $this->webhookConfigurationRegistry,
+            new RequestStack(),
+            null,
+            $urlGenerator)
+        )
             ->processor(new NullProcessor())
         ;
     }

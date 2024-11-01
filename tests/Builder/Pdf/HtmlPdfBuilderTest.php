@@ -111,7 +111,7 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 
     private function getHtmlPdfBuilder(bool $twig = true): HtmlPdfBuilder
     {
-        return (new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), $this->webhookConfigurationRegistry, true === $twig ? self::$twig : null))
+        return (new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, new RequestStack(), true === $twig ? self::$twig : null))
             ->processor(new NullProcessor())
         ;
     }

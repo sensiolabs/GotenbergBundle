@@ -20,12 +20,12 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
-        RequestStack $requestStack,
         WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
+        RequestStack $requestStack,
         Environment|null $twig = null,
         private readonly UrlGeneratorInterface|null $urlGenerator = null,
     ) {
-        parent::__construct($gotenbergClient, $asset, $requestStack, $webhookConfigurationRegistry, $twig);
+        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry, $requestStack, $twig);
 
         $this->addNormalizer('route', $this->generateUrlFromRoute(...));
     }
