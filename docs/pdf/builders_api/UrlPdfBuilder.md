@@ -129,6 +129,8 @@ Resets the metadata.
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
 
+* `downloadFrom(array $downloadFrom)`:
+
 * `setWebhookConfigurationRegistry(Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry $registry)`:
 
 * `webhookConfiguration(string $webhook)`:

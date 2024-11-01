@@ -8,6 +8,8 @@ Enable PDF for Universal Access for optimal accessibility.
 
 * `files(string $paths)`:
 
+* `downloadFrom(array $downloadFrom)`:
+
 * `setWebhookConfigurationRegistry(Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry $registry)`:
 
 * `webhookConfiguration(string $webhook)`:

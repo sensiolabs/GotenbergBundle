@@ -269,7 +269,7 @@ class Configuration implements ConfigurationInterface
                     ->info('The JavaScript expression to wait before converting an HTML document into PDF until it returns true - default None. https://gotenberg.dev/docs/routes#wait-before-rendering')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return !\is_string($option);
                         })
                         ->thenInvalid('Invalid value %s')
@@ -309,37 +309,13 @@ class Configuration implements ConfigurationInterface
                     ->info('Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return !\is_string($option);
                         })
                         ->thenInvalid('Invalid value %s')
                     ->end()
                 ->end()
-                ->arrayNode('extra_http_headers')
-                    ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
-                    ->defaultValue([])
-                    ->useAttributeAsKey('name')
-                    ->arrayPrototype()
-                        ->children()
-                            ->scalarNode('name')
-                                ->validate()
-                                    ->ifTrue(static function ($option) {
-                                        return !\is_string($option);
-                                    })
-                                    ->thenInvalid('Invalid header name %s')
-                                ->end()
-                            ->end()
-                            ->scalarNode('value')
-                                ->validate()
-                                    ->ifTrue(static function ($option) {
-                                        return !\is_string($option);
-                                    })
-                                    ->thenInvalid('Invalid header value %s')
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+                ->append($this->addExtraHttpHeaders())
                 ->arrayNode('fail_on_http_status_codes')
                     ->info('Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium')
                     ->defaultValue([499, 599])
@@ -355,9 +331,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultNull()
                 ->end()
                 ->append($this->addPdfMetadata())
+                ->append($this->addDownloadFrom())
             ->end()
             ->validate()
-                ->ifTrue(function ($v) {
+                ->ifTrue(function ($v): bool {
                     return isset($v['paper_standard_size']) && (isset($v['paper_height']) || isset($v['paper_width']));
                 })
                 ->thenInvalid('You cannot use "paper_standard_size" when "paper_height", "paper_width" or both are set".')
@@ -416,7 +393,7 @@ class Configuration implements ConfigurationInterface
                     ->info('The JavaScript expression to wait before converting an HTML document into PDF until it returns true - default None. https://gotenberg.dev/docs/routes#wait-before-rendering')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return !\is_string($option);
                         })
                         ->thenInvalid('Invalid value %s')
@@ -456,37 +433,13 @@ class Configuration implements ConfigurationInterface
                     ->info('Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium')
                     ->defaultNull()
                     ->validate()
-                        ->ifTrue(static function ($option) {
+                        ->ifTrue(static function ($option): bool {
                             return !\is_string($option);
                         })
                         ->thenInvalid('Invalid value %s')
                     ->end()
                 ->end()
-                ->arrayNode('extra_http_headers')
-                    ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium')
-                    ->defaultValue([])
-                    ->useAttributeAsKey('name')
-                        ->arrayPrototype()
-                            ->children()
-                            ->scalarNode('name')
-                                ->validate()
-                                    ->ifTrue(static function ($option) {
-                                        return !\is_string($option);
-                                    })
-                                    ->thenInvalid('Invalid header name %s')
-                                ->end()
-                            ->end()
-                            ->scalarNode('value')
-                                ->validate()
-                                    ->ifTrue(static function ($option) {
-                                        return !\is_string($option);
-                                    })
-                                    ->thenInvalid('Invalid header value %s')
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+                ->append($this->addExtraHttpHeaders())
                 ->arrayNode('fail_on_http_status_codes')
                     ->info('Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium')
                     ->defaultValue([499, 599])
@@ -501,6 +454,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Do not wait for Chromium network to be idle. - default false. https://gotenberg.dev/docs/routes#performance-mode-chromium')
                     ->defaultNull()
                 ->end()
+                ->append($this->addDownloadFrom())
             ->end()
         ;
     }
@@ -512,6 +466,10 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
+                ->scalarNode('password')
+                    ->info('Set the password for opening the source file. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
+                    ->defaultNull()
+                ->end()
                 ->booleanNode('landscape')
                     ->info('The paper orientation to landscape - default false. https://gotenberg.dev/docs/routes#page-properties-chromium')
                     ->defaultNull()
@@ -610,6 +568,7 @@ class Configuration implements ConfigurationInterface
                     ->values(array_map(static fn (ImageResolutionDPI $case): int => $case->value, ImageResolutionDPI::cases()))
                     ->defaultNull()
                 ->end()
+                ->append($this->addDownloadFrom())
             ->end()
         ;
 
@@ -622,6 +581,9 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('convert');
         $this->addPdfFormat($treeBuilder->getRootNode());
+        $treeBuilder->getRootNode()
+            ->append($this->addDownloadFrom())
+            ->end();
 
         return $treeBuilder->getRootNode();
     }
@@ -632,6 +594,7 @@ class Configuration implements ConfigurationInterface
         $this->addPdfFormat($treeBuilder->getRootNode());
         $treeBuilder->getRootNode()
             ->append($this->addPdfMetadata())
+            ->append($this->addDownloadFrom())
         ->end();
 
         return $treeBuilder->getRootNode();
@@ -809,6 +772,75 @@ class Configuration implements ConfigurationInterface
                             return !\is_array($v) || \count($v) !== 2 || !\is_string($v[0]) || !\is_array($v[1]);
                         })
                         ->thenInvalid('The "route" parameter must be a string or an array containing a string and an array.')
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addDownloadFrom(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('download_from');
+
+        return $treeBuilder->getRootNode()
+             ->info('URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from')
+            ->defaultValue([])
+            ->arrayPrototype()
+                ->children()
+                    ->scalarNode('url')->end()
+                    ->arrayNode('extraHttpHeaders')
+                        ->useAttributeAsKey('name')
+                        ->arrayPrototype()
+                            ->children()
+                                 ->scalarNode('name')
+                                    ->validate()
+                                        ->ifTrue(static function ($option): bool {
+                                            return !\is_string($option);
+                                        })
+                                        ->thenInvalid('Invalid header name %s')
+                                    ->end()
+                                ->end()
+                                ->scalarNode('value')
+                                    ->validate()
+                                        ->ifTrue(static function ($option): bool {
+                                            return !\is_string($option);
+                                        })
+                                        ->thenInvalid('Invalid header value %s')
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addExtraHttpHeaders(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('extra_http_headers');
+
+        return $treeBuilder->getRootNode()
+            ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
+            ->defaultValue([])
+            ->useAttributeAsKey('name')
+            ->arrayPrototype()
+                ->children()
+                    ->scalarNode('name')
+                        ->validate()
+                            ->ifTrue(static function ($option): bool {
+                                return !\is_string($option);
+                            })
+                            ->thenInvalid('Invalid header name %s')
+                        ->end()
+                    ->end()
+                    ->scalarNode('value')
+                        ->validate()
+                            ->ifTrue(static function ($option): bool {
+                                return !\is_string($option);
+                            })
+                            ->thenInvalid('Invalid header value %s')
+                        ->end()
                     ->end()
                 ->end()
             ->end()

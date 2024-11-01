@@ -64,6 +64,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'skip_network_idle_event' => true,
                     'pdf_format' => 'PDF/A-1b',
                     'pdf_universal_access' => true,
+                    'download_from' => [],
                 ],
                 'url' => [
                     'paper_width' => 21,
@@ -88,6 +89,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'pdf_format' => PdfFormat::Pdf2b->value,
                     'pdf_universal_access' => false,
                     'cookies' => [],
+                    'download_from' => [],
                 ],
                 'markdown' => [
                     'paper_width' => 30,
@@ -112,6 +114,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'pdf_format' => PdfFormat::Pdf3b->value,
                     'pdf_universal_access' => true,
                     'cookies' => [],
+                    'download_from' => [],
                 ],
                 'office' => [
                     'landscape' => false,
@@ -119,14 +122,17 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'merge' => true,
                     'pdf_format' => 'PDF/A-1b',
                     'pdf_universal_access' => true,
+                    'download_from' => [],
                 ],
                 'merge' => [
                     'pdf_format' => 'PDF/A-3b',
                     'pdf_universal_access' => true,
+                    'download_from' => [],
                 ],
                 'convert' => [
                     'pdf_format' => 'PDF/A-2b',
                     'pdf_universal_access' => true,
+                    'download_from' => [],
                 ],
             ],
             'screenshot' => [
@@ -153,6 +159,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'fail_on_http_status_codes' => [401],
                     'fail_on_console_exceptions' => true,
                     'skip_network_idle_event' => true,
+                    'download_from' => [],
                 ],
                 'url' => [
                     'width' => 1000,
@@ -178,6 +185,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'fail_on_http_status_codes' => [401, 403],
                     'fail_on_console_exceptions' => false,
                     'skip_network_idle_event' => true,
+                    'download_from' => [],
                 ],
                 'markdown' => [
                     'width' => 1000,
@@ -202,6 +210,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'fail_on_http_status_codes' => [401, 403],
                     'fail_on_console_exceptions' => false,
                     'skip_network_idle_event' => false,
+                    'download_from' => [],
                 ],
             ],
         ];
@@ -308,6 +317,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         'cookies' => [],
                         'extra_http_headers' => [],
                         'fail_on_http_status_codes' => [],
+                        'download_from' => [],
                     ],
                     'url' => [
                         'metadata' => [
@@ -316,6 +326,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         'cookies' => [],
                         'extra_http_headers' => [],
                         'fail_on_http_status_codes' => [],
+                        'download_from' => [],
                     ],
                     'markdown' => [
                         'metadata' => [
@@ -324,19 +335,23 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         'cookies' => [],
                         'extra_http_headers' => [],
                         'fail_on_http_status_codes' => [],
+                        'download_from' => [],
                     ],
                     'office' => [
                         'metadata' => [
                             'Author' => 'SensioLabs OFFICE',
                         ],
+                        'download_from' => [],
                     ],
                     'merge' => [
                         'metadata' => [
                             'Author' => 'SensioLabs MERGE',
                         ],
+                        'download_from' => [],
                     ],
                     'convert' => [
                         'pdf_format' => 'PDF/A-2b',
+                        'download_from' => [],
                     ],
                 ],
             ],
@@ -354,6 +369,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'cookies' => [],
                 'extra_http_headers' => [],
                 'fail_on_http_status_codes' => [],
+                'download_from' => [],
             ],
             'url' => [
                 'metadata' => [
@@ -362,6 +378,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'cookies' => [],
                 'extra_http_headers' => [],
                 'fail_on_http_status_codes' => [],
+                'download_from' => [],
             ],
             'markdown' => [
                 'metadata' => [
@@ -370,19 +387,23 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'cookies' => [],
                 'extra_http_headers' => [],
                 'fail_on_http_status_codes' => [],
+                'download_from' => [],
             ],
             'office' => [
                 'metadata' => [
                     'Author' => 'SensioLabs OFFICE',
                 ],
+                'download_from' => [],
             ],
             'merge' => [
                 'metadata' => [
                     'Author' => 'SensioLabs MERGE',
                 ],
+                'download_from' => [],
             ],
             'convert' => [
                 'pdf_format' => 'PDF/A-2b',
+                'download_from' => [],
             ],
         ], $dataCollectorOptions);
     }
