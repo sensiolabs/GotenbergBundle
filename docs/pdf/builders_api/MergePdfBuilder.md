@@ -16,6 +16,8 @@ Resets the metadata.
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
 
+* `getMultipartFormData()`:
+
 * `downloadFrom(array $downloadFrom)`:
 
 * `webhookConfiguration(string $name)`:
@@ -34,8 +36,4 @@ Allows to set both $successWebhook and $errorWebhook URLs. If $errorWebhook is n
 
 * `webhookExtraHeaders(array $extraHeaders)`:
 Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
-
-* `fileName(string $fileName, string $headerDisposition)`:
-
-* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 

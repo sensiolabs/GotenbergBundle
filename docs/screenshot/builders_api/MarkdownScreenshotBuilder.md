@@ -8,6 +8,8 @@ The HTML file that wraps the markdown content.
 
 * `files(string $paths)`:
 
+* `getMultipartFormData()`:
+
 * `cookies(array $cookies)`:
 
 * `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
@@ -93,10 +95,6 @@ Allows to set both $successWebhook and $errorWebhook URLs. If $errorWebhook is n
 
 * `webhookExtraHeaders(array $extraHeaders)`:
 Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
-
-* `fileName(string $fileName, string $headerDisposition)`:
-
-* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

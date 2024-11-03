@@ -41,7 +41,8 @@ const EXCLUDED_METHODS = [
     'setConfigurations',
     'generate',
     'generateAsync',
-    'getMultipartFormData',
+    'fileName',
+    'processor',
 ];
 
 function parseMethodSignature(ReflectionMethod $method): string
