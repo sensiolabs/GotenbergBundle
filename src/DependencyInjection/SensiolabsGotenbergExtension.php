@@ -120,7 +120,7 @@ class SensiolabsGotenbergExtension extends Extension
             return;
         }
 
-        if (null === $webhookConfig) {
+        if (null !== $defaultWebhookName) {
             $definition->addMethodCall('webhookConfiguration', [$defaultWebhookName], true);
 
             return;
