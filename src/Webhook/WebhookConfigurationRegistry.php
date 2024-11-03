@@ -15,10 +15,16 @@ final class WebhookConfigurationRegistry implements WebhookConfigurationRegistry
 {
     /**
      * @var array<string, array{
-     *     success: string,
-     *     error: string,
-     *     extra_http_headers?: array<string, mixed>
-     * }>
+     *      success: array{
+     *          url: string,
+     *          method: 'POST'|'PUT'|'PATCH'|null,
+     *      },
+     *      error: array{
+     *          url: string,
+     *          method: 'POST'|'PUT'|'PATCH'|null,
+     *      },
+     *      extra_http_headers?: array<string, mixed>
+     *  }>
      */
     private array $configurations = [];
 
@@ -39,10 +45,17 @@ final class WebhookConfigurationRegistry implements WebhookConfigurationRegistry
         }
 
         try {
-            $success = $this->processWebhookConfiguration($configuration['success']);
+            $success = [
+                'url' => $this->processWebhookConfiguration($configuration['success']),
+                'method' => $configuration['success']['method'] ?? null,
+            ];
             $error = $success;
+
             if (isset($configuration['error'])) {
-                $error = $this->processWebhookConfiguration($configuration['error']);
+                $error = [
+                    'url' => $this->processWebhookConfiguration($configuration['error']),
+                    'method' => $configuration['error']['method'] ?? null,
+                ];
             }
 
             $namedConfiguration = ['success' => $success, 'error' => $error];

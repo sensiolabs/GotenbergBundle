@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
 
 /**
- * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string, mixed>}}
+ * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string, mixed>}, method?: 'POST'|'PUT'|'PATCH'|null}
  */
 class SensiolabsGotenbergExtension extends Extension
 {

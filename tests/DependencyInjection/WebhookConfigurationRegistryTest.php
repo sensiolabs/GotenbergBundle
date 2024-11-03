@@ -39,38 +39,38 @@ final class WebhookConfigurationRegistryTest extends TestCase
     {
         $registry = new WebhookConfigurationRegistry($this->createMock(UrlGeneratorInterface::class), null);
         $registry->add('test', ['success' => ['url' => 'http://example.com/success']]);
-        $this->assertSame(['success' => 'http://example.com/success', 'error' => 'http://example.com/success'], $registry->get('test'));
+        $this->assertSame(['success' => ['url' => 'http://example.com/success', 'method' => null], 'error' => ['url' => 'http://example.com/success', 'method' => null]], $registry->get('test'));
         $registry->add('test', ['success' => ['url' => 'http://example.com/override']]);
-        $this->assertSame(['success' => 'http://example.com/override', 'error' => 'http://example.com/override'], $registry->get('test'));
+        $this->assertSame(['success' => ['url' => 'http://example.com/override', 'method' => null], 'error' => ['url' => 'http://example.com/override', 'method' => null]], $registry->get('test'));
     }
 
     /**
-     * @return \Generator<string, array{0: array{success: WebhookDefinition, error?: WebhookDefinition}, 1: array{success: string, error: string}}>
+     * @return \Generator<string, array{0: array{success: WebhookDefinition, error?: WebhookDefinition}, 1: array{success: array{url: string, method: 'POST'|'PUT'|'PATCH'|null}, error: array{url: string, method: 'POST'|'PUT'|'PATCH'|null}}}>
      */
     public static function configurationProvider(): \Generator
     {
         yield 'full definition with urls' => [
             ['success' => ['url' => 'http://example.com/success'], 'error' => ['url' => 'http://example.com/error']],
-            ['success' => 'http://example.com/success', 'error' => 'http://example.com/error'],
+            ['success' => ['url' => 'http://example.com/success', 'method' => null], 'error' => ['url' => 'http://example.com/error', 'method' => null]],
         ];
         yield 'full definition with routes' => [
             ['success' => ['route' => ['test_route_success', ['param' => 'value']]], 'error' => ['route' => ['test_route_error', ['param' => 'value']]]],
-            ['success' => 'http://localhost/test_route?param=value', 'error' => 'http://localhost/test_route?param=value'],
+            ['success' => ['url' => 'http://localhost/test_route?param=value', 'method' => null], 'error' => ['url' => 'http://localhost/test_route?param=value', 'method' => null]],
         ];
         yield 'partial definition with urls' => [
             ['success' => ['url' => 'http://example.com/success']],
-            ['success' => 'http://example.com/success', 'error' => 'http://example.com/success'],
+            ['success' => ['url' => 'http://example.com/success', 'method' => null], 'error' => ['url' => 'http://example.com/success', 'method' => null]],
         ];
         yield 'partial definition with routes' => [
             ['success' => ['route' => ['test_route_success', ['param' => 'value']]],
                 'error' => ['route' => ['test_route_error', ['param' => 'value']]],
             ],
-            ['success' => 'http://localhost/test_route?param=value', 'error' => 'http://localhost/test_route?param=value'],
+            ['success' => ['url' => 'http://localhost/test_route?param=value', 'method' => null], 'error' => ['url' => 'http://localhost/test_route?param=value', 'method' => null]],
         ];
         yield 'mixed definition with url and route' => [
             ['success' => ['url' => 'http://example.com/success'], 'error' => ['route' => ['test_route_error', ['param' => 'value']]],
             ],
-            ['success' => 'http://example.com/success', 'error' => 'http://localhost/test_route?param=value'],
+            ['success' => ['url' => 'http://example.com/success', 'method' => null], 'error' => ['url' => 'http://localhost/test_route?param=value', 'method' => null]],
         ];
     }
 

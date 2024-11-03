@@ -774,6 +774,11 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The "route" parameter must be a string or an array containing a string and an array.')
                     ->end()
                 ->end()
+                ->enumNode('method')
+                    ->info('HTTP method to use on that endpoint.')
+                    ->values(['POST', 'PUT', 'PATCH'])
+                    ->defaultNull()
+                ->end()
             ->end()
         ;
     }

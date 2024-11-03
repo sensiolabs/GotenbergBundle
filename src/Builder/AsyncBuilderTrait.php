@@ -9,9 +9,19 @@ trait AsyncBuilderTrait
 {
     use DefaultBuilderTrait;
 
-    private string $webhookUrl;
+    private string|null $successWebhookUrl = null;
 
-    private string $errorWebhookUrl;
+    /**
+     * @var 'POST'|'PATCH'|'PUT'|null
+     */
+    private string|null $successWebhookMethod = null;
+
+    private string|null $errorWebhookUrl = null;
+
+    /**
+     * @var 'POST'|'PATCH'|'PUT'|null
+     */
+    private string|null $errorWebhookMethod = null;
 
     /**
      * @var array<string, mixed>
@@ -22,17 +32,29 @@ trait AsyncBuilderTrait
 
     public function generateAsync(): void
     {
-        if (!isset($this->webhookUrl)) {
+        if (null === $this->successWebhookUrl) {
             throw new MissingRequiredFieldException('->webhookUrls() was never called.');
         }
 
-        $errorWebhookUrl = $this->errorWebhookUrl ?? $this->webhookUrl;
+        $errorWebhookUrl = $this->errorWebhookUrl ?? $this->successWebhookUrl;
 
         $headers = [
-            'Gotenberg-Webhook-Url' => $this->webhookUrl,
+            'Gotenberg-Webhook-Url' => $this->successWebhookUrl,
             'Gotenberg-Webhook-Error-Url' => $errorWebhookUrl,
-            'Gotenberg-Webhook-Extra-Http-Headers' => json_encode($this->webhookExtraHeaders, \JSON_THROW_ON_ERROR),
         ];
+
+        if (null !== $this->successWebhookMethod) {
+            $headers['Gotenberg-Webhook-Method'] = $this->successWebhookMethod;
+        }
+
+        if (null !== $this->errorWebhookMethod) {
+            $headers['Gotenberg-Webhook-Error-Method'] = $this->errorWebhookMethod;
+        }
+
+        if ([] !== $this->webhookExtraHeaders) {
+            $headers['Gotenberg-Webhook-Extra-Http-Headers'] = json_encode($this->webhookExtraHeaders, \JSON_THROW_ON_ERROR);
+        }
+
         if (null !== $this->fileName) {
             // Gotenberg will add the extension to the file name (e.g. filename : "file.pdf" => generated file : "file.pdf.pdf").
             $headers['Gotenberg-Output-Filename'] = $this->fileName;
@@ -41,13 +63,18 @@ trait AsyncBuilderTrait
     }
 
     /**
-     * Providing an existing $webhook from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
+     * Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
      */
-    public function webhookConfiguration(string $webhook): static
+    public function webhookConfiguration(string $name): static
     {
-        $webhookConfiguration = $this->webhookConfigurationRegistry->get($webhook);
+        $webhookConfiguration = $this->webhookConfigurationRegistry->get($name);
 
-        $result = $this->webhookUrls($webhookConfiguration['success'], $webhookConfiguration['error']);
+        $result = $this->webhookUrls(
+            $webhookConfiguration['success']['url'],
+            $webhookConfiguration['error']['url'],
+            $webhookConfiguration['success']['method'],
+            $webhookConfiguration['error']['method'],
+        );
 
         if (\array_key_exists('extra_http_headers', $webhookConfiguration)) {
             $result = $result->webhookExtraHeaders($webhookConfiguration['extra_http_headers']);
@@ -57,14 +84,49 @@ trait AsyncBuilderTrait
     }
 
     /**
-     * Allows to set both $successWebhook and $errorWebhook URLs. If $errorWebhook is not provided, it will fallback to $successWebhook one.
+     * Sets the webhook for cases of success.
+     * Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+     *
+     * @param 'POST'|'PATCH'|'PUT'|null $method
+     *
+     * @see https://gotenberg.dev/docs/webhook
      */
-    public function webhookUrls(string $successWebhook, string|null $errorWebhook = null): static
+    public function webhookUrl(string $url, string|null $method = null): static
     {
-        $this->webhookUrl = $successWebhook;
-        $this->errorWebhookUrl = $errorWebhook ?? $successWebhook;
+        $this->successWebhookUrl = $url;
+        $this->successWebhookMethod = $method;
 
         return $this;
+    }
+
+    /**
+     * Sets the webhook for cases of error.
+     * Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+     *
+     * @param 'POST'|'PATCH'|'PUT'|null $method
+     *
+     * @see https://gotenberg.dev/docs/webhook
+     */
+    public function errorWebhookUrl(string|null $url = null, string|null $method = null): static
+    {
+        $this->errorWebhookUrl = $url;
+        $this->errorWebhookMethod = $method;
+
+        return $this;
+    }
+
+    /**
+     * Allows to set both $successWebhook and $errorWebhook URLs. If $errorWebhook is not provided, it will fallback to $successWebhook one.
+     *
+     * @param 'POST'|'PATCH'|'PUT'|null $successMethod
+     * @param 'POST'|'PATCH'|'PUT'|null $errorMethod
+     */
+    public function webhookUrls(string $successWebhook, string|null $errorWebhook = null, string|null $successMethod = null, string|null $errorMethod = null): static
+    {
+        return $this
+            ->webhookUrl($successWebhook, $successMethod)
+            ->errorWebhookUrl($errorWebhook, $errorMethod)
+        ;
     }
 
     /**
