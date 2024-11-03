@@ -85,8 +85,6 @@ Specify if the resolution of each image is reduced to the resolution specified b
 * `maxImageResolution(Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)`:
 If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
 
-* `getMultipartFormData()`:
-
 * `downloadFrom(array $downloadFrom)`:
 
 * `webhookConfiguration(string $name)`:

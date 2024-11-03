@@ -16,8 +16,6 @@ Resets the metadata.
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
 
-* `getMultipartFormData()`:
-
 * `downloadFrom(array $downloadFrom)`:
 
 * `webhookConfiguration(string $name)`:

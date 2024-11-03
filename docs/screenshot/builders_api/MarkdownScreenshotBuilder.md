@@ -8,8 +8,6 @@ The HTML file that wraps the markdown content.
 
 * `files(string $paths)`:
 
-* `getMultipartFormData()`:
-
 * `cookies(array $cookies)`:
 
 * `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:

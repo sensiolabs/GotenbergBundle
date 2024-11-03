@@ -7,8 +7,6 @@ URL of the page you want to screenshot.
 
 * `route(string $name, array $parameters)`:
 
-* `getMultipartFormData()`:
-
 * `cookies(array $cookies)`:
 
 * `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:

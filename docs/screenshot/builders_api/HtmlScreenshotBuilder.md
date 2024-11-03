@@ -5,8 +5,6 @@
 * `contentFile(string $path)`:
 The HTML file to convert into Screenshot.
 
-* `getMultipartFormData()`:
-
 * `cookies(array $cookies)`:
 
 * `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:

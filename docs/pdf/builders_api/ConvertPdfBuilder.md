@@ -8,8 +8,6 @@ Enable PDF for Universal Access for optimal accessibility.
 
 * `files(string $paths)`:
 
-* `getMultipartFormData()`:
-
 * `downloadFrom(array $downloadFrom)`:
 
 * `webhookConfiguration(string $name)`:
