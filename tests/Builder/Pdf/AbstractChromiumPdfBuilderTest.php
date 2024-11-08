@@ -101,6 +101,12 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         yield 'fail_on_http_status_codes' => ['fail_on_http_status_codes', [499, 500], [
             ['failOnHttpStatusCodes' => '[499,500]'],
         ]];
+        yield 'fail_on_resource_http_status_codes' => ['fail_on_resource_http_status_codes', [499, 500], [
+            ['failOnResourceHttpStatusCodes' => '[499,500]'],
+        ]];
+        yield 'fail_on_resource_loading_failed' => ['fail_on_resource_loading_failed', false, [
+            ['failOnResourceLoadingFailed' => 'false'],
+        ]];
         yield 'fail_on_console_exceptions' => ['fail_on_console_exceptions', false, [
             ['failOnConsoleExceptions' => 'false'],
         ]];
