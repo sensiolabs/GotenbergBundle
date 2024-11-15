@@ -47,7 +47,8 @@ class SensiolabsGotenbergExtension extends Extension
          *             url: array<string, mixed>,
          *             markdown: array<string, mixed>
          *         }
-         *     } $config
+         *     }
+         * } $config
          */
         $config = $this->processConfiguration($configuration, $configs);
 

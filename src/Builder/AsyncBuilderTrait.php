@@ -69,12 +69,16 @@ trait AsyncBuilderTrait
     {
         $webhookConfiguration = $this->webhookConfigurationRegistry->get($name);
 
-        $result = $this->webhookUrls(
-            $webhookConfiguration['success']['url'],
-            $webhookConfiguration['error']['url'],
-            $webhookConfiguration['success']['method'],
-            $webhookConfiguration['error']['method'],
-        );
+        $result = $this
+            ->webhookUrl(
+                $webhookConfiguration['success']['url'],
+                $webhookConfiguration['error']['url'],
+            )
+            ->errorWebhookUrl(
+                $webhookConfiguration['error']['url'],
+                $webhookConfiguration['error']['method'],
+            )
+        ;
 
         if (\array_key_exists('extra_http_headers', $webhookConfiguration)) {
             $result = $result->webhookExtraHeaders($webhookConfiguration['extra_http_headers']);
@@ -113,20 +117,6 @@ trait AsyncBuilderTrait
         $this->errorWebhookMethod = $method;
 
         return $this;
-    }
-
-    /**
-     * Allows to set both $successWebhook and $errorWebhook URLs. If $errorWebhook is not provided, it will fallback to $successWebhook one.
-     *
-     * @param 'POST'|'PATCH'|'PUT'|null $successMethod
-     * @param 'POST'|'PATCH'|'PUT'|null $errorMethod
-     */
-    public function webhookUrls(string $successWebhook, string|null $errorWebhook = null, string|null $successMethod = null, string|null $errorMethod = null): static
-    {
-        return $this
-            ->webhookUrl($successWebhook, $successMethod)
-            ->errorWebhookUrl($errorWebhook, $errorMethod)
-        ;
     }
 
     /**

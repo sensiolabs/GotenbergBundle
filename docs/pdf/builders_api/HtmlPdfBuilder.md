@@ -140,9 +140,6 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 Sets the webhook for cases of error.
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
-* `webhookUrls(string $successWebhook, ?string $errorWebhook, ?string $successMethod, ?string $errorMethod)`:
-Allows to set both $successWebhook and $errorWebhook URLs. If $errorWebhook is not provided, it will fallback to $successWebhook one.
-
 * `webhookExtraHeaders(array $extraHeaders)`:
 Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
 
