@@ -21,7 +21,34 @@ class SensiolabsGotenbergExtension extends Extension
     {
         $configuration = new Configuration();
 
-        /** @var array{base_uri: string, http_client: string, controller_listener: bool, request_context?: array{base_uri?: string}, assets_directory: string, webhook: array<string, array{success: WebhookDefinition, error?: WebhookDefinition}>, default_options: array{pdf: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>, office: array<string, mixed>, merge: array<string, mixed>, convert: array<string, mixed>}, screenshot: array{html: array<string, mixed>, url: array<string, mixed>, markdown: array<string, mixed>}, webhook?: string}} $config */
+        /** @var array{
+         *     base_uri: string,
+         *     http_client: string,
+         *     controller_listener: bool,
+         *     request_context?: array{base_uri?: string},
+         *     assets_directory: string,
+         *     webhook: array<string, array{
+         *         success: WebhookDefinition,
+         *         error?: WebhookDefinition,
+         *         extra_http_headers?: array<string, mixed>
+         *     }>,
+         *     default_options: array{
+         *         webhook?: string,
+         *         pdf: array{
+         *             html: array<string, mixed>,
+         *             url: array<string, mixed>,
+         *             markdown: array<string, mixed>,
+         *             office: array<string, mixed>,
+         *             merge: array<string, mixed>,
+         *             convert: array<string, mixed>
+         *         },
+         *         screenshot: array{
+         *             html: array<string, mixed>,
+         *             url: array<string, mixed>,
+         *             markdown: array<string, mixed>
+         *         }
+         *     } $config
+         */
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
@@ -58,7 +85,6 @@ class SensiolabsGotenbergExtension extends Extension
         $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'], false));
 
         $baseUri = $config['request_context']['base_uri'] ?? null;
-        $defaultWebhookConfig = $config['default_options']['webhook'] ?? null;
 
         if (null !== $baseUri) {
             $requestContextDefinition = new Definition(RequestContext::class);
@@ -69,27 +95,27 @@ class SensiolabsGotenbergExtension extends Extension
         }
 
         foreach ($config['webhook'] as $name => $configuration) {
-            $container->getDefinition('sensiolabs_gotenberg.webhook_configuration_registry')
+            $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')
                 ->addMethodCall('add', [$name, $configuration]);
         }
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.pdf_builder.html', $container, $config['default_options']['pdf']['html'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.html', $config['default_options']['pdf']['html']);
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.pdf_builder.url', $container, $config['default_options']['pdf']['url'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.url', $config['default_options']['pdf']['url']);
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.pdf_builder.markdown', $container, $config['default_options']['pdf']['markdown'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.markdown', $config['default_options']['pdf']['markdown']);
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.pdf_builder.office', $container, $config['default_options']['pdf']['office'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.office', $config['default_options']['pdf']['office']);
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.pdf_builder.merge', $container, $config['default_options']['pdf']['merge'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.merge', $config['default_options']['pdf']['merge']);
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.pdf_builder.convert', $container, $config['default_options']['pdf']['convert'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.convert', $config['default_options']['pdf']['convert']);
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.screenshot_builder.html', $container, $config['default_options']['screenshot']['html'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.html', $config['default_options']['screenshot']['html']);
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.screenshot_builder.url', $container, $config['default_options']['screenshot']['url'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.url', $config['default_options']['screenshot']['url']);
 
-        $this->processDefaultOptions('.sensiolabs_gotenberg.screenshot_builder.markdown', $container, $config['default_options']['screenshot']['markdown'], $defaultWebhookConfig);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.markdown', $config['default_options']['screenshot']['markdown']);
 
         $definition = $container->getDefinition('sensiolabs_gotenberg.asset.base_dir_formatter');
         $definition->replaceArgument(2, $config['assets_directory']);
@@ -107,32 +133,43 @@ class SensiolabsGotenbergExtension extends Extension
         }, \ARRAY_FILTER_USE_BOTH);
     }
 
-    /**
-     * @param array<string, mixed> $config
-     */
-    private function processDefaultOptions(string $serviceId, ContainerBuilder $container, array $config, string|null $defaultWebhookName): void
+    private function processDefaultOptions(ContainerBuilder $container, array $config, string $serviceId, array $serviceConfig): void
     {
         $definition = $container->getDefinition($serviceId);
-        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($config)]);
 
-        $webhookConfig = $config['webhook'] ?? null;
-        if (null === $webhookConfig && null === $defaultWebhookName) {
+        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($serviceConfig)]);
+
+        $this->processWebhookOptions($container, $serviceId, $config['webhook'], $config['default_options']['webhook'] ?? null, $serviceConfig);
+    }
+
+    /**
+     * @param array<string, array{success: WebhookDefinition, error?: WebhookDefinition, extra_http_headers?: array<string, mixed>}> $webhookConfig
+     */
+    private function processWebhookOptions(ContainerBuilder $container, string $serviceId, array $webhookConfig, string|null $webhookDefaultConfigName, array $config): void
+    {
+        $definition = $container->getDefinition($serviceId);
+
+        $serviceWebhookConfig = $config['webhook'] ?? [];
+        $webhookConfigName = $serviceWebhookConfig['config_name'] ?? $webhookDefaultConfigName ?? null;
+        unset($serviceWebhookConfig['config_name']);
+
+        if ([] !== $serviceWebhookConfig && ['extra_http_headers' => []] !== $serviceWebhookConfig) {
+            $webhookConfig = array_merge($webhookConfig[$webhookConfigName] ?? [], $serviceWebhookConfig);
+
+            $webhookConfigName = ltrim($serviceId, '.');
+            $webhookConfigName = ".{$webhookConfigName}.webhook_configuration";
+
+            $registryDefinition = $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
+            $registryDefinition->addMethodCall('add', [
+                $webhookConfigName,
+                $webhookConfig,
+            ]);
+        }
+
+        if (null === $webhookConfigName) {
             return;
         }
 
-        if (null !== $defaultWebhookName) {
-            $definition->addMethodCall('webhookConfiguration', [$defaultWebhookName], true);
-
-            return;
-        }
-
-        if (\array_key_exists('config_name', $webhookConfig) && \is_string($webhookConfig['config_name'])) {
-            $name = $webhookConfig['config_name'];
-        } else {
-            $name = $serviceId.'_webhook_config';
-            $container->getDefinition('sensiolabs_gotenberg.webhook_configuration_registry')
-                ->addMethodCall('add', [$name, $webhookConfig]);
-        }
-        $definition->addMethodCall('webhookConfiguration', [$name], true);
+        $definition->addMethodCall('webhookConfiguration', [$webhookConfigName]);
     }
 }

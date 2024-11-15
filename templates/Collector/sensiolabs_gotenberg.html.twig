@@ -102,13 +102,16 @@
         {% for index, file in collector.files %}
             <tr class="file-info">
                 <td class="font-normal">
-                        <span class="icon">
-                            {% if file.type == 'pdf' %}
-                                {{ source('@SensiolabsGotenberg/Icon/file-type-pdf.svg') }}
-                            {% elseif file.type == 'screenshot' %}
-                                {{ source('@SensiolabsGotenberg/Icon/file-type-screenshot.svg') }}
-                            {% endif %}
-                        </span>
+                    <span class="icon">
+                        {% if file.type == 'pdf' %}
+                            {{ source('@SensiolabsGotenberg/Icon/file-type-pdf.svg') }}
+                        {% elseif file.type == 'screenshot' %}
+                            {{ source('@SensiolabsGotenberg/Icon/file-type-screenshot.svg') }}
+                        {% endif %}
+                    </span>
+                    <span class="icon">
+                        {{ source('@SensiolabsGotenberg/Icon/file-' ~ file.request_type ~ '.svg') }}
+                    </span>
                 </td>
                 <td class="font-normal">
                     {{ file.fileName }}

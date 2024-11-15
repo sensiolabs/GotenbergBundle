@@ -10,7 +10,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
 {
     /**
-     * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
+     * @var list<array{'type': 'sync'|'async', 'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
      */
     private array $screenshots = [];
 
@@ -39,6 +39,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         $swEvent?->stop();
 
         $this->screenshots[] = [
+            'type' => 'sync',
             'calls' => $this->calls,
             'time' => $swEvent?->getDuration(),
             'memory' => $swEvent?->getMemory(),
@@ -66,6 +67,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         $swEvent?->stop();
 
         $this->screenshots[] = [
+            'type' => 'async',
             'calls' => $this->calls,
             'time' => $swEvent?->getDuration(),
             'memory' => $swEvent?->getMemory(),
@@ -97,7 +99,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
+     * @return list<array{'type': 'sync'|'async', 'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getFiles(): array
     {
