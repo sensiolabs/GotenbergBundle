@@ -72,7 +72,7 @@ trait AsyncBuilderTrait
         $result = $this
             ->webhookUrl(
                 $webhookConfiguration['success']['url'],
-                $webhookConfiguration['error']['method'],
+                $webhookConfiguration['success']['method'],
             )
             ->errorWebhookUrl(
                 $webhookConfiguration['error']['url'],
