@@ -193,3 +193,7 @@ $builder = $this->gotenberg->pdf()->html()
 > If calling `->webhookConfiguration()` first then `->webhookUrl()` will override only the "success" part.
 > 
 > If calling `->webhookUrl()` first then `->webhookConfiguration()` totally overrides previously set values.
+
+
+> [!NOTE]  
+> If only success URL is set, error URL will fallback to the success one.

@@ -33,7 +33,7 @@ trait AsyncBuilderTrait
     public function generateAsync(): void
     {
         if (null === $this->successWebhookUrl) {
-            throw new MissingRequiredFieldException('->webhookUrls() was never called.');
+            throw new MissingRequiredFieldException('->webhookUrl() was never called.');
         }
 
         $errorWebhookUrl = $this->errorWebhookUrl ?? $this->successWebhookUrl;
