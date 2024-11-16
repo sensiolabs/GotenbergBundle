@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuilder
@@ -27,9 +28,10 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         AssetBaseDirFormatter $asset,
         WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
         private readonly RequestStack $requestStack,
+        UrlGeneratorInterface|null $urlGenerator = null,
         private readonly Environment|null $twig = null,
     ) {
-        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);
+        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry, $urlGenerator);
 
         $normalizers = [
             'extraHttpHeaders' => function (mixed $value): array {

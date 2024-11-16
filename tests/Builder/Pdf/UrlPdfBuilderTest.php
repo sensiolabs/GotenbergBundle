@@ -137,9 +137,8 @@ final class UrlPdfBuilderTest extends AbstractBuilderTestCase
             self::$assetBaseDirFormatter,
             $this->webhookConfigurationRegistry,
             new RequestStack(),
-            null,
-            $urlGenerator)
-        )
+            $urlGenerator,
+        ))
             ->processor(new NullProcessor())
         ;
     }

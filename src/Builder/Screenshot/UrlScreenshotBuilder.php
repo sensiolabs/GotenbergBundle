@@ -22,10 +22,10 @@ final class UrlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
         AssetBaseDirFormatter $asset,
         WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
         RequestStack $requestStack,
+        UrlGeneratorInterface|null $urlGenerator = null,
         Environment|null $twig = null,
-        private readonly UrlGeneratorInterface|null $urlGenerator = null,
     ) {
-        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry, $requestStack, $twig);
+        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry, $requestStack, $urlGenerator, $twig);
 
         $this->addNormalizer('route', $this->generateUrlFromRoute(...));
     }

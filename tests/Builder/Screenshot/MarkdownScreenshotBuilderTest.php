@@ -94,9 +94,9 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    private function getMarkdownScreenshotBuilder(bool $twig = true): MarkdownScreenshotBuilder
+    private function getMarkdownScreenshotBuilder(bool $urlGenerator = true, bool $twig = true): MarkdownScreenshotBuilder
     {
-        return (new MarkdownScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, new RequestStack(), true === $twig ? self::$twig : null))
+        return (new MarkdownScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, new RequestStack(), $urlGenerator ? self::$urlGenerator : null, $twig ? self::$twig : null))
             ->processor(new NullProcessor())
         ;
     }

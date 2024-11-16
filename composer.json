@@ -42,10 +42,12 @@
         "symfony/framework-bundle": "^6.4 || ^7.0",
         "symfony/http-client": "^6.4 || ^7.0",
         "symfony/monolog-bundle": "^3.10",
+        "symfony/remote-event": "^6.4 || ^7.0",
         "symfony/routing": "^6.4 || ^7.0",
         "symfony/stopwatch": "^6.4 || ^7.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
         "symfony/var-dumper": "^6.4 || ^7.0",
+        "symfony/webhook": "^6.4 || ^7.0",
         "twig/twig": "^3.14"
     },
     "config": {
@@ -56,7 +58,9 @@
     },
     "suggest": {
         "symfony/monolog-bundle": "Enables logging througout the generating process.",
-        "symfony/twig-bundle": "Allows you to use Twig to render templates into PDF",
+        "symfony/remote-event": "Allows you to use Webhook to handle asynchronous generation.",
+        "symfony/twig-bundle": "Allows you to use Twig to render templates into PDF.",
+        "symfony/webhook": "Allows you to use Webhook to handle asynchronous generation.",
         "monolog/monolog": "Enables logging througout the generating process."
     }
 }

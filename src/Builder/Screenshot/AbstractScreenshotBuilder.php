@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface, AsyncBuilderInterface
 {
@@ -20,10 +21,12 @@ abstract class AbstractScreenshotBuilder implements ScreenshotBuilderInterface, 
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
         WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
+        UrlGeneratorInterface|null $urlGenerator = null,
     ) {
         $this->client = $gotenbergClient;
         $this->asset = $asset;
         $this->webhookConfigurationRegistry = $webhookConfigurationRegistry;
+        $this->urlGenerator = $urlGenerator;
 
         $this->normalizers = [
             'downloadFrom' => fn (array $value): array => $this->downloadFromNormalizer($value, $this->encodeData(...)),
