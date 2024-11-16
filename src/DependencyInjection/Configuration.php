@@ -661,7 +661,7 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addWebhookConfigurationNode('success'))
                         ->append($this->addWebhookConfigurationNode('error'))
                         ->arrayNode('extra_http_headers')
-                            ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
+                            ->info('HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook')
                             ->useAttributeAsKey('name')
                             ->arrayPrototype()
                                 ->children()
@@ -713,7 +713,10 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addWebhookConfigurationNode('success'))
                         ->append($this->addWebhookConfigurationNode('error'))
                         ->arrayNode('extra_http_headers')
-                            ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
+                            ->info('HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook')
+                            ->example([
+                                ['name' => 'X-Custom-Header', 'value' => 'custom-header-value'],
+                            ])
                             ->useAttributeAsKey('name')
                             ->arrayPrototype()
                                 ->children()
@@ -773,6 +776,10 @@ class Configuration implements ConfigurationInterface
                         })
                         ->thenInvalid('The "route" parameter must be a string or an array containing a string and an array.')
                     ->end()
+                    ->example([
+                        'https://webhook.site/#!/view/{some-token}',
+                        ['my_route', ['param1' => 'value1', 'param2' => 'value2']],
+                    ])
                 ->end()
                 ->enumNode('method')
                     ->info('HTTP method to use on that endpoint.')
