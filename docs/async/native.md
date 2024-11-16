@@ -67,6 +67,7 @@ sensiolabs_gotenberg:
 ```
 
 Each named configuration requires at least a `success` URL which can be set either through a plain URL (`sensiolabs_gotenberg.webhook.{name}.success.url`) or by using a defined route in your application (`sensiolabs_gotenberg.webhook.{name}.success.route`).
+
 Here are some examples :
 
 ```yaml
@@ -126,6 +127,7 @@ sensiolabs_gotenberg:
 > [!WARNING]  
 > When using both `config_name` and a custom configuration on a builder,
 > it will load the named configuration and merge it with the builder's configuration.
+> 
 > See the following example : 
 
 ```yaml
@@ -186,6 +188,8 @@ $builder = $this->gotenberg->pdf()->html()
 ```
 
 > [!WARNING]  
-> If combining both `->webhookConfiguration()` & `->webhookUrl()`, the order is important
+> If combining both `->webhookConfiguration()` & `->webhookUrl()`, the order is important :
+> 
 > If calling `->webhookConfiguration()` first then `->webhookUrl()` will override only the "success" part.
+> 
 > If calling `->webhookUrl()` first then `->webhookConfiguration()` totally overrides previously set values.
