@@ -54,6 +54,10 @@ sensiolabs_gotenberg:
                 # Route configuration.
                 route:                ~
 
+                  # Examples:
+                  # - 'https://webhook.site/#!/view/{some-token}'
+                  # - [my_route, { param1: value1, param2: value2 }]
+
                 # HTTP method to use on that endpoint.
                 method:               null # One of "POST"; "PUT"; "PATCH"
             error:
@@ -64,10 +68,14 @@ sensiolabs_gotenberg:
                 # Route configuration.
                 route:                ~
 
+                  # Examples:
+                  # - 'https://webhook.site/#!/view/{some-token}'
+                  # - [my_route, { param1: value1, param2: value2 }]
+
                 # HTTP method to use on that endpoint.
                 method:               null # One of "POST"; "PUT"; "PATCH"
 
-            # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+            # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
             extra_http_headers:
 
                 # Prototype
@@ -236,6 +244,10 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
                     error:
@@ -246,11 +258,18 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
-                    # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                    # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
                     extra_http_headers:
+
+                        # Example:
+                        # - { name: X-Custom-Header, value: custom-header-value }
 
                         # Prototype
                         name:
@@ -413,6 +432,10 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
                     error:
@@ -423,11 +446,18 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
-                    # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                    # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
                     extra_http_headers:
+
+                        # Example:
+                        # - { name: X-Custom-Header, value: custom-header-value }
 
                         # Prototype
                         name:
@@ -590,6 +620,10 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
                     error:
@@ -600,11 +634,18 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
-                    # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                    # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
                     extra_http_headers:
+
+                        # Example:
+                        # - { name: X-Custom-Header, value: custom-header-value }
 
                         # Prototype
                         name:
@@ -867,6 +908,10 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
                     error:
@@ -877,11 +922,18 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
-                    # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                    # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
                     extra_http_headers:
+
+                        # Example:
+                        # - { name: X-Custom-Header, value: custom-header-value }
 
                         # Prototype
                         name:
@@ -984,6 +1036,10 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
                     error:
@@ -994,11 +1050,18 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
-                    # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                    # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
                     extra_http_headers:
+
+                        # Example:
+                        # - { name: X-Custom-Header, value: custom-header-value }
 
                         # Prototype
                         name:
@@ -1101,6 +1164,10 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
                     error:
@@ -1111,11 +1178,18 @@ sensiolabs_gotenberg:
                         # Route configuration.
                         route:                ~
 
+                          # Examples:
+                          # - 'https://webhook.site/#!/view/{some-token}'
+                          # - [my_route, { param1: value1, param2: value2 }]
+
                         # HTTP method to use on that endpoint.
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
-                    # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                    # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
                     extra_http_headers:
+
+                        # Example:
+                        # - { name: X-Custom-Header, value: custom-header-value }
 
                         # Prototype
                         name:
@@ -1133,16 +1207,6 @@ HTTP headers to send by Chromium while loading the HTML document.
 
 ```yaml
 sensiolabs_gotenberg:
-    webhook:
-        default:
-            extra_http_headers:
-                - { name: 'My-Header', value: 'MyValue' }
-```
-
-Or Headers to send to your webhook endpoint
-
-```yaml
-sensiolabs_gotenberg:
     default_options:
         pdf:
             html:
@@ -1150,8 +1214,18 @@ sensiolabs_gotenberg:
                     - { name: 'My-Header', value: 'MyValue' }
 ```
 
+Or Headers to send to your webhook endpoint
+
+```yaml
+sensiolabs_gotenberg:
+    webhook:
+        default:
+            extra_http_headers:
+                - { name: 'My-Header', value: 'MyValue' }
+```
+
 > [!TIP]
-> For more information about [custom HTTP headers](https://gotenberg.dev/docs/routes#custom-http-headers).
+> For more information about [custom HTTP headers](https://gotenberg.dev/docs/routes#custom-http-headers) & [webhook custom HTTP headers](https://gotenberg.dev/docs/configuration#webhook).
 
 ## Invalid HTTP Status Codes
 
