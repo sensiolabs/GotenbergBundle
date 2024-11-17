@@ -1,6 +1,7 @@
 <?php
 
 // use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 // use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 // use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -9,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -17,16 +19,24 @@ return static function (ContainerConfigurator $container): void {
         ->tag('monolog.logger', ['channel' => 'sensiolabs_gotenberg'])
     ;
 
-    $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)
-        ->share(false)
+    $services->set('.sensiolabs_gotenberg.abstract_builder', AbstractBuilder::class)
+        ->abstract()
         ->args([
             service('sensiolabs_gotenberg.client'),
             service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            abstract_arg('default configuration'),
-            service('logger')->nullOnInvalid(),
-            service('twig')->nullOnInvalid(),
-            service('router')->nullOnInvalid(),
+            abstract_arg('default body configuration'),
+            abstract_arg('default headers configuration'),
         ])
+    ;
+
+    $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)
+        ->share(false)
+        ->parent('.sensiolabs_gotenberg.abstract_builder')
+        ->arg(4, service_locator([
+            'logger' => service('logger')->nullOnInvalid(),
+            'twig' => service('twig')->nullOnInvalid(),
+            'router' => service('router')->nullOnInvalid(),
+        ]))
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 

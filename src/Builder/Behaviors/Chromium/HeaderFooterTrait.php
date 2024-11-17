@@ -2,8 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequireAssetTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequireTwigTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
 use Sensiolabs\GotenbergBundle\Client\BodyBag;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
@@ -16,14 +15,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 trait HeaderFooterTrait
 {
-    use RequireAssetTrait;
-    use RequireTwigTrait;
+    use TwigAwareTrait;
 
     abstract protected function getBodyBag(): BodyBag;
 
-    protected function configure(OptionsResolver $optionsResolver): void
+    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
     {
-        $optionsResolver
+        $bodyOptionsResolver
             ->setDefined(
                 array_map(fn (Part $p): string => $p->value, Part::cases()),
             )

@@ -50,6 +50,9 @@ class HeadersBag
 
         $headers = new Headers();
         foreach ($data as $name => $value) {
+            if (null === $value) {
+                continue;
+            }
             $headers->addHeader($name, $value);
         }
 

@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 
-interface BuilderAsyncInterface
+interface BuilderAsyncInterface extends BuilderInterface
 {
     public function generateAsync(): GotenbergAsyncResult;
 }

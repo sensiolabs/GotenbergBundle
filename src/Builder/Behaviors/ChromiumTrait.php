@@ -10,10 +10,10 @@ trait ChromiumTrait
     use Chromium\PagePropertiesTrait { Chromium\PagePropertiesTrait::configure as configurePageProperties; }
     use Chromium\WaitBeforeRenderingTrait { Chromium\WaitBeforeRenderingTrait::configure as configureWaitBeforeRendering; }
 
-    protected function configure(OptionsResolver $optionsResolver): void
+    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
     {
-        $this->configureHeaderFooter($optionsResolver);
-        $this->configurePageProperties($optionsResolver);
-        $this->configureWaitBeforeRendering($optionsResolver);
+        $this->configureHeaderFooter($bodyOptionsResolver, $headersOptionsResolver);
+        $this->configurePageProperties($bodyOptionsResolver, $headersOptionsResolver);
+        $this->configureWaitBeforeRendering($bodyOptionsResolver, $headersOptionsResolver);
     }
 }

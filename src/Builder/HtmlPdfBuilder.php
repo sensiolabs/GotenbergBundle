@@ -2,39 +2,23 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 class HtmlPdfBuilder extends AbstractBuilder
 {
     use ChromiumTrait { ChromiumTrait::configure as configureChromium; }
     use WebhookTrait { WebhookTrait::configure as configureWebhook; }
 
-    public function __construct(
-        GotenbergClientInterface $client,
-        AssetBaseDirFormatter $asset,
-        array $defaultBodyData = [],
-        LoggerInterface|null $logger = null,
-        protected readonly Environment|null $twig = null,
-        protected readonly UrlGeneratorInterface|null $urlGenerator = null,
-    ) {
-        parent::__construct($client, $asset, $defaultBodyData, $logger);
-    }
-
-    protected function configure(OptionsResolver $optionsResolver): void
+    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
     {
-        parent::configure($optionsResolver);
-        $this->configureChromium($optionsResolver);
-        $this->configureWebhook($optionsResolver);
-    }
+        parent::configure($bodyOptionsResolver, $headersOptionsResolver);
+        $this->configureChromium($bodyOptionsResolver, $headersOptionsResolver);
+        $this->configureWebhook($bodyOptionsResolver, $headersOptionsResolver);
+        }
 
     /**
      * @param string               $template #Template
@@ -55,23 +39,5 @@ class HtmlPdfBuilder extends AbstractBuilder
     protected function getEndpoint(): string
     {
         return '/forms/chromium/convert/html';
-    }
-
-    protected function getTwig(): Environment
-    {
-        if (!$this->twig instanceof Environment) {
-            throw new \LogicException(\sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
-        }
-
-        return $this->twig;
-    }
-
-    protected function getUrlGenerator(): UrlGeneratorInterface
-    {
-        if (!$this->urlGenerator instanceof UrlGeneratorInterface) {
-            throw new \LogicException(\sprintf('UrlGenerator is required to use "%s" method. Try to run "composer require symfony/router".', __METHOD__));
-        }
-
-        return $this->urlGenerator;
     }
 }

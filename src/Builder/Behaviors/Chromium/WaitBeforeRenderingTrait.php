@@ -12,12 +12,12 @@ trait WaitBeforeRenderingTrait
 {
     abstract protected function getBodyBag(): BodyBag;
 
-    protected function configure(OptionsResolver $optionsResolver): void
+    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
     {
-        $optionsResolver
+        $bodyOptionsResolver
             ->setDefined(['waitDelay', 'waitForExpression'])
             ->setAllowedTypes('waitDelay', ['string'])
-            ->setAllowedValues('waitDelay', fn(mixed $value): bool => 1 === preg_match('/^\d+(s|ms)$/', $value))
+            ->setAllowedValues('waitDelay', fn (mixed $value): bool => 1 === preg_match('/^\d+(s|ms)$/', $value))
             ->setAllowedTypes('waitForExpression', ['string'])
         ;
     }

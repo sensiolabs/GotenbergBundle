@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Psr\Log\LoggerInterface;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequireAssetTrait;
+use Psr\Container\ContainerInterface;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Client\BodyBag;
@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Client\HeadersBag;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
@@ -20,9 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Builder for responses.
  */
-abstract class AbstractBuilder implements BuilderInterface
+abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface
 {
-    use RequireAssetTrait;
 
     private readonly BodyBag $bodyBag;
     private readonly HeadersBag $headersBag;
@@ -39,14 +39,17 @@ abstract class AbstractBuilder implements BuilderInterface
         protected readonly GotenbergClientInterface $client,
         protected readonly AssetBaseDirFormatter $asset,
         array $defaultBodyData = [],
-        protected readonly LoggerInterface|null $logger = null,
-    ) {
-        $optionsResolver = new OptionsResolver();
-//        $optionsResolver->setDefaults($defaultBodyData);
-        $this->configure($optionsResolver);
+        array $defaultHeadersData = [],
+        protected readonly ContainerInterface $dependencies = new Container(),
+    )
+    {
+        $bodyOptionsResolver = (new OptionsResolver())->setDefaults($defaultBodyData);
+        $headersOptionsResolver = (new OptionsResolver())->setRequired($defaultHeadersData);
 
-        $this->bodyBag = new BodyBag($optionsResolver);
-        $this->headersBag = new HeadersBag($optionsResolver);
+        $this->configure($bodyOptionsResolver, $headersOptionsResolver);
+
+        $this->bodyBag = new BodyBag($bodyOptionsResolver);
+        $this->headersBag = new HeadersBag($headersOptionsResolver);
     }
 
     /**
@@ -123,10 +126,12 @@ abstract class AbstractBuilder implements BuilderInterface
 
     abstract protected function getEndpoint(): string;
 
-    protected function configure(OptionsResolver $optionsResolver): void
+    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
     {
-        $optionsResolver->setDefined([
+        $bodyOptionsResolver->setDefined([
             'assets',
+        ]);
+        $headersOptionsResolver->setDefined([
             'Gotenberg-Output-Filename',
         ]);
     }

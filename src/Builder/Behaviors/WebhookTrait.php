@@ -2,8 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequireUrlGeneratorTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait;
 use Sensiolabs\GotenbergBundle\Client\HeadersBag;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -12,32 +13,33 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 trait WebhookTrait
 {
-    use RequireUrlGeneratorTrait;
+    use UrlGeneratorAwareTrait;
 
     abstract protected function getHeadersBag(): HeadersBag;
 
-    public function webhookUrl(string $url, string|null $method = null, array $extraHttpHeaders = []): static
+    public function webhookUrl(string $url, string|null $method = null): static
     {
         $this->getHeadersBag()->set('Gotenberg-Webhook-Url', $url);
         if ($method) {
             $this->getHeadersBag()->set('Gotenberg-Webhook-Method', $method);
         }
-        if ($extraHttpHeaders) {
-            $this->getHeadersBag()->set('Gotenberg-Webhook-Extra-Http-Headers', json_encode($extraHttpHeaders));
-        }
 
         return $this;
     }
 
-    public function webhookErrorUrl(string $url, string|null $method = null, array $extraHttpHeaders = []): static
+    public function webhookErrorUrl(string $url, string|null $method = null): static
     {
         $this->getHeadersBag()->set('Gotenberg-Webhook-Error-Url', $url);
         if ($method) {
             $this->getHeadersBag()->set('Gotenberg-Webhook-Error-Method', $method);
         }
-        if ($extraHttpHeaders) {
-            $this->getHeadersBag()->set('Gotenberg-Webhook-Error-Extra-Http-Headers', json_encode($extraHttpHeaders));
-        }
+
+        return $this;
+    }
+
+    public function webhookExtraHeaders(array $extraHttpHeaders): static
+    {
+        $this->getHeadersBag()->set('Gotenberg-Webhook-Error-Extra-Http-Headers', json_encode($extraHttpHeaders));
 
         return $this;
     }
@@ -46,23 +48,23 @@ trait WebhookTrait
      * @param string               $route      #Route
      * @param array<string, mixed> $parameters
      */
-    public function webhookRoute(string $route, array $parameters = [], string|null $method = null, array $extraHttpHeaders = []): static
+    public function webhookRoute(string $route, array $parameters = [], string|null $method = null): static
     {
-        return $this->webhookUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method, $extraHttpHeaders);
+        return $this->webhookUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method);
     }
 
     /**
      * @param string               $route      #Route
      * @param array<string, mixed> $parameters
      */
-    public function webhookErrorRoute(string $route, array $parameters = [], string|null $method = null, array $extraHttpHeaders = []): static
+    public function webhookErrorRoute(string $route, array $parameters = [], string|null $method = null): static
     {
-        return $this->webhookErrorUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method, $extraHttpHeaders);
+        return $this->webhookErrorUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method);
     }
 
-    protected function configure(OptionsResolver $optionsResolver): void
+    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
     {
-        $optionsResolver
+        $headersOptionsResolver
             ->setDefined([
                 'Gotenberg-Webhook-Url',
                 'Gotenberg-Webhook-Method',
@@ -71,6 +73,7 @@ trait WebhookTrait
                 'Gotenberg-Webhook-Error-Method',
                 'Gotenberg-Webhook-Error-Extra-Http-Headers',
             ])
+            ->setDefault('Gotenberg-Webhook-Error-Url', static fn (Options $options) => $options['Gotenberg-Webhook-Url'] ?? null)
         ;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-interface BuilderInterface extends BuilderFileInterface, BuilderAsyncInterface
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+
+interface BuilderInterface
 {
 }
