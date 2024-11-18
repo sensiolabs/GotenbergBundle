@@ -3,7 +3,6 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Container\ContainerInterface;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Client\BodyBag;
@@ -23,7 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface
 {
-
     private readonly BodyBag $bodyBag;
     private readonly HeadersBag $headersBag;
 
@@ -32,19 +30,13 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     /** @var ProcessorInterface<mixed>|null */
     private ProcessorInterface|null $processor;
 
-    /**
-     * @param array<string, mixed> $defaultBodyData
-     */
     public function __construct(
         protected readonly GotenbergClientInterface $client,
         protected readonly AssetBaseDirFormatter $asset,
-        array $defaultBodyData = [],
-        array $defaultHeadersData = [],
         protected readonly ContainerInterface $dependencies = new Container(),
-    )
-    {
-        $bodyOptionsResolver = (new OptionsResolver())->setDefaults($defaultBodyData);
-        $headersOptionsResolver = (new OptionsResolver())->setRequired($defaultHeadersData);
+    ) {
+        $bodyOptionsResolver = new OptionsResolver();
+        $headersOptionsResolver = new OptionsResolver();
 
         $this->configure($bodyOptionsResolver, $headersOptionsResolver);
 

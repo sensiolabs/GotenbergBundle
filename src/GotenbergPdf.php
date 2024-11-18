@@ -3,8 +3,9 @@
 namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\MergePdfBuilder;
 
 //use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\ConvertPdfBuilder;
 //use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\HtmlPdfBuilder;
@@ -43,7 +44,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
         return $this->get(".sensiolabs_gotenberg.pdf_builder.{$key}");
     }
 
-    public function html(): HtmlPdfBuilder
+    public function html(): BuilderInterface
     {
         return $this->getInternal('html');
     }
@@ -62,12 +63,12 @@ final class GotenbergPdf implements GotenbergPdfInterface
 //    {
 //        return $this->getInternal('markdown');
 //    }
-//
-//    public function merge(): PdfBuilderInterface
-//    {
-//        return $this->getInternal('merge');
-//    }
-//
+
+    public function merge(): BuilderInterface
+    {
+        return $this->getInternal('merge');
+    }
+
 //    public function convert(): PdfBuilderInterface
 //    {
 //        return $this->getInternal('convert');

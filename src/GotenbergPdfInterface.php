@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\MergePdfBuilder;
 
 //use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\ConvertPdfBuilder;
 //use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\HtmlPdfBuilder;
@@ -24,7 +25,7 @@ interface GotenbergPdfInterface
      */
     public function get(string $builder): BuilderInterface;
 
-    public function html(): HtmlPdfBuilder;
+    public function html(): BuilderInterface;
 
     //    /**
     //     * @return UrlPdfBuilder
@@ -40,12 +41,9 @@ interface GotenbergPdfInterface
     //     * @return MarkdownPdfBuilder
     //     */
     //    public function markdown(): PdfBuilderInterface;
-    //
-    //    /**
-    //     * @return MergePdfBuilder
-    //     */
-    //    public function merge(): PdfBuilderInterface;
-    //
+
+    public function merge(): BuilderInterface;
+
     //    /**
     //     * @return ConvertPdfBuilder
     //     */

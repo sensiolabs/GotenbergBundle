@@ -6,5 +6,5 @@ interface GotenbergInterface
 {
     public function pdf(): GotenbergPdfInterface;
 
-    //    public function screenshot(): GotenbergScreenshotInterface;
+    public function screenshot(): GotenbergScreenshotInterface;
 }

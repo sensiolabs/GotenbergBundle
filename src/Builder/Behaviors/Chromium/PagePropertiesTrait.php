@@ -97,4 +97,14 @@ trait PagePropertiesTrait
 
         return $this;
     }
+
+    /**
+     * Sets the paper orientation to landscape.
+     */
+    public function landscape(bool $bool = true): self
+    {
+        $this->getBodyBag()->set('landscape', $bool);
+
+        return $this;
+    }
 }

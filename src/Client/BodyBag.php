@@ -40,8 +40,6 @@ class BodyBag
 
     /**
      * Compiles the values into an array to send to the HTTP client.
-     *
-     * @return FormDataPart
      */
     public function resolve(): FormDataPart
     {

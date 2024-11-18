@@ -8,14 +8,14 @@ use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class HtmlPdfBuilder extends AbstractBuilder
+class HtmlScreenshotBuilder extends AbstractBuilder
 {
     use ChromiumTrait { ChromiumTrait::configure as configureChromium; }
     use WebhookTrait { WebhookTrait::configure as configureWebhook; }
 
     protected function getEndpoint(): string
     {
-        return '/forms/chromium/convert/html';
+        return '/forms/chromium/screenshot/html';
     }
 
     protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void

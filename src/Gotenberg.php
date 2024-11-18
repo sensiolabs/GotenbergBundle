@@ -16,8 +16,8 @@ final class Gotenberg implements GotenbergInterface
         return $this->container->get(GotenbergPdfInterface::class);
     }
 
-    //    public function screenshot(): GotenbergScreenshotInterface
-    //    {
-    //        return $this->container->get(GotenbergScreenshotInterface::class);
-    //    }
+    public function screenshot(): GotenbergScreenshotInterface
+    {
+        return $this->container->get(GotenbergScreenshotInterface::class);
+    }
 }

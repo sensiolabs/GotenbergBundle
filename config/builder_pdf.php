@@ -1,16 +1,19 @@
 <?php
 
 // use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
-// use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
-// use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
-// use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
-// use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Configurator\HtmlPdfBuilderConfigurator;
+use Sensiolabs\GotenbergBundle\Configurator\MergePdfBuilderConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
+
+// use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+// use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+// use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+// use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -19,24 +22,22 @@ return static function (ContainerConfigurator $container): void {
         ->tag('monolog.logger', ['channel' => 'sensiolabs_gotenberg'])
     ;
 
-    $services->set('.sensiolabs_gotenberg.abstract_builder', AbstractBuilder::class)
-        ->abstract()
+    // HTML
+    $services->set('.sensiolabs_gotenberg.pdf_builder_configurator.html', HtmlPdfBuilderConfigurator::class)
         ->args([
-            service('sensiolabs_gotenberg.client'),
-            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-            abstract_arg('default body configuration'),
-            abstract_arg('default headers configuration'),
+            abstract_arg('default configuration'),
         ])
     ;
-
     $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->arg(4, service_locator([
+        ->arg(2, service_locator([
             'logger' => service('logger')->nullOnInvalid(),
             'twig' => service('twig')->nullOnInvalid(),
             'router' => service('router')->nullOnInvalid(),
         ]))
+        ->configurator(service('.sensiolabs_gotenberg.pdf_builder_configurator.html'))
+        ->tag('sensiolabs_gotenberg.builder')
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 
@@ -87,17 +88,20 @@ return static function (ContainerConfigurator $container): void {
     //        ->call('setLogger', [service('logger')->nullOnInvalid()])
     //        ->tag('sensiolabs_gotenberg.pdf_builder')
     //    ;
-    //
-    //    $services->set('.sensiolabs_gotenberg.pdf_builder.merge', MergePdfBuilder::class)
-    //        ->share(false)
-    //        ->args([
-    //            service('sensiolabs_gotenberg.client'),
-    //            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
-    //        ])
-    //        ->call('setLogger', [service('logger')->nullOnInvalid()])
-    //        ->tag('sensiolabs_gotenberg.pdf_builder')
-    //    ;
-    //
+
+    // Merge
+    $services->set('.sensiolabs_gotenberg.pdf_builder_configurator.merge', MergePdfBuilderConfigurator::class)
+        ->args([
+            abstract_arg('default configuration'),
+        ])
+    ;
+    $services->set('.sensiolabs_gotenberg.pdf_builder.merge', MergePdfBuilder::class)
+        ->share(false)
+        ->parent('.sensiolabs_gotenberg.abstract_builder')
+        ->configurator(service('.sensiolabs_gotenberg.pdf_builder_configurator.merge'))
+        ->tag('sensiolabs_gotenberg.pdf_builder')
+    ;
+
     //    $services->set('.sensiolabs_gotenberg.pdf_builder.convert', ConvertPdfBuilder::class)
     //        ->share(false)
     //        ->args([

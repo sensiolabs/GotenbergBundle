@@ -2,16 +2,18 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAsyncInterface;
+use Sensiolabs\GotenbergBundle\Builder\BuilderFileInterface;
+use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
+use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-final class TraceablePdfBuilder implements PdfBuilderInterface
+final class TraceableBuilder implements BuilderFileInterface, BuilderAsyncInterface
 {
     /**
      * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
      */
-    private array $pdfs = [];
+    private array $files = [];
 
     /**
      * @var list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>
@@ -23,7 +25,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     private static int $count = 0;
 
     public function __construct(
-        private readonly PdfBuilderInterface $inner,
+        private readonly BuilderFileInterface|BuilderAsyncInterface $inner,
         private readonly Stopwatch|null $stopwatch,
     ) {
     }
@@ -33,11 +35,11 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
 
-        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_pdf');
+        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_file');
         $response = $this->inner->generate();
         $swEvent?->stop();
 
-        $this->pdfs[] = [
+        $this->files[] = [
             'calls' => $this->calls,
             'time' => $swEvent?->getDuration(),
             'memory' => $swEvent?->getMemory(),
@@ -49,6 +51,27 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
 
         return $response;
     }
+
+    public function generateAsync(): GotenbergAsyncResult
+    {
+        $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
+        ++self::$count;
+
+        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_async');
+        $response = $this->inner->generateAsync();
+        $swEvent?->stop();
+
+        $this->async[] = [
+            'calls' => $this->calls,
+            'time' => $swEvent?->getDuration(),
+            'memory' => $swEvent?->getMemory(),
+        ];
+
+        ++$this->totalGenerated;
+
+        return $response;
+    }
+
 
     /**
      * @param array<mixed> $arguments
@@ -75,10 +98,10 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
      */
     public function getFiles(): array
     {
-        return $this->pdfs;
+        return $this->files;
     }
 
-    public function getInner(): PdfBuilderInterface
+    public function getInner(): BuilderFileInterface|BuilderAsyncInterface
     {
         return $this->inner;
     }
