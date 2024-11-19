@@ -13,6 +13,33 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
 
 /**
+ * @phpstan-type SensiolabsGotenbergConfiguration array{
+ *      assets_directory: string,
+ *      http_client: string,
+ *      request_context?: array{base_uri?: string},
+ *      controller_listener: bool,
+ *      webhook: array<string, array{
+ *          success: WebhookDefinition,
+ *          error?: WebhookDefinition,
+ *          extra_http_headers?: array<string, mixed>
+ *      }>,
+ *      default_options: array{
+ *          webhook?: string,
+ *          pdf: array{
+ *              html: array<string, mixed>,
+ *              url: array<string, mixed>,
+ *              markdown: array<string, mixed>,
+ *              office: array<string, mixed>,
+ *              merge: array<string, mixed>,
+ *              convert: array<string, mixed>
+ *          },
+ *          screenshot: array{
+ *              html: array<string, mixed>,
+ *              url: array<string, mixed>,
+ *              markdown: array<string, mixed>
+ *          }
+ *      }
+ *  }
  * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string, mixed>}, method?: 'POST'|'PUT'|'PATCH'|null}
  */
 class SensiolabsGotenbergExtension extends Extension
@@ -21,34 +48,7 @@ class SensiolabsGotenbergExtension extends Extension
     {
         $configuration = new Configuration();
 
-        /** @var array{
-         *     base_uri: string,
-         *     http_client: string,
-         *     controller_listener: bool,
-         *     request_context?: array{base_uri?: string},
-         *     assets_directory: string,
-         *     webhook: array<string, array{
-         *         success: WebhookDefinition,
-         *         error?: WebhookDefinition,
-         *         extra_http_headers?: array<string, mixed>
-         *     }>,
-         *     default_options: array{
-         *         webhook?: string,
-         *         pdf: array{
-         *             html: array<string, mixed>,
-         *             url: array<string, mixed>,
-         *             markdown: array<string, mixed>,
-         *             office: array<string, mixed>,
-         *             merge: array<string, mixed>,
-         *             convert: array<string, mixed>
-         *         },
-         *         screenshot: array{
-         *             html: array<string, mixed>,
-         *             url: array<string, mixed>,
-         *             markdown: array<string, mixed>
-         *         }
-         *     }
-         * } $config
+        /** @var SensiolabsGotenbergConfiguration $config
          */
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -134,6 +134,10 @@ class SensiolabsGotenbergExtension extends Extension
         }, \ARRAY_FILTER_USE_BOTH);
     }
 
+    /**
+     * @param SensiolabsGotenbergConfiguration $config
+     * @param array<string, mixed>             $serviceConfig
+     */
     private function processDefaultOptions(ContainerBuilder $container, array $config, string $serviceId, array $serviceConfig): void
     {
         $definition = $container->getDefinition($serviceId);
@@ -145,6 +149,7 @@ class SensiolabsGotenbergExtension extends Extension
 
     /**
      * @param array<string, array{success: WebhookDefinition, error?: WebhookDefinition, extra_http_headers?: array<string, mixed>}> $webhookConfig
+     * @param array<string, mixed>                                                                                                   $config
      */
     private function processWebhookOptions(ContainerBuilder $container, string $serviceId, array $webhookConfig, string|null $webhookDefaultConfigName, array $config): void
     {

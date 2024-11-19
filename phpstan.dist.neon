@@ -53,3 +53,23 @@ parameters:
 			message: "#^Parameter \\#2 \\$cookie of method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\Screenshot\\\\AbstractChromiumScreenshotBuilder\\:\\:setCookie\\(\\) expects array\\{name\\: string, value\\: string, domain\\: string, path\\?\\: string\\|null, secure\\?\\: bool\\|null, httpOnly\\?\\: bool\\|null, sameSite\\?\\: 'Lax'\\|'Strict'\\|null\\}\\|Symfony\\\\Component\\\\HttpFoundation\\\\Cookie, array\\{name\\: string, value\\: string\\|null, domain\\: string\\} given\\.$#"
 			count: 1
 			path: src/Builder/Screenshot/AbstractChromiumScreenshotBuilder.php
+
+		-
+			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:errorWebhookUrl\\(\\)\\.$#"
+			count: 2
+			path: tests/Builder/AsyncBuilderTraitTest.php
+
+		-
+			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookConfiguration\\(\\)\\.$#"
+			count: 1
+			path: tests/Builder/AsyncBuilderTraitTest.php
+
+		-
+			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookExtraHeaders\\(\\)\\.$#"
+			count: 1
+			path: tests/Builder/AsyncBuilderTraitTest.php
+
+		-
+			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookUrl\\(\\)\\.$#"
+			count: 4
+			path: tests/Builder/AsyncBuilderTraitTest.php
