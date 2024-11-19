@@ -14,6 +14,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -74,13 +75,13 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
      */
     private function getScreenshotBuilder(array $formFields = []): AbstractScreenshotBuilder
     {
-        return (new class($this->gotenbergClient, self::$assetBaseDirFormatter, $formFields) extends AbstractScreenshotBuilder {
+        return (new class($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, $formFields) extends AbstractScreenshotBuilder {
             /**
              * @param array<mixed> $formFields
              */
-            public function __construct(GotenbergClientInterface $gotenbergClient, AssetBaseDirFormatter $asset, array $formFields = [])
+            public function __construct(GotenbergClientInterface $gotenbergClient, AssetBaseDirFormatter $asset, WebhookConfigurationRegistryInterface $webhookConfigurationRegistry, array $formFields = [])
             {
-                parent::__construct($gotenbergClient, $asset);
+                parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);
                 $this->formFields = $formFields;
             }
 

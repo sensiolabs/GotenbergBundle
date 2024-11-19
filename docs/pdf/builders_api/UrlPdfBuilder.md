@@ -131,9 +131,19 @@ The metadata to write.
 
 * `downloadFrom(array $downloadFrom)`:
 
-* `fileName(string $fileName, string $headerDisposition)`:
+* `webhookConfiguration(string $name)`:
+Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
 
-* `processor(Sensiolabs\GotenbergBundle\Processor\ProcessorInterface $processor)`:
+* `webhookUrl(string $url, ?string $method)`:
+Sets the webhook for cases of success.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+
+* `errorWebhookUrl(?string $url, ?string $method)`:
+Sets the webhook for cases of error.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+
+* `webhookExtraHeaders(array $extraHeaders)`:
+Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
 
 * `addCookies(array $cookies)`:
 Add cookies to store in the Chromium cookie jar.

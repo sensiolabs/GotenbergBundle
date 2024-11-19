@@ -87,6 +87,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                         'default_options' => $this->cloneVar($this->defaultOptions[$id] ?? []),
                     ],
                     'type' => $type,
+                    'request_type' => $request['type'],
                     'time' => $request['time'],
                     'memory' => $request['memory'],
                     'size' => $this->formatSize($request['size'] ?? 0),

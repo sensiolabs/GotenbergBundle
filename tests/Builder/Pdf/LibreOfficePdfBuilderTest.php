@@ -168,7 +168,7 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
 
     private function getLibreOfficePdfBuilder(): LibreOfficePdfBuilder
     {
-        return (new LibreOfficePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter))
+        return (new LibreOfficePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry))
             ->processor(new NullProcessor())
         ;
     }

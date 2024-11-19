@@ -15,6 +15,7 @@ use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
@@ -30,6 +31,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(Filesystem::class)]
 #[UsesClass(TraceableScreenshotBuilder::class)]
 #[UsesClass(TraceableGotenbergScreenshot::class)]
+#[UsesClass(WebhookConfigurationRegistry::class)]
 final class GotenbergScreenshotTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void

@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
+use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -9,7 +10,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class TraceablePdfBuilder implements PdfBuilderInterface
 {
     /**
-     * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
+     * @var list<array{'type': 'sync'|'async', 'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<PdfBuilderInterface>, 'arguments': array<mixed>}>}>
      */
     private array $pdfs = [];
 
@@ -38,6 +39,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         $swEvent?->stop();
 
         $this->pdfs[] = [
+            'type' => 'sync',
             'calls' => $this->calls,
             'time' => $swEvent?->getDuration(),
             'memory' => $swEvent?->getMemory(),
@@ -48,6 +50,31 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
         ++$this->totalGenerated;
 
         return $response;
+    }
+
+    public function generateAsync(): void
+    {
+        if (!$this->inner instanceof AsyncBuilderInterface) {
+            throw new \LogicException(\sprintf('The inner builder of %s must implement %s.', self::class, AsyncBuilderInterface::class));
+        }
+
+        $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
+        ++self::$count;
+
+        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_pdf');
+        $this->inner->generateAsync();
+        $swEvent?->stop();
+
+        $this->pdfs[] = [
+            'type' => 'async',
+            'calls' => $this->calls,
+            'time' => $swEvent?->getDuration(),
+            'memory' => $swEvent?->getMemory(),
+            'size' => null,
+            'fileName' => null,
+        ];
+
+        ++$this->totalGenerated;
     }
 
     /**
@@ -71,7 +98,7 @@ final class TraceablePdfBuilder implements PdfBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
+     * @return list<array{'type': 'sync'|'async', 'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<PdfBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getFiles(): array
     {

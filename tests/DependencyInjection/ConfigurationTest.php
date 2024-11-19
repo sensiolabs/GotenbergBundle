@@ -148,7 +148,7 @@ final class ConfigurationTest extends TestCase
     #[DataProvider('providePaperSizesConfigurations')]
     public function testExceptionOnPaperSizesConfigurations(array $configuration): void
     {
-        self::expectException(InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
 
         $processor = new Processor();
         $processor->processConfiguration(new Configuration(), [
@@ -164,7 +164,54 @@ final class ConfigurationTest extends TestCase
     }
 
     /**
+     * @return \Generator<string, array{array{array<string, array<string|int, mixed>>}}>
+     */
+    public static function invalidWebhookConfigurationProvider(): \Generator
+    {
+        yield 'webhook definition without "success" and "error" keys' => [
+            [['webhook' => ['foo' => ['some_key' => ['url' => 'http://example.com']]]]],
+        ];
+        yield 'webhook definition without "success" key' => [
+            [['webhook' => ['foo' => ['error' => ['url' => 'http://example.com']]]]],
+        ];
+        yield 'webhook definition without name' => [
+            [['webhook' => [['success' => ['url' => 'http://example.com']], ['error' => ['url' => 'http://example.com/error']]]]],
+        ];
+        yield 'webhook definition with invalid "url" key' => [
+            [['webhook' => ['foo' => ['success' => ['url' => ['array_element']]]]]],
+        ];
+        yield 'webhook definition with array of string as "route" key' => [
+            [['webhook' => ['foo' => ['success' => ['route' => ['array_element']]]]]],
+        ];
+        yield 'webhook definition with array of two strings as "route" key' => [
+            [['webhook' => ['foo' => ['success' => ['route' => ['array_element', 'array_element_2']]]]]],
+        ];
+        yield 'webhook definition in default webhook declaration' => [
+            [['default_options' => ['webhook' => ['success' => ['url' => 'http://example.com']]]]],
+        ];
+    }
+
+    /**
+     * @param array<array<string, mixed>> $config
+     *
+     * @dataProvider invalidWebhookConfigurationProvider
+     */
+    #[DataProvider('invalidWebhookConfigurationProvider')]
+    public function testInvalidWebhookConfiguration(array $config): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $processor = new Processor();
+        $processor->processConfiguration(
+            new Configuration(),
+            $config,
+        );
+    }
+
+    /**
      * @return array{
+     *     'assets_directory': string,
+     *     'http_client': string,
+     *     'webhook': array<void>,
      *     'default_options': array{
      *         'pdf': array{
      *              'html': array<string, mixed>,
@@ -182,6 +229,7 @@ final class ConfigurationTest extends TestCase
         return [
             'assets_directory' => '%kernel.project_dir%/assets',
             'http_client' => 'http_client',
+            'webhook' => [],
             'controller_listener' => true,
             'default_options' => [
                 'pdf' => [

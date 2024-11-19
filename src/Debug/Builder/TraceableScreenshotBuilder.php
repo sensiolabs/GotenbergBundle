@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
+use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -9,7 +10,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
 {
     /**
-     * @var list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
+     * @var list<array{'type': 'sync'|'async', 'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'method': string, 'class': class-string<ScreenshotBuilderInterface>, 'arguments': array<mixed>}>}>
      */
     private array $screenshots = [];
 
@@ -38,6 +39,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         $swEvent?->stop();
 
         $this->screenshots[] = [
+            'type' => 'sync',
             'calls' => $this->calls,
             'time' => $swEvent?->getDuration(),
             'memory' => $swEvent?->getMemory(),
@@ -49,6 +51,31 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
         ++$this->totalGenerated;
 
         return $response;
+    }
+
+    public function generateAsync(): void
+    {
+        if (!$this->inner instanceof AsyncBuilderInterface) {
+            throw new \LogicException(\sprintf('The inner builder of %s must implement %s.', self::class, AsyncBuilderInterface::class));
+        }
+
+        $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
+        ++self::$count;
+
+        $swEvent = $this->stopwatch?->start($name, 'gotenberg.generate_screenshot');
+        $this->inner->generateAsync();
+        $swEvent?->stop();
+
+        $this->screenshots[] = [
+            'type' => 'async',
+            'calls' => $this->calls,
+            'time' => $swEvent?->getDuration(),
+            'memory' => $swEvent?->getMemory(),
+            'size' => null,
+            'fileName' => null,
+        ];
+
+        ++$this->totalGenerated;
     }
 
     /**
@@ -72,7 +99,7 @@ final class TraceableScreenshotBuilder implements ScreenshotBuilderInterface
     }
 
     /**
-     * @return list<array{'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
+     * @return list<array{'type': 'sync'|'async', 'time': float|null, 'memory': int|null, 'size': int<0, max>|null, 'fileName': string|null, 'calls': list<array{'class': class-string<ScreenshotBuilderInterface>, 'method': string, 'arguments': array<mixed>}>}>
      */
     public function getFiles(): array
     {

@@ -111,7 +111,7 @@ final class HtmlScreenshotBuilderTest extends AbstractBuilderTestCase
 
     private function getHtmlScreenshotBuilder(bool $twig = true): HtmlScreenshotBuilder
     {
-        return (new HtmlScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, new RequestStack(), true === $twig ? self::$twig : null))
+        return (new HtmlScreenshotBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, new RequestStack(), true === $twig ? self::$twig : null))
             ->processor(new NullProcessor())
         ;
     }

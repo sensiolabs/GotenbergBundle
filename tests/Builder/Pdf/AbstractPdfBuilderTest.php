@@ -14,6 +14,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -76,13 +77,13 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
      */
     private function getPdfBuilder(array $formFields = []): AbstractPdfBuilder
     {
-        return (new class($this->gotenbergClient, self::$assetBaseDirFormatter, $formFields) extends AbstractPdfBuilder {
+        return (new class($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, $formFields) extends AbstractPdfBuilder {
             /**
              * @param array<mixed> $formFields
              */
-            public function __construct(GotenbergClientInterface $gotenbergClient, AssetBaseDirFormatter $asset, array $formFields = [])
+            public function __construct(GotenbergClientInterface $gotenbergClient, AssetBaseDirFormatter $asset, WebhookConfigurationRegistryInterface $webhookConfigurationRegistry, array $formFields = [])
             {
-                parent::__construct($gotenbergClient, $asset);
+                parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);
                 $this->formFields = $formFields;
             }
 

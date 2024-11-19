@@ -21,6 +21,7 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\GotenbergPdf;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 use Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
@@ -42,6 +43,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(SensiolabsGotenbergExtension::class)]
 #[UsesClass(SensiolabsGotenbergBundle::class)]
 #[UsesClass(Unit::class)]
+#[UsesClass(WebhookConfigurationRegistry::class)]
 final class GotenbergPdfTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void

@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Part\DataPart;
@@ -24,10 +25,11 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
     public function __construct(
         GotenbergClientInterface $gotenbergClient,
         AssetBaseDirFormatter $asset,
+        WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
         private readonly RequestStack $requestStack,
         private readonly Environment|null $twig = null,
     ) {
-        parent::__construct($gotenbergClient, $asset);
+        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry);
 
         $normalizers = [
             'extraHttpHeaders' => function (mixed $value): array {
