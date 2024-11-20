@@ -109,6 +109,14 @@ document. (default None).
 Return a 409 Conflict response if the HTTP status code from
 the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
 
+* `failOnResourceHttpStatusCodes(array $statusCodes)`:
+Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.
+(default None). (overrides any previous configuration).
+
+* `failOnResourceLoadingFailed(bool $bool)`:
+Forces GotenbergScreenshot to return a 409 Conflict response if there are
+exceptions load at least one resource. (default false).
+
 * `failOnConsoleExceptions(bool $bool)`:
 Forces GotenbergPdf to return a 409 Conflict response if there are
 exceptions in the Chromium console. (default false).

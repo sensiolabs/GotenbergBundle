@@ -53,6 +53,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'failOnHttpStatusCodes' => function (mixed $value): array {
                 return $this->encodeData('failOnHttpStatusCodes', $value);
             },
+            'failOnResourceHttpStatusCodes' => function (mixed $value): array {
+                return $this->encodeData('failOnResourceHttpStatusCodes', $value);
+            },
             'cookies' => fn (mixed $value): array => $this->cookieNormalizer($value, $this->encodeData(...)),
         ];
 
@@ -461,6 +464,34 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.
+     * (default None). (overrides any previous configuration).
+     *
+     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     *
+     * @param list<int<100, 599>> $statusCodes
+     */
+    public function failOnResourceHttpStatusCodes(array $statusCodes): static
+    {
+        $this->formFields['failOnResourceHttpStatusCodes'] = $statusCodes;
+
+        return $this;
+    }
+
+    /**
+     * Forces GotenbergScreenshot to return a 409 Conflict response if there are
+     * exceptions load at least one resource. (default false).
+     *
+     * @see https://gotenberg.dev/docs/routes#network-errors-chromium
+     */
+    public function failOnResourceLoadingFailed(bool $bool = true): static
+    {
+        $this->formFields['failOnResourceLoadingFailed'] = $bool;
+
+        return $this;
+    }
+
+    /**
      * Forces GotenbergPdf to return a 409 Conflict response if there are
      * exceptions in the Chromium console. (default false).
      *
@@ -600,6 +631,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'user_agent' => $this->userAgent($value),
             'extra_http_headers' => $this->extraHttpHeaders($value),
             'fail_on_http_status_codes' => $this->failOnHttpStatusCodes($value),
+            'fail_on_resource_http_status_codes' => $this->failOnResourceHttpStatusCodes($value),
+            'fail_on_resource_loading_failed' => $this->failOnResourceLoadingFailed($value),
             'fail_on_console_exceptions' => $this->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             'metadata' => $this->metadata($value),
