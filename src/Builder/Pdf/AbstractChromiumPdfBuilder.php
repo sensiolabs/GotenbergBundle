@@ -213,6 +213,18 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     }
 
     /**
+     * Define whether the document outline should be embedded into the PDF. (Default false).
+     *
+     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     */
+    public function generateDocumentOutline(bool $bool = true): static
+    {
+        $this->formFields['generateDocumentOutline'] = $bool;
+
+        return $this;
+    }
+
+    /**
      * Prints the background graphics. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
@@ -575,6 +587,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'margin_left' => $this->marginLeft(...Unit::parse($value)),
             'margin_right' => $this->marginRight(...Unit::parse($value)),
             'prefer_css_page_size' => $this->preferCssPageSize($value),
+            'generate_document_outline' => $this->generateDocumentOutline($value),
             'print_background' => $this->printBackground($value),
             'omit_background' => $this->omitBackground($value),
             'landscape' => $this->landscape($value),

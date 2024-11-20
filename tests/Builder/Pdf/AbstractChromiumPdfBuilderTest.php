@@ -65,6 +65,9 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         yield 'prefer_css_page_size' => ['prefer_css_page_size', false, [
             ['preferCssPageSize' => 'false'],
         ]];
+        yield 'generate_document_outline' => ['generate_document_outline', false, [
+            ['generateDocumentOutline' => 'false'],
+        ]];
         yield 'print_background' => ['print_background', false, [
             ['printBackground' => 'false'],
         ]];
