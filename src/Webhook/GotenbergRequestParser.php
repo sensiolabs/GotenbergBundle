@@ -37,8 +37,8 @@ class GotenbergRequestParser extends AbstractRequestParser
             throw new RejectWebhookException(406, \sprintf('Missing "%s" HTTP request header.', $this->idHeaderName));
         }
 
-        if ($this->userAgent !== ($type = $request->headers->get('User-Agent', ''))) {
-            throw new RejectWebhookException(406, \sprintf('Invalid user agent "%s".', $type));
+        if ($this->userAgent !== ($userAgent = $request->headers->get('User-Agent', ''))) {
+            throw new RejectWebhookException(406, \sprintf('Invalid user agent "%s".', $userAgent));
         }
 
         if ('json' === $request->getContentTypeFormat()) {
