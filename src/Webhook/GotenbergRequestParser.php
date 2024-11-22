@@ -57,7 +57,7 @@ class GotenbergRequestParser extends AbstractRequestParser
             $id,
             $request->getContent(true),
             HeaderUtils::extractFilename($request->headers) ?? '',
-            $request->headers->get('Content-Type', ''),
+            $request->getContentTypeFormat() ?? '',
             HeaderUtils::extractContentLength($request->headers) ?? 0,
         );
     }
