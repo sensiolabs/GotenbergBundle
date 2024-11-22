@@ -447,7 +447,7 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Twig is required to use "Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder::withRenderedPart" method. Try to run "composer require symfony/twig-bundle".');
 
-        $builder = $this->getChromiumPdfBuilder(false);
+        $builder = $this->getChromiumPdfBuilder(twig: false);
         $builder->header('header.html.twig', ['name' => 'World']);
     }
 
@@ -460,9 +460,9 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         $builder->header('templates/invalid.html.twig');
     }
 
-    private function getChromiumPdfBuilder(bool $twig = true, RequestStack $requestStack = new RequestStack()): AbstractChromiumPdfBuilder
+    private function getChromiumPdfBuilder(bool $urlGenerator = true, bool $twig = true, RequestStack $requestStack = new RequestStack()): AbstractChromiumPdfBuilder
     {
-        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, $requestStack, true === $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
+        return new class($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, $requestStack, $urlGenerator ? self::$urlGenerator : null, $twig ? self::$twig : null) extends AbstractChromiumPdfBuilder {
             protected function getEndpoint(): string
             {
                 return '/fake/endpoint';

@@ -109,9 +109,9 @@ final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    private function getHtmlPdfBuilder(bool $twig = true): HtmlPdfBuilder
+    private function getHtmlPdfBuilder(bool $urlGenerator = true, bool $twig = true): HtmlPdfBuilder
     {
-        return (new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, new RequestStack(), true === $twig ? self::$twig : null))
+        return (new HtmlPdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry, new RequestStack(), $urlGenerator ? self::$urlGenerator : null, $twig ? self::$twig : null))
             ->processor(new NullProcessor())
         ;
     }

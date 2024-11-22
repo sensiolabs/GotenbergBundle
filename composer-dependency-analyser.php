@@ -13,7 +13,13 @@ return $config
     ->addPathToScan(__DIR__.'/src/Debug', isDev: true)
     ->addPathToScan(__DIR__.'/tests', isDev: true)
 
+    ->ignoreErrorsOnPackage('symfony/remote-event', [
+        ErrorType::DEV_DEPENDENCY_IN_PROD,
+    ])
     ->ignoreErrorsOnPackage('symfony/routing', [
+        ErrorType::DEV_DEPENDENCY_IN_PROD,
+    ])
+    ->ignoreErrorsOnPackage('symfony/webhook', [
         ErrorType::DEV_DEPENDENCY_IN_PROD,
     ])
     ->ignoreErrorsOnPackage('twig/twig', [

@@ -2,8 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Exception\WebhookConfigurationException;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 trait AsyncBuilderTrait
 {
@@ -30,16 +31,22 @@ trait AsyncBuilderTrait
 
     private WebhookConfigurationRegistryInterface $webhookConfigurationRegistry;
 
+    protected UrlGeneratorInterface|null $urlGenerator;
+
     public function generateAsync(): void
     {
-        if (null === $this->successWebhookUrl) {
-            throw new MissingRequiredFieldException('->webhookUrl() was never called.');
-        }
+        $successWebhookUrl = $this->successWebhookUrl;
+        if (!$successWebhookUrl) {
+            if (!$this->urlGenerator) {
+                throw new WebhookConfigurationException(\sprintf('A webhook URL or Router is required to use "%s" method. Set the URL or try to run "composer require symfony/routing".', __METHOD__));
+            }
 
-        $errorWebhookUrl = $this->errorWebhookUrl ?? $this->successWebhookUrl;
+            $successWebhookUrl = $this->urlGenerator->generate('_webhook_controller', ['type' => 'gotenberg'], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+        $errorWebhookUrl = $this->errorWebhookUrl ?? $successWebhookUrl;
 
         $headers = [
-            'Gotenberg-Webhook-Url' => $this->successWebhookUrl,
+            'Gotenberg-Webhook-Url' => $successWebhookUrl,
             'Gotenberg-Webhook-Error-Url' => $errorWebhookUrl,
         ];
 
@@ -59,6 +66,7 @@ trait AsyncBuilderTrait
             // Gotenberg will add the extension to the file name (e.g. filename : "file.pdf" => generated file : "file.pdf.pdf").
             $headers['Gotenberg-Output-Filename'] = $this->fileName;
         }
+
         $this->client->call($this->getEndpoint(), $this->getMultipartFormData(), $headers);
     }
 

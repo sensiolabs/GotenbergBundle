@@ -10,12 +10,19 @@ use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 abstract class AbstractBuilderTestCase extends TestCase
 {
     protected const FIXTURE_DIR = __DIR__.'/../Fixtures';
+
+    protected static UrlGeneratorInterface $urlGenerator;
 
     protected static Environment $twig;
 
@@ -33,6 +40,9 @@ abstract class AbstractBuilderTestCase extends TestCase
 
     public static function setUpBeforeClass(): void
     {
+        $routeCollection = new RouteCollection();
+        $routeCollection->add('_webhook_controller', new Route('/webhook/{type}'));
+        self::$urlGenerator = new UrlGenerator($routeCollection, new RequestContext());
         self::$twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
             'strict_variables' => true,
         ]);

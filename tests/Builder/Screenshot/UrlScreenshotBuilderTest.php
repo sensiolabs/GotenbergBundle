@@ -72,15 +72,15 @@ final class UrlScreenshotBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    private function getUrlScreenshotBuilder(bool $twig = true): UrlScreenshotBuilder
+    private function getUrlScreenshotBuilder(bool $urlGenerator = true, bool $twig = true): UrlScreenshotBuilder
     {
         return (new UrlScreenshotBuilder(
             $this->gotenbergClient,
             self::$assetBaseDirFormatter,
             $this->webhookConfigurationRegistry,
             new RequestStack(),
-            true === $twig ? self::$twig : null,
-            $this->router,
+            $urlGenerator ? self::$urlGenerator : null,
+            $twig ? self::$twig : null,
         ))
             ->processor(new NullProcessor())
         ;

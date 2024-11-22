@@ -10,12 +10,17 @@ use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderTrait;
 use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
-use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Exception\WebhookConfigurationException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[CoversClass(AsyncBuilderTrait::class)]
@@ -27,10 +32,10 @@ class AsyncBuilderTraitTest extends TestCase
 {
     public function testRequiresAtLeastSuccessWebhookUrl(): void
     {
-        $builder = $this->getBuilder(new MockHttpClient([]));
+        $builder = $this->getBuilder(new MockHttpClient([]), disableUrlGenerator: true);
 
-        $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('->webhookUrl() was never called.');
+        $this->expectException(WebhookConfigurationException::class);
+        $this->expectExceptionMessage('A webhook URL or Router is required to use "Sensiolabs\GotenbergBundle\Builder\AsyncBuilderTrait::generateAsync" method. Set the URL or try to run "composer require symfony/routing".');
 
         $builder->generateAsync();
     }
@@ -175,7 +180,19 @@ class AsyncBuilderTraitTest extends TestCase
         $builder->generateAsync();
     }
 
-    private function getBuilder(MockHttpClient $httpClient, WebhookConfigurationRegistryInterface|null $registry = null): AsyncBuilderInterface
+    public function testWebhookComponentCanBeUsed(): void
+    {
+        $builder = $this->getBuilder(new MockHttpClient(function ($method, $url, $options): MockResponse {
+            $this->assertContains('Gotenberg-Webhook-Url: http://localhost/webhook/gotenberg', $options['headers']);
+            $this->assertContains('Gotenberg-Webhook-Error-Url: http://localhost/webhook/gotenberg', $options['headers']);
+
+            return new MockResponse();
+        }));
+
+        $builder->generateAsync();
+    }
+
+    private function getBuilder(MockHttpClient $httpClient, WebhookConfigurationRegistryInterface|null $registry = null, bool $disableUrlGenerator = false): AsyncBuilderInterface
     {
         $registry ??= new class implements WebhookConfigurationRegistryInterface {
             public function add(string $name, array $configuration): void
@@ -198,14 +215,22 @@ class AsyncBuilderTraitTest extends TestCase
             }
         };
 
-        return new class($httpClient, $registry) implements AsyncBuilderInterface {
+        $urlGenerator = null;
+        if (!$disableUrlGenerator) {
+            $routeCollection = new RouteCollection();
+            $routeCollection->add('_webhook_controller', new Route('/webhook/{type}'));
+            $urlGenerator = new UrlGenerator($routeCollection, new RequestContext());
+        }
+
+        return new class($httpClient, $registry, $urlGenerator) implements AsyncBuilderInterface {
             use AsyncBuilderTrait;
 
-            public function __construct(HttpClientInterface $httpClient, WebhookConfigurationRegistryInterface $registry)
+            public function __construct(HttpClientInterface $httpClient, WebhookConfigurationRegistryInterface $registry, UrlGeneratorInterface|null $urlGenerator)
             {
                 $this->client = new GotenbergClient($httpClient);
                 $this->webhookConfigurationRegistry = $registry;
                 $this->asset = new AssetBaseDirFormatter(new Filesystem(), '', '');
+                $this->urlGenerator = $urlGenerator;
             }
 
             protected function getEndpoint(): string
