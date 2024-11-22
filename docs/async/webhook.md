@@ -14,11 +14,10 @@ To connect the provider to your application, you need to configure the Webhook c
 ```yaml
 # config/packages/webhook.yaml
 framework:
-  webhook:
-    routing:
-      gotenberg:
-        service: 'sensiolabs_gotenberg.webhook.request_parser'
-```
+    webhook:
+        routing:
+            gotenberg:
+                service: 'sensiolabs_gotenberg.webhook.request_parser'
 
 Then, create your handler to respond to the Gotenberg RemoteEvent:
 
