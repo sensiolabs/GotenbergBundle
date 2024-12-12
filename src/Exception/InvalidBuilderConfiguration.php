@@ -2,6 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Exception;
 
-final class InvalidBuilderConfiguration extends \RuntimeException implements ExceptionInterface
+final class InvalidBuilderConfiguration extends RuntimeException
 {
 }

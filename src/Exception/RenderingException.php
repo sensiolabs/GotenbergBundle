@@ -2,6 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Exception;
 
-class ProcessorException extends RuntimeException
+class RenderingException extends RuntimeException
 {
 }

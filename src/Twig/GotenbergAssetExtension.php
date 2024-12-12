@@ -21,7 +21,7 @@ final class GotenbergAssetExtension extends AbstractExtension
      */
     public function getAssetUrl(array $context, string $path): string
     {
-        $builder = $context['_builder'];
+        $builder = $context['_builder'] ?? null;
 
         if (!$builder instanceof AbstractChromiumPdfBuilder && !$builder instanceof AbstractChromiumScreenshotBuilder) {
             throw new \LogicException('You need to extend from AbstractChromiumPdfBuilder to use gotenberg_asset function.');

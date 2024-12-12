@@ -39,7 +39,7 @@ return static function (ContainerConfigurator $container): void {
         ->alias(AssetBaseDirFormatter::class, 'sensiolabs_gotenberg.asset.base_dir_formatter')
     ;
 
-    $services->set('sensiolabs_gotenberg.twig.asset_extension', GotenbergAssetExtension::class)
+    $services->set('sensiolabs_gotenberg.twig.gotenberg_asset_extension', GotenbergAssetExtension::class)
         ->tag('twig.extension')
     ;
 

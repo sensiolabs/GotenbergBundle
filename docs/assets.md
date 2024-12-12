@@ -8,9 +8,22 @@ You can add assets in several ways, and it's available for most builders.
 | Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     N/A      |
 
 > [!WARNING]  
-> As a reminder, we can only load assets in the content. And not in Header or Footer.  
+> As a reminder, we can only load assets in the content, not in Header or Footer.
+> However, you can load images using a base64 encoded source.
 > For more information about [Header and Footer restriction](https://gotenberg.dev/docs/routes#header-footer-chromium)
->
+
+## Using public assets with the Symfony Asset component
+
+Public assets loaded using the [Symfony Asset component](https://symfony.com/doc/current/components/asset.html) can be 
+used when generating your PDF. 
+
+> [!WARNING]
+> Since the Asset component handle assets from the public folder, prefer the Gotenberg bundle to display private assets.
+> See below.
+
+## Using private assets with the Gotenberg bundle
+
+> [!WARNING]  
 > By default, the assets are fetch in the `assets` folder of your application.
 > If your assets files are in another folder, you can override the
 > default value of `assets_directory` in your configuration file
@@ -47,7 +60,7 @@ You can add assets in several ways, and it's available for most builders.
 > ```
 > </details>
 
-## Twig file
+### Twig file
 
 `{{ gotenberg_asset() }}` Twig function will help you to generate an asset path.
 This function work as [asset() Twig function](https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets).
@@ -104,7 +117,7 @@ class YourController
 }
 ```
 
-## HTML file
+### HTML file
 
 If your file is an HTML file and not a Twig template, you can also
 add some assets as below.

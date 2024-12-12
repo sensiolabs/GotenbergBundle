@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
+use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -56,6 +57,10 @@ class SensiolabsGotenbergExtension extends Extension
         $loader->load('builder_pdf.php');
         $loader->load('builder_screenshot.php');
         $loader->load('services.php');
+
+        if ($container::willBeAvailable('symfony/asset', AssetExtension::class, ['symfony/framework-bundle'])) {
+            $loader->load('asset.php');
+        }
 
         if (false === $config['controller_listener']) {
             $container->removeDefinition('sensiolabs_gotenberg.http_kernel.stream_builder');
