@@ -2,6 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Exception;
 
-final class MissingRequiredFieldException extends \RuntimeException implements ExceptionInterface
+final class MissingRequiredFieldException extends RuntimeException
 {
 }

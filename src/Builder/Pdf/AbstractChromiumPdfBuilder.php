@@ -343,13 +343,13 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     /**
      * Adds a file, like an image, font, stylesheet, and so on.
      */
-    public function addAsset(string $path): static
+    public function addAsset(string $path, string|null $name = null): static
     {
         $resolvedPath = $this->asset->resolve($path);
 
-        $dataPart = new DataPart(new DataPartFile($resolvedPath));
+        $dataPart = new DataPart(new DataPartFile($resolvedPath, $name));
 
-        $this->formFields['assets'][$resolvedPath] = $dataPart;
+        $this->formFields['assets'][$name ?? $resolvedPath] = $dataPart;
 
         return $this;
     }
