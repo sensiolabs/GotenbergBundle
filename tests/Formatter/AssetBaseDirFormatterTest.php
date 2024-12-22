@@ -12,8 +12,8 @@ use Symfony\Component\Filesystem\Filesystem;
 #[CoversClass(AssetBaseDirFormatter::class)]
 final class AssetBaseDirFormatterTest extends TestCase
 {
-    private const BASE_PATH = "/var/www/project";
-    
+    private const BASE_PATH = '/var/www/project';
+
     /**
      * @return iterable<string, array<int, string>>
      */
