@@ -12,16 +12,18 @@ use Symfony\Component\Filesystem\Filesystem;
 #[CoversClass(AssetBaseDirFormatter::class)]
 final class AssetBaseDirFormatterTest extends TestCase
 {
+    private const BASE_PATH = "/var/www/project";
+    
     /**
      * @return iterable<string, array<int, string>>
      */
     public static function generateBaseDirectoryAndPath(): iterable
     {
-        yield 'absolute path and absolute base dir' => [__DIR__.'/../Fixtures/assets/file.md', __DIR__.'/../Fixtures/assets', __DIR__.'/../Fixtures/assets/file.md'];
-        yield 'absolute path and relative base dir' => [__DIR__.'/../Fixtures/assets/logo.png', '/assets', __DIR__.'/../Fixtures/assets/logo.png'];
-        yield 'relative path and relative base dir' => ['document.odt', 'assets/office', __DIR__.'/../Fixtures/assets/office/document.odt'];
-        yield 'relative path and relative base dir with end slash' => ['document.odt', 'assets/office/', __DIR__.'/../Fixtures/assets/office/document.odt'];
-        yield 'relative path and absolute base dir' => ['office/document_1.docx', __DIR__.'/../Fixtures/assets', __DIR__.'/../Fixtures/assets/office/document_1.docx'];
+        yield 'absolute path and absolute base dir' => [self::BASE_PATH.'/foo/file.md', self::BASE_PATH.'/bar', self::BASE_PATH.'/foo/file.md'];
+        yield 'absolute path and relative base dir' => [self::BASE_PATH.'/foo/logo.png', '/bar', self::BASE_PATH.'/foo/logo.png'];
+        yield 'relative path and relative base dir' => ['document.odt', 'bar/baz', self::BASE_PATH.'/bar/baz/document.odt'];
+        yield 'relative path and absolute base dir' => ['foo/document.odt', self::BASE_PATH.'/bar/baz', self::BASE_PATH.'/bar/baz/foo/document.odt'];
+        yield 'relative path and relative base dir with end slash' => ['document.odt', 'bar/baz/', self::BASE_PATH.'/bar/baz/document.odt'];
     }
 
     #[DataProvider('generateBaseDirectoryAndPath')]
@@ -29,7 +31,7 @@ final class AssetBaseDirFormatterTest extends TestCase
     public function testResolvePathCorrectly(string $path, string $baseDirectory, string $expectedResult): void
     {
         $filesystem = new Filesystem();
-        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, __DIR__.'/../Fixtures', $baseDirectory);
+        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::BASE_PATH, $baseDirectory);
         $resolvedPath = $assetBaseDirFormatter->resolve($path);
         self::assertSame($expectedResult, $resolvedPath);
     }

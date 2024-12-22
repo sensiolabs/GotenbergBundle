@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Formatter;
 
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 final class AssetBaseDirFormatter
 {
@@ -18,14 +19,14 @@ final class AssetBaseDirFormatter
 
     public function resolve(string $path): string
     {
-        if ($this->filesystem->isAbsolutePath($path)) {
+        if (Path::isAbsolute($path)) {
             return $path;
         }
 
-        if ($this->filesystem->isAbsolutePath($this->baseDir)) {
-            return "{$this->baseDir}/{$path}";
+        if (Path::isAbsolute($this->baseDir)) {
+            return Path::join($this->baseDir, $path);
         }
 
-        return "{$this->projectDir}/{$this->baseDir}/{$path}";
+        return Path::join($this->projectDir, $this->baseDir, $path);
     }
 }
