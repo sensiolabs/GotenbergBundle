@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -41,6 +42,9 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.twig.asset_extension', GotenbergAssetExtension::class)
         ->tag('twig.extension')
+    ;
+    $services->set('sensiolabs_gotenberg.twig.asset_runtime', GotenbergAssetRuntime::class)
+        ->tag('twig.runtime')
     ;
 
     $services->set('sensiolabs_gotenberg.pdf', GotenbergPdf::class)
