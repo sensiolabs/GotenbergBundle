@@ -447,7 +447,7 @@ class YourController
 
 ### header and footer
 
-You may have the possibility to add header or footer twig templates
+You may have the possibility to add header or footer Twig templates
 to your generated PDF.
 
 ```php
