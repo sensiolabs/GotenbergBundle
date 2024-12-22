@@ -12,11 +12,11 @@
 
 ## What is it?
 
-This bundle allows you to generate, stream and save PDF locally from URL, HTML, Markdown or any 
-Office file. Different options are available depending on the source.
+This bundle allows you to generate, stream and save PDF locally from URL, HTML,
+Markdown or any Office file. Different options are available depending on the source.
 
-It also helps you to generate, stream and save images locally from URL, HTML and Markdown by taking 
-a screenshot.
+It also helps you to generate, stream and save images locally from URL, HTML and
+Markdown by taking a screenshot.
 
 ## How to install
 
@@ -30,9 +30,10 @@ composer require sensiolabs/gotenberg-bundle
 
 If you accept the Symfony Flex recipe during installation, the bundle is registered,
 the configuration skeleton file is created, the `.env` file is updated with `GOTENBERG_DSN`
-and dockerfile is also created to get the [gotenberg image](https://hub.docker.com/r/gotenberg/gotenberg), you need to configure 
-the ports related to `GOTENBERG_DSN` in your `.env` file. The host could be updated too
-since it's localhost by default. If your script is run in a container, the host will be `gotenberg`.
+and dockerfile is also created to get the [gotenberg image](https://hub.docker.com/r/gotenberg/gotenberg),
+you need to configure the ports related to `GOTENBERG_DSN` in your `.env` file. 
+The host could be updated too since it's localhost by default. If your script is
+run in a container, the host will be `gotenberg`.
 
 You can now adapt the configuration file to your needs.
 
@@ -292,8 +293,8 @@ MIT License (MIT): see the [License File](LICENSE) for more details.
     It can also be because from Gotenberg <abbr title="Point of View">PoV</abbr> the 
     URL of your Symfony app is not reachable.
     Let's say you are using [symfony CLI](https://symfony.com/download) to run your
-    project locally with Gotenberg running in Docker. You need to configure the `request_context` 
-    like so:
+    project locally with Gotenberg running in Docker. You need to configure the 
+    `request_context` like so:
 
     ```diff
     --- a/config/packages/gotenberg.yaml
