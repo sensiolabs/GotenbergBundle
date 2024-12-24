@@ -374,12 +374,13 @@ sensiolabs_gotenberg:
                 user_agent:           null
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
-                extra_http_headers:
+                extra_http_headers: []
+                
+                    # Example:
+                    # 'X-Custom-Header': 'custom-header-value'
 
-                    # Prototype
-                    name:
-                        name:                 ~
-                        value:                ~
+                    # Or the syntax below is also possible
+                    # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
                 # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
                 fail_on_http_status_codes:
@@ -472,15 +473,13 @@ sensiolabs_gotenberg:
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
                     # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
-                    extra_http_headers:
+                    extra_http_headers: []
 
                         # Example:
-                        # - { name: X-Custom-Header, value: custom-header-value }
-
-                        # Prototype
-                        name:
-                            name:                 ~
-                            value:                ~
+                        # 'X-Custom-Header': 'custom-header-value'
+    
+                        # Or the syntax below is also possible
+                        # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             markdown:
 
                 # Add default header to the builder.
@@ -571,12 +570,13 @@ sensiolabs_gotenberg:
                 user_agent:           null
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
-                extra_http_headers:
+                extra_http_headers: []
+                
+                    # Example:
+                    # 'X-Custom-Header': 'custom-header-value'
 
-                    # Prototype
-                    name:
-                        name:                 ~
-                        value:                ~
+                    # Or the syntax below is also possible
+                    # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
                 # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
                 fail_on_http_status_codes:
@@ -669,15 +669,13 @@ sensiolabs_gotenberg:
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
                     # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
-                    extra_http_headers:
+                    extra_http_headers: []
 
                         # Example:
-                        # - { name: X-Custom-Header, value: custom-header-value }
-
-                        # Prototype
-                        name:
-                            name:                 ~
-                            value:                ~
+                        # 'X-Custom-Header': 'custom-header-value'
+    
+                        # Or the syntax below is also possible
+                        # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             office:
 
                 # Set the password for opening the source file. https://gotenberg.dev/docs/routes#page-properties-libreoffice
@@ -907,12 +905,13 @@ sensiolabs_gotenberg:
                 user_agent:           null
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
-                extra_http_headers:
+                extra_http_headers: []
+                
+                    # Example:
+                    # 'X-Custom-Header': 'custom-header-value'
 
-                    # Prototype
-                    name:
-                        name:                 ~
-                        value:                ~
+                    # Or the syntax below is also possible
+                    # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
                 # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
                 fail_on_http_status_codes:
@@ -975,15 +974,13 @@ sensiolabs_gotenberg:
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
                     # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
-                    extra_http_headers:
+                    extra_http_headers: []
 
                         # Example:
-                        # - { name: X-Custom-Header, value: custom-header-value }
-
-                        # Prototype
-                        name:
-                            name:                 ~
-                            value:                ~
+                        # 'X-Custom-Header': 'custom-header-value'
+    
+                        # Or the syntax below is also possible
+                        # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             url:
 
                 # The device screen width in pixels. - default 800. https://gotenberg.dev/docs/routes#screenshots-route
@@ -1035,12 +1032,13 @@ sensiolabs_gotenberg:
                 user_agent:           null
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
-                extra_http_headers:
+                extra_http_headers: []
+                
+                    # Example:
+                    # 'X-Custom-Header': 'custom-header-value'
 
-                    # Prototype
-                    name:
-                        name:                 ~
-                        value:                ~
+                    # Or the syntax below is also possible
+                    # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
                 # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
                 fail_on_http_status_codes:
@@ -1103,15 +1101,13 @@ sensiolabs_gotenberg:
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
                     # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
-                    extra_http_headers:
+                    extra_http_headers: []
 
                         # Example:
-                        # - { name: X-Custom-Header, value: custom-header-value }
-
-                        # Prototype
-                        name:
-                            name:                 ~
-                            value:                ~
+                        # 'X-Custom-Header': 'custom-header-value'
+    
+                        # Or the syntax below is also possible
+                        # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             markdown:
 
                 # The device screen width in pixels. - default 800. https://gotenberg.dev/docs/routes#screenshots-route
@@ -1163,12 +1159,13 @@ sensiolabs_gotenberg:
                 user_agent:           null
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
-                extra_http_headers:
+                extra_http_headers: []
 
-                    # Prototype
-                    name:
-                        name:                 ~
-                        value:                ~
+                    # Example:
+                    # 'X-Custom-Header': 'custom-header-value'
+
+                    # Or the syntax below is also possible
+                    # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
                 # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
                 fail_on_http_status_codes:
@@ -1231,15 +1228,13 @@ sensiolabs_gotenberg:
                         method:               null # One of "POST"; "PUT"; "PATCH"
 
                     # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
-                    extra_http_headers:
+                    extra_http_headers: []
 
                         # Example:
-                        # - { name: X-Custom-Header, value: custom-header-value }
-
-                        # Prototype
-                        name:
-                            name:                 ~
-                            value:                ~
+                        # 'X-Custom-Header': 'custom-header-value'
+                    
+                        # Or the syntax below is also possible
+                        # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 ```
 
 > [!TIP]
@@ -1256,17 +1251,28 @@ sensiolabs_gotenberg:
         pdf:
             html:
                 extra_http_headers:
+                    'My-Header': 'MyValue'
+```
+
+Or the syntax below is also possible
+
+```yaml
+sensiolabs_gotenberg:
+    default_options:
+        pdf:
+            html:
+                extra_http_headers:
                     - { name: 'My-Header', value: 'MyValue' }
 ```
 
-Or Headers to send to your webhook endpoint
+Headers to send to your webhook endpoint
 
 ```yaml
 sensiolabs_gotenberg:
     webhook:
         default:
             extra_http_headers:
-                - { name: 'My-Header', value: 'MyValue' }
+                'My-Header': 'MyValue'
 ```
 
 > [!TIP]
