@@ -7,7 +7,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Symfony\Component\Filesystem\Filesystem;
 
 #[CoversClass(AssetBaseDirFormatter::class)]
 final class AssetBaseDirFormatterTest extends TestCase
