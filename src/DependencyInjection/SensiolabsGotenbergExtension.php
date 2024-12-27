@@ -122,7 +122,7 @@ class SensiolabsGotenbergExtension extends Extension
 
         $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.markdown', $config['default_options']['screenshot']['markdown']);
 
-        $definition = $container->getDefinition('sensiolabs_gotenberg.asset.base_dir_formatter');
+        $definition = $container->getDefinition('.sensiolabs_gotenberg.asset.base_dir_formatter');
         $definition->replaceArgument(1, $config['assets_directory']);
     }
 
