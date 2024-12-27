@@ -36,16 +36,6 @@ cd GotenbergBundle
 composer install
 ```
 
-### Configure Environment
-
-Copy the example environment file and adjust configurations as needed.
-
-```
-cp .env.example .env
-```
-
-Update .env with your local settings.
-
 ## Testing
 
 Ensure your changes work as expected by running the test suite:
@@ -68,11 +58,17 @@ Maintain high code quality by following these steps before submitting a pull req
 
 ### Code Linting
 
+Check your code for style violations:
+
 ```
-./vendor/bin/phpcs
+./vendor/bin/php-cs-fixer check --diff
 ```
 
-Ensure your code adheres to the coding standards.
+Eventually, you can fix the issues automatically:
+
+```
+./vendor/bin/php-cs-fixer fix --diff
+```
 
 ### Static Analysis
 
