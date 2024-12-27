@@ -205,7 +205,7 @@ class AsyncBuilderTraitTest extends TestCase
             {
                 $this->client = new GotenbergClient($httpClient);
                 $this->webhookConfigurationRegistry = $registry;
-                $this->asset = new AssetBaseDirFormatter(new Filesystem(), '', '');
+                $this->asset = new AssetBaseDirFormatter('', '');
             }
 
             protected function getEndpoint(): string

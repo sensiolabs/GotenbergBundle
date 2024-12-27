@@ -2,15 +2,16 @@
 
 namespace Sensiolabs\GotenbergBundle\Formatter;
 
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
+/**
+ * @internal
+ */
 final class AssetBaseDirFormatter
 {
     private readonly string $baseDir;
 
     public function __construct(
-        private readonly Filesystem $filesystem,
         private readonly string $projectDir,
         string $baseDir,
     ) {

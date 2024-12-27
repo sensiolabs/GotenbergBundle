@@ -33,7 +33,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.asset.base_dir_formatter', AssetBaseDirFormatter::class)
         ->args([
-            service(Filesystem::class),
             param('kernel.project_dir'),
             abstract_arg('assets_directory to assets'),
         ])

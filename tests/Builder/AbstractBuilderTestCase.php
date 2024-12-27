@@ -48,7 +48,7 @@ abstract class AbstractBuilderTestCase extends TestCase
                 return GotenbergAssetRuntime::class === $class ? new GotenbergAssetRuntime() : null;
             }
         });
-        self::$assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
+        self::$assetBaseDirFormatter = new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR);
     }
 
     protected function setUp(): void

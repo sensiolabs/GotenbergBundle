@@ -119,7 +119,6 @@ class DefaultBuilderTraitTest extends TestCase
             public function __construct()
             {
                 $this->asset = new AssetBaseDirFormatter(
-                    new Filesystem(),
                     __DIR__.'/../Fixtures',
                     'files',
                 );

@@ -30,8 +30,7 @@ final class AssetBaseDirFormatterTest extends TestCase
     #[TestDox('Resolve path when "$_dataName"')]
     public function testResolvePathCorrectly(string $path, string $baseDirectory, string $expectedResult): void
     {
-        $filesystem = new Filesystem();
-        $assetBaseDirFormatter = new AssetBaseDirFormatter($filesystem, self::BASE_PATH, $baseDirectory);
+        $assetBaseDirFormatter = new AssetBaseDirFormatter(self::BASE_PATH, $baseDirectory);
         $resolvedPath = $assetBaseDirFormatter->resolve($path);
         self::assertSame($expectedResult, $resolvedPath);
     }
