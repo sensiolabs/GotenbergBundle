@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
@@ -567,6 +568,48 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * Either intervals or pages. (default None).
+     *
+     * @see https://gotenberg.dev/docs/routes#split-chromium
+     */
+    public function splitMode(SplitMode|null $splitMode = null): static
+    {
+        if (null === $splitMode) {
+            unset($this->formFields['splitMode']);
+
+            return $this;
+        }
+
+        $this->formFields['splitMode'] = $splitMode;
+
+        return $this;
+    }
+
+    /**
+     * Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
+     *
+     * @see https://gotenberg.dev/docs/routes#split-chromium
+     */
+    public function splitSpan(string $splitSpan): static
+    {
+        $this->formFields['splitSpan'] = $splitSpan;
+
+        return $this;
+    }
+
+    /**
+     * Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
+     *
+     * @see https://gotenberg.dev/docs/routes#split-chromium
+     */
+    public function splitUnify(bool $bool = true): static
+    {
+        $this->formFields['splitUnify'] = $bool;
+
+        return $this;
+    }
+
     protected function withPdfPartFile(Part $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
@@ -637,6 +680,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'skip_network_idle_event' => $this->skipNetworkIdleEvent($value),
             'metadata' => $this->metadata($value),
             'download_from' => $this->downloadFrom($value),
+            'split_mode' => $this->splitMode(SplitMode::from($value)),
+            'split_span' => $this->splitSpan($value),
+            'split_unify' => $this->splitUnify($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

@@ -263,6 +263,9 @@ final class ConfigurationTest extends TestCase
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
+                        'split_mode' => null,
+                        'split_span' => null,
+                        'split_unify' => null,
                     ],
                     'url' => [
                         'single_page' => null,
@@ -294,6 +297,9 @@ final class ConfigurationTest extends TestCase
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
+                        'split_mode' => null,
+                        'split_span' => null,
+                        'split_unify' => null,
                     ],
                     'markdown' => [
                         'single_page' => null,
@@ -325,6 +331,9 @@ final class ConfigurationTest extends TestCase
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
+                        'split_mode' => null,
+                        'split_span' => null,
+                        'split_unify' => null,
                     ],
                     'office' => [
                         'password' => null,
@@ -353,6 +362,9 @@ final class ConfigurationTest extends TestCase
                         'reduce_image_resolution' => null,
                         'max_image_resolution' => null,
                         'download_from' => [],
+                        'split_mode' => null,
+                        'split_span' => null,
+                        'split_unify' => null,
                     ],
                     'merge' => [
                         'pdf_format' => null,
@@ -363,6 +375,11 @@ final class ConfigurationTest extends TestCase
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
+                    ],
+                    'split' => [
+                        'split_mode' => null,
+                        'split_span' => null,
+                        'split_unify' => null,
                     ],
                 ],
                 'screenshot' => [

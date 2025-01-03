@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
 final class GotenbergPdf implements GotenbergPdfInterface
@@ -24,7 +25,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -33,6 +34,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'office' ? LibreOfficePdfBuilder :
      *   $key is 'merge' ? MergePdfBuilder :
      *   $key is 'convert' ? ConvertPdfBuilder :
+     *   $key is 'split' ? SplitPdfBuilder :
      *   PdfBuilderInterface
      * )
      */
@@ -69,5 +71,10 @@ final class GotenbergPdf implements GotenbergPdfInterface
     public function convert(): PdfBuilderInterface
     {
         return $this->getInternal('convert');
+    }
+
+    public function split(): PdfBuilderInterface
+    {
+        return $this->getInternal('split');
     }
 }

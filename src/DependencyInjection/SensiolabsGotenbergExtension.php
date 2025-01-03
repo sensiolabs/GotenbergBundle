@@ -31,7 +31,8 @@ use Symfony\Component\Routing\RequestContext;
  *              markdown: array<string, mixed>,
  *              office: array<string, mixed>,
  *              merge: array<string, mixed>,
- *              convert: array<string, mixed>
+ *              convert: array<string, mixed>,
+ *              split: array<string, mixed>
  *          },
  *          screenshot: array{
  *              html: array<string, mixed>,
@@ -71,6 +72,7 @@ class SensiolabsGotenbergExtension extends Extension
                     'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
                     'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
                     'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
+                    'split' => $this->cleanUserOptions($config['default_options']['pdf']['split']),
                 ])
             ;
         }
@@ -111,6 +113,8 @@ class SensiolabsGotenbergExtension extends Extension
         $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.merge', $config['default_options']['pdf']['merge']);
 
         $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.convert', $config['default_options']['pdf']['convert']);
+
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.split', $config['default_options']['pdf']['split']);
 
         $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.screenshot_builder.html', $config['default_options']['screenshot']['html']);
 

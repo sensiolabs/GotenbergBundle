@@ -1,12 +1,11 @@
-# MarkdownPdfBuilder
+# UrlPdfBuilder
 
-* `wrapper(string $template, array $context)`:
-The HTML file that wraps the markdown content, rendered from a Twig template.
+* `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
 
-* `wrapperFile(string $path)`:
-The HTML file that wraps the markdown content.
+* `url(string $url)`:
+URL of the page you want to convert into PDF.
 
-* `files(string $paths)`:
+* `route(string $name, array $parameters)`:
 
 * `cookies(array $cookies)`:
 
@@ -140,6 +139,15 @@ Resets the metadata.
 
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
+
+* `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
+Either intervals or pages. (default None).
+
+* `splitSpan(string $splitSpan)`:
+Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
+
+* `splitUnify(bool $bool)`:
+Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
 
 * `downloadFrom(array $downloadFrom)`:
 

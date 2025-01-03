@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Mime\Part\DataPart;
@@ -338,6 +339,48 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * Either intervals or pages. (default None).
+     *
+     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     */
+    public function splitMode(SplitMode|null $splitMode = null): static
+    {
+        if (null === $splitMode) {
+            unset($this->formFields['splitMode']);
+
+            return $this;
+        }
+
+        $this->formFields['splitMode'] = $splitMode;
+
+        return $this;
+    }
+
+    /**
+     * Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
+     *
+     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     */
+    public function splitSpan(string $splitSpan): static
+    {
+        $this->formFields['splitSpan'] = $splitSpan;
+
+        return $this;
+    }
+
+    /**
+     * Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
+     *
+     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     */
+    public function splitUnify(bool $bool = true): static
+    {
+        $this->formFields['splitUnify'] = $bool;
+
+        return $this;
+    }
+
     public function getMultipartFormData(): array
     {
         if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
@@ -382,6 +425,9 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
             'reduce_image_resolution' => $this->reduceImageResolution($value),
             'max_image_resolution' => $this->maxImageResolution(ImageResolutionDPI::from($value)),
             'download_from' => $this->downloadFrom($value),
+            'split_mode' => $this->splitMode(SplitMode::from($value)),
+            'split_span' => $this->splitSpan($value),
+            'split_unify' => $this->splitUnify($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

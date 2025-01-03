@@ -5,6 +5,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -80,6 +81,17 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->set('.sensiolabs_gotenberg.pdf_builder.convert', ConvertPdfBuilder::class)
+        ->share(false)
+        ->args([
+            service('sensiolabs_gotenberg.client'),
+            service('sensiolabs_gotenberg.asset.base_dir_formatter'),
+            service('.sensiolabs_gotenberg.webhook_configuration_registry'),
+        ])
+        ->call('setLogger', [service('logger')->nullOnInvalid()])
+        ->tag('sensiolabs_gotenberg.pdf_builder')
+    ;
+
+    $services->set('.sensiolabs_gotenberg.pdf_builder.split', SplitPdfBuilder::class)
         ->share(false)
         ->args([
             service('sensiolabs_gotenberg.client'),

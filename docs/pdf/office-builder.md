@@ -61,7 +61,50 @@ class YourController
 }
 ```
 
-## merge
+## Available functions
+
+### Render
+[merge](#merge)  
+[landscape](#landscape)  
+[nativePageRanges](#nativePageRanges)  
+[singlePageSheets](#singlePageSheets)  
+[skipEmptyPages](#skipEmptyPages)  
+[losslessImageCompression](#losslessImageCompression)  
+[quality](#quality)  
+[reduceImageResolution](#reduceImageResolution)  
+[maxImageResolution](#maxImageResolution)  
+[splitMode](#splitMode)  
+[splitSpan](#splitSpan)  
+[splitUnify](#splitUnify)
+
+### Additional content
+[doNotExportFormFields](#doNotExportFormFields)   
+[allowDuplicateFieldNames](#allowDuplicateFieldNames)  
+[doNotExportBookmarks](#doNotExportBookmarks)  
+[exportBookmarksToPdfDestination](#exportBookmarksToPdfDestination)  
+[exportPlaceholders](#exportPlaceholders)  
+[exportNotes](#exportNotes)  
+[exportNotesPages](#exportNotesPages)  
+[exportOnlyNotesPages](#exportOnlyNotesPages)  
+[exportNotesInMargin](#exportNotesInMargin)  
+[exportLinksRelativeFsys](#exportLinksRelativeFsys)  
+[exportHiddenSlides](#exportHiddenSlides)  
+[addOriginalDocumentAsStream](#addOriginalDocumentAsStream)  
+[download from](#download-from)
+
+### Formatting
+[metadata](#metadata)  
+[addMetadata](#addMetadata)  
+[pdfFormat](#pdfFormat)  
+[pdfUniversalAccess](#pdfUniversalAccess)  
+[convertOooTargetToPdfTarget](#convertOooTargetToPdfTarget)
+
+### Security
+[password](#password)
+
+## Render
+
+### merge
 
 Default: `false`
 
@@ -89,7 +132,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#merge-libreoffice).
 
-## landscape
+### landscape
 
 Default: `false`
 
@@ -117,7 +160,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## nativePageRanges
+### nativePageRanges
 
 Default: `All pages generated`
 
@@ -145,36 +188,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## doNotExportFormFields
-
-Default: `true`
-
-Set whether to export the form fields or to use the inputted/selected content 
-of the fields.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->doNotExportFormFields() // is same as `->doNotExportFormFields(false)`
-            ->generate()
-            ->stream()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## singlePageSheets
+### singlePageSheets
 
 Default: `false`
 
@@ -202,413 +216,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## pdfFormat
-
-Default: `None`
-
-Convert the resulting PDF into the given PDF/A format.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->pdfFormat(PdfFormat::Pdf1b)
-            ->generate()
-            ->stream()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-libreoffice).
-
-## pdfUniversalAccess
-
-Default: `false`
-
-Enable PDF for Universal Access for optimal accessibility.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
-            ->generate()
-            ->stream()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-libreoffice).
-
-## metatada
-
-Default: `None`
-
-Resets the configuration metadata and add new ones to write.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
-            ->generate()
-            ->stream()
-         ;
-    }
-}
-```
-
-## addMetadata
-
-Default: `None`
-
-If you want to add metadata from the ones already loaded in the configuration.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->addMetadata('key', 'value')
-            ->generate()
-            ->stream()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#metadata-libreoffice).
-
-## allowDuplicateFieldNames
-
-Default: `false`
-
-Specify whether multiple form fields exported are allowed to have the same field name.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->allowDuplicateFieldNames()  // is same as `->allowDuplicateFieldNames(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## doNotExportBookmarks
-
-Default: `true`
-
-Specify if bookmarks are exported to PDF.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->doNotExportBookmarks()  // is same as `->doNotExportBookmarks(false)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## exportBookmarksToPdfDestination
-
-Default: `false`
-
-Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->exportBookmarksToPdfDestination()  // is same as `->exportBookmarksToPdfDestination(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## exportPlaceholders
-
-Default: `false`
-
-Export the placeholders fields visual markings only. The exported placeholder is ineffective.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->exportPlaceholders()  // is same as `->exportPlaceholders(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## exportNotes
-
-Default: `false`
-
-Specify if notes are exported to PDF.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->exportNotes()  // is same as `->exportNotes(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## exportNotesPages
-
-Default: `false`
-
-Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->exportNotesPages()  // is same as `->exportNotesPages(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## exportOnlyNotesPages
-
-Default: `false`
-
-Specify, if the form field exportNotesPages is set to true, if only notes pages are exported to PDF.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->exportOnlyNotesPages()  // is same as `->exportOnlyNotesPages(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## exportNotesInMargin
-
-Default: `false`
-
-Specify if notes in margin are exported to PDF.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->exportNotesInMargin()  // is same as `->exportNotesInMargin(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## convertOooTargetToPdfTarget
-
-Default: `false`
-
-Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->convertOooTargetToPdfTarget()  // is same as `->convertOooTargetToPdfTarget(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## exportLinksRelativeFsys
-
-Default: `false`
-
-Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->exportLinksRelativeFsys()  // is same as `->exportLinksRelativeFsys(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## exportHiddenSlides
-
-Default: `false`
-
-Export, for LibreOffice Impress, slides that are not included in slide shows.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->exportHiddenSlides()  // is same as `->exportHiddenSlides(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## skipEmptyPages
+### skipEmptyPages
 
 Default: `false`
 
@@ -635,34 +243,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-## addOriginalDocumentAsStream
-
-Default: `false`
-
-Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
-    {
-        return $gotenberg->office()
-            ->files('document.txt')
-            ->addOriginalDocumentAsStream()  // is same as `->addOriginalDocumentAsStream(true)`
-            ->generate()
-         ;
-    }
-}
-```
-
-> [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
-
-## losslessImageCompression
+### losslessImageCompression
 
 Default: `false`
 
@@ -689,7 +270,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#images-libreoffice).
 
-## quality
+### quality
 
 Default: `90`
 
@@ -716,7 +297,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#images-libreoffice).
 
-## reduceImageResolution
+### reduceImageResolution
 
 Default: `false`
 
@@ -743,7 +324,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#images-libreoffice).
 
-## maxImageResolution
+### maxImageResolution
 
 Default: `300`
 
@@ -770,6 +351,420 @@ class YourController
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#images-libreoffice).
+
+### splitMode
+
+default: `None`
+
+Either `intervals` or `pages`.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\Enum\SplitMode;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->splitMode(SplitMode::Intervals)
+            ->splitSpan('1')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#split-libreoffice).
+
+### splitSpan
+
+default: `None`
+
+Either the intervals or the page ranges to extract, depending on the selected `splitMode`.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->splitMode(SplitMode::Intervals)
+            ->splitSpan('1')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+### splitUnify
+
+Default: `false`
+
+Specify whether to put extracted pages into a single file or as many files as
+there are page ranges. Only works with `pages` mode.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\Enum\SplitMode;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1-2')
+            ->splitUnify() // is same as ->splitUnify(true)
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+## Additional content
+
+### doNotExportFormFields
+
+Default: `true`
+
+Set whether to export the form fields or to use the inputted/selected content
+of the fields.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->doNotExportFormFields() // is same as `->doNotExportFormFields(false)`
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### allowDuplicateFieldNames
+
+Default: `false`
+
+Specify whether multiple form fields exported are allowed to have the same field name.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->allowDuplicateFieldNames()  // is same as `->allowDuplicateFieldNames(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### doNotExportBookmarks
+
+Default: `true`
+
+Specify if bookmarks are exported to PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->doNotExportBookmarks()  // is same as `->doNotExportBookmarks(false)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### exportBookmarksToPdfDestination
+
+Default: `false`
+
+Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportBookmarksToPdfDestination()  // is same as `->exportBookmarksToPdfDestination(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### exportPlaceholders
+
+Default: `false`
+
+Export the placeholders fields visual markings only. The exported placeholder is ineffective.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportPlaceholders()  // is same as `->exportPlaceholders(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### exportNotes
+
+Default: `false`
+
+Specify if notes are exported to PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportNotes()  // is same as `->exportNotes(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### exportNotesPages
+
+Default: `false`
+
+Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportNotesPages()  // is same as `->exportNotesPages(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### exportOnlyNotesPages
+
+Default: `false`
+
+Specify, if the form field exportNotesPages is set to true, if only notes pages are exported to PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportOnlyNotesPages()  // is same as `->exportOnlyNotesPages(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### exportNotesInMargin
+
+Default: `false`
+
+Specify if notes in margin are exported to PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportNotesInMargin()  // is same as `->exportNotesInMargin(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### exportLinksRelativeFsys
+
+Default: `false`
+
+Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportLinksRelativeFsys()  // is same as `->exportLinksRelativeFsys(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### exportHiddenSlides
+
+Default: `false`
+
+Export, for LibreOffice Impress, slides that are not included in slide shows.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->exportHiddenSlides()  // is same as `->exportHiddenSlides(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### addOriginalDocumentAsStream
+
+Default: `false`
+
+Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->addOriginalDocumentAsStream()  // is same as `->addOriginalDocumentAsStream(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
 ### download from
 
@@ -816,7 +811,147 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#download-from).
 
-## password
+## Formatting
+
+### metadata
+
+Default: `None`
+
+Resets the configuration metadata and add new ones to write.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+### addMetadata
+
+Default: `None`
+
+If you want to add metadata from the ones already loaded in the configuration.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->addMetadata('key', 'value')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#metadata-libreoffice).
+
+### pdfFormat
+
+Default: `None`
+
+Convert the resulting PDF into the given PDF/A format.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->pdfFormat(PdfFormat::Pdf1b)
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-libreoffice).
+
+### pdfUniversalAccess
+
+Default: `false`
+
+Enable PDF for Universal Access for optimal accessibility.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\Enum\PdfFormat;use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-libreoffice).
+
+### convertOooTargetToPdfTarget
+
+Default: `false`
+
+Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->convertOooTargetToPdfTarget()  // is same as `->convertOooTargetToPdfTarget(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+## Security
+
+### password
 
 Default: `None`
 

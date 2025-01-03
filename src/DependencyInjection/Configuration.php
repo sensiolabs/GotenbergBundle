@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -57,6 +58,7 @@ class Configuration implements ConfigurationInterface
                             ->append($this->addPdfOfficeNode())
                             ->append($this->addPdfMergeNode())
                             ->append($this->addPdfConvertNode())
+                            ->append($this->addPdfSplitNode())
                         ->end()
                         ->arrayNode('screenshot')
                             ->addDefaultsIfNotSet()
@@ -356,6 +358,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $this->addPdfFormat($parent);
+        $this->addSplitConfigurationNode($parent);
     }
 
     private function addChromiumScreenshotOptionsNode(ArrayNodeDefinition $parent): void
@@ -597,6 +600,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         $this->addPdfFormat($treeBuilder->getRootNode());
+        $this->addSplitConfigurationNode($treeBuilder->getRootNode());
 
         return $treeBuilder->getRootNode();
     }
@@ -620,6 +624,14 @@ class Configuration implements ConfigurationInterface
             ->append($this->addPdfMetadata())
             ->append($this->addDownloadFrom())
         ->end();
+
+        return $treeBuilder->getRootNode();
+    }
+
+    private function addPdfSplitNode(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('split');
+        $this->addSplitConfigurationNode($treeBuilder->getRootNode());
 
         return $treeBuilder->getRootNode();
     }
@@ -879,6 +891,40 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+            ->end()
+        ;
+    }
+
+    private function addSplitConfigurationNode(ArrayNodeDefinition $parent): void
+    {
+        $parent
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->enumNode('split_mode')
+                    ->info('Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-chromium')
+                    ->values(array_map(static fn (SplitMode $case): string => $case->value, SplitMode::cases()))
+                    ->defaultNull()
+                ->end()
+                ->scalarNode('split_span')
+                    ->info('Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-chromium')
+                    ->defaultNull()
+                    ->validate()
+                        ->ifTrue(static function ($option): bool {
+                            return preg_match('/([\d]+[-][\d]+)/', $option) !== 1 && preg_match('/(\d+)/', $option) !== 1;
+                        })
+                        ->thenInvalid('Invalid value, the range value format need to look like e.g 1-20 or as a single int value e.g 2.')
+                    ->end()
+                ->end()
+                ->booleanNode('split_unify')
+                    ->info('Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium')
+                    ->defaultNull()
+                ->end()
+            ->end()
+            ->validate()
+                ->ifTrue(static function ($option): bool {
+                    return isset($option['split_mode']) && !isset($option['split_span']);
+                })
+                ->thenInvalid('"splitMode" and "splitSpan" must be provided.')
             ->end()
         ;
     }
