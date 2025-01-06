@@ -20,7 +20,7 @@ require_once \dirname(__DIR__).'/vendor/autoload.php';
  * @var array<string, non-empty-list<class-string>>
  */
 const BUILDERS = [
-    'Pdf' => [
+    'pdf' => [
         HtmlPdfBuilder::class,
         UrlPdfBuilder::class,
         MarkdownPdfBuilder::class,
@@ -28,7 +28,7 @@ const BUILDERS = [
         MergePdfBuilder::class,
         ConvertPdfBuilder::class,
     ],
-    'Screenshot' => [
+    'screenshot' => [
         HtmlScreenshotBuilder::class,
         UrlScreenshotBuilder::class,
         MarkdownScreenshotBuilder::class,
@@ -147,7 +147,7 @@ $application->register('generate')
                 throw new RuntimeException(\sprintf('Directory "%s" was not created', $directory));
             }
 
-            $summary .= "## {$type}\n\n";
+            $summary .= '## '.ucfirst($type)."\n\n";
 
             foreach ($builderClasses as $pdfBuilder) {
                 $reflectionClass = new ReflectionClass($pdfBuilder);
