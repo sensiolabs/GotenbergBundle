@@ -53,6 +53,9 @@ Overrides the default margins (e.g., 0.39), in inches.
 * `preferCssPageSize(bool $bool)`:
 Define whether to prefer page size as defined by CSS. (Default false).
 
+* `generateDocumentOutline(bool $bool)`:
+Define whether the document outline should be embedded into the PDF. (Default false).
+
 * `printBackground(bool $bool)`:
 Prints the background graphics. (Default false).
 
