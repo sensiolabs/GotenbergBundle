@@ -1241,6 +1241,30 @@ sensiolabs_gotenberg:
 > For more information about the [PDF properties](https://gotenberg.dev/docs/routes#page-properties-chromium) 
 > or [screenshot properties](https://gotenberg.dev/docs/routes#screenshots-route).
 
+## Header and footer defaults templates
+
+You have the option to add a default header and/or footer template to your PDF.
+If your template contains variables, simply enter its name and value under `context`
+as shown below.
+
+```yaml
+sensiolabs_gotenberg:
+    http_client: 'gotenberg.client'
+    assets_directory: 'assets'
+    default_options:
+        pdf:
+            html:
+                header:
+                    template: 'header.html.twig'
+                    context:
+                        title: 'Hello'
+                        first_name: 'Jean Michel'
+                footer:
+                    template: 'footer.html.twig'
+                    context:
+                        foo: 'bar'
+```
+
 ## Extra HTTP headers
 
 HTTP headers to send by Chromium while loading the HTML document.
