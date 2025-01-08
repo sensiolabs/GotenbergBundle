@@ -30,7 +30,11 @@ final class AbstractScreenshotBuilderTest extends AbstractBuilderTestCase
     {
         // @phpstan-ignore-next-line
         $this->gotenbergClient = new GotenbergClient(new MockHttpClient([
-            new MockResponse(),
+            new MockResponse(info: [
+                'response_headers' => [
+                    'Content-Disposition' => 'attachment; filename="some_file.png"',
+                ],
+            ]),
         ]));
 
         $response = $this->getScreenshotBuilder()

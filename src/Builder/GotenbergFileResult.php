@@ -4,21 +4,20 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Contracts\HttpClient\ChunkInterface;
 
 class GotenbergFileResult
 {
     /**
-     * @param \Generator<int, void, ChunkInterface, mixed> $processorGenerator
+     * @param ProcessorInterface<mixed> $processor
      */
     public function __construct(
         protected readonly GotenbergResponse $response,
-        protected readonly \Generator $processorGenerator,
+        protected readonly ProcessorInterface $processor,
         protected readonly string $disposition,
-        protected readonly string|null $fileName = null,
     ) {
     }
 
@@ -51,19 +50,22 @@ class GotenbergFileResult
             throw new ProcessorException('Already processed query.');
         }
 
+        $processorGenerator = ($this->processor)($this->getFileName());
+
         foreach ($this->response->getStream() as $chunk) {
-            $this->processorGenerator->send($chunk);
+            $processorGenerator->send($chunk);
         }
 
-        return $this->processorGenerator->getReturn();
+        return $processorGenerator->getReturn();
     }
 
     public function stream(): StreamedResponse
     {
         $headers = $this->getHeaders();
         $headers->set('X-Accel-Buffering', 'no'); // See https://symfony.com/doc/current/components/http_foundation.html#streaming-a-json-response
-        if (null !== $this->fileName) {
-            $headers->set('Content-Disposition', HeaderUtils::makeDisposition($this->disposition, $this->fileName));
+
+        if (null !== $this->getFileName()) {
+            $headers->set('Content-Disposition', HeaderUtils::makeDisposition($this->disposition, $this->getFileName()));
         }
 
         return new StreamedResponse(
@@ -72,8 +74,10 @@ class GotenbergFileResult
                     throw new ProcessorException('Already processed query.');
                 }
 
+                $processorGenerator = ($this->processor)($this->getFileName());
+
                 foreach ($this->response->getStream() as $chunk) {
-                    $this->processorGenerator->send($chunk);
+                    $processorGenerator->send($chunk);
                     echo $chunk->getContent();
                     flush();
                 }

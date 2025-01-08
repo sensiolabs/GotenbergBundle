@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
@@ -69,6 +70,10 @@ trait DefaultBuilderTrait
      */
     public function fileName(string $fileName, string $headerDisposition = HeaderUtils::DISPOSITION_INLINE): static
     {
+        if (!preg_match('/\.[^.]+$/', $fileName)) {
+            throw new InvalidBuilderConfiguration(\sprintf('File name "%s" needs to get extension as ".pdf", ".png" or any other valid extension.', $fileName));
+        }
+
         $this->fileName = $fileName;
         $this->headerDisposition = $headerDisposition;
 
@@ -214,13 +219,15 @@ trait DefaultBuilderTrait
             'sensiolabs_gotenberg.builder' => $this::class,
         ]);
 
-        $processor = $this->processor ?? new NullProcessor();
+        $headers = [];
+        if (null !== $this->fileName) {
+            $headers['Gotenberg-Output-Filename'] = $this->fileName;
+        }
 
         return new GotenbergFileResult(
-            $this->client->call($this->getEndpoint(), $this->getMultipartFormData()),
-            $processor($this->fileName),
+            $this->client->call($this->getEndpoint(), $this->getMultipartFormData(), $headers),
+            $this->processor ?? new NullProcessor(),
             $this->headerDisposition,
-            $this->fileName,
         );
     }
 }
