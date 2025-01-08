@@ -85,6 +85,15 @@ Specify if the resolution of each image is reduced to the resolution specified b
 * `maxImageResolution(Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)`:
 If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
 
+* `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
+Either intervals or pages. (default None).
+
+* `splitSpan(string $splitSpan)`:
+Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
+
+* `splitUnify(bool $bool)`:
+Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
+
 * `downloadFrom(array $downloadFrom)`:
 
 * `webhookConfiguration(string $name)`:

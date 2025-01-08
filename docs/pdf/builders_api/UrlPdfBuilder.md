@@ -52,6 +52,9 @@ Overrides the default margins (e.g., 0.39), in inches.
 * `preferCssPageSize(bool $bool)`:
 Define whether to prefer page size as defined by CSS. (Default false).
 
+* `generateDocumentOutline(bool $bool)`:
+Define whether the document outline should be embedded into the PDF. (Default false).
+
 * `printBackground(bool $bool)`:
 Prints the background graphics. (Default false).
 
@@ -136,6 +139,15 @@ Resets the metadata.
 
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
+
+* `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
+Either intervals or pages. (default None).
+
+* `splitSpan(string $splitSpan)`:
+Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
+
+* `splitUnify(bool $bool)`:
+Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
 
 * `downloadFrom(array $downloadFrom)`:
 
