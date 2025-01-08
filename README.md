@@ -10,18 +10,17 @@
 > [!WARNING]  
 > This Bundle is experimental and subject to change in a future release.
 
-## What is it ?
+## What is it?
 
-This bundle allows you to generate, stream and save PDF locally from URL, HTML, Markdown or any 
-Office file. Different options are available depending on the source.
+This bundle allows you to generate, stream and save PDF locally from URL, HTML,
+Markdown or any Office file. Different options are available depending on the source.
 
-It also helps you to generate, stream and save images locally from URL, HTML and Markdown using 
-a screenshot.
-
+It also helps you to generate, stream and save images locally from URL, HTML and
+Markdown by taking a screenshot.
 
 ## How to install
 
-Install the bundle using composer :
+Install the bundle using composer:
 
 ```bash
 composer require sensiolabs/gotenberg-bundle
@@ -29,12 +28,12 @@ composer require sensiolabs/gotenberg-bundle
 
 ### With Symfony Flex
 
-If you accept the Symfony Flex recipe during installation, the bundle is registered, the configuration
-skeleton file is created, the .env file is updated with `GOTENBERG_DSN` and dockerfile is also created
-to get the [gotenberg image](https://hub.docker.com/r/gotenberg/gotenberg), you need to configure the ports 
-related to `GOTENBERG_DSN` in your .env file.  
-The host could be updated too since it's localhost by default.
-If your script is run in a container, the host will be `gotenberg`.
+If you accept the Symfony Flex recipe during installation, the bundle is registered,
+the configuration skeleton file is created, the `.env` file is updated with `GOTENBERG_DSN`
+and dockerfile is also created to get the [gotenberg image](https://hub.docker.com/r/gotenberg/gotenberg),
+you need to configure the ports related to `GOTENBERG_DSN` in your `.env` file. 
+The host could be updated too since it's localhost by default. If your script is
+run in a container, the host will be `gotenberg`.
 
 You can now adapt the configuration file to your needs.
 
@@ -43,7 +42,8 @@ You can now adapt the configuration file to your needs.
 > [!CAUTION]
 > To use this bundle, you first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation).
 
-Enable the bundle by adding it to the list of registered bundles in the ``config/bundles.php`` file of your project:
+Enable the bundle by adding it to the list of registered bundles in the ``config/bundles.php``
+file of your project:
 
 ```php
 // config/bundles.php
@@ -92,7 +92,7 @@ class YourController
 #### Twig
 
 > [!WARNING]  
-> Every twig templates you pass to Gotenberg need to have the following structure.  
+> Every Twig template you pass to Gotenberg must have the following structure.  
 > Even Header or Footer parts.
 > ```html
 > <!DOCTYPE html>
@@ -127,29 +127,30 @@ class YourController
 }
 ```
 
-If a template needs to link to a static asset (e.g. an image), this bundle provides a `{{ gotenberg_asset() }}`
-Twig function to generate the correct path AND add it to the builder automatically.
+If a template needs to link to a static asset (e.g. an image), this bundle
+provides a `{{ gotenberg_asset() }}` Twig function to generate the correct
+path AND add it to the builder automatically.
 
 This function work as [asset() Twig function](https://symfony.com/doc/current/templates.html#linking-to-css-javascript-and-image-assets) 
-and fetch your assets in the `assets` folder of your application
-If your files are in another folder, you can override the default value of ``assets_directory`` in your
-configuration file ``config/sensiolabs_gotenberg.yml``.
-The path provided can be relative as well as absolute.
+and fetch your assets in the `assets` folder of your application.
+If your files are in another folder, you can override the default value of ``assets_directory``
+in your configuration file ``config/sensiolabs_gotenberg.yml``. The path provided
+can be relative as well as absolute.
 
-```html
+```twig
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>PDF body</title>
-    </head>
-    <body>
-        <main>
-            <h1>Hello world!</h1>
-            <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
-             <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
-         </main>
-    </body>
+<head>
+    <meta charset="utf-8"/>
+    <title>PDF body</title>
+</head>
+<body>
+    <main>
+        <h1>Hello world!</h1>
+        <img src="{{ gotenberg_asset('public/img/ceo.jpeg') }}" alt="CEO"/>
+        <img src="{{ gotenberg_asset('public/img/admin.jpeg') }}" alt="Admin"/>
+    </main>
+</body>
 </html>
 ```
 
@@ -162,11 +163,11 @@ You can generate a screenshot locally from URL, HTML and Markdown.
 
 #### URL
 
-After injecting ``GotenbergScreenshotInterface`` you simply need to call the method ``url``,
-which will return a ``UrlScreenshotBuilder`` instance.
+After injecting ``GotenbergScreenshotInterface`` you simply need to call the
+method ``url``, which will return a ``UrlScreenshotBuilder`` instance.
 
-``UrlScreenshotBuilder`` lets you pass the URL of the page you want to convert into screenshot
-to the method ``url``.
+``UrlScreenshotBuilder`` lets you pass the URL of the page you want to convert
+into screenshot to the method ``url``.
 
 ```php
 namespace App\Controller;
@@ -187,11 +188,11 @@ class YourController
 ```
 #### Twig
 
-After injecting ``GotenbergScreenshotInterface`` you simply need to call the method ``html``,
-which will return a ``HtmlScreenshotBuilder`` instance.
+After injecting ``GotenbergScreenshotInterface`` you simply need to call the method
+``html``, which will return a ``HtmlScreenshotBuilder`` instance.
 
-``HtmlScreenshotBuilder`` lets you pass the content of the page you want to convert into screenshot
-to the method ``content``.
+``HtmlScreenshotBuilder`` lets you pass the content of the page you want to convert
+into screenshot to the method ``content``.
 
 ```php
 namespace App\Controller;
@@ -230,16 +231,16 @@ class YourController
 3. [Markdown Builder](./docs/pdf/markdown-builder.md)
 4. [Url Builder](./docs/pdf/url-builder.md)
 5. [Office Builder](./docs/pdf/office-builder.md) (available extensions for conversion below)  
-   `123`, `602`, `abw`, `bib`, `bmp`, `cdr`, `cgm`, `cmx`, `csv`, `cwk`, `dbf`, `dif`, `doc`, `docm`,
-   `docx`, `dot`, `dotm`, `dotx`, `dxf`, `emf`, `eps`, `epub`, `fodg`, `fodp`, `fods`, `fodt`, `fopd`,
-   `gif`, `htm`, `html`, `hwp`, `jpeg`, `jpg`, `key`, `ltx`, `lwp`, `mcw`, `met`, `mml`, `mw`, `numbers`,
-   `odd`, `odg`, `odm`, `odp`, `ods`, `odt`, `otg`, `oth`, `otp`, `ots`, `ott`, `pages`, `pbm`, `pcd`,
-   `pct`, `pcx`, `pdb`, `pdf`, `pgm`, `png`, `pot`, `potm`, `potx`, `ppm`, `pps`, `ppt`, `pptm`, `pptx`,
-   `psd`, `psw`, `pub`, `pwp`, `pxl`, `ras`, `rtf`, `sda`, `sdc`, `sdd`, `sdp`, `sdw`, `sgl`, `slk`,
-   `smf`, `stc`, `std`, `sti`, `stw`, `svg`, `svm`, `swf`, `sxc`, `sxd`, `sxg`, `sxi`, `sxm`, `sxw`,
-   `tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
-   `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
-   `xltx`, `xlw`, `xml`, `xpm`, `zabw`
+    `123`, `602`, `abw`, `bib`, `bmp`, `cdr`, `cgm`, `cmx`, `csv`, `cwk`, `dbf`, `dif`, `doc`, `docm`,
+    `docx`, `dot`, `dotm`, `dotx`, `dxf`, `emf`, `eps`, `epub`, `fodg`, `fodp`, `fods`, `fodt`, `fopd`,
+    `gif`, `htm`, `html`, `hwp`, `jpeg`, `jpg`, `key`, `ltx`, `lwp`, `mcw`, `met`, `mml`, `mw`, `numbers`,
+    `odd`, `odg`, `odm`, `odp`, `ods`, `odt`, `otg`, `oth`, `otp`, `ots`, `ott`, `pages`, `pbm`, `pcd`,
+    `pct`, `pcx`, `pdb`, `pdf`, `pgm`, `png`, `pot`, `potm`, `potx`, `ppm`, `pps`, `ppt`, `pptm`, `pptx`,
+    `psd`, `psw`, `pub`, `pwp`, `pxl`, `ras`, `rtf`, `sda`, `sdc`, `sdd`, `sdp`, `sdw`, `sgl`, `slk`,
+    `smf`, `stc`, `std`, `sti`, `stw`, `svg`, `svm`, `swf`, `sxc`, `sxd`, `sxg`, `sxi`, `sxm`, `sxw`,
+    `tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
+    `wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
+    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
 6. [Merge Builder](./docs/pdf/merge-builder.md)
 7. [Convert Builder](./docs/pdf/convert-builder.md)
 8. [Split Builder](./docs/pdf/split-builder.md)
@@ -271,35 +272,39 @@ MIT License (MIT): see the [License File](LICENSE) for more details.
 ## FAQ
 
 <details>
-   <summary>My PDF / Screenshot is blank but I have no errors !</summary>
-   It may be because Gotenberg is trying to access an invalid URL (when using the `->url()` or `->route()` modes).
-   For example if Gotenberg tries to access a page on `https://localhost:8001` but the SSL is a local provided one. Then Chromium won't be able to authorize access to the website.
-   To fix this you can update your Gotenberg docker service as followed :
+    <summary>My PDF / Screenshot is blank but I have no errors!</summary>
+    It may be because Gotenberg is trying to access an invalid URL (when using the
+    `->url()` or `->route()` modes).
+    For example if Gotenberg tries to access a page on `https://localhost:8001` but
+    the SSL is a local provided one. Then Chromium won't be able to authorize access
+    to the website. To fix this you can update your Gotenberg Docker service as followed:
 
-   ```diff
-   --- a/compose.yaml
-   +++ b/compose.yaml
-   @@ -1,6 +1,9 @@
+    ```diff
+    --- a/compose.yaml
+    +++ b/compose.yaml
+    @@ -1,6 +1,9 @@
     services:
-      gotenberg:
-        image: 'gotenberg/gotenberg:8'
-   +    command:
-   +      - 'gotenberg'
-   +      - '--chromium-ignore-certificate-errors'
-   ```
+         gotenberg:
+             image: 'gotenberg/gotenberg:8'
+    +         command:
+    +             - 'gotenberg'
+    +             - '--chromium-ignore-certificate-errors'
+    ```
 
-   It can also be because from Gotenberg <abbr title="Point of View">PoV</abbr> the URL of your Symfony app is not reachable.
-   Let's say you are using [symfony CLI](https://symfony.com/download) to run your project locally with Gotenberg running in Docker.
-   You need to configure the request_context like so :
+    It can also be because from Gotenberg <abbr title="Point of View">PoV</abbr> the 
+    URL of your Symfony app is not reachable.
+    Let's say you are using [symfony CLI](https://symfony.com/download) to run your
+    project locally with Gotenberg running in Docker. You need to configure the 
+    `request_context` like so:
 
-   ```diff
-   --- a/config/packages/gotenberg.yaml
-   +++ b/config/packages/gotenberg.yaml
-   @@ -6,5 +6,5 @@ framework:
-    
+    ```diff
+    --- a/config/packages/gotenberg.yaml
+    +++ b/config/packages/gotenberg.yaml
+    @@ -6,5 +6,5 @@ framework:
+     
     sensiolabs_gotenberg:
         http_client: 'gotenberg.client'
-   +    request_context:
-   +        base_uri: 'http://host.docker.internal:8000' # 8000 is the port Symfony CLI is running my app on.
-   ```
+    +       request_context:
+    +       base_uri: 'http://host.docker.internal:8000' # 8000 is the port Symfony CLI is running my app on.
+    ```
 </details>
