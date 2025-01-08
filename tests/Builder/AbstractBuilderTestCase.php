@@ -10,7 +10,6 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -48,7 +47,7 @@ abstract class AbstractBuilderTestCase extends TestCase
                 return GotenbergAssetRuntime::class === $class ? new GotenbergAssetRuntime() : null;
             }
         });
-        self::$assetBaseDirFormatter = new AssetBaseDirFormatter(new Filesystem(), self::FIXTURE_DIR, self::FIXTURE_DIR);
+        self::$assetBaseDirFormatter = new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR);
     }
 
     protected function setUp(): void

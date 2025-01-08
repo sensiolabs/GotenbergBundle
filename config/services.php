@@ -15,7 +15,6 @@ use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\Filesystem\Filesystem;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -31,13 +30,12 @@ return static function (ContainerConfigurator $container): void {
         ])
         ->alias(GotenbergClientInterface::class, 'sensiolabs_gotenberg.client');
 
-    $services->set('sensiolabs_gotenberg.asset.base_dir_formatter', AssetBaseDirFormatter::class)
+    $services->set('.sensiolabs_gotenberg.asset.base_dir_formatter', AssetBaseDirFormatter::class)
         ->args([
-            service(Filesystem::class),
             param('kernel.project_dir'),
             abstract_arg('assets_directory to assets'),
         ])
-        ->alias(AssetBaseDirFormatter::class, 'sensiolabs_gotenberg.asset.base_dir_formatter')
+        ->alias(AssetBaseDirFormatter::class, '.sensiolabs_gotenberg.asset.base_dir_formatter')
     ;
 
     $services->set('sensiolabs_gotenberg.twig.asset_extension', GotenbergAssetExtension::class)

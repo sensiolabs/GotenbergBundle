@@ -10,7 +10,6 @@ use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Symfony\Component\Filesystem\Filesystem;
 
 #[CoversClass(DefaultBuilderTrait::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
@@ -119,7 +118,6 @@ class DefaultBuilderTraitTest extends TestCase
             public function __construct()
             {
                 $this->asset = new AssetBaseDirFormatter(
-                    new Filesystem(),
                     __DIR__.'/../Fixtures',
                     'files',
                 );
