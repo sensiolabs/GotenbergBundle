@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -386,10 +387,14 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
             throw new \LogicException(\sprintf('Twig is required to use "%s" method. Try to run "composer require symfony/twig-bundle".', __METHOD__));
         }
 
+        $this->twig->getRuntime(GotenbergAssetRuntime::class)->setBuilder($this);
+
         try {
-            $html = $this->twig->render($template, array_merge($context, ['_builder' => $this]));
+            $html = $this->twig->render($template, $context);
         } catch (\Throwable $error) {
             throw new ScreenshotPartRenderingException(\sprintf('Could not render template "%s" into Screenshot part "%s". %s', $template, $screenshotPart->value, $error->getMessage()), previous: $error);
+        } finally {
+            $this->twig->getRuntime(GotenbergAssetRuntime::class)->setBuilder(null);
         }
 
         $this->formFields[$screenshotPart->value] = new DataPart($html, $screenshotPart->value, 'text/html');
