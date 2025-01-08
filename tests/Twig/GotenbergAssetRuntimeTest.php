@@ -14,7 +14,7 @@ class GotenbergAssetRuntimeTest extends TestCase
     public function testGetAssetThrowsPerDefault(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('You need to extend from AbstractChromiumPdfBuilder to use "gotenberg_asset" function.');
+        $this->expectExceptionMessage('The gotenberg_asset function must be used in a Gotenberg context.');
         $runtime = new GotenbergAssetRuntime();
         $runtime->getAssetUrl('foo');
     }
@@ -22,7 +22,7 @@ class GotenbergAssetRuntimeTest extends TestCase
     public function testGetAssetThrowsWhenBuilderIsNotSet(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('You need to extend from AbstractChromiumPdfBuilder to use "gotenberg_asset" function.');
+        $this->expectExceptionMessage('The gotenberg_asset function must be used in a Gotenberg context.');
         $runtime = new GotenbergAssetRuntime();
         $runtime->setBuilder(null);
         $runtime->getAssetUrl('foo');
