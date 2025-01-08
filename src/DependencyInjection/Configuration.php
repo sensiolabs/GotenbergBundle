@@ -321,7 +321,7 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('Invalid value %s')
                     ->end()
                 ->end()
-                ->append($this->addExtraHttpHeaders())
+                ->append($this->addExtraHttpHeadersNode())
                 ->arrayNode('fail_on_http_status_codes')
                     ->info('Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium')
                     ->defaultValue([499, 599])
@@ -346,8 +346,8 @@ class Configuration implements ConfigurationInterface
                     ->info('Do not wait for Chromium network to be idle. - default false. https://gotenberg.dev/docs/routes#performance-mode-chromium')
                     ->defaultNull()
                 ->end()
-                ->append($this->addPdfMetadata())
-                ->append($this->addDownloadFrom())
+                ->append($this->addPdfMetadataNode())
+                ->append($this->addDownloadFromNode())
             ->end()
             ->validate()
                 ->ifTrue(function ($v): bool {
@@ -357,7 +357,7 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        $this->addPdfFormat($parent);
+        $this->addPdfFormatNode($parent);
         $this->addSplitConfigurationNode($parent);
     }
 
@@ -456,7 +456,7 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('Invalid value %s')
                     ->end()
                 ->end()
-                ->append($this->addExtraHttpHeaders())
+                ->append($this->addExtraHttpHeadersNode())
                 ->arrayNode('fail_on_http_status_codes')
                     ->info('Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium')
                     ->defaultValue([499, 599])
@@ -481,7 +481,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Do not wait for Chromium network to be idle. - default false. https://gotenberg.dev/docs/routes#performance-mode-chromium')
                     ->defaultNull()
                 ->end()
-                ->append($this->addDownloadFrom())
+                ->append($this->addDownloadFromNode())
             ->end()
         ;
     }
@@ -523,7 +523,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Merge alphanumerically the resulting PDFs. - default false. https://gotenberg.dev/docs/routes#merge-libreoffice')
                     ->defaultNull()
                 ->end()
-                ->append($this->addPdfMetadata())
+                ->append($this->addPdfMetadataNode())
                 ->booleanNode('allow_duplicate_field_names')
                     ->info('Specify whether multiple form fields exported are allowed to have the same field name. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
                     ->defaultNull()
@@ -595,11 +595,11 @@ class Configuration implements ConfigurationInterface
                     ->values(array_map(static fn (ImageResolutionDPI $case): int => $case->value, ImageResolutionDPI::cases()))
                     ->defaultNull()
                 ->end()
-                ->append($this->addDownloadFrom())
+                ->append($this->addDownloadFromNode())
             ->end()
         ;
 
-        $this->addPdfFormat($treeBuilder->getRootNode());
+        $this->addPdfFormatNode($treeBuilder->getRootNode());
         $this->addSplitConfigurationNode($treeBuilder->getRootNode());
 
         return $treeBuilder->getRootNode();
@@ -608,9 +608,9 @@ class Configuration implements ConfigurationInterface
     private function addPdfConvertNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('convert');
-        $this->addPdfFormat($treeBuilder->getRootNode());
+        $this->addPdfFormatNode($treeBuilder->getRootNode());
         $treeBuilder->getRootNode()
-            ->append($this->addDownloadFrom())
+            ->append($this->addDownloadFromNode())
             ->end();
 
         return $treeBuilder->getRootNode();
@@ -619,10 +619,10 @@ class Configuration implements ConfigurationInterface
     private function addPdfMergeNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('merge');
-        $this->addPdfFormat($treeBuilder->getRootNode());
+        $this->addPdfFormatNode($treeBuilder->getRootNode());
         $treeBuilder->getRootNode()
-            ->append($this->addPdfMetadata())
-            ->append($this->addDownloadFrom())
+            ->append($this->addPdfMetadataNode())
+            ->append($this->addDownloadFromNode())
         ->end();
 
         return $treeBuilder->getRootNode();
@@ -636,7 +636,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder->getRootNode();
     }
 
-    private function addPdfFormat(ArrayNodeDefinition $parent): void
+    private function addPdfFormatNode(ArrayNodeDefinition $parent): void
     {
         $parent
             ->addDefaultsIfNotSet()
@@ -654,7 +654,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addPdfMetadata(): NodeDefinition
+    private function addPdfMetadataNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('metadata');
 
@@ -696,30 +696,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->append($this->addWebhookConfigurationNode('success'))
                         ->append($this->addWebhookConfigurationNode('error'))
-                        ->arrayNode('extra_http_headers')
-                            ->info('HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook')
-                            ->useAttributeAsKey('name')
-                            ->arrayPrototype()
-                                ->children()
-                                    ->scalarNode('name')
-                                        ->validate()
-                                            ->ifTrue(static function ($option) {
-                                                return !\is_string($option);
-                                            })
-                                            ->thenInvalid('Invalid header name %s')
-                                        ->end()
-                                    ->end()
-                                    ->scalarNode('value')
-                                        ->validate()
-                                            ->ifTrue(static function ($option) {
-                                                return !\is_string($option);
-                                            })
-                                            ->thenInvalid('Invalid header value %s')
-                                        ->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
+                        ->append($this->addExtraHttpHeadersNode())
                     ->end()
                     ->validate()
                         ->ifTrue(static function (mixed $option): bool {
@@ -748,33 +725,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->append($this->addWebhookConfigurationNode('success'))
                         ->append($this->addWebhookConfigurationNode('error'))
-                        ->arrayNode('extra_http_headers')
-                            ->info('HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook')
-                            ->example([
-                                ['name' => 'X-Custom-Header', 'value' => 'custom-header-value'],
-                            ])
-                            ->useAttributeAsKey('name')
-                            ->arrayPrototype()
-                                ->children()
-                                    ->scalarNode('name')
-                                        ->validate()
-                                            ->ifTrue(static function ($option) {
-                                                return !\is_string($option);
-                                            })
-                                            ->thenInvalid('Invalid header name %s')
-                                        ->end()
-                                    ->end()
-                                    ->scalarNode('value')
-                                        ->validate()
-                                            ->ifTrue(static function ($option) {
-                                                return !\is_string($option);
-                                            })
-                                            ->thenInvalid('Invalid header value %s')
-                                        ->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
+                        ->append($this->addExtraHttpHeadersNode())
                     ->end()
                     ->validate()
                         ->ifTrue(static function ($option): bool {
@@ -826,7 +777,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addDownloadFrom(): NodeDefinition
+    private function addDownloadFromNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('download_from');
 
@@ -864,33 +815,16 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addExtraHttpHeaders(): NodeDefinition
+    private function addExtraHttpHeadersNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('extra_http_headers');
 
         return $treeBuilder->getRootNode()
             ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
             ->defaultValue([])
+            ->normalizeKeys(false)
             ->useAttributeAsKey('name')
-            ->arrayPrototype()
-                ->children()
-                    ->scalarNode('name')
-                        ->validate()
-                            ->ifTrue(static function ($option): bool {
-                                return !\is_string($option);
-                            })
-                            ->thenInvalid('Invalid header name %s')
-                        ->end()
-                    ->end()
-                    ->scalarNode('value')
-                        ->validate()
-                            ->ifTrue(static function ($option): bool {
-                                return !\is_string($option);
-                            })
-                            ->thenInvalid('Invalid header value %s')
-                        ->end()
-                    ->end()
-                ->end()
+            ->variablePrototype()
             ->end()
         ;
     }

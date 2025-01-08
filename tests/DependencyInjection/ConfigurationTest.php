@@ -60,7 +60,24 @@ final class ConfigurationTest extends TestCase
         );
     }
 
-    public function testWithExtraHeadersConfiguration(): void
+    /**
+     * @return iterable<string, list<array<array-key, string>|list<array{name: array-key, value: string}>>>
+     */
+    public static function provideExtraHeaderConfiguration(): iterable
+    {
+        yield 'with variable Prototype configuration' => [
+            ['MyHeader' => 'MyValue', 'User-Agent' => 'MyAgent'],
+        ];
+        yield 'with attribute as key configuration' => [
+            [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyAgent']],
+        ];
+    }
+
+    /**
+     * @param list<array<array-key, string>|list<array{name: array-key, value: string}>> $configuration
+     */
+    #[DataProvider('provideExtraHeaderConfiguration')]
+    public function testWithExtraHeadersConfiguration(array $configuration): void
     {
         $processor = new Processor();
         /** @var array{'default_options': array<string, mixed>} $config */
@@ -69,7 +86,7 @@ final class ConfigurationTest extends TestCase
                 'http_client' => 'http_client',
                 'default_options' => [
                     'pdf' => [
-                        'html' => ['extra_http_headers' => [['name' => 'MyHeader', 'value' => 'MyValue'], ['name' => 'User-Agent', 'value' => 'MyValue']]],
+                        'html' => ['extra_http_headers' => $configuration],
                     ],
                 ],
             ],
@@ -77,7 +94,7 @@ final class ConfigurationTest extends TestCase
 
         $config = $this->cleanOptions($config['default_options']['pdf']['html']);
         self::assertEquals([
-            'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+            'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyAgent'],
             'fail_on_http_status_codes' => ['499', '599'],
         ], $config);
     }
