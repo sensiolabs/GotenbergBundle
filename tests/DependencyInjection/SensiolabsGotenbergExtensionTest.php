@@ -426,6 +426,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'pdf_format' => 'PDF/A-2b',
                 'download_from' => [],
             ],
+            'split' => [],
         ], $dataCollectorOptions);
     }
 

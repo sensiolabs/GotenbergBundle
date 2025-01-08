@@ -231,6 +231,15 @@ sensiolabs_gotenberg:
                 # Enable PDF for Universal Access for optimal accessibility - default false.
                 pdf_universal_access: null
 
+                # Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-chromium
+                split_mode: null
+
+                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-chromium
+                split_span: null
+
+                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
+                split_unify: null
+
                 # Webhook configuration name or definition.
                 webhook:
 
@@ -418,6 +427,15 @@ sensiolabs_gotenberg:
 
                 # Enable PDF for Universal Access for optimal accessibility - default false.
                 pdf_universal_access: null
+
+                # Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-chromium
+                split_mode: null
+
+                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-chromium
+                split_span: null
+
+                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
+                split_unify: null
 
                 # Webhook configuration name or definition.
                 webhook:
@@ -607,6 +625,15 @@ sensiolabs_gotenberg:
                 # Enable PDF for Universal Access for optimal accessibility - default false.
                 pdf_universal_access: null
 
+                # Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-chromium
+                split_mode: null
+
+                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-chromium
+                split_span: null
+
+                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
+                split_unify: null
+
                 # Webhook configuration name or definition.
                 webhook:
 
@@ -755,6 +782,15 @@ sensiolabs_gotenberg:
 
                 # Enable PDF for Universal Access for optimal accessibility - default false.
                 pdf_universal_access: null
+                
+                # Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
+                split_mode: null
+                
+                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
+                split_span: null
+                
+                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-libreoffice
+                split_unify: null
             merge:
 
                 # Convert PDF into the given PDF/A format - default None.
@@ -810,6 +846,15 @@ sensiolabs_gotenberg:
                             name:
                                 name:                 ~
                                 value:                ~
+            split:
+                # Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
+                split_mode: null
+
+                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
+                split_span: null
+
+                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-libreoffice
+                split_unify: null
         screenshot:
             html:
 

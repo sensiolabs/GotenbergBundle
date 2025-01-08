@@ -242,7 +242,8 @@ class YourController
    `xltx`, `xlw`, `xml`, `xpm`, `zabw`
 6. [Merge Builder](./docs/pdf/merge-builder.md)
 7. [Convert Builder](./docs/pdf/convert-builder.md)
-8. [PDF customization](./docs/pdf/customization.md) (available for every builder except LibreOffice and Merge)
+8. [Split Builder](./docs/pdf/split-builder.md)
+9. [PDF customization](./docs/pdf/customization.md) (available for every builder except LibreOffice, Merge and Split)
 
 #### Screenshot
 

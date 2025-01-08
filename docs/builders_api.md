@@ -8,6 +8,7 @@
 * [LibreOfficePdfBuilder](./pdf/builders_api/LibreOfficePdfBuilder.md)
 * [MergePdfBuilder](./pdf/builders_api/MergePdfBuilder.md)
 * [ConvertPdfBuilder](./pdf/builders_api/ConvertPdfBuilder.md)
+* [SplitPdfBuilder](./pdf/builders_api/SplitPdfBuilder.md)
 
 ## Screenshot
 

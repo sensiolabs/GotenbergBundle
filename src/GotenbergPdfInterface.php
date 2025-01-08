@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
 interface GotenbergPdfInterface
@@ -50,4 +51,9 @@ interface GotenbergPdfInterface
      * @return ConvertPdfBuilder
      */
     public function convert(): PdfBuilderInterface;
+
+    /**
+     * @return SplitPdfBuilder
+     */
+    public function split(): PdfBuilderInterface;
 }
