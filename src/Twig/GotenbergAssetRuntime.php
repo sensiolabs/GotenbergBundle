@@ -27,7 +27,7 @@ final class GotenbergAssetRuntime
     public function getAssetUrl(string $path): string
     {
         if (null === $this->builder) {
-            throw new \LogicException('You need to extend from AbstractChromiumPdfBuilder to use "gotenberg_asset" function.');
+            throw new \LogicException('The gotenberg_asset function must be used in a Gotenberg context.');
         }
 
         $this->builder->addAsset($path);
