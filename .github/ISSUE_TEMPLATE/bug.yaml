@@ -35,7 +35,7 @@ body:
     id: gotenberg_bundle_version
     attributes:
       label: Gotenberg Bundle Version
-      description: Specify the version of the Gotenberg bundle you are using (if applicable).
+      description: Specify the version of the Gotenberg bundle you are using.
       placeholder: ex. 0.3.1
     validations:
       required: false
