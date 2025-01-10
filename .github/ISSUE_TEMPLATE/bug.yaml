@@ -11,7 +11,7 @@ body:
       description: Provide a minimal reproducible example, if possible. This helps us understand and reproduce the issue. You can check out the HttpClient profiler panel to copy the curl command if needed.
       placeholder: ex. A curl command or small script
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: description
