@@ -15,10 +15,10 @@ Assuming you have the following client configured.
 # app/config/framework.yaml
 
 framework:
-http_client:
-scoped_clients:
-gotenberg.client:
-base_uri: 'http://localhost:3000'
+    http_client:
+        scoped_clients:
+            gotenberg.client:
+                base_uri: 'http://localhost:3000'
 ```
 
 </details>
