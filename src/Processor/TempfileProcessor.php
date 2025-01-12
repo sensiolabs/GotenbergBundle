@@ -3,8 +3,6 @@
 namespace Sensiolabs\GotenbergBundle\Processor;
 
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
-use function fwrite;
-use function tmpfile;
 
 /**
  * @implements ProcessorInterface<resource>

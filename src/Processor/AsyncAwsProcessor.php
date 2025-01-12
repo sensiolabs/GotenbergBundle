@@ -6,10 +6,9 @@ use AsyncAws\S3\Result\CompleteMultipartUploadOutput;
 use AsyncAws\S3\S3Client;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
-use function uniqid;
 
 /**
- * TODO : Might be worth adding "MultiPart" to the name as not all services supports the multi part upload
+ * TODO : Might be worth adding "MultiPart" to the name as not all services supports the multi part upload.
  *
  * @implements ProcessorInterface<CompleteMultipartUploadOutput>
  */
@@ -24,7 +23,7 @@ final class AsyncAwsProcessor implements ProcessorInterface
     ) {
     }
 
-    public function __invoke(?string $fileName): \Generator
+    public function __invoke(string|null $fileName): \Generator
     {
         if (null === $fileName) {
             $fileName = uniqid('gotenberg_', true);
@@ -97,13 +96,14 @@ final class AsyncAwsProcessor implements ProcessorInterface
             unset($currentChunk, $upload);
 
             $this->logger?->debug('{processor}: completing multi part upload of "{file}".', ['processor' => self::class, 'file' => $fileName]);
+
             return $this->s3Client->completeMultipartUpload([
                 'UploadId' => $uploadId,
                 'Bucket' => $this->bucketName,
                 'Key' => $fileName,
                 'MultipartUpload' => [
                     'Parts' => $uploads,
-                ]
+                ],
             ]);
         } catch (\Throwable $e) {
             $this->s3Client->abortMultipartUpload([

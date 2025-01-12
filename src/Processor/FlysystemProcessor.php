@@ -5,7 +5,6 @@ namespace Sensiolabs\GotenbergBundle\Processor;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
-use function uniqid;
 
 /**
  * @implements ProcessorInterface<(Closure(): string)>
@@ -18,7 +17,7 @@ final class FlysystemProcessor implements ProcessorInterface
     ) {
     }
 
-    public function __invoke(?string $fileName): \Generator
+    public function __invoke(string|null $fileName): \Generator
     {
         if (null === $fileName) {
             $fileName = uniqid('gotenberg_', true);
@@ -29,7 +28,7 @@ final class FlysystemProcessor implements ProcessorInterface
         do {
             $chunk = yield;
             $tmpfileProcessor->send($chunk);
-        } while(!$chunk->isLast());
+        } while (!$chunk->isLast());
 
         $tmpfile = $tmpfileProcessor->getReturn();
 
