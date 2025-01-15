@@ -3,14 +3,16 @@
 namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\MergePdfBuilder;
+//use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\ConvertPdfBuilder;
+//use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\HtmlPdfBuilder;
+//use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\LibreOfficePdfBuilder;
+//use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\MarkdownPdfBuilder;
+//use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\MergePdfBuilder;
+//use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\SplitPdfBuilder;
+//use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\UrlPdfBuilder;
 
 final class GotenbergPdf implements GotenbergPdfInterface
 {
@@ -19,7 +21,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     ) {
     }
 
-    public function get(string $builder): PdfBuilderInterface
+    public function get(string $builder): BuilderInterface
     {
         return $this->container->get($builder);
     }
@@ -38,43 +40,43 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   PdfBuilderInterface
      * )
      */
-    private function getInternal(string $key): PdfBuilderInterface
+    private function getInternal(string $key): BuilderInterface
     {
         return $this->get(".sensiolabs_gotenberg.pdf_builder.{$key}");
     }
 
-    public function html(): PdfBuilderInterface
+    public function html(): BuilderInterface
     {
         return $this->getInternal('html');
     }
 
-    public function url(): PdfBuilderInterface
-    {
-        return $this->getInternal('url');
-    }
+//    public function url(): PdfBuilderInterface
+//    {
+//        return $this->getInternal('url');
+//    }
+//
+//    public function office(): PdfBuilderInterface
+//    {
+//        return $this->getInternal('office');
+//    }
+//
+//    public function markdown(): PdfBuilderInterface
+//    {
+//        return $this->getInternal('markdown');
+//    }
 
-    public function office(): PdfBuilderInterface
-    {
-        return $this->getInternal('office');
-    }
-
-    public function markdown(): PdfBuilderInterface
-    {
-        return $this->getInternal('markdown');
-    }
-
-    public function merge(): PdfBuilderInterface
+    public function merge(): BuilderInterface
     {
         return $this->getInternal('merge');
     }
 
-    public function convert(): PdfBuilderInterface
-    {
-        return $this->getInternal('convert');
-    }
-
-    public function split(): PdfBuilderInterface
-    {
-        return $this->getInternal('split');
-    }
+//    public function convert(): PdfBuilderInterface
+//    {
+//        return $this->getInternal('convert');
+//    }
+//
+//    public function split(): PdfBuilderInterface
+//    {
+//        return $this->getInternal('split');
+//    }
 }

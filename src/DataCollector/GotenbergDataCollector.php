@@ -2,8 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\DataCollector;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
+use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
@@ -20,7 +21,7 @@ use Symfony\Component\VarDumper\Cloner\Data;
 final class GotenbergDataCollector extends DataCollector implements LateDataCollectorInterface
 {
     /**
-     * @param ServiceLocator<PdfBuilderInterface|ScreenshotBuilderInterface> $builders
+     * @param ServiceLocator<TraceableBuilder|PdfBuilderInterface|ScreenshotBuilderInterface> $builders
      * @param array<mixed>                                                   $defaultOptions
      */
     public function __construct(
@@ -42,7 +43,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
         foreach ($this->builders->getProvidedServices() as $id => $type) {
             $builder = $this->builders->get($id);
 
-            if ($builder instanceof TraceablePdfBuilder || $builder instanceof TraceableScreenshotBuilder) {
+            if ($builder instanceof TraceableBuilder) {
                 $builder = $builder->getInner();
             }
 
@@ -71,7 +72,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     }
 
     /**
-     * @param list<array{string, TraceablePdfBuilder|TraceableScreenshotBuilder}> $builders
+     * @param list<array{string, TraceableBuilder}> $builders
      */
     private function lateCollectFiles(array $builders, string $type): void
     {
@@ -84,7 +85,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                     'builderClass' => $builder->getInner()::class,
                     'configuration' => [
                         'options' => $this->cloneVar([]),
-                        'default_options' => $this->cloneVar($this->defaultOptions[$id] ?? []),
+                        'default_options' => $this->cloneVar($this->defaultOptions[$type][$id] ?? []),
                     ],
                     'type' => $type,
                     'request_type' => $request['type'],

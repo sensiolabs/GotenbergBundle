@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('sensiolabs_gotenberg.pdf'),
             service('sensiolabs_gotenberg.screenshot'),
-            tagged_locator('sensiolabs_gotenberg.pdf_builder'),
+            tagged_locator('sensiolabs_gotenberg.builder'),
             abstract_arg('All default options will be set through the configuration.'),
         ])
         ->tag('data_collector', ['template' => '@SensiolabsGotenberg/Collector/sensiolabs_gotenberg.html.twig', 'id' => 'sensiolabs_gotenberg'])
