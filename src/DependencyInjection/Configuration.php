@@ -756,7 +756,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('route')
                     ->info('Route configuration.')
-                    ->example(['my_route', ['param1' => 'value1', 'param2' => 'value2']])
+                    ->example([['my_route', ['param1' => 'value1', 'param2' => 'value2']]])
                     ->beforeNormalization()
                         ->ifArray()
                             ->then(function (array $v): array {
