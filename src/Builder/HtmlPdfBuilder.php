@@ -4,8 +4,9 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
+use Sensiolabs\GotenbergBundle\Client\Payload;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
-use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
@@ -25,22 +26,12 @@ class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
         $this->configureWebhook($bodyOptionsResolver, $headersOptionsResolver);
     }
 
-    /**
-     * @param string               $template #Template
-     * @param array<string, mixed> $context
-     *
-     * @throws PdfPartRenderingException if the template could not be rendered
-     */
-    public function content(string $template, array $context = []): self
+    protected function validatePayload(Payload $payload): void
     {
-        return $this->withRenderedPart(Part::Body, $template, $context);
-    }
+        $body = $payload->getPayloadBody();
 
-    /**
-     * The HTML file to convert into PDF.
-     */
-    public function contentFile(string $path): self
-    {
-        return $this->withFilePart(Part::Body, $path);
+        if (!\array_key_exists(Part::Body->value, $body) && [] === ($body['downloadFrom'] ?? [])) {
+            throw new MissingRequiredFieldException('Content is required');
+        }
     }
 }

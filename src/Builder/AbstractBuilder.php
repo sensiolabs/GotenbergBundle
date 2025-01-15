@@ -5,11 +5,10 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Client\BodyBag;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Client\HeadersBag;
-use Sensiolabs\GotenbergBundle\Exception\ClientException;
+use Sensiolabs\GotenbergBundle\Client\Payload;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -67,7 +66,10 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generate(): GotenbergFileResult
     {
-        $response = $this->client->call($this->getEndpoint(), $this->bodyBag, $this->headersBag);
+        $payload = new Payload($this->bodyBag, $this->headersBag);
+        $this->validatePayload($payload);
+
+        $response = $this->client->call($this->getEndpoint(), $payload);
 
         return new GotenbergFileResult(
             $response,
@@ -79,7 +81,10 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generateAsync(): GotenbergAsyncResult
     {
-        $response = $this->client->call($this->getEndpoint(), $this->bodyBag, $this->headersBag);
+        $payload = new Payload($this->bodyBag, $this->headersBag);
+        $this->validatePayload($payload);
+
+        $response = $this->client->call($this->getEndpoint(), $payload);
 
         return new GotenbergAsyncResult(
             $response,
@@ -104,5 +109,9 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     protected function getHeadersBag(): HeadersBag
     {
         return $this->headersBag;
+    }
+
+    protected function validatePayload(Payload $payload): void
+    {
     }
 }

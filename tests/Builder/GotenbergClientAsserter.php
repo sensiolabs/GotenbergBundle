@@ -2,9 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\HeadersBag;
+use Sensiolabs\GotenbergBundle\Client\Payload;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\Mime\Header\HeaderInterface;
 use Symfony\Component\Mime\Part\AbstractPart;
@@ -27,12 +26,12 @@ class GotenbergClientAsserter implements GotenbergClientInterface
         $this->httpClient = new MockHttpClient();
     }
 
-    public function call(string $endpoint, BodyBag $bodyBag, HeadersBag $headersBag): ResponseInterface
+    public function call(string $endpoint, Payload $payload): ResponseInterface
     {
         try {
             $this->endpoint = $endpoint;
-            $this->body = $bodyBag->resolve()->getParts();
-            $this->headers = $headersBag->resolve()->all();
+            $this->body = $payload->getFormData()->getParts();
+            $this->headers = $payload->getHeaders()->all();
         } catch (\Throwable $t) {
             $this->throwable = $t;
         }

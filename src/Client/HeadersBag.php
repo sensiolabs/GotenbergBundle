@@ -37,10 +37,7 @@ class HeadersBag
         return $this;
     }
 
-    /**
-     * Compiles the values into Headers to send to the HTTP client.
-     */
-    public function resolve(): Headers
+    public function resolve(): array
     {
         try {
             $data = $this->resolver->resolve($this->data);
@@ -48,14 +45,6 @@ class HeadersBag
             throw new InvalidBuilderConfiguration($e->getMessage(), 0, $e);
         }
 
-        $headers = new Headers();
-        foreach ($data as $name => $value) {
-            if (null === $value) {
-                continue;
-            }
-            $headers->addHeader($name, $value);
-        }
-
-        return $headers;
+        return $data;
     }
 }

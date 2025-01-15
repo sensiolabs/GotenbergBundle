@@ -3,9 +3,13 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
+use Sensiolabs\GotenbergBundle\Client\Payload;
+use Sensiolabs\GotenbergBundle\Enumeration\Part;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -14,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MergePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
+    use DownloadFromTrait { DownloadFromTrait::configure as configureDownloadFrom; }
     use MetadataTrait { MetadataTrait::configure as configureMetadata; }
     use PdfFormatTrait { PdfFormatTrait::configure as configurePdfFormat; }
 
@@ -33,6 +38,15 @@ class MergePdfBuilder extends AbstractBuilder
             ->info('Add PDF files to merge')
             ->allowedValues(ValidatorFactory::filesExtension())
         ;
+    }
+
+    protected function validatePayload(Payload $payload): void
+    {
+        $body = $payload->getPayloadBody();
+
+        if ([] === ($body['files'] ?? []) && [] === ($body['downloadFrom'] ?? [])) {
+            throw new MissingRequiredFieldException('At least one PDF file is required');
+        }
     }
 
     /**

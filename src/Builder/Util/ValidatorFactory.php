@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Util;
 
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
@@ -48,6 +47,20 @@ class ValidatorFactory
                 $ext = $file->getExtension();
                 if ('pdf' !== $ext) {
                     throw new InvalidOptionsException(\sprintf('The option "files" expects files with a "pdf" extension, but "%s" has a "%s" extension.', $file, $ext));
+                }
+            }
+
+            return true;
+        };
+    }
+
+    public static function download(): \Closure
+    {
+        return static function (array $downloadFrom) {
+            /** @var list<array{url: string, extraHttpHeaders?: array<string, string>}> $downloadFrom */
+            foreach ($downloadFrom as $file) {
+                if (!\array_key_exists('url', $file)) {
+                    return false;
                 }
             }
 

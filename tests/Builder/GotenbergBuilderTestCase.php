@@ -5,18 +5,11 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\HeadersBag;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpClient\MockHttpClient;
-use Symfony\Component\Mime\Header\HeaderInterface;
-use Symfony\Component\Mime\Part\AbstractPart;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
 use Symfony\Component\Mime\Part\TextPart;
-use Symfony\Contracts\HttpClient\ResponseInterface;
-use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 /**
  * @template T of BuilderInterface
@@ -104,5 +97,21 @@ abstract class GotenbergBuilderTestCase extends TestCase
     protected function assertGotenbergException(string $message): void
     {
         $this->assertSame($message, $this->client->getThrowable()->getMessage());
+    }
+
+    protected function assertContentFile(string $filename, string $contentType = 'text/html', string|null $expectedContent = null): void
+    {
+        foreach ($this->client->getBody() as $part) {
+            if (!$part instanceof DataPart || $part->getFilename() !== $filename) {
+                continue;
+            }
+
+            self::assertSame($contentType, $part->getContentType());
+            if (null !== $expectedContent) {
+                self::assertSame($expectedContent, $part->getBody());
+            }
+
+            iterator_to_array($part->bodyToIterable());
+        }
     }
 }

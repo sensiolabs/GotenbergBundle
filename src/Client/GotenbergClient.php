@@ -15,10 +15,10 @@ final class GotenbergClient implements GotenbergClientInterface
     ) {
     }
 
-    public function call(string $endpoint, BodyBag $bodyBag, HeadersBag $headersBag): ResponseInterface
+    public function call(string $endpoint, Payload $payload): ResponseInterface
     {
-        $headers = $headersBag->resolve();
-        $formDataPart = $bodyBag->resolve();
+        $headers = $payload->getHeaders();
+        $formDataPart = $payload->getFormData();
         foreach ($formDataPart->getPreparedHeaders()->all() as $header) {
             $headers->add($header);
         }

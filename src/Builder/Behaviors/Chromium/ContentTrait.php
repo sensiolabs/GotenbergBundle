@@ -11,10 +11,7 @@ use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * See https://gotenberg.dev/docs/routes#header-footer-chromium.
- */
-trait HeaderFooterTrait
+trait ContentTrait
 {
     use AssetBaseDirFormatterAwareTrait;
     use TwigAwareTrait;
@@ -26,7 +23,7 @@ trait HeaderFooterTrait
         foreach (Part::cases() as $part) {
             $bodyOptionsResolver
                 ->define($part->value)
-                ->allowedTypes(RenderedPart::class, 'string')
+                ->allowedTypes(RenderedPart::class, \SplFileInfo::class)
             ;
         }
     }
@@ -36,6 +33,27 @@ trait HeaderFooterTrait
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
+     */
+    public function content(string $template, array $context = []): self
+    {
+        return $this->withRenderedPart(Part::Body, $template, $context);
+    }
+
+    /**
+     * The HTML file to convert into PDF.
+     */
+    public function contentFile(string $path): self
+    {
+        return $this->withFilePart(Part::Body, $path);
+    }
+
+    /**
+     * @param string               $template #Template
+     * @param array<string, mixed> $context
+     *
+     * @throws PdfPartRenderingException if the template could not be rendered
+     *
+     * See https://gotenberg.dev/docs/routes#header-footer-chromium.
      */
     public function header(string $template, array $context = []): static
     {
@@ -47,6 +65,8 @@ trait HeaderFooterTrait
      * @param array<string, mixed> $context
      *
      * @throws PdfPartRenderingException if the template could not be rendered
+     *
+     * See https://gotenberg.dev/docs/routes#header-footer-chromium.
      */
     public function footer(string $template, array $context = []): static
     {
