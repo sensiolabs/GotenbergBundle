@@ -36,6 +36,9 @@ class BodyBag
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function resolve(): array
     {
         try {

@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection\CompilerPass;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
+use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -67,7 +67,7 @@ class GotenbergPassTest extends TestCase
 
         $traceablePdfTaggedService = $container->getDefinition('.debug.service.pdf_tagged');
         self::assertNotNull($traceablePdfTaggedService);
-        self::assertSame(TraceablePdfBuilder::class, $traceablePdfTaggedService->getClass());
+        self::assertSame(TraceableGotenbergPdf::class, $traceablePdfTaggedService->getClass());
 
         $traceablePdfTaggedServiceArguments = $traceablePdfTaggedService->getArguments();
         self::assertCount(2, $traceablePdfTaggedServiceArguments);

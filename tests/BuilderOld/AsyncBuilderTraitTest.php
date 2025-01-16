@@ -1,13 +1,13 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Tests\Builder;
+namespace BuilderOld;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderTrait;
 use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
+use Sensiolabs\GotenbergBundle\BuilderOld\AsyncBuilderTrait;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\AsyncBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;

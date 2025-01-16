@@ -16,6 +16,8 @@ use Symfony\Component\Mime\Part\TextPart;
  */
 abstract class GotenbergBuilderTestCase extends TestCase
 {
+    protected const FIXTURE_DIR = __DIR__.'/../Fixtures';
+
     protected GotenbergClientAsserter $client;
     protected ContainerInterface $dependencies;
     /** @var T */

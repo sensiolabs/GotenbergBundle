@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug\Builder;
 
-use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAsyncInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderFileInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
@@ -57,8 +56,8 @@ final class TraceableBuilder implements BuilderFileInterface, BuilderAsyncInterf
 
     public function generateAsync(): GotenbergAsyncResult
     {
-        if (!$this->inner instanceof AsyncBuilderInterface) {
-            throw new \LogicException(\sprintf('The inner builder of %s must implement %s.', self::class, AsyncBuilderInterface::class));
+        if (!$this->inner instanceof BuilderAsyncInterface) {
+            throw new \LogicException(\sprintf('The inner builder of %s must implement %s.', self::class, BuilderAsyncInterface::class));
         }
 
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;

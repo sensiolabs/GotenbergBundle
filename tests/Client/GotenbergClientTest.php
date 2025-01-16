@@ -5,14 +5,16 @@ namespace Sensiolabs\GotenbergBundle\Tests\Client;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Sensiolabs\GotenbergBundle\Client\BodyBag;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\Client\GotenbergFileResponse;
+use Sensiolabs\GotenbergBundle\Client\HeadersBag;
+use Sensiolabs\GotenbergBundle\Client\Payload;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversClass(GotenbergClient::class)]
-#[UsesClass(GotenbergFileResponse::class)]
+#[UsesClass(Payload::class)]
 final class GotenbergClientTest extends TestCase
 {
     public function testCallIsCorrectlyFormatted(): void
@@ -30,19 +32,32 @@ final class GotenbergClientTest extends TestCase
         ]);
 
         $mockClient = new MockHttpClient([$mockResponse], baseUri: 'http://localhost:3000');
+        $bodyBag = $this->createMock(BodyBag::class);
+        $bodyBag
+            ->expects($this->once())
+            ->method('resolve')
+            ->willReturn(['url' => 'https://google.com'])
+        ;
 
-        $multipartFormData = [
-            [
-                'url' => 'https://google.com',
-            ],
-        ];
+        $headersBag = $this->createMock(HeadersBag::class);
+        $headersBag
+            ->expects($this->once())
+            ->method('resolve')
+            ->willReturn(['SomeHeader' => 'SomeValue'])
+        ;
+
+        $payload = new Payload(
+            $bodyBag,
+            $headersBag,
+        );
 
         $gotenbergClient = new GotenbergClient($mockClient);
-        $response = $gotenbergClient->call('/some/url', $multipartFormData, ['SomeHeader' => 'SomeValue']);
+        $response = $gotenbergClient->call('/some/url', $payload);
 
         self::assertSame(1, $mockClient->getRequestsCount());
         self::assertSame('POST', $mockResponse->getRequestMethod());
         self::assertSame('http://localhost:3000/some/url', $mockResponse->getRequestUrl());
+
 
         $requestHeaders = array_reduce($mockResponse->getRequestOptions()['headers'], static function (array $carry, string $header): array {
             [$key, $value] = explode(': ', $header, 2);
@@ -56,24 +71,16 @@ final class GotenbergClientTest extends TestCase
         self::assertArrayHasKey('SomeHeader', $requestHeaders);
         self::assertSame('SomeValue', $requestHeaders['SomeHeader'][0]);
 
-        self::assertArrayHasKey('content-type', $requestHeaders);
-        $requestContentType = $requestHeaders['content-type'][0];
+
+        self::assertArrayHasKey('Content-Type', $requestHeaders);
+        $requestContentType = $requestHeaders['Content-Type'][0];
 
         self::assertMatchesRegularExpression('#^multipart/form-data; boundary=(?P<boundary>.*)$#', $requestContentType);
 
-        /* @see https://onlinephp.io/c/e8233 */
-        preg_match('#^multipart/form-data; boundary=(?P<boundary>.*)$#', $requestContentType, $matches);
-        $boundary = $matches['boundary'] ?? '';
-
-        $requestBody = $mockResponse->getRequestOptions()['body'];
-        self::assertSame(
-            "--{$boundary}\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\nContent-Disposition: form-data; name=\"url\"\r\n\r\nhttps://google.com\r\n--{$boundary}--\r\n",
-            $requestBody,
-        );
-
+        $responseHeaders = $response->getHeaders();
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        self::assertSame('application/pdf', $response->getHeaders()->get('content-type'));
-        self::assertSame('simple_pdf.pdf', $response->getFileName());
-        self::assertSame(13624, $response->getContentLength());
+        self::assertSame('application/pdf', $responseHeaders['content-type'][0]);
+        self::assertSame('attachment; filename="simple_pdf.pdf"', $responseHeaders['content-disposition'][0]);
+        self::assertSame('13624', $responseHeaders['content-length'][0]);
     }
 }

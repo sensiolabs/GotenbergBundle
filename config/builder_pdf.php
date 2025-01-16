@@ -7,8 +7,8 @@
 // use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 // use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 // use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Configurator\HtmlPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\MergePdfBuilderConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;

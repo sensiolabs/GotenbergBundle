@@ -10,7 +10,10 @@ use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 
 final class Payload
 {
+    /** @var array<string, mixed> */
     private array $bodyData;
+
+    /** @var array<string, mixed> */
     private array $headersData;
 
     public function __construct(

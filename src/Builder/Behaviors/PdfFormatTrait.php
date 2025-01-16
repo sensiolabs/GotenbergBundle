@@ -18,7 +18,7 @@ trait PdfFormatTrait
         $bodyOptionsResolver
             ->define('pdfa')
             ->info('Convert the resulting PDF into the given PDF/A format.')
-            ->allowedValues(PdfFormat::cases())
+            ->allowedValues(...PdfFormat::cases())
         ;
         $bodyOptionsResolver
             ->define('pdfua')

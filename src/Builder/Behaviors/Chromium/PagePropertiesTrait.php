@@ -55,6 +55,11 @@ trait PagePropertiesTrait
         ;
         $bodyOptionsResolver
             ->define('preferCssPageSize')
+            ->info('Define whether the document outline should be embedded into the PDF.')
+            ->allowedTypes('bool')
+        ;
+        $bodyOptionsResolver
+            ->define('generateDocumentOutline')
             ->info('Define whether to prefer page size as defined by CSS.')
             ->allowedTypes('bool')
         ;

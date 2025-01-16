@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Builder;
+namespace Sensiolabs\GotenbergBundle\BuilderOld\Pdf;
 
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 

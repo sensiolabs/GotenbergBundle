@@ -1,14 +1,16 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Tests\Builder;
+namespace Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -18,6 +20,10 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
  * @extends GotenbergBuilderTestCase<HtmlPdfBuilder>
  */
 #[CoversClass(HtmlPdfBuilder::class)]
+#[UsesClass(AssetBaseDirFormatter::class)]
+#[UsesClass(Environment::class)]
+#[UsesClass(FilesystemLoader::class)]
+#[UsesClass(GotenbergAssetRuntime::class)]
 class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 {
     protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
@@ -37,10 +43,10 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testFilename(): void
     {
-        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(__DIR__, '/../Fixtures'));
+        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
         $this->getBuilder()
-            ->contentFile('content.html')
+            ->contentFile('files/content.html')
             ->filename('test')
             ->generate()
         ;
@@ -51,9 +57,9 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWithTwigContentFile(): void
     {
-        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(__DIR__, '/../Fixtures'));
+        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
-        $twig = new Environment(new FilesystemLoader(__DIR__.'/../Fixtures'), [
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
             'strict_variables' => true,
         ]);
 

@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Configurator;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 
 /**
  * @extends AbstractBuilderConfigurator<HtmlScreenshotBuilder>

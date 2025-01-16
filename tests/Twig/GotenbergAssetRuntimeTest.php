@@ -5,7 +5,9 @@ namespace Sensiolabs\GotenbergBundle\Tests\Twig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 
 #[CoversClass(GotenbergAssetRuntime::class)]
@@ -31,7 +33,7 @@ class GotenbergAssetRuntimeTest extends TestCase
     public function testGetAssetCallChromiumPdfBuilder(): void
     {
         $runtime = new GotenbergAssetRuntime();
-        $builder = $this->createMock(AbstractChromiumPdfBuilder::class);
+        $builder = $this->createMock(HtmlPdfBuilder::class);
         $builder
             ->expects($this->once())
             ->method('addAsset')
@@ -44,7 +46,7 @@ class GotenbergAssetRuntimeTest extends TestCase
     public function testGetAssetCallChromiumScreenshotBuilder(): void
     {
         $runtime = new GotenbergAssetRuntime();
-        $builder = $this->createMock(AbstractChromiumScreenshotBuilder::class);
+        $builder = $this->createMock(HtmlScreenshotBuilder::class);
         $builder
             ->expects($this->once())
             ->method('addAsset')

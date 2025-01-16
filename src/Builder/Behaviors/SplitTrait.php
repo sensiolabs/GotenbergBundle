@@ -19,7 +19,7 @@ trait SplitTrait
         $bodyOptionsResolver
             ->define('splitMode')
             ->info('Either intervals or pages.')
-            ->allowedValues(SplitMode::cases())
+            ->allowedValues(...SplitMode::cases())
         ;
         $bodyOptionsResolver
             ->define('splitSpan')

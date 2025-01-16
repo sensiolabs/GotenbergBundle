@@ -22,6 +22,13 @@ trait FailOnTrait
         ;
 
         $bodyOptionsResolver
+            ->define('failOnResourceHttpStatusCodes')
+            ->info('Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.')
+            ->allowedTypes('int[]')
+            ->normalize(NormalizerFactory::json(false))
+        ;
+
+        $bodyOptionsResolver
             ->define('failOnResourceLoadingFailed')
             ->info('Return a 409 Conflict response if Chromium fails to load at least one resource.')
             ->allowedTypes('bool')
@@ -45,6 +52,21 @@ trait FailOnTrait
     public function failOnHttpStatusCodes(array $statusCodes): static
     {
         $this->getBodyBag()->set('failOnHttpStatusCodes', $statusCodes);
+
+        return $this;
+    }
+
+    /**
+     * Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.
+     * (default None). (overrides any previous configuration).
+     *
+     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     *
+     * @param list<int<100, 599>> $statusCodes
+     */
+    public function failOnResourceHttpStatusCodes(array $statusCodes): static
+    {
+        $this->getBodyBag()->set('failOnResourceHttpStatusCodes', $statusCodes);
 
         return $this;
     }

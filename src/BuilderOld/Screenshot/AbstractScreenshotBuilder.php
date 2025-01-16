@@ -2,10 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
-use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\AsyncBuilderTrait;
 use Sensiolabs\GotenbergBundle\Builder\DefaultBuilderTrait;
 use Sensiolabs\GotenbergBundle\Builder\DownloadFromTrait;
+use Sensiolabs\GotenbergBundle\BuilderOld\AsyncBuilderTrait;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\AsyncBuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;

@@ -18,7 +18,7 @@ trait EmulatedMediaTypeTrait
         $bodyOptionsResolver
             ->define('emulatedMediaType')
             ->info('Forces Chromium to emulate, either "screen" or "print".')
-            ->allowedValues(EmulatedMediaType::cases())
+            ->allowedValues(...EmulatedMediaType::cases())
         ;
     }
 

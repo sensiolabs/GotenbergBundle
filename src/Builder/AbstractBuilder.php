@@ -40,6 +40,8 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         $this->headersBag = new HeadersBag($headersOptionsResolver);
     }
 
+    abstract protected function getEndpoint(): string;
+
     /**
      * @see https://gotenberg.dev/docs/routes#output-filename.
      *
@@ -91,7 +93,15 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         );
     }
 
-    abstract protected function getEndpoint(): string;
+    public function getBodyBag(): BodyBag
+    {
+        return $this->bodyBag;
+    }
+
+    public function getHeadersBag(): HeadersBag
+    {
+        return $this->headersBag;
+    }
 
     protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
     {
@@ -99,16 +109,6 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
             ->define('Gotenberg-Output-Filename')
             ->allowedTypes('string')
         ;
-    }
-
-    protected function getBodyBag(): BodyBag
-    {
-        return $this->bodyBag;
-    }
-
-    protected function getHeadersBag(): HeadersBag
-    {
-        return $this->headersBag;
     }
 
     protected function validatePayload(Payload $payload): void
