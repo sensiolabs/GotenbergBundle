@@ -513,6 +513,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'foo' => [
                     'success' => [
                         'url' => 'https://sensiolabs.com/webhook',
+                        'route' => [],
                         'method' => null,
                     ],
                     'error' => [
@@ -531,6 +532,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration' => [
                     'success' => [
                         'url' => 'https://sensiolabs.com/webhook-on-the-fly',
+                        'route' => [],
                         'method' => null,
                     ],
                     'error' => [
