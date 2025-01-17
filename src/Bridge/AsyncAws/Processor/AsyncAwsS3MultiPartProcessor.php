@@ -1,24 +1,23 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Processor;
+namespace Sensiolabs\GotenbergBundle\Bridge\AsyncAws\Processor;
 
 use AsyncAws\S3\Result\CompleteMultipartUploadOutput;
 use AsyncAws\S3\S3Client;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 
 /**
- * TODO : Might be worth adding "MultiPart" to the name as not all services supports the multi part upload.
- *
  * @implements ProcessorInterface<CompleteMultipartUploadOutput>
  */
-final class AsyncAwsProcessor implements ProcessorInterface
+final class AsyncAwsS3MultiPartProcessor implements ProcessorInterface
 {
     private const MIN_PART_SIZE = 5 * 1024 * 1024;
 
     public function __construct(
-        private S3Client $s3Client,
-        private string $bucketName,
+        private readonly S3Client $s3Client,
+        private readonly string $bucketName,
         private readonly LoggerInterface|null $logger = null,
     ) {
     }

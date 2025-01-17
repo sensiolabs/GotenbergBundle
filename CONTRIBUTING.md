@@ -25,15 +25,15 @@ To set up the project locally for development:
 
 ### Clone the Repository
 
-```
-git clone https://github.com/sensiolabs/GotenbergBundle.git
-cd GotenbergBundle
+```shell
+$ git clone https://github.com/sensiolabs/GotenbergBundle.git
+$ cd GotenbergBundle
 ```
 
 ### Install Dependencies
 
-```
-composer install
+```shell
+$ composer install
 ```
 
 ## Testing
@@ -42,14 +42,14 @@ Ensure your changes work as expected by running the test suite:
 
 ### Run Tests
 
-```
-./vendor/bin/phpunit
+```shell
+$ ./vendor/bin/phpunit
 ```
 
 ### Run Tests with Coverage (optional)
 
-```
-./vendor/bin/phpunit --coverage-text
+```shell
+$ ./vendor/bin/phpunit --coverage-text
 ```
 
 ## Quality Assurance
@@ -60,23 +60,31 @@ Maintain high code quality by following these steps before submitting a pull req
 
 Check your code for style violations:
 
-```
-./vendor/bin/php-cs-fixer check --diff
+```shell
+$ PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer check --diff
 ```
 
 Eventually, you can fix the issues automatically:
 
-```
-./vendor/bin/php-cs-fixer fix --diff
+```shell
+$ PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --diff
 ```
 
 ### Static Analysis
 
-```
-./vendor/bin/phpstan analyse
+```shell
+$ php -dmemory_limit=-1 ./vendor/bin/phpstan analyse --debug
 ```
 
 Detect potential issues in your code.
+
+### Dependencies
+
+```shell
+$ ./vendor/bin/composer-dependency-analyser --show-all-usages
+```
+
+Detect potential issues in composer.json dependencies.
 
 ### Fix Issues
 
@@ -91,8 +99,8 @@ The project documentation is partially built from the source code.
 
 ### Update the documentation
 
-```
-php ./docs/generate.php
+```shell
+$ php ./docs/generate.php
 ``` 
 
 

@@ -5,10 +5,35 @@ To avoid loading the whole file content in memory you can stream it to the brows
 
 You can also hook on the stream and save the file chunk by chunk. To do so we leverage the [`->stream`](https://symfony.com/doc/current/http_client.html#streaming-responses) method from the HttpClientInterface and use a powerful feature from PHP Generators : [`->send`](https://www.php.net/manual/en/generator.send.php).
 
-## Using FileProcessor
+## Native Processors
+
+Given an exemple for a PDF (works the same for Screenshots):
+
+```php
+/** @var GotenbergPdfInterface $gotenbergPdf */
+use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;$gotenbergPdf = /* ... */;
+
+/** @var GotenbergFileResult $gotenbergFileResult */
+$gotenbergFileResult = $gotenbergPdf->html()
+    // ...
+    ->fileName('my_pdf')
+    ->processor(/* ... */)
+    ->generate()
+;
+
+// Either process it with
+$result = $gotenbergFileResult->process(); // `$result` depends on the Processor used. See below.
+// or to send a response to the browser :
+$result = $gotenbergFileResult->stream(); // `$result` is a `Symfony\Component\HttpFoundation\StreamedResponse`
+```
+
+Here is the list of existing Processors :
+
+### `Sensiolabs\GotenbergBundle\Processor\FileProcessor`
 
 Useful if you want to store the file in the local filesystem.
-Example when generating a PDF :
+<details>
+<summary>Example in a controller</summary>
 
 ```php
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -26,7 +51,7 @@ public function pdf(
     string $pdfStorage,
 ): Response {
     return $gotenbergPdf->html()
-        //
+        // ...
         ->fileName('my_pdf')
         ->processor(new FileProcessor(
             $filesystem,
@@ -39,7 +64,13 @@ public function pdf(
 ```
 
 This will save the file under `%kernel.project_dir%/var/pdf/my_pdf.pdf` once the file has been fully streamed to the browser.
-If you are not streaming to a browser, you can still process the file using the `process` method instead of `stream` :
+
+</details>
+
+
+
+<details>
+<summary>If you are not streaming to a browser, you can still process the file using the `process` method instead of `stream`</summary>
 
 ```php
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -48,7 +79,12 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class SomeService
 {
-    public function __construct(private readonly GotenbergPdfInterface $gotenbergPdf) {}
+    public function __construct(
+        private readonly GotenbergPdfInterface $gotenbergPdf,
+        
+        #[Autowire('%kernel.project_dir%/var/pdf')]
+        private readonly string $kernelProjectDir,
+    ) {}
     
     public function pdf(): \SplFileInfo
     {
@@ -57,7 +93,7 @@ class SomeService
             ->fileName('my_pdf')
             ->processor(new FileProcessor(
                 new Filesystem(),
-                $this->getParameter('kernel.project_dir').'/var/pdf',
+                "{$this->kernelProjectDir}/var/pdf",
             ))
             ->generate()
             ->process()
@@ -68,23 +104,52 @@ class SomeService
 
 This will return a `SplFileInfo` of the generated file stored at `%kernel.project_dir%/var/pdf/my_pdf.pdf`.
 
-## Other processors
+</details>
 
-* `Sensiolabs\GotenbergBundle\Processor\AsyncAwsProcessor` : Upload using the `async-aws/s3` package. Uploads using the (multipart upload)[https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html] feature of S3. Returns a `AsyncAws\S3\Result\CompleteMultipartUploadOutput` object.
-* `Sensiolabs\GotenbergBundle\Processor\FlysystemProcessor` : Upload using the `league/flysystem-bundle` package. Returns a `callable`. This callable will return the uploaded content.
-* `Sensiolabs\GotenbergBundle\Processor\ChainProcessor` : Apply multiple processors. Each chunk will be sent to each processor sequentially. Return an array of vaues returned by chained processors.
-* `Sensiolabs\GotenbergBundle\Processor\NullProcessor` : Empty processor. Does nothing. Returns `null`.
-* `Sensiolabs\GotenbergBundle\Processor\TempfileProcessor` : Creates a temporary file and dump all chunks into it. Return a `ressource` of said `tmpfile()`.
+## `Sensiolabs\GotenbergBundle\Processor\NullProcessor`
 
-## Custom processor
+Empty processor. Does nothing. Returns `null`.
+
+## `Sensiolabs\GotenbergBundle\Processor\TempfileProcessor`
+
+Creates a temporary file and dump all chunks into it. Return a `ressource` of said `tmpfile()`.
+TODO : warning about tmpfile
+
+## `Sensiolabs\GotenbergBundle\Processor\ChainProcessor`
+
+Apply multiple processors. Each chunk will be sent to each processor sequentially. Return an array of vaues returned by chained processors.
+
+TODO
+
+## `Sensiolabs\GotenbergBundle\Bridge\LeagueFlysystem\Processor\FlysystemProcessor`
+
+Upload using the `league/flysystem-bundle` package. Returns a `callable`. This callable will return the uploaded content.
+
+## `Sensiolabs\GotenbergBundle\Bridge\AsyncAws\Processor\AsyncAwsS3MultiPartProcessor`
+
+Upload using the `async-aws/s3` package. Uploads using the (multipart upload)[https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html] feature of S3. Returns a `AsyncAws\S3\Result\CompleteMultipartUploadOutput` object.
+
+### Custom processor
 
 A custom processor must implement `Sensiolabs\GotenbergBundle\Processor\ProcessorInterface` which require that your `__invoke` method is a `\Generator`. To receive a chunk you must assign `yield` to a variable like so : `$chunk = yield`.
 
 The basic needed code is the following :
 
 ```php
-do {
-    $chunk = yield;
-    // do something with it
-} while (!$chunk->isLast());
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
+
+/**
+ * @implements ProcessorInterface<YOUR_GENERATOR_RETURN_TYPE>
+ */
+class CustomProcessor implements ProcessorInterface
+{
+    public function __invoke(string|null $fileName): \Generator
+    {
+        do {
+            $chunk = yield;
+            // do something with it
+        } while (!$chunk->isLast());
+        // rest of your code
+    }
+}
 ```
