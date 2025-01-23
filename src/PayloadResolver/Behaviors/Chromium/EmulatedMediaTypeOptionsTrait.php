@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 trait EmulatedMediaTypeOptionsTrait
@@ -15,6 +16,7 @@ trait EmulatedMediaTypeOptionsTrait
             ->define('emulatedMediaType')
             ->info('Forces Chromium to emulate, either "screen" or "print".')
             ->allowedValues(...EmulatedMediaType::cases())
+            ->normalize(NormalizerFactory::enum())
         ;
     }
 }

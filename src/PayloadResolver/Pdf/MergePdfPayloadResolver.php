@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\PayloadResolver\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\PayloadResolver\AbstractPayloadResolver;
 use Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors\DownloadFromOptionsTrait;

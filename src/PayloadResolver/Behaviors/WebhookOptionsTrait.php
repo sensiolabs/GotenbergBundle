@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

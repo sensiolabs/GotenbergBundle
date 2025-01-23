@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 trait MetadataOptionsTrait

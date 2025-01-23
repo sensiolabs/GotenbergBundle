@@ -3,8 +3,8 @@
 namespace Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,6 +19,7 @@ trait PagePropertiesOptionsTrait
             ->define('singlePage')
             ->info('Define whether to print the entire content in one single page.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
         $this->getBodyOptionsResolver()
             ->define('paperWidth')
@@ -54,26 +55,31 @@ trait PagePropertiesOptionsTrait
             ->define('preferCssPageSize')
             ->info('Define whether the document outline should be embedded into the PDF.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
         $this->getBodyOptionsResolver()
             ->define('generateDocumentOutline')
             ->info('Define whether to prefer page size as defined by CSS.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
         $this->getBodyOptionsResolver()
             ->define('printBackground')
             ->info('Print the background graphics.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
         $this->getBodyOptionsResolver()
             ->define('omitBackground')
             ->info('Hide the default white background and allow generating PDFs with transparency.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
         $this->getBodyOptionsResolver()
             ->define('landscape')
             ->info('Set the paper orientation to landscape.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
         $this->getBodyOptionsResolver()
             ->define('scale')

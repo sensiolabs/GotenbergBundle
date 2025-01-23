@@ -32,7 +32,7 @@ final class Payload
                 continue;
             }
 
-            foreach ($this->prepareFormData($key, $value) as $resolved) {
+            foreach ($this->prepareFormDataContent($key, $value) as $resolved) {
                 $multipartFormData[] = $resolved;
             }
         }
@@ -59,7 +59,7 @@ final class Payload
     /**
      * @return list<array<string, mixed>>
      */
-    private function prepareFormData(string $key, mixed $value): array
+    private function prepareFormDataContent(string $key, mixed $value): array
     {
         if ($value instanceof RenderedPart) {
             return [[
@@ -73,44 +73,11 @@ final class Payload
             ]];
         }
 
-        if (\is_bool($value)) {
-            return [[
-                $key => $value ? 'true' : 'false',
-            ]];
-        }
-
-        if (\is_int($value)) {
-            return [[
-                $key => (string) $value,
-            ]];
-        }
-
-        if (\is_float($value)) {
-            [$left, $right] = sscanf((string) $value, '%d.%s') ?? [$value, ''];
-
-            $right ??= '0';
-
-            return [[
-                $key => "{$left}.{$right}",
-            ]];
-        }
-
-        if ($value instanceof \BackedEnum) {
-            return [[
-                $key => (string) $value->value,
-            ]];
-        }
-
-        if ($value instanceof \Stringable) {
-            return [[
-                $key => (string) $value,
-            ]];
-        }
-
+        // Related to MergePdfBuilder
         if (\is_array($value)) {
             $result = [];
             foreach ($value as $nestedValue) {
-                $result[] = $this->prepareFormData($key, $nestedValue);
+                $result[] = $this->prepareFormDataContent($key, $nestedValue);
             }
 
             return array_merge(...$result);

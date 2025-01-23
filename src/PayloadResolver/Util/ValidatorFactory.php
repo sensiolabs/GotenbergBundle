@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Builder\Util;
+namespace Sensiolabs\GotenbergBundle\PayloadResolver\Util;
 
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;

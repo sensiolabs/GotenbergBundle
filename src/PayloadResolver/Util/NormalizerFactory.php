@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Builder\Util;
+namespace Sensiolabs\GotenbergBundle\PayloadResolver\Util;
 
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Symfony\Component\OptionsResolver\Options;
@@ -30,5 +30,36 @@ class NormalizerFactory
                 throw new JsonEncodingException(previous: $exception);
             }
         };
+    }
+
+    public static function bool(): \Closure
+    {
+        return static fn (Options $options, bool $value) => $value ? 'true' : 'false';
+    }
+
+    public static function int(): \Closure
+    {
+        return static fn (Options $options, int $value) => (string) $value;
+    }
+
+    public static function float(): \Closure
+    {
+        return static function (Options $options, float $value) {
+            [$left, $right] = sscanf((string) $value, '%d.%s') ?? [$value, ''];
+
+            $right ??= '0';
+
+            return "{$left}.{$right}";
+        };
+    }
+
+    public static function enum(): \Closure
+    {
+        return static fn (Options $options, \BackedEnum $value) => (string) $value->value;
+    }
+
+    public static function stringable(): \Closure
+    {
+        return static fn (Options $options, \Stringable $value) => (string) $value;
     }
 }

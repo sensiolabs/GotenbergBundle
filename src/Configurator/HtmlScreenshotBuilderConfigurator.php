@@ -43,9 +43,12 @@ class HtmlScreenshotBuilderConfigurator extends AbstractBuilderConfigurator
             'user_agent' => $builder->userAgent($value),
             'extra_http_headers' => $builder->extraHttpHeaders($value),
             'fail_on_http_status_codes' => $builder->failOnHttpStatusCodes($value),
+            'fail_on_resource_http_status_codes' => $builder->failOnResourceHttpStatusCodes($value),
+            'fail_on_resource_loading_failed' => $builder->failOnResourceLoadingFailed($value),
             'fail_on_console_exceptions' => $builder->failOnConsoleExceptions($value),
             'skip_network_idle_event' => $builder->skipNetworkIdleEvent($value),
             'metadata' => $builder->metadata($value),
+            'download_from' => $builder->downloadFrom($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $name, $builder::class)),
         };
     }

@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors\Chromium;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 trait FailOnOptionsTrait
@@ -29,12 +29,14 @@ trait FailOnOptionsTrait
             ->define('failOnResourceLoadingFailed')
             ->info('Return a 409 Conflict response if Chromium fails to load at least one resource.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
 
         $this->getBodyOptionsResolver()
             ->define('failOnConsoleExceptions')
             ->info('Return a 409 Conflict response if there are exceptions in the Chromium console.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors\Chromium;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\ValidatorFactory;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

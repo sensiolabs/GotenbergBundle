@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 trait SplitOptionsTrait
@@ -15,6 +16,7 @@ trait SplitOptionsTrait
             ->define('splitMode')
             ->info('Either intervals or pages.')
             ->allowedValues(...SplitMode::cases())
+            ->normalize(NormalizerFactory::enum())
         ;
         $this->getBodyOptionsResolver()
             ->define('splitSpan')
@@ -25,6 +27,7 @@ trait SplitOptionsTrait
             ->define('splitUnify')
             ->info('Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode.')
             ->allowedTypes('bool')
+            ->normalize(NormalizerFactory::bool())
         ;
     }
 }

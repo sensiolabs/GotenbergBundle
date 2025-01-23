@@ -12,6 +12,5 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             abstract_arg('Gotenberg API version'),
         ])
-        ->tag('sensiolabs_gotenberg.payload_resolver')
     ;
 };

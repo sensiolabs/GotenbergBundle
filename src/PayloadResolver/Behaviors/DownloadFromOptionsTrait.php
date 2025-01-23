@@ -2,7 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\PayloadResolver\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\ValidatorFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 trait DownloadFromOptionsTrait
@@ -16,6 +17,7 @@ trait DownloadFromOptionsTrait
             ->info('URLs to download files from (JSON format).')
             ->allowedTypes('string[]')
             ->allowedValues(ValidatorFactory::download())
+            ->normalize(NormalizerFactory::json())
         ;
     }
 }
