@@ -2,8 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 
 /**
  * @see https://gotenberg.dev/docs/routes#wait-before-rendering-chromium.
@@ -11,16 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 trait WaitBeforeRenderingTrait
 {
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $bodyOptionsResolver
-            ->setDefined(['waitDelay', 'waitForExpression'])
-            ->setAllowedTypes('waitDelay', ['string'])
-            ->setAllowedValues('waitDelay', fn (mixed $value): bool => 1 === preg_match('/^\d+(s|ms)$/', $value))
-            ->setAllowedTypes('waitForExpression', ['string'])
-        ;
-    }
 
     /**
      * Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML

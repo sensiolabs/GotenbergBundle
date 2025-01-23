@@ -65,7 +65,7 @@ final class HtmlPdfBuilderConfiguratorTest extends TestCase
         ];
         yield 'scale' => [
             ['scale' => 1.5],
-            ['scale' => '1.5'],
+            ['scale' => 1.5],
         ];
         yield 'native_page_ranges' => [
             ['native_page_ranges' => '1-5'],
@@ -95,19 +95,31 @@ final class HtmlPdfBuilderConfiguratorTest extends TestCase
                     'path' => null,
                 ]],
             ],
-            ['cookies' => '[{"name":"cook_me","value":"sensio","domain":"sensiolabs.com","secure":true,"httpOnly":true,"sameSite":"Lax","path":null}]'],
+            [
+                'cookies' => [
+                    'cook_me' => [
+                        'name' => 'cook_me',
+                        'value' => 'sensio',
+                        'domain' => 'sensiolabs.com',
+                        'secure' => true,
+                        'httpOnly' => true,
+                        'sameSite' => 'Lax',
+                        'path' => null,
+                    ],
+                ],
+            ],
         ];
         yield 'extra_http_headers' => [
             ['extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue']],
-            ['extraHttpHeaders' => '{"MyHeader":"MyValue","User-Agent":"MyValue"}'],
+            ['extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue']],
         ];
         yield 'fail_on_http_status_codes' => [
             ['fail_on_http_status_codes' => [401]],
-            ['failOnHttpStatusCodes' => '[401]'],
+            ['failOnHttpStatusCodes' => [401]],
         ];
         yield 'fail_on_resource_http_status_codes' => [
             ['fail_on_resource_http_status_codes' => [401]],
-            ['failOnResourceHttpStatusCodes' => '[401]'],
+            ['failOnResourceHttpStatusCodes' => [401]],
         ];
         yield 'fail_on_resource_loading_failed' => [
             ['fail_on_resource_loading_failed' => true],
@@ -153,10 +165,11 @@ final class HtmlPdfBuilderConfiguratorTest extends TestCase
         $htmlBuilder = new HtmlPdfBuilder(
             $this->createMock(GotenbergClientInterface::class),
             $this->createMock(ContainerInterface::class),
+            $this->createMock(ContainerInterface::class),
         );
 
         (new HtmlPdfBuilderConfigurator($configuration))->__invoke($htmlBuilder);
 
-        self::assertSame($expected, $htmlBuilder->getBodyBag()->resolve());
+        self::assertSame($expected, $htmlBuilder->getBodyBag()->all());
     }
 }

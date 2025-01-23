@@ -2,12 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
-use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
-use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 
 /**
  * @see https://gotenberg.dev/docs/routes#pdfa-chromium
@@ -15,15 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 trait MetadataTrait
 {
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $bodyOptionsResolver
-            ->define('metadata')
-            ->info('Add metadata.')
-            ->normalize(NormalizerFactory::json())
-        ;
-    }
 
     /**
      * Resets the metadata.

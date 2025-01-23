@@ -5,10 +5,8 @@ namespace Sensiolabs\GotenbergBundle\Tests\Client;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\Client\HeadersBag;
-use Sensiolabs\GotenbergBundle\Client\Payload;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Payload;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,23 +30,10 @@ final class GotenbergClientTest extends TestCase
         ]);
 
         $mockClient = new MockHttpClient([$mockResponse], baseUri: 'http://localhost:3000');
-        $bodyBag = $this->createMock(BodyBag::class);
-        $bodyBag
-            ->expects($this->once())
-            ->method('resolve')
-            ->willReturn(['url' => 'https://google.com'])
-        ;
-
-        $headersBag = $this->createMock(HeadersBag::class);
-        $headersBag
-            ->expects($this->once())
-            ->method('resolve')
-            ->willReturn(['SomeHeader' => 'SomeValue'])
-        ;
 
         $payload = new Payload(
-            $bodyBag,
-            $headersBag,
+            ['url' => 'https://google.com'],
+            ['SomeHeader' => 'SomeValue'],
         );
 
         $gotenbergClient = new GotenbergClient($mockClient);
@@ -70,7 +55,6 @@ final class GotenbergClientTest extends TestCase
 
         self::assertArrayHasKey('SomeHeader', $requestHeaders);
         self::assertSame('SomeValue', $requestHeaders['SomeHeader'][0]);
-
 
         self::assertArrayHasKey('Content-Type', $requestHeaders);
         $requestContentType = $requestHeaders['Content-Type'][0];

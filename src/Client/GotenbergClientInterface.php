@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Client;
 
+use Sensiolabs\GotenbergBundle\PayloadResolver\Payload;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 

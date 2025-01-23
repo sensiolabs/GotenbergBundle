@@ -5,14 +5,14 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\HeadersBag;
-use Sensiolabs\GotenbergBundle\Client\Payload;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Payload;
+use Sensiolabs\GotenbergBundle\PayloadResolver\PayloadResolverInterface;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Symfony\Component\String\u;
 
 /**
  * Builder for responses.
@@ -30,14 +30,10 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     public function __construct(
         protected readonly GotenbergClientInterface $client,
         protected readonly ContainerInterface $dependencies,
+        protected readonly ContainerInterface $payloadResolvers,
     ) {
-        $bodyOptionsResolver = new OptionsResolver();
-        $headersOptionsResolver = new OptionsResolver();
-
-        $this->configure($bodyOptionsResolver, $headersOptionsResolver);
-
-        $this->bodyBag = new BodyBag($bodyOptionsResolver);
-        $this->headersBag = new HeadersBag($headersOptionsResolver);
+        $this->bodyBag = new BodyBag();
+        $this->headersBag = new HeadersBag();
     }
 
     abstract protected function getEndpoint(): string;
@@ -68,10 +64,15 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generate(): GotenbergFileResult
     {
-        $payload = new Payload($this->bodyBag, $this->headersBag);
-        $this->validatePayload($payload);
+        $payloadResolver = $this->getPayloadResolver();
 
-        $response = $this->client->call($this->getEndpoint(), $payload);
+        $response = $this->client->call(
+            $this->getEndpoint(),
+            new Payload(
+                $payloadResolver->resolveBody($this->getBodyBag()),
+                $payloadResolver->resolveHeaders($this->getHeadersBag()),
+            ),
+        );
 
         return new GotenbergFileResult(
             $response,
@@ -83,10 +84,15 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generateAsync(): GotenbergAsyncResult
     {
-        $payload = new Payload($this->bodyBag, $this->headersBag);
-        $this->validatePayload($payload);
+        $payloadResolver = $this->getPayloadResolver();
 
-        $response = $this->client->call($this->getEndpoint(), $payload);
+        $response = $this->client->call(
+            $this->getEndpoint(),
+            new Payload(
+                $payloadResolver->resolveBody($this->getBodyBag()),
+                $payloadResolver->resolveHeaders($this->getHeadersBag()),
+            ),
+        );
 
         return new GotenbergAsyncResult(
             $response,
@@ -103,15 +109,16 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         return $this->headersBag;
     }
 
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
+    private function getPayloadResolver(): PayloadResolverInterface
     {
-        $headersOptionsResolver
-            ->define('Gotenberg-Output-Filename')
-            ->allowedTypes('string')
-        ;
-    }
+        $namespace = explode('\\', static::class);
+        $class = array_pop($namespace);
+        $serviceId = '.sensiolabs_gotenberg.payload_resolver.'.u($class)->snake();
 
-    protected function validatePayload(Payload $payload): void
-    {
+        if (!$this->payloadResolvers->has($serviceId)) {
+            throw new InvalidBuilderConfiguration(\sprintf('Missing resolver for %s.', static::class));
+        }
+
+        return $this->payloadResolvers->get($serviceId);
     }
 }

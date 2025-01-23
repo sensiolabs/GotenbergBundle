@@ -2,29 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 
 trait CustomHttpHeadersTrait
 {
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $bodyOptionsResolver
-            ->define('userAgent')
-            ->info('Override the default User-Agent HTTP header.')
-            ->allowedTypes('string')
-        ;
-
-        $bodyOptionsResolver
-            ->define('extraHttpHeaders')
-            ->info('Extra HTTP headers to send by Chromium (JSON format).')
-            ->allowedTypes('string[]')
-            ->normalize(NormalizerFactory::json())
-        ;
-    }
 
     /**
      * Override the default User-Agent HTTP header. (default None).

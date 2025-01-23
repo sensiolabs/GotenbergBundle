@@ -2,9 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 
 /**
  * @see https://gotenberg.dev/docs/routes#download-from
@@ -12,16 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 trait DownloadFromTrait
 {
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $bodyOptionsResolver
-            ->define('downloadFrom')
-            ->info('URLs to download files from (JSON format).')
-            ->allowedTypes('string[]')
-            ->allowedValues(ValidatorFactory::download())
-        ;
-    }
 
     /**
      * Sets download from to download each entry (file) in parallel (default None).

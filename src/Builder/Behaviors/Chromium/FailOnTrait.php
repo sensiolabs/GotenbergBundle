@@ -2,44 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
-use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 
 trait FailOnTrait
 {
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $bodyOptionsResolver
-            ->define('failOnHttpStatusCodes')
-            ->info('Return a 409 Conflict response if the HTTP status code from the main page is not acceptable.')
-            ->allowedTypes('int[]')
-            ->normalize(NormalizerFactory::json(false))
-        ;
-
-        $bodyOptionsResolver
-            ->define('failOnResourceHttpStatusCodes')
-            ->info('Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.')
-            ->allowedTypes('int[]')
-            ->normalize(NormalizerFactory::json(false))
-        ;
-
-        $bodyOptionsResolver
-            ->define('failOnResourceLoadingFailed')
-            ->info('Return a 409 Conflict response if Chromium fails to load at least one resource.')
-            ->allowedTypes('bool')
-        ;
-
-        $bodyOptionsResolver
-            ->define('failOnConsoleExceptions')
-            ->info('Return a 409 Conflict response if there are exceptions in the Chromium console.')
-            ->allowedTypes('bool')
-        ;
-    }
 
     /**
      * Return a 409 Conflict response if the HTTP status code from

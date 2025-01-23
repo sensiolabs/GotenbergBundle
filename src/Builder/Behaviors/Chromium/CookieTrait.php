@@ -4,13 +4,8 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait;
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
-use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see https://gotenberg.dev/docs/routes#cookies-chromium.
@@ -21,17 +16,6 @@ trait CookieTrait
     use RequestAwareTrait;
 
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $bodyOptionsResolver
-            ->define('cookies')
-            ->info('Cookies to store in the Chromium cookie jar (JSON format).')
-            ->allowedTypes('array[]', Cookie::class.'[]')
-            ->allowedValues(ValidatorFactory::cookies())
-            ->normalize(NormalizerFactory::json(false))
-        ;
-    }
 
     /**
      * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies

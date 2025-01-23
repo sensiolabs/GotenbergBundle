@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Client\Payload;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Payload;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\Mime\Header\HeaderInterface;
 use Symfony\Component\Mime\Part\AbstractPart;

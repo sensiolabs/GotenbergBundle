@@ -2,14 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-// use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
-// use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
+use Sensiolabs\GotenbergBundle\PayloadResolver\PayloadResolverInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-// use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
@@ -64,6 +62,12 @@ class SensiolabsGotenbergExtension extends Extension
         $loader->load('builder.php');
         $loader->load('builder_pdf.php');
         $loader->load('builder_screenshot.php');
+
+        // Resolvers
+        $loader->load('payload_resolver.php');
+        $loader->load('payload_resolver_pdf.php');
+        $loader->load('payload_resolver_screenshot.php');
+
         $container
             ->registerForAutoconfiguration(PdfBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.pdf_builder')
@@ -71,6 +75,15 @@ class SensiolabsGotenbergExtension extends Extension
         $container
             ->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.screenshot_builder')
+        ;
+        $container
+            ->registerForAutoconfiguration(PayloadResolverInterface::class)
+            ->addTag('sensiolabs_gotenberg.payload_resolver')
+        ;
+
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.abstract_payload_resolver')
+            ->replaceArgument(0, '8.15.2')
         ;
 
         // Configurators

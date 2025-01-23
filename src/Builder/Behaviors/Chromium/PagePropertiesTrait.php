@@ -2,12 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see https://gotenberg.dev/docs/routes#page-properties-chromium.
@@ -15,81 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 trait PagePropertiesTrait
 {
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $bodyOptionsResolver
-            ->define('singlePage')
-            ->info('Define whether to print the entire content in one single page.')
-            ->allowedTypes('bool')
-        ;
-        $bodyOptionsResolver
-            ->define('paperWidth')
-            ->info('Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
-            ->normalize(NormalizerFactory::unit())
-        ;
-        $bodyOptionsResolver
-            ->define('paperHeight')
-            ->info('Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
-            ->normalize(NormalizerFactory::unit())
-        ;
-        $bodyOptionsResolver
-            ->define('marginTop')
-            ->info('Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
-            ->normalize(NormalizerFactory::unit())
-        ;
-        $bodyOptionsResolver
-            ->define('marginBottom')
-            ->info('Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
-            ->normalize(NormalizerFactory::unit())
-        ;
-        $bodyOptionsResolver
-            ->define('marginLeft')
-            ->info('Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
-            ->normalize(NormalizerFactory::unit())
-        ;
-        $bodyOptionsResolver
-            ->define('marginRight')
-            ->info('Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.')
-            ->normalize(NormalizerFactory::unit())
-        ;
-        $bodyOptionsResolver
-            ->define('preferCssPageSize')
-            ->info('Define whether the document outline should be embedded into the PDF.')
-            ->allowedTypes('bool')
-        ;
-        $bodyOptionsResolver
-            ->define('generateDocumentOutline')
-            ->info('Define whether to prefer page size as defined by CSS.')
-            ->allowedTypes('bool')
-        ;
-        $bodyOptionsResolver
-            ->define('printBackground')
-            ->info('Print the background graphics.')
-            ->allowedTypes('bool')
-        ;
-        $bodyOptionsResolver
-            ->define('omitBackground')
-            ->info('Hide the default white background and allow generating PDFs with transparency.')
-            ->allowedTypes('bool')
-        ;
-        $bodyOptionsResolver
-            ->define('landscape')
-            ->info('Set the paper orientation to landscape.')
-            ->allowedTypes('bool')
-        ;
-        $bodyOptionsResolver
-            ->define('scale')
-            ->info('The scale of the page rendering.')
-            ->allowedTypes('int', 'float')
-            ->normalize(NormalizerFactory::scale())
-        ;
-        $bodyOptionsResolver
-            ->define('nativePageRanges')
-            ->info("Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.")
-            ->allowedValues(ValidatorFactory::range())
-        ;
-    }
 
     /**
      * Define whether to print the entire content in one single page.

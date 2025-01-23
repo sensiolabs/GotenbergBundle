@@ -5,11 +5,10 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 trait ContentTrait
 {
@@ -17,16 +16,6 @@ trait ContentTrait
     use TwigAwareTrait;
 
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        foreach (Part::cases() as $part) {
-            $bodyOptionsResolver
-                ->define($part->value)
-                ->allowedTypes(RenderedPart::class, \SplFileInfo::class)
-            ;
-        }
-    }
 
     /**
      * @param string               $template #Template
@@ -97,18 +86,16 @@ trait ContentTrait
      */
     protected function withRenderedPart(Part $part, string $template, array $context = []): static
     {
-        $this->getBodyBag()->set($part->value, function () use ($part, $template, $context): RenderedPart {
-            $this->getTwig()->getRuntime(GotenbergAssetRuntime::class)->setBuilder($this);
-            try {
-                $renderedPart = new RenderedPart($part, $this->getTwig()->render($template, array_merge($context, ['_builder' => $this])));
-            } catch (\Throwable $t) {
-                throw new PdfPartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
-            } finally {
-                $this->getTwig()->getRuntime(GotenbergAssetRuntime::class)->setBuilder(null);
-            }
+        $this->getTwig()->getRuntime(GotenbergAssetRuntime::class)->setBuilder($this);
+        try {
+            $renderedPart = new RenderedPart($part, $this->getTwig()->render($template, array_merge($context, ['_builder' => $this])));
+        } catch (\Throwable $t) {
+            throw new PdfPartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
+        } finally {
+            $this->getTwig()->getRuntime(GotenbergAssetRuntime::class)->setBuilder(null);
+        }
 
-            return $renderedPart;
-        });
+        $this->getBodyBag()->set($part->value, $renderedPart);
 
         return $this;
     }

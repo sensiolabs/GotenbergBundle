@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Client;
+namespace Sensiolabs\GotenbergBundle\PayloadResolver;
 
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Symfony\Component\Mime\Header\Headers;
@@ -10,34 +10,14 @@ use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 
 final class Payload
 {
-    /** @var array<string, mixed> */
-    private array $bodyData;
-
-    /** @var array<string, mixed> */
-    private array $headersData;
-
+    /**
+     * @param array<string, mixed> $bodyOptions
+     * @param array<string, mixed> $headersOptions
+     */
     public function __construct(
-        BodyBag $bodyBag,
-        HeadersBag $headersBag,
+        private readonly array $bodyOptions,
+        private readonly array $headersOptions,
     ) {
-        $this->bodyData = $bodyBag->resolve();
-        $this->headersData = $headersBag->resolve();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getPayloadBody(): array
-    {
-        return $this->bodyData;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getPayloadHeader(): array
-    {
-        return $this->headersData;
     }
 
     /**
@@ -47,7 +27,7 @@ final class Payload
     {
         // Prepare form data
         $multipartFormData = [];
-        foreach ($this->bodyData as $key => $value) {
+        foreach ($this->bodyOptions as $key => $value) {
             if (null === $value) {
                 continue;
             }
@@ -66,7 +46,7 @@ final class Payload
     public function getHeaders(): Headers
     {
         $headers = new Headers();
-        foreach ($this->headersData as $name => $value) {
+        foreach ($this->headersOptions as $name => $value) {
             if (null === $value) {
                 continue;
             }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Builder\Pdf;
+namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Pdf\HtmlPdfPayloadResolver;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Twig\Environment;
@@ -24,15 +25,18 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
 #[UsesClass(Environment::class)]
 #[UsesClass(FilesystemLoader::class)]
 #[UsesClass(GotenbergAssetRuntime::class)]
+#[UsesClass(HtmlPdfPayloadResolver::class)]
 class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 {
-    protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
+    protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies, ContainerInterface $resolvers): BuilderInterface
     {
-        return new HtmlPdfBuilder($client, $dependencies);
+        return new HtmlPdfBuilder($client, $dependencies, $resolvers);
     }
 
     public function testRequiredFormData(): void
     {
+        $this->resolvers->set('.sensiolabs_gotenberg.payload_resolver.html_pdf_builder', new HtmlPdfPayloadResolver(self::GOTENBERG_API_VERSION));
+
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('Content is required');
 
@@ -44,8 +48,9 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
     public function testFilename(): void
     {
         $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->resolvers->set('.sensiolabs_gotenberg.payload_resolver.html_pdf_builder', new HtmlPdfPayloadResolver(self::GOTENBERG_API_VERSION));
 
-        $this->getBuilder()
+        $this->builder
             ->contentFile('files/content.html')
             ->filename('test')
             ->generate()
@@ -58,6 +63,7 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
     public function testWithTwigContentFile(): void
     {
         $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->resolvers->set('.sensiolabs_gotenberg.payload_resolver.html_pdf_builder', new HtmlPdfPayloadResolver(self::GOTENBERG_API_VERSION));
 
         $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
             'strict_variables' => true,

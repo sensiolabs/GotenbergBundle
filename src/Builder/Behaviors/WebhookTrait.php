@@ -3,9 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait;
-use Sensiolabs\GotenbergBundle\Client\HeadersBag;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -60,20 +58,5 @@ trait WebhookTrait
     public function webhookErrorRoute(string $route, array $parameters = [], string|null $method = null): static
     {
         return $this->webhookErrorUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method);
-    }
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $headersOptionsResolver
-            ->setDefined([
-                'Gotenberg-Webhook-Url',
-                'Gotenberg-Webhook-Method',
-                'Gotenberg-Webhook-Extra-Http-Headers',
-                'Gotenberg-Webhook-Error-Url',
-                'Gotenberg-Webhook-Error-Method',
-                'Gotenberg-Webhook-Error-Extra-Http-Headers',
-            ])
-            ->setDefault('Gotenberg-Webhook-Error-Url', static fn (Options $options) => $options['Gotenberg-Webhook-Url'] ?? null)
-        ;
     }
 }

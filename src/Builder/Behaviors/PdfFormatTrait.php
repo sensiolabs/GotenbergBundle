@@ -2,9 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Client\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see https://gotenberg.dev/docs/routes#pdfa-chromium
@@ -12,20 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 trait PdfFormatTrait
 {
     abstract protected function getBodyBag(): BodyBag;
-
-    protected function configure(OptionsResolver $bodyOptionsResolver, OptionsResolver $headersOptionsResolver): void
-    {
-        $bodyOptionsResolver
-            ->define('pdfa')
-            ->info('Convert the resulting PDF into the given PDF/A format.')
-            ->allowedValues(...PdfFormat::cases())
-        ;
-        $bodyOptionsResolver
-            ->define('pdfua')
-            ->info('Enable PDF for Universal Access for optimal accessibility.')
-            ->allowedTypes('bool')
-        ;
-    }
 
     /**
      * Enable PDF for Universal Access for optimal accessibility. (default false).
