@@ -4,7 +4,6 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -24,7 +23,6 @@ return static function (ContainerConfigurator $container): void {
                 'router' => service('router')->nullOnInvalid(),
                 'twig' => service('twig')->nullOnInvalid(),
             ]),
-            tagged_locator('sensiolabs_gotenberg.payload_resolver'),
         ])
     ;
 };

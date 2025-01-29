@@ -2,7 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 
 trait CustomHttpHeadersTrait
 {
@@ -15,6 +18,7 @@ trait CustomHttpHeadersTrait
      *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      */
+    #[ExposeSemantic('user_agent', options: ['restrict_to' => 'string'])]
     public function userAgent(string $userAgent): static
     {
         $this->getBodyBag()->set('userAgent', $userAgent);
@@ -30,6 +34,7 @@ trait CustomHttpHeadersTrait
      *
      * @param array<string, string> $headers
      */
+    #[ExposeSemantic('extra_http_headers', NodeType::Array, ['normalize_keys' => false, 'use_attribute_as_key' => 'name', 'prototype' => 'variable'])]
     public function extraHttpHeaders(array $headers): static
     {
         if ([] === $headers) {
@@ -62,5 +67,10 @@ trait CustomHttpHeadersTrait
         $this->getBodyBag()->set('extraHttpHeaders', array_merge($current, $headers));
 
         return $this;
+    }
+
+    protected function normalize(): \Generator
+    {
+        yield 'extraHttpHeaders' => NormalizerFactory::json();
     }
 }

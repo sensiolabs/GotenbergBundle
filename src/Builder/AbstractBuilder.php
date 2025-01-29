@@ -3,16 +3,17 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Container\ContainerInterface;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Configurator\NodeBuilderDispatcher;
 use Sensiolabs\GotenbergBundle\PayloadResolver\Payload;
-use Sensiolabs\GotenbergBundle\PayloadResolver\PayloadResolverInterface;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\HttpFoundation\HeaderUtils;
-use function Symfony\Component\String\u;
 
 /**
  * Builder for responses.
@@ -30,13 +31,35 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     public function __construct(
         protected readonly GotenbergClientInterface $client,
         protected readonly ContainerInterface $dependencies,
-        protected readonly ContainerInterface $payloadResolvers,
     ) {
         $this->bodyBag = new BodyBag();
         $this->headersBag = new HeadersBag();
     }
 
     abstract protected function getEndpoint(): string;
+
+    abstract protected function normalize(): \Generator;
+
+    public static function getConfiguration(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('html');
+        $root = $treeBuilder->getRootNode()->addDefaultsIfNotSet();
+
+        $reflection = new \ReflectionClass(static::class);
+
+        foreach (array_reverse($reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $methodR) {
+            $attributes = $methodR->getAttributes(ExposeSemantic::class);
+            if (\count($attributes) === 0) {
+                continue;
+            }
+
+            /** @var ExposeSemantic $attribute */
+            $attribute = $attributes[0]->newInstance();
+            $root->append(NodeBuilderDispatcher::getNode($attribute));
+        }
+
+        return $root;
+    }
 
     /**
      * @see https://gotenberg.dev/docs/routes#output-filename.
@@ -64,13 +87,14 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generate(): GotenbergFileResult
     {
-        $payloadResolver = $this->getPayloadResolver();
+        $this->validatePayload();
+        $payloadBody = iterator_to_array($this->resolvePayloadBody());
 
         $response = $this->client->call(
             $this->getEndpoint(),
             new Payload(
-                $payloadResolver->resolveBody($this->getBodyBag()),
-                $payloadResolver->resolveHeaders($this->getHeadersBag()),
+                $payloadBody,
+                $this->getHeadersBag()->all(),
             ),
         );
 
@@ -84,13 +108,14 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generateAsync(): GotenbergAsyncResult
     {
-        $payloadResolver = $this->getPayloadResolver();
+        $this->validatePayload();
+        $payloadBody = iterator_to_array($this->resolvePayloadBody());
 
         $response = $this->client->call(
             $this->getEndpoint(),
             new Payload(
-                $payloadResolver->resolveBody($this->getBodyBag()),
-                $payloadResolver->resolveHeaders($this->getHeadersBag()),
+                $payloadBody,
+                $this->getHeadersBag()->all(),
             ),
         );
 
@@ -109,16 +134,29 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         return $this->headersBag;
     }
 
-    private function getPayloadResolver(): PayloadResolverInterface
+    protected function validatePayload(): void
     {
-        $namespace = explode('\\', static::class);
-        $class = array_pop($namespace);
-        $serviceId = '.sensiolabs_gotenberg.payload_resolver.'.u($class)->snake();
+    }
 
-        if (!$this->payloadResolvers->has($serviceId)) {
-            throw new InvalidBuilderConfiguration(\sprintf('Missing resolver for %s.', static::class));
+    private function resolvePayloadBody(): \Generator
+    {
+        foreach ($this->normalize() as $key => $normalizer) {
+            if ($this->getBodyBag()->get($key) === null) {
+                continue;
+            }
+
+            if (!\is_callable($normalizer)) {
+                throw new \RuntimeException(\sprintf('Le normalizer pour "%s" n\'est pas une fonction valide.', $key));
+            }
+
+            if ('assets' === $key && \count($this->getBodyBag()->get($key)) > 1) {
+                $multipleFiles = $normalizer($key, $this->getBodyBag()->get($key));
+                foreach ($multipleFiles as $file) {
+                    yield $file;
+                }
+            } else {
+                yield $normalizer($key, $this->getBodyBag()->get($key));
+            }
         }
-
-        return $this->payloadResolvers->get($serviceId);
     }
 }

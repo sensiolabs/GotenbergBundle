@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormat
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 /**
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
@@ -36,5 +37,10 @@ class MergePdfBuilder extends AbstractBuilder
         ));
 
         return $this;
+    }
+
+    protected function normalize(): \Generator
+    {
+        yield '';
     }
 }

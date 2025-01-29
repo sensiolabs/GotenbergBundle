@@ -7,10 +7,10 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class ValidatorFactory
 {
-    public static function range(): \Closure
+    public static function range(string $value): bool
     {
         // See https://regex101.com/r/XUK2Ip/1
-        return static fn (string $value): bool => 1 === preg_match('/^ *(\d+ *(- *\d+)? *, *)*\d+ *(- *\d+)? *$/', $value);
+        return preg_match('/^ *(\d+ *(- *\d+)? *, *)*\d+ *(- *\d+)? *$/', $value);
     }
 
     public static function cookies(): \Closure

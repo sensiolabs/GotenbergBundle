@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 
 /**
  * See https://gotenberg.dev/docs/routes#html-file-into-pdf-route.
@@ -44,5 +45,10 @@ trait AssetTrait
         $this->getBodyBag()->set('assets', $assets);
 
         return $this;
+    }
+
+    public function normalize(): \Generator
+    {
+        yield 'assets' => NormalizerFactory::asset();
     }
 }

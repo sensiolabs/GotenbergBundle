@@ -63,11 +63,6 @@ class SensiolabsGotenbergExtension extends Extension
         $loader->load('builder_pdf.php');
         $loader->load('builder_screenshot.php');
 
-        // Resolvers
-        $loader->load('payload_resolver.php');
-        $loader->load('payload_resolver_pdf.php');
-        $loader->load('payload_resolver_screenshot.php');
-
         $container
             ->registerForAutoconfiguration(PdfBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.pdf_builder')
@@ -75,15 +70,6 @@ class SensiolabsGotenbergExtension extends Extension
         $container
             ->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.screenshot_builder')
-        ;
-        $container
-            ->registerForAutoconfiguration(PayloadResolverInterface::class)
-            ->addTag('sensiolabs_gotenberg.payload_resolver')
-        ;
-
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.abstract_payload_resolver')
-            ->replaceArgument(0, '8.15.2')
         ;
 
         // Configurators

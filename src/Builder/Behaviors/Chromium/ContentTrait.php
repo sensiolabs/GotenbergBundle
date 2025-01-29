@@ -4,10 +4,12 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
-use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\Configuration;
+use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 
 trait ContentTrait
@@ -105,5 +107,12 @@ trait ContentTrait
         $this->getBodyBag()->set($part->value, new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path)));
 
         return $this;
+    }
+
+    protected function normalize(): \Generator
+    {
+        yield 'header.html' => NormalizerFactory::content();
+        yield 'index.html' => NormalizerFactory::content();
+        yield 'footer.html' => NormalizerFactory::content();
     }
 }
