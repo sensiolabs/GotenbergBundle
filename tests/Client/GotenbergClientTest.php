@@ -6,7 +6,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
-use Sensiolabs\GotenbergBundle\PayloadResolver\Payload;
+use Sensiolabs\GotenbergBundle\Builder\Payload;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +32,7 @@ final class GotenbergClientTest extends TestCase
         $mockClient = new MockHttpClient([$mockResponse], baseUri: 'http://localhost:3000');
 
         $payload = new Payload(
-            ['url' => 'https://google.com'],
+            [['url' => 'https://google.com']],
             ['SomeHeader' => 'SomeValue'],
         );
 

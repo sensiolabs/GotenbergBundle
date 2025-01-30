@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\PayloadResolver\Util;
+namespace Sensiolabs\GotenbergBundle\Builder\Util;
 
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;

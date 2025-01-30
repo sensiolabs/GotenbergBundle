@@ -88,9 +88,6 @@ final class GotenbergPdfTest extends KernelTestCase
 
         self::assertCount(5, $formFields);
 
-        self::assertArrayHasKey('failOnHttpStatusCodes', $formFields);
-        self::assertSame([499, 599], $formFields['failOnHttpStatusCodes']);
-
         self::assertArrayHasKey('failOnResourceHttpStatusCodes', $formFields);
         self::assertSame([], $formFields['failOnResourceHttpStatusCodes']);
 

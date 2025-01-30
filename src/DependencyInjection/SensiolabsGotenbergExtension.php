@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
-use Sensiolabs\GotenbergBundle\PayloadResolver\PayloadResolverInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -72,20 +72,6 @@ class SensiolabsGotenbergExtension extends Extension
             ->addTag('sensiolabs_gotenberg.screenshot_builder')
         ;
 
-        // Configurators
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.html')
-            ->replaceArgument(0, $this->cleanUserOptions($config['default_options']['pdf']['html']))
-        ;
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.merge')
-            ->replaceArgument(0, $this->cleanUserOptions($config['default_options']['pdf']['merge']))
-        ;
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.screenshot_builder_configurator.html')
-            ->replaceArgument(0, $this->cleanUserOptions($config['default_options']['screenshot']['html']))
-        ;
-
         // HTTP Client
         $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'] ?? 'http_client', false));
 
@@ -118,12 +104,12 @@ class SensiolabsGotenbergExtension extends Extension
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
                 ->replaceArgument(3, [
                     'html' => $this->cleanUserOptions($config['default_options']['pdf']['html']),
-                    'url' => $this->cleanUserOptions($config['default_options']['pdf']['url']),
-                    'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),
-                    'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
-                    'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
-                    'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
-                    'split' => $this->cleanUserOptions($config['default_options']['pdf']['split']),
+//                    'url' => $this->cleanUserOptions($config['default_options']['pdf']['url']),
+//                    'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),
+//                    'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
+//                    'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
+//                    'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
+//                    'split' => $this->cleanUserOptions($config['default_options']['pdf']['split']),
                 ])
             ;
         }
@@ -153,7 +139,7 @@ class SensiolabsGotenbergExtension extends Extension
         //                ->addMethodCall('add', [$name, $configuration]);
         //        }
         //
-        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.html', $config['default_options']['pdf']['html']);
+        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.html', $config['default_options']['pdf']['html']);
         //
         //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.url', $config['default_options']['pdf']['url']);
         //

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Configurator;
+namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
@@ -12,10 +12,15 @@ final class ScalarNodeBuilder implements NodeBuilderInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'default_value' => null,
             'required' => false,
+            'default_null' => false,
             'cannot_be_empty' => false,
         ]);
+
+        $resolver->setAllowedTypes('default_null', 'bool');
+
+        $resolver->setDefined('default_value');
+        $resolver->setAllowedValues('default_value', ['boolean', 'string', 'integer', 'float']);
 
         $resolver->setDefined('restrict_to');
         $resolver->setAllowedValues('restrict_to', ['boolean', 'string', 'integer', 'float']);
@@ -41,7 +46,13 @@ final class ScalarNodeBuilder implements NodeBuilderInterface
             };
         }
 
-        $node->defaultValue($options['default_value']);
+        if ($options['default_null']) {
+            $node->defaultNull();
+        }
+
+        if (isset($options['default_value'])) {
+            $node->defaultValue($options['default_value']);
+        }
 
         return $node;
     }

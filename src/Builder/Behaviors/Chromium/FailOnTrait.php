@@ -2,7 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
 
 trait FailOnTrait
 {
@@ -16,6 +20,7 @@ trait FailOnTrait
      *
      * @param array<int, int> $statusCodes
      */
+    #[ExposeSemantic('fail_on_http_status_codes', NodeType::Array, ['default_value' => [], 'prototype' => 'integer'])]
     public function failOnHttpStatusCodes(array $statusCodes): static
     {
         $this->getBodyBag()->set('failOnHttpStatusCodes', $statusCodes);
@@ -31,6 +36,7 @@ trait FailOnTrait
      *
      * @param list<int<100, 599>> $statusCodes
      */
+    #[ExposeSemantic('fail_on_resource_http_status_codes', NodeType::Array, ['default_value' => [], 'prototype' => 'integer'])]
     public function failOnResourceHttpStatusCodes(array $statusCodes): static
     {
         $this->getBodyBag()->set('failOnResourceHttpStatusCodes', $statusCodes);
@@ -44,6 +50,7 @@ trait FailOnTrait
      *
      * @see https://gotenberg.dev/docs/routes#network-errors-chromium
      */
+    #[ExposeSemantic('fail_on_resource_loading_failed', NodeType::Boolean, ['default_null' => true])]
     public function failOnResourceLoadingFailed(bool $bool = true): static
     {
         $this->getBodyBag()->set('failOnResourceLoadingFailed', $bool);
@@ -57,10 +64,20 @@ trait FailOnTrait
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
      */
+    #[ExposeSemantic('fail_on_console_exceptions', NodeType::Boolean, ['default_null' => true])]
     public function failOnConsoleExceptions(bool $bool = true): static
     {
         $this->getBodyBag()->set('failOnConsoleExceptions', $bool);
 
         return $this;
+    }
+
+    #[NormalizeGotenbergPayload]
+    protected function normalizeFailOn(): \Generator
+    {
+        yield 'failOnHttpStatusCodes' => NormalizerFactory::json(false);
+        yield 'failOnResourceHttpStatusCodes' => NormalizerFactory::json(false);
+        yield 'failOnResourceLoadingFailed' => NormalizerFactory::bool();
+        yield 'failOnConsoleExceptions' => NormalizerFactory::bool();
     }
 }

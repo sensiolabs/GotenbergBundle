@@ -38,9 +38,4 @@ class MergePdfBuilder extends AbstractBuilder
 
         return $this;
     }
-
-    protected function normalize(): \Generator
-    {
-        yield '';
-    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Configurator;
+namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;

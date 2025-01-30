@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Configurator;
+namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
@@ -19,6 +19,7 @@ final class NodeBuilderDispatcher
             NodeType::Enum => EnumNodeBuilder::create($exposeSemantic),
             NodeType::Array => ArrayNodeBuilder::create($exposeSemantic),
             NodeType::Variable => VariableNodeBuilder::create($exposeSemantic),
+            NodeType::Parent => ParentNodeBuilder::create($exposeSemantic),
             default => throw new InvalidBuilderConfiguration(\sprintf('Unexpected node type "%s"', $exposeSemantic->nodeType->value)),
         };
     }

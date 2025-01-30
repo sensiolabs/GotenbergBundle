@@ -2,9 +2,15 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
+use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
@@ -20,6 +26,15 @@ trait CookieTrait
     /**
      * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
      */
+    #[ExposeSemantic('cookies', NodeType::Array, ['default_value' => [], 'prototype' => 'array', 'children' => [
+        ['name' => 'name', 'options' => ['required' => true]],
+        ['name' => 'value', 'options' => ['required' => true]],
+        ['name' => 'domain', 'options' => ['required' => true]],
+        ['name' => 'path'],
+        ['name' => 'secure', 'node_type' => NodeType::Boolean],
+        ['name' => 'httpOnly', 'node_type' => NodeType::Boolean],
+        ['name' => 'sameSite', 'node_type' => NodeType::Enum, 'options' => ['values' => ['Strict', 'Lax', 'None']]],
+    ]])]
     public function cookies(array $cookies): static
     {
         if ([] === $cookies) {
@@ -42,6 +57,10 @@ trait CookieTrait
      */
     public function addCookies(array $cookies): static
     {
+        if (!ValidatorFactory::cookies($cookies)) {
+            throw new InvalidBuilderConfiguration('Invalid cookies schema.');
+        }
+
         $c = $this->getBodyBag()->get('cookies', []);
 
         foreach ($cookies as $cookie) {
@@ -97,5 +116,11 @@ trait CookieTrait
             'value' => $request->cookies->get($name),
             'domain' => $request->getHost(),
         ]);
+    }
+
+    #[NormalizeGotenbergPayload]
+    protected function normalizeCookies(): \Generator
+    {
+        yield 'cookies' => NormalizerFactory::json(false);
     }
 }

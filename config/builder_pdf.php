@@ -23,29 +23,17 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     // HTML
-    $services->set('.sensiolabs_gotenberg.pdf_builder_configurator.html', HtmlPdfBuilderConfigurator::class)
-        ->args([
-            abstract_arg('default configuration'),
-        ])
-    ;
     $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->configurator(service('.sensiolabs_gotenberg.pdf_builder_configurator.html'))
         ->tag('sensiolabs_gotenberg.builder')
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 
     // Merge
-    $services->set('.sensiolabs_gotenberg.pdf_builder_configurator.merge', MergePdfBuilderConfigurator::class)
-        ->args([
-            abstract_arg('default configuration'),
-        ])
-    ;
     $services->set('.sensiolabs_gotenberg.pdf_builder.merge', MergePdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->configurator(service('.sensiolabs_gotenberg.pdf_builder_configurator.merge'))
         ->tag('sensiolabs_gotenberg.pdf_builder')
     ;
 

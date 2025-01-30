@@ -1,6 +1,6 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Configurator;
+namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Symfony\Component\Config\Definition\Builder\IntegerNodeDefinition;
@@ -13,7 +13,7 @@ final class VariableNodeBuilder implements NodeBuilderInterface
     public static function create(ExposeSemantic $exposeSemantic): VariableNodeDefinition
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefault('default_value', null);
+        $resolver->setDefined('default_value');
 
         $options = $resolver->resolve($exposeSemantic->options);
 
@@ -21,7 +21,9 @@ final class VariableNodeBuilder implements NodeBuilderInterface
 
         // TODO
 
-        $node->defaultValue($options['default_value']);
+        if (isset($options['default_value'])) {
+            $node->defaultValue($options['default_value']);
+        }
 
         return $node;
     }

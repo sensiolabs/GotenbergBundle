@@ -2,9 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
-use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 
 /**
  * See https://gotenberg.dev/docs/routes#html-file-into-pdf-route.
@@ -47,7 +48,8 @@ trait AssetTrait
         return $this;
     }
 
-    public function normalize(): \Generator
+    #[NormalizeGotenbergPayload]
+    protected function normalizeAsset(): \Generator
     {
         yield 'assets' => NormalizerFactory::asset();
     }

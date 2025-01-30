@@ -17,11 +17,9 @@ use Symfony\Component\Mime\Part\TextPart;
 abstract class GotenbergBuilderTestCase extends TestCase
 {
     protected const FIXTURE_DIR = __DIR__.'/../Fixtures';
-    protected const GOTENBERG_API_VERSION = '8.15.3';
 
     protected GotenbergClientAsserter $client;
     protected ContainerInterface $dependencies;
-    protected ContainerInterface $resolvers;
     /** @var T */
     protected BuilderInterface $builder;
 
@@ -31,15 +29,14 @@ abstract class GotenbergBuilderTestCase extends TestCase
 
         $this->client = new GotenbergClientAsserter();
         $this->dependencies = new Container();
-        $this->resolvers = new Container();
 
-        $this->builder = $this->createBuilder($this->client, $this->dependencies, $this->resolvers);
+        $this->builder = $this->createBuilder($this->client, $this->dependencies);
     }
 
     /**
      * @return T
      */
-    abstract protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies, ContainerInterface $resolvers): BuilderInterface;
+    abstract protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface;
 
     /**
      * @return T

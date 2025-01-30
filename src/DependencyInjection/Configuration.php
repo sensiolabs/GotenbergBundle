@@ -2,6 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
@@ -54,19 +56,19 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('pdf')
                             ->addDefaultsIfNotSet()
                             ->append(HtmlPdfBuilder::getConfiguration())
-                            ->append($this->addPdfUrlNode())
-                            ->append($this->addPdfMarkdownNode())
-                            ->append($this->addPdfOfficeNode())
-                            ->append($this->addPdfMergeNode())
-                            ->append($this->addPdfConvertNode())
-                            ->append($this->addPdfSplitNode())
+//                            ->append($this->addPdfUrlNode())
+//                            ->append($this->addPdfMarkdownNode())
+//                            ->append($this->addPdfOfficeNode())
+//                            ->append($this->addPdfMergeNode())
+//                            ->append($this->addPdfConvertNode())
+//                            ->append($this->addPdfSplitNode())
                         ->end()
-                        ->arrayNode('screenshot')
-                            ->addDefaultsIfNotSet()
-                            ->append($this->addScreenshotHtmlNode())
-                            ->append($this->addScreenshotUrlNode())
-                            ->append($this->addScreenshotMarkdownNode())
-                        ->end()
+//                        ->arrayNode('screenshot')
+//                            ->addDefaultsIfNotSet()
+//                            ->append($this->addScreenshotHtmlNode())
+//                            ->append($this->addScreenshotUrlNode())
+//                            ->append($this->addScreenshotMarkdownNode())
+//                        ->end()
                     ->end()
                 ->end()
             ->end()

@@ -4,11 +4,13 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\Configurator\NodeBuilderDispatcher;
-use Sensiolabs\GotenbergBundle\PayloadResolver\Payload;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NodeBuilderDispatcher;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -23,6 +25,8 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     private readonly BodyBag $bodyBag;
     private readonly HeadersBag $headersBag;
 
+    private readonly \ReflectionClass $reflection;
+
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     /** @var ProcessorInterface<mixed>|null */
@@ -34,18 +38,22 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     ) {
         $this->bodyBag = new BodyBag();
         $this->headersBag = new HeadersBag();
+
+        $this->reflection = new \ReflectionClass(static::class);
     }
 
     abstract protected function getEndpoint(): string;
 
-    abstract protected function normalize(): \Generator;
-
     public static function getConfiguration(): NodeDefinition
     {
-        $treeBuilder = new TreeBuilder('html');
-        $root = $treeBuilder->getRootNode()->addDefaultsIfNotSet();
-
         $reflection = new \ReflectionClass(static::class);
+        $nodeAttributes = $reflection->getAttributes(SemanticNode::class);
+
+        /** @var SemanticNode $attribute */
+        $semanticNode = $nodeAttributes[0]->newInstance();
+
+        $treeBuilder = new TreeBuilder($semanticNode->name);
+        $root = $treeBuilder->getRootNode()->addDefaultsIfNotSet();
 
         foreach (array_reverse($reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $methodR) {
             $attributes = $methodR->getAttributes(ExposeSemantic::class);
@@ -58,7 +66,39 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
             $root->append(NodeBuilderDispatcher::getNode($attribute));
         }
 
+        if (HtmlPdfBuilder::class === static::class) {
+            $root->validate()->ifTrue(function ($v): bool {
+                return isset($v['paper_standard_size']) && (isset($v['paper_height']) || isset($v['paper_width']));
+            })->thenInvalid('You cannot use "paper_standard_size" when "paper_height", "paper_width" or both are set".');
+        }
+
         return $root;
+    }
+
+    /**
+     * To set configurations by an array of configurations.
+     *
+     * @param array<string, mixed> $configurations
+     */
+    public function setConfigurations(array $configurations): static
+    {
+        foreach (array_reverse($this->reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $methodR) {
+            $attributes = $methodR->getAttributes(ExposeSemantic::class);
+            if (\count($attributes) === 0) {
+                continue;
+            }
+
+            /** @var ExposeSemantic $attribute */
+            $attribute = $attributes[0]->newInstance();
+
+            if (!\array_key_exists($attribute->name, $configurations)) {
+                continue;
+            }
+
+            $this->{$methodR->getName()}($configurations[$attribute->name]);
+        }
+
+        return $this;
     }
 
     /**
@@ -87,8 +127,8 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generate(): GotenbergFileResult
     {
-        $this->validatePayload();
-        $payloadBody = iterator_to_array($this->resolvePayloadBody());
+        $this->validatePayloadBody();
+        $payloadBody = iterator_to_array($this->normalizePayloadBody());
 
         $response = $this->client->call(
             $this->getEndpoint(),
@@ -108,8 +148,8 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generateAsync(): GotenbergAsyncResult
     {
-        $this->validatePayload();
-        $payloadBody = iterator_to_array($this->resolvePayloadBody());
+        $this->validatePayloadBody();
+        $payloadBody = iterator_to_array($this->normalizePayloadBody());
 
         $response = $this->client->call(
             $this->getEndpoint(),
@@ -134,28 +174,36 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         return $this->headersBag;
     }
 
-    protected function validatePayload(): void
+    protected function validatePayloadBody(): void
     {
     }
 
-    private function resolvePayloadBody(): \Generator
+    private function normalizePayloadBody(): \Generator
     {
-        foreach ($this->normalize() as $key => $normalizer) {
-            if ($this->getBodyBag()->get($key) === null) {
+        foreach (array_reverse($this->reflection->getMethods(\ReflectionMethod::IS_PROTECTED)) as $methodR) {
+            $attributes = $methodR->getAttributes(NormalizeGotenbergPayload::class);
+
+            if (\count($attributes) === 0) {
                 continue;
             }
 
-            if (!\is_callable($normalizer)) {
-                throw new \RuntimeException(\sprintf('Le normalizer pour "%s" n\'est pas une fonction valide.', $key));
-            }
-
-            if ('assets' === $key && \count($this->getBodyBag()->get($key)) > 1) {
-                $multipleFiles = $normalizer($key, $this->getBodyBag()->get($key));
-                foreach ($multipleFiles as $file) {
-                    yield $file;
+            foreach ($this->{$methodR->getName()}() as $key => $normalizer) {
+                if ($this->getBodyBag()->get($key) === null) {
+                    continue;
                 }
-            } else {
-                yield $normalizer($key, $this->getBodyBag()->get($key));
+
+                if (!\is_callable($normalizer)) {
+                    throw new \RuntimeException(\sprintf('Normalizer "%s" is not a valid callable function.', $key));
+                }
+
+                if ('assets' === $key && \count($this->getBodyBag()->get($key)) > 1) {
+                    $multipleFiles = $normalizer($key, $this->getBodyBag()->get($key));
+                    foreach ($multipleFiles as $file) {
+                        yield $file;
+                    }
+                } else {
+                    yield $normalizer($key, $this->getBodyBag()->get($key));
+                }
             }
         }
     }

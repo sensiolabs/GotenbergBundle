@@ -2,14 +2,14 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
-use Sensiolabs\GotenbergBundle\Builder\Configuration;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
-use Sensiolabs\GotenbergBundle\PayloadResolver\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 
 trait ContentTrait
@@ -109,7 +109,8 @@ trait ContentTrait
         return $this;
     }
 
-    protected function normalize(): \Generator
+    #[NormalizeGotenbergPayload]
+    protected function normalizeContent(): \Generator
     {
         yield 'header.html' => NormalizerFactory::content();
         yield 'index.html' => NormalizerFactory::content();

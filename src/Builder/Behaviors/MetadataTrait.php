@@ -2,7 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
 
 /**
  * @see https://gotenberg.dev/docs/routes#pdfa-chromium
@@ -22,6 +26,20 @@ trait MetadataTrait
      *
      * @param array<string, mixed> $metadata
      */
+    #[ExposeSemantic('metadata', NodeType::Parent, ['children' => [
+        ['name' => 'Author'],
+        ['name' => 'Copyright'],
+        ['name' => 'CreationDate'],
+        ['name' => 'Creator'],
+        ['name' => 'Keywords'],
+        ['name' => 'Marked', 'node_type' => NodeType::Boolean],
+        ['name' => 'ModDate'],
+        ['name' => 'PDFVersion'],
+        ['name' => 'Producer'],
+        ['name' => 'Subject'],
+        ['name' => 'Title'],
+        ['name' => 'Trapped', 'node_type' => NodeType::Enum, 'options' => ['values' => ['True', 'False', 'Unknown']]],
+    ]])]
     public function metadata(array $metadata): static
     {
         $this->getBodyBag()->set('metadata', $metadata);
@@ -37,5 +55,11 @@ trait MetadataTrait
         $this->getBodyBag()->set('metadata', [$key => $value] + $this->getBodyBag()->get('metadata', []));
 
         return $this;
+    }
+
+    #[NormalizeGotenbergPayload]
+    protected function normalizeMetadata(): \Generator
+    {
+        yield 'metadata' => NormalizerFactory::json();
     }
 }

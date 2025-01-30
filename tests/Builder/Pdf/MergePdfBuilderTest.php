@@ -18,15 +18,13 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 #[CoversClass(MergePdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(MergePdfPayloadResolver::class)]
 class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
-    protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies, ContainerInterface $resolvers): BuilderInterface
+    protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
     {
         $dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(__DIR__, 'fixtures'));
-        $this->resolvers->set('.sensiolabs_gotenberg.payload_resolver.merge_pdf_builder', new MergePdfPayloadResolver(self::GOTENBERG_API_VERSION));
 
-        return new MergePdfBuilder($client, $dependencies, $resolvers);
+        return new MergePdfBuilder($client, $dependencies);
     }
 
     public function testFiles(): void

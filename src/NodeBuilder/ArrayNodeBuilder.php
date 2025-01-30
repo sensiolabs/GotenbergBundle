@@ -1,11 +1,10 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Configurator;
+namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\IntegerNode;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ArrayNodeBuilder implements NodeBuilderInterface
@@ -14,10 +13,10 @@ final class ArrayNodeBuilder implements NodeBuilderInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'default_value' => [],
             'normalize_keys' => true,
         ]);
 
+        $resolver->setDefined('default_value');
         $resolver->setAllowedTypes('default_value', 'array');
 
         $resolver->setDefined('use_attribute_as_key');
@@ -34,8 +33,8 @@ final class ArrayNodeBuilder implements NodeBuilderInterface
             $childrenResolver->setPrototype(true);
 
             $childrenResolver->setDefined('node_type');
-            $childrenResolver->setAllowedTypes('node_type', 'string');
-            $childrenResolver->setAllowedValues('node_type', array_map(static fn (NodeType $case): string => $case->value, NodeType::cases()));
+            $childrenResolver->setAllowedValues('node_type', NodeType::cases());
+            $childrenResolver->setDefault('node_type', NodeType::Scalar);
 
             $childrenResolver->setDefined('name');
             $childrenResolver->setAllowedTypes('name', 'string');
@@ -56,25 +55,22 @@ final class ArrayNodeBuilder implements NodeBuilderInterface
         }
 
         if (isset($options['prototype'])) {
-            match ($options['prototype']) {
+            $prototype = match ($options['prototype']) {
                 'integer' => $node->integerPrototype(),
                 'array' => $node->arrayPrototype(),
                 'variable' => $node->variablePrototype(),
             };
-        }
 
-        if (isset($options['children']) && \count($options['children']) > 0) {
+            if (isset($options['children']) && \count($options['children']) > 0) {
+                foreach ($options['children'] as $child) {
+                    $childNode = NodeBuilderDispatcher::getNode(
+                        new ExposeSemantic($child['name'], $child['node_type'], $child['options']),
+                    );
 
-            foreach ($options['children'] as $child) {
-                $childNode = NodeBuilderDispatcher::getNode(
-                    new ExposeSemantic($child['name'], NodeType::from($child['node_type']), $child['options']),
-                );
-
-                $node->children()->append($childNode);
+                    $prototype->append($childNode);
+                }
             }
         }
-
-        $node->defaultValue($options['default_value']);
 
         return $node;
     }
