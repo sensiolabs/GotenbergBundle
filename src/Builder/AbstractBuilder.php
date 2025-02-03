@@ -61,8 +61,10 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                 continue;
             }
 
+
             /** @var ExposeSemantic $attribute */
             $attribute = $attributes[0]->newInstance();
+//            dd($attribute);
             $root->append(NodeBuilderDispatcher::getNode($attribute));
         }
 

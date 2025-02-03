@@ -68,7 +68,18 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'skip_network_idle_event' => true,
                     'pdf_format' => PdfFormat::Pdf1b,
                     'pdf_universal_access' => true,
-                    'download_from' => [],
+                    'download_from' => [
+                        [
+                            'url' => 'http://example.com',
+                            'extraHttpHeaders' => [
+                                'MyHeader' => 'MyValue',
+                            ],
+                        ],
+                    ],
+                    'webhook' => [
+                        'config_name' => 'bar',
+                        'extra_http_headers' => [],
+                    ]
                 ],
                 //                'url' => [
                 //                    'paper_width' => 21,
@@ -320,48 +331,43 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         'metadata' => [
                             'Author' => 'SensioLabs HTML',
                         ],
-                        'cookies' => [],
-                        'extra_http_headers' => [],
-                        'fail_on_http_status_codes' => [],
-                        'fail_on_resource_http_status_codes' => [],
-                        'download_from' => [],
                     ],
-//                    'url' => [
-//                        'metadata' => [
-//                            'Author' => 'SensioLabs URL',
-//                        ],
-//                        'cookies' => [],
-//                        'extra_http_headers' => [],
-//                        'fail_on_http_status_codes' => [],
-//                        'fail_on_resource_http_status_codes' => [],
-//                        'download_from' => [],
-//                    ],
-//                    'markdown' => [
-//                        'metadata' => [
-//                            'Author' => 'SensioLabs MARKDOWN',
-//                        ],
-//                        'cookies' => [],
-//                        'extra_http_headers' => [],
-//                        'fail_on_http_status_codes' => [],
-//                        'fail_on_resource_http_status_codes' => [],
-//                        'download_from' => [],
-//                    ],
-//                    'office' => [
-//                        'metadata' => [
-//                            'Author' => 'SensioLabs OFFICE',
-//                        ],
-//                        'download_from' => [],
-//                    ],
-//                    'merge' => [
-//                        'metadata' => [
-//                            'Author' => 'SensioLabs MERGE',
-//                        ],
-//                        'download_from' => [],
-//                    ],
-//                    'convert' => [
-//                        'pdf_format' => 'PDF/A-2b',
-//                        'download_from' => [],
-//                    ],
+                    //                    'url' => [
+                    //                        'metadata' => [
+                    //                            'Author' => 'SensioLabs URL',
+                    //                        ],
+                    //                        'cookies' => [],
+                    //                        'extra_http_headers' => [],
+                    //                        'fail_on_http_status_codes' => [],
+                    //                        'fail_on_resource_http_status_codes' => [],
+                    //                        'download_from' => [],
+                    //                    ],
+                    //                    'markdown' => [
+                    //                        'metadata' => [
+                    //                            'Author' => 'SensioLabs MARKDOWN',
+                    //                        ],
+                    //                        'cookies' => [],
+                    //                        'extra_http_headers' => [],
+                    //                        'fail_on_http_status_codes' => [],
+                    //                        'fail_on_resource_http_status_codes' => [],
+                    //                        'download_from' => [],
+                    //                    ],
+                    //                    'office' => [
+                    //                        'metadata' => [
+                    //                            'Author' => 'SensioLabs OFFICE',
+                    //                        ],
+                    //                        'download_from' => [],
+                    //                    ],
+                    //                    'merge' => [
+                    //                        'metadata' => [
+                    //                            'Author' => 'SensioLabs MERGE',
+                    //                        ],
+                    //                        'download_from' => [],
+                    //                    ],
+                    //                    'convert' => [
+                    //                        'pdf_format' => 'PDF/A-2b',
+                    //                        'download_from' => [],
+                    //                    ],
                 ],
             ],
         ]], $containerBuilder);
@@ -375,165 +381,146 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'metadata' => [
                     'Author' => 'SensioLabs HTML',
                 ],
-                'cookies' => [],
-                'extra_http_headers' => [],
-                'fail_on_http_status_codes' => [],
-                'fail_on_resource_http_status_codes' => [],
-                'download_from' => [],
             ],
-//            'url' => [
-//                'metadata' => [
-//                    'Author' => 'SensioLabs URL',
-//                ],
-//                'cookies' => [],
-//                'extra_http_headers' => [],
-//                'fail_on_http_status_codes' => [],
-//                'fail_on_resource_http_status_codes' => [],
-//                'download_from' => [],
-//            ],
-//            'markdown' => [
-//                'metadata' => [
-//                    'Author' => 'SensioLabs MARKDOWN',
-//                ],
-//                'cookies' => [],
-//                'extra_http_headers' => [],
-//                'fail_on_http_status_codes' => [],
-//                'fail_on_resource_http_status_codes' => [],
-//                'download_from' => [],
-//            ],
-//            'office' => [
-//                'metadata' => [
-//                    'Author' => 'SensioLabs OFFICE',
-//                ],
-//                'download_from' => [],
-//            ],
-//            'merge' => [
-//                'metadata' => [
-//                    'Author' => 'SensioLabs MERGE',
-//                ],
-//                'download_from' => [],
-//            ],
-//            'convert' => [
-//                'pdf_format' => 'PDF/A-2b',
-//                'download_from' => [],
-//            ],
-//            'split' => [],
+            //            'url' => [
+            //                'metadata' => [
+            //                    'Author' => 'SensioLabs URL',
+            //                ],
+            //                'cookies' => [],
+            //                'extra_http_headers' => [],
+            //                'fail_on_http_status_codes' => [],
+            //                'fail_on_resource_http_status_codes' => [],
+            //                'download_from' => [],
+            //            ],
+            //            'markdown' => [
+            //                'metadata' => [
+            //                    'Author' => 'SensioLabs MARKDOWN',
+            //                ],
+            //                'cookies' => [],
+            //                'extra_http_headers' => [],
+            //                'fail_on_http_status_codes' => [],
+            //                'fail_on_resource_http_status_codes' => [],
+            //                'download_from' => [],
+            //            ],
+            //            'office' => [
+            //                'metadata' => [
+            //                    'Author' => 'SensioLabs OFFICE',
+            //                ],
+            //                'download_from' => [],
+            //            ],
+            //            'merge' => [
+            //                'metadata' => [
+            //                    'Author' => 'SensioLabs MERGE',
+            //                ],
+            //                'download_from' => [],
+            //            ],
+            //            'convert' => [
+            //                'pdf_format' => 'PDF/A-2b',
+            //                'download_from' => [],
+            //            ],
+            //            'split' => [],
         ], $dataCollectorOptions);
     }
 
-    //    public function testBuilderWebhookConfiguredWithDefaultConfiguration(): void
-    //    {
-    //        $extension = new SensiolabsGotenbergExtension();
-    //
-    //        $containerBuilder = $this->getContainerBuilder();
-    //        $extension->load([['http_client' => 'http_client']], $containerBuilder);
-    //
-    //        self::assertEmpty($containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')->getMethodCalls());
-    //
-    //        $buildersIds = [
-    //            '.sensiolabs_gotenberg.pdf_builder.html',
-    //            '.sensiolabs_gotenberg.pdf_builder.url',
-    //            '.sensiolabs_gotenberg.pdf_builder.markdown',
-    //            '.sensiolabs_gotenberg.pdf_builder.office',
-    //            '.sensiolabs_gotenberg.screenshot_builder.html',
-    //            '.sensiolabs_gotenberg.screenshot_builder.url',
-    //            '.sensiolabs_gotenberg.screenshot_builder.markdown',
-    //        ];
-    //
-    //        foreach ($buildersIds as $builderId) {
-    //            $builderDefinition = $containerBuilder->getDefinition($builderId);
-    //            $methodCalls = $builderDefinition->getMethodCalls();
-    //            self::assertNotContains('webhookConfiguration', $methodCalls);
-    //        }
-    //    }
-    //
-    //    public function testBuilderWebhookConfiguredWithValidConfiguration(): void
-    //    {
-    //        $extension = new SensiolabsGotenbergExtension();
-    //
-    //        $containerBuilder = $this->getContainerBuilder();
-    //        $extension->load([[
-    //            'http_client' => 'http_client',
-    //            'webhook' => [
-    //                'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
-    //                'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
-    //            ],
-    //            'default_options' => [
-    //                'webhook' => 'foo',
-    //                'pdf' => [
-    //                    'html' => ['webhook' => 'bar'],
-    //                    'url' => ['webhook' => 'baz'],
-    //                    'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
-    //                ],
-    //                'screenshot' => [
-    //                    'html' => ['webhook' => 'foo'],
-    //                    'url' => ['webhook' => 'bar'],
-    //                    'markdown' => ['webhook' => 'baz'],
-    //                ],
-    //            ],
-    //        ]], $containerBuilder);
-    //
-    //        $expectedConfigurationMapping = [
-    //            '.sensiolabs_gotenberg.pdf_builder.html' => 'bar',
-    //            '.sensiolabs_gotenberg.pdf_builder.url' => 'baz',
-    //            '.sensiolabs_gotenberg.pdf_builder.markdown' => '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration',
-    //            '.sensiolabs_gotenberg.pdf_builder.office' => 'foo',
-    //            '.sensiolabs_gotenberg.screenshot_builder.html' => 'foo',
-    //            '.sensiolabs_gotenberg.screenshot_builder.url' => 'bar',
-    //            '.sensiolabs_gotenberg.screenshot_builder.markdown' => 'baz',
-    //        ];
-    //        array_map(static function (string $builderId, string $expectedConfigurationName) use ($containerBuilder): void {
-    //            foreach ($containerBuilder->getDefinition($builderId)->getMethodCalls() as $methodCall) {
-    //                [$name, $arguments] = $methodCall;
-    //                if ('webhookConfiguration' === $name) {
-    //                    self::assertSame($expectedConfigurationName, $arguments[0], "Wrong expected configuration for builder '{$builderId}'.");
-    //
-    //                    return;
-    //                }
-    //            }
-    //        }, array_keys($expectedConfigurationMapping), array_values($expectedConfigurationMapping));
-    //
-    //        $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
-    //        $methodCalls = $webhookConfigurationRegistryDefinition->getMethodCalls();
-    //        self::assertCount(3, $methodCalls);
-    //        foreach ($methodCalls as $methodCall) {
-    //            [$name, $arguments] = $methodCall;
-    //            self::assertSame('add', $name);
-    //            self::assertContains($arguments[0], ['foo', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration']);
-    //            self::assertSame(match ($arguments[0]) {
-    //                'foo' => [
-    //                    'success' => [
-    //                        'url' => 'https://sensiolabs.com/webhook',
-    //                        'method' => null,
-    //                    ],
-    //                    'error' => [
-    //                        'route' => ['simple_route', []],
-    //                        'method' => null,
-    //                    ],
-    //                    'extra_http_headers' => [],
-    //                ],
-    //                'baz' => [
-    //                    'success' => [
-    //                        'route' => ['array_route', ['param1', 'param2']],
-    //                        'method' => null,
-    //                    ],
-    //                    'extra_http_headers' => [],
-    //                ],
-    //                '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration' => [
-    //                    'success' => [
-    //                        'url' => 'https://sensiolabs.com/webhook-on-the-fly',
-    //                        'method' => null,
-    //                    ],
-    //                    'error' => [
-    //                        'route' => ['simple_route', []],
-    //                        'method' => null,
-    //                    ],
-    //                    'extra_http_headers' => [],
-    //                ],
-    //                default => self::fail('Unexpected webhook configuration'),
-    //            }, $arguments[1], "Configuration mismatch for webhook '{$arguments[0]}'.");
-    //        }
-    //    }
+        public function testBuilderWebhookConfiguredWithValidConfiguration(): void
+        {
+            $extension = new SensiolabsGotenbergExtension();
+
+            $containerBuilder = $this->getContainerBuilder();
+            $extension->load([[
+                'http_client' => 'http_client',
+                'webhook' => [
+                    'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
+                    'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
+                ],
+                'default_options' => [
+                    'webhook' => 'foo',
+                    'pdf' => [
+                        'html' => ['webhook' => ['config_name' => 'bar']],
+//                        'url' => ['webhook' => 'baz'],
+//                        'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
+                    ],
+//                    'screenshot' => [
+//                        'html' => ['webhook' => 'foo'],
+//                        'url' => ['webhook' => 'bar'],
+//                        'markdown' => ['webhook' => 'baz'],
+//                    ],
+                ],
+            ]], $containerBuilder);
+
+            $list = [
+                'pdf' => [
+                    'html' => [
+                        'webhook' => [
+                            'config_name' => 'bar',
+                            'extra_http_headers' => [],
+                        ]
+                    ],
+                    //                'url' => [],
+                    //                'markdown' => [],
+                    //                'office' => [],
+                    //                'merge' => [],
+                    //                'convert' => [],
+                ],
+                //            'screenshot' => [
+                //                'html' => [],
+                //                'url' => [],
+                //                'markdown' => [],
+                //            ],
+            ];
+
+            foreach ($list as $builderType => $builder) {
+                foreach ($builder as $builderName => $expectedConfig) {
+                    $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
+
+                    foreach ($definition->getMethodCalls() as $methodCall) {
+                        self::assertSame('setConfigurations', $methodCall[0]);
+                        self::assertSame([$expectedConfig], $methodCall[1]);
+                    }
+                }
+            }
+
+//            $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
+//            $methodCalls = $webhookConfigurationRegistryDefinition->getMethodCalls();
+//            self::assertCount(3, $methodCalls);
+//            foreach ($methodCalls as $methodCall) {
+//                [$name, $arguments] = $methodCall;
+//                self::assertSame('add', $name);
+//                self::assertContains($arguments[0], ['foo', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration']);
+//                self::assertSame(match ($arguments[0]) {
+//                    'foo' => [
+//                        'success' => [
+//                            'url' => 'https://sensiolabs.com/webhook',
+//                            'method' => null,
+//                        ],
+//                        'error' => [
+//                            'route' => ['simple_route', []],
+//                            'method' => null,
+//                        ],
+//                        'extra_http_headers' => [],
+//                    ],
+//                    'baz' => [
+//                        'success' => [
+//                            'route' => ['array_route', ['param1', 'param2']],
+//                            'method' => null,
+//                        ],
+//                        'extra_http_headers' => [],
+//                    ],
+//                    '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration' => [
+//                        'success' => [
+//                            'url' => 'https://sensiolabs.com/webhook-on-the-fly',
+//                            'method' => null,
+//                        ],
+//                        'error' => [
+//                            'route' => ['simple_route', []],
+//                            'method' => null,
+//                        ],
+//                        'extra_http_headers' => [],
+//                    ],
+//                    default => self::fail('Unexpected webhook configuration'),
+//                }, $arguments[1], "Configuration mismatch for webhook '{$arguments[0]}'.");
+//            }
+        }
 
     /**
      * @return array<int, array{
@@ -569,7 +556,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'baz' => ['success' => ['url' => 'https://sensiolabs.com/single-url-webhook']],
                 ],
                 'default_options' => [
-                    //                    'webhook' => 'foo',
+                    'webhook' => 'foo',
                     'pdf' => [
                         'html' => [
                             'paper_standard_size' => 'A4',
@@ -603,7 +590,20 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'skip_network_idle_event' => true,
                             'pdf_format' => PdfFormat::Pdf1b->value,
                             'pdf_universal_access' => true,
-                            //                            'webhook' => 'bar',
+                            'download_from' => [
+                                [
+                                    'url' => 'http://example.com',
+                                    'extraHttpHeaders' => [
+                                        [
+                                            'name' => 'MyHeader',
+                                            'value' => 'MyValue',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'webhook' => [
+                                'config_name' => 'bar'
+                            ],
                         ],
                         //                        'url' => [
                         //                            'paper_width' => 21,

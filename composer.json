@@ -62,6 +62,7 @@
     },
     "suggest": {
         "symfony/monolog-bundle": "Enables logging througout the generating process.",
+        "symfony/routing": "Allows you to use webhook to generate URL or route."
         "symfony/twig-bundle": "Allows you to use Twig to render templates into PDF.",
         "monolog/monolog": "Enables logging througout the generating process.",
         "async-aws/s3": "Upload any file to aws s3 compatible endpoints supporting multi part upload without memory overhead.",

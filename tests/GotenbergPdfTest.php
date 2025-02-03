@@ -86,10 +86,7 @@ final class GotenbergPdfTest extends KernelTestCase
 
         $formFields = $builder->getBodyBag()->all();
 
-        self::assertCount(5, $formFields);
-
-        self::assertArrayHasKey('failOnResourceHttpStatusCodes', $formFields);
-        self::assertSame([], $formFields['failOnResourceHttpStatusCodes']);
+        self::assertCount(3, $formFields);
 
         self::assertArrayHasKey('marginTop', $formFields);
         self::assertSame('3in', $formFields['marginTop']);

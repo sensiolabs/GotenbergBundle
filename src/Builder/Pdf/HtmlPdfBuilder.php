@@ -14,7 +14,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumTrait;
-//    use WebhookTrait;
+    use WebhookTrait;
 
     protected function getEndpoint(): string
     {

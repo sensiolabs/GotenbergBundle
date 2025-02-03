@@ -11,10 +11,10 @@ trait UrlGeneratorAwareTrait
     protected function getUrlGenerator(): UrlGeneratorInterface
     {
         if (
-            !$this->dependencies->has('urlGenerator')
-            || !($urlGenerator = $this->dependencies->get('urlGenerator')) instanceof UrlGeneratorInterface
+            !$this->dependencies->has('router.default')
+            || !($urlGenerator = $this->dependencies->get('router.default')) instanceof UrlGeneratorInterface
         ) {
-            throw new \LogicException(\sprintf('UrlGenerator is required to use "%s" method. Try to run "composer require symfony/router".', __METHOD__));
+            throw new \LogicException(\sprintf('UrlGenerator is required to use "%s" method. Try to run "composer require symfony/routing".', __METHOD__));
         }
 
         return $urlGenerator;
