@@ -103,7 +103,7 @@ class SensiolabsGotenbergExtension extends Extension
                     //                    'url' => $this->cleanUserOptions($config['default_options']['pdf']['url']),
                     //                    'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),
                     //                    'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
-                    //                    'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
+                    'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
                     //                    'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
                     //                    'split' => $this->cleanUserOptions($config['default_options']['pdf']['split']),
                 ])

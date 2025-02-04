@@ -3,26 +3,25 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
+#[SemanticNode('merge')]
 class MergePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
     use DownloadFromTrait;
     use MetadataTrait;
     use PdfFormatTrait;
-
-    protected function getEndpoint(): string
-    {
-        return '/forms/pdfengines/merge';
-    }
 
     /**
      * Add PDF files to merge.
@@ -31,11 +30,30 @@ class MergePdfBuilder extends AbstractBuilder
      */
     public function files(string ...$paths): self
     {
-        $this->getBodyBag()->set('files', array_map(
-            fn (string $path): \SplFileInfo => new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path)),
-            $paths,
-        ));
+        foreach ($paths as $path) {
+            $files[$path] = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+        }
+
+        $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
+    }
+
+    protected function getEndpoint(): string
+    {
+        return '/forms/pdfengines/merge';
+    }
+
+    #[NormalizeGotenbergPayload]
+    protected function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
+    }
+
+    protected function validatePayloadBody(): void
+    {
+        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('At least one PDF file is required.');
+        }
     }
 }

@@ -2,9 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
@@ -56,6 +55,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('pdf')
                             ->addDefaultsIfNotSet()
                             ->append(HtmlPdfBuilder::getConfiguration())
+                            ->append(MergePdfBuilder::getConfiguration())
 //                            ->append($this->addPdfUrlNode())
 //                            ->append($this->addPdfMarkdownNode())
 //                            ->append($this->addPdfOfficeNode())
@@ -627,17 +627,17 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder->getRootNode();
     }
 
-    private function addPdfMergeNode(): NodeDefinition
-    {
-        $treeBuilder = new TreeBuilder('merge');
-        $this->addPdfFormatNode($treeBuilder->getRootNode());
-        $treeBuilder->getRootNode()
-            ->append($this->addPdfMetadataNode())
-            ->append($this->addDownloadFromNode())
-        ->end();
-
-        return $treeBuilder->getRootNode();
-    }
+//    private function addPdfMergeNode(): NodeDefinition
+//    {
+//        $treeBuilder = new TreeBuilder('merge');
+//        $this->addPdfFormatNode($treeBuilder->getRootNode());
+//        $treeBuilder->getRootNode()
+//            ->append($this->addPdfMetadataNode())
+//            ->append($this->addDownloadFromNode())
+//        ->end();
+//
+//        return $treeBuilder->getRootNode();
+//    }
 
     private function addPdfSplitNode(): NodeDefinition
     {
