@@ -26,7 +26,7 @@ trait MetadataTrait
      *
      * @param array<string, mixed> $metadata
      */
-    #[ExposeSemantic('metadata', NodeType::Parent, ['children' => [
+    #[ExposeSemantic('metadata', NodeType::Array, ['has_parent_node' => true, 'children' => [
         ['name' => 'Author'],
         ['name' => 'Copyright'],
         ['name' => 'CreationDate'],

@@ -61,10 +61,9 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                 continue;
             }
 
-
             /** @var ExposeSemantic $attribute */
             $attribute = $attributes[0]->newInstance();
-//            dd($attribute);
+
             $root->append(NodeBuilderDispatcher::getNode($attribute));
         }
 
@@ -203,9 +202,10 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                     foreach ($multipleFiles as $file) {
                         yield $file;
                     }
-                } else {
-                    yield $normalizer($key, $this->getBodyBag()->get($key));
+                    continue;
                 }
+
+                yield $normalizer($key, $this->getBodyBag()->get($key));
             }
         }
     }

@@ -11,5 +11,4 @@ enum NodeType: string
     case Enum = 'enum';
     case Array = 'array';
     case Variable = 'variable';
-    case Parent = 'parent';
 }

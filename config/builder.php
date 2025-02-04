@@ -20,7 +20,7 @@ return static function (ContainerConfigurator $container): void {
                 'asset_base_dir_formatter' => service('.sensiolabs_gotenberg.asset.base_dir_formatter'),
                 'logger' => service('logger')->nullOnInvalid(),
                 'request_stack' => service('request_stack')->nullOnInvalid(),
-                'router' => service('router')->nullOnInvalid(),
+                'router' => service('router.default')->nullOnInvalid(),
                 'twig' => service('twig')->nullOnInvalid(),
             ]),
         ])

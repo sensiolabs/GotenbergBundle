@@ -18,14 +18,14 @@ trait WebhookTrait
 
     abstract protected function getHeadersBag(): HeadersBag;
 
-    #[ExposeSemantic('webhook', NodeType::Parent, ['children' => [
+    #[ExposeSemantic('webhook', NodeType::Array, ['has_parent_node' => true, 'children' => [
         ['name' => 'config_name', 'options' => ['restrict_to' => 'string']],
-        ['name' => 'success', 'node_type' => NodeType::Parent, 'options' => ['children' => [
+        ['name' => 'success', 'node_type' => NodeType::Array, 'options' => ['has_parent_node' => true, 'children' => [
             ['name' => 'url', 'options' => ['restrict_to' => 'string']],
             ['name' => 'route', 'node_type' => NodeType::Variable],
             ['name' => 'method', 'node_type' => NodeType::Enum, 'options' => ['values' => ['POST', 'PUT', 'PATCH']]],
         ]]],
-        ['name' => 'error', 'node_type' => NodeType::Parent, 'options' => ['children' => [
+        ['name' => 'error', 'node_type' => NodeType::Array, 'options' => ['has_parent_node' => true, 'children' => [
             ['name' => 'url', 'options' => ['restrict_to' => 'string']],
             ['name' => 'route', 'node_type' => NodeType::Variable],
             ['name' => 'method', 'node_type' => NodeType::Enum, 'options' => ['values' => ['POST', 'PUT', 'PATCH']]],
