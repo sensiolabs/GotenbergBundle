@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
 use Symfony\Component\Config\FileLocator;
@@ -12,16 +13,13 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
 
 /**
+ * @phpstan-import-type webhookConfiguration from WebhookTrait
  * @phpstan-type SensiolabsGotenbergConfiguration array{
  *      assets_directory: string,
- *      http_client: string,
+ *      http_client?: string,
  *      request_context?: array{base_uri?: string},
  *      controller_listener: bool,
- *      webhook: array<string, array{
- *          success: WebhookDefinition,
- *          error?: WebhookDefinition,
- *          extra_http_headers?: array<string, mixed>
- *      }>,
+ *      webhook: webhookConfiguration,
  *      default_options: array{
  *          webhook?: string,
  *          pdf: array{
@@ -40,7 +38,6 @@ use Symfony\Component\Routing\RequestContext;
  *          }
  *      }
  *  }
- * @phpstan-type WebhookDefinition array{url?: string, route?: array{0: string, 1: array<string, mixed>}, method?: 'POST'|'PUT'|'PATCH'|null}
  */
 class SensiolabsGotenbergExtension extends Extension
 {
@@ -188,8 +185,9 @@ class SensiolabsGotenbergExtension extends Extension
     }
 
     /**
-     * @param array<string, array{success: WebhookDefinition, error?: WebhookDefinition, extra_http_headers?: array<string, mixed>}> $webhookConfig
+     * @param webhookConfiguration $webhookConfig
      * @param array<string, mixed> $serviceConfig
+     * @return array<string, mixed>
      */
     private function processWebhookOptions(array $webhookConfig, string|null $webhookDefaultConfigName, array $serviceConfig): array
     {

@@ -77,20 +77,20 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addPdfHtmlNode(): NodeDefinition
-    {
-        $treebuilder = new TreeBuilder('html');
-
-        $treebuilder
-            ->getRootNode()
-            ->addDefaultsIfNotSet()
-        ;
-
-        $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
-        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
-
-        return $treebuilder->getRootNode();
-    }
+//    private function addPdfHtmlNode(): NodeDefinition
+//    {
+//        $treebuilder = new TreeBuilder('html');
+//
+//        $treebuilder
+//            ->getRootNode()
+//            ->addDefaultsIfNotSet()
+//        ;
+//
+//        $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
+//        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
+//
+//        return $treebuilder->getRootNode();
+//    }
 
     private function addPdfUrlNode(): NodeDefinition
     {

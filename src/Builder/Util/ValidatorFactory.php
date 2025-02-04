@@ -10,12 +10,12 @@ class ValidatorFactory
     public static function range(string $value): bool
     {
         // See https://regex101.com/r/XUK2Ip/1
-        return preg_match('/^ *(\d+ *(- *\d+)? *, *)*\d+ *(- *\d+)? *$/', $value);
+        return (bool) preg_match('/^ *(\d+ *(- *\d+)? *, *)*\d+ *(- *\d+)? *$/', $value);
     }
 
     public static function waitDelay(string $value): bool
     {
-        return preg_match('/^\d+(s|ms)$/', $value);
+        return (bool) preg_match('/^\d+(s|ms)$/', $value);
     }
 
     /**

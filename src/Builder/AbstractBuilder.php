@@ -25,6 +25,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     private readonly BodyBag $bodyBag;
     private readonly HeadersBag $headersBag;
 
+    /** @var \ReflectionClass<BuilderInterface> */
     private readonly \ReflectionClass $reflection;
 
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
@@ -49,7 +50,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         $reflection = new \ReflectionClass(static::class);
         $nodeAttributes = $reflection->getAttributes(SemanticNode::class);
 
-        /** @var SemanticNode $attribute */
+        /** @var SemanticNode $semanticNode */
         $semanticNode = $nodeAttributes[0]->newInstance();
 
         $treeBuilder = new TreeBuilder($semanticNode->name);

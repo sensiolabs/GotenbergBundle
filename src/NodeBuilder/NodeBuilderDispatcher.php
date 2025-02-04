@@ -19,7 +19,6 @@ final class NodeBuilderDispatcher
             NodeType::Enum => EnumNodeBuilder::create($exposeSemantic),
             NodeType::Array => ArrayNodeBuilder::create($exposeSemantic),
             NodeType::Variable => VariableNodeBuilder::create($exposeSemantic),
-            default => throw new InvalidBuilderConfiguration(\sprintf('Unexpected node type "%s"', $exposeSemantic->nodeType->value)),
         };
     }
 }

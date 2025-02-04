@@ -113,7 +113,7 @@ trait CookieTrait
 
         return $this->setCookie($name, [
             'name' => $name,
-            'value' => $request->cookies->get($name),
+            'value' => (string) $request->cookies->get($name),
             'domain' => $request->getHost(),
         ]);
     }

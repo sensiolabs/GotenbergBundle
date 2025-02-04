@@ -31,6 +31,9 @@ class BodyBag
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function all(): array
     {
         return $this->data;

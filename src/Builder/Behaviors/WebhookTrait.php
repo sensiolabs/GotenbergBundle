@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @see https://gotenberg.dev/docs/webhook.
+ *
+ * @phpstan-type  webhookConfiguration array{config_name: string, success?: array{url?: string, route?: string|array<array-key, array{0: string, 1: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, error?: array{url?: string, route?: string|array<array-key, array{0: string, 1: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, extra_http_headers?: array<string, string>}
  */
 trait WebhookTrait
 {
@@ -18,6 +20,9 @@ trait WebhookTrait
 
     abstract protected function getHeadersBag(): HeadersBag;
 
+    /**
+     * @param webhookConfiguration $webhook
+     */
     #[ExposeSemantic('webhook', NodeType::Array, ['has_parent_node' => true, 'children' => [
         ['name' => 'config_name', 'options' => ['restrict_to' => 'string']],
         ['name' => 'success', 'node_type' => NodeType::Array, 'options' => ['has_parent_node' => true, 'children' => [
@@ -49,7 +54,7 @@ trait WebhookTrait
 
         if (isset($webhook['error']['route'])) {
             if (\is_string($webhook['error']['route'])) {
-                $this->webhookErrorRoute($webhook['route']['url'], method: $webhook['error']['method'] ?? null);
+                $this->webhookErrorRoute($webhook['error']['route'], method: $webhook['error']['method'] ?? null);
             }
 
             if (\is_array($webhook['error']['route'])) {
@@ -99,6 +104,9 @@ trait WebhookTrait
         return $this;
     }
 
+    /**
+     * @param array<string, string> $extraHttpHeaders
+     */
     public function webhookExtraHeaders(array $extraHttpHeaders): static
     {
         $this->getHeadersBag()->set('Gotenberg-Webhook-Error-Extra-Http-Headers', json_encode($extraHttpHeaders));
@@ -107,8 +115,8 @@ trait WebhookTrait
     }
 
     /**
-     * @param string               $route      #Route
-     * @param array<string, mixed> $parameters
+     * @param array<string, mixed>      $parameters
+     * @param 'PATCH'|'POST'|'PUT'|null $method
      */
     public function webhookRoute(string $route, array $parameters = [], string|null $method = null): static
     {
@@ -116,14 +124,17 @@ trait WebhookTrait
     }
 
     /**
-     * @param string               $route      #Route
-     * @param array<string, mixed> $parameters
+     * @param array<string, mixed>      $parameters
+     * @param 'PATCH'|'POST'|'PUT'|null $method
      */
     public function webhookErrorRoute(string $route, array $parameters = [], string|null $method = null): static
     {
         return $this->webhookErrorUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method);
     }
 
+    /**
+     * @param webhookConfiguration $webhook
+     */
     private function webhookConfigurationValidator(array $webhook): void
     {
         if (!isset($webhook['success'])) {
