@@ -135,7 +135,7 @@ class SensiolabsGotenbergExtension extends Extension
         //                ->addMethodCall('add', [$name, $configuration]);
         //        }
         //
-        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.html', $config['default_options']['pdf']['html']);
+        //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.html', $config['default_options']['pdf']['html']);
         //
         //        $this->processDefaultOptions($container, $config, '.sensiolabs_gotenberg.pdf_builder.url', $config['default_options']['pdf']['url']);
         //
@@ -157,31 +157,28 @@ class SensiolabsGotenbergExtension extends Extension
         //
         //        $definition = $container->getDefinition('.sensiolabs_gotenberg.asset.base_dir_formatter');
         //        $definition->replaceArgument(1, $config['assets_directory']);
-    }
 
-    /**
-     * @param array<string, mixed> $userConfigurations
-     *
-     * @return array<string, mixed>
-     */
-    private function cleanUserOptions(array $userConfigurations): array
-    {
-        return array_filter($userConfigurations, static function ($config, $configName): bool {
-            return null !== $config && [] !== $config;
-        }, \ARRAY_FILTER_USE_BOTH);
+        // Configurators
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.html')
+            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['html']))
+        ;
+
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.merge')
+            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']))
+        ;
     }
 
     /**
      * @param SensiolabsGotenbergConfiguration $config
      * @param array<string, mixed>             $serviceConfig
      */
-    private function processDefaultOptions(ContainerBuilder $container, array $config, string $serviceId, array $serviceConfig): void
+    private function processDefaultOptions(array $config, array $serviceConfig): array
     {
-        $definition = $container->getDefinition($serviceId);
-
         $serviceOptions = $this->processWebhookOptions($config['webhook'], $config['default_options']['webhook'] ?? null, $serviceConfig);
 
-        $definition->addMethodCall('setConfigurations', [$this->cleanUserOptions($serviceOptions)]);
+        return $this->cleanUserOptions($serviceOptions);
     }
 
     /**
@@ -197,5 +194,17 @@ class SensiolabsGotenbergExtension extends Extension
         $serviceConfig['webhook'] = array_merge($webhookConfig[$webhookConfigName] ?? [], $serviceWebhookConfig);
 
         return $serviceConfig;
+    }
+
+    /**
+     * @param array<string, mixed> $userConfigurations
+     *
+     * @return array<string, mixed>
+     */
+    private function cleanUserOptions(array $userConfigurations): array
+    {
+        return array_filter($userConfigurations, static function ($config, $configName): bool {
+            return null !== $config && [] !== $config;
+        }, \ARRAY_FILTER_USE_BOTH);
     }
 }

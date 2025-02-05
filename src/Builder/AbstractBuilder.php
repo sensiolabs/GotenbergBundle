@@ -6,7 +6,6 @@ use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
@@ -44,58 +43,6 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     }
 
     abstract protected function getEndpoint(): string;
-
-    public static function getConfiguration(): NodeDefinition
-    {
-        $reflection = new \ReflectionClass(static::class);
-        $nodeAttributes = $reflection->getAttributes(SemanticNode::class);
-
-        /** @var SemanticNode $semanticNode */
-        $semanticNode = $nodeAttributes[0]->newInstance();
-
-        $treeBuilder = new TreeBuilder($semanticNode->name);
-        $root = $treeBuilder->getRootNode()->addDefaultsIfNotSet();
-
-        foreach (array_reverse($reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $methodR) {
-            $attributes = $methodR->getAttributes(ExposeSemantic::class);
-            if (\count($attributes) === 0) {
-                continue;
-            }
-
-            /** @var ExposeSemantic $attribute */
-            $attribute = $attributes[0]->newInstance();
-
-            $root->append(NodeBuilderDispatcher::getNode($attribute));
-        }
-
-        return $root;
-    }
-
-    /**
-     * To set configurations by an array of configurations.
-     *
-     * @param array<string, mixed> $configurations
-     */
-    public function setConfigurations(array $configurations): static
-    {
-        foreach (array_reverse($this->reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $methodR) {
-            $attributes = $methodR->getAttributes(ExposeSemantic::class);
-            if (\count($attributes) === 0) {
-                continue;
-            }
-
-            /** @var ExposeSemantic $attribute */
-            $attribute = $attributes[0]->newInstance();
-
-            if (!\array_key_exists($attribute->name, $configurations)) {
-                continue;
-            }
-
-            $this->{$methodR->getName()}($configurations[$attribute->name]);
-        }
-
-        return $this;
-    }
 
     /**
      * @see https://gotenberg.dev/docs/routes#output-filename.

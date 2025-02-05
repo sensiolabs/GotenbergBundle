@@ -4,6 +4,9 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Configurator\AbstractBuilderConfigurator;
+use Sensiolabs\GotenbergBundle\Configurator\Pdf\HtmlPdfBuilderConfigurator;
+use Sensiolabs\GotenbergBundle\Configurator\Pdf\MergePdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
@@ -54,8 +57,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('pdf')
                             ->addDefaultsIfNotSet()
-                            ->append(HtmlPdfBuilder::getConfiguration())
-                            ->append(MergePdfBuilder::getConfiguration())
+                            ->append(HtmlPdfBuilderConfigurator::getConfiguration())
+                            ->append(MergePdfBuilderConfigurator::getConfiguration())
 //                            ->append($this->addPdfUrlNode())
 //                            ->append($this->addPdfMarkdownNode())
 //                            ->append($this->addPdfOfficeNode())

@@ -12,8 +12,6 @@ use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
-use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
-use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;

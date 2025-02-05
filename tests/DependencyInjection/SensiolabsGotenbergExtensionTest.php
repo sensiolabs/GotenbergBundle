@@ -246,10 +246,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             foreach ($builder as $builderName => $expectedConfig) {
                 $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
 
-                foreach ($definition->getMethodCalls() as $methodCall) {
-                    self::assertSame('setConfigurations', $methodCall[0]);
-                    self::assertSame([$expectedConfig], $methodCall[1]);
-                }
+                $configurator = $definition->getConfigurator();
+                self::assertSame('setConfigurations', $configurator[1]);
+
+                $configuratorDefinition = $containerBuilder->getDefinition($configurator[0]->__toString());
+                self::assertSame($expectedConfig, $configuratorDefinition->getArgument(0));
             }
         }
     }
@@ -471,10 +472,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 foreach ($builder as $builderName => $expectedConfig) {
                     $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
 
-                    foreach ($definition->getMethodCalls() as $methodCall) {
-                        self::assertSame('setConfigurations', $methodCall[0]);
-                        self::assertSame([$expectedConfig], $methodCall[1]);
-                    }
+                    $configurator = $definition->getConfigurator();
+                    self::assertSame('setConfigurations', $configurator[1]);
+
+                    $configuratorDefinition = $containerBuilder->getDefinition($configurator[0]->__toString());
+                    self::assertSame($expectedConfig, $configuratorDefinition->getArgument(0));
                 }
             }
 
