@@ -72,7 +72,7 @@ trait CustomHttpHeadersTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizeCustomHttpHeader(): \Generator
+    private function normalizeCustomHttpHeader(): \Generator
     {
         yield 'extraHttpHeaders' => NormalizerFactory::json();
     }

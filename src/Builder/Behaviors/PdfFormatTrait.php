@@ -43,7 +43,7 @@ trait PdfFormatTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizePdfFormat(): \Generator
+    private function normalizePdfFormat(): \Generator
     {
         yield 'pdfa' => NormalizerFactory::enum();
         yield 'pdfua' => NormalizerFactory::bool();

@@ -24,7 +24,7 @@ trait PerformanceModeTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizePerformanceMode(): \Generator
+    private function normalizePerformanceMode(): \Generator
     {
         yield 'skipNetworkIdleEvent' => NormalizerFactory::bool();
     }

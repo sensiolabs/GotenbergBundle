@@ -358,12 +358,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     //                        ],
                     //                        'download_from' => [],
                     //                    ],
-                    //                    'merge' => [
-                    //                        'metadata' => [
-                    //                            'Author' => 'SensioLabs MERGE',
-                    //                        ],
-                    //                        'download_from' => [],
-                    //                    ],
+                    'merge' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs MERGE',
+                        ],
+                    ],
                     //                    'convert' => [
                     //                        'pdf_format' => 'PDF/A-2b',
                     //                        'download_from' => [],
@@ -408,12 +407,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             //                ],
             //                'download_from' => [],
             //            ],
-            //            'merge' => [
-            //                'metadata' => [
-            //                    'Author' => 'SensioLabs MERGE',
-            //                ],
-            //                'download_from' => [],
-            //            ],
+            'merge' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs MERGE',
+                ],
+            ],
             //            'convert' => [
             //                'pdf_format' => 'PDF/A-2b',
             //                'download_from' => [],

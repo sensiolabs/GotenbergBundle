@@ -54,7 +54,7 @@ trait DownloadFromTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizeDownloadFrom(): \Generator
+    private function normalizeDownloadFrom(): \Generator
     {
         yield 'downloadFrom' => NormalizerFactory::json();
     }

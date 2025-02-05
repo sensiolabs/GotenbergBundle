@@ -228,7 +228,7 @@ trait PagePropertiesTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizePageProperties(): \Generator
+    private function normalizePageProperties(): \Generator
     {
         yield 'singlePage' => NormalizerFactory::bool();
         yield 'paperWidth' => NormalizerFactory::unit();

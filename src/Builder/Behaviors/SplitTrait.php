@@ -59,7 +59,7 @@ trait SplitTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizeSplit(): \Generator
+    private function normalizeSplit(): \Generator
     {
         yield 'splitMode' => NormalizerFactory::enum();
         yield 'splitUnify' => NormalizerFactory::bool();

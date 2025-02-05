@@ -41,22 +41,21 @@ class ValidatorFactory
         return true;
     }
 
-    public static function filesExtension(): \Closure
+    /**
+     * @param \SplFileInfo[] $files
+     */
+    public static function filesExtension(array $files, array $validExtensions): void
     {
-        return function (array $files): bool {
-            foreach ($files as $file) {
-                if (!$file instanceof \SplFileInfo) {
-                    throw new InvalidOptionsException(\sprintf('The option "files" expects an array of "%s" instances, but got "%s".', \SplFileInfo::class, $file));
-                }
-
-                $ext = $file->getExtension();
-                if ('pdf' !== $ext) {
-                    throw new InvalidOptionsException(\sprintf('The option "files" expects files with a "pdf" extension, but "%s" has a "%s" extension.', $file, $ext));
-                }
+        foreach ($files as $file) {
+            if (!$file instanceof \SplFileInfo) {
+                throw new \InvalidArgumentException(\sprintf('The option "files" expects an array of "%s" instances, but got "%s".', \SplFileInfo::class, $file));
             }
 
-            return true;
-        };
+            $ext = $file->getExtension();
+            if (!\in_array($ext, $validExtensions, true)) {
+                throw new \InvalidArgumentException(\sprintf('The file extension "%s" is not valid in this context.', $ext));
+            }
+        }
     }
 
     /**

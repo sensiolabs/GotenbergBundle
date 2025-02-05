@@ -28,7 +28,7 @@ trait EmulatedMediaTypeTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizeEmulatedMediaType(): \Generator
+    private function normalizeEmulatedMediaType(): \Generator
     {
         yield 'emulatedMediaType' => NormalizerFactory::enum();
     }

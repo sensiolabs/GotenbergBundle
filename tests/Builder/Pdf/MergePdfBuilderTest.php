@@ -22,7 +22,7 @@ class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
     protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
     {
-        $dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(__DIR__, 'fixtures'));
+        $dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
         return new MergePdfBuilder($client, $dependencies);
     }
@@ -35,14 +35,14 @@ class MergePdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/pdfengines/merge');
-        $this->assertGotenbergFormDataFile('files', 'application/pdf', __DIR__.'/fixtures/a.pdf');
-        $this->assertGotenbergFormDataFile('files', 'application/pdf', __DIR__.'/fixtures/b.pdf');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/a.pdf');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/b.pdf');
     }
 
     public function testFilesExtension(): void
     {
-        $this->expectException(InvalidOptionsException::class);
-        $this->expectExceptionMessage('The option "files" expects files with a "pdf" extension, but "'.__DIR__.'/fixtures/b.png" has a "png" extension.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
         $this->getBuilder()
             ->files('a.pdf', 'b.png')

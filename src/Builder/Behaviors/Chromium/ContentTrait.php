@@ -110,7 +110,7 @@ trait ContentTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizeContent(): \Generator
+    private function normalizeContent(): \Generator
     {
         yield 'header.html' => NormalizerFactory::content();
         yield 'index.html' => NormalizerFactory::content();

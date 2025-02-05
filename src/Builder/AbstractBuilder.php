@@ -68,12 +68,6 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
             $root->append(NodeBuilderDispatcher::getNode($attribute));
         }
 
-        if (HtmlPdfBuilder::class === static::class) {
-            $root->validate()->ifTrue(function ($v): bool {
-                return isset($v['paper_standard_size']) && (isset($v['paper_height']) || isset($v['paper_width']));
-            })->thenInvalid('You cannot use "paper_standard_size" when "paper_height", "paper_width" or both are set".');
-        }
-
         return $root;
     }
 
@@ -182,14 +176,14 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     private function normalizePayloadBody(): \Generator
     {
-        foreach (array_reverse($this->reflection->getMethods(\ReflectionMethod::IS_PROTECTED)) as $methodR) {
+        foreach (array_reverse($this->reflection->getMethods()) as $methodR) {
             $attributes = $methodR->getAttributes(NormalizeGotenbergPayload::class);
 
             if (\count($attributes) === 0) {
                 continue;
             }
 
-            foreach ($this->{$methodR->getName()}() as $key => $normalizer) {
+            foreach ($methodR->invoke($this) as $key => $normalizer) {
                 if ($this->getBodyBag()->get($key) === null) {
                     continue;
                 }

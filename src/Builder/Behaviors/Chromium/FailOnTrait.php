@@ -73,7 +73,7 @@ trait FailOnTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizeFailOn(): \Generator
+    private function normalizeFailOn(): \Generator
     {
         yield 'failOnHttpStatusCodes' => NormalizerFactory::json(false);
         yield 'failOnResourceHttpStatusCodes' => NormalizerFactory::json(false);

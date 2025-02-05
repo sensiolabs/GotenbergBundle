@@ -7,6 +7,7 @@ use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
 use Symfony\Component\Mime\Part\TextPart;
@@ -70,12 +71,12 @@ abstract class GotenbergBuilderTestCase extends TestCase
     protected function assertGotenbergFormDataFile(string $name, string $contentType, string $path): void
     {
         foreach ($this->client->getBody() as $part) {
-            if (!$part instanceof DataPart || $part->getName() !== $name) {
+            if (!$part instanceof DataPart) {
                 continue;
             }
 
-            $body = \Closure::bind(static fn (TextPart $part) => $part->body, null, TextPart::class)($part);
-            if ($part->getContentType() === $contentType && $body instanceof File && $body->getPath() === $path) {
+            $body = \Closure::bind(static fn (DataPart $part) => $part->body, null, TextPart::class)($part);
+            if ($part->getContentType() === $contentType && $body instanceof File && $body->getPath() === Path::canonicalize($path)) {
                 $this->addToAssertionCount(1);
 
                 return;

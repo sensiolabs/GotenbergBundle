@@ -131,52 +131,52 @@ final class ConfigurationTest extends TestCase
         ], $config);
     }
 
-    /**
-     * @return iterable<string, array<array-key, array<string, string>>>
-     */
-    public static function providePaperSizesConfigurations(): iterable
-    {
-        yield 'with paper_width' => [
-            [
-                'paper_standard_size' => 'A4',
-                'paper_width' => '21cm',
-            ],
-        ];
-        yield 'with paper_height' => [
-            [
-                'paper_standard_size' => 'A4',
-                'paper_height' => '29.7cm',
-            ],
-        ];
-        yield 'with paper_width and paper_height' => [
-            [
-                'paper_standard_size' => 'A4',
-                'paper_width' => '21cm',
-                'paper_height' => '29.7cm',
-            ],
-        ];
-    }
-
-    /**
-     * @param array<string, string> $configuration
-     */
-    #[DataProvider('providePaperSizesConfigurations')]
-    public function testExceptionOnPaperSizesConfigurations(array $configuration): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-
-        $processor = new Processor();
-        $processor->processConfiguration(new Configuration(), [
-            [
-                'http_client' => 'http_client',
-                'default_options' => [
-                    'pdf' => [
-                        'html' => $configuration,
-                    ],
-                ],
-            ],
-        ]);
-    }
+//    /**
+//     * @return iterable<string, array<array-key, array<string, string>>>
+//     */
+//    public static function providePaperSizesConfigurations(): iterable
+//    {
+//        yield 'with paper_width' => [
+//            [
+//                'paper_standard_size' => 'A4',
+//                'paper_width' => '21cm',
+//            ],
+//        ];
+//        yield 'with paper_height' => [
+//            [
+//                'paper_standard_size' => 'A4',
+//                'paper_height' => '29.7cm',
+//            ],
+//        ];
+//        yield 'with paper_width and paper_height' => [
+//            [
+//                'paper_standard_size' => 'A4',
+//                'paper_width' => '21cm',
+//                'paper_height' => '29.7cm',
+//            ],
+//        ];
+//    }
+//
+//    /**
+//     * @param array<string, string> $configuration
+//     */
+//    #[DataProvider('providePaperSizesConfigurations')]
+//    public function testExceptionOnPaperSizesConfigurations(array $configuration): void
+//    {
+//        $this->expectException(InvalidConfigurationException::class);
+//
+//        $processor = new Processor();
+//        $processor->processConfiguration(new Configuration(), [
+//            [
+//                'http_client' => 'http_client',
+//                'default_options' => [
+//                    'pdf' => [
+//                        'html' => $configuration,
+//                    ],
+//                ],
+//            ],
+//        ]);
+//    }
 
     /**
      * @return \Generator<string, array{array{array<string, array<string|int, mixed>>}}>
@@ -277,10 +277,10 @@ final class ConfigurationTest extends TestCase
                         'skip_network_idle_event' => null,
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
-                        'download_from' => [],
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'download_from' => [],
                     ],
 //                    'url' => [
 //                        'single_page' => null,
@@ -381,11 +381,11 @@ final class ConfigurationTest extends TestCase
 //                        'split_span' => null,
 //                        'split_unify' => null,
 //                    ],
-//                    'merge' => [
-//                        'pdf_format' => null,
-//                        'pdf_universal_access' => null,
-//                        'download_from' => [],
-//                    ],
+                    'merge' => [
+                        'pdf_format' => null,
+                        'pdf_universal_access' => null,
+                        'download_from' => [],
+                    ],
 //                    'convert' => [
 //                        'pdf_format' => null,
 //                        'pdf_universal_access' => null,

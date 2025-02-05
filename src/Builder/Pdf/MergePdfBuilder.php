@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
@@ -31,7 +32,10 @@ class MergePdfBuilder extends AbstractBuilder
     public function files(string ...$paths): self
     {
         foreach ($paths as $path) {
-            $files[$path] = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            ValidatorFactory::filesExtension([$info], ['pdf']);
+
+            $files[$path] = $info;
         }
 
         $this->getBodyBag()->set('files', $files ?? null);
@@ -44,16 +48,16 @@ class MergePdfBuilder extends AbstractBuilder
         return '/forms/pdfengines/merge';
     }
 
-    #[NormalizeGotenbergPayload]
-    protected function normalizeFiles(): \Generator
-    {
-        yield 'files' => NormalizerFactory::asset();
-    }
-
     protected function validatePayloadBody(): void
     {
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
     }
 }

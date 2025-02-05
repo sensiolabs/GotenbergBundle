@@ -58,7 +58,7 @@ trait MetadataTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizeMetadata(): \Generator
+    private function normalizeMetadata(): \Generator
     {
         yield 'metadata' => NormalizerFactory::json();
     }

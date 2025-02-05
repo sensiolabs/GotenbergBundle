@@ -49,7 +49,7 @@ trait AssetTrait
     }
 
     #[NormalizeGotenbergPayload]
-    protected function normalizeAsset(): \Generator
+    private function normalizeAsset(): \Generator
     {
         yield 'assets' => NormalizerFactory::asset();
     }
