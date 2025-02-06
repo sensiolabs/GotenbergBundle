@@ -168,6 +168,11 @@ class SensiolabsGotenbergExtension extends Extension
             ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.merge')
             ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']))
         ;
+
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.office')
+            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['office']))
+        ;
     }
 
     /**

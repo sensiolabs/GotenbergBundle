@@ -47,10 +47,10 @@ final class GotenbergPdf implements GotenbergPdfInterface
 //        return $this->getInternal('url');
 //    }
 //
-//    public function office(): PdfBuilderInterface
-//    {
-//        return $this->getInternal('office');
-//    }
+    public function office(): BuilderInterface
+    {
+        return $this->getInternal('office');
+    }
 //
 //    public function markdown(): PdfBuilderInterface
 //    {

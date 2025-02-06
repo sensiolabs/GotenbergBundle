@@ -39,9 +39,7 @@ trait SplitTrait
     #[ExposeSemantic('split_span', options: ['default_null' => true])]
     public function splitSpan(string $splitSpan): self
     {
-        if (!ValidatorFactory::splitSpan($splitSpan)) {
-            throw new InvalidBuilderConfiguration('Invalid value, the range value format need to look like e.g 1-20 or as a single int value e.g 2.');
-        }
+        ValidatorFactory::splitSpan($splitSpan);
         $this->getBodyBag()->set('splitSpan', $splitSpan);
 
         return $this;

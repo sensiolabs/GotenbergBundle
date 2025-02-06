@@ -218,10 +218,7 @@ trait PagePropertiesTrait
     #[ExposeSemantic('native_page_ranges', options: ['default_null' => true])]
     public function nativePageRanges(string $ranges): static
     {
-        if (!ValidatorFactory::range($ranges)) {
-            throw new InvalidBuilderConfiguration('Invalid range values, the range value format need to look like e.g 1-20.');
-        }
-
+        ValidatorFactory::range($ranges);
         $this->getBodyBag()->set('nativePageRanges', $ranges);
 
         return $this;

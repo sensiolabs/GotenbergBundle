@@ -23,10 +23,7 @@ trait WaitBeforeRenderingTrait
     #[ExposeSemantic('wait_delay', options: ['default_null' => true])]
     public function waitDelay(string $delay): static
     {
-        if (!ValidatorFactory::waitDelay($delay)) {
-            throw new InvalidBuilderConfiguration(\sprintf('Invalid value "%s" for "waitDelay".', $delay));
-        }
-
+        ValidatorFactory::waitDelay($delay);
         $this->getBodyBag()->set('waitDelay', $delay);
 
         return $this;

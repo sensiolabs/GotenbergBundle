@@ -32,10 +32,7 @@ trait DownloadFromTrait
     ]])]
     public function downloadFrom(array $downloadFrom): static
     {
-        if (!ValidatorFactory::download($downloadFrom)) {
-            throw new InvalidBuilderConfiguration('"url" is mandatory into "downloadFrom" array field.');
-        }
-
+        ValidatorFactory::download($downloadFrom);
         if ([] === $downloadFrom) {
             $this->getBodyBag()->unset('downloadFrom');
 

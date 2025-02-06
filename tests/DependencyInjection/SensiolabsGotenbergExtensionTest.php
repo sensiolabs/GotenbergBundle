@@ -9,8 +9,10 @@ use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
@@ -76,10 +78,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             ],
                         ],
                     ],
-                    'webhook' => [
-                        'config_name' => 'bar',
-                        'extra_http_headers' => [],
-                    ]
                 ],
                 //                'url' => [
                 //                    'paper_width' => 21,
@@ -137,19 +135,62 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 //                    'cookies' => [],
                 //                    'download_from' => [],
                 //                ],
-                //                'office' => [
-                //                    'landscape' => false,
-                //                    'native_page_ranges' => '1-2',
-                //                    'merge' => true,
-                //                    'pdf_format' => 'PDF/A-1b',
-                //                    'pdf_universal_access' => true,
-                //                    'download_from' => [],
-                //                ],
-                //                'merge' => [
-                //                    'pdf_format' => 'PDF/A-3b',
-                //                    'pdf_universal_access' => true,
-                //                    'download_from' => [],
-                //                ],
+                'office' => [
+                    'password' => 'secret',
+                    'pdf_format' => PdfFormat::Pdf1b,
+                    'pdf_universal_access' => true,
+                    'landscape' => false,
+                    'native_page_ranges' => '1-2',
+                    'do_not_export_form_fields' => false,
+                    'single_page_sheets' => true,
+                    'merge' => true,
+                    'metadata' => [
+                        'Author' => 'SensioLabs HTML',
+                    ],
+                    'allow_duplicate_field_names' => true,
+                    'do_not_export_bookmarks' => false,
+                    'export_bookmarks_to_pdf_destination' => true,
+                    'export_placeholders' => true,
+                    'export_notes' => true,
+                    'export_notes_pages' => true,
+                    'export_only_notes_pages' => true,
+                    'export_notes_in_margin' => true,
+                    'convert_ooo_target_to_pdf_target' => true,
+                    'export_links_relative_fsys' => true,
+                    'export_hidden_slides' => true,
+                    'skip_empty_pages' => true,
+                    'add_original_document_as_stream' => true,
+                    'lossless_image_compression' => true,
+                    'quality' => 80,
+                    'reduce_image_resolution' => true,
+                    'max_image_resolution' => ImageResolutionDPI::DPI150,
+                    'download_from' => [
+                        [
+                            'url' => 'http://example.com',
+                            'extraHttpHeaders' => [
+                                'MyHeader' => 'MyValue',
+                            ],
+                        ],
+                    ],
+                    'split_mode' => SplitMode::Pages,
+                    'split_span' => '1-2',
+                    'split_unify' => true,
+                ],
+                'merge' => [
+                    'pdf_format' => PdfFormat::Pdf3b,
+                    'pdf_universal_access' => true,
+                    'metadata' => [
+                        'Author' => 'SensioLabs HTML',
+                    ],
+                    'download_from' => [
+                        [
+                            'url' => 'http://example.com',
+                            'extraHttpHeaders' => [
+                                'MyHeader' => 'MyValue',
+                            ],
+                        ],
+                    ],
+                ],
                 //                'convert' => [
                 //                    'pdf_format' => 'PDF/A-2b',
                 //                    'pdf_universal_access' => true,
@@ -421,106 +462,136 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         ], $dataCollectorOptions);
     }
 
-        public function testBuilderWebhookConfiguredWithValidConfiguration(): void
-        {
-            $extension = new SensiolabsGotenbergExtension();
+    public function testBuilderWebhookConfiguredWithValidConfiguration(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
 
-            $containerBuilder = $this->getContainerBuilder();
-            $extension->load([[
-                'http_client' => 'http_client',
-                'webhook' => [
-                    'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
-                    'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
-                ],
-                'default_options' => [
-                    'webhook' => 'foo',
-                    'pdf' => [
-                        'html' => ['webhook' => ['config_name' => 'bar']],
-//                        'url' => ['webhook' => 'baz'],
-//                        'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
-                    ],
-//                    'screenshot' => [
-//                        'html' => ['webhook' => 'foo'],
-//                        'url' => ['webhook' => 'bar'],
-//                        'markdown' => ['webhook' => 'baz'],
-//                    ],
-                ],
-            ]], $containerBuilder);
-
-            $list = [
+        $containerBuilder = $this->getContainerBuilder();
+        $extension->load([[
+            'http_client' => 'http_client',
+            'webhook' => [
+                'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
+                'baz' => ['success' => ['route' => ['array_route', ['param1', 'param2']]]],
+            ],
+            'default_options' => [
+                'webhook' => 'foo',
                 'pdf' => [
-                    'html' => [
-                        'webhook' => [
-                            'config_name' => 'bar',
-                            'extra_http_headers' => [],
-                        ]
-                    ],
-                    //                'url' => [],
-                    //                'markdown' => [],
-                    //                'office' => [],
-                    //                'merge' => [],
-                    //                'convert' => [],
+                    'html' => ['webhook' => ['config_name' => 'bar']],
+                    //                        'url' => ['webhook' => 'baz'],
+                    //                        'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
                 ],
-                //            'screenshot' => [
-                //                'html' => [],
+                //                    'screenshot' => [
+                //                        'html' => ['webhook' => 'foo'],
+                //                        'url' => ['webhook' => 'bar'],
+                //                        'markdown' => ['webhook' => 'baz'],
+                //                    ],
+            ],
+        ]], $containerBuilder);
+
+        $list = [
+            'pdf' => [
+                'html' => [
+                    'webhook' => [
+                        'config_name' => 'bar',
+                        'extra_http_headers' => [],
+                    ],
+                ],
                 //                'url' => [],
                 //                'markdown' => [],
-                //            ],
-            ];
+                'office' => [
+                    'webhook' => [
+                        'success' => [
+                            'url' => 'https://sensiolabs.com/webhook',
+                            'method' => null,
+                        ],
+                        'error' => [
+                            'route' => [
+                                'simple_route',
+                                [],
+                            ],
+                            'method' => null,
+                        ],
+                        'extra_http_headers' => [],
+                    ],
+                ],
+                'merge' => [
+                    'webhook' => [
+                        'success' => [
+                            'url' => 'https://sensiolabs.com/webhook',
+                            'method' => null,
+                        ],
+                        'error' => [
+                            'route' => [
+                                'simple_route',
+                                [],
+                            ],
+                            'method' => null,
+                        ],
+                        'extra_http_headers' => [],
+                    ],
+                ],
+                //                'convert' => [],
+            ],
+            //            'screenshot' => [
+            //                'html' => [],
+            //                'url' => [],
+            //                'markdown' => [],
+            //            ],
+        ];
 
-            foreach ($list as $builderType => $builder) {
-                foreach ($builder as $builderName => $expectedConfig) {
-                    $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
+        foreach ($list as $builderType => $builder) {
+            foreach ($builder as $builderName => $expectedConfig) {
+                $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
 
-                    $configurator = $definition->getConfigurator();
-                    self::assertSame('setConfigurations', $configurator[1]);
+                $configurator = $definition->getConfigurator();
+                self::assertSame('setConfigurations', $configurator[1]);
 
-                    $configuratorDefinition = $containerBuilder->getDefinition($configurator[0]->__toString());
-                    self::assertSame($expectedConfig, $configuratorDefinition->getArgument(0));
-                }
+                $configuratorDefinition = $containerBuilder->getDefinition($configurator[0]->__toString());
+                self::assertSame($expectedConfig, $configuratorDefinition->getArgument(0));
             }
-
-//            $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
-//            $methodCalls = $webhookConfigurationRegistryDefinition->getMethodCalls();
-//            self::assertCount(3, $methodCalls);
-//            foreach ($methodCalls as $methodCall) {
-//                [$name, $arguments] = $methodCall;
-//                self::assertSame('add', $name);
-//                self::assertContains($arguments[0], ['foo', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration']);
-//                self::assertSame(match ($arguments[0]) {
-//                    'foo' => [
-//                        'success' => [
-//                            'url' => 'https://sensiolabs.com/webhook',
-//                            'method' => null,
-//                        ],
-//                        'error' => [
-//                            'route' => ['simple_route', []],
-//                            'method' => null,
-//                        ],
-//                        'extra_http_headers' => [],
-//                    ],
-//                    'baz' => [
-//                        'success' => [
-//                            'route' => ['array_route', ['param1', 'param2']],
-//                            'method' => null,
-//                        ],
-//                        'extra_http_headers' => [],
-//                    ],
-//                    '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration' => [
-//                        'success' => [
-//                            'url' => 'https://sensiolabs.com/webhook-on-the-fly',
-//                            'method' => null,
-//                        ],
-//                        'error' => [
-//                            'route' => ['simple_route', []],
-//                            'method' => null,
-//                        ],
-//                        'extra_http_headers' => [],
-//                    ],
-//                    default => self::fail('Unexpected webhook configuration'),
-//                }, $arguments[1], "Configuration mismatch for webhook '{$arguments[0]}'.");
-//            }
         }
+
+        //            $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
+        //            $methodCalls = $webhookConfigurationRegistryDefinition->getMethodCalls();
+        //            self::assertCount(3, $methodCalls);
+        //            foreach ($methodCalls as $methodCall) {
+        //                [$name, $arguments] = $methodCall;
+        //                self::assertSame('add', $name);
+        //                self::assertContains($arguments[0], ['foo', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration']);
+        //                self::assertSame(match ($arguments[0]) {
+        //                    'foo' => [
+        //                        'success' => [
+        //                            'url' => 'https://sensiolabs.com/webhook',
+        //                            'method' => null,
+        //                        ],
+        //                        'error' => [
+        //                            'route' => ['simple_route', []],
+        //                            'method' => null,
+        //                        ],
+        //                        'extra_http_headers' => [],
+        //                    ],
+        //                    'baz' => [
+        //                        'success' => [
+        //                            'route' => ['array_route', ['param1', 'param2']],
+        //                            'method' => null,
+        //                        ],
+        //                        'extra_http_headers' => [],
+        //                    ],
+        //                    '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration' => [
+        //                        'success' => [
+        //                            'url' => 'https://sensiolabs.com/webhook-on-the-fly',
+        //                            'method' => null,
+        //                        ],
+        //                        'error' => [
+        //                            'route' => ['simple_route', []],
+        //                            'method' => null,
+        //                        ],
+        //                        'extra_http_headers' => [],
+        //                    ],
+        //                    default => self::fail('Unexpected webhook configuration'),
+        //                }, $arguments[1], "Configuration mismatch for webhook '{$arguments[0]}'.");
+        //            }
+    }
 
     /**
      * @return array<int, array{
@@ -551,12 +622,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         return [
             [
                 'http_client' => 'http_client',
-                'webhook' => [
-                    'foo' => ['success' => ['url' => 'https://sensiolabs.com/webhook'], 'error' => ['route' => 'simple_route']],
-                    'baz' => ['success' => ['url' => 'https://sensiolabs.com/single-url-webhook']],
-                ],
                 'default_options' => [
-                    'webhook' => 'foo',
                     'pdf' => [
                         'html' => [
                             'paper_standard_size' => 'A4',
@@ -600,9 +666,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                                         ],
                                     ],
                                 ],
-                            ],
-                            'webhook' => [
-                                'config_name' => 'bar'
                             ],
                         ],
                         //                        'url' => [
@@ -658,17 +721,68 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         //                            'pdf_format' => PdfFormat::Pdf3b->value,
                         //                            'pdf_universal_access' => true,
                         //                        ],
-                        //                        'office' => [
-                        //                            'landscape' => false,
-                        //                            'native_page_ranges' => '1-2',
-                        //                            'merge' => true,
-                        //                            'pdf_format' => PdfFormat::Pdf1b->value,
-                        //                            'pdf_universal_access' => true,
-                        //                        ],
-                        //                        'merge' => [
-                        //                            'pdf_format' => PdfFormat::Pdf3b->value,
-                        //                            'pdf_universal_access' => true,
-                        //                        ],
+                        'office' => [
+                            'password' => 'secret',
+                            'pdf_format' => PdfFormat::Pdf1b->value,
+                            'pdf_universal_access' => true,
+                            'landscape' => false,
+                            'native_page_ranges' => '1-2',
+                            'do_not_export_form_fields' => false,
+                            'single_page_sheets' => true,
+                            'merge' => true,
+                            'metadata' => [
+                                'Author' => 'SensioLabs HTML',
+                            ],
+                            'allow_duplicate_field_names' => true,
+                            'do_not_export_bookmarks' => false,
+                            'export_bookmarks_to_pdf_destination' => true,
+                            'export_placeholders' => true,
+                            'export_notes' => true,
+                            'export_notes_pages' => true,
+                            'export_only_notes_pages' => true,
+                            'export_notes_in_margin' => true,
+                            'convert_ooo_target_to_pdf_target' => true,
+                            'export_links_relative_fsys' => true,
+                            'export_hidden_slides' => true,
+                            'skip_empty_pages' => true,
+                            'add_original_document_as_stream' => true,
+                            'lossless_image_compression' => true,
+                            'quality' => 80,
+                            'reduce_image_resolution' => true,
+                            'max_image_resolution' => ImageResolutionDPI::DPI150->value,
+                            'download_from' => [
+                                [
+                                    'url' => 'http://example.com',
+                                    'extraHttpHeaders' => [
+                                        [
+                                            'name' => 'MyHeader',
+                                            'value' => 'MyValue',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'split_mode' => SplitMode::Pages->value,
+                            'split_span' => '1-2',
+                            'split_unify' => true,
+                        ],
+                        'merge' => [
+                            'pdf_format' => PdfFormat::Pdf3b->value,
+                            'pdf_universal_access' => true,
+                            'metadata' => [
+                                'Author' => 'SensioLabs HTML',
+                            ],
+                            'download_from' => [
+                                [
+                                    'url' => 'http://example.com',
+                                    'extraHttpHeaders' => [
+                                        [
+                                            'name' => 'MyHeader',
+                                            'value' => 'MyValue',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                         //                        'convert' => [
                         //                            'pdf_format' => PdfFormat::Pdf2b->value,
                         //                            'pdf_universal_access' => true,

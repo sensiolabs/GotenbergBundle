@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Configurator\AbstractBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\HtmlPdfBuilderConfigurator;
+use Sensiolabs\GotenbergBundle\Configurator\Pdf\LibreOfficePdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\MergePdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
@@ -61,7 +62,7 @@ class Configuration implements ConfigurationInterface
                             ->append(MergePdfBuilderConfigurator::getConfiguration())
 //                            ->append($this->addPdfUrlNode())
 //                            ->append($this->addPdfMarkdownNode())
-//                            ->append($this->addPdfOfficeNode())
+                            ->append(LibreOfficePdfBuilderConfigurator::getConfiguration())
 //                            ->append($this->addPdfMergeNode())
 //                            ->append($this->addPdfConvertNode())
 //                            ->append($this->addPdfSplitNode())

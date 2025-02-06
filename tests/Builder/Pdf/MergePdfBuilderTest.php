@@ -8,6 +8,7 @@ use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\PayloadResolver\Pdf\MergePdfPayloadResolver;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
@@ -30,22 +31,22 @@ class MergePdfBuilderTest extends GotenbergBuilderTestCase
     public function testFiles(): void
     {
         $this->getBuilder()
-            ->files('a.pdf', 'b.pdf')
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf_1.pdf')
             ->generate()
         ;
 
         $this->assertGotenbergEndpoint('/forms/pdfengines/merge');
-        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/a.pdf');
-        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/b.pdf');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf_1.pdf');
     }
 
     public function testFilesExtension(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidBuilderConfiguration::class);
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
         $this->getBuilder()
-            ->files('a.pdf', 'b.png')
+            ->files('simple_pdf.pdf', 'b.png')
             ->generate()
         ;
     }

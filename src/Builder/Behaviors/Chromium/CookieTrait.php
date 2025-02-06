@@ -57,10 +57,7 @@ trait CookieTrait
      */
     public function addCookies(array $cookies): static
     {
-        if (!ValidatorFactory::cookies($cookies)) {
-            throw new InvalidBuilderConfiguration('Invalid cookies schema.');
-        }
-
+        ValidatorFactory::cookies($cookies);
         $c = $this->getBodyBag()->get('cookies', []);
 
         foreach ($cookies as $cookie) {
