@@ -67,8 +67,6 @@ This will save the file under `%kernel.project_dir%/var/pdf/my_pdf.pdf` once the
 
 </details>
 
-
-
 <details>
 <summary>If you are not streaming to a browser, you can still process the file using the `process` method instead of `stream`</summary>
 
@@ -113,21 +111,172 @@ Empty processor. Does nothing. Returns `null`.
 ## `Sensiolabs\GotenbergBundle\Processor\TempfileProcessor`
 
 Creates a temporary file and dump all chunks into it. Return a `ressource` of said `tmpfile()`.
-TODO : warning about tmpfile
+
+<details>
+<summary>Example in a service</summary>
+
+```php
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Processor\TempfileProcessor;
+use Symfony\Component\Filesystem\Filesystem;
+
+class SomeService
+{
+    public function __construct(
+        private readonly GotenbergPdfInterface $gotenbergPdf,
+    ) {}
+    
+    /**
+     * @return resource
+     */
+    public function pdf(): mixed
+    {
+        return $this->gotenbergPdf->html()
+            //
+            ->fileName('my_pdf')
+            ->processor(new TempfileProcessor())
+            ->generate()
+            ->process()
+        ;
+    }
+}
+```
+
+</details>
 
 ## `Sensiolabs\GotenbergBundle\Processor\ChainProcessor`
 
-Apply multiple processors. Each chunk will be sent to each processor sequentially. Return an array of vaues returned by chained processors.
+Apply multiple processors. Each chunk will be sent to each processor sequentially. Return an array of values returned by chained processors.
 
-TODO
+<details>
+<summary>Example in a service</summary>
+
+```php
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Processor\ChainProcessor;
+use Sensiolabs\GotenbergBundle\Processor\FileProcessor;
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
+use Symfony\Component\Filesystem\Filesystem;
+
+/**
+ * @implements ProcessorInterface<int>
+ */
+class CustomProcessor implements ProcessorInterface
+{
+    public function __invoke(string|null $fileName): \Generator { /* ... */ } // Implement your own logic
+}
+
+class SomeService
+{
+    public function __construct(
+        private readonly GotenbergPdfInterface $gotenbergPdf,
+        
+        #[Autowire('%kernel.project_dir%/var/pdf')]
+        private readonly string $kernelProjectDir,
+    ) {}
+    
+    /**
+     * @return array{0: \SplFileInfo, 1: int}
+     */
+    public function pdf(): array
+    {
+        return $this->gotenbergPdf->html()
+            //
+            ->fileName('my_pdf')
+            ->processor(new ChainProcessor([
+                new FileProcessor(
+                    new Filesystem(),
+                    "{$this->kernelProjectDir}/var/pdf",
+                ),
+                new CustomProcessor(),
+            ]))
+            ->generate()
+            ->process()
+        ;
+    }
+}
+```
+
+</details>
 
 ## `Sensiolabs\GotenbergBundle\Bridge\LeagueFlysystem\Processor\FlysystemProcessor`
 
 Upload using the `league/flysystem-bundle` package. Returns a `callable`. This callable will return the uploaded content.
 
+<details>
+<summary>Example in a service</summary>
+
+```php
+use League\Flysystem\FilesystemOperator;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use Sensiolabs\GotenbergBundle\Bridge\LeagueFlysystem\Processor\FlysystemProcessor;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
+class SomeService
+{
+    public function __construct(
+        private readonly GotenbergPdfInterface $gotenbergPdf,
+        
+        #[Autowire(service: 'pdfs.storage')] // Use the name under the `flysystem.storages` key in your packages configuration.
+        private readonly FilesystemOperator $filesystemOperator,
+    ) {}
+    
+    /**
+     * @return Closure(): string
+     */
+    public function pdf(): Closure
+    {
+        return $this->gotenbergPdf->html()
+            //
+            ->fileName('my_pdf')
+            ->processor(new FlysystemProcessor(
+                $this->filesystemOperator,
+            ))
+            ->generate()
+            ->process()
+        ;
+    }
+}
+```
+
+</details>
+
 ## `Sensiolabs\GotenbergBundle\Bridge\AsyncAws\Processor\AsyncAwsS3MultiPartProcessor`
 
-Upload using the `async-aws/s3` package. Uploads using the (multipart upload)[https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html] feature of S3. Returns a `AsyncAws\S3\Result\CompleteMultipartUploadOutput` object.
+Upload using the `async-aws/s3` package. Uploads using the [multipart upload](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html) feature of S3. Returns a `AsyncAws\S3\Result\CompleteMultipartUploadOutput` object.
+
+<details>
+<summary>Example in a service</summary>
+
+```php
+use AsyncAws\S3\Result\CompleteMultipartUploadOutput;
+use Sensiolabs\GotenbergBundle\Bridge\AsyncAws\Processor\AsyncAwsS3MultiPartProcessor;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class SomeService
+{
+    public function __construct(
+        private readonly GotenbergPdfInterface $gotenbergPdf,
+        private readonly S3Client $s3Client,
+    ) {}
+    
+    public function pdf(): CompleteMultipartUploadOutput
+    {
+        return $this->gotenbergPdf->html()
+            //
+            ->fileName('my_pdf')
+            ->processor(new AsyncAwsS3MultiPartProcessor(
+                $this->s3Client,
+                'bucket-name',
+            ))
+            ->generate()
+            ->process()
+        ;
+    }
+}
+```
+
+</details>
 
 ### Custom processor
 
