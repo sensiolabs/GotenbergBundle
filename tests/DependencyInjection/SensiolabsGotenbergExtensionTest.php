@@ -79,34 +79,48 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         ],
                     ],
                 ],
-                //                'url' => [
-                //                    'paper_width' => 21,
-                //                    'paper_height' => 50,
-                //                    'margin_top' => 0.5,
-                //                    'margin_bottom' => 0.5,
-                //                    'margin_left' => 0.5,
-                //                    'margin_right' => 0.5,
-                //                    'prefer_css_page_size' => false,
-                //                    'generate_document_outline' => false,
-                //                    'print_background' => false,
-                //                    'omit_background' => false,
-                //                    'landscape' => false,
-                //                    'scale' => 1.5,
-                //                    'native_page_ranges' => '1-10',
-                //                    'wait_delay' => '5s',
-                //                    'wait_for_expression' => 'window.globalVar === "ready"',
-                //                    'emulated_media_type' => 'screen',
-                //                    'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-                //                    'fail_on_http_status_codes' => [401, 403],
-                //                    'fail_on_resource_http_status_codes' => [401, 403],
-                //                    'fail_on_resource_loading_failed' => false,
-                //                    'fail_on_console_exceptions' => false,
-                //                    'skip_network_idle_event' => false,
-                //                    'pdf_format' => PdfFormat::Pdf2b->value,
-                //                    'pdf_universal_access' => false,
-                //                    'cookies' => [],
-                //                    'download_from' => [],
-                //                ],
+                'url' => [
+                    'paper_width' => 21,
+                    'paper_height' => 50,
+                    'margin_top' => 0.5,
+                    'margin_bottom' => 0.5,
+                    'margin_left' => 0.5,
+                    'margin_right' => 0.5,
+                    'prefer_css_page_size' => false,
+                    'generate_document_outline' => false,
+                    'print_background' => false,
+                    'omit_background' => false,
+                    'landscape' => false,
+                    'scale' => 1.5,
+                    'native_page_ranges' => '1-10',
+                    'wait_delay' => '5s',
+                    'wait_for_expression' => 'window.globalVar === "ready"',
+                    'emulated_media_type' => EmulatedMediaType::Screen,
+                    'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                    'fail_on_http_status_codes' => [401, 403],
+                    'fail_on_resource_http_status_codes' => [401, 403],
+                    'fail_on_resource_loading_failed' => false,
+                    'fail_on_console_exceptions' => false,
+                    'skip_network_idle_event' => false,
+                    'pdf_format' => PdfFormat::Pdf2b,
+                    'pdf_universal_access' => false,
+                    'cookies' => [[
+                        'name' => 'cook_me',
+                        'value' => 'sensio',
+                        'domain' => 'sensiolabs.com',
+                        'secure' => true,
+                        'httpOnly' => true,
+                        'sameSite' => 'Lax',
+                    ]],
+                    'download_from' => [
+                        [
+                            'url' => 'http://example.com',
+                            'extraHttpHeaders' => [
+                                'MyHeader' => 'MyValue',
+                            ],
+                        ],
+                    ],
+                ],
                 //                'markdown' => [
                 //                    'paper_width' => 30,
                 //                    'paper_height' => 45,
@@ -287,6 +301,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             foreach ($builder as $builderName => $expectedConfig) {
                 $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
 
+                /** @var array<array-key, mixed> $configurator */
                 $configurator = $definition->getConfigurator();
                 self::assertSame('setConfigurations', $configurator[1]);
 
@@ -374,16 +389,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'Author' => 'SensioLabs HTML',
                         ],
                     ],
-                    //                    'url' => [
-                    //                        'metadata' => [
-                    //                            'Author' => 'SensioLabs URL',
-                    //                        ],
-                    //                        'cookies' => [],
-                    //                        'extra_http_headers' => [],
-                    //                        'fail_on_http_status_codes' => [],
-                    //                        'fail_on_resource_http_status_codes' => [],
-                    //                        'download_from' => [],
-                    //                    ],
+                    'url' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs URL',
+                        ],
+                    ],
                     //                    'markdown' => [
                     //                        'metadata' => [
                     //                            'Author' => 'SensioLabs MARKDOWN',
@@ -394,12 +404,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     //                        'fail_on_resource_http_status_codes' => [],
                     //                        'download_from' => [],
                     //                    ],
-                    //                    'office' => [
-                    //                        'metadata' => [
-                    //                            'Author' => 'SensioLabs OFFICE',
-                    //                        ],
-                    //                        'download_from' => [],
-                    //                    ],
+                    'office' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs OFFICE',
+                        ],
+                    ],
                     'merge' => [
                         'metadata' => [
                             'Author' => 'SensioLabs MERGE',
@@ -423,16 +432,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'Author' => 'SensioLabs HTML',
                 ],
             ],
-            //            'url' => [
-            //                'metadata' => [
-            //                    'Author' => 'SensioLabs URL',
-            //                ],
-            //                'cookies' => [],
-            //                'extra_http_headers' => [],
-            //                'fail_on_http_status_codes' => [],
-            //                'fail_on_resource_http_status_codes' => [],
-            //                'download_from' => [],
-            //            ],
+            'url' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs URL',
+                ],
+            ],
             //            'markdown' => [
             //                'metadata' => [
             //                    'Author' => 'SensioLabs MARKDOWN',
@@ -443,12 +447,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
             //                'fail_on_resource_http_status_codes' => [],
             //                'download_from' => [],
             //            ],
-            //            'office' => [
-            //                'metadata' => [
-            //                    'Author' => 'SensioLabs OFFICE',
-            //                ],
-            //                'download_from' => [],
-            //            ],
+            'office' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs OFFICE',
+                ],
+            ],
             'merge' => [
                 'metadata' => [
                     'Author' => 'SensioLabs MERGE',
@@ -668,33 +671,51 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                                 ],
                             ],
                         ],
-                        //                        'url' => [
-                        //                            'paper_width' => 21,
-                        //                            'paper_height' => 50,
-                        //                            'margin_top' => 0.5,
-                        //                            'margin_bottom' => 0.5,
-                        //                            'margin_left' => 0.5,
-                        //                            'margin_right' => 0.5,
-                        //                            'prefer_css_page_size' => false,
-                        //                            'generate_document_outline' => false,
-                        //                            'print_background' => false,
-                        //                            'omit_background' => false,
-                        //                            'landscape' => false,
-                        //                            'scale' => 1.5,
-                        //                            'native_page_ranges' => '1-10',
-                        //                            'wait_delay' => '5s',
-                        //                            'wait_for_expression' => 'window.globalVar === "ready"',
-                        //                            'emulated_media_type' => 'screen',
-                        //                            'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-                        //                            'fail_on_http_status_codes' => [401, 403],
-                        //                            'fail_on_resource_http_status_codes' => [401, 403],
-                        //                            'fail_on_resource_loading_failed' => false,
-                        //                            'fail_on_console_exceptions' => false,
-                        //                            'skip_network_idle_event' => false,
-                        //                            'pdf_format' => PdfFormat::Pdf2b->value,
-                        //                            'pdf_universal_access' => false,
-                        //                            //                            'webhook' => ['success' => '']
-                        //                        ],
+                        'url' => [
+                            'paper_width' => 21,
+                            'paper_height' => 50,
+                            'margin_top' => 0.5,
+                            'margin_bottom' => 0.5,
+                            'margin_left' => 0.5,
+                            'margin_right' => 0.5,
+                            'prefer_css_page_size' => false,
+                            'generate_document_outline' => false,
+                            'print_background' => false,
+                            'omit_background' => false,
+                            'landscape' => false,
+                            'scale' => 1.5,
+                            'native_page_ranges' => '1-10',
+                            'wait_delay' => '5s',
+                            'wait_for_expression' => 'window.globalVar === "ready"',
+                            'emulated_media_type' => 'screen',
+                            'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                            'fail_on_http_status_codes' => [401, 403],
+                            'fail_on_resource_http_status_codes' => [401, 403],
+                            'fail_on_resource_loading_failed' => false,
+                            'fail_on_console_exceptions' => false,
+                            'skip_network_idle_event' => false,
+                            'pdf_format' => PdfFormat::Pdf2b->value,
+                            'pdf_universal_access' => false,
+                            'cookies' => [[
+                                'name' => 'cook_me',
+                                'value' => 'sensio',
+                                'domain' => 'sensiolabs.com',
+                                'secure' => true,
+                                'httpOnly' => true,
+                                'sameSite' => 'Lax',
+                            ]],
+                            'download_from' => [
+                                [
+                                    'url' => 'http://example.com',
+                                    'extraHttpHeaders' => [
+                                        [
+                                            'name' => 'MyHeader',
+                                            'value' => 'MyValue',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                         //                        'markdown' => [
                         //                            'paper_width' => 30,
                         //                            'paper_height' => 45,

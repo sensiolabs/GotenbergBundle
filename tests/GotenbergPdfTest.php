@@ -28,7 +28,6 @@ use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(GotenbergPdf::class)]
 #[UsesClass(AbstractChromiumPdfBuilder::class)]
-#[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(HtmlPdfBuilder::class)]
 #[UsesClass(MarkdownPdfBuilder::class)]
 #[UsesClass(LibreOfficePdfBuilder::class)]
@@ -36,14 +35,12 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(GotenbergClient::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
 #[UsesClass(Filesystem::class)]
-#[UsesClass(TraceablePdfBuilder::class)]
 #[UsesClass(TraceableGotenbergPdf::class)]
 #[UsesClass(GotenbergPass::class)]
 #[UsesClass(Configuration::class)]
 #[UsesClass(SensiolabsGotenbergExtension::class)]
 #[UsesClass(SensiolabsGotenbergBundle::class)]
 #[UsesClass(Unit::class)]
-#[UsesClass(WebhookConfigurationRegistry::class)]
 final class GotenbergPdfTest extends KernelTestCase
 {
     //    public function testUrlBuilderFactory(): void

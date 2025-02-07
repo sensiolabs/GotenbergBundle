@@ -4,7 +4,9 @@ namespace Sensiolabs\GotenbergBundle;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 
 interface GotenbergPdfInterface
@@ -23,15 +25,15 @@ interface GotenbergPdfInterface
      */
     public function html(): BuilderInterface;
 
- //    /**
- //     * @return UrlPdfBuilder
- //     */
- //    public function url(): PdfBuilderInterface;
- //
- //    /**
- //     * @return LibreOfficePdfBuilder
- //     */
- //    public function office(): PdfBuilderInterface;
+     /**
+      * @return UrlPdfBuilder
+      */
+     public function url(): BuilderInterface;
+
+     /**
+      * @return LibreOfficePdfBuilder
+      */
+     public function office(): BuilderInterface;
  //
  //    /**
  //     * @return MarkdownPdfBuilder

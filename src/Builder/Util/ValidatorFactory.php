@@ -45,6 +45,7 @@ class ValidatorFactory
 
     /**
      * @param \SplFileInfo[] $files
+     * @param string[] $validExtensions
      */
     public static function filesExtension(array $files, array $validExtensions): void
     {

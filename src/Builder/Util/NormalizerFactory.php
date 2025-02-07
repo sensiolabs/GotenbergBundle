@@ -6,6 +6,8 @@ use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
 
 class NormalizerFactory
 {
@@ -77,7 +79,7 @@ class NormalizerFactory
             }
 
             return [[
-                'files' => new DataPart(new File($value)),
+                'files' => new DataPart(new File($value, $key)),
             ]];
         };
     }
@@ -87,10 +89,32 @@ class NormalizerFactory
         return static function (string $key, array $assets): array {
             $multipart = [];
             foreach ($assets as $asset) {
-                $multipart[] = \call_user_func(self::content(), $key, $asset);
+                $multipart[] = [[
+                    'files' => new DataPart(new File($asset)),
+                ]];
             }
 
             return $multipart;
+        };
+    }
+
+    public static function route(RequestContext|null $requestContext, UrlGeneratorInterface $urlGenerator): \Closure
+    {
+        return static function (string $key, array $value) use ($requestContext, $urlGenerator): array {
+
+            [$route, $parameters] = $value;
+
+            $context = $urlGenerator->getContext();
+
+            if (null !== $requestContext) {
+                $urlGenerator->setContext($requestContext);
+            }
+
+            try {
+                return [['url' => $urlGenerator->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL)]];
+            } finally {
+                $urlGenerator->setContext($context);
+            }
         };
     }
 }

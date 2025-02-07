@@ -14,6 +14,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
@@ -56,6 +57,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['html', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return UrlPdfBuilder|TraceableBuilder
+     */
+    public function url(): BuilderInterface
+    {
+        /** @var UrlPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->url();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['url', $traceableBuilder];
 
         return $traceableBuilder;
     }

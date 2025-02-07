@@ -3,17 +3,12 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Container\ContainerInterface;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
-use Sensiolabs\GotenbergBundle\NodeBuilder\NodeBuilderDispatcher;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 
 /**
@@ -123,14 +118,14 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     private function normalizePayloadBody(): \Generator
     {
-        foreach (array_reverse($this->reflection->getMethods()) as $methodR) {
-            $attributes = $methodR->getAttributes(NormalizeGotenbergPayload::class);
+        foreach (array_reverse($this->reflection->getMethods()) as $method) {
+            $attributes = $method->getAttributes(NormalizeGotenbergPayload::class);
 
             if (\count($attributes) === 0) {
                 continue;
             }
 
-            foreach ($methodR->invoke($this) as $key => $normalizer) {
+            foreach ($method->invoke($this) as $key => $normalizer) {
                 if ($this->getBodyBag()->get($key) === null) {
                     continue;
                 }
@@ -144,11 +139,18 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                     foreach ($multipleFiles as $file) {
                         yield $file;
                     }
+
+                    $this->getBodyBag()->unset($key);
                     continue;
                 }
 
                 yield $normalizer($key, $this->getBodyBag()->get($key));
+                $this->getBodyBag()->unset($key);
             }
+        }
+
+        foreach ($this->getBodyBag()->all() as $key => $value) {
+            yield [[$key => $value]];
         }
     }
 }

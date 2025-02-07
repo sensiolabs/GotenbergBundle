@@ -55,7 +55,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
     protected function assertGotenbergFormData(string $name, string $value): void
     {
         foreach ($this->client->getBody() as $part) {
-            if (!$part instanceof TextPart || $part->getName() !== $name) {
+            if ($part->getName() !== "0[{$name}]") {
                 continue;
             }
 

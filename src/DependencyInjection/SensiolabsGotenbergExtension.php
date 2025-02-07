@@ -45,7 +45,8 @@ class SensiolabsGotenbergExtension extends Extension
     {
         $configuration = new Configuration();
 
-        /** @var SensiolabsGotenbergConfiguration $config
+        /*
+         * @var SensiolabsGotenbergConfiguration $config
          */
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -100,9 +101,9 @@ class SensiolabsGotenbergExtension extends Extension
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
                 ->replaceArgument(3, [
                     'html' => $this->cleanUserOptions($config['default_options']['pdf']['html']),
-                    //                    'url' => $this->cleanUserOptions($config['default_options']['pdf']['url']),
+                    'url' => $this->cleanUserOptions($config['default_options']['pdf']['url']),
                     //                    'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),
-                    //                    'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
+                    'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
                     'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
                     //                    'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
                     //                    'split' => $this->cleanUserOptions($config['default_options']['pdf']['split']),
@@ -165,6 +166,11 @@ class SensiolabsGotenbergExtension extends Extension
         ;
 
         $container
+            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.url')
+            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['url']))
+        ;
+
+        $container
             ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.merge')
             ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']))
         ;
@@ -178,6 +184,7 @@ class SensiolabsGotenbergExtension extends Extension
     /**
      * @param SensiolabsGotenbergConfiguration $config
      * @param array<string, mixed>             $serviceConfig
+     * @return array<string, mixed>
      */
     private function processDefaultOptions(array $config, array $serviceConfig): array
     {

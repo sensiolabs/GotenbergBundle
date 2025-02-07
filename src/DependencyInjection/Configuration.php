@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Configurator\AbstractBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\HtmlPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\LibreOfficePdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\MergePdfBuilderConfigurator;
+use Sensiolabs\GotenbergBundle\Configurator\Pdf\UrlPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
@@ -59,8 +60,8 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('pdf')
                             ->addDefaultsIfNotSet()
                             ->append(HtmlPdfBuilderConfigurator::getConfiguration())
+                            ->append(UrlPdfBuilderConfigurator::getConfiguration())
                             ->append(MergePdfBuilderConfigurator::getConfiguration())
-//                            ->append($this->addPdfUrlNode())
 //                            ->append($this->addPdfMarkdownNode())
                             ->append(LibreOfficePdfBuilderConfigurator::getConfiguration())
 //                            ->append($this->addPdfMergeNode())
@@ -79,36 +80,6 @@ class Configuration implements ConfigurationInterface
         ;
 
         return $treeBuilder;
-    }
-
-//    private function addPdfHtmlNode(): NodeDefinition
-//    {
-//        $treebuilder = new TreeBuilder('html');
-//
-//        $treebuilder
-//            ->getRootNode()
-//            ->addDefaultsIfNotSet()
-//        ;
-//
-//        $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
-//        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
-//
-//        return $treebuilder->getRootNode();
-//    }
-
-    private function addPdfUrlNode(): NodeDefinition
-    {
-        $treebuilder = new TreeBuilder('url');
-
-        $treebuilder
-            ->getRootNode()
-            ->addDefaultsIfNotSet()
-        ;
-
-        $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
-        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
-
-        return $treebuilder->getRootNode();
     }
 
     private function addPdfMarkdownNode(): NodeDefinition
@@ -501,125 +472,6 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addPdfOfficeNode(): NodeDefinition
-    {
-        $treeBuilder = new TreeBuilder('office');
-
-        $treeBuilder->getRootNode()
-            ->addDefaultsIfNotSet()
-            ->children()
-                ->scalarNode('password')
-                    ->info('Set the password for opening the source file. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('landscape')
-                    ->info('The paper orientation to landscape - default false. https://gotenberg.dev/docs/routes#page-properties-chromium')
-                    ->defaultNull()
-                ->end()
-                ->scalarNode('native_page_ranges')
-                    ->info('Page ranges to print, e.g., "1-5, 8, 11-13" - default All pages. https://gotenberg.dev/docs/routes#page-properties-chromium')
-                    ->defaultNull()
-                    ->validate()
-                        ->ifTrue(static function ($option): bool {
-                            return preg_match('/([\d]+[-][\d]+)/', $option) !== 1;
-                        })
-                        ->thenInvalid('Invalid range values, the range value format need to look like e.g 1-20.')
-                    ->end()
-                ->end()
-                ->booleanNode('do_not_export_form_fields')
-                    ->info('Set whether to export the form fields or to use the inputted/selected content of the fields. - default true. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('single_page_sheets')
-                    ->info('Set whether to render the entire spreadsheet as a single page. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('merge')
-                    ->info('Merge alphanumerically the resulting PDFs. - default false. https://gotenberg.dev/docs/routes#merge-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->append($this->addPdfMetadataNode())
-                ->booleanNode('allow_duplicate_field_names')
-                    ->info('Specify whether multiple form fields exported are allowed to have the same field name. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('do_not_export_bookmarks')
-                    ->info('Specify if bookmarks are exported to PDF. - default true. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('export_bookmarks_to_pdf_destination')
-                    ->info('Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('export_placeholders')
-                    ->info('Export the placeholders fields visual markings only. The exported placeholder is ineffective. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('export_notes')
-                    ->info('Specify if notes are exported to PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('export_notes_pages')
-                    ->info('Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('export_only_notes_pages')
-                    ->info('Specify, if the form field exportNotesPages is set to true, if only notes pages are exported to PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('export_notes_in_margin')
-                    ->info('Specify if notes in margin are exported to PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('convert_ooo_target_to_pdf_target')
-                    ->info('Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('export_links_relative_fsys')
-                    ->info('Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('export_hidden_slides')
-                    ->info('Export, for LibreOffice Impress, slides that are not included in slide shows. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('skip_empty_pages')
-                    ->info('Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('add_original_document_as_stream')
-                    ->info('Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('lossless_image_compression')
-                    ->info('Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format. - default false. https://gotenberg.dev/docs/routes#images-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->integerNode('quality')
-                    ->info('Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100. - default 90. https://gotenberg.dev/docs/routes#images-libreoffice')
-                    ->min(0)
-                    ->max(100)
-                    ->defaultNull()
-                ->end()
-                ->booleanNode('reduce_image_resolution')
-                    ->info('Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution. - default false. https://gotenberg.dev/docs/routes#images-libreoffice')
-                    ->defaultNull()
-                ->end()
-                ->enumNode('max_image_resolution')
-                    ->info('If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200. - default 300. https://gotenberg.dev/docs/routes#images-libreoffice')
-                    ->values(array_map(static fn (ImageResolutionDPI $case): int => $case->value, ImageResolutionDPI::cases()))
-                    ->defaultNull()
-                ->end()
-                ->append($this->addDownloadFromNode())
-            ->end()
-        ;
-
-        $this->addPdfFormatNode($treeBuilder->getRootNode());
-        $this->addSplitConfigurationNode($treeBuilder->getRootNode());
-
-        return $treeBuilder->getRootNode();
-    }
-
     private function addPdfConvertNode(): NodeDefinition
     {
         $treeBuilder = new TreeBuilder('convert');
@@ -630,18 +482,6 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder->getRootNode();
     }
-
-//    private function addPdfMergeNode(): NodeDefinition
-//    {
-//        $treeBuilder = new TreeBuilder('merge');
-//        $this->addPdfFormatNode($treeBuilder->getRootNode());
-//        $treeBuilder->getRootNode()
-//            ->append($this->addPdfMetadataNode())
-//            ->append($this->addDownloadFromNode())
-//        ->end();
-//
-//        return $treeBuilder->getRootNode();
-//    }
 
     private function addPdfSplitNode(): NodeDefinition
     {

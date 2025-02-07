@@ -72,7 +72,7 @@ trait WebhookTrait
         }
 
         if (isset($webhook['extra_http_headers'])) {
-            $this->extraHttpHeaders($webhook['extra_http_headers']);
+            $this->webhookExtraHeaders($webhook['extra_http_headers']);
         }
 
         return $this;

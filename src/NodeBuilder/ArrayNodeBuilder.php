@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -79,6 +80,7 @@ final class ArrayNodeBuilder implements NodeBuilderInterface
                 'integer' => $node->integerPrototype(),
                 'array' => $node->arrayPrototype(),
                 'variable' => $node->variablePrototype(),
+                default => throw new InvalidBuilderConfiguration(\sprintf('Invalid value "%s", available prototype are "integer", "array" or "variable".', $options['prototype'])),
             };
 
             if (isset($options['children']) && \count($options['children']) > 0) {

@@ -19,6 +19,9 @@ abstract class AbstractBuilderConfigurator
     ) {
     }
 
+    /**
+     * @return class-string
+     */
     abstract protected static function getBuilderClass(): string;
 
     public static function getConfiguration(): NodeDefinition
@@ -49,8 +52,6 @@ abstract class AbstractBuilderConfigurator
 
     /**
      * To set configurations by an array of configurations.
-     *
-     * @param array<string, mixed> $configurations
      */
     public function setConfigurations(BuilderInterface $builder): void
     {

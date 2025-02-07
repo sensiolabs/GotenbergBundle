@@ -47,7 +47,12 @@ final class EnumNodeBuilder implements NodeBuilderInterface
         }
 
         if (isset($options['class'])) {
-            if (!\in_array('BackedEnum', class_implements($options['class']), true)) {
+            $classImplements = class_implements($options['class']);
+            if (false === $classImplements) {
+                throw new InvalidBuilderConfiguration(\sprintf('The "class" option expects a valid class "\BackedEnum" for "%s".', $options['class']));
+            }
+
+            if (!\in_array('BackedEnum', $classImplements, true)) {
                 throw new InvalidBuilderConfiguration(\sprintf('The "class" option expects a valid class "\BackedEnum" for "%s".', $exposeSemantic->name));
             }
 

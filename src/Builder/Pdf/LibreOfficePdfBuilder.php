@@ -34,11 +34,6 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
         'xltx', 'xlw', 'xml', 'xpm', 'zabw',
     ];
 
-    protected function getEndpoint(): string
-    {
-        return '/forms/libreoffice/convert';
-    }
-
     /**
      * Adds office files to convert (overrides any previous files).
      */
@@ -54,6 +49,11 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
         $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
+    }
+
+    protected function getEndpoint(): string
+    {
+        return '/forms/libreoffice/convert';
     }
 
     protected function validatePayloadBody(): void
