@@ -104,11 +104,11 @@ This will return a `SplFileInfo` of the generated file stored at `%kernel.projec
 
 </details>
 
-## `Sensiolabs\GotenbergBundle\Processor\NullProcessor`
+### `Sensiolabs\GotenbergBundle\Processor\NullProcessor`
 
 Empty processor. Does nothing. Returns `null`.
 
-## `Sensiolabs\GotenbergBundle\Processor\TempfileProcessor`
+### `Sensiolabs\GotenbergBundle\Processor\TempfileProcessor`
 
 Creates a temporary file and dump all chunks into it. Return a `ressource` of said `tmpfile()`.
 
@@ -144,7 +144,7 @@ class SomeService
 
 </details>
 
-## `Sensiolabs\GotenbergBundle\Processor\ChainProcessor`
+### `Sensiolabs\GotenbergBundle\Processor\ChainProcessor`
 
 Apply multiple processors. Each chunk will be sent to each processor sequentially. Return an array of values returned by chained processors.
 
@@ -199,7 +199,7 @@ class SomeService
 
 </details>
 
-## `Sensiolabs\GotenbergBundle\Bridge\LeagueFlysystem\Processor\FlysystemProcessor`
+### `Sensiolabs\GotenbergBundle\Bridge\LeagueFlysystem\Processor\FlysystemProcessor`
 
 Upload using the `league/flysystem-bundle` package. Returns a `callable`. This callable will return the uploaded content.
 
@@ -241,7 +241,7 @@ class SomeService
 
 </details>
 
-## `Sensiolabs\GotenbergBundle\Bridge\AsyncAws\Processor\AsyncAwsS3MultiPartProcessor`
+### `Sensiolabs\GotenbergBundle\Bridge\AsyncAws\Processor\AsyncAwsS3MultiPartProcessor`
 
 Upload using the `async-aws/s3` package. Uploads using the [multipart upload](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html) feature of S3. Returns a `AsyncAws\S3\Result\CompleteMultipartUploadOutput` object.
 
@@ -278,7 +278,7 @@ class SomeService
 
 </details>
 
-### Custom processor
+## Custom processor
 
 A custom processor must implement `Sensiolabs\GotenbergBundle\Processor\ProcessorInterface` which require that your `__invoke` method is a `\Generator`. To receive a chunk you must assign `yield` to a variable like so : `$chunk = yield`.
 
