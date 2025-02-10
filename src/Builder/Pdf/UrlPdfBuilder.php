@@ -19,9 +19,6 @@ class UrlPdfBuilder extends AbstractBuilder
 
     private RequestContext|null $requestContext = null;
 
-    // TODO Assets into URL??? AssetsTrait dans chromiumTrait
-    // TODO to fix no url field error 400 but sent
-
     /**
      * URL of the page you want to convert into PDF.
      */

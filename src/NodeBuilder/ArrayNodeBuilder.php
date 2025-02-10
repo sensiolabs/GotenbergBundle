@@ -92,6 +92,16 @@ final class ArrayNodeBuilder implements NodeBuilderInterface
                     $prototype->append($childNode);
                 }
             }
+        } else {
+            if (isset($options['children']) && \count($options['children']) > 0) {
+                foreach ($options['children'] as $child) {
+                    $childNode = NodeBuilderDispatcher::getNode(
+                        new ExposeSemantic($child['name'], $child['node_type'], $child['options']),
+                    );
+
+                    $node->append($childNode);
+                }
+            }
         }
 
         return $node;

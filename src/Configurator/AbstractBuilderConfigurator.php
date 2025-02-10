@@ -69,6 +69,12 @@ abstract class AbstractBuilderConfigurator
                 continue;
             }
 
+            if (\in_array($attribute->name, ['header', 'footer'], true) && \count($this->configuration[$attribute->name]) > 0) {
+                $configuration = $this->configuration[$attribute->name];
+                $builder->{$method->getName()}($configuration['template'], $configuration['context']);
+                continue;
+            }
+
             $builder->{$method->getName()}($this->configuration[$attribute->name]);
         }
     }

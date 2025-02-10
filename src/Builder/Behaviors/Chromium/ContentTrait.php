@@ -2,12 +2,14 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
+use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
@@ -46,6 +48,10 @@ trait ContentTrait
      *
      * See https://gotenberg.dev/docs/routes#header-footer-chromium.
      */
+    #[ExposeSemantic('header', NodeType::Array, ['default_value' => [], 'children' => [
+        ['name' => 'template', 'options' => ['restrict_to' => 'string', 'required' => true]],
+        ['name' => 'context', 'node_type' => NodeType::Array, 'options' => ['default_value' => [], 'normalize_keys' => false, 'prototype' => 'variable']],
+    ]])]
     public function header(string $template, array $context = []): static
     {
         return $this->withRenderedPart(Part::Header, $template, $context);
@@ -59,6 +65,10 @@ trait ContentTrait
      *
      * See https://gotenberg.dev/docs/routes#header-footer-chromium.
      */
+    #[ExposeSemantic('footer', NodeType::Array, ['default_value' => [], 'children' => [
+        ['name' => 'template', 'options' => ['restrict_to' => 'string', 'required' => true]],
+        ['name' => 'context', 'node_type' => NodeType::Array, 'options' => ['default_value' => [], 'normalize_keys' => false, 'prototype' => 'variable']],
+    ]])]
     public function footer(string $template, array $context = []): static
     {
         return $this->withRenderedPart(Part::Footer, $template, $context);
