@@ -134,7 +134,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                     throw new \RuntimeException(\sprintf('Normalizer "%s" is not a valid callable function.', $key));
                 }
 
-                if (('assets' === $key || 'files' === $key) && \count($this->getBodyBag()->get($key)) > 1) {
+                if ('assets' === $key && \count($this->getBodyBag()->get($key)) > 1) {
                     $multipleFiles = $normalizer($key, $this->getBodyBag()->get($key));
                     foreach ($multipleFiles as $file) {
                         yield $file;
@@ -150,7 +150,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         }
 
         foreach ($this->getBodyBag()->all() as $key => $value) {
-            yield [[$key => $value]];
+            yield [$key => $value];
         }
     }
 }

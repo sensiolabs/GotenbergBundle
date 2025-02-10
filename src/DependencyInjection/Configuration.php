@@ -620,6 +620,10 @@ class Configuration implements ConfigurationInterface
                         })
                         ->thenInvalid('The "route" parameter must be a string or an array containing a string and an array.')
                     ->end()
+                    ->example([
+                        'https://webhook.site/#!/view/{some-token}',
+                        ['my_route', ['param1' => 'value1', 'param2' => 'value2']],
+                    ])
                     ->variablePrototype()->end()
                 ->end()
                 ->enumNode('method')
