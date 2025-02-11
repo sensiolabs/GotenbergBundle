@@ -2,72 +2,68 @@
 
 namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
-use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class EnumNodeBuilder implements NodeBuilderInterface
+final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
-    public static function create(ExposeSemantic $exposeSemantic): EnumNodeDefinition
+    /** @var callable|string|null */
+    public $callback;
+
+    public function __construct(
+        protected string $name,
+
+        public string|null $defaultValue = null,
+
+        /** @var class-string|null */
+        public string|null $className = null,
+
+        public array $values = [],
+
+        string|callable|null $callback = null,
+    ) {
+        parent::__construct($name);
+        $this->callback = $callback;
+    }
+
+    public function create(): EnumNodeDefinition
     {
-        $resolver = new OptionsResolver();
-        $resolver->setDefault('default_null', false);
-        $resolver->setAllowedTypes('default_null', 'bool');
+        $node = new EnumNodeDefinition($this->name);
 
-        $resolver->setDefined('default_value');
-
-        $resolver->setDefined('values');
-        $resolver->setAllowedTypes('values', 'array');
-
-        $resolver->setDefined('callback');
-        $resolver->setAllowedTypes('callback', ['array', 'string']);
-
-        $resolver->setDefined('class');
-        $resolver->setAllowedTypes('class', 'string');
-
-        $options = $resolver->resolve($exposeSemantic->options);
-
-        $node = new EnumNodeDefinition($exposeSemantic->name);
-
-        if (isset($options['values']) && isset($options['callback'])) {
-            throw new InvalidBuilderConfiguration(\sprintf('You must choose between "values" or "callback" to provide any choice for "%s".', $exposeSemantic->name));
+        if (count($this->values) > 0 && null !== $this->callback) {
+            throw new InvalidBuilderConfiguration(\sprintf('You must choose between "values" or "callback" to provide any choice for "%s".', $this->name));
         }
 
-        if (isset($options['values'])) {
-            $node->values($options['values']);
+        if (\count($this->values) > 0) {
+            $node->values($this->values);
         }
 
-        if (isset($options['callback'])) {
-            if (!\is_callable($options['callback'])) {
-                throw new InvalidBuilderConfiguration(\sprintf('The Builder constraint expects a valid callback for "%s".', $exposeSemantic->name));
+        if (null !== $this->callback) {
+            if (!\is_callable($this->callback)) {
+                throw new InvalidBuilderConfiguration(\sprintf('The Builder constraint expects a valid callback for "%s".', $this->name));
             }
 
-            $node->values(\call_user_func($options['callback']));
+            $node->values(\call_user_func($this->callback));
         }
 
-        if (isset($options['class'])) {
-            $classImplements = class_implements($options['class']);
+        if (null !== $this->className) {
+            $classImplements = class_implements($this->className);
             if (false === $classImplements) {
-                throw new InvalidBuilderConfiguration(\sprintf('The "class" option expects a valid class "\BackedEnum" for "%s".', $options['class']));
+                throw new InvalidBuilderConfiguration(\sprintf('The "class" option expects a valid class "\BackedEnum" for "%s".', $this->className));
             }
 
             if (!\in_array('BackedEnum', $classImplements, true)) {
-                throw new InvalidBuilderConfiguration(\sprintf('The "class" option expects a valid class "\BackedEnum" for "%s".', $exposeSemantic->name));
+                throw new InvalidBuilderConfiguration(\sprintf('The "class" option expects a valid class "\BackedEnum" for "%s".', $this->name));
             }
 
-            $node->beforeNormalization()->ifString()->then(static function (string $value) use ($options): \BackedEnum {
-                return $options['class']::from($value);
+            $className = $this->className;
+
+            $node->beforeNormalization()->ifString()->then(static function (string $value) use ($className): \BackedEnum {
+                return $className::from($value);
             });
         }
 
-        if ($options['default_null']) {
-            $node->defaultNull();
-        }
-
-        if (isset($options['default_value'])) {
-            $node->defaultValue($options['default_value']);
-        }
+        $node->defaultValue($this->defaultValue);
 
         return $node;
     }

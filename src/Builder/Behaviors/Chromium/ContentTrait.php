@@ -9,9 +9,10 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
-use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 
 trait ContentTrait
@@ -48,10 +49,10 @@ trait ContentTrait
      *
      * See https://gotenberg.dev/docs/routes#header-footer-chromium.
      */
-    #[ExposeSemantic('header', NodeType::Array, ['default_value' => [], 'children' => [
-        ['name' => 'template', 'options' => ['restrict_to' => 'string', 'required' => true]],
-        ['name' => 'context', 'node_type' => NodeType::Array, 'options' => ['default_value' => [], 'normalize_keys' => false, 'prototype' => 'variable']],
-    ]])]
+    #[ExposeSemantic(new ArrayNodeBuilder('header', children: [
+        new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
+        new ArrayNodeBuilder('context', normalizeKeys: false, prototype: 'variable'),
+    ]))]
     public function header(string $template, array $context = []): static
     {
         return $this->withRenderedPart(Part::Header, $template, $context);
@@ -65,10 +66,10 @@ trait ContentTrait
      *
      * See https://gotenberg.dev/docs/routes#header-footer-chromium.
      */
-    #[ExposeSemantic('footer', NodeType::Array, ['default_value' => [], 'children' => [
-        ['name' => 'template', 'options' => ['restrict_to' => 'string', 'required' => true]],
-        ['name' => 'context', 'node_type' => NodeType::Array, 'options' => ['default_value' => [], 'normalize_keys' => false, 'prototype' => 'variable']],
-    ]])]
+    #[ExposeSemantic(new ArrayNodeBuilder('footer', children: [
+        new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
+        new ArrayNodeBuilder('context', normalizeKeys: false, prototype: 'variable'),
+    ]))]
     public function footer(string $template, array $context = []): static
     {
         return $this->withRenderedPart(Part::Footer, $template, $context);

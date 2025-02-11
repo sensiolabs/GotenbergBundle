@@ -496,7 +496,6 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'html' => [
                     'webhook' => [
                         'config_name' => 'bar',
-                        'extra_http_headers' => [],
                     ],
                 ],
                 //                'url' => [],
@@ -505,32 +504,24 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'webhook' => [
                         'success' => [
                             'url' => 'https://sensiolabs.com/webhook',
-                            'method' => null,
                         ],
                         'error' => [
                             'route' => [
                                 'simple_route',
-                                [],
                             ],
-                            'method' => null,
                         ],
-                        'extra_http_headers' => [],
                     ],
                 ],
                 'merge' => [
                     'webhook' => [
                         'success' => [
                             'url' => 'https://sensiolabs.com/webhook',
-                            'method' => null,
                         ],
                         'error' => [
                             'route' => [
                                 'simple_route',
-                                [],
                             ],
-                            'method' => null,
                         ],
-                        'extra_http_headers' => [],
                     ],
                 ],
                 //                'convert' => [],

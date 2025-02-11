@@ -5,8 +5,11 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
-use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\VariableNodeBuilder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -23,20 +26,20 @@ trait WebhookTrait
     /**
      * @param webhookConfiguration $webhook
      */
-    #[ExposeSemantic('webhook', NodeType::Array, ['has_parent_node' => true, 'children' => [
-        ['name' => 'config_name', 'options' => ['restrict_to' => 'string']],
-        ['name' => 'success', 'node_type' => NodeType::Array, 'options' => ['has_parent_node' => true, 'children' => [
-            ['name' => 'url', 'options' => ['restrict_to' => 'string']],
-            ['name' => 'route', 'node_type' => NodeType::Variable],
-            ['name' => 'method', 'node_type' => NodeType::Enum, 'options' => ['values' => ['POST', 'PUT', 'PATCH']]],
-        ]]],
-        ['name' => 'error', 'node_type' => NodeType::Array, 'options' => ['has_parent_node' => true, 'children' => [
-            ['name' => 'url', 'options' => ['restrict_to' => 'string']],
-            ['name' => 'route', 'node_type' => NodeType::Variable],
-            ['name' => 'method', 'node_type' => NodeType::Enum, 'options' => ['values' => ['POST', 'PUT', 'PATCH']]],
-        ]]],
-        ['name' => 'extra_http_headers', 'node_type' => NodeType::Array, 'options' => ['default_value' => [], 'normalize_keys' => false, 'use_attribute_as_key' => 'name', 'prototype' => 'variable']],
-    ]])]
+    #[ExposeSemantic(new ArrayNodeBuilder('webhook', hasParentNode: true, children: [
+        new ScalarNodeBuilder('config_name', restrictTo: 'string'),
+        new ArrayNodeBuilder('success', hasParentNode: true, children: [
+            new ScalarNodeBuilder('url', restrictTo: 'string'),
+            new VariableNodeBuilder('route'),
+            new EnumNodeBuilder('method', values: ['POST', 'PUT', 'PATCH']),
+        ]),
+        new ArrayNodeBuilder('error', hasParentNode: true, children: [
+            new ScalarNodeBuilder('url', restrictTo: 'string'),
+            new VariableNodeBuilder('route'),
+            new EnumNodeBuilder('method', values: ['POST', 'PUT', 'PATCH']),
+        ]),
+        new ArrayNodeBuilder('extra_http_headers', normalizeKeys: false, useAttributeAsKey: 'name', prototype: 'variable'),
+    ]))]
     public function webhook(array $webhook): static
     {
         $this->webhookConfigurationValidator($webhook);
@@ -48,7 +51,7 @@ trait WebhookTrait
 
             if (\is_array($webhook['success']['route'])) {
                 $route = $webhook['success']['route'][0];
-                $this->webhookRoute($route[0], $route[1], $webhook['success']['method'] ?? null);
+                $this->webhookRoute($route[0], $route[1] ?? [], $webhook['success']['method'] ?? null);
             }
         }
 
@@ -59,7 +62,7 @@ trait WebhookTrait
 
             if (\is_array($webhook['error']['route'])) {
                 $route = $webhook['error']['route'][0];
-                $this->webhookErrorRoute($route[0], $route[1], $webhook['error']['method'] ?? null);
+                $this->webhookErrorRoute($route[0], $route[1] ?? [], $webhook['error']['method'] ?? null);
             }
         }
 

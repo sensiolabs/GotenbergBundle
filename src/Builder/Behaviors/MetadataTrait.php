@@ -6,7 +6,10 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#pdfa-chromium
@@ -26,20 +29,20 @@ trait MetadataTrait
      *
      * @param array<string, mixed> $metadata
      */
-    #[ExposeSemantic('metadata', NodeType::Array, ['has_parent_node' => true, 'children' => [
-        ['name' => 'Author'],
-        ['name' => 'Copyright'],
-        ['name' => 'CreationDate'],
-        ['name' => 'Creator'],
-        ['name' => 'Keywords'],
-        ['name' => 'Marked', 'node_type' => NodeType::Boolean],
-        ['name' => 'ModDate'],
-        ['name' => 'PDFVersion'],
-        ['name' => 'Producer'],
-        ['name' => 'Subject'],
-        ['name' => 'Title'],
-        ['name' => 'Trapped', 'node_type' => NodeType::Enum, 'options' => ['values' => ['True', 'False', 'Unknown']]],
-    ]])]
+    #[ExposeSemantic(new ArrayNodeBuilder('metadata', hasParentNode: true, children: [
+        new ScalarNodeBuilder('Author'),
+        new ScalarNodeBuilder('Copyright'),
+        new ScalarNodeBuilder('CreationDate'),
+        new ScalarNodeBuilder('Creator'),
+        new ScalarNodeBuilder('Keywords'),
+        new BooleanNodeBuilder('Marked'),
+        new ScalarNodeBuilder('ModDate'),
+        new ScalarNodeBuilder('PDFVersion'),
+        new ScalarNodeBuilder('Producer'),
+        new ScalarNodeBuilder('Subject'),
+        new ScalarNodeBuilder('Title'),
+        new EnumNodeBuilder('Trapped', values: ['True', 'False', 'Unknown']),
+    ]))]
     public function metadata(array $metadata): static
     {
         $this->getBodyBag()->set('metadata', $metadata);

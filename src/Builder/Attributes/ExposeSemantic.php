@@ -2,18 +2,13 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Attributes;
 
-use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NodeBuilderInterface;
 
 #[\Attribute(\Attribute::TARGET_METHOD)]
 final class ExposeSemantic
 {
-    /**
-     * @param array<string, mixed> $options
-     */
     public function __construct(
-        public readonly string $name,
-        public readonly NodeType $nodeType = NodeType::Scalar,
-        public readonly array $options = [],
+        public readonly NodeBuilderInterface $node,
     ) {
     }
 }

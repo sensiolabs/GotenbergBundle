@@ -2,40 +2,30 @@
 
 namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
-use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class BooleanNodeBuilder implements NodeBuilderInterface
+final class BooleanNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
-    public static function create(ExposeSemantic $exposeSemantic): BooleanNodeDefinition
+    public function __construct(
+        protected string $name,
+
+        public bool|null $defaultValue = null,
+
+        public bool $required = false,
+    ) {
+        parent::__construct($name);
+    }
+
+    public function create(): BooleanNodeDefinition
     {
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults([
-            'required' => false,
-            'default_null' => false,
-        ]);
+        $node = new BooleanNodeDefinition($this->name);
 
-        $resolver->setAllowedTypes('default_null', 'bool');
-
-        $resolver->setDefined('default_value');
-        $resolver->setAllowedTypes('default_value', 'bool');
-
-        $options = $resolver->resolve($exposeSemantic->options);
-
-        $node = new BooleanNodeDefinition($exposeSemantic->name);
-
-        if ($options['required']) {
+        if ($this->required) {
             $node->isRequired();
         }
 
-        if ($options['default_null']) {
-            $node->defaultNull();
-        }
 
-        if (isset($options['default_value'])) {
-            $node->defaultValue($options['default_value']);
-        }
+        $node->defaultValue($this->defaultValue);
 
         return $node;
     }

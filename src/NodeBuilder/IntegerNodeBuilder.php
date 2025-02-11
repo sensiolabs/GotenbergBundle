@@ -2,44 +2,35 @@
 
 namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
-use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Symfony\Component\Config\Definition\Builder\IntegerNodeDefinition;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class IntegerNodeBuilder implements NodeBuilderInterface
+final class IntegerNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
-    public static function create(ExposeSemantic $exposeSemantic): IntegerNodeDefinition
+    public function __construct(
+        protected string $name,
+
+        public int|null $defaultValue = null,
+
+        public int|null $min = null,
+
+        public int|null $max = null,
+    ) {
+        parent::__construct($name);
+    }
+
+    public function create(): IntegerNodeDefinition
     {
-        $resolver = new OptionsResolver();
-        $resolver->setDefault('default_null', false);
-        $resolver->setAllowedTypes('default_null', 'bool');
+        $node = new IntegerNodeDefinition($this->name);
 
-        $resolver->setDefined('default_value');
-        $resolver->setAllowedTypes('default_value', 'int');
-
-        $resolver->setDefined(['min', 'max']);
-        $resolver->setAllowedTypes('min', 'int');
-        $resolver->setAllowedTypes('max', 'int');
-
-        $options = $resolver->resolve($exposeSemantic->options);
-
-        $node = new IntegerNodeDefinition($exposeSemantic->name);
-
-        if (isset($options['min'])) {
-            $node->min($options['min']);
+        if (null !== $this->min) {
+            $node->min($this->min);
         }
 
-        if (isset($options['max'])) {
-            $node->max($options['max']);
+        if (null !== $this->max) {
+            $node->max($this->max);
         }
 
-        if ($options['default_null']) {
-            $node->defaultNull();
-        }
-
-        if (isset($options['default_value'])) {
-            $node->defaultValue($options['default_value']);
-        }
+        $node->defaultValue($this->defaultValue);
 
         return $node;
     }

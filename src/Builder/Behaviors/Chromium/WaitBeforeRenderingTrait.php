@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
-use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#wait-before-rendering-chromium.
@@ -20,7 +20,7 @@ trait WaitBeforeRenderingTrait
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering-chromium
      */
-    #[ExposeSemantic('wait_delay', options: ['default_null' => true])]
+    #[ExposeSemantic(new ScalarNodeBuilder('wait_delay'))]
     public function waitDelay(string $delay): static
     {
         ValidatorFactory::waitDelay($delay);
@@ -37,7 +37,7 @@ trait WaitBeforeRenderingTrait
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
      */
-    #[ExposeSemantic('wait_for_expression', options: ['default_null' => true])]
+    #[ExposeSemantic(new ScalarNodeBuilder('wait_for_expression'))]
     public function waitForExpression(string $expression): static
     {
         $this->getBodyBag()->set('waitForExpression', $expression);

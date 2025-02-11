@@ -14,6 +14,7 @@ use Symfony\Component\Routing\RequestContext;
 
 /**
  * @phpstan-import-type webhookConfiguration from WebhookTrait
+ *
  * @phpstan-type SensiolabsGotenbergConfiguration array{
  *      assets_directory: string,
  *      http_client?: string,
@@ -184,6 +185,7 @@ class SensiolabsGotenbergExtension extends Extension
     /**
      * @param SensiolabsGotenbergConfiguration $config
      * @param array<string, mixed>             $serviceConfig
+     *
      * @return array<string, mixed>
      */
     private function processDefaultOptions(array $config, array $serviceConfig): array
@@ -196,6 +198,7 @@ class SensiolabsGotenbergExtension extends Extension
     /**
      * @param webhookConfiguration $webhookConfig
      * @param array<string, mixed> $serviceConfig
+     *
      * @return array<string, mixed>
      */
     private function processWebhookOptions(array $webhookConfig, string|null $webhookDefaultConfigName, array $serviceConfig): array
@@ -215,8 +218,18 @@ class SensiolabsGotenbergExtension extends Extension
      */
     private function cleanUserOptions(array $userConfigurations): array
     {
-        return array_filter($userConfigurations, static function ($config, $configName): bool {
-            return null !== $config && [] !== $config;
-        }, \ARRAY_FILTER_USE_BOTH);
+        foreach ($userConfigurations as $key => $value) {
+            if (\is_array($value)) {
+                $userConfigurations[$key] = $this->cleanUserOptions($value);
+
+                if ([] === $userConfigurations[$key]) {
+                    unset($userConfigurations[$key]);
+                }
+            } elseif (null === $value) {
+                unset($userConfigurations[$key]);
+            }
+        }
+
+        return $userConfigurations;
     }
 }

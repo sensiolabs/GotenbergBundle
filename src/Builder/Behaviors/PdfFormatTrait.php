@@ -6,8 +6,9 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
+use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#pdfa-chromium
@@ -19,7 +20,7 @@ trait PdfFormatTrait
     /**
      * Enable PDF for Universal Access for optimal accessibility. (default false).
      */
-    #[ExposeSemantic('pdf_format', NodeType::Enum, ['default_null' => true, 'class' => PdfFormat::class, 'callback' => [PdfFormat::class, 'cases']])]
+    #[ExposeSemantic(new EnumNodeBuilder('pdf_format', className: PdfFormat::class, callback: [PdfFormat::class, 'cases']))]
     public function pdfFormat(PdfFormat|null $format): self
     {
         if (!$format) {
@@ -34,7 +35,7 @@ trait PdfFormatTrait
     /**
      * Enable PDF for Universal Access for optimal accessibility. (default false).
      */
-    #[ExposeSemantic('pdf_universal_access', NodeType::Boolean, ['default_null' => true])]
+    #[ExposeSemantic(new BooleanNodeBuilder('pdf_universal_access'))]
     public function pdfUniversalAccess(bool $bool = true): self
     {
         $this->getBodyBag()->set('pdfua', $bool);

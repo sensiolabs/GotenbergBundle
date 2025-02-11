@@ -7,8 +7,8 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
-use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
-use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#download-from
@@ -23,13 +23,13 @@ trait DownloadFromTrait
      *
      * @param list<array{url: string, extraHttpHeaders?: array<string, string>}> $downloadFrom
      */
-    #[ExposeSemantic('download_from', NodeType::Array, ['default_value' => [], 'prototype' => 'array', 'children' => [
-        ['name' => 'url', 'options' => ['required' => true]],
-        ['name' => 'extraHttpHeaders', 'node_type' => NodeType::Array, 'options' => ['prototype' => 'array', 'use_attribute_as_key' => 'name', 'children' => [
-            ['name' => 'name'],
-            ['name' => 'value'],
-        ]]],
-    ]])]
+    #[ExposeSemantic(new ArrayNodeBuilder('download_from', prototype: 'array', children: [
+        new ScalarNodeBuilder('url', required: true, restrictTo: 'string'),
+        new ArrayNodeBuilder('extraHttpHeaders', useAttributeAsKey: 'name', prototype: 'array', children: [
+            new ScalarNodeBuilder('name', required: true),
+            new ScalarNodeBuilder('value', required: true),
+        ]),
+    ]))]
     public function downloadFrom(array $downloadFrom): static
     {
         ValidatorFactory::download($downloadFrom);
