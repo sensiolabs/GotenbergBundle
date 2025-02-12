@@ -172,7 +172,7 @@ class SomeService
         private readonly GotenbergPdfInterface $gotenbergPdf,
         
         #[Autowire('%kernel.project_dir%/var/pdf')]
-        private readonly string $kernelProjectDir,
+        private readonly string $pdfStorage,
     ) {}
     
     /**
