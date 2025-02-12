@@ -186,7 +186,7 @@ class SomeService
             ->processor(new ChainProcessor([
                 new FileProcessor(
                     new Filesystem(),
-                    "{$this->kernelProjectDir}/var/pdf",
+                    $pdfStorage,
                 ),
                 new CustomProcessor(),
             ]))
