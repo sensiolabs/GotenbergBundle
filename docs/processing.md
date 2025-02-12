@@ -91,7 +91,7 @@ class SomeService
             ->fileName('my_pdf')
             ->processor(new FileProcessor(
                 new Filesystem(),
-                "{$this->kernelProjectDir}/var/pdf",
+                $pdfStorage,
             ))
             ->generate()
             ->process()
