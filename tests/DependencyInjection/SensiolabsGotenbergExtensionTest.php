@@ -323,7 +323,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
                 /** @var array<array-key, mixed> $configurator */
                 $configurator = $definition->getConfigurator();
-                self::assertSame('sensiolabs_gotenberg.builder_configurator', (string)$configurator[0]);
+                self::assertSame('sensiolabs_gotenberg.builder_configurator', (string) $configurator[0]);
             }
         }
     }
@@ -545,7 +545,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
 
                 $configurator = $definition->getConfigurator();
-                self::assertSame('sensiolabs_gotenberg.builder_configurator', (string)$configurator[0]);
+                self::assertSame('sensiolabs_gotenberg.builder_configurator', (string) $configurator[0]);
             }
         }
 

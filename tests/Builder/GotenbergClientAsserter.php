@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Builder\Payload;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\Mime\Header\HeaderInterface;
 use Symfony\Component\Mime\Part\AbstractPart;

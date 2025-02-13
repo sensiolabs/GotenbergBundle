@@ -24,7 +24,6 @@ final class BooleanNodeBuilder extends NodeBuilder implements NodeBuilderInterfa
             $node->isRequired();
         }
 
-
         $node->defaultValue($this->defaultValue);
 
         return $node;

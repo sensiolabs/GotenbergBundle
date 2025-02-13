@@ -5,8 +5,6 @@ namespace Sensiolabs\GotenbergBundle\DataCollector;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
-use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
-use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -22,7 +20,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 {
     /**
      * @param ServiceLocator<TraceableBuilder|PdfBuilderInterface|ScreenshotBuilderInterface> $builders
-     * @param array<mixed>                                                   $defaultOptions
+     * @param array<mixed>                                                                    $defaultOptions
      */
     public function __construct(
         private readonly TraceableGotenbergPdf $traceableGotenbergPdf,

@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Client;
 
-use Sensiolabs\GotenbergBundle\Exception\ClientException;
 use Sensiolabs\GotenbergBundle\Builder\Payload;
+use Sensiolabs\GotenbergBundle\Exception\ClientException;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;

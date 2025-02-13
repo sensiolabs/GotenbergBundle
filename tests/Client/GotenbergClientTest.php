@@ -5,8 +5,8 @@ namespace Sensiolabs\GotenbergBundle\Tests\Client;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Builder\Payload;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +42,6 @@ final class GotenbergClientTest extends TestCase
         self::assertSame(1, $mockClient->getRequestsCount());
         self::assertSame('POST', $mockResponse->getRequestMethod());
         self::assertSame('http://localhost:3000/some/url', $mockResponse->getRequestUrl());
-
 
         $requestHeaders = array_reduce($mockResponse->getRequestOptions()['headers'], static function (array $carry, string $header): array {
             [$key, $value] = explode(': ', $header, 2);

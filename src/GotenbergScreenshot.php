@@ -41,13 +41,13 @@ final class GotenbergScreenshot implements GotenbergScreenshotInterface
         return $this->getInternal('html');
     }
 
-//    public function url(): ScreenshotBuilderInterface
-//    {
-//        return $this->getInternal('url');
-//    }
-//
-//    public function markdown(): ScreenshotBuilderInterface
-//    {
-//        return $this->getInternal('markdown');
-//    }
+    //    public function url(): ScreenshotBuilderInterface
+    //    {
+    //        return $this->getInternal('url');
+    //    }
+    //
+    //    public function markdown(): ScreenshotBuilderInterface
+    //    {
+    //        return $this->getInternal('markdown');
+    //    }
 }

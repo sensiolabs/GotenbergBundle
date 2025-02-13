@@ -2,18 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use LogicException;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use function array_key_exists;
-use function array_reverse;
-use function count;
-use function implode;
-use function is_a;
-use function sprintf;
 
 /**
  * @internal
@@ -41,17 +34,17 @@ final class BuilderStack
     private array $configNode = [];
 
     /**
-     * @param 'pdf'|'screenshot' $type
+     * @param 'pdf'|'screenshot'             $type
      * @param class-string<BuilderInterface> $class
      */
     public function push(string $type, string $class): void
     {
         if (!is_a($class, BuilderInterface::class, true)) {
-            throw new LogicException('logic');
+            throw new \LogicException('logic');
         }
 
-        if (array_key_exists($class, $this->builders)) {
-            throw new LogicException('logic');
+        if (\array_key_exists($class, $this->builders)) {
+            throw new \LogicException('logic');
         }
 
         $this->builders[$class] = $type;
@@ -59,8 +52,8 @@ final class BuilderStack
         $reflection = new \ReflectionClass($class);
         $nodeAttributes = $reflection->getAttributes(SemanticNode::class);
 
-        if (count($nodeAttributes) === 0) {
-            throw new LogicException(sprintf('%s is missing the %s attribute', $class, SemanticNode::class));
+        if (\count($nodeAttributes) === 0) {
+            throw new \LogicException(\sprintf('%s is missing the %s attribute', $class, SemanticNode::class));
         }
 
         /** @var SemanticNode $semanticNode */

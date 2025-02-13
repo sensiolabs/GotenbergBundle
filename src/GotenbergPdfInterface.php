@@ -47,10 +47,10 @@ interface GotenbergPdfInterface
      */
     public function merge(): BuilderInterface;
 
-        /**
-         * @return ConvertPdfBuilder
-         */
-        public function convert(): BuilderInterface;
+    /**
+     * @return ConvertPdfBuilder
+     */
+    public function convert(): BuilderInterface;
     //
     //    /**
     //     * @return SplitPdfBuilder

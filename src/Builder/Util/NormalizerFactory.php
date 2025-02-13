@@ -101,7 +101,6 @@ class NormalizerFactory
     public static function route(RequestContext|null $requestContext, UrlGeneratorInterface $urlGenerator): \Closure
     {
         return static function (string $key, array $value) use ($requestContext, $urlGenerator): array {
-
             [$route, $parameters] = $value;
 
             $context = $urlGenerator->getContext();

@@ -53,39 +53,39 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
         return $traceableBuilder;
     }
 
-//    /**
-//     * @return UrlScreenshotBuilder|TraceableScreenshotBuilder
-//     */
-//    public function url(): ScreenshotBuilderInterface
-//    {
-//        /** @var UrlScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
-//        $traceableBuilder = $this->inner->url();
-//
-//        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
-//            return $traceableBuilder;
-//        }
-//
-//        $this->builders[] = ['url', $traceableBuilder];
-//
-//        return $traceableBuilder;
-//    }
-//
-//    /**
-//     * @return MarkdownScreenshotBuilder|TraceableScreenshotBuilder
-//     */
-//    public function markdown(): ScreenshotBuilderInterface
-//    {
-//        /** @var MarkdownScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
-//        $traceableBuilder = $this->inner->markdown();
-//
-//        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
-//            return $traceableBuilder;
-//        }
-//
-//        $this->builders[] = ['markdown', $traceableBuilder];
-//
-//        return $traceableBuilder;
-//    }
+    //    /**
+    //     * @return UrlScreenshotBuilder|TraceableScreenshotBuilder
+    //     */
+    //    public function url(): ScreenshotBuilderInterface
+    //    {
+    //        /** @var UrlScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
+    //        $traceableBuilder = $this->inner->url();
+    //
+    //        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
+    //            return $traceableBuilder;
+    //        }
+    //
+    //        $this->builders[] = ['url', $traceableBuilder];
+    //
+    //        return $traceableBuilder;
+    //    }
+    //
+    //    /**
+    //     * @return MarkdownScreenshotBuilder|TraceableScreenshotBuilder
+    //     */
+    //    public function markdown(): ScreenshotBuilderInterface
+    //    {
+    //        /** @var MarkdownScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
+    //        $traceableBuilder = $this->inner->markdown();
+    //
+    //        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
+    //            return $traceableBuilder;
+    //        }
+    //
+    //        $this->builders[] = ['markdown', $traceableBuilder];
+    //
+    //        return $traceableBuilder;
+    //    }
 
     /**
      * @return list<array{string, TraceableScreenshotBuilder}>

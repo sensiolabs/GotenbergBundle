@@ -2,24 +2,16 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use LogicException;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
-use function array_reverse;
-use function is_a;
-use function is_string;
-use function sprintf;
 
 /**
  * @phpstan-import-type webhookConfiguration from WebhookTrait
@@ -59,7 +51,7 @@ class SensiolabsGotenbergExtension extends Extension
     }
 
     /**
-     * @param 'pdf'|'screenshot' $type
+     * @param 'pdf'|'screenshot'             $type
      * @param class-string<BuilderInterface> $class
      */
     public function registerBuilder(string $type, string $class): void
@@ -171,7 +163,7 @@ class SensiolabsGotenbergExtension extends Extension
         // Configurators
         $configValueMapping = [];
         foreach ($config['default_options'] as $type => $buildersOptions) {
-            if ($type === 'webhook') {
+            if ('webhook' === $type) {
                 continue;
             }
 

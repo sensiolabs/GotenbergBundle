@@ -17,13 +17,13 @@ interface GotenbergScreenshotInterface
 
     public function html(): BuilderInterface;
 
-//    /**
-//     * @return UrlScreenshotBuilder
-//     */
-//    public function url(): BuilderInterface;
-//
-//    /**
-//     * @return MarkdownScreenshotBuilder
-//     */
-//    public function markdown(): ScreenshotBuilderInterface;
+    //    /**
+    //     * @return UrlScreenshotBuilder
+    //     */
+    //    public function url(): BuilderInterface;
+    //
+    //    /**
+    //     * @return MarkdownScreenshotBuilder
+    //     */
+    //    public function markdown(): ScreenshotBuilderInterface;
 }

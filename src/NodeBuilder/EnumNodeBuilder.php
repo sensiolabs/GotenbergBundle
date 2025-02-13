@@ -2,11 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
-use BackedEnum;
-use LogicException;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
-use function array_map;
 
 final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
@@ -33,7 +30,7 @@ final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
     {
         $node = new EnumNodeDefinition($this->name);
 
-        if (count($this->values) > 0 && null !== $this->callback) {
+        if (\count($this->values) > 0 && null !== $this->callback) {
             throw new InvalidBuilderConfiguration(\sprintf('You must choose between "values" or "callback" to provide any choice for "%s".', $this->name));
         }
 
@@ -44,15 +41,15 @@ final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
                 throw new InvalidBuilderConfiguration(\sprintf('The Builder constraint expects a valid callback for "%s".', $this->name));
             }
 
-            $node->values(array_map(static function(mixed $value): int|string|float|bool|null {
-                if ($value instanceof BackedEnum) {
+            $node->values(array_map(static function (mixed $value): int|string|float|bool|null {
+                if ($value instanceof \BackedEnum) {
                     return $value->value;
                 }
 
                 return $value;
             }, ($this->callback)()));
         } else {
-            throw new LogicException('Problem enum');
+            throw new \LogicException('Problem enum');
         }
 
         if (null !== $this->className) {
