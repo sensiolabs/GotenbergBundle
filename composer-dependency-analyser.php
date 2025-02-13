@@ -13,6 +13,13 @@ return $config
     ->addPathToScan(__DIR__.'/src/Debug', isDev: true)
     ->addPathToScan(__DIR__.'/tests', isDev: true)
 
+    ->ignoreErrorsOnPackage('async-aws/s3', [
+        ErrorType::DEV_DEPENDENCY_IN_PROD,
+    ])
+    ->disableExtensionsAnalysis() // TODO : Bug waiting for https://github.com/shipmonk-rnd/composer-dependency-analyser/issues/217
+    ->ignoreErrorsOnPackage('league/flysystem', [
+        ErrorType::DEV_DEPENDENCY_IN_PROD,
+    ])
     ->ignoreErrorsOnPackage('symfony/routing', [
         ErrorType::DEV_DEPENDENCY_IN_PROD,
     ])

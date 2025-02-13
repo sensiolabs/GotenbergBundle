@@ -25,16 +25,14 @@ final class FileProcessor implements ProcessorInterface
             $this->logger?->debug('{processor}: no filename given. Content will be dumped to "{file}".', ['processor' => self::class, 'file' => $fileName]);
         }
 
-        $resource = tmpfile() ?: throw new ProcessorException('Unable to create a temporary file resource.');
+        $tempfileProcessor = (new TempfileProcessor())($fileName);
 
         do {
             $chunk = yield;
-            if (false === fwrite($resource, $chunk->getContent())) {
-                throw new ProcessorException('Unable to write to the temporary file resource.');
-            }
+            $tempfileProcessor->send($chunk);
         } while (!$chunk->isLast());
 
-        rewind($resource);
+        $resource = $tempfileProcessor->getReturn();
 
         try {
             $path = $this->directory.'/'.$fileName;

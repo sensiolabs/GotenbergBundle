@@ -8,8 +8,10 @@ The default configuration for the bundle looks like :
 
 Assuming you have the following client configured.
 
-```yaml
+<details>
+    <summary>app/config/framework.yaml</summary>
 
+```yaml
 # app/config/framework.yaml
 
 framework:
@@ -19,7 +21,12 @@ framework:
                 base_uri: 'http://localhost:3000'
 ```
 
+</details>
+
 Then
+
+<details>
+    <summary>app/config/sensiolabs_gotenberg.yaml</summary>
 
 ```yaml
 # app/config/sensiolabs_gotenberg.yaml
@@ -1236,6 +1243,8 @@ sensiolabs_gotenberg:
                         # Or the syntax below is also possible
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 ```
+
+</details>
 
 > [!TIP]
 > For more information about the [PDF properties](https://gotenberg.dev/docs/routes#page-properties-chromium) 

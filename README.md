@@ -220,6 +220,7 @@ class YourController
 ### Advanced Usage
 
 1. [Configuration](./docs/configuration.md)
+2. [Processing (saving for example)](./docs/processing.md)
 2. [Working with assets](./docs/assets.md)
 3. [Builders API](./docs/builders_api.md)
 4. [Async & Webhooks](./docs/webhook.md)
