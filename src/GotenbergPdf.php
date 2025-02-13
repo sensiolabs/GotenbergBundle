@@ -51,11 +51,11 @@ final class GotenbergPdf implements GotenbergPdfInterface
     {
         return $this->getInternal('office');
     }
-//
-//    public function markdown(): PdfBuilderInterface
-//    {
-//        return $this->getInternal('markdown');
-//    }
+
+    public function markdown(): BuilderInterface
+    {
+        return $this->getInternal('markdown');
+    }
 
     public function merge(): BuilderInterface
     {

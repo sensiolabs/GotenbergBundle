@@ -394,16 +394,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'Author' => 'SensioLabs URL',
                         ],
                     ],
-                    //                    'markdown' => [
-                    //                        'metadata' => [
-                    //                            'Author' => 'SensioLabs MARKDOWN',
-                    //                        ],
-                    //                        'cookies' => [],
-                    //                        'extra_http_headers' => [],
-                    //                        'fail_on_http_status_codes' => [],
-                    //                        'fail_on_resource_http_status_codes' => [],
-                    //                        'download_from' => [],
-                    //                    ],
+                    'markdown' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs MARKDOWN',
+                        ],
+                    ],
                     'office' => [
                         'metadata' => [
                             'Author' => 'SensioLabs OFFICE',
@@ -437,16 +432,11 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'Author' => 'SensioLabs URL',
                 ],
             ],
-            //            'markdown' => [
-            //                'metadata' => [
-            //                    'Author' => 'SensioLabs MARKDOWN',
-            //                ],
-            //                'cookies' => [],
-            //                'extra_http_headers' => [],
-            //                'fail_on_http_status_codes' => [],
-            //                'fail_on_resource_http_status_codes' => [],
-            //                'download_from' => [],
-            //            ],
+            'markdown' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs MARKDOWN',
+                ],
+            ],
             'office' => [
                 'metadata' => [
                     'Author' => 'SensioLabs OFFICE',

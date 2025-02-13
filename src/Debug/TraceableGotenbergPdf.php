@@ -2,17 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug;
 
-//use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
-//use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
-//use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
-//use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
-//use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
-//use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
-//use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
-//use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
@@ -79,6 +72,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
+     * @return MarkdownPdfBuilder|TraceableBuilder
+     */
+    public function markdown(): BuilderInterface
+    {
+        /** @var MarkdownPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->markdown();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['markdown', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
      * @return LibreOfficePdfBuilder|TraceableBuilder
      */
     public function office(): BuilderInterface
@@ -111,40 +121,6 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
 
         return $traceableBuilder;
     }
-
-//    /**
-//     * @return ConvertPdfBuilder|TraceablePdfBuilder
-//     */
-//    public function convert(): PdfBuilderInterface
-//    {
-//        /** @var ConvertPdfBuilder|TraceablePdfBuilder $traceableBuilder */
-//        $traceableBuilder = $this->inner->convert();
-//
-//        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
-//            return $traceableBuilder;
-//        }
-//
-//        $this->builders[] = ['convert', $traceableBuilder];
-//
-//        return $traceableBuilder;
-//    }
-//
-//    /**
-//     * @return SplitPdfBuilder|TraceablePdfBuilder
-//     */
-//    public function split(): PdfBuilderInterface
-//    {
-//        /** @var SplitPdfBuilder|TraceablePdfBuilder $traceableBuilder */
-//        $traceableBuilder = $this->inner->split();
-//
-//        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
-//            return $traceableBuilder;
-//        }
-//
-//        $this->builders[] = ['split', $traceableBuilder];
-//
-//        return $traceableBuilder;
-//    }
 
     /**
      * @return list<array{string, TraceablePdfBuilder}>

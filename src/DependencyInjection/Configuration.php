@@ -2,17 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Configurator\AbstractBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\HtmlPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\LibreOfficePdfBuilderConfigurator;
+use Sensiolabs\GotenbergBundle\Configurator\Pdf\MarkdownPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\MergePdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\UrlPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
-use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
@@ -24,14 +19,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * @param array<string, array<class-string<PdfBuilderInterface>, NodeDefinition>> $builders
-     */
-    public function __construct(
-        private readonly array $builders
-    ) {
-    }
-
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sensiolabs_gotenberg');
@@ -61,56 +48,34 @@ class Configuration implements ConfigurationInterface
                     ->info('Enables the listener on kernel.view to stream GotenbergFileResult object.')
                 ->end()
                 ->append($this->addNamedWebhookDefinition())
-                ->append($this->addDefaultOptionsNode())
+                ->arrayNode('default_options')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('webhook')
+                            ->info('Webhook configuration name.')
+                        ->end()
+                        ->arrayNode('pdf')
+                            ->addDefaultsIfNotSet()
+                            ->append(HtmlPdfBuilderConfigurator::getConfiguration())
+                            ->append(UrlPdfBuilderConfigurator::getConfiguration())
+                            ->append(MarkdownPdfBuilderConfigurator::getConfiguration())
+                            ->append(MergePdfBuilderConfigurator::getConfiguration())
+                            ->append(LibreOfficePdfBuilderConfigurator::getConfiguration())
+//                            ->append($this->addPdfConvertNode())
+//                            ->append($this->addPdfSplitNode())
+                        ->end()
+//                        ->arrayNode('screenshot')
+//                            ->addDefaultsIfNotSet()
+//                            ->append($this->addScreenshotHtmlNode())
+//                            ->append($this->addScreenshotUrlNode())
+//                            ->append($this->addScreenshotMarkdownNode())
+//                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 
         return $treeBuilder;
-    }
-
-    private function addDefaultOptionsNode(): NodeDefinition
-    {
-        $defaultOptionsTreeBuilder = new TreeBuilder('default_options');
-        $defaultOptionsTreeBuilder->getRootNode()
-            ->addDefaultsIfNotSet()
-        ;
-
-        $webhookNode = (new TreeBuilder('webhook', 'scalar'))
-            ->getRootNode()
-            ->info('Webhook configuration name.')
-        ;
-
-        $defaultOptionsTreeBuilder->getRootNode()->append($webhookNode);
-
-        foreach ($this->builders as $type => $innerBuilders) {
-            $typeTreeBuilder = new TreeBuilder($type);
-            $typeTreeBuilder->getRootNode()
-                ->addDefaultsIfNotSet()
-            ;
-
-            foreach ($innerBuilders as $innerBuilder) {
-                $typeTreeBuilder->getRootNode()->append($innerBuilder);
-            }
-
-            $defaultOptionsTreeBuilder->getRootNode()->append($typeTreeBuilder->getRootNode());
-        }
-
-        return $defaultOptionsTreeBuilder->getRootNode();
-    }
-
-    private function addPdfMarkdownNode(): NodeDefinition
-    {
-        $treebuilder = new TreeBuilder('markdown');
-
-        $treebuilder
-            ->getRootNode()
-            ->addDefaultsIfNotSet()
-        ;
-
-        $this->addChromiumPdfOptionsNode($treebuilder->getRootNode());
-        $this->addWebhookDeclarationNode($treebuilder->getRootNode());
-
-        return $treebuilder->getRootNode();
     }
 
     private function addScreenshotHtmlNode(): NodeDefinition
@@ -617,9 +582,8 @@ class Configuration implements ConfigurationInterface
                     ->info('The URL to call.')
                     ->example('https://webhook.site/#!/view/{some-token}')
                 ->end()
-                ->arrayNode('route')
+                ->variableNode('route')
                     ->info('Route configuration.')
-                    ->example([['my_route', ['param1' => 'value1', 'param2' => 'value2']]])
                     ->beforeNormalization()
                         ->ifArray()
                             ->then(function (array $v): array {
@@ -636,11 +600,7 @@ class Configuration implements ConfigurationInterface
                         })
                         ->thenInvalid('The "route" parameter must be a string or an array containing a string and an array.')
                     ->end()
-                    ->example([
-                        'https://webhook.site/#!/view/{some-token}',
-                        ['my_route', ['param1' => 'value1', 'param2' => 'value2']],
-                    ])
-                    ->variablePrototype()->end()
+                    ->example("['my_route', ['param1' => 'value1', 'param2' => 'value2']]")
                 ->end()
                 ->enumNode('method')
                     ->info('HTTP method to use on that endpoint.')

@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
@@ -25,33 +26,33 @@ interface GotenbergPdfInterface
      */
     public function html(): BuilderInterface;
 
-     /**
-      * @return UrlPdfBuilder
-      */
-     public function url(): BuilderInterface;
+    /**
+     * @return UrlPdfBuilder
+     */
+    public function url(): BuilderInterface;
 
-     /**
-      * @return LibreOfficePdfBuilder
-      */
-     public function office(): BuilderInterface;
- //
- //    /**
- //     * @return MarkdownPdfBuilder
- //     */
- //    public function markdown(): PdfBuilderInterface;
+    /**
+     * @return MarkdownPdfBuilder
+     */
+    public function markdown(): BuilderInterface;
+
+    /**
+     * @return LibreOfficePdfBuilder
+     */
+    public function office(): BuilderInterface;
 
     /**
      * @return MergePdfBuilder
      */
     public function merge(): BuilderInterface;
 
- //    /**
- //     * @return ConvertPdfBuilder
- //     */
- //    public function convert(): PdfBuilderInterface;
- //
- //    /**
- //     * @return SplitPdfBuilder
- //     */
- //    public function split(): PdfBuilderInterface;
+    //    /**
+    //     * @return ConvertPdfBuilder
+    //     */
+    //    public function convert(): PdfBuilderInterface;
+    //
+    //    /**
+    //     * @return SplitPdfBuilder
+    //     */
+    //    public function split(): PdfBuilderInterface;
 }
