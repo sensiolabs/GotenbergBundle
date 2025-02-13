@@ -27,7 +27,7 @@ final class BuilderConfigurator
                 continue;
             }
 
-            if (array_is_list($value) === true) {  // TODO Not sure about the logic we should use here...
+            if (!\is_array($value) || (\is_array($value) && array_is_list($value) === true)) {  // TODO Not sure about the logic we should use here...
                 $builder->{$method}($value);
             } else {
                 $builder->{$method}(...$value);
