@@ -5,6 +5,14 @@ namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -12,11 +20,36 @@ use Symfony\Component\Config\Definition\Processor;
 #[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {
+    /**
+     * @param array<'pdf'|'screenshot', list<BuilderInterface>> $builders
+     */
+    public static function getWithBuilders(array $builders): Configuration
+    {
+        $builderStack = new BuilderStack();
+
+        foreach ($builders as $type => $builderList) {
+            foreach ($builderList as $builderClass) {
+                $builderStack->push($type, $builderClass);
+            }
+        }
+
+        return new Configuration($builderStack->getConfigNode());
+    }
+
     public function testDefaultConfigIsCorrect(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(
-            new Configuration(),
+            self::getWithBuilders([
+                'pdf' => [
+                    ConvertPdfBuilder::class,
+                    HtmlPdfBuilder::class,
+                    LibreOfficePdfBuilder::class,
+                    MarkdownPdfBuilder::class,
+                    MergePdfBuilder::class,
+                    UrlPdfBuilder::class,
+                ],
+            ]),
             [[
                 'http_client' => 'http_client',
             ]],
@@ -32,7 +65,7 @@ final class ConfigurationTest extends TestCase
 
         $processor = new Processor();
         $processor->processConfiguration(
-            new Configuration(),
+            new Configuration([]),
             [],
         );
     }
@@ -55,7 +88,7 @@ final class ConfigurationTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $processor = new Processor();
         $processor->processConfiguration(
-            new Configuration(),
+            self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]),
             [['default_options' => ['pdf' => ['html' => ['native_page_ranges' => $range]]]]],
         );
     }
@@ -81,7 +114,7 @@ final class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         /** @var array{'default_options': array<string, mixed>} $config */
-        $config = $processor->processConfiguration(new Configuration(), [
+        $config = $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
             [
                 'http_client' => 'http_client',
                 'default_options' => [
@@ -102,7 +135,7 @@ final class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         /** @var array{'default_options': array<string, mixed>} $config */
-        $config = $processor->processConfiguration(new Configuration(), [
+        $config = $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
             [
                 'http_client' => 'http_client',
                 'default_options' => [
@@ -170,7 +203,7 @@ final class ConfigurationTest extends TestCase
         $this->expectException(InvalidConfigurationException::class);
         $processor = new Processor();
         $processor->processConfiguration(
-            new Configuration(),
+            new Configuration([]),
             $config,
         );
     }

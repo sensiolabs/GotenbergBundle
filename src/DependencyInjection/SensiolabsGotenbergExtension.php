@@ -2,15 +2,24 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
+use LogicException;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
+use function array_reverse;
+use function is_a;
+use function is_string;
+use function sprintf;
 
 /**
  * @phpstan-import-type webhookConfiguration from WebhookTrait
@@ -42,9 +51,30 @@ use Symfony\Component\Routing\RequestContext;
  */
 class SensiolabsGotenbergExtension extends Extension
 {
+    private BuilderStack $builderStack;
+
+    public function __construct()
+    {
+        $this->builderStack = new BuilderStack();
+    }
+
+    /**
+     * @param 'pdf'|'screenshot' $type
+     * @param class-string<BuilderInterface> $class
+     */
+    public function registerBuilder(string $type, string $class): void
+    {
+        $this->builderStack->push($type, $class);
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
+    {
+        return new Configuration($this->builderStack->getConfigNode());
+    }
+
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $configuration = new Configuration();
+        $configuration = $this->getConfiguration($configs, $container);
 
         /*
          * @var SensiolabsGotenbergConfiguration $config
@@ -139,34 +169,21 @@ class SensiolabsGotenbergExtension extends Extension
         //
 
         // Configurators
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.html')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['html']))
-        ;
+        $configValueMapping = [];
+        foreach ($config['default_options'] as $type => $buildersOptions) {
+            if ($type === 'webhook') {
+                continue;
+            }
 
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.url')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['url']))
-        ;
+            foreach ($buildersOptions as $builderName => $builderOptions) {
+                $class = $this->builderStack->getTypeReverseMapping()[$builderName];
+                $configValueMapping[$class] = $this->cleanUserOptions($builderOptions);
+            }
+        }
 
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.markdown')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['markdown']))
-        ;
-
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.merge')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']))
-        ;
-
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.office')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['office']))
-        ;
-
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.convert')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['convert']))
+        $container->getDefinition('sensiolabs_gotenberg.builder_configurator')
+            ->replaceArgument(0, $this->builderStack->getConfigMapping())
+            ->replaceArgument(1, $configValueMapping)
         ;
     }
 

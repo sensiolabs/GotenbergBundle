@@ -6,6 +6,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
@@ -28,9 +34,23 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         ]));
     }
 
-    public function testGotenbergConfiguredWithValidConfig(): void
+    private function getExtension(): SensiolabsGotenbergExtension
     {
         $extension = new SensiolabsGotenbergExtension();
+
+        $extension->registerBuilder('pdf', ConvertPdfBuilder::class);
+        $extension->registerBuilder('pdf', HtmlPdfBuilder::class);
+        $extension->registerBuilder('pdf', LibreOfficePdfBuilder::class);
+        $extension->registerBuilder('pdf', MarkdownPdfBuilder::class);
+        $extension->registerBuilder('pdf', MergePdfBuilder::class);
+        $extension->registerBuilder('pdf', UrlPdfBuilder::class);
+
+        return $extension;
+    }
+
+    public function testGotenbergConfiguredWithValidConfig(): void
+    {
+        $extension = $this->getExtension();
 
         $containerBuilder = $this->getContainerBuilder();
         $validConfig = self::getValidConfig();
@@ -303,10 +323,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
                 /** @var array<array-key, mixed> $configurator */
                 $configurator = $definition->getConfigurator();
-                self::assertSame('setConfigurations', $configurator[1]);
-
-                $configuratorDefinition = $containerBuilder->getDefinition($configurator[0]->__toString());
-                self::assertSame($expectedConfig, $configuratorDefinition->getArgument(0));
+                self::assertSame('sensiolabs_gotenberg.builder_configurator', (string)$configurator[0]);
             }
         }
     }
@@ -320,7 +337,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
     //    #[DataProvider('urlBuildersCanChangeTheirRequestContextProvider')]
     //    public function testUrlBuildersCanChangeTheirRequestContext(string $serviceName): void
     //    {
-    //        $extension = new SensiolabsGotenbergExtension();
+    //        $extension = $this->getExtension();
     //
     //        $containerBuilder = $this->getContainerBuilder();
     //        self::assertNotContains('.sensiolabs_gotenberg.request_context', $containerBuilder->getServiceIds());
@@ -353,7 +370,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
     public function testDataCollectorIsNotEnabledWhenKernelDebugIsFalse(): void
     {
-        $extension = new SensiolabsGotenbergExtension();
+        $extension = $this->getExtension();
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
         $extension->load([[
@@ -365,7 +382,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
     public function testDataCollectorIsEnabledWhenKernelDebugIsTrue(): void
     {
-        $extension = new SensiolabsGotenbergExtension();
+        $extension = $this->getExtension();
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: true);
         $extension->load([[
@@ -377,7 +394,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
     public function testDataCollectorIsProperlyConfiguredIfEnabled(): void
     {
-        $extension = new SensiolabsGotenbergExtension();
+        $extension = $this->getExtension();
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: true);
         $extension->load([[
@@ -457,7 +474,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
     public function testBuilderWebhookConfiguredWithValidConfiguration(): void
     {
-        $extension = new SensiolabsGotenbergExtension();
+        $extension = $this->getExtension();
 
         $containerBuilder = $this->getContainerBuilder();
         $extension->load([[
@@ -528,10 +545,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
 
                 $configurator = $definition->getConfigurator();
-                self::assertSame('setConfigurations', $configurator[1]);
-
-                $configuratorDefinition = $containerBuilder->getDefinition($configurator[0]->__toString());
-                self::assertSame($expectedConfig, $configuratorDefinition->getArgument(0));
+                self::assertSame('sensiolabs_gotenberg.builder_configurator', (string)$configurator[0]);
             }
         }
 
@@ -868,7 +882,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
     public function testControllerListenerIsEnabledByDefault(): void
     {
-        $extension = new SensiolabsGotenbergExtension();
+        $extension = $this->getExtension();
 
         $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
         $extension->load([[
@@ -880,7 +894,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
     //    public function testControllerListenerCanBeDisabled(): void
     //    {
-    //        $extension = new SensiolabsGotenbergExtension();
+    //        $extension = $this->getExtension();
     //
     //        $containerBuilder = $this->getContainerBuilder(kernelDebug: false);
     //        $extension->load([[
