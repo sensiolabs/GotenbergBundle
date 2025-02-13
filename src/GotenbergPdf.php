@@ -62,10 +62,10 @@ final class GotenbergPdf implements GotenbergPdfInterface
         return $this->getInternal('merge');
     }
 
-//    public function convert(): PdfBuilderInterface
-//    {
-//        return $this->getInternal('convert');
-//    }
+    public function convert(): BuilderInterface
+    {
+        return $this->getInternal('convert');
+    }
 //
 //    public function split(): PdfBuilderInterface
 //    {

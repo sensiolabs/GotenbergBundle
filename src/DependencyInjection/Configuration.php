@@ -2,6 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Configurator\Pdf\ConvertPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\HtmlPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\LibreOfficePdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\MarkdownPdfBuilderConfigurator;
@@ -61,7 +63,7 @@ class Configuration implements ConfigurationInterface
                             ->append(MarkdownPdfBuilderConfigurator::getConfiguration())
                             ->append(MergePdfBuilderConfigurator::getConfiguration())
                             ->append(LibreOfficePdfBuilderConfigurator::getConfiguration())
-//                            ->append($this->addPdfConvertNode())
+                            ->append(ConvertPdfBuilderConfigurator::getConfiguration())
 //                            ->append($this->addPdfSplitNode())
                         ->end()
 //                        ->arrayNode('screenshot')
@@ -451,17 +453,6 @@ class Configuration implements ConfigurationInterface
 //                ->append($this->addDownloadFromNode())
             ->end()
         ;
-    }
-
-    private function addPdfConvertNode(): NodeDefinition
-    {
-        $treeBuilder = new TreeBuilder('convert');
-        $this->addPdfFormatNode($treeBuilder->getRootNode());
-        $treeBuilder->getRootNode()
-            ->append($this->addDownloadFromNode())
-            ->end();
-
-        return $treeBuilder->getRootNode();
     }
 
     private function addPdfSplitNode(): NodeDefinition

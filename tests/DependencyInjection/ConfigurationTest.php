@@ -339,11 +339,11 @@ final class ConfigurationTest extends TestCase
                         'pdf_universal_access' => null,
                         'download_from' => [],
                     ],
-//                    'convert' => [
-//                        'pdf_format' => null,
-//                        'pdf_universal_access' => null,
-//                        'download_from' => [],
-//                    ],
+                    'convert' => [
+                        'pdf_format' => null,
+                        'pdf_universal_access' => null,
+                        'download_from' => [],
+                    ],
 //                    'split' => [
 //                        'split_mode' => null,
 //                        'split_span' => null,

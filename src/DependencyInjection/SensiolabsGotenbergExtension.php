@@ -163,6 +163,11 @@ class SensiolabsGotenbergExtension extends Extension
             ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.office')
             ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['office']))
         ;
+
+        $container
+            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.convert')
+            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['convert']))
+        ;
     }
 
     /**

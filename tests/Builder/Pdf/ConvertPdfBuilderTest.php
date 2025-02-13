@@ -6,36 +6,58 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 
 /**
- * @extends GotenbergBuilderTestCase<MergePdfBuilder>
+ * @extends GotenbergBuilderTestCase<ConvertPdfBuilder>
  */
-#[CoversClass(MergePdfBuilder::class)]
+#[CoversClass(ConvertPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-class MergePdfBuilderTest extends GotenbergBuilderTestCase
+final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
 {
     protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
     {
         $dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
-        return new MergePdfBuilder($client, $dependencies);
+        return new ConvertPdfBuilder($client, $dependencies);
     }
 
     public function testFiles(): void
     {
         $this->getBuilder()
-            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf_1.pdf')
+            ->files('pdf/simple_pdf.pdf')
+            ->pdfUniversalAccess()
             ->generate()
         ;
 
-        $this->assertGotenbergEndpoint('/forms/pdfengines/merge');
+        $this->assertGotenbergEndpoint('/forms/pdfengines/convert');
         $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
-        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf_1.pdf');
+    }
+
+    public function testRequiredConfiguration(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least "pdfa" or "pdfua" must be provided.');
+
+        $this->getBuilder()
+            ->generate()
+        ;
+    }
+
+    public function testRequiredFile(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one PDF file is required.');
+
+        $this->getBuilder()
+            ->pdfUniversalAccess()
+            ->generate()
+        ;
     }
 
     public function testFilesExtension(): void
@@ -44,7 +66,7 @@ class MergePdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
         $this->getBuilder()
-            ->files('simple_pdf.pdf', 'b.png')
+            ->files('b.png')
             ->generate()
         ;
     }
