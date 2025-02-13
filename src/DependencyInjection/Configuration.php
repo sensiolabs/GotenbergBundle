@@ -2,8 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Configurator\AbstractBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\HtmlPdfBuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Configurator\Pdf\LibreOfficePdfBuilderConfigurator;
@@ -22,6 +24,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    /**
+     * @param array<string, array<class-string<PdfBuilderInterface>, NodeDefinition>> $builders
+     */
+    public function __construct(
+        private readonly array $builders
+    ) {
+    }
+
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sensiolabs_gotenberg');
@@ -51,35 +61,41 @@ class Configuration implements ConfigurationInterface
                     ->info('Enables the listener on kernel.view to stream GotenbergFileResult object.')
                 ->end()
                 ->append($this->addNamedWebhookDefinition())
-                ->arrayNode('default_options')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('webhook')
-                            ->info('Webhook configuration name.')
-                        ->end()
-                        ->arrayNode('pdf')
-                            ->addDefaultsIfNotSet()
-                            ->append(HtmlPdfBuilderConfigurator::getConfiguration())
-                            ->append(UrlPdfBuilderConfigurator::getConfiguration())
-                            ->append(MergePdfBuilderConfigurator::getConfiguration())
-//                            ->append($this->addPdfMarkdownNode())
-                            ->append(LibreOfficePdfBuilderConfigurator::getConfiguration())
-//                            ->append($this->addPdfMergeNode())
-//                            ->append($this->addPdfConvertNode())
-//                            ->append($this->addPdfSplitNode())
-                        ->end()
-//                        ->arrayNode('screenshot')
-//                            ->addDefaultsIfNotSet()
-//                            ->append($this->addScreenshotHtmlNode())
-//                            ->append($this->addScreenshotUrlNode())
-//                            ->append($this->addScreenshotMarkdownNode())
-//                        ->end()
-                    ->end()
-                ->end()
+                ->append($this->addDefaultOptionsNode())
             ->end()
         ;
 
         return $treeBuilder;
+    }
+
+    private function addDefaultOptionsNode(): NodeDefinition
+    {
+        $defaultOptionsTreeBuilder = new TreeBuilder('default_options');
+        $defaultOptionsTreeBuilder->getRootNode()
+            ->addDefaultsIfNotSet()
+        ;
+
+        $webhookNode = (new TreeBuilder('webhook', 'scalar'))
+            ->getRootNode()
+            ->info('Webhook configuration name.')
+        ;
+
+        $defaultOptionsTreeBuilder->getRootNode()->append($webhookNode);
+
+        foreach ($this->builders as $type => $innerBuilders) {
+            $typeTreeBuilder = new TreeBuilder($type);
+            $typeTreeBuilder->getRootNode()
+                ->addDefaultsIfNotSet()
+            ;
+
+            foreach ($innerBuilders as $innerBuilder) {
+                $typeTreeBuilder->getRootNode()->append($innerBuilder);
+            }
+
+            $defaultOptionsTreeBuilder->getRootNode()->append($typeTreeBuilder->getRootNode());
+        }
+
+        return $defaultOptionsTreeBuilder->getRootNode();
     }
 
     private function addPdfMarkdownNode(): NodeDefinition

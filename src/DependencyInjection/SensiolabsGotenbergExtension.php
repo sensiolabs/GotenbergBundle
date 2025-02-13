@@ -2,15 +2,25 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
+use LogicException;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\MainConfiguration;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
+use function array_reverse;
+use function is_a;
+use function sprintf;
 
 /**
  * @phpstan-import-type webhookConfiguration from WebhookTrait
@@ -42,9 +52,70 @@ use Symfony\Component\Routing\RequestContext;
  */
 class SensiolabsGotenbergExtension extends Extension
 {
+    /**
+     * @var array<string, class-string<BuilderInterface>>
+     */
+    private array $typeReverseMapping = [];
+
+    /**
+     * @var array<class-string<BuilderInterface>, array<string, string>>
+     */
+    private array $configMapping = [];
+
+    private array $configNode = [];
+
+    /**
+     * @param 'pdf'|'screenshot' $type
+     * @param class-string<BuilderInterface> $class
+     */
+    public function registerBuilder(string $type, string $class): void
+    {
+        if (!is_a($class, BuilderInterface::class, true)) {
+            throw new LogicException('logic');
+        }
+
+        $reflection = new \ReflectionClass($class);
+        $nodeAttributes = $reflection->getAttributes(SemanticNode::class);
+
+        if (count($nodeAttributes) === 0) {
+            throw new LogicException(sprintf('%s is missing the %s attribute', $class, SemanticNode::class));
+        }
+
+        /** @var SemanticNode $semanticNode */
+        $semanticNode = $nodeAttributes[0]->newInstance();
+
+        $this->typeReverseMapping[$semanticNode->name] = $class;
+
+        $treeBuilder = new TreeBuilder($semanticNode->name);
+        $root = $treeBuilder->getRootNode()->addDefaultsIfNotSet();
+
+        foreach (array_reverse($reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $method) {
+            $attributes = $method->getAttributes(ExposeSemantic::class);
+            if (\count($attributes) === 0) {
+                continue;
+            }
+
+            /** @var ExposeSemantic $attribute */
+            $attribute = $attributes[0]->newInstance();
+
+            $root->append($attribute->node->create());
+
+            $this->configMapping[$class] ??= [];
+            $this->configMapping[$class][$attribute->node->getName()] = $method->getName();
+        }
+
+        $this->configNode[$type] ??= [];
+        $this->configNode[$type][$class] = $root;
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
+    {
+        return new Configuration($this->configNode);
+    }
+
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $configuration = new Configuration();
+        $configuration = $this->getConfiguration($configs, $container);
 
         /*
          * @var SensiolabsGotenbergConfiguration $config
@@ -161,24 +232,17 @@ class SensiolabsGotenbergExtension extends Extension
         //        $definition->replaceArgument(1, $config['assets_directory']);
 
         // Configurators
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.html')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['html']))
-        ;
+        $configValueMapping = [];
+        foreach ($config['default_options'] as $builders) {
+            foreach ($builders as $builder => $options) {
+                $class = $this->typeReverseMapping[$builder];
+                $configValueMapping[$class] = $options;
+            }
+        }
 
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.url')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['url']))
-        ;
-
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.merge')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']))
-        ;
-
-        $container
-            ->getDefinition('.sensiolabs_gotenberg.pdf_builder_configurator.office')
-            ->replaceArgument(0, $this->processDefaultOptions($config, $config['default_options']['pdf']['office']))
+        $container->getDefinition('sensiolabs_gotenberg.builder_configurator')
+            ->replaceArgument(0, $this->configMapping)
+            ->replaceArgument(1, $configValueMapping)
         ;
     }
 

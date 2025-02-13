@@ -16,7 +16,7 @@ final class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 
         public string|null $useAttributeAsKey = null,
 
-        /** @var 'integer'|'array'|'variable' */
+        /** @var 'integer'|'array'|'variable'|null */
         public string|null $prototype = null,
 
         /** @var NodeBuilderInterface[] */
@@ -56,11 +56,9 @@ final class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
                     $prototype->append($child->create());
                 }
             }
-        } else {
-            if (\count($this->children) > 0) {
-                foreach ($this->children as $child) {
-                    $node->append($child->create());
-                }
+        } elseif (\count($this->children) > 0) {
+            foreach ($this->children as $child) {
+                $node->append($child->create());
             }
         }
 

@@ -4,12 +4,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Configurator\Pdf\HtmlPdfBuilderConfigurator;
-use Sensiolabs\GotenbergBundle\Configurator\Pdf\LibreOfficePdfBuilderConfigurator;
-use Sensiolabs\GotenbergBundle\Configurator\Pdf\MergePdfBuilderConfigurator;
-use Sensiolabs\GotenbergBundle\Configurator\Pdf\UrlPdfBuilderConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $container): void {
@@ -20,61 +15,37 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     // HTML
-    $services->set('.sensiolabs_gotenberg.pdf_builder_configurator.html', HtmlPdfBuilderConfigurator::class)
-        ->args([
-            abstract_arg('default configuration'),
-        ])
-    ;
-
     $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.builder')
         ->tag('sensiolabs_gotenberg.pdf_builder')
-        ->configurator([service('.sensiolabs_gotenberg.pdf_builder_configurator.html'), 'setConfigurations'])
+        ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
     // URL
-    $services->set('.sensiolabs_gotenberg.pdf_builder_configurator.url', UrlPdfBuilderConfigurator::class)
-        ->args([
-            abstract_arg('default configuration'),
-        ])
-    ;
-
     $services->set('.sensiolabs_gotenberg.pdf_builder.url', UrlPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.builder')
         ->tag('sensiolabs_gotenberg.pdf_builder')
-        ->configurator([service('.sensiolabs_gotenberg.pdf_builder_configurator.url'), 'setConfigurations'])
+        ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
     // Office
-    $services->set('.sensiolabs_gotenberg.pdf_builder_configurator.office', LibreOfficePdfBuilderConfigurator::class)
-        ->args([
-            abstract_arg('default configuration'),
-        ])
-    ;
-
     $services->set('.sensiolabs_gotenberg.pdf_builder.office', LibreOfficePdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.pdf_builder')
-        ->configurator([service('.sensiolabs_gotenberg.pdf_builder_configurator.office'), 'setConfigurations'])
+        ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
     // Merge
-    $services->set('.sensiolabs_gotenberg.pdf_builder_configurator.merge', MergePdfBuilderConfigurator::class)
-        ->args([
-            abstract_arg('default configuration'),
-        ])
-    ;
-
     $services->set('.sensiolabs_gotenberg.pdf_builder.merge', MergePdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.pdf_builder')
-        ->configurator([service('.sensiolabs_gotenberg.pdf_builder_configurator.merge'), 'setConfigurations'])
+        ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
     //    $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)

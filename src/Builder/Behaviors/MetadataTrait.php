@@ -27,7 +27,20 @@ trait MetadataTrait
      * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
      * @see https://exiftool.org/TagNames/XMP.html#pdf
      *
-     * @param array<string, mixed> $metadata
+     * @param array{
+     *     Author?: string,
+     *     Copyright?: string,
+     *     CreationDate?: string,
+     *     Creator?: string,
+     *     Keywords?: string,
+     *     Marked?: bool,
+     *     ModDate?: string,
+     *     PDFVersion?: string,
+     *     Producer?: string,
+     *     Subject?: string,
+     *     Title?: string,
+     *     Trapped?: 'True'|'False'|'Unknown',
+     * } $metadata
      */
     #[ExposeSemantic(new ArrayNodeBuilder('metadata', hasParentNode: true, children: [
         new ScalarNodeBuilder('Author'),
