@@ -11,7 +11,6 @@ use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
 use Symfony\Component\Mime\Part\TextPart;
-use function implode;
 
 /**
  * @template T of BuilderInterface
@@ -48,6 +47,11 @@ abstract class GotenbergBuilderTestCase extends TestCase
         return $this->builder;
     }
 
+    protected function getDependencies(): ContainerInterface
+    {
+        return $this->dependencies;
+    }
+
     protected function assertGotenbergEndpoint(string $endpoint): void
     {
         $this->assertSame($endpoint, $this->client->getEndpoint());
@@ -69,7 +73,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
             $found = true;
 
             $expected = trim($part->getBody());
-            if ($expected === trim($value)) {
+            if (trim($value) === $expected) {
                 $this->addToAssertionCount(1);
 
                 $matches = true;
@@ -77,7 +81,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
         }
 
         if (false === $found) {
-            $this->fail(\sprintf('No matching form data with name "%s". Did you mean one of "%s" ?', $name, implode(', ', $availableNames)));
+            $this->fail(\sprintf('No matching form data with name "%s". Did you mean one of "%s" ?', $name, \implode(', ', $availableNames)));
         }
 
         if (false === $matches) {

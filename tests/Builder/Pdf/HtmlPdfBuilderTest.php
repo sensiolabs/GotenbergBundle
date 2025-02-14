@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Twig\Environment;
@@ -26,9 +27,20 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
 #[UsesClass(GotenbergAssetRuntime::class)]
 class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 {
+    use ChromiumTestCaseTrait;
+
     protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
     {
         return new HtmlPdfBuilder($client, $dependencies);
+    }
+
+    protected function getBuilderTrait(): BuilderInterface
+    {
+        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+
+        return $this->getBuilder()
+            ->contentFile('files/content.html')
+        ;
     }
 
     public function testRequiredFormData(): void

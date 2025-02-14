@@ -52,7 +52,7 @@ class MarkdownPdfBuilder extends AbstractBuilder
         }
 
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
-            throw new MissingRequiredFieldException('At least one PDF file is required.');
+            throw new MissingRequiredFieldException('At least one markdown file is required.');
         }
     }
 

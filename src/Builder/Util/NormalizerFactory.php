@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Util;
 
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -31,6 +32,36 @@ class NormalizerFactory
             try {
                 return [
                     $key => json_encode($associative ? $value : array_values($value), \JSON_THROW_ON_ERROR),
+                ];
+            } catch (\JsonException $exception) {
+                throw new JsonEncodingException(previous: $exception);
+            }
+        };
+    }
+
+    public static function cookie(): \Closure
+    {
+        return static function (string $key, array $value) {
+            $cookies = [];
+            foreach ($value as $cookie) {
+                if ($cookie instanceof Cookie) {
+                    $c['name'] = $cookie->getName();
+                    $c['value'] = $cookie->getValue();
+                    $c['domain'] = $cookie->getDomain();
+                    $c['path'] = $cookie->getPath();
+                    $c['secure'] = $cookie->isSecure();
+                    $c['httpOnly'] = $cookie->isHttpOnly();
+                    $c['sameSite'] = $cookie->getSameSite();
+
+                    $cookies[] = $c;
+                } else {
+                    $cookies[] = $cookie;
+                }
+            }
+
+            try {
+                return [
+                    $key => json_encode($cookies, \JSON_THROW_ON_ERROR),
                 ];
             } catch (\JsonException $exception) {
                 throw new JsonEncodingException(previous: $exception);
