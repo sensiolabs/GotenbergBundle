@@ -11,6 +11,7 @@ use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
 use Symfony\Component\Mime\Part\TextPart;
+use function implode;
 
 /**
  * @template T of BuilderInterface
@@ -54,18 +55,34 @@ abstract class GotenbergBuilderTestCase extends TestCase
 
     protected function assertGotenbergFormData(string $name, string $value): void
     {
+        $availableNames = [];
+        $found = false;
+        $matches = false;
+        $expected = null;
+
         foreach ($this->client->getBody() as $part) {
+            $availableNames[] = $part->getName();
+
             if ($part->getName() !== $name) {
                 continue;
             }
+            $found = true;
 
-            if ($part->getBody() === $value) {
+            $expected = trim($part->getBody());
+            if ($expected === trim($value)) {
                 $this->addToAssertionCount(1);
 
-                return;
+                $matches = true;
             }
         }
-        $this->fail(\sprintf('No matching form data found with name "%s" and value "%s".', $name, $value));
+
+        if (false === $found) {
+            $this->fail(\sprintf('No matching form data with name "%s". Did you mean one of "%s" ?', $name, implode(', ', $availableNames)));
+        }
+
+        if (false === $matches) {
+            $this->fail(\sprintf('No matching form data with name "%s" and value "%s". Expected "%s".', $name, $value, $expected));
+        }
     }
 
     protected function assertGotenbergFormDataFile(string $name, string $contentType, string $path): void

@@ -20,6 +20,7 @@ class GotenbergClientAsserter implements GotenbergClientInterface
     /** @var iterable<string, HeaderInterface>|null */
     private iterable|null $headers = null;
     private \Throwable|null $throwable = null;
+    private Payload $payload;
 
     public function __construct()
     {
@@ -30,6 +31,7 @@ class GotenbergClientAsserter implements GotenbergClientInterface
     {
         try {
             $this->endpoint = $endpoint;
+            $this->payload = $payload;
             $this->body = $payload->getFormData()->getParts();
             $this->headers = $payload->getHeaders()->all();
         } catch (\Throwable $t) {
@@ -51,6 +53,15 @@ class GotenbergClientAsserter implements GotenbergClientInterface
         }
 
         return $this->endpoint ?? throw new \LogicException('No calls done. Did you forget to call the generate method?');
+    }
+
+    public function getPayload(): Payload
+    {
+        if ($this->throwable) {
+            throw new \LogicException('An exception occurred during call.', previous: $this->throwable);
+        }
+
+        return $this->payload ?? throw new \LogicException('No calls done. Did you forget to call the generate method?');
     }
 
     /**
