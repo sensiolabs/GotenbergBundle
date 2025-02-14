@@ -120,6 +120,6 @@ trait CookieTrait
     #[NormalizeGotenbergPayload]
     private function normalizeCookies(): \Generator
     {
-        yield 'cookies' => NormalizerFactory::json(false);
+        yield 'cookies' => NormalizerFactory::cookie();
     }
 }

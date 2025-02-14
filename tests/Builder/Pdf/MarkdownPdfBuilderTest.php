@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Twig\Environment;
@@ -27,11 +28,21 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
 #[UsesClass(GotenbergAssetRuntime::class)]
 final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
 {
+    use ChromiumTestCaseTrait;
+
     protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
     {
         $dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
         return new MarkdownPdfBuilder($client, $dependencies);
+    }
+
+    protected function getBuilderTrait(): BuilderInterface
+    {
+        return $this->getBuilder()
+            ->contentFile('files/wrapper.html')
+            ->files('assets/file.md')
+        ;
     }
 
     public function testFileWithContentFile(): void
@@ -77,6 +88,17 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('HTML template is required');
 
         $this->getBuilder()
+            ->generate()
+        ;
+    }
+
+    public function testRequiredMarkdownFile(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one markdown file is required.');
+
+        $this->getBuilder()
+            ->contentFile('files/wrapper.html')
             ->generate()
         ;
     }

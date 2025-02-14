@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -25,9 +26,20 @@ use Symfony\Component\Routing\RouteCollection;
 #[UsesClass(RequestContext::class)]
 class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 {
+    use ChromiumTestCaseTrait;
+
     protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
     {
         return new UrlPdfBuilder($client, $dependencies);
+    }
+
+    protected function getBuilderTrait(): BuilderInterface
+    {
+        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+
+        return $this->builder
+            ->url('https://example.com')
+        ;
     }
 
     public function testRequiredFormData(): void
