@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Client\GotenbergResponse;
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -17,8 +18,9 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 final class GotenbergFileResultTest extends TestCase
 {
     private GotenbergResponse $response;
-    /** \Generator<int, void, ChunkInterface, string> */
-    private \Generator $processorGenerator;
+
+    /** @var ProcessorInterface<mixed> */
+    private ProcessorInterface $processor;
 
     protected function setUp(): void
     {
@@ -26,34 +28,27 @@ final class GotenbergFileResultTest extends TestCase
         $this->response = new GotenbergResponse(
             $client->stream($client->request('GET', '/')),
             200,
-            new ResponseHeaderBag(),
+            new ResponseHeaderBag([
+                'Content-Disposition' => 'inline; filename="file.pdf"',
+            ]),
         );
 
-        $this->processorGenerator = (function () {
-            $content = '';
-            do {
-                $chunk = yield;
-                $content .= $chunk->getContent();
-            } while (!$chunk->isLast());
-
-            return $content;
-        })();
+        $this->processor = new TestProcessor();
     }
 
     #[TestDox('Response is processed')]
     public function testProcess(): void
     {
-        $result = new GotenbergFileResult($this->response, $this->processorGenerator, 'inline', 'file.pdf');
+        $result = new GotenbergFileResult($this->response, $this->processor, 'inline');
         $process = $result->process();
 
         self::assertSame('abc', $process);
-        self::assertSame('abc', $this->processorGenerator->getReturn());
     }
 
     #[TestDox('Response is streamed')]
     public function testStream(): void
     {
-        $result = new GotenbergFileResult($this->response, $this->processorGenerator, 'inline', 'file.pdf');
+        $result = new GotenbergFileResult($this->response, $this->processor, 'inline');
         $stream = $result->stream();
 
         ob_start();
@@ -63,6 +58,22 @@ final class GotenbergFileResultTest extends TestCase
 
         self::assertSame('inline; filename=file.pdf', $stream->headers->get('Content-Disposition'));
         self::assertSame('no', $stream->headers->get('X-Accel-Buffering'));
-        self::assertSame('abc', $this->processorGenerator->getReturn());
+    }
+}
+
+/**
+ * @implements ProcessorInterface<string>
+ */
+class TestProcessor implements ProcessorInterface
+{
+    public function __invoke(string|null $fileName): \Generator
+    {
+        $content = '';
+        do {
+            $chunk = yield;
+            $content .= $chunk->getContent();
+        } while (!$chunk->isLast());
+
+        return $content;
     }
 }
