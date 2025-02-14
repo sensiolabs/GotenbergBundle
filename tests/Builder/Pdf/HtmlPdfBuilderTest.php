@@ -55,6 +55,25 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'test');
     }
 
+    public function testWidth(): void
+    {
+        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+
+        $this->builder
+            ->contentFile('files/content.html')
+            ->filename('test')
+            ->paperWidth(200)
+            ->paperHeight(150)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('paperWidth', '200in');
+        $this->assertGotenbergFormData('paperHeight', '150in');
+
+        $this->assertGotenbergEndpoint('/forms/chromium/convert/html');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'test');
+    }
+
     public function testWithTwigContentFile(): void
     {
         $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
