@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * @see https://gotenberg.dev/docs/webhook.
  *
- * @phpstan-type  webhookConfiguration array{config_name: string, success?: array{url?: string, route?: string|array<array-key, array{0: string, 1: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, error?: array{url?: string, route?: string|array<array-key, array{0: string, 1: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, extra_http_headers?: array<string, string>}
+ * @phpstan-type WebhookConfiguration array{config_name: string, success?: array{url?: string, route?: string|array<array-key, array{0: string, 1: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, error?: array{url?: string, route?: string|array<array-key, array{0: string, 1: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, extra_http_headers?: array<string, string>}
  */
 trait WebhookTrait
 {
@@ -24,16 +24,16 @@ trait WebhookTrait
     abstract protected function getHeadersBag(): HeadersBag;
 
     /**
-     * @param webhookConfiguration $webhook
+     * @param WebhookConfiguration $webhook
      */
-    #[ExposeSemantic(new ArrayNodeBuilder('webhook', hasParentNode: true, children: [
+    #[ExposeSemantic(new ArrayNodeBuilder('webhook', children: [
         new ScalarNodeBuilder('config_name', restrictTo: 'string'),
-        new ArrayNodeBuilder('success', hasParentNode: true, children: [
+        new ArrayNodeBuilder('success', children: [
             new ScalarNodeBuilder('url', restrictTo: 'string'),
             new VariableNodeBuilder('route'),
             new EnumNodeBuilder('method', values: ['POST', 'PUT', 'PATCH']),
         ]),
-        new ArrayNodeBuilder('error', hasParentNode: true, children: [
+        new ArrayNodeBuilder('error', children: [
             new ScalarNodeBuilder('url', restrictTo: 'string'),
             new VariableNodeBuilder('route'),
             new EnumNodeBuilder('method', values: ['POST', 'PUT', 'PATCH']),
@@ -136,7 +136,7 @@ trait WebhookTrait
     }
 
     /**
-     * @param webhookConfiguration $webhook
+     * @param WebhookConfiguration $webhook
      */
     private function webhookConfigurationValidator(array $webhook): void
     {

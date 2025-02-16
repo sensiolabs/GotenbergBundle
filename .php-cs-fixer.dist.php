@@ -2,6 +2,7 @@
 
 $finder = (new PhpCsFixer\Finder())
     ->in([
+        __DIR__ . '/bin',
         __DIR__ . '/config',
         __DIR__ . '/docs',
         __DIR__ . '/src',

@@ -15,9 +15,6 @@ final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 
         public string|null $defaultValue = null,
 
-        /** @var class-string|null */
-        public string|null $className = null,
-
         public array $values = [],
 
         string|callable|null $callback = null,
@@ -30,39 +27,44 @@ final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
     {
         $node = new EnumNodeDefinition($this->name);
 
+        if (\count($this->values) === 0 && null === $this->callback) {
+            throw new InvalidBuilderConfiguration(\sprintf('You must choose between "values" or "callback" to provide any choice for "%s".', $this->name));
+        }
+
         if (\count($this->values) > 0 && null !== $this->callback) {
             throw new InvalidBuilderConfiguration(\sprintf('You must choose between "values" or "callback" to provide any choice for "%s".', $this->name));
         }
 
+        $values = [];
+
         if (\count($this->values) > 0) {
-            $node->values($this->values);
+            $values = $this->values;
         } elseif (null !== $this->callback) {
-            if (!\is_callable($this->callback)) {
+            if (\is_string($this->callback)) {
+                if (is_a($this->callback, \BackedEnum::class, true) === false) {
+                    throw new InvalidBuilderConfiguration('The class from the "callback" option is not a valid class "\BackedEnum"');
+                }
+
+                $this->callback = [$this->callback, 'cases'];
+            } elseif (!\is_callable($this->callback)) {
                 throw new InvalidBuilderConfiguration(\sprintf('The Builder constraint expects a valid callback for "%s".', $this->name));
             }
 
-            $node->values(array_map(static function (mixed $value): int|string|float|bool|null {
+            $values = array_map(static function (mixed $value): int|string|float|bool|null {
                 if ($value instanceof \BackedEnum) {
                     return $value->value;
                 }
 
                 return $value;
-            }, ($this->callback)()));
-        } else {
-            throw new \LogicException('Problem enum');
+            }, ($this->callback)());
         }
 
-        if (null !== $this->className) {
-            $classImplements = class_implements($this->className);
-            if (false === $classImplements) {
-                throw new InvalidBuilderConfiguration(\sprintf('The "class" option expects a valid class "\BackedEnum" for "%s".', $this->className));
-            }
+        $node->values($values);
 
-            if (!\in_array('BackedEnum', $classImplements, true)) {
-                throw new InvalidBuilderConfiguration(\sprintf('The "class" option expects a valid class "\BackedEnum" for "%s".', $this->name));
+        if (null !== $this->defaultValue) {
+            if (!\in_array($this->defaultValue, $values, true)) {
+                throw new InvalidBuilderConfiguration(\sprintf('The default value "%s" is not part of the configured values "%s".', $this->defaultValue, implode(', ', $values)));
             }
-
-            $className = $this->className;
         }
 
         $node->defaultValue($this->defaultValue);

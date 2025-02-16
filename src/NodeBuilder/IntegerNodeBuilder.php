@@ -30,6 +30,16 @@ final class IntegerNodeBuilder extends NodeBuilder implements NodeBuilderInterfa
             $node->max($this->max);
         }
 
+        if (null !== $this->defaultValue) {
+            if (null !== $this->min && $this->defaultValue < $this->min) {
+                throw new \InvalidArgumentException(\sprintf('The default value "%s" is less than the minimum configured value "%s".', $this->defaultValue, $this->min));
+            }
+
+            if (null !== $this->max && $this->defaultValue > $this->max) {
+                throw new \InvalidArgumentException(\sprintf('The default value "%s" is greater than the maximum configured value "%s".', $this->defaultValue, $this->max));
+            }
+        }
+
         $node->defaultValue($this->defaultValue);
 
         return $node;

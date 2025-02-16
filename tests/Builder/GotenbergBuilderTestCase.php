@@ -81,7 +81,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
         }
 
         if (false === $found) {
-            $this->fail(\sprintf('No matching form data with name "%s". Did you mean one of "%s" ?', $name, \implode(', ', $availableNames)));
+            $this->fail(\sprintf('No matching form data with name "%s". Did you mean one of "%s" ?', $name, implode(', ', $availableNames)));
         }
 
         if (false === $matches) {

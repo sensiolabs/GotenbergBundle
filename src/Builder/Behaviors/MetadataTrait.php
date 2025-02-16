@@ -42,7 +42,7 @@ trait MetadataTrait
      *     Trapped?: 'True'|'False'|'Unknown',
      * } $metadata
      */
-    #[ExposeSemantic(new ArrayNodeBuilder('metadata', hasParentNode: true, children: [
+    #[ExposeSemantic(new ArrayNodeBuilder('metadata', children: [
         new ScalarNodeBuilder('Author'),
         new ScalarNodeBuilder('Copyright'),
         new ScalarNodeBuilder('CreationDate'),

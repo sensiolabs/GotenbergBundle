@@ -266,7 +266,7 @@ trait PagePropertiesTrait
     /**
      * If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
      */
-    #[ExposeSemantic(new EnumNodeBuilder('max_image_resolution', className: ImageResolutionDPI::class, callback: [ImageResolutionDPI::class, 'cases']))]
+    #[ExposeSemantic(new EnumNodeBuilder('max_image_resolution', callback: ImageResolutionDPI::class))]
     public function maxImageResolution(ImageResolutionDPI|null $resolution): self
     {
         if (!$resolution) {

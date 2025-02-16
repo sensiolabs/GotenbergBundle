@@ -22,7 +22,7 @@ trait SplitTrait
     /**
      * Either intervals or pages. (default None).
      */
-    #[ExposeSemantic(new EnumNodeBuilder('split_mode', className: SplitMode::class, callback: [SplitMode::class, 'cases']))]
+    #[ExposeSemantic(new EnumNodeBuilder('split_mode', callback: SplitMode::class))]
     public function splitMode(SplitMode|null $splitMode = null): self
     {
         if (!$splitMode) {
