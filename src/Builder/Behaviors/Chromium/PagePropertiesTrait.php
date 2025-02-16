@@ -82,7 +82,7 @@ trait PagePropertiesTrait
         return $this;
     }
 
-    #[ExposeSemantic(new EnumNodeBuilder('paper_standard_size', className: PaperSize::class, callback: [PaperSize::class, 'cases']))]
+    #[ExposeSemantic(new EnumNodeBuilder('paper_standard_size', callback: PaperSize::class))]
     public function paperStandardSize(PaperSizeInterface $paperSize): static
     {
         $this->paperWidth($paperSize->width(), $paperSize->unit());

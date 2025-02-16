@@ -20,7 +20,7 @@ trait PdfFormatTrait
     /**
      * Enable PDF for Universal Access for optimal accessibility. (default false).
      */
-    #[ExposeSemantic(new EnumNodeBuilder('pdf_format', className: PdfFormat::class, callback: [PdfFormat::class, 'cases']))]
+    #[ExposeSemantic(new EnumNodeBuilder('pdf_format', callback: PdfFormat::class))]
     public function pdfFormat(PdfFormat|null $format): self
     {
         if (!$format) {

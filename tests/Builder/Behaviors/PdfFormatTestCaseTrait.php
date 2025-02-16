@@ -15,11 +15,9 @@ trait PdfFormatTestCaseTrait
 
     public function testPdfFormatSemanticConfigurationIsCorrectlySet(): void
     {
-
     }
 
     public function testPdfFormatIsCorrectlyNormalizedBeforeSend(): void
     {
-
     }
 }

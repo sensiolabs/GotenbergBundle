@@ -12,8 +12,6 @@ final class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 
         public bool $normalizeKeys = true,
 
-        public bool $hasParentNode = false,
-
         public string|null $useAttributeAsKey = null,
 
         /** @var 'integer'|'array'|'variable'|null */
@@ -28,14 +26,6 @@ final class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
     public function create(): ArrayNodeDefinition
     {
         $node = new ArrayNodeDefinition($this->name);
-
-        if ($this->hasParentNode && \count($this->children) > 0) {
-            foreach ($this->children as $child) {
-                $node->append($child->create());
-            }
-
-            return $node;
-        }
 
         $node->normalizeKeys($this->normalizeKeys);
 

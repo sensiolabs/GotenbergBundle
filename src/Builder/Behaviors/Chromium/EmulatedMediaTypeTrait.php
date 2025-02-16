@@ -19,7 +19,7 @@ trait EmulatedMediaTypeTrait
     /**
      * Forces Chromium to emulate, either "screen" or "print". (default "print").
      */
-    #[ExposeSemantic(new EnumNodeBuilder('emulated_media_type', className: EmulatedMediaType::class, callback: [EmulatedMediaType::class, 'cases']))]
+    #[ExposeSemantic(new EnumNodeBuilder('emulated_media_type', callback: EmulatedMediaType::class))]
     public function emulatedMediaType(EmulatedMediaType $mediaType): static
     {
         $this->getBodyBag()->set('emulatedMediaType', $mediaType);
