@@ -31,12 +31,15 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use ChromiumTestCaseTrait<MarkdownPdfBuilder> */
     use ChromiumTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): MarkdownPdfBuilder
     {
         return new MarkdownPdfBuilder($client, $dependencies);
     }
 
-    protected function initializeBuilder(BuilderInterface $builder, Container $container): BuilderInterface
+    /**
+     * @param MarkdownPdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): MarkdownPdfBuilder
     {
         return $builder
             ->contentFile('files/wrapper.html')
@@ -111,5 +114,21 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
             ->files('b.png')
             ->generate()
         ;
+    }
+
+    public function testDownloadFrom(): void
+    {
+        $this->getBuilder()
+            ->contentFile('files/wrapper.html')
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
     }
 }

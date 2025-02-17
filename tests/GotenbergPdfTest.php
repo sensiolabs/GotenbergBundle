@@ -4,11 +4,10 @@ namespace Sensiolabs\GotenbergBundle\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\LibreOfficePdfBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\MarkdownPdfBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
@@ -21,10 +20,8 @@ use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 use Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(GotenbergPdf::class)]
-#[UsesClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(HtmlPdfBuilder::class)]
 #[UsesClass(MarkdownPdfBuilder::class)]
 #[UsesClass(LibreOfficePdfBuilder::class)]

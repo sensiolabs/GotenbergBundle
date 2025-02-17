@@ -68,40 +68,20 @@ trait CookieTestCaseTrait
         $this->assertGotenbergFormData('cookies', '[{"name":"my_cookie","value":"value","domain":"symfony.com","path":"\/","secure":false,"httpOnly":true,"sameSite":"lax"}]');
     }
 
-    //    public function setCookieArray(string $name, Cookie|array $cookie): static
-    //    {
-    //        $current = $this->getBodyBag()->get('cookies', []);
-    //        $current[$name] = $cookie;
-    //
-    //        $this->getBodyBag()->set('cookies', $current);
-    //
-    //        return $this;
-    //    }
-    //
-    //    public function forwardCookie(string $name): static
-    //    {
-    //        $request = $this->getCurrentRequest();
-    //
-    //        if (null === $request) {
-    //            $this->getLogger()?->debug('Cookie {sensiolabs_gotenberg.cookie_name} cannot be forwarded because there is no Request.', [
-    //                'sensiolabs_gotenberg.cookie_name' => $name,
-    //            ]);
-    //
-    //            return $this;
-    //        }
-    //
-    //        if (false === $request->cookies->has($name)) {
-    //            $this->getLogger()?->debug('Cookie {sensiolabs_gotenberg.cookie_name} does not exists.', [
-    //                'sensiolabs_gotenberg.cookie_name' => $name,
-    //            ]);
-    //
-    //            return $this;
-    //        }
-    //
-    //        return $this->setCookie($name, [
-    //            'name' => $name,
-    //            'value' => (string) $request->cookies->get($name),
-    //            'domain' => $request->getHost(),
-    //        ]);
-    //    }
+    public function testSetCookieArray(): void
+    {
+        $this->getDefaultBuilder()
+            ->setCookie('my_cookie', [
+                'name' => 'my_cookie',
+                'value' => 'symfony',
+                'domain' => 'symfony.com',
+                'secure' => true,
+                'httpOnly' => true,
+                'sameSite' => 'Lax',
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('cookies', '[{"name":"my_cookie","value":"symfony","domain":"symfony.com","secure":true,"httpOnly":true,"sameSite":"Lax"}]');
+    }
 }

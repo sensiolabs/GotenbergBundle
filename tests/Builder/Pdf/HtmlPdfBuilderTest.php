@@ -30,12 +30,15 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use ChromiumTestCaseTrait<HtmlPdfBuilder> */
     use ChromiumTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): HtmlPdfBuilder
     {
         return new HtmlPdfBuilder($client, $dependencies);
     }
 
-    protected function initializeBuilder(BuilderInterface $builder, Container $container): BuilderInterface
+    /**
+     * @param HtmlPdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): HtmlPdfBuilder
     {
         return $builder
             ->contentFile('files/content.html')
@@ -123,5 +126,20 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         HTML;
 
         $this->assertContentFile('index.html', 'text/html', $expected);
+    }
+
+    public function testDownloadFrom(): void
+    {
+        $this->getBuilder()
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
     }
 }

@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormat
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -23,6 +24,7 @@ class MergePdfBuilder extends AbstractBuilder
     use DownloadFromTrait;
     use MetadataTrait;
     use PdfFormatTrait;
+    use WebhookTrait;
 
     /**
      * Add PDF files to merge.

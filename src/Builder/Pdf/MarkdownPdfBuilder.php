@@ -19,7 +19,6 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 class MarkdownPdfBuilder extends AbstractBuilder
 {
     use ChromiumTrait;
-    use WebhookTrait;
 
     /**
      * Add Markdown into a PDF.

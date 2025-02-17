@@ -17,4 +17,5 @@ trait ChromiumTrait
     use MetadataTrait;
     use PdfFormatTrait;
     use SplitTrait;
+    use WebhookTrait;
 }

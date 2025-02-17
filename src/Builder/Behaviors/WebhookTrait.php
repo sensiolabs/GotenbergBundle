@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * @see https://gotenberg.dev/docs/webhook.
  *
- * @phpstan-type WebhookConfiguration array{config_name: string, success?: array{url?: string, route?: string|array<array-key, array{0: string, 1: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, error?: array{url?: string, route?: string|array<array-key, array{0: string, 1: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, extra_http_headers?: array<string, string>}
+ * @phpstan-type WebhookConfiguration array{config_name: string, success?: array{url?: string, route?: string|array<array-key, array{0: string, 1?: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, error?: array{url?: string, route?: string|array<array-key, array{0: string, 1?: array<string, mixed>}>, method: 'PUT'|'PATCH'|'POST'|null}, extra_http_headers?: array<string, string>}
  */
 trait WebhookTrait
 {
@@ -112,7 +112,7 @@ trait WebhookTrait
      */
     public function webhookExtraHeaders(array $extraHttpHeaders): static
     {
-        $this->getHeadersBag()->set('Gotenberg-Webhook-Error-Extra-Http-Headers', json_encode($extraHttpHeaders));
+        $this->getHeadersBag()->set('Gotenberg-Webhook-Extra-Http-Headers', json_encode($extraHttpHeaders));
 
         return $this;
     }

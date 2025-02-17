@@ -6,10 +6,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\LibreOfficeTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -20,9 +23,22 @@ use Symfony\Component\DependencyInjection\Container;
 #[UsesClass(AssetBaseDirFormatter::class)]
 class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
 {
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
+    /** @use LibreOfficeTestCaseTrait<LibreOfficePdfBuilder> */
+    use LibreOfficeTestCaseTrait;
+
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): LibreOfficePdfBuilder
     {
         return new LibreOfficePdfBuilder($client, $dependencies);
+    }
+
+    /**
+     * @param LibreOfficePdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): LibreOfficePdfBuilder
+    {
+        return $builder
+            ->files('assets/office/document.odt')
+        ;
     }
 
     public static function provideValidOfficeFiles(): \Generator
@@ -54,5 +70,20 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
         $this->getBuilder()
             ->generate()
         ;
+    }
+
+    public function testDownloadFrom(): void
+    {
+        $this->getBuilder()
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
     }
 }

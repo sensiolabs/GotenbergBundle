@@ -12,6 +12,9 @@ use Symfony\Component\Routing\RequestContext;
 
 class NormalizerFactory
 {
+    /**
+     * @return (\Closure(string, mixed): array<string, string>)
+     */
     public static function scale(): \Closure
     {
         return static function (string $key, mixed $value) {
@@ -21,11 +24,17 @@ class NormalizerFactory
         };
     }
 
+    /**
+     * @return (\Closure(string, mixed): array<string, string>)
+     */
     public static function unit(): \Closure
     {
         return static fn (string $key, mixed $value) => [$key => is_numeric($value) ? $value.'in' : (string) $value];
     }
 
+    /**
+     * @return (\Closure(string, array<string, mixed>): array<string, string>)
+     */
     public static function json(bool $associative = true): \Closure
     {
         return static function (string $key, array $value) use ($associative) {
@@ -48,13 +57,15 @@ class NormalizerFactory
             $cookies = [];
             foreach ($value as $cookie) {
                 if ($cookie instanceof Cookie) {
-                    $c['name'] = $cookie->getName();
-                    $c['value'] = $cookie->getValue();
-                    $c['domain'] = $cookie->getDomain();
-                    $c['path'] = $cookie->getPath();
-                    $c['secure'] = $cookie->isSecure();
-                    $c['httpOnly'] = $cookie->isHttpOnly();
-                    $c['sameSite'] = $cookie->getSameSite();
+                    $c = [
+                        'name' => $cookie->getName(),
+                        'value' => $cookie->getValue(),
+                        'domain' => $cookie->getDomain(),
+                        'path' => $cookie->getPath(),
+                        'secure' => $cookie->isSecure(),
+                        'httpOnly' => $cookie->isHttpOnly(),
+                        'sameSite' => $cookie->getSameSite(),
+                    ];
 
                     $cookies[] = $c;
                 } else {
@@ -72,16 +83,25 @@ class NormalizerFactory
         };
     }
 
+    /**
+     * @return (\Closure(string, bool): array<string, string>)
+     */
     public static function bool(): \Closure
     {
         return static fn (string $key, bool $value) => [$key => $value ? 'true' : 'false'];
     }
 
+    /**
+     * @return (\Closure(string, int): array<string, string>)
+     */
     public static function int(): \Closure
     {
         return static fn (string $key, int $value) => [$key => (string) $value];
     }
 
+    /**
+     * @return (\Closure(string, float): array<string, string>)
+     */
     public static function float(): \Closure
     {
         return static function (string $key, float $value) {
@@ -93,16 +113,25 @@ class NormalizerFactory
         };
     }
 
+    /**
+     * @return (\Closure(string, \BackedEnum): array<string, string>)
+     */
     public static function enum(): \Closure
     {
         return static fn (string $key, \BackedEnum $value) => [$key => (string) $value->value];
     }
 
+    /**
+     * @return (\Closure(string, \Stringable): array<string, string>)
+     */
     public static function stringable(): \Closure
     {
         return static fn (string $key, \Stringable $value) => [$key => (string) $value];
     }
 
+    /**
+     * @return (\Closure(string, RenderedPart|\SplFileInfo): array<string, string>)
+     */
     public static function content(): \Closure
     {
         return static function (string $key, RenderedPart|\SplFileInfo $value) {
@@ -118,6 +147,9 @@ class NormalizerFactory
         };
     }
 
+    /**
+     * @return (\Closure(string, array<string, \SplFileInfo>): array<string, string>)
+     */
     public static function asset(): \Closure
     {
         return static function (string $key, array $assets): array {
@@ -132,6 +164,9 @@ class NormalizerFactory
         };
     }
 
+    /**
+     * @return (\Closure(string, array<string, mixed>): array<string, string>)
+     */
     public static function route(RequestContext|null $requestContext, UrlGeneratorInterface $urlGenerator): \Closure
     {
         return static function (string $key, array $value) use ($requestContext, $urlGenerator): array {

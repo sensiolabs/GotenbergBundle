@@ -8,8 +8,8 @@ use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 final class Payload
 {
     /**
-     * @param array<string, mixed> $bodyOptions
-     * @param array<string, mixed> $headersOptions
+     * @param list<array<string, string>> $bodyOptions
+     * @param array<string, mixed>        $headersOptions
      */
     public function __construct(
         private readonly array $bodyOptions,

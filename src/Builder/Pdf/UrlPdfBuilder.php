@@ -15,7 +15,6 @@ use Symfony\Component\Routing\RequestContext;
 class UrlPdfBuilder extends AbstractBuilder
 {
     use ChromiumTrait;
-    use WebhookTrait;
 
     private RequestContext|null $requestContext = null;
 
