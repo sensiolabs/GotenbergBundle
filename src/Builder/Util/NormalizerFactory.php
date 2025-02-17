@@ -39,6 +39,9 @@ class NormalizerFactory
         };
     }
 
+    /**
+     * @return (\Closure(string, list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}>): array<string, string>)
+     */
     public static function cookie(): \Closure
     {
         return static function (string $key, array $value) {
