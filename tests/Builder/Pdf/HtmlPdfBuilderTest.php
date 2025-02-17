@@ -4,7 +4,6 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
@@ -13,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
+use Symfony\Component\DependencyInjection\Container;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\RuntimeLoader\RuntimeLoaderInterface;
@@ -27,18 +27,17 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
 #[UsesClass(GotenbergAssetRuntime::class)]
 class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 {
+    /** @use ChromiumTestCaseTrait<HtmlPdfBuilder> */
     use ChromiumTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
     {
         return new HtmlPdfBuilder($client, $dependencies);
     }
 
-    protected function getBuilderTrait(): BuilderInterface
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): BuilderInterface
     {
-        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
-
-        return $this->getBuilder()
+        return $builder
             ->contentFile('files/content.html')
         ;
     }
@@ -57,7 +56,7 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
     {
         $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
-        $this->builder
+        $this->getBuilder()
             ->contentFile('files/content.html')
             ->filename('test')
             ->generate()
@@ -71,7 +70,7 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
     {
         $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
-        $this->builder
+        $this->getBuilder()
             ->contentFile('files/content.html')
             ->filename('test')
             ->paperWidth(200)

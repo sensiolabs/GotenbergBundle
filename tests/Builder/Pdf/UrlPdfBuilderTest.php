@@ -4,13 +4,13 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
@@ -26,18 +26,24 @@ use Symfony\Component\Routing\RouteCollection;
 #[UsesClass(RequestContext::class)]
 class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 {
+    /** @use ChromiumTestCaseTrait<UrlPdfBuilder> */
     use ChromiumTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+    }
+
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
     {
         return new UrlPdfBuilder($client, $dependencies);
     }
 
-    protected function getBuilderTrait(): BuilderInterface
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): BuilderInterface
     {
-        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
-
-        return $this->builder
+        return $builder
             ->url('https://example.com')
         ;
     }
@@ -56,7 +62,7 @@ class UrlPdfBuilderTest extends GotenbergBuilderTestCase
     {
         $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
 
-        $this->builder
+        $this->getBuilder()
             ->url('https://example.com')
             ->filename('test')
             ->generate()
@@ -74,7 +80,7 @@ class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 
         $this->dependencies->set('router', new UrlGenerator($routeCollection, new RequestContext()));
 
-        $this->builder
+        $this->getBuilder()
             ->route('article_read', ['id' => 1])
             ->filename('article')
             ->generate()

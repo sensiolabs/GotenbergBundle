@@ -4,13 +4,13 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @extends GotenbergBuilderTestCase<MergePdfBuilder>
@@ -19,10 +19,8 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 #[UsesClass(AssetBaseDirFormatter::class)]
 class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
-    protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
     {
-        $dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
-
         return new MergePdfBuilder($client, $dependencies);
     }
 

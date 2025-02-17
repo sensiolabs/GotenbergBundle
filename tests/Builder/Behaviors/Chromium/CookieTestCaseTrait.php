@@ -2,21 +2,23 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 use Symfony\Component\HttpFoundation\Cookie;
 
+/**
+ * @template T of BuilderInterface
+ */
 trait CookieTestCaseTrait
 {
-    abstract protected function getBuilderTrait(): BuilderInterface;
-
-    abstract protected function getDependencies(): ContainerInterface;
+    /** @use BehaviorTrait<T> */
+    use BehaviorTrait;
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
     public function testCookies(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->cookies([[
                 'name' => 'my_cookie',
                 'value' => 'symfony',
@@ -33,7 +35,7 @@ trait CookieTestCaseTrait
 
     public function testAddCookies(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->cookies([[
                 'name' => 'my_cookie',
                 'value' => 'symfony',
@@ -58,7 +60,7 @@ trait CookieTestCaseTrait
 
     public function testSetCookieObject(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->setCookie('my_cookie', new Cookie('my_cookie', 'value', domain: 'symfony.com'))
             ->generate()
         ;
