@@ -115,6 +115,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
                 return;
             }
         }
+
         $this->fail(\sprintf('No matching header found with name "%s" and value "%s".', $name, $value));
     }
 

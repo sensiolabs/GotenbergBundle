@@ -53,6 +53,6 @@ trait DownloadFromTrait
     #[NormalizeGotenbergPayload]
     private function normalizeDownloadFrom(): \Generator
     {
-        yield 'downloadFrom' => NormalizerFactory::json();
+        yield 'downloadFrom' => NormalizerFactory::json(false);
     }
 }

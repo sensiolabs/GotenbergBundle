@@ -24,7 +24,7 @@ use Symfony\Component\Routing\RouteCollection;
 #[UsesClass(UrlGenerator::class)]
 #[UsesClass(RouteCollection::class)]
 #[UsesClass(RequestContext::class)]
-class UrlPdfBuilderTest extends GotenbergBuilderTestCase
+final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use ChromiumTestCaseTrait<UrlPdfBuilder> */
     use ChromiumTestCaseTrait;
@@ -36,12 +36,15 @@ class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
     }
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): UrlPdfBuilder
     {
         return new UrlPdfBuilder($client, $dependencies);
     }
 
-    protected function initializeBuilder(BuilderInterface $builder, Container $container): BuilderInterface
+    /**
+     * @param UrlPdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): UrlPdfBuilder
     {
         return $builder
             ->url('https://example.com')
@@ -89,5 +92,23 @@ class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergEndpoint('/forms/chromium/convert/url');
         $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'article');
         $this->assertGotenbergFormData('url', 'http://localhost/article/1');
+    }
+
+    public function testDownloadFrom(): void
+    {
+        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+
+        $this->getBuilder()
+            ->url('https://example.com')
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
     }
 }

@@ -9,6 +9,9 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -17,11 +20,30 @@ use Symfony\Component\DependencyInjection\Container;
  */
 #[CoversClass(MergePdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-class MergePdfBuilderTest extends GotenbergBuilderTestCase
+final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
+    /** @use MetadataTestCaseTrait<MergePdfBuilder> */
+    use MetadataTestCaseTrait;
+
+    /** @use PdfFormatTestCaseTrait<MergePdfBuilder> */
+    use PdfFormatTestCaseTrait;
+
+    /** @use WebhookTestCaseTrait<MergePdfBuilder> */
+    use WebhookTestCaseTrait;
+
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): MergePdfBuilder
     {
         return new MergePdfBuilder($client, $dependencies);
+    }
+
+    /**
+     * @param MergePdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): MergePdfBuilder
+    {
+        return $builder
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf_1.pdf')
+        ;
     }
 
     public function testFiles(): void
@@ -45,5 +67,24 @@ class MergePdfBuilderTest extends GotenbergBuilderTestCase
             ->files('simple_pdf.pdf', 'b.png')
             ->generate()
         ;
+    }
+
+    public function testDownloadFrom(): void
+    {
+        $this->getBuilder()
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                ],
+                [
+                    'url' => 'http://url/to/second/file.com',
+                    'extraHttpHeaders' => ['User-Agent' => 'MyValue'],
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}},{"url":"http:\/\/url\/to\/second\/file.com","extraHttpHeaders":{"User-Agent":"MyValue"}}]');
     }
 }

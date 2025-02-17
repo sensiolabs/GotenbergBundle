@@ -2,22 +2,38 @@
 
 declare(strict_types=1);
 
-namespace Builder\Behaviors;
+namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 
+/**
+ * @template T of BuilderInterface
+ */
 trait PdfFormatTestCaseTrait
 {
-    abstract protected function getBuilder(): BuilderInterface;
+    /** @use BehaviorTrait<T> */
+    use BehaviorTrait;
 
-    abstract protected function getDependencies(): ContainerInterface;
+    abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testPdfFormatSemanticConfigurationIsCorrectlySet(): void
+    public function testPdfFormat(): void
     {
+        $this->getDefaultBuilder()
+            ->pdfFormat(PdfFormat::Pdf1b)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('pdfa', PdfFormat::Pdf1b->value);
     }
 
-    public function testPdfFormatIsCorrectlyNormalizedBeforeSend(): void
+    public function testPdfUniversalAccess(): void
     {
+        $this->getDefaultBuilder()
+            ->pdfUniversalAccess()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('pdfua', 'true');
     }
 }

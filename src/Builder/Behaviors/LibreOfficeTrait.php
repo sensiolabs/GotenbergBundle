@@ -9,4 +9,5 @@ trait LibreOfficeTrait
     use MetadataTrait;
     use PdfFormatTrait;
     use SplitTrait;
+    use WebhookTrait;
 }

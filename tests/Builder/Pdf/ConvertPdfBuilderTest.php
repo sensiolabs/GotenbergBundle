@@ -10,6 +10,8 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -20,9 +22,26 @@ use Symfony\Component\DependencyInjection\Container;
 #[UsesClass(AssetBaseDirFormatter::class)]
 final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
 {
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface
+    /** @use PdfFormatTestCaseTrait<ConvertPdfBuilder> */
+    use PdfFormatTestCaseTrait;
+
+    /** @use WebhookTestCaseTrait<ConvertPdfBuilder> */
+    use WebhookTestCaseTrait;
+
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): ConvertPdfBuilder
     {
         return new ConvertPdfBuilder($client, $dependencies);
+    }
+
+    /**
+     * @param ConvertPdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): ConvertPdfBuilder
+    {
+        return $builder
+            ->files('pdf/simple_pdf.pdf')
+            ->pdfUniversalAccess()
+        ;
     }
 
     public function testFiles(): void
@@ -67,5 +86,21 @@ final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
             ->files('b.png')
             ->generate()
         ;
+    }
+
+    public function testDownloadFrom(): void
+    {
+        $this->getBuilder()
+            ->pdfUniversalAccess()
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
     }
 }

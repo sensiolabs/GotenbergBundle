@@ -19,7 +19,6 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
     use LibreOfficeTrait;
-    use WebhookTrait;
 
     private const AVAILABLE_EXTENSIONS = [
         '123', '602', 'abw', 'bib', 'bmp', 'cdr', 'cgm', 'cmx', 'csv', 'cwk', 'dbf', 'dif', 'doc', 'docm',
