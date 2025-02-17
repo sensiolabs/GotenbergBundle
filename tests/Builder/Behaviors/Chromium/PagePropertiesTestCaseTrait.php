@@ -2,21 +2,23 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
+/**
+ * @template T of BuilderInterface
+ */
 trait PagePropertiesTestCaseTrait
 {
-    abstract protected function getBuilderTrait(): BuilderInterface;
-
-    abstract protected function getDependencies(): ContainerInterface;
+    /** @use BehaviorTrait<T> */
+    use BehaviorTrait;
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
     public function testSinglePage(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->singlePage()
             ->generate()
         ;
@@ -26,7 +28,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testWidth(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->paperWidth(200)
             ->generate()
         ;
@@ -36,7 +38,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testWidthWithUnit(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->paperWidth(21, Unit::Centimeters)
             ->generate()
         ;
@@ -46,7 +48,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testPaperHeight(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->paperHeight(150)
             ->generate()
         ;
@@ -56,7 +58,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testPaperHeightWithUnit(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->paperHeight(29.7, Unit::Centimeters)
             ->generate()
         ;
@@ -66,7 +68,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testPaperSize(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->paperSize(200, 150)
             ->generate()
         ;
@@ -77,7 +79,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testPaperSizeWithUnit(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->paperSize(21, 29.7, Unit::Centimeters)
             ->generate()
         ;
@@ -88,7 +90,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginTop(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->marginTop(2)
             ->generate()
         ;
@@ -98,7 +100,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginTopWithUnit(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->marginTop(2, Unit::Centimeters)
             ->generate()
         ;
@@ -108,7 +110,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginBottom(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->marginBottom(2)
             ->generate()
         ;
@@ -118,7 +120,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginBottomWithUnit(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->marginBottom(2, Unit::Centimeters)
             ->generate()
         ;
@@ -128,7 +130,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginLeft(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->marginLeft(2)
             ->generate()
         ;
@@ -138,7 +140,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginLeftWithUnit(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->marginLeft(2, Unit::Centimeters)
             ->generate()
         ;
@@ -148,7 +150,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginRight(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->marginRight(2)
             ->generate()
         ;
@@ -158,7 +160,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginRightWithUnit(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->marginRight(2, Unit::Centimeters)
             ->generate()
         ;
@@ -168,7 +170,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMargins(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->margins(2, 2, 2, 2)
             ->generate()
         ;
@@ -181,7 +183,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testMarginsWithUnit(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->margins(2, 2, 2, 2, Unit::Centimeters)
             ->generate()
         ;
@@ -194,7 +196,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testPreferCssPageSize(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
            ->preferCssPageSize(true)
            ->generate()
         ;
@@ -204,7 +206,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testGenerateDocumentOutline(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
            ->generateDocumentOutline(true)
            ->generate()
         ;
@@ -214,7 +216,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testPrintBackground(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
            ->printBackground(true)
            ->generate()
         ;
@@ -224,7 +226,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testOmitBackground(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
            ->omitBackground(true)
            ->generate()
         ;
@@ -234,7 +236,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testLandscape(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->landscape()
             ->generate()
         ;
@@ -244,7 +246,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testScale(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->scale(1.5)
             ->generate()
         ;
@@ -254,7 +256,7 @@ trait PagePropertiesTestCaseTrait
 
     public function testNativePageRanges(): void
     {
-        $this->getBuilderTrait()
+        $this->getDefaultBuilder()
             ->nativePageRanges('1-5')
             ->generate()
         ;

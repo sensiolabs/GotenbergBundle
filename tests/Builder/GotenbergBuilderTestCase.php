@@ -3,9 +3,9 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\Part\DataPart;
@@ -20,7 +20,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
     protected const FIXTURE_DIR = __DIR__.'/../Fixtures';
 
     protected GotenbergClientAsserter $client;
-    protected ContainerInterface $dependencies;
+    protected Container $dependencies;
     /** @var T */
     protected BuilderInterface $builder;
 
@@ -31,23 +31,23 @@ abstract class GotenbergBuilderTestCase extends TestCase
         $this->client = new GotenbergClientAsserter();
         $this->dependencies = new Container();
 
-        $this->builder = $this->createBuilder($this->client, $this->dependencies);
+        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(static::FIXTURE_DIR, static::FIXTURE_DIR));
     }
 
     /**
      * @return T
      */
-    abstract protected function createBuilder(GotenbergClientInterface $client, ContainerInterface $dependencies): BuilderInterface;
+    abstract protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface;
 
     /**
      * @return T
      */
     protected function getBuilder(): BuilderInterface
     {
-        return $this->builder;
+        return $this->builder ??= $this->createBuilder($this->client, $this->dependencies);
     }
 
-    protected function getDependencies(): ContainerInterface
+    protected function getDependencies(): Container
     {
         return $this->dependencies;
     }
