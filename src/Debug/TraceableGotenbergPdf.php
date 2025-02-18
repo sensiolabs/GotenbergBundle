@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
@@ -136,6 +137,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['convert', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return SplitPdfBuilder|TraceableBuilder
+     */
+    public function split(): BuilderInterface
+    {
+        /** @var SplitPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->split();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['split', $traceableBuilder];
 
         return $traceableBuilder;
     }

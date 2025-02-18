@@ -1,17 +1,15 @@
 <?php
 
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection\CompilerPass;
-
-use PHPUnit\Framework\Attributes\CoversClass;
+;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-#[CoversClass(GotenbergPass::class)]
 class GotenbergPassTest extends TestCase
 {
     private function getContainerBuilder(bool $withDataCollector = false): ContainerBuilder
@@ -24,7 +22,7 @@ class GotenbergPassTest extends TestCase
             $container->setDefinition('sensiolabs_gotenberg.data_collector', $dataCollector);
         }
 
-        $pdfTaggedService = new Definition(PdfBuilderInterface::class);
+        $pdfTaggedService = new Definition(BuilderInterface::class);
         $pdfTaggedService->addTag('sensiolabs_gotenberg.pdf_builder');
         $container->setDefinition('.service.pdf_tagged', $pdfTaggedService);
 

@@ -2,10 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 
 /**
- * @template T of LibreOfficePdfBuilder
+ * @template T of BuilderInterface
  */
 trait LibreOfficeTestCaseTrait
 {

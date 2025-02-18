@@ -2,12 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\LibreOffice;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
 /**
- * @template T of LibreOfficePdfBuilder
+ * @template T of BuilderInterface
  */
 trait PagePropertiesTestCaseTrait
 {

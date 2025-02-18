@@ -6,7 +6,6 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
@@ -16,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
 #[SemanticNode('markdown')]
-class MarkdownPdfBuilder extends AbstractBuilder
+final class MarkdownPdfBuilder extends AbstractBuilder
 {
     use ChromiumTrait;
 

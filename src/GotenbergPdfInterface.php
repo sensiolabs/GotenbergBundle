@@ -8,17 +8,17 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
 
 interface GotenbergPdfInterface
 {
     /**
-     * @template T of PdfBuilderInterface
+     * @template T of BuilderInterface
      *
      * @param string|class-string<T> $builder
      *
-     * @return ($builder is class-string ? T : PdfBuilderInterface)
+     * @return ($builder is class-string ? T : BuilderInterface)
      */
     public function get(string $builder): BuilderInterface;
 
@@ -51,9 +51,9 @@ interface GotenbergPdfInterface
      * @return ConvertPdfBuilder
      */
     public function convert(): BuilderInterface;
-    //
-    //    /**
-    //     * @return SplitPdfBuilder
-    //     */
-    //    public function split(): PdfBuilderInterface;
+
+    /**
+     * @return SplitPdfBuilder
+     */
+    public function split(): BuilderInterface;
 }

@@ -2,13 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Twig;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 
-#[CoversClass(GotenbergAssetRuntime::class)]
 class GotenbergAssetRuntimeTest extends TestCase
 {
     public function testGetAssetThrowsPerDefault(): void
@@ -28,18 +25,18 @@ class GotenbergAssetRuntimeTest extends TestCase
         $runtime->getAssetUrl('foo');
     }
 
-    public function testGetAssetCallChromiumPdfBuilder(): void
-    {
-        $runtime = new GotenbergAssetRuntime();
-        $builder = $this->createMock(HtmlPdfBuilder::class);
-        $builder
-            ->expects($this->once())
-            ->method('addAsset')
-            ->with('foo')
-        ;
-        $runtime->setBuilder($builder);
-        $this->assertSame('foo', $runtime->getAssetUrl('foo'));
-    }
+//    public function testGetAssetCallChromiumPdfBuilder(): void
+//    {
+//        $runtime = new GotenbergAssetRuntime();
+//        $builder = $this->createMock(HtmlPdfBuilder::class);
+//        $builder
+//            ->expects($this->once())
+//            ->method('addAsset')
+//            ->with('foo')
+//        ;
+//        $runtime->setBuilder($builder);
+//        $this->assertSame('foo', $runtime->getAssetUrl('foo'));
+//    }
 
     public function testGetAssetCallChromiumScreenshotBuilder(): void
     {

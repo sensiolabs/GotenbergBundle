@@ -2,8 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
@@ -20,11 +18,6 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
 /**
  * @extends GotenbergBuilderTestCase<HtmlPdfBuilder>
  */
-#[CoversClass(HtmlPdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(Environment::class)]
-#[UsesClass(FilesystemLoader::class)]
-#[UsesClass(GotenbergAssetRuntime::class)]
 class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use ChromiumTestCaseTrait<HtmlPdfBuilder> */

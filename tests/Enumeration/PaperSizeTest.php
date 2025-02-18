@@ -2,13 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Enumeration;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 
-#[CoversClass(PaperSize::class)]
 final class PaperSizeTest extends TestCase
 {
     public function testCaseListIsCorrect(): void

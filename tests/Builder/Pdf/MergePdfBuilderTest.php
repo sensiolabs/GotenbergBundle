@@ -2,13 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
@@ -18,8 +15,6 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @extends GotenbergBuilderTestCase<MergePdfBuilder>
  */
-#[CoversClass(MergePdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
 final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use MetadataTestCaseTrait<MergePdfBuilder> */
