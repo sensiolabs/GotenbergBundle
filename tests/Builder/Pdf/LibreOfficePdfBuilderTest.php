@@ -2,16 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\LibreOfficeTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Symfony\Component\DependencyInjection\Container;
@@ -19,8 +14,6 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @extends GotenbergBuilderTestCase<LibreOfficePdfBuilder>
  */
-#[CoversClass(LibreOfficePdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
 class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use LibreOfficeTestCaseTrait<LibreOfficePdfBuilder> */

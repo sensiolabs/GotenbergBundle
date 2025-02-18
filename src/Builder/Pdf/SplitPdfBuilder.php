@@ -6,22 +6,24 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\SplitTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
- * @see https://gotenberg.dev/docs/routes#convert-into-pdfa--pdfua-route
+ * @see https://gotenberg.dev/docs/routes#split-pdfs-route
  */
-#[SemanticNode('convert')]
-final class ConvertPdfBuilder extends AbstractBuilder
+#[SemanticNode('split')]
+final class SplitPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
-    use DownloadFromTrait;
+    use MetadataTrait;
     use PdfFormatTrait;
+    use SplitTrait;
     use WebhookTrait;
 
     public function files(string ...$paths): self
@@ -40,16 +42,20 @@ final class ConvertPdfBuilder extends AbstractBuilder
 
     protected function getEndpoint(): string
     {
-        return '/forms/pdfengines/convert';
+        return '/forms/pdfengines/split';
     }
 
     protected function validatePayloadBody(): void
     {
-        if ($this->getBodyBag()->get('pdfa') === null && $this->getBodyBag()->get('pdfua') === null) {
-            throw new MissingRequiredFieldException('At least "pdfa" or "pdfua" must be provided.');
+        if ($this->getBodyBag()->get('splitMode') === null) {
+            throw new MissingRequiredFieldException('Field "splitMode" must be provided.');
         }
 
-        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+        if ($this->getBodyBag()->get('splitSpan') === null) {
+            throw new MissingRequiredFieldException('Field "splitSpan" must be provided.');
+        }
+
+        if ($this->getBodyBag()->get('files') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
     }

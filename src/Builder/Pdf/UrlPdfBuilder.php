@@ -6,13 +6,15 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Routing\RequestContext;
 
+/**
+ * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+ */
 #[SemanticNode('url')]
-class UrlPdfBuilder extends AbstractBuilder
+final class UrlPdfBuilder extends AbstractBuilder
 {
     use ChromiumTrait;
 

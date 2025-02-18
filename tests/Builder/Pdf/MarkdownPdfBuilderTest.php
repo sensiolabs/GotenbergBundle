@@ -2,14 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
@@ -21,11 +18,6 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
 /**
  * @extends GotenbergBuilderTestCase<MarkdownPdfBuilder>
  */
-#[CoversClass(MarkdownPdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(Environment::class)]
-#[UsesClass(FilesystemLoader::class)]
-#[UsesClass(GotenbergAssetRuntime::class)]
 final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use ChromiumTestCaseTrait<MarkdownPdfBuilder> */

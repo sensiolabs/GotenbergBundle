@@ -2,12 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Enumeration;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\NodeType;
 
-#[CoversClass(EmulatedMediaType::class)]
 class NodeTypeTest extends TestCase
 {
     public function testCaseListIsCorrect(): void

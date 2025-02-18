@@ -2,17 +2,14 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
@@ -22,9 +19,6 @@ use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
-#[CoversClass(SensiolabsGotenbergExtension::class)]
-#[UsesClass(ContainerBuilder::class)]
-#[UsesClass(Configuration::class)]
 final class SensiolabsGotenbergExtensionTest extends TestCase
 {
     private function getContainerBuilder(bool $kernelDebug = false): ContainerBuilder
@@ -43,6 +37,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $extension->registerBuilder('pdf', LibreOfficePdfBuilder::class);
         $extension->registerBuilder('pdf', MarkdownPdfBuilder::class);
         $extension->registerBuilder('pdf', MergePdfBuilder::class);
+        $extension->registerBuilder('pdf', SplitPdfBuilder::class);
         $extension->registerBuilder('pdf', UrlPdfBuilder::class);
 
         return $extension;
@@ -226,9 +221,13 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     ],
                 ],
                 'convert' => [
-                    'pdf_format' => 'PDF/A-2b',
+                    'pdf_format' => PdfFormat::Pdf2b,
                     'pdf_universal_access' => true,
                     'download_from' => [],
+                ],
+                'split' => [
+                    'split_mode' => SplitMode::Intervals,
+                    'split_span' => 1,
                 ],
             ],
             //            'screenshot' => [
@@ -426,10 +425,14 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'Author' => 'SensioLabs MERGE',
                         ],
                     ],
-                    //                    'convert' => [
-                    //                        'pdf_format' => 'PDF/A-2b',
-                    //                        'download_from' => [],
-                    //                    ],
+                    'convert' => [
+                        'pdf_format' => 'PDF/A-2b',
+                    ],
+                    'split' => [
+                        'metadata' => [
+                            'Author' => 'SensioLabs SPLIT',
+                        ],
+                    ],
                 ],
             ],
         ]], $containerBuilder);
@@ -464,11 +467,14 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'Author' => 'SensioLabs MERGE',
                 ],
             ],
-            //            'convert' => [
-            //                'pdf_format' => 'PDF/A-2b',
-            //                'download_from' => [],
-            //            ],
-            //            'split' => [],
+            'convert' => [
+                'pdf_format' => 'PDF/A-2b',
+            ],
+            'split' => [
+                'metadata' => [
+                    'Author' => 'SensioLabs SPLIT',
+                ],
+            ],
         ], $dataCollectorOptions);
     }
 
@@ -799,6 +805,10 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                         'convert' => [
                             'pdf_format' => PdfFormat::Pdf2b->value,
                             'pdf_universal_access' => true,
+                        ],
+                        'split' => [
+                            'split_mode' => SplitMode::Intervals->value,
+                            'split_span' => 1,
                         ],
                     ],
                     //                    'screenshot' => [

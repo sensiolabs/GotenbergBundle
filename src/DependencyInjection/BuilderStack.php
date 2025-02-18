@@ -14,7 +14,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 final class BuilderStack
 {
     /**
-     * @var array<list<class-string<BuilderInterface>>, string>
+     * @var array<class-string<BuilderInterface>, string>
      */
     private array $builders = [];
 
@@ -85,7 +85,7 @@ final class BuilderStack
     }
 
     /**
-     * @return array<list<class-string<BuilderInterface>>, string>
+     * @return array<class-string<BuilderInterface>, string>
      */
     public function getBuilders(): array
     {

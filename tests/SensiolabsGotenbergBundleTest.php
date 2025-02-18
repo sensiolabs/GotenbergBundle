@@ -2,13 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-#[CoversClass(SensiolabsGotenbergBundle::class)]
 class SensiolabsGotenbergBundleTest extends TestCase
 {
     public function testCanBeAutoDiscovered(): void

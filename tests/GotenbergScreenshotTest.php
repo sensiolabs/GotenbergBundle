@@ -2,36 +2,13 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\AbstractChromiumScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\AbstractScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\HtmlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\UrlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Part\DataPart;
 
-#[CoversClass(GotenbergScreenshot::class)]
-#[UsesClass(AbstractScreenshotBuilder::class)]
-#[UsesClass(AbstractChromiumScreenshotBuilder::class)]
-#[UsesClass(HtmlScreenshotBuilder::class)]
-#[UsesClass(MarkdownScreenshotBuilder::class)]
-#[UsesClass(UrlScreenshotBuilder::class)]
-#[UsesClass(GotenbergClient::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(Filesystem::class)]
-#[UsesClass(TraceableScreenshotBuilder::class)]
-#[UsesClass(TraceableGotenbergScreenshot::class)]
-#[UsesClass(WebhookConfigurationRegistry::class)]
 final class GotenbergScreenshotTest extends KernelTestCase
 {
     public function testUrlBuilderFactory(): void

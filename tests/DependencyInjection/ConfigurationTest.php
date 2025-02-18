@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
@@ -17,7 +16,6 @@ use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
-#[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {
     /**

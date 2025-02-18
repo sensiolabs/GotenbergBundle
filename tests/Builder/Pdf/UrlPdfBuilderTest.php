@@ -2,8 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
@@ -20,10 +18,6 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * @extends GotenbergBuilderTestCase<UrlPdfBuilder>
  */
-#[CoversClass(UrlPdfBuilder::class)]
-#[UsesClass(UrlGenerator::class)]
-#[UsesClass(RouteCollection::class)]
-#[UsesClass(RequestContext::class)]
 final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use ChromiumTestCaseTrait<UrlPdfBuilder> */

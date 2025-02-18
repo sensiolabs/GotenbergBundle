@@ -84,7 +84,7 @@ class SensiolabsGotenbergExtension extends Extension
         $loader->load('builder_screenshot.php');
 
         $container
-            ->registerForAutoconfiguration(PdfBuilderInterface::class)
+            ->registerForAutoconfiguration(BuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.pdf_builder')
         ;
         $container
@@ -128,8 +128,8 @@ class SensiolabsGotenbergExtension extends Extension
                     'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),
                     'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
                     'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
-                    //                    'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
-                    //                    'split' => $this->cleanUserOptions($config['default_options']['pdf']['split']),
+                    'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
+                    'split' => $this->cleanUserOptions($config['default_options']['pdf']['split']),
                 ])
             ;
         }
@@ -169,7 +169,7 @@ class SensiolabsGotenbergExtension extends Extension
 
             foreach ($buildersOptions as $builderName => $builderOptions) {
                 $class = $this->builderStack->getTypeReverseMapping()[$builderName];
-                $configValueMapping[$class] = $this->cleanUserOptions($builderOptions);
+                $configValueMapping[$class] = $this->processDefaultOptions($config, $builderOptions);
             }
         }
 

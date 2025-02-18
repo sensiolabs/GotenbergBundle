@@ -2,8 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Client;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\Payload;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
@@ -11,8 +9,6 @@ use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-#[CoversClass(GotenbergClient::class)]
-#[UsesClass(Payload::class)]
 final class GotenbergClientTest extends TestCase
 {
     public function testCallIsCorrectlyFormatted(): void

@@ -2,13 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\BuilderOld\Pdf\PdfBuilderInterface;
-use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
-use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
-use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
-use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
-use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -16,7 +10,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * @param array<string, array<class-string<PdfBuilderInterface>, NodeDefinition>> $builders
+     * @param array<string, array<class-string<BuilderInterface>, NodeDefinition>> $builders
      */
     public function __construct(
         private readonly array $builders,
@@ -115,35 +109,6 @@ class Configuration implements ConfigurationInterface
                             return !isset($option['success']);
                         })
                         ->thenInvalid('Invalid webhook configuration : At least a "success" key is required.')
-                    ->end()
-                ->end();
-    }
-
-    private function addWebhookDeclarationNode(ArrayNodeDefinition $parent): void
-    {
-        $parent
-            ->children()
-                ->arrayNode('webhook')
-                    ->info('Webhook configuration name or definition.')
-                    ->beforeNormalization()
-                        ->ifString()
-                            ->then(static function (string $v): array {
-                                return ['config_name' => $v];
-                            })
-                    ->end()
-                    ->children()
-                        ->scalarNode('config_name')
-                            ->info('The name of the webhook configuration to use.')
-                        ->end()
-                        ->append($this->addWebhookConfigurationNode('success'))
-                        ->append($this->addWebhookConfigurationNode('error'))
-                        ->append($this->addExtraHttpHeadersNode())
-                    ->end()
-                    ->validate()
-                        ->ifTrue(static function ($option): bool {
-                            return !isset($option['config_name']) && !isset($option['success']);
-                        })
-                        ->thenInvalid('Invalid webhook configuration : either reference an existing webhook configuration or declare a new one with "success" and optionally "error" keys.')
                     ->end()
                 ->end();
     }
