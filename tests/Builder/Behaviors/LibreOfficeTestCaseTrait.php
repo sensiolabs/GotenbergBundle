@@ -9,6 +9,9 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
  */
 trait LibreOfficeTestCaseTrait
 {
+    /** @use DownloadFromTestCaseTrait<T> */
+    use DownloadFromTestCaseTrait;
+
     /** @use LibreOffice\PagePropertiesTestCaseTrait<T> */
     use LibreOffice\PagePropertiesTestCaseTrait;
 

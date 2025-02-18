@@ -107,20 +107,4 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
-
-    public function testAddAnExternalResource(): void
-    {
-        $this->getBuilder()
-            ->contentFile('files/wrapper.html')
-            ->downloadFrom([
-                [
-                    'url' => 'http://url/to/file.com',
-                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-                ],
-            ])
-            ->generate()
-        ;
-
-        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
-    }
 }

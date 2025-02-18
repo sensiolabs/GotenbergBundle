@@ -64,19 +64,4 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
-
-    public function testAddAnExternalResource(): void
-    {
-        $this->getBuilder()
-            ->downloadFrom([
-                [
-                    'url' => 'http://url/to/file.com',
-                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-                ],
-            ])
-            ->generate()
-        ;
-
-        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
-    }
 }

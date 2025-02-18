@@ -30,6 +30,9 @@ trait ChromiumTestCaseTrait
     /** @use Chromium\WaitBeforeRenderingTestCaseTrait<T> */
     use Chromium\WaitBeforeRenderingTestCaseTrait;
 
+    /** @use DownloadFromTestCaseTrait<T> */
+    use DownloadFromTestCaseTrait;
+
     /** @use MetadataTestCaseTrait<T> */
     use MetadataTestCaseTrait;
 

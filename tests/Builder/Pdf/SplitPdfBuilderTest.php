@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\SplitTestCaseTrait;
@@ -20,6 +21,9 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
 {
+    /** @use DownloadFromTestCaseTrait<SplitPdfBuilder> */
+    use DownloadFromTestCaseTrait;
+
     /** @use MetadataTestCaseTrait<SplitPdfBuilder> */
     use MetadataTestCaseTrait;
 

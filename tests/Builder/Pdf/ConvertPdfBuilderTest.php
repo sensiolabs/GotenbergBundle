@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
@@ -17,6 +18,9 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
 {
+    /** @use DownloadFromTestCaseTrait<ConvertPdfBuilder> */
+    use DownloadFromTestCaseTrait;
+
     /** @use PdfFormatTestCaseTrait<ConvertPdfBuilder> */
     use PdfFormatTestCaseTrait;
 
@@ -81,21 +85,5 @@ final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
             ->files('b.png')
             ->generate()
         ;
-    }
-
-    public function testAddAnExternalResource(): void
-    {
-        $this->getBuilder()
-            ->pdfUniversalAccess()
-            ->downloadFrom([
-                [
-                    'url' => 'http://url/to/file.com',
-                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-                ],
-            ])
-            ->generate()
-        ;
-
-        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
     }
 }

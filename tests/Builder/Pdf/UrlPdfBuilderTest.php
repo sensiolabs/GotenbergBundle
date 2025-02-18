@@ -87,22 +87,4 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'article');
         $this->assertGotenbergFormData('url', 'http://localhost/article/1');
     }
-
-    public function testAddAnExternalResource(): void
-    {
-        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
-
-        $this->getBuilder()
-            ->url('https://example.com')
-            ->downloadFrom([
-                [
-                    'url' => 'http://url/to/file.com',
-                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-                ],
-            ])
-            ->generate()
-        ;
-
-        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
-    }
 }
