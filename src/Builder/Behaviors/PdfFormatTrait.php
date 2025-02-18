@@ -18,7 +18,7 @@ trait PdfFormatTrait
     abstract protected function getBodyBag(): BodyBag;
 
     /**
-     * Enable PDF for Universal Access for optimal accessibility. (default false).
+     * Convert the resulting PDF into the given PDF/A format.
      */
     #[ExposeSemantic(new EnumNodeBuilder('pdf_format', callback: PdfFormat::class))]
     public function pdfFormat(PdfFormat|null $format): self
