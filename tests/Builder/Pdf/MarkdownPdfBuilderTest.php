@@ -34,7 +34,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
     protected function initializeBuilder(BuilderInterface $builder, Container $container): MarkdownPdfBuilder
     {
         return $builder
-            ->contentFile('files/wrapper.html')
+            ->wrapperFile('files/wrapper.html')
             ->files('assets/file.md')
         ;
     }
@@ -43,7 +43,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
     {
         $this->getBuilder()
             ->files('assets/file.md')
-            ->contentFile('files/wrapper.html')
+            ->wrapperFile('files/wrapper.html')
             ->generate()
         ;
 
@@ -68,7 +68,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
 
         $this->getBuilder()
             ->files('assets/file.md')
-            ->content('templates/wrapper.html.twig', ['name' => 'John Doe'])
+            ->wrapper('templates/wrapper.html.twig', ['name' => 'John Doe'])
             ->generate()
         ;
 
@@ -92,7 +92,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('At least one markdown file is required.');
 
         $this->getBuilder()
-            ->contentFile('files/wrapper.html')
+            ->wrapperFile('files/wrapper.html')
             ->generate()
         ;
     }

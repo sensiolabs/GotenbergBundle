@@ -17,7 +17,10 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 #[SemanticNode('markdown')]
 final class MarkdownPdfBuilder extends AbstractBuilder
 {
-    use ChromiumTrait;
+    use ChromiumTrait {
+        content as wrapper;
+        contentFile as wrapperFile;
+    }
 
     /**
      * Add Markdown into a PDF.
@@ -36,6 +39,16 @@ final class MarkdownPdfBuilder extends AbstractBuilder
         $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
+    }
+
+    public function content(): void
+    {
+        throw new \BadMethodCallException('Use wrapper() instead of content().');
+    }
+
+    public function contentFile(): void
+    {
+        throw new \BadMethodCallException('Use wrapperFile() instead of contentFile().');
     }
 
     protected function getEndpoint(): string
