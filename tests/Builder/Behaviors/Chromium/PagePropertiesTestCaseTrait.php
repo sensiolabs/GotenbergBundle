@@ -16,7 +16,7 @@ trait PagePropertiesTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testSinglePage(): void
+    public function testSetSinglePageOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->singlePage()
@@ -26,7 +26,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('singlePage', 'true');
     }
 
-    public function testWidth(): void
+    public function testSetWidthOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->paperWidth(200)
@@ -36,7 +36,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('paperWidth', '200in');
     }
 
-    public function testWidthWithUnit(): void
+    public function testSetWidthOnRenderingWithUnit(): void
     {
         $this->getDefaultBuilder()
             ->paperWidth(21, Unit::Centimeters)
@@ -46,7 +46,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('paperWidth', '21cm');
     }
 
-    public function testPaperHeight(): void
+    public function testSetPaperHeightOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->paperHeight(150)
@@ -56,7 +56,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('paperHeight', '150in');
     }
 
-    public function testPaperHeightWithUnit(): void
+    public function testSetPaperHeightOnRenderingWithUnit(): void
     {
         $this->getDefaultBuilder()
             ->paperHeight(29.7, Unit::Centimeters)
@@ -66,7 +66,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('paperHeight', '29.7cm');
     }
 
-    public function testPaperSize(): void
+    public function testSetPaperSizeOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->paperSize(200, 150)
@@ -77,7 +77,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('paperHeight', '150in');
     }
 
-    public function testPaperSizeWithUnit(): void
+    public function testSetPaperSizeOnRenderingWithUnit(): void
     {
         $this->getDefaultBuilder()
             ->paperSize(21, 29.7, Unit::Centimeters)
@@ -88,7 +88,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('paperHeight', '29.7cm');
     }
 
-    public function testMarginTop(): void
+    public function testSetMarginTopOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->marginTop(2)
@@ -98,7 +98,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginTop', '2in');
     }
 
-    public function testMarginTopWithUnit(): void
+    public function testSetMarginTopOnRenderingWithUnit(): void
     {
         $this->getDefaultBuilder()
             ->marginTop(2, Unit::Centimeters)
@@ -108,7 +108,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginTop', '2cm');
     }
 
-    public function testMarginBottom(): void
+    public function testSetMarginBottomOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->marginBottom(2)
@@ -118,7 +118,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginBottom', '2in');
     }
 
-    public function testMarginBottomWithUnit(): void
+    public function testSetMarginBottomOnRenderingWithUnit(): void
     {
         $this->getDefaultBuilder()
             ->marginBottom(2, Unit::Centimeters)
@@ -128,7 +128,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginBottom', '2cm');
     }
 
-    public function testMarginLeft(): void
+    public function testSetMarginLeftOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->marginLeft(2)
@@ -138,7 +138,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginLeft', '2in');
     }
 
-    public function testMarginLeftWithUnit(): void
+    public function testSetMarginLeftOnRenderingWithUnit(): void
     {
         $this->getDefaultBuilder()
             ->marginLeft(2, Unit::Centimeters)
@@ -148,7 +148,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginLeft', '2cm');
     }
 
-    public function testMarginRight(): void
+    public function testSetMarginRightOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->marginRight(2)
@@ -158,7 +158,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginRight', '2in');
     }
 
-    public function testMarginRightWithUnit(): void
+    public function testSetMarginRightOnRenderingWithUnit(): void
     {
         $this->getDefaultBuilder()
             ->marginRight(2, Unit::Centimeters)
@@ -168,7 +168,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginRight', '2cm');
     }
 
-    public function testMargins(): void
+    public function testSetMarginsOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->margins(2, 2, 2, 2)
@@ -181,7 +181,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginRight', '2in');
     }
 
-    public function testMarginsWithUnit(): void
+    public function testSetMarginsOnRenderingWithUnit(): void
     {
         $this->getDefaultBuilder()
             ->margins(2, 2, 2, 2, Unit::Centimeters)
@@ -194,7 +194,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('marginRight', '2cm');
     }
 
-    public function testPreferCssPageSize(): void
+    public function testPreferCssPageSizeOnRendering(): void
     {
         $this->getDefaultBuilder()
            ->preferCssPageSize(true)
@@ -204,7 +204,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('preferCssPageSize', 'true');
     }
 
-    public function testGenerateDocumentOutline(): void
+    public function testGenerateDocumentOutlineEmbeddedIntoPdf(): void
     {
         $this->getDefaultBuilder()
            ->generateDocumentOutline(true)
@@ -214,7 +214,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('generateDocumentOutline', 'true');
     }
 
-    public function testPrintBackground(): void
+    public function testPrintBackgroundIntoPdf(): void
     {
         $this->getDefaultBuilder()
            ->printBackground(true)
@@ -224,7 +224,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('printBackground', 'true');
     }
 
-    public function testOmitBackground(): void
+    public function testSetOmitBackgroundOnRendering(): void
     {
         $this->getDefaultBuilder()
            ->omitBackground(true)
@@ -234,7 +234,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('omitBackground', 'true');
     }
 
-    public function testLandscape(): void
+    public function testSetOrientationToLandscape(): void
     {
         $this->getDefaultBuilder()
             ->landscape()
@@ -244,7 +244,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('landscape', 'true');
     }
 
-    public function testScale(): void
+    public function testSetScaleOnRendering(): void
     {
         $this->getDefaultBuilder()
             ->scale(1.5)
@@ -254,7 +254,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('scale', '1.5');
     }
 
-    public function testNativePageRanges(): void
+    public function testNativePageRangesForRendering(): void
     {
         $this->getDefaultBuilder()
             ->nativePageRanges('1-5')

@@ -17,7 +17,7 @@ trait PerformanceModeTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testSkipNetworkIdleEvent(): void
+    public function testWaitForChromiumNetworkToBeIdle(): void
     {
         $this->getDefaultBuilder()
             ->skipNetworkIdleEvent()

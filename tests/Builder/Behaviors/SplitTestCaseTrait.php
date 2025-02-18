@@ -18,7 +18,7 @@ trait SplitTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testSplitMode(): void
+    public function testSplitPdfIntoPageMode(): void
     {
         $this->getDefaultBuilder()
             ->splitMode(SplitMode::Pages)
@@ -28,7 +28,7 @@ trait SplitTestCaseTrait
         $this->assertGotenbergFormData('splitMode', SplitMode::Pages->value);
     }
 
-    public function testSplitSpan(): void
+    public function testSplitPdfWithPageRanges(): void
     {
         $this->getDefaultBuilder()
             ->splitSpan('1-2')
@@ -38,7 +38,7 @@ trait SplitTestCaseTrait
         $this->assertGotenbergFormData('splitSpan', '1-2');
     }
 
-    public function testSplitUnify(): void
+    public function testUnifyTheSplittingResultIntoOnePdf(): void
     {
         $this->getDefaultBuilder()
             ->splitUnify()

@@ -76,7 +76,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
     }
 
-    public function testRequiredFile(): void
+    public function testRequiredFileContent(): void
     {
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('HTML template is required');
@@ -97,7 +97,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testFilesExtension(): void
+    public function testFilesExtensionRequirement(): void
     {
         $this->expectException(InvalidBuilderConfiguration::class);
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
@@ -108,7 +108,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testDownloadFrom(): void
+    public function testAddAnExternalResource(): void
     {
         $this->getBuilder()
             ->contentFile('files/wrapper.html')

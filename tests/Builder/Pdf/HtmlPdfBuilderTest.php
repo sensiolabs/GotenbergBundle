@@ -48,7 +48,7 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testFilename(): void
+    public function testOutputFilename(): void
     {
         $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
@@ -121,7 +121,7 @@ class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertContentFile('index.html', 'text/html', $expected);
     }
 
-    public function testDownloadFrom(): void
+    public function testAddAnExternalResource(): void
     {
         $this->getBuilder()
             ->downloadFrom([

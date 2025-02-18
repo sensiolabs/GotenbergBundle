@@ -55,7 +55,7 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', $contentType, self::FIXTURE_DIR.'/'.$filePath);
     }
 
-    public function testRequiredFile(): void
+    public function testRequiredFileContent(): void
     {
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('At least one office file is required.');
@@ -65,7 +65,7 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testDownloadFrom(): void
+    public function testAddAnExternalResource(): void
     {
         $this->getBuilder()
             ->downloadFrom([

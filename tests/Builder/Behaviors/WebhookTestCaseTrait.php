@@ -24,7 +24,7 @@ trait WebhookTestCaseTrait
 
     abstract protected function assertGotenbergHeader(string $name, mixed $value): void;
 
-    public function testWebhook(): void
+    public function testAddFullWebhookConfiguration(): void
     {
         $this->getDefaultBuilder()
             ->webhook([
@@ -51,7 +51,7 @@ trait WebhookTestCaseTrait
         $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value"}');
     }
 
-    public function testWebhookUrl(): void
+    public function testAddWebhookUrlToCallOnSuccessResult(): void
     {
         $this->getDefaultBuilder()
             ->webhookUrl('http://example.com/success', 'PUT')
@@ -62,7 +62,7 @@ trait WebhookTestCaseTrait
         $this->assertGotenbergHeader('Gotenberg-Webhook-Method', 'PUT');
     }
 
-    public function testWebhookErrorUrl(): void
+    public function testAddWebhookUrlToCallOnErrorResult(): void
     {
         $this->getDefaultBuilder()
             ->webhookErrorUrl('http://example.com/error', 'POST')
@@ -73,7 +73,7 @@ trait WebhookTestCaseTrait
         $this->assertGotenbergHeader('Gotenberg-Webhook-Error-Method', 'POST');
     }
 
-    public function testWebhookExtraHeaders(): void
+    public function testAddWebhookExtraHeaders(): void
     {
         $this->getDefaultBuilder()
             ->webhookExtraHeaders(['my_header' => 'value'])

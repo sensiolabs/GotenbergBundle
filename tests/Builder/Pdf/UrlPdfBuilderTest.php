@@ -55,7 +55,7 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testFilename(): void
+    public function testOutputFilename(): void
     {
         $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
 
@@ -70,7 +70,7 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormData('url', 'https://example.com');
     }
 
-    public function testWithRoute(): void
+    public function testPdfGenerationFromAGivenRoute(): void
     {
         $routeCollection = new RouteCollection();
         $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
@@ -88,7 +88,7 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormData('url', 'http://localhost/article/1');
     }
 
-    public function testDownloadFrom(): void
+    public function testAddAnExternalResource(): void
     {
         $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
 

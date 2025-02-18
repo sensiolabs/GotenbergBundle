@@ -17,7 +17,7 @@ trait WaitBeforeRenderingTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testWaitDelay(): void
+    public function testWaitDurationBeforeConverting(): void
     {
         $this->getDefaultBuilder()
             ->waitDelay('2s')
@@ -27,7 +27,7 @@ trait WaitBeforeRenderingTestCaseTrait
         $this->assertGotenbergFormData('waitDelay', '2s');
     }
 
-    public function testWaitForExpression(): void
+    public function testSetWaitForExpression(): void
     {
         $this->getDefaultBuilder()
             ->waitForExpression("window.status === 'ready'")

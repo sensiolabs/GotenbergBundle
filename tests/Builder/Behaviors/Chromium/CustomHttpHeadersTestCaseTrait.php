@@ -16,7 +16,7 @@ trait CustomHttpHeadersTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testUserAgent(): void
+    public function testSetUserAgentWithUserAgentConstant(): void
     {
         $this->getDefaultBuilder()
             ->userAgent(UserAgent::LinuxFirefox)
@@ -26,7 +26,7 @@ trait CustomHttpHeadersTestCaseTrait
         $this->assertGotenbergFormData('userAgent', UserAgent::LinuxFirefox);
     }
 
-    public function testExtraHttpHeaders(): void
+    public function testSetExtraHttpHeaders(): void
     {
         $this->getDefaultBuilder()
             ->extraHttpHeaders(['my_header' => 'my_value'])
@@ -36,7 +36,7 @@ trait CustomHttpHeadersTestCaseTrait
         $this->assertGotenbergFormData('extraHttpHeaders', '{"my_header":"my_value"}');
     }
 
-    public function testAddExtraHttpHeaders(): void
+    public function testAddExtraHttpHeadersToExistingHeaders(): void
     {
         $this->getDefaultBuilder()
             ->extraHttpHeaders(['my_header' => 'my_value'])

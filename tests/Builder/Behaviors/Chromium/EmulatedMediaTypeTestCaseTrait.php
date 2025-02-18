@@ -17,7 +17,7 @@ trait EmulatedMediaTypeTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testEmulatedMediaType(): void
+    public function testSetEmulatedMediaTypeWithPrintMediaType(): void
     {
         $this->getDefaultBuilder()
             ->emulatedMediaType(EmulatedMediaType::Print)

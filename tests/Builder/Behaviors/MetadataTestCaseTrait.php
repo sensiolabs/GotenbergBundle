@@ -16,7 +16,7 @@ trait MetadataTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testMetadata(): void
+    public function testSetMetadataWithArray(): void
     {
         $this->getDefaultBuilder()
             ->metadata([
@@ -30,7 +30,7 @@ trait MetadataTestCaseTrait
         $this->assertGotenbergFormData('metadata', '{"Author":"SensioLabs","Creator":"SensioLabs","Title":"GotenbergBundle"}');
     }
 
-    public function testAddMetadata(): void
+    public function testAddMetadataToExistingMetadata(): void
     {
         $this->getDefaultBuilder()
             ->metadata([
