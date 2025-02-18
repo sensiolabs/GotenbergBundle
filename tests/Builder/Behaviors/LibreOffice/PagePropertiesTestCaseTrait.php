@@ -16,7 +16,7 @@ trait PagePropertiesTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testPassword(): void
+    public function testSetPassword(): void
     {
         $this->getDefaultBuilder()
             ->password('my_password')
@@ -26,7 +26,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('password', 'my_password');
     }
 
-    public function testLandscape(): void
+    public function testSetOrientationToLandscape(): void
     {
         $this->getDefaultBuilder()
             ->landscape()
@@ -36,7 +36,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('landscape', 'true');
     }
 
-    public function testNativePageRanges(): void
+    public function testNativePageRangesForRendering(): void
     {
         $this->getDefaultBuilder()
             ->nativePageRanges('1-2')
@@ -196,7 +196,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('singlePageSheets', 'true');
     }
 
-    public function testMerge(): void
+    public function testMergeTheResultingPdf(): void
     {
         $this->getDefaultBuilder()
             ->merge()
@@ -216,7 +216,7 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('losslessImageCompression', 'true');
     }
 
-    public function testQuality(): void
+    public function testQualityOfTheJpgExport(): void
     {
         $this->getDefaultBuilder()
             ->quality(50)

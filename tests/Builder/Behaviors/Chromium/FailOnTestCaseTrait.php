@@ -17,7 +17,7 @@ trait FailOnTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testFailOnHttpStatusCodes(): void
+    public function testSetFailOnHttpStatusCodesOnUnauthorizedStatusCode(): void
     {
         $this->getDefaultBuilder()
             ->failOnHttpStatusCodes([401])
@@ -27,7 +27,7 @@ trait FailOnTestCaseTrait
         $this->assertGotenbergFormData('failOnHttpStatusCodes', '[401]');
     }
 
-    public function testFailOnResourceHttpStatusCodes(): void
+    public function testSetFailOnResourceHttpStatusCodesOnUnauthorizedStatusCode(): void
     {
         $this->getDefaultBuilder()
             ->failOnResourceHttpStatusCodes([401])
@@ -37,7 +37,7 @@ trait FailOnTestCaseTrait
         $this->assertGotenbergFormData('failOnResourceHttpStatusCodes', '[401]');
     }
 
-    public function testFailOnResourceLoadingFailed(): void
+    public function testSetFailOnResourceLoaded(): void
     {
         $this->getDefaultBuilder()
             ->failOnResourceLoadingFailed()
@@ -47,7 +47,7 @@ trait FailOnTestCaseTrait
         $this->assertGotenbergFormData('failOnResourceLoadingFailed', 'true');
     }
 
-    public function testFailOnConsoleExceptions(): void
+    public function testSetFailOnConsoleExceptions(): void
     {
         $this->getDefaultBuilder()
             ->failOnConsoleExceptions()

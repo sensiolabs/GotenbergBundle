@@ -16,24 +16,34 @@ trait CookieTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testCookies(): void
+    public function testSetCookiesWithMultipleArrays(): void
     {
         $this->getDefaultBuilder()
-            ->cookies([[
-                'name' => 'my_cookie',
-                'value' => 'symfony',
-                'domain' => 'symfony.com',
-                'secure' => true,
-                'httpOnly' => true,
-                'sameSite' => 'Lax',
-            ]])
+            ->cookies([
+                [
+                    'name' => 'my_cookie',
+                    'value' => 'symfony',
+                    'domain' => 'symfony.com',
+                    'secure' => true,
+                    'httpOnly' => true,
+                    'sameSite' => 'Lax',
+                ],
+                [
+                    'name' => 'cook',
+                    'value' => 'sensiolabs',
+                    'domain' => 'sensiolabs.com',
+                    'secure' => true,
+                    'httpOnly' => true,
+                    'sameSite' => 'Lax',
+                ],
+            ])
             ->generate()
         ;
 
-        $this->assertGotenbergFormData('cookies', '[{"name":"my_cookie","value":"symfony","domain":"symfony.com","secure":true,"httpOnly":true,"sameSite":"Lax"}]');
+        $this->assertGotenbergFormData('cookies', '[{"name":"my_cookie","value":"symfony","domain":"symfony.com","secure":true,"httpOnly":true,"sameSite":"Lax"},{"name":"cook","value":"sensiolabs","domain":"sensiolabs.com","secure":true,"httpOnly":true,"sameSite":"Lax"}]');
     }
 
-    public function testAddCookies(): void
+    public function testSetAddCookiesWithSimpleArrayToExistingCookies(): void
     {
         $this->getDefaultBuilder()
             ->cookies([[
@@ -58,7 +68,7 @@ trait CookieTestCaseTrait
         $this->assertGotenbergFormData('cookies', '[{"name":"my_cookie","value":"symfony","domain":"symfony.com","secure":true,"httpOnly":true,"sameSite":"Lax"},{"name":"cook","value":"sensiolabs","domain":"sensiolabs.com","secure":true,"httpOnly":true,"sameSite":"Lax"}]');
     }
 
-    public function testSetCookieObject(): void
+    public function testSetCookieWithCookieObject(): void
     {
         $this->getDefaultBuilder()
             ->setCookie('my_cookie', new Cookie('my_cookie', 'value', domain: 'symfony.com'))
@@ -68,7 +78,7 @@ trait CookieTestCaseTrait
         $this->assertGotenbergFormData('cookies', '[{"name":"my_cookie","value":"value","domain":"symfony.com","path":"\/","secure":false,"httpOnly":true,"sameSite":"lax"}]');
     }
 
-    public function testSetCookieArray(): void
+    public function testSetCookieWithSimpleArray(): void
     {
         $this->getDefaultBuilder()
             ->setCookie('my_cookie', [

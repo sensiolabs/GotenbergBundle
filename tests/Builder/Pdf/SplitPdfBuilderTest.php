@@ -3,7 +3,6 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
@@ -50,7 +49,7 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testFiles(): void
+    public function testAddFilesAsContent(): void
     {
         $this->getBuilder()
             ->files('pdf/simple_pdf.pdf')
@@ -63,7 +62,7 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
     }
 
-    public function testFilesExtension(): void
+    public function testFilesExtensionRequirement(): void
     {
         $this->expectException(InvalidBuilderConfiguration::class);
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
@@ -100,7 +99,7 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testRequiredFile(): void
+    public function testRequiredFileContent(): void
     {
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('At least one PDF file is required.');

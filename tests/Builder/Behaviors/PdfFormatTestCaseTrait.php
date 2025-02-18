@@ -17,7 +17,7 @@ trait PdfFormatTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function testPdfFormat(): void
+    public function testPdfFormatForTheResultingPdf(): void
     {
         $this->getDefaultBuilder()
             ->pdfFormat(PdfFormat::Pdf1b)
@@ -27,7 +27,7 @@ trait PdfFormatTestCaseTrait
         $this->assertGotenbergFormData('pdfa', PdfFormat::Pdf1b->value);
     }
 
-    public function testPdfUniversalAccess(): void
+    public function testPdfUniversalAccessForTheResultingPdf(): void
     {
         $this->getDefaultBuilder()
             ->pdfUniversalAccess()

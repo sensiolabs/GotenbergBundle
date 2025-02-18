@@ -41,7 +41,7 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testFiles(): void
+    public function testAddFilesAsContent(): void
     {
         $this->getBuilder()
             ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf_1.pdf')
@@ -53,7 +53,7 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf_1.pdf');
     }
 
-    public function testFilesExtension(): void
+    public function testFilesExtensionRequirement(): void
     {
         $this->expectException(InvalidBuilderConfiguration::class);
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
@@ -64,7 +64,7 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testDownloadFrom(): void
+    public function testAddAnExternalResource(): void
     {
         $this->getBuilder()
             ->downloadFrom([
