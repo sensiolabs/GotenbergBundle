@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
@@ -17,6 +18,9 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
+    /** @use DownloadFromTestCaseTrait<MergePdfBuilder> */
+    use DownloadFromTestCaseTrait;
+
     /** @use MetadataTestCaseTrait<MergePdfBuilder> */
     use MetadataTestCaseTrait;
 
@@ -62,24 +66,5 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
             ->files('simple_pdf.pdf', 'b.png')
             ->generate()
         ;
-    }
-
-    public function testAddAnExternalResource(): void
-    {
-        $this->getBuilder()
-            ->downloadFrom([
-                [
-                    'url' => 'http://url/to/file.com',
-                    'extraHttpHeaders' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-                ],
-                [
-                    'url' => 'http://url/to/second/file.com',
-                    'extraHttpHeaders' => ['User-Agent' => 'MyValue'],
-                ],
-            ])
-            ->generate()
-        ;
-
-        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}},{"url":"http:\/\/url\/to\/second\/file.com","extraHttpHeaders":{"User-Agent":"MyValue"}}]');
     }
 }
