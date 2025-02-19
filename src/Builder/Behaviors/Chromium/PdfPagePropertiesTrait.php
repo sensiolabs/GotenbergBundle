@@ -18,7 +18,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 /**
  * @see https://gotenberg.dev/docs/routes#page-properties-chromium.
  */
-trait PagePropertiesTrait
+trait PdfPagePropertiesTrait
 {
     abstract protected function getBodyBag(): BodyBag;
 

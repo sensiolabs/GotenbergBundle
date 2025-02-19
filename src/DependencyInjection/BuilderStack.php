@@ -19,7 +19,7 @@ final class BuilderStack
     private array $builders = [];
 
     /**
-     * @var array<string, class-string<BuilderInterface>>
+     * @var array<string, array<string, class-string<BuilderInterface>>>
      */
     private array $typeReverseMapping = [];
 
@@ -60,7 +60,7 @@ final class BuilderStack
         /** @var SemanticNode $semanticNode */
         $semanticNode = $nodeAttributes[0]->newInstance();
 
-        $this->typeReverseMapping[$semanticNode->name] = $class;
+        $this->typeReverseMapping[$type][$semanticNode->name] = $class;
 
         $treeBuilder = new TreeBuilder($semanticNode->name);
         $root = $treeBuilder->getRootNode()->addDefaultsIfNotSet();
@@ -93,7 +93,7 @@ final class BuilderStack
     }
 
     /**
-     * @return array<string, class-string<BuilderInterface>>
+     * @return array<string, array<string, class-string<BuilderInterface>>>
      */
     public function getTypeReverseMapping(): array
     {
@@ -116,3 +116,5 @@ final class BuilderStack
         return $this->configNode;
     }
 }
+
+

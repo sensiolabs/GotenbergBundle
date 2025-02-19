@@ -9,7 +9,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 /**
  * @template T of BuilderInterface
  */
-trait PagePropertiesTestCaseTrait
+trait PdfPagePropertiesTestCaseTrait
 {
     /** @use BehaviorTrait<T> */
     use BehaviorTrait;

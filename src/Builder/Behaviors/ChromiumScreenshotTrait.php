@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
-trait ChromiumTrait
+trait ChromiumScreenshotTrait
 {
     use Chromium\AssetTrait;
     use Chromium\ContentTrait;
@@ -10,12 +10,9 @@ trait ChromiumTrait
     use Chromium\CustomHttpHeadersTrait;
     use Chromium\EmulatedMediaTypeTrait;
     use Chromium\FailOnTrait;
-    use Chromium\PagePropertiesTrait;
     use Chromium\PerformanceModeTrait;
+    use Chromium\ScreenshotPagePropertiesTrait;
     use Chromium\WaitBeforeRenderingTrait;
     use DownloadFromTrait;
-    use MetadataTrait;
-    use PdfFormatTrait;
-    use SplitTrait;
     use WebhookTrait;
 }

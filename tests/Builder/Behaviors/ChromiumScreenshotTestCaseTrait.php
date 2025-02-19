@@ -7,7 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 /**
  * @template T of BuilderInterface
  */
-trait ChromiumTestCaseTrait
+trait ChromiumScreenshotTestCaseTrait
 {
     /** @use Chromium\CookieTestCaseTrait<T> */
     use Chromium\CookieTestCaseTrait;
@@ -21,26 +21,17 @@ trait ChromiumTestCaseTrait
     /** @use Chromium\FailOnTestCaseTrait<T> */
     use Chromium\FailOnTestCaseTrait;
 
-    /** @use Chromium\PagePropertiesTestCaseTrait<T> */
-    use Chromium\PagePropertiesTestCaseTrait;
-
     /** @use Chromium\PerformanceModeTestCaseTrait<T> */
     use Chromium\PerformanceModeTestCaseTrait;
+
+    /** @use Chromium\ScreenshotPagePropertiesTestCaseTrait<T> */
+    use Chromium\ScreenshotPagePropertiesTestCaseTrait;
 
     /** @use Chromium\WaitBeforeRenderingTestCaseTrait<T> */
     use Chromium\WaitBeforeRenderingTestCaseTrait;
 
     /** @use DownloadFromTestCaseTrait<T> */
     use DownloadFromTestCaseTrait;
-
-    /** @use MetadataTestCaseTrait<T> */
-    use MetadataTestCaseTrait;
-
-    /** @use PdfFormatTestCaseTrait<T> */
-    use PdfFormatTestCaseTrait;
-
-    /** @use SplitTestCaseTrait<T> */
-    use SplitTestCaseTrait;
 
     /** @use WebhookTestCaseTrait<T> */
     use WebhookTestCaseTrait;

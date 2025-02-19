@@ -123,42 +123,16 @@ class SensiolabsGotenbergExtension extends Extension
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
                 ->replaceArgument(3, [
-                    'html' => $this->cleanUserOptions($config['default_options']['pdf']['html']),
-                    'url' => $this->cleanUserOptions($config['default_options']['pdf']['url']),
-                    'markdown' => $this->cleanUserOptions($config['default_options']['pdf']['markdown']),
-                    'office' => $this->cleanUserOptions($config['default_options']['pdf']['office']),
-                    'merge' => $this->cleanUserOptions($config['default_options']['pdf']['merge']),
-                    'convert' => $this->cleanUserOptions($config['default_options']['pdf']['convert']),
-                    'split' => $this->cleanUserOptions($config['default_options']['pdf']['split']),
+                    'html' => $this->processDefaultOptions($config, $config['default_options']['pdf']['html']),
+                    'url' => $this->processDefaultOptions($config, $config['default_options']['pdf']['url']),
+                    'markdown' => $this->processDefaultOptions($config, $config['default_options']['pdf']['markdown']),
+                    'office' => $this->processDefaultOptions($config, $config['default_options']['pdf']['office']),
+                    'merge' => $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']),
+                    'convert' => $this->processDefaultOptions($config, $config['default_options']['pdf']['convert']),
+                    'split' => $this->processDefaultOptions($config, $config['default_options']['pdf']['split']),
                 ])
             ;
         }
-        //
-        //        $container->registerForAutoconfiguration(PdfBuilderInterface::class)
-        //            ->addTag('sensiolabs_gotenberg.pdf_builder')
-        //        ;
-        //
-        //        $container->registerForAutoconfiguration(ScreenshotBuilderInterface::class)
-        //            ->addTag('sensiolabs_gotenberg.screenshot_builder')
-        //        ;
-        //
-        //        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'], false));
-        //
-        //        $baseUri = $config['request_context']['base_uri'] ?? null;
-        //
-        //        if (null !== $baseUri) {
-        //            $requestContextDefinition = new Definition(RequestContext::class);
-        //            $requestContextDefinition->setFactory([RequestContext::class, 'fromUri']);
-        //            $requestContextDefinition->setArguments([$baseUri]);
-        //
-        //            $container->setDefinition('.sensiolabs_gotenberg.request_context', $requestContextDefinition);
-        //        }
-        //
-        //        foreach ($config['webhook'] as $name => $configuration) {
-        //            $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')
-        //                ->addMethodCall('add', [$name, $configuration]);
-        //        }
-        //
 
         // Configurators
         $configValueMapping = [];
@@ -168,7 +142,7 @@ class SensiolabsGotenbergExtension extends Extension
             }
 
             foreach ($buildersOptions as $builderName => $builderOptions) {
-                $class = $this->builderStack->getTypeReverseMapping()[$builderName];
+                $class = $this->builderStack->getTypeReverseMapping()[$type][$builderName];
                 $configValueMapping[$class] = $this->processDefaultOptions($config, $builderOptions);
             }
         }

@@ -7,7 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Symfony\Component\DependencyInjection\Container;
@@ -20,8 +20,8 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
  */
 final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
 {
-    /** @use ChromiumTestCaseTrait<MarkdownPdfBuilder> */
-    use ChromiumTestCaseTrait;
+    /** @use ChromiumPdfTestCaseTrait<MarkdownPdfBuilder> */
+    use ChromiumPdfTestCaseTrait;
 
     protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): MarkdownPdfBuilder
     {

@@ -6,7 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +20,8 @@ use Symfony\Component\Routing\RouteCollection;
  */
 final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 {
-    /** @use ChromiumTestCaseTrait<UrlPdfBuilder> */
-    use ChromiumTestCaseTrait;
+    /** @use ChromiumPdfTestCaseTrait<UrlPdfBuilder> */
+    use ChromiumPdfTestCaseTrait;
 
     protected function setUp(): void
     {

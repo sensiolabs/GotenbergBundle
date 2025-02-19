@@ -4,10 +4,7 @@ namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\HtmlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\UrlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 
 final class GotenbergScreenshot implements GotenbergScreenshotInterface
 {

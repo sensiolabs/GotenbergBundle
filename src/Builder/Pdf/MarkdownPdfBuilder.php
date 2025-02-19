@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
@@ -17,7 +17,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 #[SemanticNode('markdown')]
 final class MarkdownPdfBuilder extends AbstractBuilder
 {
-    use ChromiumTrait {
+    use ChromiumPdfTrait {
         content as wrapper;
         contentFile as wrapperFile;
     }

@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Routing\RequestContext;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\RequestContext;
 #[SemanticNode('url')]
 final class UrlPdfBuilder extends AbstractBuilder
 {
-    use ChromiumTrait;
+    use ChromiumPdfTrait;
 
     private RequestContext|null $requestContext = null;
 

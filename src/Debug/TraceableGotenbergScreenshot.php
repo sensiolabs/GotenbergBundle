@@ -4,11 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Debug;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\HtmlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\ScreenshotBuilderInterface;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
-use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
 final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
@@ -88,7 +84,7 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
     //    }
 
     /**
-     * @return list<array{string, TraceableScreenshotBuilder}>
+     * @return list<array{string, TraceableBuilder}>
      */
     public function getBuilders(): array
     {

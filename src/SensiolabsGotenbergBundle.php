@@ -35,7 +35,7 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder('pdf', SplitPdfBuilder::class);
         $extension->registerBuilder('pdf', UrlPdfBuilder::class);
 
-        //        $extension->registerBuilder('screenshot', HtmlScreenshotBuilder::class);
+        $extension->registerBuilder('screenshot', HtmlScreenshotBuilder::class);
 
         $container->addCompilerPass(new GotenbergPass());
     }

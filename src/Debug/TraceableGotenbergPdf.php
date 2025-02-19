@@ -11,7 +11,6 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
-use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
 final class TraceableGotenbergPdf implements GotenbergPdfInterface
@@ -159,7 +158,7 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @return list<array{string, TraceablePdfBuilder}>
+     * @return list<array{string, TraceableBuilder}>
      */
     public function getBuilders(): array
     {

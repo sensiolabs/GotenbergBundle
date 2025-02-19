@@ -130,7 +130,7 @@ class NormalizerFactory
     }
 
     /**
-     * @return (\Closure(string, RenderedPart|\SplFileInfo): array<string, string>)
+     * @return (\Closure(string, RenderedPart|\SplFileInfo): array{files: DataPart})
      */
     public static function content(): \Closure
     {
@@ -148,7 +148,7 @@ class NormalizerFactory
     }
 
     /**
-     * @return (\Closure(string, array<string, \SplFileInfo>): array<string, string>)
+     * @return (\Closure(string, array<string, \SplFileInfo>): list<array{files: DataPart}>)
      */
     public static function asset(): \Closure
     {

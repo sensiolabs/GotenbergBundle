@@ -21,6 +21,7 @@ final class BuilderConfigurator
         $configuration = $this->configurations[$builder::class];
         $values = $this->values[$builder::class];
 
+
         foreach ($configuration as $key => $method) {
             $value = $values[$key] ?? null;
             if (null === $value) {

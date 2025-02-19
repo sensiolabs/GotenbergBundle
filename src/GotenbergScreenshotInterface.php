@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 
 interface GotenbergScreenshotInterface
 {
@@ -15,6 +16,9 @@ interface GotenbergScreenshotInterface
      */
     public function get(string $builder): BuilderInterface;
 
+    /**
+     * @return HtmlScreenshotBuilder
+     */
     public function html(): BuilderInterface;
 
     //    /**

@@ -23,7 +23,6 @@
             <directory>tests</directory>
             <exclude>tests/BuilderOld</exclude>
             <exclude>tests/Builder/AsyncBuilderTraitTest.php</exclude>
-            <exclude>tests/GotenbergScreenshotTest.php</exclude>
             <exclude>tests/DependencyInjection/CompilerPass/GotenbergPassTest.php</exclude>
         </testsuite>
     </testsuites>

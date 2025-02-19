@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
@@ -39,6 +40,8 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         $extension->registerBuilder('pdf', MergePdfBuilder::class);
         $extension->registerBuilder('pdf', SplitPdfBuilder::class);
         $extension->registerBuilder('pdf', UrlPdfBuilder::class);
+
+        $extension->registerBuilder('screenshot', HtmlScreenshotBuilder::class);
 
         return $extension;
     }
