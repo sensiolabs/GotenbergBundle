@@ -9,8 +9,8 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 trait PagePropertiesTrait
@@ -266,7 +266,7 @@ trait PagePropertiesTrait
     /**
      * If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
      */
-    #[ExposeSemantic(new EnumNodeBuilder('max_image_resolution', callback: ImageResolutionDPI::class))]
+    #[ExposeSemantic(new NativeEnumNodeBuilder('max_image_resolution', enumClass: ImageResolutionDPI::class))]
     public function maxImageResolution(ImageResolutionDPI|null $resolution): self
     {
         if (!$resolution) {

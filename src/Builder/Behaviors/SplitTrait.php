@@ -9,7 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
@@ -22,7 +22,7 @@ trait SplitTrait
     /**
      * Either intervals or pages. (default None).
      */
-    #[ExposeSemantic(new EnumNodeBuilder('split_mode', callback: SplitMode::class))]
+    #[ExposeSemantic(new NativeEnumNodeBuilder('split_mode', enumClass: SplitMode::class))]
     public function splitMode(SplitMode|null $splitMode = null): self
     {
         if (!$splitMode) {

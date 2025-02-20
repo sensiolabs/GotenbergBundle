@@ -3,13 +3,12 @@
 namespace Sensiolabs\GotenbergBundle\Configurator;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 
 final class BuilderConfigurator
 {
     /**
-     * @param array<class-string<BuilderInterface>, array<string, array{'method': string, 'parametersType': array<array-key, string>}>> $configurations
-     * @param array<class-string<BuilderInterface>, array<string, mixed>>                                                               $values
+     * @param array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': (\Closure(mixed): mixed)|null}>> $configurations
+     * @param array<class-string<BuilderInterface>, array<string, mixed>>                                                                                       $values
      */
     public function __construct(
         private readonly array $configurations,
@@ -28,19 +27,14 @@ final class BuilderConfigurator
                 continue;
             }
 
-            if (!\is_array($value) && \count($configurationMap['parametersType']) === 1) {
-                if (class_exists($configurationMap['parametersType'][0]) || interface_exists($configurationMap['parametersType'][0])) {
-                    $class = 'Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface' === $configurationMap['parametersType'][0]
-                        ? PaperSize::class
-                        : $configurationMap['parametersType'][0]
-                    ;
+            if (null !== $configurationMap['callback']) {
+                $value = $configurationMap['callback']($value);
+            }
 
-                    $builder->{$configurationMap['method']}($class::from($value));
-                } else {
-                    $builder->{$configurationMap['method']}($value);
-                }
-            } else {
+            if (\is_array($value) && true === $configurationMap['mustUseVariadic']) {
                 $builder->{$configurationMap['method']}(...$value);
+            } else {
+                $builder->{$configurationMap['method']}($value);
             }
         }
     }

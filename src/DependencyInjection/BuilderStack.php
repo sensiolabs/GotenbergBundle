@@ -5,6 +5,8 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
@@ -24,7 +26,7 @@ final class BuilderStack
     private array $typeReverseMapping = [];
 
     /**
-     * @var array<class-string<BuilderInterface>, array<string, array{'method': string, 'parametersType': array<array-key, string>}>>
+     * @var array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': (\Closure(mixed): mixed)|null}>>
      */
     private array $configMapping = [];
 
@@ -76,15 +78,20 @@ final class BuilderStack
 
             $root->append($attribute->node->create());
 
-            $parametersType = [];
-            foreach ($method->getParameters() as $parameter) {
-                $parametersType[] = $parameter->getType()?->getName();
+            $mustUseVariadic = false;
+            $callback = null;
+
+            if ($attribute->node instanceof ArrayNodeBuilder) {
+                $mustUseVariadic = null === $attribute->node->prototype;
+            } elseif ($attribute->node instanceof NativeEnumNodeBuilder) {
+                $callback = [$attribute->node->enumClass, 'from'];
             }
 
             $this->configMapping[$class] ??= [];
             $this->configMapping[$class][$attribute->node->getName()] = [
                 'method' => $method->getName(),
-                'parametersType' => $parametersType,
+                'mustUseVariadic' => $mustUseVariadic,
+                'callback' => $callback,
             ];
         }
 

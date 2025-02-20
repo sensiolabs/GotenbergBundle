@@ -7,7 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
-use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#emulated-media-type-chromium.
@@ -19,7 +19,7 @@ trait EmulatedMediaTypeTrait
     /**
      * Forces Chromium to emulate, either "screen" or "print". (default "print").
      */
-    #[ExposeSemantic(new EnumNodeBuilder('emulated_media_type', callback: EmulatedMediaType::class))]
+    #[ExposeSemantic(new NativeEnumNodeBuilder('emulated_media_type', enumClass: EmulatedMediaType::class))]
     public function emulatedMediaType(EmulatedMediaType $mediaType): static
     {
         $this->getBodyBag()->set('emulatedMediaType', $mediaType);

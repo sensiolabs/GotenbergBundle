@@ -8,8 +8,8 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route
@@ -54,7 +54,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * The image compression format, either "png", "jpeg" or "webp". (default png).
      */
-    #[ExposeSemantic(new EnumNodeBuilder('format', callback: ScreenshotFormat::class))]
+    #[ExposeSemantic(new NativeEnumNodeBuilder('format', enumClass: ScreenshotFormat::class))]
     public function format(ScreenshotFormat $format): static
     {
         $this->getBodyBag()->set('format', $format);

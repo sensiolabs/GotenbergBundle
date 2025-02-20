@@ -11,8 +11,8 @@ use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\FloatNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
@@ -82,7 +82,7 @@ trait PdfPagePropertiesTrait
         return $this;
     }
 
-    #[ExposeSemantic(new EnumNodeBuilder('paper_standard_size', callback: PaperSize::class))]
+    #[ExposeSemantic(new NativeEnumNodeBuilder('paper_standard_size', enumClass: PaperSize::class))]
     public function paperStandardSize(PaperSizeInterface $paperSize): static
     {
         $this->paperWidth($paperSize->width(), $paperSize->unit());

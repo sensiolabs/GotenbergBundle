@@ -8,7 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#pdfa-chromium
@@ -20,7 +20,7 @@ trait PdfFormatTrait
     /**
      * Convert the resulting PDF into the given PDF/A format.
      */
-    #[ExposeSemantic(new EnumNodeBuilder('pdf_format', callback: PdfFormat::class))]
+    #[ExposeSemantic(new NativeEnumNodeBuilder('pdf_format', enumClass: PdfFormat::class))]
     public function pdfFormat(PdfFormat|null $format): self
     {
         if (!$format) {
