@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 
 /**
  * @internal
@@ -24,7 +25,7 @@ final class BuilderStack
     private array $typeReverseMapping = [];
 
     /**
-     * @var array<class-string<BuilderInterface>, array<string, string>>
+     * @var array<class-string<BuilderInterface>, array<string, array{'method': string, 'parametersType': array<array-key, string>}>>
      */
     private array $configMapping = [];
 
@@ -76,8 +77,16 @@ final class BuilderStack
 
             $root->append($attribute->node->create());
 
+            $parametersType = [];
+            foreach ($method->getParameters() as $parameter) {
+                $parametersType[] = $parameter->getType()?->getName();
+            }
+
             $this->configMapping[$class] ??= [];
-            $this->configMapping[$class][$attribute->node->getName()] = $method->getName();
+            $this->configMapping[$class][$attribute->node->getName()] = [
+                'method' => $method->getName(),
+                'parametersType' => $parametersType,
+            ];
         }
 
         $this->configNode[$type] ??= [];
@@ -101,7 +110,7 @@ final class BuilderStack
     }
 
     /**
-     * @return array<class-string<BuilderInterface>, array<string, string>>
+     * @return array<class-string<BuilderInterface>, array<string, array{'method': string, 'parametersType': array<array-key, string>}>>
      */
     public function getConfigMapping(): array
     {
@@ -116,5 +125,3 @@ final class BuilderStack
         return $this->configNode;
     }
 }
-
-

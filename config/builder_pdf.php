@@ -34,7 +34,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.builder')
         ->tag('sensiolabs_gotenberg.pdf_builder')
         ->configurator([service('.sensiolabs_gotenberg.pdf_builder_configurator.html'), 'setConfigurations'])
     ;
@@ -49,7 +48,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.url', UrlPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.builder')
         ->tag('sensiolabs_gotenberg.pdf_builder')
         ->configurator([service('.sensiolabs_gotenberg.pdf_builder_configurator.url'), 'setConfigurations'])
     ;

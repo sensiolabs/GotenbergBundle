@@ -15,7 +15,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.screenshot_builder.html', HtmlScreenshotBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.builder')
         ->tag('sensiolabs_gotenberg.screenshot_builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
