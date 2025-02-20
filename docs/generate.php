@@ -82,22 +82,22 @@ function parseDocComment(string $rawDocComment): string
     $currentParam = null;
 
     foreach ($lines as $line) {
-        $line = trim($line, " *");
+        $line = trim($line, ' *');
 
         if (str_starts_with($line, '@')) {
             $tagFound = preg_match('/^@(\S+)\s*(.*)$/', $line, $matches);
-            if (false !== $tagFound && count($matches) > 0) {
+            if (false !== $tagFound && \count($matches) > 0) {
                 $currentTag = $matches[1];
                 $value = $matches[2] ?? '';
 
-                if ($currentTag === 'param') {
+                if ('param' === $currentTag) {
                     $paramTagFound = preg_match('/^(\S+)\s+(\$\S+)\s*(.*)$/', $value, $paramMatches);
-                    if (false !== $paramTagFound && count($paramMatches) > 0) {
+                    if (false !== $paramTagFound && \count($paramMatches) > 0) {
                         [$type, $name, $desc] = $paramMatches;
 
                         $tags['param'][$name] = [
                             'type' => $type,
-                            'description' => $desc
+                            'description' => $desc,
                         ];
                         $currentParam = $name;
                     }
@@ -106,13 +106,13 @@ function parseDocComment(string $rawDocComment): string
                     $currentParam = null;
                 }
             }
-        } elseif ($currentTag === 'param' && $currentParam !== null) {
-            $tags['param'][$currentParam]['description'] .= ' ' . $line;
-        } elseif ($currentTag !== null) {
+        } elseif ('param' === $currentTag && null !== $currentParam) {
+            $tags['param'][$currentParam]['description'] .= ' '.$line;
+        } elseif (null !== $currentTag) {
             if (null === array_key_last($tags[$currentTag])) {
                 $tags[$currentTag][] = $line;
             } else {
-                $tags[$currentTag][array_key_last($tags[$currentTag])] .= ' ' . $line;
+                $tags[$currentTag][array_key_last($tags[$currentTag])] .= ' '.$line;
             }
         } else {
             $description[] = $line;
@@ -123,19 +123,18 @@ function parseDocComment(string $rawDocComment): string
 
     $tags['see'] ??= [];
 
-    $description = trim($description, "\ \n\r\t\v\0") . "\n";
+    $description = trim($description, "\ \n\r\t\v\0")."\n";
 
-    if (count($tags['see']) > 0) {
+    if (\count($tags['see']) > 0) {
         $description .= "\n";
-        $description .= "> [!TIP]";
+        $description .= '> [!TIP]';
     }
 
     foreach ($tags['see'] as $see) {
         $description .= "\n> See: [{$see}]({$see})";
     }
 
-
-    if (count($tags['see']) > 0) {
+    if (\count($tags['see']) > 0) {
         $description .= "\n";
     }
 
