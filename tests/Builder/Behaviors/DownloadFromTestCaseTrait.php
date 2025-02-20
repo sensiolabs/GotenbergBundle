@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 
 /**
  * @template T of BuilderInterface

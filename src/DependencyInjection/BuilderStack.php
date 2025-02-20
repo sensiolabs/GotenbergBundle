@@ -7,7 +7,6 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 
 /**
  * @internal

@@ -4,7 +4,6 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
-use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
 /**

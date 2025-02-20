@@ -25,18 +25,18 @@ class GotenbergAssetRuntimeTest extends TestCase
         $runtime->getAssetUrl('foo');
     }
 
-//    public function testGetAssetCallChromiumPdfBuilder(): void
-//    {
-//        $runtime = new GotenbergAssetRuntime();
-//        $builder = $this->createMock(HtmlPdfBuilder::class);
-//        $builder
-//            ->expects($this->once())
-//            ->method('addAsset')
-//            ->with('foo')
-//        ;
-//        $runtime->setBuilder($builder);
-//        $this->assertSame('foo', $runtime->getAssetUrl('foo'));
-//    }
+    //    public function testGetAssetCallChromiumPdfBuilder(): void
+    //    {
+    //        $runtime = new GotenbergAssetRuntime();
+    //        $builder = $this->createMock(HtmlPdfBuilder::class);
+    //        $builder
+    //            ->expects($this->once())
+    //            ->method('addAsset')
+    //            ->with('foo')
+    //        ;
+    //        $runtime->setBuilder($builder);
+    //        $this->assertSame('foo', $runtime->getAssetUrl('foo'));
+    //    }
 
     public function testGetAssetCallChromiumScreenshotBuilder(): void
     {

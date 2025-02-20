@@ -1,7 +1,7 @@
 <?php
 
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection\CompilerPass;
-;
+
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;

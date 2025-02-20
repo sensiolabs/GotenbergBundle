@@ -2,17 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
-use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
-use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
-use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\VariableNodeBuilder;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @template T of BuilderInterface

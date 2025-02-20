@@ -6,16 +6,10 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
-use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
-use Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
-use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\FloatNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route

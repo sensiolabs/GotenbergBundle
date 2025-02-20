@@ -3,8 +3,6 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
-use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
 /**
