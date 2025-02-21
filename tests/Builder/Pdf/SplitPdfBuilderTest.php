@@ -112,12 +112,24 @@ final class SplitPdfBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    #[DataProvider('supportedFilePathsProvider')]
-    public function testSupportedFormat(mixed $supportedFilePath): void
+    public function testStringableObject(): void
     {
+        $supportedFilePath = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
+            public function __construct(private string $directory)
+            {
+
+            }
+            public function __toString(): string
+            {
+                return $this->directory . '/simple_pdf.pdf';
+            }
+        };
+
         $builder = $this->getSplitPdfBuilder();
         $builder
             ->files($supportedFilePath)
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1')
         ;
 
         $data = $builder->getMultipartFormData();
@@ -127,21 +139,22 @@ final class SplitPdfBuilderTest extends AbstractBuilderTestCase
         self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
     }
 
-    /**
-     * @return array<list<string|\Stringable>>
-     */
-    public static function supportedFilePathsProvider(): array
+    public function testSplFileInfoObject(): void
     {
-        return [
-            [self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf'],
-            [new class implements \Stringable {
-                public function __toString(): string
-                {
-                    return SplitPdfBuilderTest::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf';
-                }
-            }],
-            [new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf')],
-        ];
+        $supportedFilePath = new \SplFileInfo(self::PDF_DOCUMENTS_DIR . '/simple_pdf.pdf');
+
+        $builder = $this->getSplitPdfBuilder();
+        $builder
+            ->files($supportedFilePath)
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1')
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
     }
 
     private function getSplitPdfBuilder(): SplitPdfBuilder

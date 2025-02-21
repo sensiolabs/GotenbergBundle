@@ -20,7 +20,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(GotenbergFileResult::class)]
 final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
 {
-    public const OFFICE_DOCUMENTS_DIR = 'assets/office';
+    private const OFFICE_DOCUMENTS_DIR = 'assets/office';
 
     public function testEndpointIsCorrect(): void
     {
@@ -40,9 +40,19 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         ;
     }
 
-    #[DataProvider('supportedFilePathsProvider')]
-    public function testSupportedFormat(mixed $supportedFilePath): void
+    public function testStringableObject(): void
     {
+        $supportedFilePath = new class(self::OFFICE_DOCUMENTS_DIR) implements \Stringable {
+            public function __construct(private readonly string $directory)
+            {
+
+            }
+            public function __toString(): string
+            {
+                return $this->directory.'/document_1.docx';
+            }
+        };
+
         $builder = $this->getLibreOfficePdfBuilder();
         $builder
             ->files($supportedFilePath)
@@ -56,21 +66,21 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
     }
 
-    /**
-     * @return array<list<string|\Stringable>>
-     */
-    public static function supportedFilePathsProvider(): array
+    public function testSplFileInfoObject(): void
     {
-        return [
-            [self::OFFICE_DOCUMENTS_DIR.'/document.pdf'],
-            [new class implements \Stringable {
-                public function __toString(): string
-                {
-                    return LibreOfficePdfBuilderTest::OFFICE_DOCUMENTS_DIR.'/document.pdf';
-                }
-            }],
-            [new \SplFileInfo(self::OFFICE_DOCUMENTS_DIR.'/document.pdf')],
-        ];
+        $supportedFilePath = new \SplFileInfo(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx');
+
+        $builder = $this->getLibreOfficePdfBuilder();
+        $builder
+            ->files($supportedFilePath)
+            ->pdfUniversalAccess()
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
     }
 
     public static function configurationIsCorrectlySetProvider(): \Generator

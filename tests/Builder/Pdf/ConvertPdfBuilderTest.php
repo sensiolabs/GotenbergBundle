@@ -20,7 +20,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(GotenbergFileResult::class)]
 final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
 {
-    public const PDF_DOCUMENTS_DIR = 'assets/pdf';
+    private const PDF_DOCUMENTS_DIR = 'assets/pdf';
 
     public function testEndpointIsCorrect(): void
     {
@@ -79,12 +79,22 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    #[DataProvider('supportedFilePathsProvider')]
-    public function testSupportedFormat(mixed $supportedFilePath): void
+    public function testWithStringableObject(): void
     {
+        $stringable = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
+            public function __construct(private string $directory)
+            {
+
+            }
+            public function __toString(): string
+            {
+                return $this->directory . '/document.pdf';
+            }
+        };
+
         $builder = $this->getConvertPdfBuilder();
         $builder
-            ->files($supportedFilePath)
+            ->files($stringable)
             ->pdfUniversalAccess()
         ;
 
@@ -92,24 +102,24 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
 
         /* @var DataPart $dataPart */
         self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
+        self::assertSame(basename((string) $stringable), $dataPart->getFilename());
     }
 
-    /**
-     * @return array<list<string|\Stringable>>
-     */
-    public static function supportedFilePathsProvider(): array
+    public function testSplFileInfoObject(): void
     {
-        return [
-            [self::PDF_DOCUMENTS_DIR.'/document.pdf'],
-            [new class implements \Stringable {
-                public function __toString(): string
-                {
-                    return ConvertPdfBuilderTest::PDF_DOCUMENTS_DIR.'/document.pdf';
-                }
-            }],
-            [new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/document.pdf')],
-        ];
+        $splFileInfo = new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/document.pdf');
+
+        $builder = $this->getConvertPdfBuilder();
+        $builder
+            ->files($splFileInfo)
+            ->pdfUniversalAccess()
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $splFileInfo), $dataPart->getFilename());
     }
 
     public function testRequiredPdfFile(): void
