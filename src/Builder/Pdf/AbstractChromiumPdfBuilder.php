@@ -80,17 +80,11 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    /**
-     * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
-     */
     public function cookies(array $cookies): static
     {
         return $this->withCookies($this->formFields, $cookies);
     }
 
-    /**
-     * @param Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null} $cookie
-     */
     public function setCookie(string $key, Cookie|array $cookie): static
     {
         return $this->withCookie($this->formFields, $key, $cookie);

@@ -2,14 +2,9 @@
 
 > [!TIP]
 > See: [https://google.com](https://google.com)
+
 * `addAsset(string $path)`:
 Adds a file, like an image, font, stylesheet, and so on.
-
-* `addCookies(array $cookies)`:
-Add cookies to store in the Chromium cookie jar.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
 
 * `addExtraHttpHeaders(array $headers)`:
 Adds extra HTTP headers that Chromium will send when loading the HTML
@@ -27,9 +22,9 @@ Define whether to clip the screenshot according to the device dimensions. (Defau
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
 
-* `cookies(array $cookies)`:
-
 * `downloadFrom(array $downloadFrom)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
@@ -110,8 +105,6 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
 
-* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
-
 * `userAgent(string $userAgent)`:
 Override the default User-Agent HTTP header. (default None).
 
@@ -158,4 +151,18 @@ The HTML file that wraps the markdown content, rendered from a Twig template.
 
 * `wrapperFile(string $path)`:
 The HTML file that wraps the markdown content.
+
+* `addCookies(array $cookies)`:
+Add cookies to store in the Chromium cookie jar.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
+
+* `cookies(array $cookies)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
+
+* `forwardCookie(string $name)`:
+
+* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
 

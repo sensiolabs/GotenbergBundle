@@ -1,10 +1,13 @@
 # MergePdfBuilder
 
 Merge `n` pdf files into a single one.
+
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
 
 * `downloadFrom(array $downloadFrom)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
 * `errorWebhookUrl(?string $url, ?string $method)`:
 Sets the webhook for cases of error.

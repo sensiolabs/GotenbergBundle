@@ -3,12 +3,6 @@
 * `addAsset(string $path)`:
 Adds a file, like an image, font, stylesheet, and so on.
 
-* `addCookies(array $cookies)`:
-Add cookies to store in the Chromium cookie jar.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
-
 * `addExtraHttpHeaders(array $headers)`:
 Adds extra HTTP headers that Chromium will send when loading the HTML
 document. (default None).
@@ -27,9 +21,9 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 * `contentFile(string $path)`:
 The HTML file to convert into PDF.
 
-* `cookies(array $cookies)`:
-
 * `downloadFrom(array $downloadFrom)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
@@ -171,8 +165,6 @@ The scale of the page rendering (e.g., 1.0). (Default 1.0).
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
-* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
-
 * `singlePage(bool $bool)`:
 Define whether to print the entire content in one single page.
 
@@ -230,4 +222,20 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
+* `addCookies(array $cookies)`:
+Add cookies to store in the Chromium cookie jar.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
+
+* `cookies(array $cookies)`:
+Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
+
+* `forwardCookie(string $name)`:
+
+* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
 

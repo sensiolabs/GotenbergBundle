@@ -98,7 +98,7 @@ class BuilderParser
     /**
      * @var array{
      *     '@'?: ParsedDocBlock,
-     *     'methods': array<string, array<string, array{'parts': ParsedDocBlock}>>,
+     *     'methods': array<string, array<string, ParsedDocBlock>>,
      * }
      */
     private array $parts = [];
@@ -167,15 +167,27 @@ class BuilderParser
 
         if (isset($this->parts['@'])) {
             $markdown .= $renderParts($this->parts['@']);
+            $markdown .= "\n";
         }
 
-        ksort($this->parts['methods']);
+        uksort($this->parts['methods'], static function ($a, $b) {
+            if ($a === '@') {
+                return -1;
+            }
+
+            if ($b === '@') {
+                return +1;
+            }
+
+            return strcmp($a, $b);
+        });
+
         foreach ($this->parts['methods'] as $package => $methods) {
             ksort($methods);
 
             foreach ($methods as $methodName => $parts) {
                 $markdown .= "* `{$this->methodsSignature[$methodName]}`:\n";
-                $markdown .= $renderParts($parts['parts']);
+                $markdown .= $renderParts($parts);
                 $markdown .= "\n";
             }
         }
@@ -205,16 +217,35 @@ class BuilderParser
 
                 $methodDocComment = $method->getDocComment() ?: '';
                 if ('' !== $methodDocComment) {
-                    $methodParts = $this->parsePhpDoc($methodDocComment);
-                    $package = $methodParts['package'] ?? '@';
+                    $this->parts['methods'] ??= [];
 
-                    $this->parts['methods'][$package] ??= [];
-
-                    $this->parts['methods'][$package][$method->getShortName()] = [
-                        'parts' => $this->parsePhpDoc($methodDocComment)
-                    ];
+                    $this->parts['methods']['@'][$method->getShortName()] = $this->parsePhpDoc($methodDocComment);
                 }
             }
+        }
+
+        $this->prepareBuilderFromClass($class);
+
+        foreach ($this->parts['methods']['@'] as $methodName => $parts) {
+            $package = $parts['package'] ?? '@';
+
+            if ('@' !== $package) {
+                $this->parts['methods'][$package][$methodName] = $parts;
+                unset($this->parts['methods']['@'][$methodName]);
+            }
+        }
+    }
+
+    private function prepareBuilderFromClass(ReflectionClass $class)
+    {
+        $parentClass = $class->getParentClass();
+
+        if ($parentClass !== false) {
+            $this->prepareBuilderFromClass($parentClass);
+        }
+
+        foreach ($class->getTraits() as $trait) {
+            $this->prepareBuilderFromClass($trait);
         }
 
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
@@ -226,11 +257,37 @@ class BuilderParser
 
             $methodDocComment = $method->getDocComment() ?: '';
             if ('' !== $methodDocComment) {
-                $methodParts = $this->parsePhpDoc($methodDocComment);
-                $package = $methodParts['package'] ?? '@';
+                $this->parts['methods']['@'][$method->getShortName()] ??= [];
 
-                $this->parts['methods'][$package][$method->getShortName()] ??= [];
-                $this->parts['methods'][$package][$method->getShortName()]['parts'] = $methodParts;
+                $parsedDocBlock = $this->parsePhpDoc($methodDocComment);
+
+                if ([] === ($this->parts['methods']['@'][$method->getShortName()] ?? [])) {
+                    $this->parts['methods']['@'][$method->getShortName()] = $this->parsePhpDoc($methodDocComment);
+
+                    continue;
+                }
+
+                $currentPackage = $this->parts['methods']['@'][$method->getShortName()]['package'] ?? '@';
+                $newPackage = $parsedDocBlock['package'] ?? null;
+
+                if ($newPackage !== null && $currentPackage !== $newPackage) {
+                    $this->parts['methods']['@'][$method->getShortName()]['package'] = $newPackage;
+                }
+
+                if (isset($parsedDocBlock['description'])) {
+                    $this->parts['methods']['@'][$method->getShortName()]['description'] = $parsedDocBlock['description'];
+                }
+
+                if (isset($parsedDocBlock['tags']['param'])) {
+                    $this->parts['methods']['@'][$method->getShortName()]['tags']['param'] = $parsedDocBlock['tags']['param'] + $this->parts['methods']['@'][$method->getShortName()]['tags']['param'];
+                }
+
+                if (isset($parsedDocBlock['tags']['see'])) {
+                    $this->parts['methods']['@'][$method->getShortName()]['tags']['see'] = array_unique(array_merge(
+                        $this->parts['methods']['@'][$method->getShortName()]['tags']['see'],
+                        $parsedDocBlock['tags']['see'],
+                    ));
+                }
             }
         }
     }
@@ -267,6 +324,7 @@ class BuilderParser
 
                     if ('package' === $currentTag) {
                         $currentPackage = $value;
+                        $currentTag = null;
                     } elseif ('param' === $currentTag) {
                         $paramTagFound = preg_match('/^(\S+)\s+(\$\S+)\s*(.*)$/', $value, $paramMatches);
                         if (false !== $paramTagFound && \count($paramMatches) > 0) {

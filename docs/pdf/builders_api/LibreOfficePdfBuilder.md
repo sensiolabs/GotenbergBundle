@@ -19,6 +19,8 @@ Specify if bookmarks are exported to PDF.
 Set whether to export the form fields or to use the inputted/selected content of the fields.
 
 * `downloadFrom(array $downloadFrom)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
 * `errorWebhookUrl(?string $url, ?string $method)`:
 Sets the webhook for cases of error.

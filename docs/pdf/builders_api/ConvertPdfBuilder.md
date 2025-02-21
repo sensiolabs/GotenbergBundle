@@ -1,6 +1,8 @@
 # ConvertPdfBuilder
 
 * `downloadFrom(array $downloadFrom)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
 * `errorWebhookUrl(?string $url, ?string $method)`:
 Sets the webhook for cases of error.

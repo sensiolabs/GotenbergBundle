@@ -3,12 +3,6 @@
 * `addAsset(string $path)`:
 Adds a file, like an image, font, stylesheet, and so on.
 
-* `addCookies(array $cookies)`:
-Add cookies to store in the Chromium cookie jar.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
-
 * `addExtraHttpHeaders(array $headers)`:
 Adds extra HTTP headers that Chromium will send when loading the HTML
 document. (default None).
@@ -25,9 +19,9 @@ Define whether to clip the screenshot according to the device dimensions. (Defau
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
 
-* `cookies(array $cookies)`:
-
 * `downloadFrom(array $downloadFrom)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
@@ -110,8 +104,6 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).
 
 * `route(string $name, array $parameters)`:
 
-* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
-
 * `url(string $url)`:
 URL of the page you want to screenshot.
 
@@ -155,4 +147,18 @@ The device screen width in pixels. (Default 800).
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
+
+* `addCookies(array $cookies)`:
+Add cookies to store in the Chromium cookie jar.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
+
+* `cookies(array $cookies)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
+
+* `forwardCookie(string $name)`:
+
+* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
 

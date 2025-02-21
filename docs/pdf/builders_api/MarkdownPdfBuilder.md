@@ -3,12 +3,6 @@
 * `addAsset(string $path)`:
 Adds a file, like an image, font, stylesheet, and so on.
 
-* `addCookies(array $cookies)`:
-Add cookies to store in the Chromium cookie jar.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
-
 * `addExtraHttpHeaders(array $headers)`:
 Adds extra HTTP headers that Chromium will send when loading the HTML
 document. (default None).
@@ -22,9 +16,9 @@ The metadata to write.
 * `assets(string $paths)`:
 Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
 
-* `cookies(array $cookies)`:
-
 * `downloadFrom(array $downloadFrom)`:
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
 * `emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)`:
 Forces Chromium to emulate, either "screen" or "print". (default "print").
@@ -166,8 +160,6 @@ The scale of the page rendering (e.g., 1.0). (Default 1.0).
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
-* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
-
 * `singlePage(bool $bool)`:
 Define whether to print the entire content in one single page.
 
@@ -231,4 +223,20 @@ The HTML file that wraps the markdown content, rendered from a Twig template.
 
 * `wrapperFile(string $path)`:
 The HTML file that wraps the markdown content.
+
+* `addCookies(array $cookies)`:
+Add cookies to store in the Chromium cookie jar.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
+
+* `cookies(array $cookies)`:
+Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
+
+* `forwardCookie(string $name)`:
+
+* `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
 
