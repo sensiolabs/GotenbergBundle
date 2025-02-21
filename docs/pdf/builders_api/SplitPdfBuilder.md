@@ -1,6 +1,14 @@
 # SplitPdfBuilder
 
 Split `n` pdf files.
+* `downloadFrom(array $downloadFrom)`:
+
+* `errorWebhookUrl(?string $url, ?string $method)`:
+Sets the webhook for cases of error.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
 * `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
 Either intervals or pages. (default None).
@@ -20,12 +28,11 @@ Specify whether to put extracted pages into a single file or as many files as th
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#split-pdfs-route](https://gotenberg.dev/docs/routes#split-pdfs-route)
 
-* `files(string $paths)`:
-
-* `downloadFrom(array $downloadFrom)`:
-
 * `webhookConfiguration(string $name)`:
 Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
+
+* `webhookExtraHeaders(array $extraHeaders)`:
+Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
 
 * `webhookUrl(string $url, ?string $method)`:
 Sets the webhook for cases of success.
@@ -33,14 +40,4 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-* `errorWebhookUrl(?string $url, ?string $method)`:
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-* `webhookExtraHeaders(array $extraHeaders)`:
-Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
 

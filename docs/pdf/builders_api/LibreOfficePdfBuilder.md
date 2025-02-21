@@ -1,33 +1,70 @@
 # LibreOfficePdfBuilder
 
-* `password(string $password)`:
-Set the password for opening the source file.
+* `addMetadata(string $key, string $value)`:
+The metadata to write.
 
-* `landscape(bool $bool)`:
-Sets the paper orientation to landscape.
+* `addOriginalDocumentAsStream(bool $bool)`:
+Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.
 
-* `nativePageRanges(string $range)`:
-Page ranges to print, e.g., '1-4' - empty means all pages.
+* `allowDuplicateFieldNames(bool $bool)`:
+Specify whether multiple form fields exported are allowed to have the same field name.
 
-If multiple files are provided, the page ranges will be applied independently to each file.
+* `convertOooTargetToPdfTarget(bool $bool)`:
+Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.
+
+* `doNotExportBookmarks(bool $bool)`:
+Specify if bookmarks are exported to PDF.
 
 * `doNotExportFormFields(bool $bool)`:
 Set whether to export the form fields or to use the inputted/selected content of the fields.
 
-* `singlePageSheets(bool $bool)`:
-Set whether to render the entire spreadsheet as a single page.
+* `downloadFrom(array $downloadFrom)`:
 
-* `pdfFormat(Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
-Convert the resulting PDF into the given PDF/A format.
+* `errorWebhookUrl(?string $url, ?string $method)`:
+Sets the webhook for cases of error.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
-* `pdfUniversalAccess(bool $bool)`:
-Enable PDF for Universal Access for optimal accessibility.
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
-* `merge(bool $bool)`:
-Merge alphanumerically the resulting PDFs.
+* `exportBookmarksToPdfDestination(bool $bool)`:
+Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
+
+* `exportHiddenSlides(bool $bool)`:
+Export, for LibreOffice Impress, slides that are not included in slide shows.
+
+* `exportLinksRelativeFsys(bool $bool)`:
+Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.
+
+* `exportNotes(bool $bool)`:
+Specify if notes are exported to PDF.
+
+* `exportNotesInMargin(bool $bool)`:
+Specify if notes in margin are exported to PDF.
+
+* `exportNotesPages(bool $bool)`:
+Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.
+
+* `exportOnlyNotesPages(bool $bool)`:
+Specify, if the form field exportNotesPages is set to true, if only notes pages are exported to PDF.
+
+* `exportPlaceholders(bool $bool)`:
+Export the placeholders fields visual markings only. The exported placeholder is ineffective.
 
 * `files(Stringable|string $paths)`:
 Adds office files to convert (overrides any previous files).
+
+* `landscape(bool $bool)`:
+Sets the paper orientation to landscape.
+
+* `losslessImageCompression(bool $bool)`:
+Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.
+
+* `maxImageResolution(Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)`:
+If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
+
+* `merge(bool $bool)`:
+Merge alphanumerically the resulting PDFs.
 
 * `metadata(array $metadata)`:
 Resets the metadata.
@@ -36,50 +73,19 @@ Resets the metadata.
 > See: [https://gotenberg.dev/docs/routes#metadata-chromium](https://gotenberg.dev/docs/routes#metadata-chromium)
 > See: [https://exiftool.org/TagNames/XMP.html#pdf ](https://exiftool.org/TagNames/XMP.html#pdf )
 
-* `addMetadata(string $key, string $value)`:
-The metadata to write.
+* `nativePageRanges(string $range)`:
+Page ranges to print, e.g., '1-4' - empty means all pages.
 
-* `allowDuplicateFieldNames(bool $bool)`:
-Specify whether multiple form fields exported are allowed to have the same field name.
+If multiple files are provided, the page ranges will be applied independently to each file.
 
-* `doNotExportBookmarks(bool $bool)`:
-Specify if bookmarks are exported to PDF.
+* `password(string $password)`:
+Set the password for opening the source file.
 
-* `exportBookmarksToPdfDestination(bool $bool)`:
-Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
+* `pdfFormat(Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
+Convert the resulting PDF into the given PDF/A format.
 
-* `exportPlaceholders(bool $bool)`:
-Export the placeholders fields visual markings only. The exported placeholder is ineffective.
-
-* `exportNotes(bool $bool)`:
-Specify if notes are exported to PDF.
-
-* `exportNotesPages(bool $bool)`:
-Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.
-
-* `exportOnlyNotesPages(bool $bool)`:
-Specify, if the form field exportNotesPages is set to true, if only notes pages are exported to PDF.
-
-* `exportNotesInMargin(bool $bool)`:
-Specify if notes in margin are exported to PDF.
-
-* `convertOooTargetToPdfTarget(bool $bool)`:
-Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.
-
-* `exportLinksRelativeFsys(bool $bool)`:
-Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.
-
-* `exportHiddenSlides(bool $bool)`:
-Export, for LibreOffice Impress, slides that are not included in slide shows.
-
-* `skipEmptyPages(bool $bool)`:
-Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.
-
-* `addOriginalDocumentAsStream(bool $bool)`:
-Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.
-
-* `losslessImageCompression(bool $bool)`:
-Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.
+* `pdfUniversalAccess(bool $bool)`:
+Enable PDF for Universal Access for optimal accessibility.
 
 * `quality(int $quality)`:
 Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.
@@ -87,8 +93,11 @@ Specify the quality of the JPG export. A higher value produces a higher-quality 
 * `reduceImageResolution(bool $bool)`:
 Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution.
 
-* `maxImageResolution(Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)`:
-If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
+* `singlePageSheets(bool $bool)`:
+Set whether to render the entire spreadsheet as a single page.
+
+* `skipEmptyPages(bool $bool)`:
+Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.
 
 * `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
 Either intervals or pages. (default None).
@@ -108,10 +117,11 @@ Specify whether to put extracted pages into a single file or as many files as th
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
-* `downloadFrom(array $downloadFrom)`:
-
 * `webhookConfiguration(string $name)`:
 Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
+
+* `webhookExtraHeaders(array $extraHeaders)`:
+Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
 
 * `webhookUrl(string $url, ?string $method)`:
 Sets the webhook for cases of success.
@@ -119,14 +129,4 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-* `errorWebhookUrl(?string $url, ?string $method)`:
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-* `webhookExtraHeaders(array $extraHeaders)`:
-Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
 
