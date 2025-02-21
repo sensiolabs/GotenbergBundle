@@ -15,6 +15,9 @@ final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 
         public string|null $defaultValue = null,
 
+        /**
+         * @var array<array-key, mixed>
+         */
         public array $values = [],
 
         string|callable|null $callback = null,
@@ -46,8 +49,6 @@ final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
                 }
 
                 $this->callback = [$this->callback, 'cases'];
-            } elseif (!\is_callable($this->callback)) {
-                throw new InvalidBuilderConfiguration(\sprintf('The Builder constraint expects a valid callback for "%s".', $this->name));
             }
 
             $values = array_map(static function (mixed $value): int|string|float|bool|null {

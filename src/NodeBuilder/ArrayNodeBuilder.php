@@ -38,7 +38,6 @@ final class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
                 'integer' => $node->integerPrototype(),
                 'array' => $node->arrayPrototype(),
                 'variable' => $node->variablePrototype(),
-                default => throw new InvalidBuilderConfiguration(\sprintf('Invalid value "%s", available prototype are "integer", "array" or "variable".', $this->prototype)),
             };
 
             if (\count($this->children) > 0) {

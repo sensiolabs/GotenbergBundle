@@ -26,7 +26,7 @@ final class BuilderStack
     private array $typeReverseMapping = [];
 
     /**
-     * @var array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': (\Closure(mixed): mixed)|null}>>
+     * @var array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': array{class-string<\BackedEnum>, 'from'}|null}>>
      */
     private array $configMapping = [];
 
@@ -116,7 +116,7 @@ final class BuilderStack
     }
 
     /**
-     * @return array<class-string<BuilderInterface>, array<string, array{'method': string, 'parametersType': array<array-key, string>}>>
+     * @return array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': array{class-string<\BackedEnum>, 'from'}|null}>>
      */
     public function getConfigMapping(): array
     {

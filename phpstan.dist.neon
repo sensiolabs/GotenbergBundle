@@ -5,35 +5,31 @@ parameters:
 		- 'config'
 		- 'src'
 		- 'tests'
-	excludePaths:
-		- tests/Builder/DefaultBuilderTraitTest.php
-		- src/BuilderOld
-		- tests/BuilderOld
 	ignoreErrors:
-		-
-			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Pdf/UrlPdfBuilder.php
-		-
-			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Pdf/UrlPdfBuilder.php
-		-
-			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 2
-			path: src/Builder/Pdf/UrlPdfBuilder.php
-		-
-			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-		-
-			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-		-
-			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 2
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
+#		-
+#			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
+#			count: 1
+#			path: src/Builder/Pdf/UrlPdfBuilder.php
+#		-
+#			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
+#			count: 1
+#			path: src/Builder/Pdf/UrlPdfBuilder.php
+#		-
+#			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
+#			count: 2
+#			path: src/Builder/Pdf/UrlPdfBuilder.php
+#		-
+#			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
+#			count: 1
+#			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
+#		-
+#			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
+#			count: 1
+#			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
+#		-
+#			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
+#			count: 2
+#			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
 		-
 			message: "#^Cannot use array destructuring on array\\<int, string\\|null\\>\\|null\\.$#"
 			count: 1
@@ -45,4 +41,8 @@ parameters:
 		- # Fixed when requiring 8.2
 			message: "#^Parameter \\#1 \\$iterator of function iterator_to_array expects Traversable, iterable given\\.$#"
 			count: 1
-			path: tests/Builder/AbstractBuilderTestCase.php
+			path: tests/Builder/GotenbergBuilderTestCase.php
+		-
+			message: "#^ Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition|Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\VariableNodeDefinition::append\\(\\)\\.$#"
+			count: 1
+			path: src/NodeBuilder/ArrayNodeBuilder.php

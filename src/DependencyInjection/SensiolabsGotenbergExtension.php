@@ -12,14 +12,14 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
 
 /**
- * @phpstan-import-type webhookConfiguration from WebhookTrait
+ * @phpstan-import-type WebhookConfiguration from WebhookTrait
  *
  * @phpstan-type SensiolabsGotenbergConfiguration array{
  *      assets_directory: string,
  *      http_client?: string,
  *      request_context?: array{base_uri?: string},
  *      controller_listener: bool,
- *      webhook: webhookConfiguration,
+ *      webhook: array<string, WebhookConfiguration>,
  *      default_options: array{
  *          webhook?: string,
  *          pdf: array{
@@ -57,6 +57,9 @@ class SensiolabsGotenbergExtension extends Extension
         $this->builderStack->push($type, $class);
     }
 
+    /**
+     * @param array<array-key, SensiolabsGotenbergConfiguration> $config
+     */
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {
         return new Configuration($this->builderStack->getConfigNode());
@@ -143,8 +146,8 @@ class SensiolabsGotenbergExtension extends Extension
     }
 
     /**
-     * @param SensiolabsGotenbergConfiguration $config
-     * @param array<string, mixed>             $serviceConfig
+     * @param array<string, mixed> $config
+     * @param array<string, mixed> $serviceConfig
      *
      * @return array<string, mixed>
      */
@@ -156,17 +159,19 @@ class SensiolabsGotenbergExtension extends Extension
     }
 
     /**
-     * @param webhookConfiguration $webhookConfig
+     * @param array<string, WebhookConfiguration> $webhookConfig
      * @param array<string, mixed> $serviceConfig
      *
      * @return array<string, mixed>
      */
     private function processWebhookOptions(array $webhookConfig, string|null $webhookDefaultConfigName, array $serviceConfig): array
     {
-        $serviceWebhookConfig = $serviceConfig['webhook'] ?? [];
-        $webhookConfigName = $serviceWebhookConfig['config_name'] ?? $webhookDefaultConfigName ?? null;
+        $serviceWebhookConfig = isset($serviceConfig['webhook']) && \is_array($serviceConfig['webhook']) ? $serviceConfig['webhook'] : [];
+        $webhookConfigName = isset($serviceConfig['webhook']) && \is_string($serviceConfig['webhook']) ? $serviceConfig['webhook'] : $webhookDefaultConfigName;
 
-        $serviceConfig['webhook'] = array_merge($webhookConfig[$webhookConfigName] ?? [], $serviceWebhookConfig);
+        $defaultConfig = \is_string($webhookConfigName) ? $webhookConfig[$webhookConfigName] : [];
+
+        $serviceConfig['webhook'] = array_merge($defaultConfig, $serviceWebhookConfig);
 
         return $serviceConfig;
     }

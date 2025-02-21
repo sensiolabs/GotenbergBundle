@@ -35,7 +35,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'merge' ? MergePdfBuilder :
      *   $key is 'convert' ? ConvertPdfBuilder :
      *   $key is 'split' ? SplitPdfBuilder :
-     *   PdfBuilderInterface
+     *   BuilderInterface
      * )
      */
     private function getInternal(string $key): BuilderInterface

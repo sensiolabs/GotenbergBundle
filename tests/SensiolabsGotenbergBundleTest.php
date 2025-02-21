@@ -29,7 +29,10 @@ class SensiolabsGotenbergBundleTest extends TestCase
 
         $originalCompilerPasses = $container->getCompilerPassConfig()->getPasses();
 
-        $container->registerExtension($bundle->getContainerExtension());
+        $extension = $bundle->getContainerExtension();
+        self::assertNotNull($extension);
+
+        $container->registerExtension($extension);
         $bundle->build($container);
 
         $currentCompilerPasses = $container->getCompilerPassConfig()->getPasses();

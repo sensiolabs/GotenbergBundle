@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Routing\RequestContext;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\RequestContext;
  * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
  */
 #[SemanticNode('url')]
-final class UrlPdfBuilder extends AbstractBuilder
+final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait;
 
@@ -64,6 +65,9 @@ final class UrlPdfBuilder extends AbstractBuilder
         }
     }
 
+    /**
+     * @internal
+     */
     #[NormalizeGotenbergPayload]
     private function normalizeRoute(): \Generator
     {

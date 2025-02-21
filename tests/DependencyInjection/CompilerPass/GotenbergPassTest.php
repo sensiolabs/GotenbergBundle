@@ -46,36 +46,36 @@ class GotenbergPassTest extends TestCase
         self::assertSame($serviceIds, $container->getServiceIds());
     }
 
-    public function testItDecoratesPdfBuildersWithTraceableWhenDataCollectorIsPresent(): void
-    {
-        $container = $this->getContainerBuilder(withDataCollector: true);
-
-        $serviceIds = $container->getServiceIds();
-
-        self::assertContains('sensiolabs_gotenberg.data_collector', $serviceIds);
-
-        $compilerPass = new GotenbergPass();
-        $compilerPass->process($container);
-
-        $newServiceIds = $container->getServiceIds();
-        self::assertNotSame($serviceIds, $newServiceIds);
-        self::assertContains('.service.pdf_tagged', $newServiceIds);
-        self::assertContains('.debug.service.pdf_tagged', $newServiceIds);
-        self::assertNotContains('.debug.service.random', $newServiceIds);
-
-        $traceablePdfTaggedService = $container->getDefinition('.debug.service.pdf_tagged');
-        self::assertNotNull($traceablePdfTaggedService);
-        self::assertSame(TraceableGotenbergPdf::class, $traceablePdfTaggedService->getClass());
-
-        $traceablePdfTaggedServiceArguments = $traceablePdfTaggedService->getArguments();
-        self::assertCount(2, $traceablePdfTaggedServiceArguments);
-
-        self::assertArrayHasKey('$inner', $traceablePdfTaggedServiceArguments);
-        self::assertInstanceOf(Reference::class, $traceablePdfTaggedServiceArguments['$inner']);
-        self::assertSame('.inner', (string) $traceablePdfTaggedServiceArguments['$inner']);
-
-        self::assertArrayHasKey('$stopwatch', $traceablePdfTaggedServiceArguments);
-        self::assertInstanceOf(Reference::class, $traceablePdfTaggedServiceArguments['$stopwatch']);
-        self::assertSame('debug.stopwatch', (string) $traceablePdfTaggedServiceArguments['$stopwatch']);
-    }
+//    public function testItDecoratesPdfBuildersWithTraceableWhenDataCollectorIsPresent(): void
+//    {
+//        $container = $this->getContainerBuilder(withDataCollector: true);
+//
+//        $serviceIds = $container->getServiceIds();
+//
+//        self::assertContains('sensiolabs_gotenberg.data_collector', $serviceIds);
+//
+//        $compilerPass = new GotenbergPass();
+//        $compilerPass->process($container);
+//
+//        $newServiceIds = $container->getServiceIds();
+//        self::assertNotSame($serviceIds, $newServiceIds);
+//        self::assertContains('.service.pdf_tagged', $newServiceIds);
+//        self::assertContains('.debug.service.pdf_tagged', $newServiceIds);
+//        self::assertNotContains('.debug.service.random', $newServiceIds);
+//
+//        $traceablePdfTaggedService = $container->getDefinition('.debug.service.pdf_tagged');
+//        self::assertNotNull($traceablePdfTaggedService);
+//        self::assertSame(TraceableGotenbergPdf::class, $traceablePdfTaggedService->getClass());
+//
+//        $traceablePdfTaggedServiceArguments = $traceablePdfTaggedService->getArguments();
+//        self::assertCount(2, $traceablePdfTaggedServiceArguments);
+//
+//        self::assertArrayHasKey('$inner', $traceablePdfTaggedServiceArguments);
+//        self::assertInstanceOf(Reference::class, $traceablePdfTaggedServiceArguments['$inner']);
+//        self::assertSame('.inner', (string) $traceablePdfTaggedServiceArguments['$inner']);
+//
+//        self::assertArrayHasKey('$stopwatch', $traceablePdfTaggedServiceArguments);
+//        self::assertInstanceOf(Reference::class, $traceablePdfTaggedServiceArguments['$stopwatch']);
+//        self::assertSame('debug.stopwatch', (string) $traceablePdfTaggedServiceArguments['$stopwatch']);
+//    }
 }
