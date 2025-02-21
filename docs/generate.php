@@ -123,7 +123,7 @@ class BuilderParser
     public function extract(): string
     {
         $markdown = "# {$this->name}\n\n";
-        $renderDescription = static fn(array $parts) => trim(implode("\n", $parts), "\ \n\r\t\v\0");
+        $renderDescription = static fn (array $parts) => trim(implode("\n", $parts), "\ \n\r\t\v\0");
 
         /**
          * @param list<string> $seeList
@@ -171,11 +171,11 @@ class BuilderParser
         }
 
         uksort($this->parts['methods'], static function ($a, $b) {
-            if ($a === '@') {
+            if ('@' === $a) {
                 return -1;
             }
 
-            if ($b === '@') {
+            if ('@' === $b) {
                 return +1;
             }
 
@@ -221,11 +221,11 @@ class BuilderParser
         }
     }
 
-    private function prepareBuilderFromClass(ReflectionClass $class)
+    private function prepareBuilderFromClass(ReflectionClass $class): void
     {
         $parentClass = $class->getParentClass();
 
-        if ($parentClass !== false) {
+        if (false !== $parentClass) {
             $this->prepareBuilderFromClass($parentClass);
         }
 
@@ -259,7 +259,7 @@ class BuilderParser
                 $currentPackage = $this->parts['methods']['@'][$method->getShortName()]['package'] ?? '@';
                 $newPackage = $parsedDocBlock['package'] ?? null;
 
-                if ($newPackage !== null && $currentPackage !== $newPackage) {
+                if (null !== $newPackage && $currentPackage !== $newPackage) {
                     $this->parts['methods']['@'][$method->getShortName()]['package'] = $newPackage;
                 }
 
@@ -382,7 +382,7 @@ $application->register('generate')
                 $builderParser->prepare($summary, $type, $builder);
 
                 $filename = $summary->getFilename($builder);
-                $directory = __DIR__.'/'.dirname($filename);
+                $directory = __DIR__.'/'.\dirname($filename);
 
                 if (!@mkdir($directory, recursive: true) && !is_dir($directory)) {
                     throw new RuntimeException(\sprintf('Directory "%s" was not created', $directory));
@@ -391,7 +391,7 @@ $application->register('generate')
                 file_put_contents(__DIR__.'/'.$filename, $builderParser->extract());
             }
         }
-        file_put_contents( __DIR__.'/builders_api.md', $summary->extract());
+        file_put_contents(__DIR__.'/builders_api.md', $summary->extract());
 
         return Command::SUCCESS;
     })
