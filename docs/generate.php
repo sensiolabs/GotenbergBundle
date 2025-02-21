@@ -209,21 +209,6 @@ class BuilderParser
             $this->parts['@'] = $this->parsePhpDoc($classDocComment);
         }
 
-        foreach ($class->getInterfaces() as $interface) {
-            foreach ($interface->getMethods() as $method) {
-                if (\in_array($method->getName(), self::EXCLUDED_METHODS, true) === true) {
-                    continue;
-                }
-
-                $methodDocComment = $method->getDocComment() ?: '';
-                if ('' !== $methodDocComment) {
-                    $this->parts['methods'] ??= [];
-
-                    $this->parts['methods']['@'][$method->getShortName()] = $this->parsePhpDoc($methodDocComment);
-                }
-            }
-        }
-
         $this->prepareBuilderFromClass($class);
 
         foreach ($this->parts['methods']['@'] as $methodName => $parts) {
@@ -242,6 +227,10 @@ class BuilderParser
 
         if ($parentClass !== false) {
             $this->prepareBuilderFromClass($parentClass);
+        }
+
+        foreach ($class->getInterfaces() as $interface) {
+            $this->prepareBuilderFromClass($interface);
         }
 
         foreach ($class->getTraits() as $trait) {
