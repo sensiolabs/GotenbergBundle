@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -36,6 +37,7 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder('pdf', UrlPdfBuilder::class);
 
         $extension->registerBuilder('screenshot', HtmlScreenshotBuilder::class);
+        $extension->registerBuilder('screenshot', MarkdownScreenshotBuilder::class);
 
         $container->addCompilerPass(new GotenbergPass());
     }

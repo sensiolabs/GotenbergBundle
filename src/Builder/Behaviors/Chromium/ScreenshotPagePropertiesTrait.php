@@ -79,7 +79,7 @@ trait ScreenshotPagePropertiesTrait
      * Hides default white background and allows generating screenshot with
      * transparency. (Default false).
      */
-    #[ExposeSemantic(new BooleanNodeBuilder('omitBackground'))]
+    #[ExposeSemantic(new BooleanNodeBuilder('omit_background'))]
     public function omitBackground(bool $bool = true): static
     {
         $this->getBodyBag()->set('omitBackground', $bool);
@@ -90,7 +90,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * Define whether to optimize image encoding for speed, not for resulting size. (Default false).
      */
-    #[ExposeSemantic(new BooleanNodeBuilder('optimizeForSpeed'))]
+    #[ExposeSemantic(new BooleanNodeBuilder('optimize_for_speed'))]
     public function optimizeForSpeed(bool $bool = true): static
     {
         $this->getBodyBag()->set('optimizeForSpeed', $bool);

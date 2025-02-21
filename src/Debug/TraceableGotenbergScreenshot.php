@@ -3,7 +3,8 @@
 namespace Sensiolabs\GotenbergBundle\Debug;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\BuilderOld\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
@@ -66,22 +67,22 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
     //        return $traceableBuilder;
     //    }
     //
-    //    /**
-    //     * @return MarkdownScreenshotBuilder|TraceableScreenshotBuilder
-    //     */
-    //    public function markdown(): ScreenshotBuilderInterface
-    //    {
-    //        /** @var MarkdownScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
-    //        $traceableBuilder = $this->inner->markdown();
-    //
-    //        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
-    //            return $traceableBuilder;
-    //        }
-    //
-    //        $this->builders[] = ['markdown', $traceableBuilder];
-    //
-    //        return $traceableBuilder;
-    //    }
+    /**
+     * @return MarkdownScreenshotBuilder|TraceableBuilder
+     */
+    public function markdown(): BuilderInterface
+    {
+        /** @var MarkdownScreenshotBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->markdown();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['markdown', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
 
     /**
      * @return list<array{string, TraceableBuilder}>

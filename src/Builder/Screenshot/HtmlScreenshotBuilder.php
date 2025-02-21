@@ -5,7 +5,6 @@ namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumScreenshotTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
@@ -13,10 +12,9 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * @see https://gotenberg.dev/docs/routes#screenshots-route
  */
 #[SemanticNode('html')]
-class HtmlScreenshotBuilder extends AbstractBuilder
+final class HtmlScreenshotBuilder extends AbstractBuilder
 {
     use ChromiumScreenshotTrait;
-    use WebhookTrait;
 
     protected function getEndpoint(): string
     {

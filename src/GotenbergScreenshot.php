@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle;
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 
 final class GotenbergScreenshot implements GotenbergScreenshotInterface
 {
@@ -43,8 +44,8 @@ final class GotenbergScreenshot implements GotenbergScreenshotInterface
     //        return $this->getInternal('url');
     //    }
     //
-    //    public function markdown(): ScreenshotBuilderInterface
-    //    {
-    //        return $this->getInternal('markdown');
-    //    }
+    public function markdown(): BuilderInterface
+    {
+        return $this->getInternal('markdown');
+    }
 }
