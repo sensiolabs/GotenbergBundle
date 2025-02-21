@@ -104,6 +104,10 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).
 
 * `route(string $name, array $parameters)`:
 
+* `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
+
+* `skipNetworkIdleEvent(bool $bool)`:
+
 * `url(string $url)`:
 URL of the page you want to screenshot.
 

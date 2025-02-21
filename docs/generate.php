@@ -58,7 +58,7 @@ class Summary
 }
 
 /**
- * @phpstan-type ParsedDocBlock array{package: string, description: list<string>, tags: array{param: array<string, array{type: string, description: string}>, see: list<string>, example: list<string>}
+ * @phpstan-type ParsedDocBlock array{package: string|null, description: list<string>, tags: array{param: array<string, array{type: string, description: string}>, see: list<string>, example: list<string>}
  */
 class BuilderParser
 {
@@ -221,6 +221,9 @@ class BuilderParser
         }
     }
 
+    /**
+     * @param ReflectionClass<object> $class
+     */
     private function prepareBuilderFromClass(ReflectionClass $class): void
     {
         $parentClass = $class->getParentClass();
@@ -237,6 +240,8 @@ class BuilderParser
             $this->prepareBuilderFromClass($trait);
         }
 
+        $defaultPackage = $this->parsePhpDoc($class->getDocComment() ?: '')['package'] ?? null;
+
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if (\in_array($method->getName(), self::EXCLUDED_METHODS, true) === true) {
                 continue;
@@ -245,38 +250,37 @@ class BuilderParser
             $this->methodsSignature[$method->getName()] = $this->parseMethodSignature($method);
 
             $methodDocComment = $method->getDocComment() ?: '';
-            if ('' !== $methodDocComment) {
-                $this->parts['methods']['@'][$method->getShortName()] ??= [];
+            $this->parts['methods']['@'][$method->getShortName()] ??= [];
 
-                $parsedDocBlock = $this->parsePhpDoc($methodDocComment);
+            $parsedDocBlock = $this->parsePhpDoc($methodDocComment);
+            $parsedDocBlock['package'] ??= $defaultPackage;
 
-                if ([] === ($this->parts['methods']['@'][$method->getShortName()] ?? [])) {
-                    $this->parts['methods']['@'][$method->getShortName()] = $this->parsePhpDoc($methodDocComment);
+            if ([] === ($this->parts['methods']['@'][$method->getShortName()] ?? [])) {
+                $this->parts['methods']['@'][$method->getShortName()] = $parsedDocBlock;
 
-                    continue;
-                }
+                continue;
+            }
 
-                $currentPackage = $this->parts['methods']['@'][$method->getShortName()]['package'] ?? '@';
-                $newPackage = $parsedDocBlock['package'] ?? null;
+            $currentPackage = $this->parts['methods']['@'][$method->getShortName()]['package'] ?? '@';
+            $newPackage = $parsedDocBlock['package'];
 
-                if (null !== $newPackage && $currentPackage !== $newPackage) {
-                    $this->parts['methods']['@'][$method->getShortName()]['package'] = $newPackage;
-                }
+            if (null !== $newPackage && $currentPackage !== $newPackage) {
+                $this->parts['methods']['@'][$method->getShortName()]['package'] = $newPackage;
+            }
 
-                if (isset($parsedDocBlock['description'])) {
-                    $this->parts['methods']['@'][$method->getShortName()]['description'] = $parsedDocBlock['description'];
-                }
+            if (isset($parsedDocBlock['description']) && [''] !== $parsedDocBlock['description']) {
+                $this->parts['methods']['@'][$method->getShortName()]['description'] = $parsedDocBlock['description'];
+            }
 
-                if (isset($parsedDocBlock['tags']['param'])) {
-                    $this->parts['methods']['@'][$method->getShortName()]['tags']['param'] = $parsedDocBlock['tags']['param'] + $this->parts['methods']['@'][$method->getShortName()]['tags']['param'];
-                }
+            if (isset($parsedDocBlock['tags']['param']) && [] !== $parsedDocBlock['tags']['param']) {
+                $this->parts['methods']['@'][$method->getShortName()]['tags']['param'] = $parsedDocBlock['tags']['param'] + $this->parts['methods']['@'][$method->getShortName()]['tags']['param'];
+            }
 
-                if (isset($parsedDocBlock['tags']['see'])) {
-                    $this->parts['methods']['@'][$method->getShortName()]['tags']['see'] = array_unique(array_merge(
-                        $this->parts['methods']['@'][$method->getShortName()]['tags']['see'],
-                        $parsedDocBlock['tags']['see'],
-                    ));
-                }
+            if (isset($parsedDocBlock['tags']['see'])) {
+                $this->parts['methods']['@'][$method->getShortName()]['tags']['see'] = array_unique(array_merge(
+                    $this->parts['methods']['@'][$method->getShortName()]['tags']['see'],
+                    $parsedDocBlock['tags']['see'],
+                ));
             }
         }
     }
@@ -286,7 +290,7 @@ class BuilderParser
      *
      * @throws LogicException
      */
-    private function parsePhpDoc(string $rawPhpDoc)
+    private function parsePhpDoc(string $rawPhpDoc): array
     {
         $lines = preg_split("/\r\n|\n|\r/", trim($rawPhpDoc, "/** \t\n\r"));
 

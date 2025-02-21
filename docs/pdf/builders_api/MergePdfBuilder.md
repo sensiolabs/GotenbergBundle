@@ -16,6 +16,8 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
+* `files(string $paths)`:
+
 * `metadata(array $metadata)`:
 Resets the metadata.
 

@@ -7,12 +7,13 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Part\DataPart;
 
+/**
+ * @package Behavior\\Chromium\\Cookie
+ */
 trait CookieAwareTrait
 {
     /**
      * Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
-     *
-     * @package Behavior\\Chromium\\Cookie
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
      *
@@ -48,8 +49,6 @@ trait CookieAwareTrait
     }
 
     /**
-     * @package Behavior\\Chromium\\Cookie
-     *
      * @param Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null} $cookie
      */
     abstract public function setCookie(string $key, Cookie|array $cookie): static;
@@ -68,8 +67,6 @@ trait CookieAwareTrait
 
     /**
      * Add cookies to store in the Chromium cookie jar.
-     *
-     * @package Behavior\\Chromium\\Cookie
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
      *
@@ -118,9 +115,6 @@ trait CookieAwareTrait
         ]);
     }
 
-    /**
-     * @package Behavior\\Chromium\\Cookie
-     */
     abstract public function forwardCookie(string $name): static;
 
     /**

@@ -107,6 +107,8 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
 
+* `skipNetworkIdleEvent(bool $bool)`:
+
 * `userAgent(string $userAgent)`:
 Override the default User-Agent HTTP header. (default None).
 

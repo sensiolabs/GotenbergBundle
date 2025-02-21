@@ -11,6 +11,8 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
+* `files(string $paths)`:
+
 * `pdfFormat(Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
 Convert the resulting PDF into the given PDF/A format.
 

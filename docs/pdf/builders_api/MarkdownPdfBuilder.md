@@ -68,6 +68,8 @@ exceptions load at least one resource. (default false).
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#network-errors-chromium](https://gotenberg.dev/docs/routes#network-errors-chromium)
 
+* `files(string $paths)`:
+
 * `footer(string $template, array $context)`:
 
 * `footerFile(string $path)`:
@@ -89,6 +91,14 @@ Sets the paper orientation to landscape. (Default false).
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
+
+* `marginBottom(float $bottom, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
+
+* `marginLeft(float $left, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
+
+* `marginRight(float $right, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
+
+* `marginTop(float $top, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 
 * `margins(float $top, float $bottom, float $left, float $right, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 Overrides the default margins (e.g., 0.39), in inches.
@@ -116,6 +126,8 @@ transparency. (Default false).
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
+* `paperHeight(float $height, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
+
 * `paperSize(float $width, float $height, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 Overrides the default paper size, in inches.
 
@@ -135,6 +147,10 @@ A6 - 4.13 x 5.83
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
+
+* `paperStandardSize(Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface $paperSize)`:
+
+* `paperWidth(float $width, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 
 * `pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
 Sets the PDF format of the resulting PDF. (default None).
@@ -164,6 +180,8 @@ The scale of the page rendering (e.g., 1.0). (Default 1.0).
 Define whether to print the entire content in one single page.
 
 If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
+
+* `skipNetworkIdleEvent(bool $bool)`:
 
 * `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
 Either intervals or pages. (default None).
