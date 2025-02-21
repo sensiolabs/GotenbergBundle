@@ -15,7 +15,6 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 
 * `files(string $paths)`:
 
-
 * `pdfFormat(Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
 
 Convert the resulting PDF into the given PDF/A format.

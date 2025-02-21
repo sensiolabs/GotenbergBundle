@@ -25,7 +25,6 @@ Define whether to clip the screenshot according to the device dimensions. (Defau
 
 * `content(string $template, array $context)`:
 
-
 * `contentFile(string $path)`:
 
 The HTML file to convert into Screenshot.
@@ -128,7 +127,6 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).
 
 * `skipNetworkIdleEvent(bool $bool)`:
 
-
 * `userAgent(string $userAgent)`:
 
 Override the default User-Agent HTTP header. (default None).
@@ -191,7 +189,5 @@ Add cookies to store in the Chromium cookie jar.
 
 * `forwardCookie(string $name)`:
 
-
 * `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
-
 

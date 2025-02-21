@@ -17,7 +17,6 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 
 * `files(string $paths)`:
 
-
 * `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
 
 Either intervals or pages. (default None).

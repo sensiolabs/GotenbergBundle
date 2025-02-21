@@ -121,12 +121,9 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).
 
 * `route(string $name, array $parameters)`:
 
-
 * `setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)`:
 
-
 * `skipNetworkIdleEvent(bool $bool)`:
-
 
 * `url(string $url)`:
 
@@ -194,7 +191,5 @@ Add cookies to store in the Chromium cookie jar.
 
 * `forwardCookie(string $name)`:
 
-
 * `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
-
 

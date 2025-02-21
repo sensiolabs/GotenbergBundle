@@ -82,9 +82,7 @@ exceptions load at least one resource. (default false).
 
 * `files(string $paths)`:
 
-
 * `footer(string $template, array $context)`:
-
 
 * `footerFile(string $path)`:
 
@@ -99,7 +97,6 @@ Define whether the document outline should be embedded into the PDF. (Default fa
 
 * `header(string $template, array $context)`:
 
-
 * `headerFile(string $path)`:
 
 HTML file containing the header. (default None).
@@ -113,15 +110,11 @@ Sets the paper orientation to landscape. (Default false).
 
 * `marginBottom(float $bottom, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 
-
 * `marginLeft(float $left, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
-
 
 * `marginRight(float $right, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 
-
 * `marginTop(float $top, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
-
 
 * `margins(float $top, float $bottom, float $left, float $right, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 
@@ -155,7 +148,6 @@ transparency. (Default false).
 
 * `paperHeight(float $height, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 
-
 * `paperSize(float $width, float $height, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
 
 Overrides the default paper size, in inches.
@@ -179,9 +171,7 @@ A6 - 4.13 x 5.83
 
 * `paperStandardSize(Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface $paperSize)`:
 
-
 * `paperWidth(float $width, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)`:
-
 
 * `pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
 
@@ -219,7 +209,6 @@ Define whether to print the entire content in one single page.
 If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
 
 * `skipNetworkIdleEvent(bool $bool)`:
-
 
 * `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
 
@@ -307,7 +296,5 @@ Cookies to store in the Chromium cookie jar. (overrides any previous cookies).
 
 * `forwardCookie(string $name)`:
 
-
 * `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
-
 

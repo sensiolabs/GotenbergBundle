@@ -88,7 +88,6 @@ exceptions load at least one resource. (default false).
 
 * `files(string $paths)`:
 
-
 * `format(Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat $format)`:
 
 The image compression format, either "png", "jpeg" or "webp". (default png).
@@ -126,7 +125,6 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).
 > See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
 
 * `skipNetworkIdleEvent(bool $bool)`:
-
 
 * `userAgent(string $userAgent)`:
 
@@ -198,7 +196,5 @@ Add cookies to store in the Chromium cookie jar.
 
 * `forwardCookie(string $name)`:
 
-
 * `setCookie(string $key, Symfony\Component\HttpFoundation\Cookie|array $cookie)`:
-
 

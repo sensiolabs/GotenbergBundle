@@ -21,7 +21,6 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 
 * `files(string $paths)`:
 
-
 * `metadata(array $metadata)`:
 
 Resets the metadata.
