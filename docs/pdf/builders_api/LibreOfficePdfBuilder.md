@@ -83,7 +83,7 @@ Merge alphanumerically the resulting PDFs.
 
 * `metadata(array $metadata)`:
 
-Resets the metadata.
+Resets the metadata.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#metadata-chromium](https://gotenberg.dev/docs/routes#metadata-chromium)
@@ -91,11 +91,7 @@ Resets the metadata.
 
 * `nativePageRanges(string $range)`:
 
-Page ranges to print, e.g., '1-4' - empty means all pages.
-
-
-
-If multiple files are provided, the page ranges will be applied independently to each file.
+Page ranges to print, e.g., '1-4' - empty means all pages.<br /><br />If multiple files are provided, the page ranges will be applied independently to each file.
 
 * `password(string $password)`:
 
@@ -111,7 +107,7 @@ Enable PDF for Universal Access for optimal accessibility.
 
 * `quality(int $quality)`:
 
-Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.
+Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.<br />
 
 * `reduceImageResolution(bool $bool)`:
 
@@ -127,30 +123,28 @@ Specify that automatically inserted empty pages are suppressed. This option is a
 
 * `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
 
-Either intervals or pages. (default None).
+Either intervals or pages. (default None).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 * `splitSpan(string $splitSpan)`:
 
-Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
+Either the intervals or the page ranges to extract, depending on the selected mode. (default None).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 * `splitUnify(bool $bool)`:
 
-Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
+Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 * `errorWebhookUrl(?string $url, ?string $method)`:
 
-Sets the webhook for cases of error.
-
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+Sets the webhook for cases of error.<br />Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
@@ -161,13 +155,11 @@ Providing an existing $name from the configuration file, it will correctly set b
 
 * `webhookExtraHeaders(array $extraHeaders)`:
 
-Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
+Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.<br />
 
 * `webhookUrl(string $url, ?string $method)`:
 
-Sets the webhook for cases of success.
-
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+Sets the webhook for cases of success.<br />Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
