@@ -7,6 +7,7 @@ Adds a file, like an image, font, stylesheet, and so on.
 * `addExtraHttpHeaders(array $headers)`:
 
 Adds extra HTTP headers that Chromium will send when loading the HTML
+
 document. (default None).
 
 > [!TIP]
@@ -38,6 +39,7 @@ Forces Chromium to emulate, either "screen" or "print". (default "print").
 * `extraHttpHeaders(array $headers)`:
 
 Sets extra HTTP headers that Chromium will send when loading the HTML
+
 document. (default None). (overrides any previous headers).
 
 > [!TIP]
@@ -46,6 +48,7 @@ document. (default None). (overrides any previous headers).
 * `failOnConsoleExceptions(bool $bool)`:
 
 Forces GotenbergScreenshot to return a 409 Conflict response if there are
+
 exceptions in the Chromium console. (default false).
 
 > [!TIP]
@@ -54,6 +57,7 @@ exceptions in the Chromium console. (default false).
 * `failOnHttpStatusCodes(array $statusCodes)`:
 
 Return a 409 Conflict response if the HTTP status code from
+
 the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
 
 > [!TIP]
@@ -62,6 +66,7 @@ the main page is not acceptable. (default [499,599]). (overrides any previous co
 * `failOnResourceHttpStatusCodes(array $statusCodes)`:
 
 Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.
+
 (default None). (overrides any previous configuration).
 
 > [!TIP]
@@ -70,6 +75,7 @@ Return a 409 Conflict response if the HTTP status code from at least one resourc
 * `failOnResourceLoadingFailed(bool $bool)`:
 
 Forces GotenbergScreenshot to return a 409 Conflict response if there are
+
 exceptions load at least one resource. (default false).
 
 > [!TIP]
@@ -92,6 +98,7 @@ The device screen width in pixels. (Default 600).
 * `omitBackground(bool $bool)`:
 
 Hides default white background and allows generating screenshot with
+
 transparency. (Default false).
 
 > [!TIP]
@@ -131,6 +138,7 @@ Override the default User-Agent HTTP header. (default None).
 * `waitDelay(string $delay)`:
 
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML
+
 document before converting it to screenshot. (default None).
 
 > [!TIP]
@@ -139,7 +147,10 @@ document before converting it to screenshot. (default None).
 * `waitForExpression(string $expression)`:
 
 Sets the JavaScript expression to wait before converting an HTML
+
 document to screenshot until it returns true. (default None).
+
+
 
 For instance: "window.status === 'ready'".
 
@@ -156,6 +167,7 @@ The device screen width in pixels. (Default 800).
 * `errorWebhookUrl(?string $url, ?string $method)`:
 
 Sets the webhook for cases of error.
+
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
 > [!TIP]
@@ -172,6 +184,7 @@ Extra headers that will be provided to the webhook endpoint. May it either be Su
 * `webhookUrl(string $url, ?string $method)`:
 
 Sets the webhook for cases of success.
+
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
 > [!TIP]

@@ -123,7 +123,7 @@ class BuilderParser
     public function extract(): string
     {
         $markdown = "# {$this->name}\n\n";
-        $renderDescription = static fn (array $parts) => trim(implode("\n", $parts), "\ \n\r\t\v\0");
+        $renderDescription = static fn (array $parts) => trim(implode("\n\n", $parts), "\ \n\r\t\v\0");
 
         /**
          * @param list<string> $seeList

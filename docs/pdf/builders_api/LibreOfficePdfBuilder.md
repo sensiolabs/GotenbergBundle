@@ -93,6 +93,8 @@ Resets the metadata.
 
 Page ranges to print, e.g., '1-4' - empty means all pages.
 
+
+
 If multiple files are provided, the page ranges will be applied independently to each file.
 
 * `password(string $password)`:
@@ -147,6 +149,7 @@ Specify whether to put extracted pages into a single file or as many files as th
 * `errorWebhookUrl(?string $url, ?string $method)`:
 
 Sets the webhook for cases of error.
+
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
 > [!TIP]
@@ -163,6 +166,7 @@ Extra headers that will be provided to the webhook endpoint. May it either be Su
 * `webhookUrl(string $url, ?string $method)`:
 
 Sets the webhook for cases of success.
+
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
 > [!TIP]

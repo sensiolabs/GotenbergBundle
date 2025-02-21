@@ -32,6 +32,7 @@ Enable PDF for Universal Access for optimal accessibility.
 * `errorWebhookUrl(?string $url, ?string $method)`:
 
 Sets the webhook for cases of error.
+
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
 > [!TIP]
@@ -48,6 +49,7 @@ Extra headers that will be provided to the webhook endpoint. May it either be Su
 * `webhookUrl(string $url, ?string $method)`:
 
 Sets the webhook for cases of success.
+
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
 > [!TIP]

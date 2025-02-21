@@ -7,6 +7,7 @@ Adds a file, like an image, font, stylesheet, and so on.
 * `addExtraHttpHeaders(array $headers)`:
 
 Adds extra HTTP headers that Chromium will send when loading the HTML
+
 document. (default None).
 
 > [!TIP]
@@ -41,6 +42,7 @@ Forces Chromium to emulate, either "screen" or "print". (default "print").
 * `extraHttpHeaders(array $headers)`:
 
 Sets extra HTTP headers that Chromium will send when loading the HTML
+
 document. (default None). (overrides any previous headers).
 
 > [!TIP]
@@ -49,6 +51,7 @@ document. (default None). (overrides any previous headers).
 * `failOnConsoleExceptions(bool $bool)`:
 
 Forces GotenbergPdf to return a 409 Conflict response if there are
+
 exceptions in the Chromium console. (default false).
 
 > [!TIP]
@@ -57,6 +60,7 @@ exceptions in the Chromium console. (default false).
 * `failOnHttpStatusCodes(array $statusCodes)`:
 
 Return a 409 Conflict response if the HTTP status code from
+
 the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
 
 > [!TIP]
@@ -65,6 +69,7 @@ the main page is not acceptable. (default [499,599]). (overrides any previous co
 * `failOnResourceHttpStatusCodes(array $statusCodes)`:
 
 Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.
+
 (default None). (overrides any previous configuration).
 
 > [!TIP]
@@ -73,6 +78,7 @@ Return a 409 Conflict response if the HTTP status code from at least one resourc
 * `failOnResourceLoadingFailed(bool $bool)`:
 
 Forces GotenbergScreenshot to return a 409 Conflict response if there are
+
 exceptions load at least one resource. (default false).
 
 > [!TIP]
@@ -137,6 +143,7 @@ Page ranges to print, e.g., '1-5, 8, 11-13'. (default All pages).
 * `omitBackground(bool $bool)`:
 
 Hides default white background and allows generating PDFs with
+
 transparency. (Default false).
 
 > [!TIP]
@@ -148,18 +155,32 @@ transparency. (Default false).
 
 Overrides the default paper size, in inches.
 
+
+
 Examples of paper size (width x height):
 
+
+
 Letter - 8.5 x 11 (default)
+
 Legal - 8.5 x 14
+
 Tabloid - 11 x 17
+
 Ledger - 17 x 11
+
 A0 - 33.1 x 46.8
+
 A1 - 23.4 x 33.1
+
 A2 - 16.54 x 23.4
+
 A3 - 11.7 x 16.54
+
 A4 - 8.27 x 11.7
+
 A5 - 5.83 x 8.27
+
 A6 - 4.13 x 5.83
 
 > [!TIP]
@@ -202,6 +223,8 @@ The scale of the page rendering (e.g., 1.0). (Default 1.0).
 
 Define whether to print the entire content in one single page.
 
+
+
 If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
 
 * `skipNetworkIdleEvent(bool $bool)`:
@@ -237,6 +260,7 @@ Override the default User-Agent HTTP header. (default None).
 * `waitDelay(string $delay)`:
 
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML
+
 document before converting it to PDF. (default None).
 
 > [!TIP]
@@ -245,7 +269,10 @@ document before converting it to PDF. (default None).
 * `waitForExpression(string $expression)`:
 
 Sets the JavaScript expression to wait before converting an HTML
+
 document to PDF until it returns true. (default None).
+
+
 
 For instance: "window.status === 'ready'".
 
@@ -255,6 +282,7 @@ For instance: "window.status === 'ready'".
 * `errorWebhookUrl(?string $url, ?string $method)`:
 
 Sets the webhook for cases of error.
+
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
 > [!TIP]
@@ -271,6 +299,7 @@ Extra headers that will be provided to the webhook endpoint. May it either be Su
 * `webhookUrl(string $url, ?string $method)`:
 
 Sets the webhook for cases of success.
+
 Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
 > [!TIP]
