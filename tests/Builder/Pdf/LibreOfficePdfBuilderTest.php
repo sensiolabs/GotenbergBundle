@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(LibreOfficePdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
@@ -19,7 +20,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 #[UsesClass(GotenbergFileResult::class)]
 final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
 {
-    private const OFFICE_DOCUMENTS_DIR = 'assets/office';
+    public const OFFICE_DOCUMENTS_DIR = 'assets/office';
 
     public function testEndpointIsCorrect(): void
     {
@@ -34,9 +35,42 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         ;
 
         $this->getLibreOfficePdfBuilder()
-            ->files(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx')
+            ->files(new \SplFileInfo(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx'))
             ->generate()
         ;
+    }
+
+    #[DataProvider('supportedFilePathsProvider')]
+    public function testSupportedFormat(mixed $supportedFilePath): void
+    {
+        $builder = $this->getLibreOfficePdfBuilder();
+        $builder
+            ->files($supportedFilePath)
+            ->pdfUniversalAccess()
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
+    }
+
+    /**
+     * @return array<list<string|\Stringable>>
+     */
+    public static function supportedFilePathsProvider(): array
+    {
+        return [
+            [self::OFFICE_DOCUMENTS_DIR.'/document.pdf'],
+            [new class implements \Stringable {
+                public function __toString(): string
+                {
+                    return LibreOfficePdfBuilderTest::OFFICE_DOCUMENTS_DIR.'/document.pdf';
+                }
+            }],
+            [new \SplFileInfo(self::OFFICE_DOCUMENTS_DIR.'/document.pdf')],
+        ];
     }
 
     public static function configurationIsCorrectlySetProvider(): \Generator

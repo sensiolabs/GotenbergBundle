@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(ConvertPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
@@ -19,7 +20,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 #[UsesClass(GotenbergFileResult::class)]
 final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
 {
-    private const PDF_DOCUMENTS_DIR = 'assets/pdf';
+    public const PDF_DOCUMENTS_DIR = 'assets/pdf';
 
     public function testEndpointIsCorrect(): void
     {
@@ -76,6 +77,39 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
         $this->expectExceptionMessage('At least "pdfa" or "pdfua" must be provided.');
 
         $builder->getMultipartFormData();
+    }
+
+    #[DataProvider('supportedFilePathsProvider')]
+    public function testSupportedFormat(mixed $supportedFilePath): void
+    {
+        $builder = $this->getConvertPdfBuilder();
+        $builder
+            ->files($supportedFilePath)
+            ->pdfUniversalAccess()
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
+    }
+
+    /**
+     * @return array<list<string|\Stringable>>
+     */
+    public static function supportedFilePathsProvider(): array
+    {
+        return [
+            [self::PDF_DOCUMENTS_DIR.'/document.pdf'],
+            [new class implements \Stringable {
+                public function __toString(): string
+                {
+                    return ConvertPdfBuilderTest::PDF_DOCUMENTS_DIR.'/document.pdf';
+                }
+            }],
+            [new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/document.pdf')],
+        ];
     }
 
     public function testRequiredPdfFile(): void

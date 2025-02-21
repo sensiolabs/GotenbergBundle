@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
@@ -13,6 +14,7 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(MarkdownScreenshotBuilder::class)]
 #[UsesClass(AbstractChromiumScreenshotBuilder::class)]
@@ -72,7 +74,7 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
     {
         $builder = $this->getMarkdownScreenshotBuilder();
         $builder
-            ->files('assets/file.md')
+            ->files(new \SplFileInfo('assets/file.md'))
         ;
 
         $this->expectException(MissingRequiredFieldException::class);
@@ -92,6 +94,38 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
         $this->expectExceptionMessage('At least one markdown file is required');
 
         $builder->getMultipartFormData();
+    }
+
+    #[DataProvider('supportedFilePathsProvider')]
+    public function testSupportedFormat(mixed $supportedFilePath): void
+    {
+        $builder = $this->getMarkdownScreenshotBuilder();
+        $builder
+            ->wrapperFile('files/wrapper.html')
+            ->files($supportedFilePath)
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $data[0]['files']);
+    }
+
+    /**
+     * @return array<list<string|\Stringable>>
+     */
+    public static function supportedFilePathsProvider(): array
+    {
+        return [
+            ['assets/file.md'],
+            [new class implements \Stringable {
+                public function __toString(): string
+                {
+                    return 'assets/file.md';
+                }
+            }],
+            [new \SplFileInfo('assets/file.md')],
+        ];
     }
 
     private function getMarkdownScreenshotBuilder(bool $twig = true): MarkdownScreenshotBuilder
