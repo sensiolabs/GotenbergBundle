@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Debug;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 
@@ -50,23 +51,23 @@ final class TraceableGotenbergScreenshot implements GotenbergScreenshotInterface
         return $traceableBuilder;
     }
 
-    //    /**
-    //     * @return UrlScreenshotBuilder|TraceableScreenshotBuilder
-    //     */
-    //    public function url(): ScreenshotBuilderInterface
-    //    {
-    //        /** @var UrlScreenshotBuilder|TraceableScreenshotBuilder $traceableBuilder */
-    //        $traceableBuilder = $this->inner->url();
-    //
-    //        if (!$traceableBuilder instanceof TraceableScreenshotBuilder) {
-    //            return $traceableBuilder;
-    //        }
-    //
-    //        $this->builders[] = ['url', $traceableBuilder];
-    //
-    //        return $traceableBuilder;
-    //    }
-    //
+    /**
+     * @return UrlScreenshotBuilder|TraceableBuilder
+     */
+    public function url(): BuilderInterface
+    {
+        /** @var UrlScreenshotBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->url();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['url', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
     /**
      * @return MarkdownScreenshotBuilder|TraceableBuilder
      */

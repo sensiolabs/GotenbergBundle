@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
@@ -44,6 +45,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
 
         $extension->registerBuilder('screenshot', HtmlScreenshotBuilder::class);
         $extension->registerBuilder('screenshot', MarkdownScreenshotBuilder::class);
+        $extension->registerBuilder('screenshot', UrlScreenshotBuilder::class);
 
         return $extension;
     }
@@ -263,34 +265,34 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'skip_network_idle_event' => true,
                     'download_from' => [],
                 ],
-            //                'url' => [
-            //                    'width' => 1000,
-            //                    'height' => 500,
-            //                    'clip' => true,
-            //                    'format' => 'jpeg',
-            //                    'quality' => 75,
-            //                    'omit_background' => false,
-            //                    'optimize_for_speed' => true,
-            //                    'wait_delay' => '5s',
-            //                    'wait_for_expression' => 'window.globalVar === "ready"',
-            //                    'emulated_media_type' => 'screen',
-            //                    'cookies' => [[
-            //                        'name' => 'cook_me',
-            //                        'value' => 'sensio',
-            //                        'domain' => 'sensiolabs.com',
-            //                        'path' => null,
-            //                        'secure' => null,
-            //                        'httpOnly' => null,
-            //                        'sameSite' => null,
-            //                    ]],
-            //                    'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-            //                    'fail_on_http_status_codes' => [401, 403],
-            //                    'fail_on_resource_http_status_codes' => [401, 403],
-            //                    'fail_on_resource_loading_failed' => false,
-            //                    'fail_on_console_exceptions' => false,
-            //                    'skip_network_idle_event' => true,
-            //                    'download_from' => [],
-            //                ],
+                'url' => [
+                    'width' => 1000,
+                    'height' => 500,
+                    'clip' => true,
+                    'format' => 'jpeg',
+                    'quality' => 75,
+                    'omit_background' => false,
+                    'optimize_for_speed' => true,
+                    'wait_delay' => '5s',
+                    'wait_for_expression' => 'window.globalVar === "ready"',
+                    'emulated_media_type' => 'screen',
+                    'cookies' => [[
+                        'name' => 'cook_me',
+                        'value' => 'sensio',
+                        'domain' => 'sensiolabs.com',
+                        'path' => null,
+                        'secure' => null,
+                        'httpOnly' => null,
+                        'sameSite' => null,
+                    ]],
+                    'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                    'fail_on_http_status_codes' => [401, 403],
+                    'fail_on_resource_http_status_codes' => [401, 403],
+                    'fail_on_resource_loading_failed' => false,
+                    'fail_on_console_exceptions' => false,
+                    'skip_network_idle_event' => true,
+                    'download_from' => [],
+                ],
                 'markdown' => [
                     'width' => 1000,
                     'height' => 500,
@@ -614,6 +616,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
      *                  'office': array<string, mixed>,
      *                  'merge': array<string, mixed>,
      *                  'convert': array<string, mixed>,
+     *                  'split': array<string, mixed>,
      *              },
      *              'screenshot': array{
      *                  'html': array<string, mixed>,
@@ -841,29 +844,29 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'fail_on_console_exceptions' => true,
                             'skip_network_idle_event' => true,
                         ],
-                    //                        'url' => [
-                    //                            'width' => 1000,
-                    //                            'height' => 500,
-                    //                            'clip' => true,
-                    //                            'format' => 'jpeg',
-                    //                            'quality' => 75,
-                    //                            'omit_background' => false,
-                    //                            'optimize_for_speed' => true,
-                    //                            'wait_delay' => '5s',
-                    //                            'wait_for_expression' => 'window.globalVar === "ready"',
-                    //                            'emulated_media_type' => 'screen',
-                    //                            'cookies' => [[
-                    //                                'name' => 'cook_me',
-                    //                                'value' => 'sensio',
-                    //                                'domain' => 'sensiolabs.com',
-                    //                            ]],
-                    //                            'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
-                    //                            'fail_on_http_status_codes' => [401, 403],
-                    //                            'fail_on_resource_http_status_codes' => [401, 403],
-                    //                            'fail_on_resource_loading_failed' => false,
-                    //                            'fail_on_console_exceptions' => false,
-                    //                            'skip_network_idle_event' => true,
-                    //                        ],
+                        'url' => [
+                            'width' => 1000,
+                            'height' => 500,
+                            'clip' => true,
+                            'format' => 'jpeg',
+                            'quality' => 75,
+                            'omit_background' => false,
+                            'optimize_for_speed' => true,
+                            'wait_delay' => '5s',
+                            'wait_for_expression' => 'window.globalVar === "ready"',
+                            'emulated_media_type' => 'screen',
+                            'cookies' => [[
+                                'name' => 'cook_me',
+                                'value' => 'sensio',
+                                'domain' => 'sensiolabs.com',
+                            ]],
+                            'extra_http_headers' => ['MyHeader' => 'MyValue', 'User-Agent' => 'MyValue'],
+                            'fail_on_http_status_codes' => [401, 403],
+                            'fail_on_resource_http_status_codes' => [401, 403],
+                            'fail_on_resource_loading_failed' => false,
+                            'fail_on_console_exceptions' => false,
+                            'skip_network_idle_event' => true,
+                        ],
                         'markdown' => [
                             'width' => 1000,
                             'height' => 500,

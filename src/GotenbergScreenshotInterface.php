@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 
 interface GotenbergScreenshotInterface
 {
@@ -22,10 +23,10 @@ interface GotenbergScreenshotInterface
      */
     public function html(): BuilderInterface;
 
-    //    /**
-    //     * @return UrlScreenshotBuilder
-    //     */
-    //    public function url(): BuilderInterface;
+    /**
+     * @return UrlScreenshotBuilder
+     */
+    public function url(): BuilderInterface;
 
     /**
      * @return MarkdownScreenshotBuilder

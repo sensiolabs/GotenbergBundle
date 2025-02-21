@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 
 final class GotenbergScreenshot implements GotenbergScreenshotInterface
 {
@@ -39,11 +40,11 @@ final class GotenbergScreenshot implements GotenbergScreenshotInterface
         return $this->getInternal('html');
     }
 
-    //    public function url(): ScreenshotBuilderInterface
-    //    {
-    //        return $this->getInternal('url');
-    //    }
-    //
+    public function url(): BuilderInterface
+    {
+        return $this->getInternal('url');
+    }
+
     public function markdown(): BuilderInterface
     {
         return $this->getInternal('markdown');

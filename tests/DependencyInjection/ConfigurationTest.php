@@ -10,7 +10,11 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -19,7 +23,7 @@ use Symfony\Component\Config\Definition\Processor;
 final class ConfigurationTest extends TestCase
 {
     /**
-     * @param array<'pdf'|'screenshot', list<BuilderInterface>> $builders
+     * @param array<'pdf'|'screenshot', list<class-string<BuilderInterface>>> $builders
      */
     public static function getWithBuilders(array $builders): Configuration
     {
@@ -46,6 +50,12 @@ final class ConfigurationTest extends TestCase
                     MarkdownPdfBuilder::class,
                     MergePdfBuilder::class,
                     UrlPdfBuilder::class,
+                    SplitPdfBuilder::class
+                ],
+                'screenshot' => [
+                    HtmlScreenshotBuilder::class,
+                    MarkdownScreenshotBuilder::class,
+                    UrlScreenshotBuilder::class,
                 ],
             ]),
             [[
@@ -375,77 +385,80 @@ final class ConfigurationTest extends TestCase
                         'pdf_universal_access' => null,
                         'download_from' => [],
                     ],
-                    //                    'split' => [
-                    //                        'split_mode' => null,
-                    //                        'split_span' => null,
-                    //                        'split_unify' => null,
-                    //                    ],
+                    'split' => [
+                        'split_mode' => null,
+                        'split_span' => null,
+                        'split_unify' => null,
+                        'pdf_universal_access' => null,
+                        'pdf_format' => null,
+                        'download_from' => [],
+                    ],
                 ],
-                //                'screenshot' => [
-                //                    'html' => [
-                //                        'width' => null,
-                //                        'height' => null,
-                //                        'clip' => null,
-                //                        'format' => null,
-                //                        'quality' => null,
-                //                        'omit_background' => null,
-                //                        'optimize_for_speed' => null,
-                //                        'wait_delay' => null,
-                //                        'wait_for_expression' => null,
-                //                        'emulated_media_type' => null,
-                //                        'cookies' => [],
-                //                        'user_agent' => null,
-                //                        'extra_http_headers' => [],
-                //                        'fail_on_http_status_codes' => [],
-                //                        'fail_on_resource_http_status_codes' => [],
-                //                        'fail_on_resource_loading_failed' => null,
-                //                        'fail_on_console_exceptions' => null,
-                //                        'skip_network_idle_event' => null,
-                //                        'download_from' => [],
-                //                    ],
-                //                    'url' => [
-                //                        'width' => null,
-                //                        'height' => null,
-                //                        'clip' => null,
-                //                        'format' => null,
-                //                        'quality' => null,
-                //                        'omit_background' => null,
-                //                        'optimize_for_speed' => null,
-                //                        'wait_delay' => null,
-                //                        'wait_for_expression' => null,
-                //                        'emulated_media_type' => null,
-                //                        'cookies' => [],
-                //                        'user_agent' => null,
-                //                        'extra_http_headers' => [],
-                //                        'fail_on_http_status_codes' => [],
-                //                        'fail_on_resource_http_status_codes' => [],
-                //                        'fail_on_resource_loading_failed' => null,
-                //                        'fail_on_console_exceptions' => null,
-                //                        'skip_network_idle_event' => null,
-                //                        'download_from' => [],
-                //                    ],
-                //                    'markdown' => [
-                //                        'width' => null,
-                //                        'height' => null,
-                //                        'clip' => null,
-                //                        'format' => null,
-                //                        'quality' => null,
-                //                        'omit_background' => null,
-                //                        'optimize_for_speed' => null,
-                //                        'wait_delay' => null,
-                //                        'wait_for_expression' => null,
-                //                        'emulated_media_type' => null,
-                //                        'cookies' => [],
-                //                        'user_agent' => null,
-                //                        'extra_http_headers' => [],
-                //                        'fail_on_http_status_codes' => [],
-                //                        'fail_on_resource_http_status_codes' => [],
-                //                        'fail_on_resource_loading_failed' => null,
-                //                        'fail_on_console_exceptions' => null,
-                //                        'skip_network_idle_event' => null,
-                //                        'download_from' => [],
-                //                    ],
-                //                ],
+                'screenshot' => [
+                    'html' => [
+                        'width' => null,
+                        'height' => null,
+                        'clip' => null,
+                        'format' => null,
+                        'quality' => null,
+                        'omit_background' => null,
+                        'optimize_for_speed' => null,
+                        'wait_delay' => null,
+                        'wait_for_expression' => null,
+                        'emulated_media_type' => null,
+                        'cookies' => [],
+                        'user_agent' => null,
+                        'extra_http_headers' => [],
+                        'fail_on_http_status_codes' => [],
+                        'fail_on_resource_http_status_codes' => [],
+                        'fail_on_resource_loading_failed' => null,
+                        'fail_on_console_exceptions' => null,
+                        'skip_network_idle_event' => null,
+                        'download_from' => [],
+                    ],
+                    'url' => [
+                        'width' => null,
+                        'height' => null,
+                        'clip' => null,
+                        'format' => null,
+                        'quality' => null,
+                        'omit_background' => null,
+                        'optimize_for_speed' => null,
+                        'wait_delay' => null,
+                        'wait_for_expression' => null,
+                        'emulated_media_type' => null,
+                        'cookies' => [],
+                        'user_agent' => null,
+                        'extra_http_headers' => [],
+                        'fail_on_http_status_codes' => [],
+                        'fail_on_resource_http_status_codes' => [],
+                        'fail_on_resource_loading_failed' => null,
+                        'fail_on_console_exceptions' => null,
+                        'skip_network_idle_event' => null,
+                        'download_from' => [],
+                    ],
+                    'markdown' => [
+                        'width' => null,
+                        'height' => null,
+                        'clip' => null,
+                        'format' => null,
+                        'quality' => null,
+                        'omit_background' => null,
+                        'optimize_for_speed' => null,
+                        'wait_delay' => null,
+                        'wait_for_expression' => null,
+                        'emulated_media_type' => null,
+                        'cookies' => [],
+                        'user_agent' => null,
+                        'extra_http_headers' => [],
+                        'fail_on_http_status_codes' => [],
+                        'fail_on_resource_http_status_codes' => [],
+                        'fail_on_resource_loading_failed' => null,
+                        'fail_on_console_exceptions' => null,
+                        'skip_network_idle_event' => null,
+                        'download_from' => [],
+                    ],
+                ],
             ],
         ];
     }
