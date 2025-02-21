@@ -29,14 +29,6 @@ Set whether to export the form fields or to use the inputted/selected content of
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
-* `errorWebhookUrl(?string $url, ?string $method)`:
-
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
 * `exportBookmarksToPdfDestination(bool $bool)`:
 
 Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
@@ -151,6 +143,14 @@ Specify whether to put extracted pages into a single file or as many files as th
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+
+* `errorWebhookUrl(?string $url, ?string $method)`:
+
+Sets the webhook for cases of error.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
 * `webhookConfiguration(string $name)`:
 

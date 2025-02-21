@@ -5,6 +5,9 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 
+/**
+ * @package Behavior\\Async
+ */
 trait AsyncBuilderTrait
 {
     use DefaultBuilderTrait;

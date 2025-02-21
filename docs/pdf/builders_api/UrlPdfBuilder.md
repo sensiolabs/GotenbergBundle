@@ -32,14 +32,6 @@ Forces Chromium to emulate, either "screen" or "print". (default "print").
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#console-exceptions](https://gotenberg.dev/docs/routes#console-exceptions)
 
-* `errorWebhookUrl(?string $url, ?string $method)`:
-
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
 * `extraHttpHeaders(array $headers)`:
 
 Sets extra HTTP headers that Chromium will send when loading the HTML
@@ -261,6 +253,14 @@ For instance: "window.status === 'ready'".
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering](https://gotenberg.dev/docs/routes#wait-before-rendering)
+
+* `errorWebhookUrl(?string $url, ?string $method)`:
+
+Sets the webhook for cases of error.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
 * `webhookConfiguration(string $name)`:
 

@@ -11,14 +11,6 @@ The metadata to write.
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
-* `errorWebhookUrl(?string $url, ?string $method)`:
-
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
 * `files(string $paths)`:
 
 * `metadata(array $metadata)`:
@@ -36,6 +28,14 @@ Convert the resulting PDF into the given PDF/A format.
 * `pdfUniversalAccess(bool $bool)`:
 
 Enable PDF for Universal Access for optimal accessibility.
+
+* `errorWebhookUrl(?string $url, ?string $method)`:
+
+Sets the webhook for cases of error.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
 * `webhookConfiguration(string $name)`:
 

@@ -7,14 +7,6 @@ Split `n` pdf files.
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
-* `errorWebhookUrl(?string $url, ?string $method)`:
-
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
 * `files(string $paths)`:
 
 * `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
@@ -37,6 +29,14 @@ Specify whether to put extracted pages into a single file or as many files as th
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#split-pdfs-route](https://gotenberg.dev/docs/routes#split-pdfs-route)
+
+* `errorWebhookUrl(?string $url, ?string $method)`:
+
+Sets the webhook for cases of error.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
 * `webhookConfiguration(string $name)`:
 

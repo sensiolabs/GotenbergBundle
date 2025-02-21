@@ -32,14 +32,6 @@ Forces Chromium to emulate, either "screen" or "print". (default "print").
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#console-exceptions](https://gotenberg.dev/docs/routes#console-exceptions)
 
-* `errorWebhookUrl(?string $url, ?string $method)`:
-
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
 * `extraHttpHeaders(array $headers)`:
 
 Sets extra HTTP headers that Chromium will send when loading the HTML
@@ -256,6 +248,22 @@ For instance: "window.status === 'ready'".
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering](https://gotenberg.dev/docs/routes#wait-before-rendering)
 
+* `wrapper(string $template, array $context)`:
+
+The HTML file that wraps the markdown content, rendered from a Twig template.
+
+* `wrapperFile(string $path)`:
+
+The HTML file that wraps the markdown content.
+
+* `errorWebhookUrl(?string $url, ?string $method)`:
+
+Sets the webhook for cases of error.
+Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 * `webhookConfiguration(string $name)`:
 
 Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
@@ -271,14 +279,6 @@ Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-* `wrapper(string $template, array $context)`:
-
-The HTML file that wraps the markdown content, rendered from a Twig template.
-
-* `wrapperFile(string $path)`:
-
-The HTML file that wraps the markdown content.
 
 * `addCookies(array $cookies)`:
 
