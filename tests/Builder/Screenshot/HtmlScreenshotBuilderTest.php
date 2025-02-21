@@ -5,10 +5,15 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumScreenshotTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 use Symfony\Component\DependencyInjection\Container;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\RuntimeLoader\RuntimeLoaderInterface;
 
 /**
  * @extends GotenbergBuilderTestCase<HtmlScreenshotBuilder>
@@ -47,70 +52,54 @@ final class HtmlScreenshotBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'test');
     }
 
-    //    public static function withPlainContentFileProvider(): \Generator
-    //    {
-    //        yield 'with twig' => [true];
-    //        yield 'without twig' => [false];
-    //    }
-    //
-    //    #[DataProvider('withPlainContentFileProvider')]
-    //    public function testWithPlainContentFile(bool $withTwig): void
-    //    {
-    //        $builder = $this->getHtmlScreenshotBuilder($withTwig);
-    //        $builder->contentFile('files/content.html');
-    //
-    //        $data = $builder->getMultipartFormData()[0];
-    //
-    //        $expected = <<<HTML
-    //        <!DOCTYPE html>
-    //        <html lang="en">
-    //            <head>
-    //                <meta charset="utf-8" />
-    //                <title>My PDF</title>
-    //            </head>
-    //            <body>
-    //                <h1>Hello world!</h1>
-    //                <img src="logo.png" />
-    //            </body>
-    //        </html>
-    //
-    //        HTML;
-    //
-    //        self::assertFile($data, 'index.html', expectedContent: $expected);
-    //    }
-    //
-    //    public function testWithTwigContentFile(): void
-    //    {
-    //        $builder = $this->getHtmlScreenshotBuilder();
-    //        $builder->content('templates/content.html.twig', ['name' => 'world']);
-    //
-    //        $data = $builder->getMultipartFormData()[0];
-    //
-    //        $expected = <<<HTML
-    //        <!DOCTYPE html>
-    //        <html lang="en">
-    //            <head>
-    //                <meta charset="utf-8" />
-    //                <title>My PDF</title>
-    //            </head>
-    //            <body>
-    //                <h1>Hello world!</h1>
-    //                <img src="logo.png" />
-    //            </body>
-    //        </html>
-    //
-    //        HTML;
-    //
-    //        self::assertFile($data, 'index.html', expectedContent: $expected);
-    //    }
-    //
-    //    public function testRequiredFormData(): void
-    //    {
-    //        $builder = $this->getHtmlScreenshotBuilder();
-    //
-    //        $this->expectException(MissingRequiredFieldException::class);
-    //        $this->expectExceptionMessage('Content is required');
-    //
-    //        $builder->getMultipartFormData();
-    //    }
+
+    public function testWithTwigContentFile(): void
+    {
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
+            'strict_variables' => true,
+        ]);
+
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load(string $class): object|null
+            {
+                return GotenbergAssetRuntime::class === $class ? new GotenbergAssetRuntime() : null;
+            }
+        });
+
+        $this->dependencies->set('twig', $twig);
+
+        $this->getBuilder()
+            ->content('templates/content.html.twig', ['name' => 'world'])
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/chromium/screenshot/html');
+
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF</title>
+            </head>
+            <body>
+                <h1>Hello world!</h1>
+                <img src="logo.png" />
+            </body>
+        </html>
+
+        HTML;
+
+        $this->assertContentFile('index.html', 'text/html', $expected);
+    }
+
+    public function testRequiredFormData(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('Content is required');
+
+        $this->getBuilder()
+            ->generate()
+        ;
+    }
 }
