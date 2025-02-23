@@ -186,14 +186,16 @@ class BuilderParser
             ksort($methods);
 
             foreach ($methods as $methodName => $parts) {
-                $markdown .= "* `{$this->methodsSignature[$methodName]}`:\n";
+//                $markdown .= "* `{$this->methodsSignature[$methodName]}`:\n";
+                $markdown .= '<details>';
+                $markdown .= "<summary>`{$this->methodsSignature[$methodName]}`</summary>";
 
                 $renderedParts =  $renderParts($parts);
                 if ('' !== $renderedParts) {
                     $markdown .= "\n{$renderedParts}";
                 }
 
-                $markdown .= "\n";
+                $markdown .= '</details>';
             }
         }
 
