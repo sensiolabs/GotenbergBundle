@@ -26,7 +26,7 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use DownloadFromTestCaseTrait<SplitPdfBuilder> */
     use DownloadFromTestCaseTrait;
 
-    /** @use FlattenTestCaseTrait<MergePdfBuilder> */
+    /** @use FlattenTestCaseTrait<SplitPdfBuilder> */
     use FlattenTestCaseTrait;
 
     /** @use MetadataTestCaseTrait<SplitPdfBuilder> */

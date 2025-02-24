@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Debug;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -153,6 +154,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['split', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return FlattenPdfBuilder|TraceableBuilder
+     */
+    public function flatten(): BuilderInterface
+    {
+        /** @var FlattenPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->flatten();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['flatten', $traceableBuilder];
 
         return $traceableBuilder;
     }

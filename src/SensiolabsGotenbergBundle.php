@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle;
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -30,6 +31,7 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension = $container->getExtension('sensiolabs_gotenberg');
 
         $extension->registerBuilder('pdf', ConvertPdfBuilder::class);
+        $extension->registerBuilder('pdf', FlattenPdfBuilder::class);
         $extension->registerBuilder('pdf', HtmlPdfBuilder::class);
         $extension->registerBuilder('pdf', LibreOfficePdfBuilder::class);
         $extension->registerBuilder('pdf', MarkdownPdfBuilder::class);

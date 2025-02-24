@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -56,4 +57,9 @@ interface GotenbergPdfInterface
      * @return SplitPdfBuilder
      */
     public function split(): BuilderInterface;
+
+    /**
+     * @return FlattenPdfBuilder
+     */
+    public function flatten(): BuilderInterface;
 }
