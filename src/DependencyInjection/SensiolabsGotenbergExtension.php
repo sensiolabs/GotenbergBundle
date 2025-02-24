@@ -160,16 +160,29 @@ class SensiolabsGotenbergExtension extends Extension
 
     /**
      * @param array<string, WebhookConfiguration> $webhookConfig
-     * @param array<string, mixed> $serviceConfig
+     * @param array<string, mixed>                $serviceConfig
      *
      * @return array<string, mixed>
      */
     private function processWebhookOptions(array $webhookConfig, string|null $webhookDefaultConfigName, array $serviceConfig): array
     {
-        $serviceWebhookConfig = isset($serviceConfig['webhook']) && \is_array($serviceConfig['webhook']) ? $serviceConfig['webhook'] : [];
-        $webhookConfigName = isset($serviceConfig['webhook']) && \is_string($serviceConfig['webhook']) ? $serviceConfig['webhook'] : $webhookDefaultConfigName;
+        $serviceWebhookConfig = [];
+        $serviceWebhookConfigName = null;
+        if (isset($serviceConfig['webhook'])) {
+            if (\is_array($serviceConfig['webhook'])) {
+                $serviceWebhookConfig = $serviceConfig['webhook'];
 
-        $defaultConfig = \is_string($webhookConfigName) ? $webhookConfig[$webhookConfigName] : [];
+                /** @var string|null $serviceWebhookConfigName */
+                $serviceWebhookConfigName = $serviceConfig['webhook']['config_name'] ?? null;
+            }
+
+            if (\is_string($serviceConfig['webhook'])) {
+                $serviceWebhookConfigName = $serviceConfig['webhook'];
+            }
+        }
+
+        $webhookConfigName = $serviceWebhookConfigName ?? $webhookDefaultConfigName;
+        $defaultConfig = $webhookConfig[$webhookConfigName] ?? [];
 
         $serviceConfig['webhook'] = array_merge($defaultConfig, $serviceWebhookConfig);
 

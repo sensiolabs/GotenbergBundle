@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
@@ -19,10 +19,12 @@ use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\Reference;
 
-final class SensiolabsGotenbergExtensionTest extends TestCase
+final class SensiolabsGotenbergExtensionTest extends KernelTestCase
 {
     private function getContainerBuilder(bool $kernelDebug = false): ContainerBuilder
     {
@@ -485,7 +487,91 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
         ], $dataCollectorOptions);
     }
 
-    public function testBuilderWebhookConfiguredWithValidConfiguration(): void
+    /**
+     * @return iterable<string, array<array-key, string|array<string, mixed>>>
+     */
+    public static function provideExpectedWebhookConfiguration(): iterable
+    {
+        yield 'for HtmlPdfBuilder' => [
+            '.sensiolabs_gotenberg.pdf_builder.html',
+            [
+                'webhook' => [
+                    'config_name' => 'bar',
+                ],
+            ],
+        ];
+        yield 'for UrlPdfBuilder' => [
+            '.sensiolabs_gotenberg.pdf_builder.url',
+            [
+                'webhook' => [
+                    'config_name' => 'baz',
+                    'success' => [
+                        'route' => [
+                            'array_route', [
+                                'param1', 'param2',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'for MarkdownPdfBuilder' => [
+            '.sensiolabs_gotenberg.pdf_builder.markdown',
+            [
+                'webhook' => [
+                    'success' => [
+                        'url' => 'https://sensiolabs.com/webhook-on-the-fly',
+                    ],
+                    'error' => ['route' => ['simple_route']],
+                ],
+            ],
+        ];
+        yield 'for HtmlScreenshotBuilder' => [
+            '.sensiolabs_gotenberg.screenshot_builder.html',
+            [
+                'webhook' => [
+                    'config_name' => 'foo',
+                    'success' => [
+                        'url' => 'https://sensiolabs.com/webhook',
+                    ],
+                    'error' => [
+                        'route' => [
+                            'simple_route',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'for UrlScreenshotBuilder' => [
+            '.sensiolabs_gotenberg.screenshot_builder.url',
+            [
+                'webhook' => [
+                    'config_name' => 'bar',
+                ],
+            ],
+        ];
+        yield 'for MarkdownScreenshotBuilder' => [
+            '.sensiolabs_gotenberg.screenshot_builder.markdown',
+            [
+                'webhook' => [
+                    'config_name' => 'baz',
+                    'success' => [
+                        'route' => [
+                            'array_route', [
+                                'param1', 'param2',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $expectedConfig
+     */
+    #[DataProvider('provideExpectedWebhookConfiguration')]
+    public function testBuilderWebhookConfiguredWithValidConfiguration(string $builderId, array $expectedConfig): void
     {
         $extension = $this->getExtension();
 
@@ -500,109 +586,27 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                 'webhook' => 'foo',
                 'pdf' => [
                     'html' => ['webhook' => ['config_name' => 'bar']],
-                    //                        'url' => ['webhook' => 'baz'],
-                    //                        'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
+                    'url' => ['webhook' => ['config_name' => 'baz']],
+                    'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
                 ],
-                //                    'screenshot' => [
-                //                        'html' => ['webhook' => 'foo'],
-                //                        'url' => ['webhook' => 'bar'],
-                //                        'markdown' => ['webhook' => 'baz'],
-                //                    ],
+                'screenshot' => [
+                    'html' => ['webhook' => ['config_name' => 'foo']],
+                    'url' => ['webhook' => ['config_name' => 'bar']],
+                    'markdown' => ['webhook' => ['config_name' => 'baz']],
+                ],
             ],
         ]], $containerBuilder);
 
-        $list = [
-            'pdf' => [
-                'html' => [
-                    'webhook' => [
-                        'config_name' => 'bar',
-                    ],
-                ],
-                //                'url' => [],
-                //                'markdown' => [],
-                'office' => [
-                    'webhook' => [
-                        'success' => [
-                            'url' => 'https://sensiolabs.com/webhook',
-                        ],
-                        'error' => [
-                            'route' => [
-                                'simple_route',
-                            ],
-                        ],
-                    ],
-                ],
-                'merge' => [
-                    'webhook' => [
-                        'success' => [
-                            'url' => 'https://sensiolabs.com/webhook',
-                        ],
-                        'error' => [
-                            'route' => [
-                                'simple_route',
-                            ],
-                        ],
-                    ],
-                ],
-                //                'convert' => [],
-            ],
-            //            'screenshot' => [
-            //                'html' => [],
-            //                'url' => [],
-            //                'markdown' => [],
-            //            ],
-        ];
+        $definition = $containerBuilder->getDefinition($builderId);
 
-        foreach ($list as $builderType => $builder) {
-            foreach ($builder as $builderName => $expectedConfig) {
-                $definition = $containerBuilder->getDefinition(".sensiolabs_gotenberg.{$builderType}_builder.{$builderName}");
+        /** @var array<array-key, mixed> $configurator */
+        $configurator = $definition->getConfigurator();
+        self::assertSame('sensiolabs_gotenberg.builder_configurator', (string) $configurator[0]);
 
-                /** @var array<array-key, mixed> $configurator */
-                $configurator = $definition->getConfigurator();
-                self::assertSame('sensiolabs_gotenberg.builder_configurator', (string) $configurator[0]);
-            }
-        }
+        $configuratorDefinition = $containerBuilder->getDefinition('sensiolabs_gotenberg.builder_configurator');
+        $values = $configuratorDefinition->getArguments()[1];
 
-        //            $webhookConfigurationRegistryDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
-        //            $methodCalls = $webhookConfigurationRegistryDefinition->getMethodCalls();
-        //            self::assertCount(3, $methodCalls);
-        //            foreach ($methodCalls as $methodCall) {
-        //                [$name, $arguments] = $methodCall;
-        //                self::assertSame('add', $name);
-        //                self::assertContains($arguments[0], ['foo', 'baz', '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration']);
-        //                self::assertSame(match ($arguments[0]) {
-        //                    'foo' => [
-        //                        'success' => [
-        //                            'url' => 'https://sensiolabs.com/webhook',
-        //                            'method' => null,
-        //                        ],
-        //                        'error' => [
-        //                            'route' => ['simple_route', []],
-        //                            'method' => null,
-        //                        ],
-        //                        'extra_http_headers' => [],
-        //                    ],
-        //                    'baz' => [
-        //                        'success' => [
-        //                            'route' => ['array_route', ['param1', 'param2']],
-        //                            'method' => null,
-        //                        ],
-        //                        'extra_http_headers' => [],
-        //                    ],
-        //                    '.sensiolabs_gotenberg.pdf_builder.markdown.webhook_configuration' => [
-        //                        'success' => [
-        //                            'url' => 'https://sensiolabs.com/webhook-on-the-fly',
-        //                            'method' => null,
-        //                        ],
-        //                        'error' => [
-        //                            'route' => ['simple_route', []],
-        //                            'method' => null,
-        //                        ],
-        //                        'extra_http_headers' => [],
-        //                    ],
-        //                    default => self::fail('Unexpected webhook configuration'),
-        //                }, $arguments[1], "Configuration mismatch for webhook '{$arguments[0]}'.");
-        //            }
+        self::assertEquals($values[$definition->getClass()], $expectedConfig);
     }
 
     /**
