@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
@@ -68,6 +69,16 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 
         $this->getBuilder()
             ->files('simple_pdf.pdf', 'b.png')
+            ->generate()
+        ;
+    }
+
+    public function testRequirementMissingFile(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one PDF file is required.');
+
+        $this->getBuilder()
             ->generate()
         ;
     }

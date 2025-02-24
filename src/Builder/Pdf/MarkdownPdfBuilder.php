@@ -42,12 +42,12 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
         return $this;
     }
 
-    public function content(): void
+    public function content(string $template, array $context = []): void
     {
         throw new \BadMethodCallException('Use wrapper() instead of content().');
     }
 
-    public function contentFile(): void
+    public function contentFile(string $path): void
     {
         throw new \BadMethodCallException('Use wrapperFile() instead of contentFile().');
     }

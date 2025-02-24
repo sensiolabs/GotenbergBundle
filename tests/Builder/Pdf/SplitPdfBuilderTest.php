@@ -119,4 +119,14 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
+
+    public function testRequirementMissingFile(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least one PDF file is required.');
+
+        $this->getBuilder()
+            ->generate()
+        ;
+    }
 }

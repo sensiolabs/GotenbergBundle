@@ -51,16 +51,16 @@ final class SplitPdfBuilder extends AbstractBuilder
 
     protected function validatePayloadBody(): void
     {
+        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('At least one PDF file is required.');
+        }
+
         if ($this->getBodyBag()->get('splitMode') === null) {
             throw new MissingRequiredFieldException('Field "splitMode" must be provided.');
         }
 
         if ($this->getBodyBag()->get('splitSpan') === null) {
             throw new MissingRequiredFieldException('Field "splitSpan" must be provided.');
-        }
-
-        if ($this->getBodyBag()->get('files') === null) {
-            throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
     }
 

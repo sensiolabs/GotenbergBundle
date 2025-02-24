@@ -36,4 +36,16 @@ trait PdfFormatTestCaseTrait
 
         $this->assertGotenbergFormData('pdfua', 'true');
     }
+
+    public function testUnsetPdfFormat(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->pdfFormat(PdfFormat::Pdf1b)
+        ;
+
+        self::assertArrayHasKey('pdfa', $builder->getBodyBag()->all());
+
+        $builder->pdfFormat(null);
+        self::assertArrayNotHasKey('pdfa', $builder->getBodyBag()->all());
+    }
 }

@@ -70,6 +70,28 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormData('url', 'https://example.com');
     }
 
+    public function testToGenerateWithRequestContext(): void
+    {
+        $routeCollection = new RouteCollection();
+        $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
+
+        $requestContext = new RequestContext();
+        $this->dependencies->set('router', new UrlGenerator($routeCollection, $requestContext));
+
+        $requestContext->setHost('example');
+
+        $this->getBuilder()
+            ->route('article_read', ['id' => 1])
+            ->setRequestContext($requestContext)
+            ->filename('article')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/chromium/convert/url');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'article');
+        $this->assertGotenbergFormData('url', 'http://example/article/1');
+    }
+
     public function testPdfGenerationFromAGivenRoute(): void
     {
         $routeCollection = new RouteCollection();
@@ -86,5 +108,18 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergEndpoint('/forms/chromium/convert/url');
         $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'article');
         $this->assertGotenbergFormData('url', 'http://localhost/article/1');
+    }
+
+    public function testRequirementAboutRouteAndUrlProvided(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('Provide only one of ["route", "url"] parameter. Not both.');
+
+        $this->getBuilder()
+            ->url('https://example.com')
+            ->route('article_read', ['id' => 1])
+            ->filename('test')
+            ->generate()
+        ;
     }
 }

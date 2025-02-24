@@ -46,4 +46,16 @@ trait SplitTestCaseTrait
 
         $this->assertGotenbergFormData('splitUnify', 'true');
     }
+
+    public function testUnsetSplitMode(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->splitMode(SplitMode::Pages)
+        ;
+
+        self::assertArrayHasKey('splitMode', $builder->getBodyBag()->all());
+
+        $builder->splitMode(null);
+        self::assertArrayNotHasKey('splitMode', $builder->getBodyBag()->all());
+    }
 }

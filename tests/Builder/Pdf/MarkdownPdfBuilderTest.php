@@ -107,4 +107,24 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
+
+    public function testToWrapWithContent(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Use wrapper() instead of content().');
+
+        $this->getBuilder()
+            ->content('templates/wrapper.html.twig', ['name' => 'John Doe'])
+        ;
+    }
+
+    public function testToWrapWithContentFile(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Use wrapperFile() instead of contentFile().');
+
+        $this->getBuilder()
+            ->contentFile('files/wrapper.html')
+        ;
+    }
 }

@@ -6,6 +6,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\LibreOfficeTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
@@ -61,6 +63,19 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('At least one office file is required.');
 
         $this->getBuilder()
+            ->generate()
+        ;
+    }
+
+    public function testSplitConfigurationRequirement(): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage('"splitUnify" can only be at "true" with "pages" mode for "splitMode".');
+
+        $this->getBuilder()
+            ->files('assets/office/document.odt')
+            ->splitMode(SplitMode::Intervals)
+            ->splitUnify()
             ->generate()
         ;
     }
