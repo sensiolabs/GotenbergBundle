@@ -21,10 +21,19 @@ require_once \dirname(__DIR__).'/vendor/autoload.php';
 
 class Summary
 {
+    /**
+     * @var array<string, array<string, ReflectionClass<PdfBuilderInterface|ScreenshotBuilderInterface>>>
+     */
     private array $builders = [];
 
+    /**
+     * @var array<string, string>
+     */
     private array $filenames = [];
 
+    /**
+     * @param ReflectionClass<PdfBuilderInterface|ScreenshotBuilderInterface> $class
+     */
     public function register(string $type, ReflectionClass $class): void
     {
         $this->builders[$type] ??= [];
@@ -58,7 +67,7 @@ class Summary
 }
 
 /**
- * @phpstan-type ParsedDocBlock array{package: string|null, description: list<string>, tags: array{param: array<string, array{type: string, description: string}>, see: list<string>, example: list<string>}
+ * @phpstan-type ParsedDocBlock array{package: string|null, description: list<string>, tags: array{param: array<string, array{type: string, description: string}>, see: list<string>, example: list<string>}}
  */
 class BuilderParser
 {
@@ -101,7 +110,9 @@ class BuilderParser
      *     'methods': array<string, array<string, ParsedDocBlock>>,
      * }
      */
-    private array $parts = [];
+    private array $parts = [
+        'methods' => [],
+    ];
 
     /**
      * @var array<string, string>
