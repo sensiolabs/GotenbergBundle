@@ -2,9 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
+use Monolog\Logger;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @template T of BuilderInterface
@@ -78,6 +81,18 @@ trait CookieTestCaseTrait
         $this->assertGotenbergFormData('cookies', '[{"name":"my_cookie","value":"value","domain":"symfony.com","path":"\/","secure":false,"httpOnly":true,"sameSite":"lax"}]');
     }
 
+    public function testToUnsetExistingCookie(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->setCookie('my_cookie', new Cookie('my_cookie', 'value', domain: 'symfony.com'))
+        ;
+
+        self::assertArrayHasKey('cookies', $builder->getBodyBag()->all());
+
+        $builder->cookies([]);
+        self::assertArrayNotHasKey('cookies', $builder->getBodyBag()->all());
+    }
+
     public function testSetCookieWithSimpleArray(): void
     {
         $this->getDefaultBuilder()
@@ -93,5 +108,62 @@ trait CookieTestCaseTrait
         ;
 
         $this->assertGotenbergFormData('cookies', '[{"name":"my_cookie","value":"symfony","domain":"symfony.com","secure":true,"httpOnly":true,"sameSite":"Lax"}]');
+    }
+
+    public function testToAddMultipleTimeTheSameCookie(): void
+    {
+        $cookie = new Cookie('my_cookie', 'value', domain: 'symfony.com');
+        $builder = $this->getDefaultBuilder()
+            ->setCookie('my_cookie', $cookie)
+        ;
+
+        self::assertArrayHasKey('cookies', $builder->getBodyBag()->all());
+
+        $builder->addCookies([$cookie]);
+        self::assertArrayHasKey('cookies', $builder->getBodyBag()->all());
+        self::assertCount(1, $builder->getBodyBag()->all()['cookies']);
+    }
+
+    public function testToForwardCookiesWithNoCurrentRequest(): void
+    {
+        $this->dependencies->set('request_stack', new RequestStack());
+        $this->dependencies->set('logger', new Logger('default'));
+
+        $builder = $this->getDefaultBuilder()
+            ->forwardCookie('my_cookie')
+        ;
+
+        self::assertArrayNotHasKey('cookies', $builder->getBodyBag()->all());
+    }
+
+    public function testToForwardCookiesWithCurrentRequest(): void
+    {
+        $request = new Request();
+        $request->setMethod('GET');
+        $request->cookies->set('my_cookie', new Cookie('my_cookie', 'value', domain: 'symfony.com'));
+
+        $this->dependencies->set('request_stack', new RequestStack([$request]));
+        $this->dependencies->set('logger', new Logger('default'));
+
+        $builder = $this->getDefaultBuilder()
+            ->forwardCookie('my_cookie')
+        ;
+
+        self::assertArrayHasKey('cookies', $builder->getBodyBag()->all());
+    }
+
+    public function testToForwardCookiesWithCurrentRequestWithoutCookies(): void
+    {
+        $request = new Request();
+        $request->setMethod('GET');
+
+        $this->dependencies->set('request_stack', new RequestStack([$request]));
+        $this->dependencies->set('logger', new Logger('default'));
+
+        $builder = $this->getDefaultBuilder()
+            ->forwardCookie('my_cookie')
+        ;
+
+        self::assertArrayNotHasKey('cookies', $builder->getBodyBag()->all());
     }
 }

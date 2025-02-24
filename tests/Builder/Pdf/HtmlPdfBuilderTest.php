@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
@@ -119,5 +120,123 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         HTML;
 
         $this->assertContentFile('index.html', 'text/html', $expected);
+    }
+
+    public function testWithTwigAndHeaderFooterParts(): void
+    {
+        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
+            'strict_variables' => true,
+        ]);
+
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load(string $class): object|null
+            {
+                return GotenbergAssetRuntime::class === $class ? new GotenbergAssetRuntime() : null;
+            }
+        });
+
+        $this->dependencies->set('twig', $twig);
+
+        $this->getBuilder()
+            ->header('templates/header.html.twig', ['name' => 'header'])
+            ->content('templates/content.html.twig', ['name' => 'world'])
+            ->footer('templates/footer.html.twig', ['name' => 'footer'])
+            ->generate()
+        ;
+
+        $expectedHeader = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My Header</title>
+            </head>
+            <body>
+                <h1>Hello header!</h1>
+            </body>
+        </html>
+
+        HTML;
+
+        $expectedContent = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF</title>
+            </head>
+            <body>
+                <h1>Hello world!</h1>
+                <img src="logo.png" />
+            </body>
+        </html>
+
+        HTML;
+
+        $expectedFooter = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My Footer</title>
+            </head>
+            <body>
+                <h1>Hello footer!</h1>
+            </body>
+        </html>
+
+        HTML;
+
+        $this->assertContentFile('header.html', 'text/html', $expectedHeader);
+        $this->assertContentFile('index.html', 'text/html', $expectedContent);
+        $this->assertContentFile('footer.html', 'text/html', $expectedFooter);
+    }
+
+    public function testFilesAsHeaderAndFooter(): void
+    {
+        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+
+        $this->getBuilder()
+            ->headerFile('files/header.html')
+            ->contentFile('files/content.html')
+            ->footerFile('files/footer.html')
+            ->filename('test')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/chromium/convert/html');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'test');
+
+        $this->assertContentFile('header.html');
+        $this->assertContentFile('index.html');
+        $this->assertContentFile('footer.html');
+    }
+
+    public function testWithInvalidTwigTemplate(): void
+    {
+        $this->expectException(PdfPartRenderingException::class);
+        $this->expectExceptionMessage('Could not render template "templates/invalid.html.twig" into PDF part "index.html". Unexpected character "!".');
+
+        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
+            'strict_variables' => true,
+        ]);
+
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load(string $class): object|null
+            {
+                return GotenbergAssetRuntime::class === $class ? new GotenbergAssetRuntime() : null;
+            }
+        });
+
+        $this->dependencies->set('twig', $twig);
+
+        $this->getBuilder()
+            ->content('templates/invalid.html.twig', ['name' => 'world'])
+            ->generate()
+        ;
     }
 }

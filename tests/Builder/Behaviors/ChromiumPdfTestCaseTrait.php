@@ -9,6 +9,9 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
  */
 trait ChromiumPdfTestCaseTrait
 {
+    /** @use Chromium\AssetTestCaseTrait<T> */
+    use Chromium\AssetTestCaseTrait;
+
     /** @use Chromium\CookieTestCaseTrait<T> */
     use Chromium\CookieTestCaseTrait;
 
