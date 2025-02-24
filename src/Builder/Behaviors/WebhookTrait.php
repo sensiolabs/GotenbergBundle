@@ -16,14 +16,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @see https://gotenberg.dev/docs/webhook.
  *
  * @phpstan-type WebhookConfiguration array{
- *     config_name: string,
+ *     config_name?: string,
  *     success?: array{
  *          url?: string,
- *          route?: string|array<array-key, array{0: string, 1?: array<string, mixed>}>,
- *          method: 'PUT'|'PATCH'|'POST'|null},
+ *          route?: string|array{0: string, 1?: array<string, mixed>},
+ *          method: 'PUT'|'PATCH'|'POST'|null
+ *      },
  *     error?: array{
  *          url?: string,
- *          route?: string|array<array-key, array{0: string, 1?: array<string, mixed>}>,
+ *          route?: string|array{0: string, 1?: array<string, mixed>},
  *          method: 'PUT'|'PATCH'|'POST'|null
  *      },
  *     extra_http_headers?: array<string, string>
@@ -62,7 +63,7 @@ trait WebhookTrait
             }
 
             if (\is_array($webhook['success']['route'])) {
-                $route = $webhook['success']['route'][0];
+                $route = $webhook['success']['route'];
                 $this->webhookRoute($route[0], $route[1] ?? [], $webhook['success']['method'] ?? null);
             }
         }
@@ -73,7 +74,7 @@ trait WebhookTrait
             }
 
             if (\is_array($webhook['error']['route'])) {
-                $route = $webhook['error']['route'][0];
+                $route = $webhook['error']['route'];
                 $this->webhookErrorRoute($route[0], $route[1] ?? [], $webhook['error']['method'] ?? null);
             }
         }
@@ -156,13 +157,25 @@ trait WebhookTrait
             throw new InvalidBuilderConfiguration('Invalid webhook configuration : At least a "success" key is required.');
         }
 
-        foreach (['success', 'error'] as $options) {
-            if (isset($webhook[$options]['url']) && isset($webhook[$options]['route'])) {
-                throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : You must provide "url" or "route" keys for "%s" configuration.', $options));
+        foreach (['success', 'error'] as $type) {
+            if (isset($webhook[$type]['url'], $webhook[$type]['route'])) {
+                throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : You must provide "url" or "route" keys for "%s" configuration.', $type));
             }
 
-            if (isset($webhook[$options]['method']) && !\in_array($webhook[$options]['method'], ['POST', 'PUT', 'PATCH'], true)) {
-                throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : "POST" "PUT", "PATCH" are the only available methods for "%s" configuration.', $options));
+            if (isset($webhook[$type]['method']) && !\in_array($webhook[$type]['method'], ['POST', 'PUT', 'PATCH'], true)) {
+                throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : "POST" "PUT", "PATCH" are the only available methods for "%s" configuration.', $type));
+            }
+
+            if (isset($webhook[$type]['route']) && \is_array($webhook[$type]['route'])) {
+                $route = $webhook[$type]['route'];
+
+                if (!\is_string($route[0])) {
+                    throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : You must provide a valid route name for "%s" configuration.', $type));
+                }
+
+                if (!\is_array($route[1] ?? [])) {
+                    throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : You must provide valid route parameters for "%s" configuration.', $type));
+                }
             }
         }
     }
