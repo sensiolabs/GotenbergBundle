@@ -50,7 +50,7 @@ final class ConfigurationTest extends TestCase
                     MarkdownPdfBuilder::class,
                     MergePdfBuilder::class,
                     UrlPdfBuilder::class,
-                    SplitPdfBuilder::class
+                    SplitPdfBuilder::class,
                 ],
                 'screenshot' => [
                     HtmlScreenshotBuilder::class,
@@ -374,11 +374,13 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'flatten' => null,
                     ],
                     'merge' => [
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
+                        'flatten' => null,
                     ],
                     'convert' => [
                         'pdf_format' => null,
@@ -392,6 +394,7 @@ final class ConfigurationTest extends TestCase
                         'pdf_universal_access' => null,
                         'pdf_format' => null,
                         'download_from' => [],
+                        'flatten' => null,
                     ],
                 ],
                 'screenshot' => [

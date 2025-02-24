@@ -12,6 +12,9 @@ trait LibreOfficeTestCaseTrait
     /** @use DownloadFromTestCaseTrait<T> */
     use DownloadFromTestCaseTrait;
 
+    /** @use FlattenTestCaseTrait<T> */
+    use FlattenTestCaseTrait;
+
     /** @use LibreOffice\PagePropertiesTestCaseTrait<T> */
     use LibreOffice\PagePropertiesTestCaseTrait;
 

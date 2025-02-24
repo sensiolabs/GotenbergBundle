@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
@@ -20,6 +21,9 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use DownloadFromTestCaseTrait<MergePdfBuilder> */
     use DownloadFromTestCaseTrait;
+
+    /** @use FlattenTestCaseTrait<MergePdfBuilder> */
+    use FlattenTestCaseTrait;
 
     /** @use MetadataTestCaseTrait<MergePdfBuilder> */
     use MetadataTestCaseTrait;
