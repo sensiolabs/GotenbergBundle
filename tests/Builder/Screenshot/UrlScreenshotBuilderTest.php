@@ -94,7 +94,7 @@ final class UrlScreenshotBuilderTest extends GotenbergBuilderTestCase
         $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
 
         $requestContext = new RequestContext();
-        $this->dependencies->set('router', new UrlGenerator($routeCollection, $requestContext));
+        $this->dependencies->set('router', new UrlGenerator($routeCollection, new RequestContext()));
 
         $requestContext->setHost('example');
 

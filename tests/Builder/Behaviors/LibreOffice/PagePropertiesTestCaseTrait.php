@@ -245,4 +245,16 @@ trait PagePropertiesTestCaseTrait
 
         $this->assertGotenbergFormData('maxImageResolution', ImageResolutionDPI::DPI150->value);
     }
+
+    public function testUnsetMaxImageResolution(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->maxImageResolution(ImageResolutionDPI::DPI150)
+        ;
+
+        self::assertArrayHasKey('maxImageResolution', $builder->getBodyBag()->all());
+
+        $builder->maxImageResolution(null);
+        self::assertArrayNotHasKey('maxImageResolution', $builder->getBodyBag()->all());
+    }
 }

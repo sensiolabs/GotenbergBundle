@@ -122,14 +122,6 @@ class NormalizerFactory
     }
 
     /**
-     * @return (\Closure(string, \Stringable): array<string, string>)
-     */
-    public static function stringable(): \Closure
-    {
-        return static fn (string $key, \Stringable $value) => [$key => (string) $value];
-    }
-
-    /**
      * @return (\Closure(string, RenderedPart|\SplFileInfo): array{files: DataPart})
      */
     public static function content(): \Closure

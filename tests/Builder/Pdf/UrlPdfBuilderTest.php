@@ -23,13 +23,6 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use ChromiumPdfTestCaseTrait<UrlPdfBuilder> */
     use ChromiumPdfTestCaseTrait;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
-    }
-
     protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): UrlPdfBuilder
     {
         return new UrlPdfBuilder($client, $dependencies);
@@ -40,6 +33,10 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
      */
     protected function initializeBuilder(BuilderInterface $builder, Container $container): UrlPdfBuilder
     {
+        if (!$this->dependencies->has('router')) {
+            $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+        }
+
         return $builder
             ->url('https://example.com')
         ;
@@ -119,6 +116,20 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
             ->url('https://example.com')
             ->route('article_read', ['id' => 1])
             ->filename('test')
+            ->generate()
+        ;
+    }
+
+    public function testUrlGeneratorDependencyRequirement(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('UrlGenerator is required to use "Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait::getUrlGenerator" method. Try to run "composer require symfony/routing".');
+
+        $routeCollection = new RouteCollection();
+        $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
+
+        $this->getBuilder()
+            ->route('article_read', ['id' => 1])
             ->generate()
         ;
     }

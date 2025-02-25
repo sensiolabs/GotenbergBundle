@@ -127,7 +127,6 @@ trait CookieTestCaseTrait
     public function testToForwardCookiesWithNoCurrentRequest(): void
     {
         $this->dependencies->set('request_stack', new RequestStack());
-        $this->dependencies->set('logger', new Logger('default'));
 
         $builder = $this->getDefaultBuilder()
             ->forwardCookie('my_cookie')
@@ -165,5 +164,15 @@ trait CookieTestCaseTrait
         ;
 
         self::assertArrayNotHasKey('cookies', $builder->getBodyBag()->all());
+    }
+
+    public function testRequestStackDependencyRequirementForForwardCookies(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('RequestStack is required to use "Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait::getCurrentRequest" method. Try to run "composer require symfony/http-foundation".');
+
+        $this->getDefaultBuilder()
+            ->forwardCookie('my_cookie')
+        ;
     }
 }

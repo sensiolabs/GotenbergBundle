@@ -5,7 +5,11 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Router;
+use function PHPUnit\Framework\assertArrayHasKey;
 
 /**
  * @template T of BuilderInterface
@@ -19,6 +23,8 @@ trait WebhookTestCaseTrait
 
     public function testAddFullWebhookConfiguration(): void
     {
+        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+
         $this->getDefaultBuilder()
             ->webhook([
                 'config_name' => 'my_config',
@@ -224,5 +230,48 @@ trait WebhookTestCaseTrait
             ->webhook($configuration)
             ->generate()
         ;
+    }
+
+    public function testUnsetWebhook(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->webhook([
+                'config_name' => 'my_config',
+                'success' => [
+                    'url' => 'http://example.com/success',
+                    'method' => 'PUT',
+                ],
+                'error' => [
+                    'url' => 'http://example.com/error',
+                    'method' => 'POST',
+                ],
+                'extra_http_headers' => [
+                    'my_header' => 'value',
+                ],
+            ])
+        ;
+
+        self::assertArrayHasKey('Gotenberg-Webhook-Url', $builder->getHeadersBag()->all());
+        self::assertSame('http://example.com/success', $builder->getHeadersBag()->get('Gotenberg-Webhook-Url'));
+
+        self::assertArrayHasKey('Gotenberg-Webhook-Method', $builder->getHeadersBag()->all());
+        self::assertSame('PUT', $builder->getHeadersBag()->get('Gotenberg-Webhook-Method'));
+
+        self::assertArrayHasKey('Gotenberg-Webhook-Error-Url', $builder->getHeadersBag()->all());
+        self::assertSame('http://example.com/error', $builder->getHeadersBag()->get('Gotenberg-Webhook-Error-Url'));
+
+        self::assertArrayHasKey('Gotenberg-Webhook-Error-Method', $builder->getHeadersBag()->all());
+        self::assertSame('POST', $builder->getHeadersBag()->get('Gotenberg-Webhook-Error-Method'));
+
+        self::assertArrayHasKey('Gotenberg-Webhook-Extra-Http-Headers', $builder->getHeadersBag()->all());
+        self::assertSame('{"my_header":"value"}', $builder->getHeadersBag()->get('Gotenberg-Webhook-Extra-Http-Headers'));
+
+        $builder->webhook([]);
+
+        self::assertArrayNotHasKey('Gotenberg-Webhook-Url', $builder->getHeadersBag()->all());
+        self::assertArrayNotHasKey('Gotenberg-Webhook-Method', $builder->getHeadersBag()->all());
+        self::assertArrayNotHasKey('Gotenberg-Webhook-Error-Url', $builder->getHeadersBag()->all());
+        self::assertArrayNotHasKey('Gotenberg-Webhook-Error-Method', $builder->getHeadersBag()->all());
+        self::assertArrayNotHasKey('Gotenberg-Webhook-Extra-Http-Headers', $builder->getHeadersBag()->all());
     }
 }

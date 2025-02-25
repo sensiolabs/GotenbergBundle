@@ -55,6 +55,16 @@ trait WebhookTrait
     ]))]
     public function webhook(array $webhook): static
     {
+        if ([] === $webhook) {
+            $this->getHeadersBag()->unset('Gotenberg-Webhook-Url');
+            $this->getHeadersBag()->unset('Gotenberg-Webhook-Method');
+            $this->getHeadersBag()->unset('Gotenberg-Webhook-Error-Url');
+            $this->getHeadersBag()->unset('Gotenberg-Webhook-Error-Method');
+            $this->getHeadersBag()->unset('Gotenberg-Webhook-Extra-Http-Headers');
+
+            return $this;
+        }
+
         $this->webhookConfigurationValidator($webhook);
 
         if (isset($webhook['success']['route'])) {

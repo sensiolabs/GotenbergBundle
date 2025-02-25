@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
@@ -86,6 +87,17 @@ trait PdfPagePropertiesTestCaseTrait
 
         $this->assertGotenbergFormData('paperWidth', '21cm');
         $this->assertGotenbergFormData('paperHeight', '29.7cm');
+    }
+
+    public function testSetPaperStandardSizeOnRendering(): void
+    {
+        $this->getDefaultBuilder()
+            ->paperStandardSize(PaperSize::A4)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('paperWidth', '8.27in');
+        $this->assertGotenbergFormData('paperHeight', '11.7in');
     }
 
     public function testSetMarginTopOnRendering(): void

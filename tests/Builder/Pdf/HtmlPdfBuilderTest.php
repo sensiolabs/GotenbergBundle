@@ -239,4 +239,15 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
+
+    public function testTwigDependencyRequirement(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Twig is required to use "Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait::getTwig" method. Try to run "composer require symfony/twig-bundle".');
+
+        $this->getBuilder()
+            ->content('templates/content.html.twig', ['name' => 'world'])
+            ->generate()
+        ;
+    }
 }

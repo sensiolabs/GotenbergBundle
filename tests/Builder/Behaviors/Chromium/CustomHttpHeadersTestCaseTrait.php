@@ -36,6 +36,18 @@ trait CustomHttpHeadersTestCaseTrait
         $this->assertGotenbergFormData('extraHttpHeaders', '{"my_header":"my_value"}');
     }
 
+    public function testToUnsetExistingExtraHttpHeaders(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->extraHttpHeaders(['my_header' => 'my_value'])
+        ;
+
+        self::assertArrayHasKey('extraHttpHeaders', $builder->getBodyBag()->all());
+
+        $builder->extraHttpHeaders([]);
+        self::assertArrayNotHasKey('extraHttpHeaders', $builder->getBodyBag()->all());
+    }
+
     public function testAddExtraHttpHeadersToExistingHeaders(): void
     {
         $this->getDefaultBuilder()
@@ -45,5 +57,16 @@ trait CustomHttpHeadersTestCaseTrait
         ;
 
         $this->assertGotenbergFormData('extraHttpHeaders', '{"my_header":"my_value","additional_header":"my_value"}');
+    }
+
+    public function testDoNotAddEmptyExtraHttpHeadersToExistingHeaders(): void
+    {
+        $this->getDefaultBuilder()
+            ->extraHttpHeaders(['my_header' => 'my_value'])
+            ->addExtraHttpHeaders([])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('extraHttpHeaders', '{"my_header":"my_value"}');
     }
 }
