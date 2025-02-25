@@ -42,6 +42,9 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function content(string $template, array $context = []): void
     {
         throw new \BadMethodCallException('Use wrapper() instead of content().');
