@@ -15,18 +15,6 @@ class NormalizerFactory
     /**
      * @return (\Closure(string, mixed): array<string, string>)
      */
-    public static function scale(): \Closure
-    {
-        return static function (string $key, mixed $value) {
-            [$left, $right] = sscanf((string) $value, '%d.%s') ?? [$value, ''];
-
-            return [$key => $left.'.'.($right ?? '0')];
-        };
-    }
-
-    /**
-     * @return (\Closure(string, mixed): array<string, string>)
-     */
     public static function unit(): \Closure
     {
         return static fn (string $key, mixed $value) => [$key => is_numeric($value) ? $value.'in' : (string) $value];
@@ -104,12 +92,10 @@ class NormalizerFactory
      */
     public static function float(): \Closure
     {
-        return static function (string $key, float $value) {
+        return static function (string $key, mixed $value) {
             [$left, $right] = sscanf((string) $value, '%d.%s') ?? [$value, ''];
 
-            $right ??= '0';
-
-            return [$key => "{$left}.{$right}"];
+            return [$key => $left.'.'.($right ?? '0')];
         };
     }
 

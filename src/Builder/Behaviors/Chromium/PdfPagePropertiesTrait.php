@@ -241,6 +241,6 @@ trait PdfPagePropertiesTrait
         yield 'printBackground' => NormalizerFactory::bool();
         yield 'omitBackground' => NormalizerFactory::bool();
         yield 'landscape' => NormalizerFactory::bool();
-        yield 'scale' => NormalizerFactory::scale();
+        yield 'scale' => NormalizerFactory::float();
     }
 }
