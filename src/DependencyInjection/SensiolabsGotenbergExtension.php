@@ -103,14 +103,10 @@ class SensiolabsGotenbergExtension extends Extension
             ->replaceArgument(1, $config['assets_directory'])
         ;
 
-        //		$loader->load('builder_pdf.php');
-        //        $loader->load('builder_screenshot.php');
-        //        $loader->load('services.php');
-        //
-        //        if (false === $config['controller_listener']) {
-        //            $container->removeDefinition('sensiolabs_gotenberg.http_kernel.stream_builder');
-        //        }
-        //
+        if (false === $config['controller_listener']) {
+            $container->removeDefinition('sensiolabs_gotenberg.http_kernel.stream_builder');
+        }
+
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
