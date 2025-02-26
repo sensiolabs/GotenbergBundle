@@ -28,4 +28,9 @@ final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterf
             throw new MissingRequiredFieldException('Content is required');
         }
     }
+
+    public static function type(): string
+    {
+        return 'pdf';
+    }
 }

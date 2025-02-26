@@ -22,7 +22,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.html', HtmlPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.pdf_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.url', UrlPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.pdf_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
         ->call('setRequestContext', [service('.sensiolabs_gotenberg.request_context')->nullOnInvalid()])
     ;
@@ -39,7 +39,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.markdown', MarkdownPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.pdf_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
@@ -47,7 +47,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.office', LibreOfficePdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.pdf_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
@@ -55,7 +55,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.merge', MergePdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.pdf_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
@@ -63,7 +63,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.convert', ConvertPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.pdf_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
@@ -71,7 +71,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.split', SplitPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.pdf_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
@@ -79,7 +79,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.pdf_builder.flatten', FlattenPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.pdf_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 };

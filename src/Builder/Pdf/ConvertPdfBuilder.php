@@ -59,4 +59,9 @@ final class ConvertPdfBuilder extends AbstractBuilder
     {
         yield 'files' => NormalizerFactory::asset();
     }
+
+    public static function type(): string
+    {
+        return 'pdf';
+    }
 }

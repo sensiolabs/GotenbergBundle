@@ -70,4 +70,9 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
     {
         yield 'route' => NormalizerFactory::route($this->requestContext, $this->getUrlGenerator());
     }
+
+    public static function type(): string
+    {
+        return 'screenshot';
+    }
 }

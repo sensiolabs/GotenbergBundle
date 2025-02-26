@@ -73,4 +73,9 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
     {
         yield 'files' => NormalizerFactory::asset();
     }
+
+    public static function type(): string
+    {
+        return 'pdf';
+    }
 }

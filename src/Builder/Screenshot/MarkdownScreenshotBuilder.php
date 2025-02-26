@@ -76,4 +76,9 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
     {
         yield 'files' => NormalizerFactory::asset();
     }
+
+    public static function type(): string
+    {
+        return 'screenshot';
+    }
 }

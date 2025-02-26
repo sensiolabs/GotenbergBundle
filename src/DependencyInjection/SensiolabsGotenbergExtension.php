@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Routing\RequestContext;
 
 /**
@@ -43,18 +44,17 @@ class SensiolabsGotenbergExtension extends Extension
 {
     private BuilderStack $builderStack;
 
-    public function __construct()
-    {
-        $this->builderStack = new BuilderStack();
-    }
-
     /**
-     * @param 'pdf'|'screenshot'             $type
      * @param class-string<BuilderInterface> $class
      */
-    public function registerBuilder(string $type, string $class): void
+    public function registerBuilder(string $class): void
     {
-        $this->builderStack->push($type, $class);
+        $this->builderStack->push($class);
+    }
+
+    public function setBuilderStack(BuilderStack $builderStack): void
+    {
+        $this->builderStack = $builderStack;
     }
 
     /**
@@ -121,6 +121,10 @@ class SensiolabsGotenbergExtension extends Extension
                 ])
             ;
         }
+
+        $container->registerForAutoconfiguration(BuilderInterface::class)
+            ->addTag('sensiolabs_gotenberg.builder')
+        ;
 
         // Configurators
         $configValueMapping = [];

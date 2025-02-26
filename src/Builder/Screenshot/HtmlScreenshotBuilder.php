@@ -28,4 +28,9 @@ final class HtmlScreenshotBuilder extends AbstractBuilder implements BuilderAsse
             throw new MissingRequiredFieldException('Content is required');
         }
     }
+
+    public static function type(): string
+    {
+        return 'screenshot';
+    }
 }

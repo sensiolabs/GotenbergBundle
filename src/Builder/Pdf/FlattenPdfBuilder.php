@@ -57,4 +57,9 @@ final class FlattenPdfBuilder extends AbstractBuilder
     {
         yield 'files' => NormalizerFactory::asset();
     }
+
+    public static function type(): string
+    {
+        return 'pdf';
+    }
 }

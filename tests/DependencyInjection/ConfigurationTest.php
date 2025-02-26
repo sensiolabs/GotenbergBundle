@@ -31,7 +31,7 @@ final class ConfigurationTest extends TestCase
 
         foreach ($builders as $type => $builderList) {
             foreach ($builderList as $builderClass) {
-                $builderStack->push($type, $builderClass);
+                $builderStack->push($builderClass);
             }
         }
 

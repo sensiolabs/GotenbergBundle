@@ -36,10 +36,9 @@ final class BuilderStack
     private array $configNode = [];
 
     /**
-     * @param 'pdf'|'screenshot'             $type
      * @param class-string<BuilderInterface> $class
      */
-    public function push(string $type, string $class): void
+    public function push(string $class): void
     {
         if (!is_a($class, BuilderInterface::class, true)) {
             throw new \LogicException('logic');
@@ -48,6 +47,11 @@ final class BuilderStack
         if (\array_key_exists($class, $this->builders)) {
             return; // TODO : understand why this is called two times on fresh cache with tests
             throw new \LogicException('logic');
+        }
+
+        $type = 'custom';
+        if (method_exists($class, 'type')) {
+            $type = $class::type();
         }
 
         $this->builders[$class] = $type;

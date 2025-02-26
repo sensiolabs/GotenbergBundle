@@ -76,4 +76,9 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
     {
         yield 'files' => NormalizerFactory::asset();
     }
+
+    public static function type(): string
+    {
+        return 'pdf';
+    }
 }

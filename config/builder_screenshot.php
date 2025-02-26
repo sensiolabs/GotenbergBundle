@@ -17,7 +17,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.screenshot_builder.html', HtmlScreenshotBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.screenshot_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
@@ -25,7 +25,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.screenshot_builder.markdown', MarkdownScreenshotBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.screenshot_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
     ;
 
@@ -33,7 +33,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set('.sensiolabs_gotenberg.screenshot_builder.url', UrlScreenshotBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
-        ->tag('sensiolabs_gotenberg.screenshot_builder')
+        ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
         ->call('setRequestContext', [service('.sensiolabs_gotenberg.request_context')->nullOnInvalid()])
     ;

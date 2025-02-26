@@ -45,14 +45,14 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.pdf', GotenbergPdf::class)
         ->args([
-            tagged_locator('sensiolabs_gotenberg.pdf_builder'),
+            abstract_arg('PDF builders services'),
         ])
         ->alias(GotenbergPdfInterface::class, 'sensiolabs_gotenberg.pdf')
     ;
 
     $services->set('sensiolabs_gotenberg.screenshot', GotenbergScreenshot::class)
         ->args([
-            tagged_locator('sensiolabs_gotenberg.screenshot_builder'),
+            abstract_arg('Screenshot builders services'),
         ])
         ->alias(GotenbergScreenshotInterface::class, 'sensiolabs_gotenberg.screenshot')
     ;

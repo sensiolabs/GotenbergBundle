@@ -73,4 +73,9 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
     {
         yield 'route' => NormalizerFactory::route($this->requestContext, $this->getUrlGenerator());
     }
+
+    public static function type(): string
+    {
+        return 'pdf';
+    }
 }

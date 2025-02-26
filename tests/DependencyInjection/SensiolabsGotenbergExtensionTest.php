@@ -13,6 +13,8 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
+use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
@@ -34,19 +36,24 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
 
     private function getExtension(): SensiolabsGotenbergExtension
     {
+        $builderStack = new BuilderStack();
+
         $extension = new SensiolabsGotenbergExtension();
+        $extension->setBuilderStack($builderStack);
 
-        $extension->registerBuilder('pdf', ConvertPdfBuilder::class);
-        $extension->registerBuilder('pdf', HtmlPdfBuilder::class);
-        $extension->registerBuilder('pdf', LibreOfficePdfBuilder::class);
-        $extension->registerBuilder('pdf', MarkdownPdfBuilder::class);
-        $extension->registerBuilder('pdf', MergePdfBuilder::class);
-        $extension->registerBuilder('pdf', SplitPdfBuilder::class);
-        $extension->registerBuilder('pdf', UrlPdfBuilder::class);
+        $extension->registerBuilder(ConvertPdfBuilder::class);
+        $extension->registerBuilder(HtmlPdfBuilder::class);
+        $extension->registerBuilder(LibreOfficePdfBuilder::class);
+        $extension->registerBuilder(MarkdownPdfBuilder::class);
+        $extension->registerBuilder(MergePdfBuilder::class);
+        $extension->registerBuilder(SplitPdfBuilder::class);
+        $extension->registerBuilder(UrlPdfBuilder::class);
 
-        $extension->registerBuilder('screenshot', HtmlScreenshotBuilder::class);
-        $extension->registerBuilder('screenshot', MarkdownScreenshotBuilder::class);
-        $extension->registerBuilder('screenshot', UrlScreenshotBuilder::class);
+        $extension->registerBuilder(HtmlScreenshotBuilder::class);
+        $extension->registerBuilder(MarkdownScreenshotBuilder::class);
+        $extension->registerBuilder(UrlScreenshotBuilder::class);
+
+        $this->getContainerBuilder()->addCompilerPass(new GotenbergPass($builderStack));
 
         return $extension;
     }
@@ -583,14 +590,14 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
             'default_options' => [
                 'webhook' => 'foo',
                 'pdf' => [
-                    'html' => ['webhook' => 'bar'],
-                    'url' => ['webhook' => 'baz'],
+                    'html' => ['webhook' => ['config_name' => 'bar']],
+                    'url' => ['webhook' => ['config_name' => 'baz']],
                     'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
                 ],
                 'screenshot' => [
-                    'html' => ['webhook' => 'foo'],
-                    'url' => ['webhook' => 'bar'],
-                    'markdown' => ['webhook' => 'baz'],
+                    'html' => ['webhook' => ['config_name' => 'foo']],
+                    'url' => ['webhook' => ['config_name' => 'bar']],
+                    'markdown' => ['webhook' => ['config_name' => 'baz']],
                 ],
             ],
         ]], $containerBuilder);
