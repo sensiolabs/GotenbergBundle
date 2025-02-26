@@ -245,7 +245,8 @@ class YourController
 6. [Merge Builder](./docs/pdf/merge-builder.md)
 7. [Convert Builder](./docs/pdf/convert-builder.md)
 8. [Split Builder](./docs/pdf/split-builder.md)
-9. [PDF customization](./docs/pdf/customization.md) (available for every builder except LibreOffice, Merge and Split)
+9. [Flatten Builder](./docs/pdf/flatten-builder.md)
+10. [PDF customization](./docs/pdf/customization.md) (available for HTML, Markdown and Url builder)
 
 #### Screenshot
 
