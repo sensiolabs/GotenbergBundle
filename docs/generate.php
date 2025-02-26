@@ -198,7 +198,7 @@ class BuilderParser
             foreach ($methods as $methodName => $parts) {
                 $markdown .= "### {$this->methodsSignature[$methodName]}";
 
-                $renderedParts =  $renderParts($parts);
+                $renderedParts = $renderParts($parts);
                 if ('' !== $renderedParts) {
                     $markdown .= "\n{$renderedParts}";
                 }
