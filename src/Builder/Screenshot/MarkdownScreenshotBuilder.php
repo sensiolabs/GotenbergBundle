@@ -8,9 +8,6 @@ use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File as DataPartFile;
 
-/**
- * @see https://google.com
- */
 final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 {
     private const ENDPOINT = '/forms/chromium/screenshot/markdown';

@@ -140,12 +140,11 @@ class BuilderParser
          * @param list<string> $seeList
          */
         $renderSee = static function (array $seeList): string {
-            $markdown = '';
-
-            if (\count($seeList) > 0) {
-                $markdown .= '> [!TIP]';
+            if ([] === $seeList) {
+                return '';
             }
 
+            $markdown = '> [!TIP]';
             foreach ($seeList as $see) {
                 $markdown .= "\n> See: [{$see}]({$see})";
             }
