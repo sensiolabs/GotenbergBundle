@@ -583,14 +583,14 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
             'default_options' => [
                 'webhook' => 'foo',
                 'pdf' => [
-                    'html' => ['webhook' => ['config_name' => 'bar']],
-                    'url' => ['webhook' => ['config_name' => 'baz']],
+                    'html' => ['webhook' => 'bar'],
+                    'url' => ['webhook' => 'baz'],
                     'markdown' => ['webhook' => ['success' => ['url' => 'https://sensiolabs.com/webhook-on-the-fly']]],
                 ],
                 'screenshot' => [
-                    'html' => ['webhook' => ['config_name' => 'foo']],
-                    'url' => ['webhook' => ['config_name' => 'bar']],
-                    'markdown' => ['webhook' => ['config_name' => 'baz']],
+                    'html' => ['webhook' => 'foo'],
+                    'url' => ['webhook' => 'bar'],
+                    'markdown' => ['webhook' => 'baz'],
                 ],
             ],
         ]], $containerBuilder);

@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\VariableNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\WebhookNodeBuilder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -39,7 +40,7 @@ trait WebhookTrait
     /**
      * @param WebhookConfiguration $webhook
      */
-    #[ExposeSemantic(new ArrayNodeBuilder('webhook', children: [
+    #[ExposeSemantic(new WebhookNodeBuilder('webhook', children: [
         new ScalarNodeBuilder('config_name', restrictTo: 'string'),
         new ArrayNodeBuilder('success', children: [
             new ScalarNodeBuilder('url', restrictTo: 'string'),

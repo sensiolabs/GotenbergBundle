@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Symfony\Component\Config\Definition\Builder\FloatNodeDefinition;
 
-final class FloatNodeBuilder extends NodeBuilder implements NodeBuilderInterface
+class FloatNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
     public function __construct(
         protected string $name,

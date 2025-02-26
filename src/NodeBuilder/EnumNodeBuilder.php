@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
 
-final class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
+class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
     /** @var callable|string|null */
     public $callback;

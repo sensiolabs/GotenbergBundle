@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Symfony\Component\Config\Definition\Builder\IntegerNodeDefinition;
 
-final class IntegerNodeBuilder extends NodeBuilder implements NodeBuilderInterface
+class IntegerNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
     public function __construct(
         protected string $name,

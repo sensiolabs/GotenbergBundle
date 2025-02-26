@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition;
 
-final class BooleanNodeBuilder extends NodeBuilder implements NodeBuilderInterface
+class BooleanNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
     public function __construct(
         protected string $name,

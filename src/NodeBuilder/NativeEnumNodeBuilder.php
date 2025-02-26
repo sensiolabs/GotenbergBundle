@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
 use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
 
-final class NativeEnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
+class NativeEnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
     /**
      * @param class-string<\BackedEnum> $enumClass

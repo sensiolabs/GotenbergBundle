@@ -2,10 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\NodeBuilder;
 
-use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
 
-final class ScalarNodeBuilder extends NodeBuilder implements NodeBuilderInterface
+class ScalarNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
     public function __construct(
         protected string $name,
