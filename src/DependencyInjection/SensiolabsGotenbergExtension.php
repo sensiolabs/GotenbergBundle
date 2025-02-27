@@ -9,7 +9,6 @@ use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Routing\RequestContext;
 
 /**
@@ -110,14 +109,21 @@ class SensiolabsGotenbergExtension extends Extension
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
-                ->replaceArgument(3, [
-                    'html' => $this->processDefaultOptions($config, $config['default_options']['pdf']['html']),
-                    'url' => $this->processDefaultOptions($config, $config['default_options']['pdf']['url']),
-                    'markdown' => $this->processDefaultOptions($config, $config['default_options']['pdf']['markdown']),
-                    'office' => $this->processDefaultOptions($config, $config['default_options']['pdf']['office']),
-                    'merge' => $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']),
-                    'convert' => $this->processDefaultOptions($config, $config['default_options']['pdf']['convert']),
-                    'split' => $this->processDefaultOptions($config, $config['default_options']['pdf']['split']),
+                ->replaceArgument(4, [
+                    'pdf' => [
+                        'html' => $this->processDefaultOptions($config, $config['default_options']['pdf']['html']),
+                        'url' => $this->processDefaultOptions($config, $config['default_options']['pdf']['url']),
+                        'markdown' => $this->processDefaultOptions($config, $config['default_options']['pdf']['markdown']),
+                        'office' => $this->processDefaultOptions($config, $config['default_options']['pdf']['office']),
+                        'merge' => $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']),
+                        'convert' => $this->processDefaultOptions($config, $config['default_options']['pdf']['convert']),
+                        'split' => $this->processDefaultOptions($config, $config['default_options']['pdf']['split']),
+                    ],
+                    'screenshot' => [
+                        'html' => $this->processDefaultOptions($config, $config['default_options']['screenshot']['html']),
+                        'url' => $this->processDefaultOptions($config, $config['default_options']['screenshot']['url']),
+                        'markdown' => $this->processDefaultOptions($config, $config['default_options']['screenshot']['markdown']),
+                    ],
                 ])
             ;
         }

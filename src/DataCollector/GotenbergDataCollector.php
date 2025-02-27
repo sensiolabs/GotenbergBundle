@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\DataCollector;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
+use Sensiolabs\GotenbergBundle\Debug\Client\TraceableGotenbergClient;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -25,6 +26,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
         private readonly TraceableGotenbergPdf $traceableGotenbergPdf,
         private readonly TraceableGotenbergScreenshot $traceableGotenbergScreenshot,
         private readonly ServiceLocator $builders,
+        private readonly TraceableGotenbergClient $traceableGotenbergClient,
         private readonly array $defaultOptions,
     ) {
     }
@@ -81,9 +83,11 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                 $this->data['files'][] = [
                     'builderClass' => $builder->getInner()::class,
                     'configuration' => [
-                        'options' => $this->cloneVar([]),
                         'default_options' => $this->cloneVar($this->defaultOptions[$type][$id] ?? []),
                     ],
+                    'payload' => $this->cloneVar(
+                        $this->traceableGotenbergClient->getPayload()[$this->getRequestCount()] ?? [],
+                    ),
                     'type' => $type,
                     'request_type' => $request['type'],
                     'time' => $request['time'],
@@ -137,6 +141,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
      *      size: int<0, max>|null,
      *      fileName: string,
      *      configuration: array<string, array<mixed, mixed>>,
+     *      payload: array<string, array<mixed, mixed>>,
      *      calls: list<array{
      *          method: string,
      *          stub: Data,

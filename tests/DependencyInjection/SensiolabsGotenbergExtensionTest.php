@@ -454,40 +454,47 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         $dataCollector = $containerBuilder->getDefinition('sensiolabs_gotenberg.data_collector');
         self::assertNotNull($dataCollector);
 
-        $dataCollectorOptions = $dataCollector->getArguments()[3];
+        $dataCollectorOptions = $dataCollector->getArguments()[4];
         self::assertEquals([
-            'html' => [
-                'metadata' => [
-                    'Author' => 'SensioLabs HTML',
+            'pdf' => [
+                'html' => [
+                    'metadata' => [
+                        'Author' => 'SensioLabs HTML',
+                    ],
+                ],
+                'url' => [
+                    'metadata' => [
+                        'Author' => 'SensioLabs URL',
+                    ],
+                ],
+                'markdown' => [
+                    'metadata' => [
+                        'Author' => 'SensioLabs MARKDOWN',
+                    ],
+                ],
+                'office' => [
+                    'metadata' => [
+                        'Author' => 'SensioLabs OFFICE',
+                    ],
+                ],
+                'merge' => [
+                    'metadata' => [
+                        'Author' => 'SensioLabs MERGE',
+                    ],
+                ],
+                'convert' => [
+                    'pdf_format' => 'PDF/A-2b',
+                ],
+                'split' => [
+                    'metadata' => [
+                        'Author' => 'SensioLabs SPLIT',
+                    ],
                 ],
             ],
-            'url' => [
-                'metadata' => [
-                    'Author' => 'SensioLabs URL',
-                ],
-            ],
-            'markdown' => [
-                'metadata' => [
-                    'Author' => 'SensioLabs MARKDOWN',
-                ],
-            ],
-            'office' => [
-                'metadata' => [
-                    'Author' => 'SensioLabs OFFICE',
-                ],
-            ],
-            'merge' => [
-                'metadata' => [
-                    'Author' => 'SensioLabs MERGE',
-                ],
-            ],
-            'convert' => [
-                'pdf_format' => 'PDF/A-2b',
-            ],
-            'split' => [
-                'metadata' => [
-                    'Author' => 'SensioLabs SPLIT',
-                ],
+            'screenshot' => [
+                'html' => [],
+                'url' => [],
+                'markdown' => [],
             ],
         ], $dataCollectorOptions);
     }

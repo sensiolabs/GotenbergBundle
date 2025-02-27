@@ -40,4 +40,20 @@ final class Payload
 
         return $headers;
     }
+
+    /**
+     * @return list<array<string, string>>
+     */
+    public function getBodyOptions(): array
+    {
+        return $this->bodyOptions;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getHeadersOptions(): array
+    {
+        return $this->headersOptions;
+    }
 }
