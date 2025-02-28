@@ -32,7 +32,7 @@ You can provide an absolute path.
         <meta charset="utf-8" />
         <title>PDF with Custom Font</title>
         <style>
-            {{ gotenberg_font('fonts/custom-font.ttf', 'MyCustomFont') }}
+            {{ gotenberg_font('fonts/custom-font.ttf', 'my_font') }}
             h1 {
                 color: red;
                 font-family: "my_font";
@@ -48,7 +48,6 @@ You can provide an absolute path.
 ### Output
 
 ```html
-```html
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -56,7 +55,7 @@ You can provide an absolute path.
         <title>PDF with Custom Font</title>
         <style>
             @font-face {
-                font-family: "MyCustomFont";
+                font-family: "my_font";
                 src: url("custom-font.ttf");
             }
             h1 {
@@ -106,13 +105,13 @@ The only requirement is that their paths in the HTML file are on the root level.
         <title>PDF with Custom Font</title>
         <style>
             @font-face {
-                font-family: "MyCustomFont";
+                font-family: "my_font";
                 src: url("custom-font.ttf");
             }
         </style>
     </head>
     <body>
-        <p style="font-family: 'MyCustomFont';">This text uses the custom font.</p>
+        <p style="font-family: 'my_font';">This text uses the custom font.</p>
     </body>
 </html>
 ```
