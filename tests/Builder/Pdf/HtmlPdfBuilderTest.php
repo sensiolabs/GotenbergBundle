@@ -13,14 +13,14 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergExtension;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 #[CoversClass(HtmlPdfBuilder::class)]
 #[UsesClass(AbstractChromiumPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(GotenbergAssetExtension::class)]
+#[UsesClass(GotenbergExtension::class)]
 #[UsesClass(GotenbergFileResult::class)]
 final class HtmlPdfBuilderTest extends AbstractBuilderTestCase
 {
