@@ -6,30 +6,6 @@ parameters:
 		- 'src'
 		- 'tests'
 	ignoreErrors:
-#		-
-#			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-#			count: 1
-#			path: src/Builder/Pdf/UrlPdfBuilder.php
-#		-
-#			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-#			count: 1
-#			path: src/Builder/Pdf/UrlPdfBuilder.php
-#		-
-#			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-#			count: 2
-#			path: src/Builder/Pdf/UrlPdfBuilder.php
-#		-
-#			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-#			count: 1
-#			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-#		-
-#			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-#			count: 1
-#			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-#		-
-#			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-#			count: 2
-#			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
 		-
 			message: "#^Cannot use array destructuring on array\\<int, string\\|null\\>\\|null\\.$#"
 			count: 1
