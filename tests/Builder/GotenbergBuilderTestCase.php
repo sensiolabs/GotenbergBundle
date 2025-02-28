@@ -11,7 +11,6 @@ use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
 use Symfony\Component\Mime\Part\TextPart;
-use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * @template T of BuilderInterface

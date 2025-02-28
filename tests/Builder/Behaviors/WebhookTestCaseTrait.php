@@ -9,7 +9,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Router;
-use function PHPUnit\Framework\assertArrayHasKey;
 
 /**
  * @template T of BuilderInterface

@@ -52,7 +52,6 @@ final class HtmlScreenshotBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'test');
     }
 
-
     public function testWithTwigContentFile(): void
     {
         $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [

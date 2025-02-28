@@ -17,15 +17,13 @@ class WebhookNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 
     public function create(): NodeDefinition
     {
-        $node = (new ArrayNodeBuilder($this->name, children: $this->children))->create();
+        return (new ArrayNodeBuilder($this->name, children: $this->children))->create();
 
-//        $node->beforeNormalization()
-//            ->ifString()
-//            ->then(static function (string $v): array {
-//                return ['config_name' => $v];
-//            })
-//        ;
-
-        return $node;
+        //        $node->beforeNormalization()
+        //            ->ifString()
+        //            ->then(static function (string $v): array {
+        //                return ['config_name' => $v];
+        //            })
+        //        ;
     }
 }

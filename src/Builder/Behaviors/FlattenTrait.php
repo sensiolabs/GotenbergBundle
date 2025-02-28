@@ -6,11 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
-use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#flatten-libreoffice

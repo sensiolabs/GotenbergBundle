@@ -43,4 +43,3 @@ final class TraceableGotenbergClient implements GotenbergClientInterface
         return $this->payload;
     }
 }
-

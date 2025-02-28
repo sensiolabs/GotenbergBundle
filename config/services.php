@@ -17,7 +17,6 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

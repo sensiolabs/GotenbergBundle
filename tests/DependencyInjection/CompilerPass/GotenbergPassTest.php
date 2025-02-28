@@ -3,10 +3,8 @@
 namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection\CompilerPass;
 
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
-use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

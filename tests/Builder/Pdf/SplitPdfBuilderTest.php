@@ -3,7 +3,6 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;

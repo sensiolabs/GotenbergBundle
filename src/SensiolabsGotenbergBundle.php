@@ -47,7 +47,6 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
         $extension->registerBuilder(UrlScreenshotBuilder::class);
 
-
         $container->addCompilerPass(new GotenbergPass($builderStack));
     }
 }
