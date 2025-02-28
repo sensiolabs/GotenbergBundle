@@ -31,9 +31,7 @@
         "symfony/http-client-contracts": "^3.5",
         "symfony/http-foundation": "^6.4 || ^7.0",
         "symfony/http-kernel": "^6.4 || ^7.0",
-        "symfony/mime": "^6.4 || ^7.0",
-        "symfony/options-resolver": "^6.4 || ^7.0",
-        "symfony/string": "^6.4 || ^7.0"
+        "symfony/mime": "^6.4 || ^7.0"
     },
     "require-dev": {
         "ext-mbstring": "*",

@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
-use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -142,7 +142,7 @@ trait CookieTestCaseTrait
         $request->cookies->set('my_cookie', new Cookie('my_cookie', 'value', domain: 'symfony.com'));
 
         $this->dependencies->set('request_stack', new RequestStack([$request]));
-        $this->dependencies->set('logger', new Logger('default'));
+        $this->dependencies->set('logger', $this->getMockBuilder(LoggerInterface::class));
 
         $builder = $this->getDefaultBuilder()
             ->forwardCookie('my_cookie')
@@ -157,7 +157,7 @@ trait CookieTestCaseTrait
         $request->setMethod('GET');
 
         $this->dependencies->set('request_stack', new RequestStack([$request]));
-        $this->dependencies->set('logger', new Logger('default'));
+        $this->dependencies->set('logger', $this->getMockBuilder(LoggerInterface::class));
 
         $builder = $this->getDefaultBuilder()
             ->forwardCookie('my_cookie')
