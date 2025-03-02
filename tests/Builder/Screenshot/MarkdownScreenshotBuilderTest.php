@@ -96,36 +96,39 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    #[DataProvider('supportedFilePathsProvider')]
-    public function testSupportedFormat(mixed $supportedFilePath): void
+    public function testStringableObject(): void
     {
+    $stringable = new class implements \Stringable {
+        public function __toString(): string
+        {
+            return 'assets/file.md';
+        }
+    };
+    $builder = $this->getMarkdownScreenshotBuilder();
+    $builder
+        ->wrapperFile('files/wrapper.html')
+        ->files($stringable)
+    ;
+
+    $data = $builder->getMultipartFormData();
+
+    /* @var DataPart $dataPart */
+    self::assertInstanceOf(DataPart::class, $data[0]['files']);
+    }
+
+    public function testSplFileInfoObject(): void
+    {
+        $splFileInfo = new \SplFileInfo('assets/file.md');
         $builder = $this->getMarkdownScreenshotBuilder();
         $builder
             ->wrapperFile('files/wrapper.html')
-            ->files($supportedFilePath)
+            ->files($splFileInfo)
         ;
 
         $data = $builder->getMultipartFormData();
 
         /* @var DataPart $dataPart */
         self::assertInstanceOf(DataPart::class, $data[0]['files']);
-    }
-
-    /**
-     * @return array<list<string|\Stringable>>
-     */
-    public static function supportedFilePathsProvider(): array
-    {
-        return [
-            ['assets/file.md'],
-            [new class implements \Stringable {
-                public function __toString(): string
-                {
-                    return 'assets/file.md';
-                }
-            }],
-            [new \SplFileInfo('assets/file.md')],
-        ];
     }
 
     private function getMarkdownScreenshotBuilder(bool $twig = true): MarkdownScreenshotBuilder
