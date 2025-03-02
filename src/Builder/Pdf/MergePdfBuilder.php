@@ -55,7 +55,6 @@ final class MergePdfBuilder extends AbstractPdfBuilder
 
         foreach ($paths as $path) {
             $path = (string) $path;
-
             $this->assertFileExtension($path, ['pdf']);
 
             $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));

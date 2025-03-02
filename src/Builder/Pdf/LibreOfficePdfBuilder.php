@@ -132,7 +132,6 @@ final class LibreOfficePdfBuilder extends AbstractPdfBuilder
 
         foreach ($paths as $path) {
             $path = (string) $path;
-
             $this->assertFileExtension($path, self::AVAILABLE_EXTENSIONS);
 
             $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
