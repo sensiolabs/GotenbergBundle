@@ -20,7 +20,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(GotenbergFileResult::class)]
 final class MergePdfBuilderTest extends AbstractBuilderTestCase
 {
-    public const PDF_DOCUMENTS_DIR = 'pdf';
+    private const PDF_DOCUMENTS_DIR = 'pdf';
 
     public function testEndpointIsCorrect(): void
     {
@@ -84,36 +84,43 @@ final class MergePdfBuilderTest extends AbstractBuilderTestCase
         $builder->getMultipartFormData();
     }
 
-    #[DataProvider('supportedFilePathsProvider')]
-    public function testSupportedFormat(mixed $supportedFilePath): void
+    public function testStringableObject(): void
     {
+        $stringable = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
+            public function __construct(private string $directory)
+            {
+
+            }
+            public function __toString(): string
+            {
+                return $this->directory . '/simple_pdf.pdf';
+            }
+        };
         $builder = $this->getMergePdfBuilder();
         $builder
-            ->files($supportedFilePath)
+            ->files($stringable)
         ;
 
         $data = $builder->getMultipartFormData();
 
         /* @var DataPart $dataPart */
         self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
+        self::assertSame(basename((string) $stringable), $dataPart->getFilename());
     }
 
-    /**
-     * @return array<list<string|\Stringable>>
-     */
-    public static function supportedFilePathsProvider(): array
+    public function testSplFileInfoObject(): void
     {
-        return [
-            [self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf'],
-            [new class implements \Stringable {
-                public function __toString(): string
-                {
-                    return MergePdfBuilderTest::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf';
-                }
-            }],
-            [new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf')],
-        ];
+        $splFileInfo = new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf');
+        $builder = $this->getMergePdfBuilder();
+        $builder
+            ->files($splFileInfo)
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $splFileInfo), $dataPart->getFilename());
     }
 
     private function getMergePdfBuilder(): MergePdfBuilder
