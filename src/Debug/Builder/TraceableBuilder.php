@@ -33,6 +33,10 @@ final class TraceableBuilder implements BuilderFileInterface, BuilderAsyncInterf
 
     public function generate(): GotenbergFileResult
     {
+        if (!$this->inner instanceof BuilderFileInterface) {
+            throw new \LogicException(\sprintf('The inner builder of %s must implement %s.', self::class, BuilderFileInterface::class));
+        }
+
         $name = self::$count.'.'.$this->inner::class.'::'.__FUNCTION__;
         ++self::$count;
 

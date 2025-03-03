@@ -1,3 +1,8 @@
+services:
+	-
+		class: Sensiolabs\GotenbergBundle\Tests\PHPStanRules\AlwaysUsedMethodRule
+		tags:
+			- phpstan.methods.alwaysUsedMethodExtension
 parameters:
 	phpVersion: 80100
 	level: 8
@@ -22,3 +27,7 @@ parameters:
 			message: "#^ Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition|Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\VariableNodeDefinition::append\\(\\)\\.$#"
 			count: 1
 			path: src/NodeBuilder/ArrayNodeBuilder.php
+		-
+		    message: '#Class Sensiolabs\\GotenbergBundle\\Builder\\Pdf|Screenshot\\.* has an uninitialized readonly property \$dependencies#'
+		    count: 11
+		    path: src/Builder
