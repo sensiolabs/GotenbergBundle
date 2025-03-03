@@ -25,7 +25,7 @@ Enable PDF for Universal Access for optimal accessibility.
 * `merge(bool $bool)`:
 Merge alphanumerically the resulting PDFs.
 
-* `files(string $paths)`:
+* `files(Stringable|string $paths)`:
 Adds office files to convert (overrides any previous files).
 
 * `metadata(array $metadata)`:

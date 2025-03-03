@@ -8,7 +8,7 @@ Convert the resulting PDF into the given PDF/A format.
 * `pdfUniversalAccess(bool $bool)`:
 Enable PDF for Universal Access for optimal accessibility.
 
-* `files(string $paths)`:
+* `files(Stringable|string $paths)`:
 
 * `metadata(array $metadata)`:
 Resets the metadata.

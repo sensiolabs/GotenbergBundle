@@ -6,7 +6,7 @@ The HTML file that wraps the markdown content, rendered from a Twig template.
 * `wrapperFile(string $path)`:
 The HTML file that wraps the markdown content.
 
-* `files(string $paths)`:
+* `files(Stringable|string $paths)`:
 
 * `cookies(array $cookies)`:
 
