@@ -21,7 +21,7 @@ use Symfony\Component\Mime\Part\DataPart;
 #[UsesClass(GotenbergFileResult::class)]
 final class SplitPdfBuilderTest extends AbstractBuilderTestCase
 {
-    public const PDF_DOCUMENTS_DIR = 'pdf';
+    private const PDF_DOCUMENTS_DIR = 'pdf';
 
     public function testEndpointIsCorrect(): void
     {
