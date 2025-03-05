@@ -84,11 +84,11 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
         $stringable = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
             public function __construct(private string $directory)
             {
-
             }
+
             public function __toString(): string
             {
-                return $this->directory . '/document.pdf';
+                return $this->directory.'/document.pdf';
             }
         };
 

@@ -45,8 +45,8 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         $supportedFilePath = new class(self::OFFICE_DOCUMENTS_DIR) implements \Stringable {
             public function __construct(private readonly string $directory)
             {
-
             }
+
             public function __toString(): string
             {
                 return $this->directory.'/document_1.docx';

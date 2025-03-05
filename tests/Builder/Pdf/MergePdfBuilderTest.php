@@ -89,11 +89,11 @@ final class MergePdfBuilderTest extends AbstractBuilderTestCase
         $stringable = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
             public function __construct(private string $directory)
             {
-
             }
+
             public function __toString(): string
             {
-                return $this->directory . '/simple_pdf.pdf';
+                return $this->directory.'/simple_pdf.pdf';
             }
         };
         $builder = $this->getMergePdfBuilder();

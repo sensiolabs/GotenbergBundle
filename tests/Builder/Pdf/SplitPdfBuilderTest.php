@@ -117,11 +117,11 @@ final class SplitPdfBuilderTest extends AbstractBuilderTestCase
         $supportedFilePath = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
             public function __construct(private string $directory)
             {
-
             }
+
             public function __toString(): string
             {
-                return $this->directory . '/simple_pdf.pdf';
+                return $this->directory.'/simple_pdf.pdf';
             }
         };
 
@@ -141,7 +141,7 @@ final class SplitPdfBuilderTest extends AbstractBuilderTestCase
 
     public function testSplFileInfoObject(): void
     {
-        $supportedFilePath = new \SplFileInfo(self::PDF_DOCUMENTS_DIR . '/simple_pdf.pdf');
+        $supportedFilePath = new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf');
 
         $builder = $this->getSplitPdfBuilder();
         $builder

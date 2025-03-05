@@ -3,7 +3,6 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
@@ -98,22 +97,22 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
 
     public function testStringableObject(): void
     {
-    $stringable = new class implements \Stringable {
-        public function __toString(): string
-        {
-            return 'assets/file.md';
-        }
-    };
-    $builder = $this->getMarkdownScreenshotBuilder();
-    $builder
-        ->wrapperFile('files/wrapper.html')
-        ->files($stringable)
-    ;
+        $stringable = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'assets/file.md';
+            }
+        };
+        $builder = $this->getMarkdownScreenshotBuilder();
+        $builder
+            ->wrapperFile('files/wrapper.html')
+            ->files($stringable)
+        ;
 
-    $data = $builder->getMultipartFormData();
+        $data = $builder->getMultipartFormData();
 
-    /* @var DataPart $dataPart */
-    self::assertInstanceOf(DataPart::class, $data[0]['files']);
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $data[0]['files']);
     }
 
     public function testSplFileInfoObject(): void
