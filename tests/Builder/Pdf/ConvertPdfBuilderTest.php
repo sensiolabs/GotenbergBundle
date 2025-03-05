@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(ConvertPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
@@ -76,6 +77,49 @@ final class ConvertPdfBuilderTest extends AbstractBuilderTestCase
         $this->expectExceptionMessage('At least "pdfa" or "pdfua" must be provided.');
 
         $builder->getMultipartFormData();
+    }
+
+    public function testWithStringableObject(): void
+    {
+        $stringable = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
+            public function __construct(private string $directory)
+            {
+            }
+
+            public function __toString(): string
+            {
+                return $this->directory.'/document.pdf';
+            }
+        };
+
+        $builder = $this->getConvertPdfBuilder();
+        $builder
+            ->files($stringable)
+            ->pdfUniversalAccess()
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $stringable), $dataPart->getFilename());
+    }
+
+    public function testSplFileInfoObject(): void
+    {
+        $splFileInfo = new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/document.pdf');
+
+        $builder = $this->getConvertPdfBuilder();
+        $builder
+            ->files($splFileInfo)
+            ->pdfUniversalAccess()
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $splFileInfo), $dataPart->getFilename());
     }
 
     public function testRequiredPdfFile(): void

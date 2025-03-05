@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(SplitPdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
@@ -109,6 +110,51 @@ final class SplitPdfBuilderTest extends AbstractBuilderTestCase
         $this->expectExceptionMessage('At least one PDF file is required');
 
         $builder->getMultipartFormData();
+    }
+
+    public function testStringableObject(): void
+    {
+        $supportedFilePath = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
+            public function __construct(private string $directory)
+            {
+            }
+
+            public function __toString(): string
+            {
+                return $this->directory.'/simple_pdf.pdf';
+            }
+        };
+
+        $builder = $this->getSplitPdfBuilder();
+        $builder
+            ->files($supportedFilePath)
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1')
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
+    }
+
+    public function testSplFileInfoObject(): void
+    {
+        $supportedFilePath = new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf');
+
+        $builder = $this->getSplitPdfBuilder();
+        $builder
+            ->files($supportedFilePath)
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1')
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
     }
 
     private function getSplitPdfBuilder(): SplitPdfBuilder

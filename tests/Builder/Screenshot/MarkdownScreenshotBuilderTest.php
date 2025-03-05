@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(MarkdownScreenshotBuilder::class)]
 #[UsesClass(AbstractChromiumScreenshotBuilder::class)]
@@ -72,7 +73,7 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
     {
         $builder = $this->getMarkdownScreenshotBuilder();
         $builder
-            ->files('assets/file.md')
+            ->files(new \SplFileInfo('assets/file.md'))
         ;
 
         $this->expectException(MissingRequiredFieldException::class);
@@ -92,6 +93,41 @@ final class MarkdownScreenshotBuilderTest extends AbstractBuilderTestCase
         $this->expectExceptionMessage('At least one markdown file is required');
 
         $builder->getMultipartFormData();
+    }
+
+    public function testStringableObject(): void
+    {
+        $stringable = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'assets/file.md';
+            }
+        };
+        $builder = $this->getMarkdownScreenshotBuilder();
+        $builder
+            ->wrapperFile('files/wrapper.html')
+            ->files($stringable)
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $data[0]['files']);
+    }
+
+    public function testSplFileInfoObject(): void
+    {
+        $splFileInfo = new \SplFileInfo('assets/file.md');
+        $builder = $this->getMarkdownScreenshotBuilder();
+        $builder
+            ->wrapperFile('files/wrapper.html')
+            ->files($splFileInfo)
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $data[0]['files']);
     }
 
     private function getMarkdownScreenshotBuilder(bool $twig = true): MarkdownScreenshotBuilder

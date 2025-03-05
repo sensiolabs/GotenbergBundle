@@ -49,11 +49,12 @@ final class MergePdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    public function files(string ...$paths): self
+    public function files(string|\Stringable ...$paths): self
     {
         $this->formFields['files'] = [];
 
         foreach ($paths as $path) {
+            $path = (string) $path;
             $this->assertFileExtension($path, ['pdf']);
 
             $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));

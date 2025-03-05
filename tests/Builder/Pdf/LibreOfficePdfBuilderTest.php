@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
+use Symfony\Component\Mime\Part\DataPart;
 
 #[CoversClass(LibreOfficePdfBuilder::class)]
 #[UsesClass(AbstractPdfBuilder::class)]
@@ -34,9 +35,52 @@ final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
         ;
 
         $this->getLibreOfficePdfBuilder()
-            ->files(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx')
+            ->files(new \SplFileInfo(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx'))
             ->generate()
         ;
+    }
+
+    public function testStringableObject(): void
+    {
+        $supportedFilePath = new class(self::OFFICE_DOCUMENTS_DIR) implements \Stringable {
+            public function __construct(private readonly string $directory)
+            {
+            }
+
+            public function __toString(): string
+            {
+                return $this->directory.'/document_1.docx';
+            }
+        };
+
+        $builder = $this->getLibreOfficePdfBuilder();
+        $builder
+            ->files($supportedFilePath)
+            ->pdfUniversalAccess()
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
+    }
+
+    public function testSplFileInfoObject(): void
+    {
+        $supportedFilePath = new \SplFileInfo(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx');
+
+        $builder = $this->getLibreOfficePdfBuilder();
+        $builder
+            ->files($supportedFilePath)
+            ->pdfUniversalAccess()
+        ;
+
+        $data = $builder->getMultipartFormData();
+
+        /* @var DataPart $dataPart */
+        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
+        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
     }
 
     public static function configurationIsCorrectlySetProvider(): \Generator
