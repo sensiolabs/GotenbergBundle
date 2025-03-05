@@ -1,88 +1,125 @@
 <?php
 
-namespace Sensiolabs\GotenbergBundle\Tests\Builder\Screenshot;
+namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
-use PHPUnit\Framework\MockObject\MockObject;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
-use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RouterInterface;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumScreenshotTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
-#[CoversClass(UrlScreenshotBuilder::class)]
-#[UsesClass(AbstractChromiumScreenshotBuilder::class)]
-#[UsesClass(AbstractScreenshotBuilder::class)]
-#[UsesClass(GotenbergFileResult::class)]
-final class UrlScreenshotBuilderTest extends AbstractBuilderTestCase
+/**
+ * @extends GotenbergBuilderTestCase<UrlScreenshotBuilder>
+ */
+final class UrlScreenshotBuilderTest extends GotenbergBuilderTestCase
 {
-    /**
-     * @var MockObject&RouterInterface
-     */
-    protected RouterInterface $router;
+    /** @use ChromiumScreenshotTestCaseTrait<UrlScreenshotBuilder> */
+    use ChromiumScreenshotTestCaseTrait;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->router = $this->createMock(RouterInterface::class);
+
+        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
     }
 
-    public function testEndpointIsCorrect(): void
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): UrlScreenshotBuilder
     {
-        $this->gotenbergClient
-            ->expects($this->once())
-            ->method('call')
-            ->with(
-                $this->equalTo('/forms/chromium/screenshot/url'),
-                $this->anything(),
-                $this->anything(),
-            )
-        ;
-
-        $this->getUrlScreenshotBuilder()
-            ->url('https://google.com')
-            ->generate()
-        ;
+        return new UrlScreenshotBuilder($client, $dependencies);
     }
 
-    public function testUrl(): void
+    /**
+     * @param UrlScreenshotBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): UrlScreenshotBuilder
     {
-        $builder = $this->getUrlScreenshotBuilder();
-        $builder->url('https://google.com');
-
-        $multipartFormData = $builder->getMultipartFormData();
-
-        self::assertCount(1, $multipartFormData);
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['url' => 'https://google.com'], $multipartFormData[0]);
+        return $builder
+            ->url('https://example.com')
+        ;
     }
 
     public function testRequiredFormData(): void
     {
-        $builder = $this->getUrlScreenshotBuilder();
-
         $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('URL (or route) is required');
+        $this->expectExceptionMessage('"url" (or "route") is required');
 
-        $builder->getMultipartFormData();
+        $this->getBuilder()
+            ->generate()
+        ;
     }
 
-    private function getUrlScreenshotBuilder(bool $twig = true): UrlScreenshotBuilder
+    public function testOutputFilename(): void
     {
-        return (new UrlScreenshotBuilder(
-            $this->gotenbergClient,
-            self::$assetBaseDirFormatter,
-            $this->webhookConfigurationRegistry,
-            new RequestStack(),
-            true === $twig ? self::$twig : null,
-            $this->router,
-        ))
-            ->processor(new NullProcessor())
+        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+
+        $this->getBuilder()
+            ->url('https://example.com')
+            ->filename('test')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/chromium/screenshot/url');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'test');
+        $this->assertGotenbergFormData('url', 'https://example.com');
+    }
+
+    public function testPdfGenerationFromAGivenRoute(): void
+    {
+        $routeCollection = new RouteCollection();
+        $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
+
+        $this->dependencies->set('router', new UrlGenerator($routeCollection, new RequestContext()));
+
+        $this->getBuilder()
+            ->route('article_read', ['id' => 1])
+            ->filename('article')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/chromium/screenshot/url');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'article');
+        $this->assertGotenbergFormData('url', 'http://localhost/article/1');
+    }
+
+    public function testToGenerateWithRequestContext(): void
+    {
+        $routeCollection = new RouteCollection();
+        $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
+
+        $requestContext = new RequestContext();
+        $this->dependencies->set('router', new UrlGenerator($routeCollection, new RequestContext()));
+
+        $requestContext->setHost('example');
+
+        $this->getBuilder()
+            ->route('article_read', ['id' => 1])
+            ->setRequestContext($requestContext)
+            ->filename('article')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/chromium/screenshot/url');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'article');
+        $this->assertGotenbergFormData('url', 'http://example/article/1');
+    }
+
+    public function testRequirementAboutRouteAndUrlProvided(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('Provide only one of ["route", "url"] parameter. Not both.');
+
+        $this->getBuilder()
+            ->url('https://example.com')
+            ->route('article_read', ['id' => 1])
+            ->filename('test')
+            ->generate()
         ;
     }
 }

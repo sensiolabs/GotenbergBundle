@@ -2,145 +2,135 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
-use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-#[CoversClass(UrlPdfBuilder::class)]
-#[UsesClass(AbstractChromiumPdfBuilder::class)]
-#[UsesClass(AbstractPdfBuilder::class)]
-#[UsesClass(GotenbergFileResult::class)]
-final class UrlPdfBuilderTest extends AbstractBuilderTestCase
+/**
+ * @extends GotenbergBuilderTestCase<UrlPdfBuilder>
+ */
+final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 {
-    public function testEndpointIsCorrect(): void
-    {
-        $this->gotenbergClient
-            ->expects($this->once())
-            ->method('call')
-            ->with(
-                $this->equalTo('/forms/chromium/convert/url'),
-                $this->anything(),
-                $this->anything(),
-            )
-        ;
+    /** @use ChromiumPdfTestCaseTrait<UrlPdfBuilder> */
+    use ChromiumPdfTestCaseTrait;
 
-        $this->getUrlPdfBuilder()
-            ->url('https://google.com')
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): UrlPdfBuilder
+    {
+        return new UrlPdfBuilder($client, $dependencies);
+    }
+
+    /**
+     * @param UrlPdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): UrlPdfBuilder
+    {
+        if (!$this->dependencies->has('router')) {
+            $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+        }
+
+        return $builder
+            ->url('https://example.com')
+        ;
+    }
+
+    public function testRequiredFormData(): void
+    {
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('"url" (or "route") is required');
+
+        $this->getBuilder()
             ->generate()
         ;
     }
 
-    public function testCanProvideUrl(): void
+    public function testOutputFilename(): void
     {
-        $builder = $this->getUrlPdfBuilder();
-        $builder->url('https://google.com');
+        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
 
-        $multipartFormData = $builder->getMultipartFormData();
+        $this->getBuilder()
+            ->url('https://example.com')
+            ->filename('test')
+            ->generate()
+        ;
 
-        self::assertCount(1, $multipartFormData);
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['url' => 'https://google.com'], $multipartFormData[0]);
+        $this->assertGotenbergEndpoint('/forms/chromium/convert/url');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'test');
+        $this->assertGotenbergFormData('url', 'https://example.com');
     }
 
-    public function testCanProvideRoute(): void
+    public function testToGenerateWithRequestContext(): void
     {
         $routeCollection = new RouteCollection();
-        $routeCollection->add('fake_route', new Route('/route'));
-        $urlGenerator = new UrlGenerator($routeCollection, new RequestContext());
+        $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
 
-        $builder = $this->getUrlPdfBuilder(urlGenerator: $urlGenerator);
-        $builder->route('fake_route');
-
-        $multipartFormData = $builder->getMultipartFormData();
-
-        self::assertCount(1, $multipartFormData);
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['url' => 'http://localhost/route'], $multipartFormData[0]);
-    }
-
-    public function testCanProvideRouteWithCustomContext(): void
-    {
         $requestContext = new RequestContext();
-        $requestContext->setHost('sensiolabs.com');
+        $this->dependencies->set('router', new UrlGenerator($routeCollection, $requestContext));
 
-        $routeCollection = new RouteCollection();
-        $routeCollection->add('fake_route', new Route('/route'));
-        $urlGenerator = new UrlGenerator($routeCollection, new RequestContext());
+        $requestContext->setHost('example');
 
-        $originalRequestContext = $urlGenerator->getContext();
+        $this->getBuilder()
+            ->route('article_read', ['id' => 1])
+            ->setRequestContext($requestContext)
+            ->filename('article')
+            ->generate()
+        ;
 
-        $builder = $this->getUrlPdfBuilder(urlGenerator: $urlGenerator);
-        $builder->setRequestContext($requestContext);
-
-        $builder->route('fake_route');
-
-        $multipartFormData = $builder->getMultipartFormData();
-
-        self::assertCount(1, $multipartFormData);
-        self::assertArrayHasKey(0, $multipartFormData);
-        self::assertSame(['url' => 'http://sensiolabs.com/route'], $multipartFormData[0]);
-        self::assertSame($originalRequestContext, $urlGenerator->getContext());
+        $this->assertGotenbergEndpoint('/forms/chromium/convert/url');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'article');
+        $this->assertGotenbergFormData('url', 'http://example/article/1');
     }
 
-    public function testRouterIsRequired(): void
-    {
-        $builder = $this->getUrlPdfBuilder();
-
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Router is required to use "Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder::route" method. Try to run "composer require symfony/routing".');
-
-        $builder->route('fake_route');
-    }
-
-    public function testRequiredEitherUrlOrRoute(): void
-    {
-        $builder = $this->getUrlPdfBuilder();
-
-        $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('URL (or route) is required');
-
-        $builder->getMultipartFormData();
-    }
-
-    public function testRequiredEitherUrlOrRouteNotBoth(): void
+    public function testPdfGenerationFromAGivenRoute(): void
     {
         $routeCollection = new RouteCollection();
-        $routeCollection->add('fake_route', new Route('/route'));
-        $urlGenerator = new UrlGenerator($routeCollection, new RequestContext());
+        $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
 
-        $builder = $this->getUrlPdfBuilder(urlGenerator: $urlGenerator);
-        $builder->url('https://sensiolabs.com');
-        $builder->route('fake_route');
+        $this->dependencies->set('router', new UrlGenerator($routeCollection, new RequestContext()));
 
+        $this->getBuilder()
+            ->route('article_read', ['id' => 1])
+            ->filename('article')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/chromium/convert/url');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'article');
+        $this->assertGotenbergFormData('url', 'http://localhost/article/1');
+    }
+
+    public function testRequirementAboutRouteAndUrlProvided(): void
+    {
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('Provide only one of ["route", "url"] parameter. Not both.');
 
-        $builder->getMultipartFormData();
+        $this->getBuilder()
+            ->url('https://example.com')
+            ->route('article_read', ['id' => 1])
+            ->filename('test')
+            ->generate()
+        ;
     }
 
-    private function getUrlPdfBuilder(UrlGeneratorInterface|null $urlGenerator = null): UrlPdfBuilder
+    public function testUrlGeneratorDependencyRequirement(): void
     {
-        return (new UrlPdfBuilder(
-            $this->gotenbergClient,
-            self::$assetBaseDirFormatter,
-            $this->webhookConfigurationRegistry,
-            new RequestStack(),
-            null,
-            $urlGenerator)
-        )
-            ->processor(new NullProcessor())
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('UrlGenerator is required to use "Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait::getUrlGenerator" method. Try to run "composer require symfony/routing".');
+
+        $routeCollection = new RouteCollection();
+        $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
+
+        $this->getBuilder()
+            ->route('article_read', ['id' => 1])
+            ->generate()
         ;
     }
 }

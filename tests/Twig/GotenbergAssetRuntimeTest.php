@@ -2,13 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Twig;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
 
-#[CoversClass(GotenbergAssetRuntime::class)]
 class GotenbergAssetRuntimeTest extends TestCase
 {
     public function testGetAssetThrowsPerDefault(): void
@@ -28,29 +25,20 @@ class GotenbergAssetRuntimeTest extends TestCase
         $runtime->getAssetUrl('foo');
     }
 
-    public function testGetAssetCallChromiumPdfBuilder(): void
+    public function testGetAssetWithBuilder(): void
     {
         $runtime = new GotenbergAssetRuntime();
-        $builder = $this->createMock(AbstractChromiumPdfBuilder::class);
-        $builder
-            ->expects($this->once())
-            ->method('addAsset')
-            ->with('foo')
-        ;
-        $runtime->setBuilder($builder);
-        $this->assertSame('foo', $runtime->getAssetUrl('foo'));
-    }
+        $runtime->setBuilder(new MyBuilder());
+        $path = $runtime->getAssetUrl('path/to/bar.png');
 
-    public function testGetAssetCallChromiumScreenshotBuilder(): void
+        self::assertSame('bar.png', $path);
+    }
+}
+
+class MyBuilder implements BuilderAssetInterface
+{
+    public function addAsset(string $path): static
     {
-        $runtime = new GotenbergAssetRuntime();
-        $builder = $this->createMock(AbstractChromiumScreenshotBuilder::class);
-        $builder
-            ->expects($this->once())
-            ->method('addAsset')
-            ->with('foo')
-        ;
-        $runtime->setBuilder($builder);
-        $this->assertSame('foo', $runtime->getAssetUrl('foo'));
+        return $this;
     }
 }

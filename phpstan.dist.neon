@@ -1,3 +1,8 @@
+services:
+	-
+		class: Sensiolabs\GotenbergBundle\Tests\PHPStanRules\AlwaysUsedMethodRule
+		tags:
+			- phpstan.methods.alwaysUsedMethodExtension
 parameters:
 	phpVersion: 80100
 	level: 8
@@ -5,33 +10,7 @@ parameters:
 		- 'config'
 		- 'src'
 		- 'tests'
-	excludePaths:
-		- tests/Builder/DefaultBuilderTraitTest.php
 	ignoreErrors:
-		-
-			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Pdf/UrlPdfBuilder.php
-		-
-			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Pdf/UrlPdfBuilder.php
-		-
-			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 2
-			path: src/Builder/Pdf/UrlPdfBuilder.php
-		-
-			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-		-
-			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-		-
-			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 2
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
 		-
 			message: "#^Cannot use array destructuring on array\\<int, string\\|null\\>\\|null\\.$#"
 			count: 1
@@ -43,33 +22,12 @@ parameters:
 		- # Fixed when requiring 8.2
 			message: "#^Parameter \\#1 \\$iterator of function iterator_to_array expects Traversable, iterable given\\.$#"
 			count: 1
-			path: tests/Builder/AbstractBuilderTestCase.php
+			path: tests/Builder/GotenbergBuilderTestCase.php
 		-
-			message: "#^Parameter \\#2 \\$cookie of method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\Pdf\\\\AbstractChromiumPdfBuilder\\:\\:setCookie\\(\\) expects array\\{name\\: string, value\\: string, domain\\: string, path\\?\\: string\\|null, secure\\?\\: bool\\|null, httpOnly\\?\\: bool\\|null, sameSite\\?\\: 'Lax'\\|'Strict'\\|null\\}\\|Symfony\\\\Component\\\\HttpFoundation\\\\Cookie, array\\{name\\: string, value\\: string\\|null, domain\\: string\\} given\\.$#"
+			message: "#^ Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition|Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\VariableNodeDefinition::append\\(\\)\\.$#"
 			count: 1
-			path: src/Builder/Pdf/AbstractChromiumPdfBuilder.php
-
+			path: src/NodeBuilder/ArrayNodeBuilder.php
 		-
-			message: "#^Parameter \\#2 \\$cookie of method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\Screenshot\\\\AbstractChromiumScreenshotBuilder\\:\\:setCookie\\(\\) expects array\\{name\\: string, value\\: string, domain\\: string, path\\?\\: string\\|null, secure\\?\\: bool\\|null, httpOnly\\?\\: bool\\|null, sameSite\\?\\: 'Lax'\\|'Strict'\\|null\\}\\|Symfony\\\\Component\\\\HttpFoundation\\\\Cookie, array\\{name\\: string, value\\: string\\|null, domain\\: string\\} given\\.$#"
-			count: 1
-			path: src/Builder/Screenshot/AbstractChromiumScreenshotBuilder.php
-
-		-
-			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:errorWebhookUrl\\(\\)\\.$#"
-			count: 2
-			path: tests/Builder/AsyncBuilderTraitTest.php
-
-		-
-			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookConfiguration\\(\\)\\.$#"
-			count: 1
-			path: tests/Builder/AsyncBuilderTraitTest.php
-
-		-
-			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookExtraHeaders\\(\\)\\.$#"
-			count: 1
-			path: tests/Builder/AsyncBuilderTraitTest.php
-
-		-
-			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookUrl\\(\\)\\.$#"
-			count: 4
-			path: tests/Builder/AsyncBuilderTraitTest.php
+		    message: '#Class Sensiolabs\\GotenbergBundle\\Builder\\Pdf|Screenshot\\.* has an uninitialized readonly property \$dependencies#'
+		    count: 11
+		    path: src/Builder

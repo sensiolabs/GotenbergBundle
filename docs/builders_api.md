@@ -9,6 +9,7 @@
 * [MergePdfBuilder](./pdf/builders_api/MergePdfBuilder.md)
 * [ConvertPdfBuilder](./pdf/builders_api/ConvertPdfBuilder.md)
 * [SplitPdfBuilder](./pdf/builders_api/SplitPdfBuilder.md)
+* [FlattenPdfBuilder](./pdf/builders_api/FlattenPdfBuilder.md)
 
 ## Screenshot
 

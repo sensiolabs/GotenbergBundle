@@ -2,6 +2,7 @@
 <?php
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -29,6 +30,7 @@ const BUILDERS = [
         MergePdfBuilder::class,
         ConvertPdfBuilder::class,
         SplitPdfBuilder::class,
+        FlattenPdfBuilder::class,
     ],
     'screenshot' => [
         HtmlScreenshotBuilder::class,

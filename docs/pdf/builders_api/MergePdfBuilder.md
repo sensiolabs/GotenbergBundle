@@ -1,34 +1,56 @@
 # MergePdfBuilder
 
-Merge `n` pdf files into a single one.
-
-* `pdfFormat(Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
-Convert the resulting PDF into the given PDF/A format.
-
-* `pdfUniversalAccess(bool $bool)`:
-Enable PDF for Universal Access for optimal accessibility.
 
 * `files(string $paths)`:
+Add PDF files to merge.
+
+* `type()`:
+
+* `getBodyBag()`:
+
+* `getHeadersBag()`:
+
+* `downloadFrom(array $downloadFrom)`:
+Sets download from to download each entry (file) in parallel (default None).
+(URLs MUST return a Content-Disposition header with a filename parameter.).
+
+* `flatten(bool $bool)`:
+Flattening a PDF combines all its contents into a single layer. (default false).
 
 * `metadata(array $metadata)`:
 Resets the metadata.
+Author?: string,
+Copyright?: string,
+CreationDate?: string,
+Creator?: string,
+Keywords?: string,
+Marked?: bool,
+ModDate?: string,
+PDFVersion?: string,
+Producer?: string,
+Subject?: string,
+Title?: string,
+Trapped?: 'True'|'False'|'Unknown',
+} $metadata
 
 * `addMetadata(string $key, string $value)`:
 The metadata to write.
 
-* `downloadFrom(array $downloadFrom)`:
+* `pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
+Convert the resulting PDF into the given PDF/A format.
 
-* `webhookConfiguration(string $name)`:
-Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
+* `pdfUniversalAccess(bool $bool)`:
+Enable PDF for Universal Access for optimal accessibility. (default false).
+
+* `webhook(array $webhook)`:
 
 * `webhookUrl(string $url, ?string $method)`:
-Sets the webhook for cases of success.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
-* `errorWebhookUrl(?string $url, ?string $method)`:
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+* `webhookErrorUrl(string $url, ?string $method)`:
 
-* `webhookExtraHeaders(array $extraHeaders)`:
-Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
+* `webhookExtraHeaders(array $extraHttpHeaders)`:
+
+* `webhookRoute(string $route, array $parameters, ?string $method)`:
+
+* `webhookErrorRoute(string $route, array $parameters, ?string $method)`:
 

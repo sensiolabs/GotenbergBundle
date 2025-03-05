@@ -1,38 +1,33 @@
 # LibreOfficePdfBuilder
 
-* `password(string $password)`:
-Set the password for opening the source file.
-
-* `landscape(bool $bool)`:
-Sets the paper orientation to landscape.
-
-* `nativePageRanges(string $range)`:
-Page ranges to print, e.g., '1-4' - empty means all pages.
-If multiple files are provided, the page ranges will be applied independently to each file.
-
-* `doNotExportFormFields(bool $bool)`:
-Set whether to export the form fields or to use the inputted/selected content of the fields.
-
-* `singlePageSheets(bool $bool)`:
-Set whether to render the entire spreadsheet as a single page.
-
-* `pdfFormat(Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
-Convert the resulting PDF into the given PDF/A format.
-
-* `pdfUniversalAccess(bool $bool)`:
-Enable PDF for Universal Access for optimal accessibility.
-
-* `merge(bool $bool)`:
-Merge alphanumerically the resulting PDFs.
 
 * `files(string $paths)`:
 Adds office files to convert (overrides any previous files).
 
-* `metadata(array $metadata)`:
-Resets the metadata.
+* `type()`:
 
-* `addMetadata(string $key, string $value)`:
-The metadata to write.
+* `getBodyBag()`:
+
+* `getHeadersBag()`:
+
+* `downloadFrom(array $downloadFrom)`:
+Sets download from to download each entry (file) in parallel (default None).
+(URLs MUST return a Content-Disposition header with a filename parameter.).
+
+* `flatten(bool $bool)`:
+Flattening a PDF combines all its contents into a single layer. (default false).
+
+* `password(string $password)`:
+Set the password for opening the source file.
+
+* `landscape(bool $bool)`:
+Set the paper orientation to landscape.
+
+* `nativePageRanges(string $ranges)`:
+Page ranges to print, e.g., '1-4' - empty means all pages.
+
+* `doNotExportFormFields(bool $bool)`:
+Specify whether form fields are exported as widgets or only their fixed print representation is exported.
 
 * `allowDuplicateFieldNames(bool $bool)`:
 Specify whether multiple form fields exported are allowed to have the same field name.
@@ -73,6 +68,12 @@ Specify that automatically inserted empty pages are suppressed. This option is a
 * `addOriginalDocumentAsStream(bool $bool)`:
 Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.
 
+* `singlePageSheets(bool $bool)`:
+Ignore each sheet’s paper size, print ranges and shown/hidden status and puts every sheet (even hidden sheets) on exactly one page.
+
+* `merge(bool $bool)`:
+Merge alphanumerically the resulting PDFs.
+
 * `losslessImageCompression(bool $bool)`:
 Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.
 
@@ -82,8 +83,33 @@ Specify the quality of the JPG export. A higher value produces a higher-quality 
 * `reduceImageResolution(bool $bool)`:
 Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution.
 
-* `maxImageResolution(Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)`:
+* `maxImageResolution(?Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)`:
 If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
+
+* `metadata(array $metadata)`:
+Resets the metadata.
+Author?: string,
+Copyright?: string,
+CreationDate?: string,
+Creator?: string,
+Keywords?: string,
+Marked?: bool,
+ModDate?: string,
+PDFVersion?: string,
+Producer?: string,
+Subject?: string,
+Title?: string,
+Trapped?: 'True'|'False'|'Unknown',
+} $metadata
+
+* `addMetadata(string $key, string $value)`:
+The metadata to write.
+
+* `pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)`:
+Convert the resulting PDF into the given PDF/A format.
+
+* `pdfUniversalAccess(bool $bool)`:
+Enable PDF for Universal Access for optimal accessibility. (default false).
 
 * `splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)`:
 Either intervals or pages. (default None).
@@ -94,19 +120,15 @@ Either the intervals or the page ranges to extract, depending on the selected mo
 * `splitUnify(bool $bool)`:
 Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
 
-* `downloadFrom(array $downloadFrom)`:
-
-* `webhookConfiguration(string $name)`:
-Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
+* `webhook(array $webhook)`:
 
 * `webhookUrl(string $url, ?string $method)`:
-Sets the webhook for cases of success.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
 
-* `errorWebhookUrl(?string $url, ?string $method)`:
-Sets the webhook for cases of error.
-Optionaly sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+* `webhookErrorUrl(string $url, ?string $method)`:
 
-* `webhookExtraHeaders(array $extraHeaders)`:
-Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
+* `webhookExtraHeaders(array $extraHttpHeaders)`:
+
+* `webhookRoute(string $route, array $parameters, ?string $method)`:
+
+* `webhookErrorRoute(string $route, array $parameters, ?string $method)`:
 

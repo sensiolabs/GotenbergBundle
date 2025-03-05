@@ -2,17 +2,16 @@
 
 namespace Sensiolabs\GotenbergBundle\Twig;
 
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractChromiumPdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 
 /**
  * @internal
  */
 final class GotenbergAssetRuntime
 {
-    private AbstractChromiumPdfBuilder|AbstractChromiumScreenshotBuilder|null $builder = null;
+    private BuilderAssetInterface|null $builder = null;
 
-    public function setBuilder(AbstractChromiumPdfBuilder|AbstractChromiumScreenshotBuilder|null $builder): void
+    public function setBuilder(BuilderAssetInterface|null $builder): void
     {
         $this->builder = $builder;
     }
@@ -21,8 +20,7 @@ final class GotenbergAssetRuntime
      * This function is used to get the URL of an asset during the rendering
      * of a PDF or a screenshot with the Gotenberg client.
      *
-     * It only works if the builder is an instance of AbstractChromiumPdfBuilder
-     * or AbstractChromiumScreenshotBuilder.
+     * It only works if the builder is an instance of BuilderAssetInterface
      */
     public function getAssetUrl(string $path): string
     {
