@@ -92,6 +92,25 @@ final class MarkdownScreenshotBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
     }
 
+    public function testWithStringableObject(): void
+    {
+        $class = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'assets/file.md';
+            }
+        };
+
+        $this->getBuilder()
+            ->files($class)
+            ->wrapperFile('files/wrapper.html')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/chromium/screenshot/markdown');
+        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
+    }
+
     public function testRequiredFileContent(): void
     {
         $this->expectException(MissingRequiredFieldException::class);

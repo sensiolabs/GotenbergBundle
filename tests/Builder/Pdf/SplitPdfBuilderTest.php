@@ -70,6 +70,26 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
     }
 
+    public function testWithStringableObject(): void
+    {
+        $class = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'pdf/simple_pdf.pdf';
+            }
+        };
+
+        $this->getBuilder()
+            ->files($class)
+            ->splitMode(SplitMode::Pages)
+            ->splitSpan('1-2')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/pdfengines/split');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+    }
+
     public function testFilesExtensionRequirement(): void
     {
         $this->expectException(InvalidBuilderConfiguration::class);

@@ -62,6 +62,25 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf_1.pdf');
     }
 
+    public function testWithStringableObject(): void
+    {
+        $class = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'pdf/simple_pdf.pdf';
+            }
+        };
+
+        $this->getBuilder()
+            ->files($class, 'pdf/simple_pdf_1.pdf')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/pdfengines/merge');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf_1.pdf');
+    }
+
     public function testFilesExtensionRequirement(): void
     {
         $this->expectException(InvalidBuilderConfiguration::class);

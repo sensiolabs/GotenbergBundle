@@ -24,9 +24,10 @@ final class ConvertPdfBuilder extends AbstractBuilder
     use PdfFormatTrait;
     use WebhookTrait;
 
-    public function files(string ...$paths): self
+    public function files(string|\Stringable ...$paths): self
     {
         foreach ($paths as $path) {
+            $path = (string) $path;
             $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
             ValidatorFactory::filesExtension([$info], ['pdf']);
 

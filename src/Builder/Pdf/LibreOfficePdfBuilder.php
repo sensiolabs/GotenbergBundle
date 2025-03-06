@@ -38,9 +38,10 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
     /**
      * Adds office files to convert (overrides any previous files).
      */
-    public function files(string ...$paths): self
+    public function files(string|\Stringable ...$paths): self
     {
         foreach ($paths as $path) {
+            $path = (string) $path;
             $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
             ValidatorFactory::filesExtension([$info], self::AVAILABLE_EXTENSIONS);
 

@@ -57,6 +57,24 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', $contentType, self::FIXTURE_DIR.'/'.$filePath);
     }
 
+    public function testWithStringableObject(): void
+    {
+        $class = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'assets/office/document.odt';
+            }
+        };
+
+        $this->getBuilder()
+            ->files($class)
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/libreoffice/convert');
+        $this->assertGotenbergFormDataFile('files', 'application/vnd.oasis.opendocument.text', self::FIXTURE_DIR.'/assets/office/document.odt');
+    }
+
     public function testRequiredFileContent(): void
     {
         $this->expectException(MissingRequiredFieldException::class);
