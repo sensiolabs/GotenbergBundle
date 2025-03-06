@@ -4,7 +4,7 @@
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
-### files(string $paths)
+### files(Stringable|string $paths)
 ### pdfFormat(Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)
 Convert the resulting PDF into the given PDF/A format.
 

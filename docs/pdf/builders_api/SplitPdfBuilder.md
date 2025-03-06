@@ -6,7 +6,7 @@ Split `n` pdf files.
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
-### files(string $paths)
+### files(Stringable|string $paths)
 ### splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)
 Either intervals or pages. (default None).<br />
 

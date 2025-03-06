@@ -7,7 +7,7 @@ The metadata to write.
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
-### files(string $paths)
+### files(Stringable|string $paths)
 ### metadata(array $metadata)
 Resets the metadata.<br />
 

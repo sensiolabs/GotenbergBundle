@@ -22,7 +22,7 @@ Sets extra HTTP headers that Chromium will send when loading the HTML<br />docum
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )
 
-### files(string $paths)
+### files(Stringable|string $paths)
 ### userAgent(string $userAgent)
 Override the default User-Agent HTTP header. (default None).<br />
 

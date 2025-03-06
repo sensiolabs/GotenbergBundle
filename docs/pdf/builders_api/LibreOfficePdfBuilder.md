@@ -46,7 +46,7 @@ Specify, if the form field exportNotesPages is set to true, if only notes pages 
 ### exportPlaceholders(bool $bool)
 Export the placeholders fields visual markings only. The exported placeholder is ineffective.
 
-### files(string $paths)
+### files(Stringable|string $paths)
 Adds office files to convert (overrides any previous files).
 
 ### landscape(bool $bool)
