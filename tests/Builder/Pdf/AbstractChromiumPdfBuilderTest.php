@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 #[UsesClass(Unit::class)]
 #[UsesClass(PaperSize::class)]
 #[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(GotenbergAssetExtension::class)]
+#[UsesClass(GotenbergExtension::class)]
 #[UsesClass(PaperSize::class)]
 class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
 {

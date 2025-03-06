@@ -7,16 +7,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetExtension;
-use Sensiolabs\GotenbergBundle\Twig\GotenbergAssetRuntime;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergExtension;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\RuntimeLoader\RuntimeLoaderInterface;
 
-#[UsesClass(GotenbergAssetExtension::class)]
-#[UsesClass(GotenbergAssetRuntime::class)]
+#[UsesClass(GotenbergExtension::class)]
+#[UsesClass(GotenbergRuntime::class)]
 abstract class AbstractBuilderTestCase extends TestCase
 {
     protected const FIXTURE_DIR = __DIR__.'/../Fixtures';
@@ -40,11 +40,11 @@ abstract class AbstractBuilderTestCase extends TestCase
         self::$twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
             'strict_variables' => true,
         ]);
-        self::$twig->addExtension(new GotenbergAssetExtension());
+        self::$twig->addExtension(new GotenbergExtension());
         self::$twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
             public function load(string $class): object|null
             {
-                return GotenbergAssetRuntime::class === $class ? new GotenbergAssetRuntime() : null;
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
             }
         });
         self::$assetBaseDirFormatter = new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR);

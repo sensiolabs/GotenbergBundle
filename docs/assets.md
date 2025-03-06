@@ -2,14 +2,14 @@
 
 You can add assets in several ways, and it's available for most builders.
 
-|            |         HTML         |        URL         |      Markdown      | Libre Office |
-|:----------:|:--------------------:|:------------------:|:------------------:|:------------:|
-|    PDF     |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     N/A      |
-| Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |     N/A      |
+|            |         HTML         |        URL         |      Markdown      |
+|:----------:|:--------------------:|:------------------:|:------------------:|
+|    PDF     |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |
+| Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |
 
 > [!WARNING]  
 > As a reminder, we can only load assets in the content. And not in Header or Footer.  
-> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/routes#header-footer-chromium)
+> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/routes#header-footer-chromium).
 >
 > By default, the assets are fetch in the `assets` folder of your application.
 > If your assets files are in another folder, you can override the
