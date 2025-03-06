@@ -95,6 +95,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * The device screen width in pixels. (Default 800).
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function width(int $width): static
     {
@@ -107,6 +109,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * The device screen width in pixels. (Default 600).
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function height(int $height): static
     {
@@ -119,6 +123,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * Define whether to clip the screenshot according to the device dimensions. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function clip(bool $bool = true): static
     {
@@ -131,6 +137,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * The image compression format, either "png", "jpeg" or "webp". (default png).
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function format(ScreenshotFormat $format): static
     {
@@ -145,6 +153,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * @param int<0, 100> $quality
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function quality(int $quality): static
     {
@@ -158,6 +168,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * transparency. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function omitBackground(bool $bool = true): static
     {
@@ -170,6 +182,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * Define whether to optimize image encoding for speed, not for resulting size. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function optimizeForSpeed(bool $bool = true): static
     {
@@ -183,6 +197,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * document before converting it to screenshot. (default None).
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
+     *
+     * @package Behavior\\Chromium\\WaitFor
      */
     public function waitDelay(string $delay): static
     {
@@ -198,6 +214,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * For instance: "window.status === 'ready'".
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
+     *
+     * @package Behavior\\Chromium\\WaitFor
      */
     public function waitForExpression(string $expression): static
     {
@@ -279,6 +297,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
      *
      * @param array<int, int> $statusCodes
+     *
+     * @package Behavior\\FailOn
      */
     public function failOnHttpStatusCodes(array $statusCodes): static
     {
@@ -294,6 +314,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
      *
      * @param list<int<100, 599>> $statusCodes
+     *
+     * @package Behavior\\FailOn
      */
     public function failOnResourceHttpStatusCodes(array $statusCodes): static
     {
@@ -307,6 +329,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * exceptions load at least one resource. (default false).
      *
      * @see https://gotenberg.dev/docs/routes#network-errors-chromium
+     *
+     * @package Behavior\\FailOn
      */
     public function failOnResourceLoadingFailed(bool $bool = true): static
     {
@@ -320,6 +344,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
      * exceptions in the Chromium console. (default false).
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
+     *
+     * @package Behavior\\FailOn
      */
     public function failOnConsoleExceptions(bool $bool = true): static
     {
@@ -328,6 +354,9 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
         return $this;
     }
 
+    /**
+     * @package Behavior\\Performance
+     */
     public function skipNetworkIdleEvent(bool $bool = true): static
     {
         $this->formFields['skipNetworkIdleEvent'] = $bool;
@@ -337,6 +366,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
 
     /**
      * Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
+     *
+     * @package Behavior\\Assets
      */
     public function assets(string ...$paths): static
     {
@@ -351,6 +382,8 @@ abstract class AbstractChromiumScreenshotBuilder extends AbstractScreenshotBuild
 
     /**
      * Adds a file, like an image, font, stylesheet, and so on.
+     *
+     * @package Behavior\\Assets
      */
     public function addAsset(string $path): static
     {

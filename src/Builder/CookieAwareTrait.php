@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Part\DataPart;
 
+/**
+ * @package Behavior\\Chromium\\Cookie
+ */
 trait CookieAwareTrait
 {
     /**
@@ -63,7 +66,7 @@ trait CookieAwareTrait
     }
 
     /**
-     *  Add cookies to store in the Chromium cookie jar.
+     * Add cookies to store in the Chromium cookie jar.
      *
      * @see https://gotenberg.dev/docs/routes#cookies-chromium
      *

@@ -14,6 +14,8 @@ final class HtmlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
+     * @package Behavior\\Content
+     *
      * @throws ScreenshotPartRenderingException if the template could not be rendered
      */
     public function content(string $template, array $context = []): self
@@ -23,6 +25,8 @@ final class HtmlScreenshotBuilder extends AbstractChromiumScreenshotBuilder
 
     /**
      * The HTML file to convert into Screenshot.
+     *
+     * @package Behavior\\Content
      */
     public function contentFile(string $path): self
     {
