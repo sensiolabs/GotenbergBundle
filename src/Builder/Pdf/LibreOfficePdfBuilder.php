@@ -22,6 +22,8 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
     use AssetBaseDirFormatterAwareTrait;
     use LibreOfficeTrait;
 
+    public const ENDPOINT = '/forms/libreoffice/convert';
+
     private const AVAILABLE_EXTENSIONS = [
         '123', '602', 'abw', 'bib', 'bmp', 'cdr', 'cgm', 'cmx', 'csv', 'cwk', 'dbf', 'dif', 'doc', 'docm',
         'docx', 'dot', 'dotm', 'dotx', 'dxf', 'emf', 'eps', 'epub', 'fodg', 'fodp', 'fods', 'fodt', 'fopd',
@@ -55,7 +57,7 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
 
     protected function getEndpoint(): string
     {
-        return '/forms/libreoffice/convert';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

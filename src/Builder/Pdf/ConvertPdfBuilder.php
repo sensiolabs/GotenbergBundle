@@ -24,6 +24,8 @@ final class ConvertPdfBuilder extends AbstractBuilder
     use PdfFormatTrait;
     use WebhookTrait;
 
+    public const ENDPOINT = '/forms/pdfengines/convert';
+
     public function files(string|\Stringable ...$paths): self
     {
         foreach ($paths as $path) {
@@ -41,7 +43,7 @@ final class ConvertPdfBuilder extends AbstractBuilder
 
     protected function getEndpoint(): string
     {
-        return '/forms/pdfengines/convert';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

@@ -23,6 +23,8 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
         contentFile as wrapperFile;
     }
 
+    public const ENDPOINT = '/forms/chromium/screenshot/markdown';
+
     /**
      * Add Markdown into a PDF.
      *
@@ -58,7 +60,7 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
 
     protected function getEndpoint(): string
     {
-        return '/forms/chromium/screenshot/markdown';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

@@ -28,6 +28,8 @@ final class MergePdfBuilder extends AbstractBuilder
     use PdfFormatTrait;
     use WebhookTrait;
 
+    public const ENDPOINT = '/forms/pdfengines/merge';
+
     /**
      * Add PDF files to merge.
      *
@@ -50,7 +52,7 @@ final class MergePdfBuilder extends AbstractBuilder
 
     protected function getEndpoint(): string
     {
-        return '/forms/pdfengines/merge';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

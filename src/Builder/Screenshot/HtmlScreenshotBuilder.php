@@ -17,9 +17,11 @@ final class HtmlScreenshotBuilder extends AbstractBuilder implements BuilderAsse
 {
     use ChromiumScreenshotTrait;
 
+    public const ENDPOINT = '/forms/chromium/screenshot/html';
+
     protected function getEndpoint(): string
     {
-        return '/forms/chromium/screenshot/html';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

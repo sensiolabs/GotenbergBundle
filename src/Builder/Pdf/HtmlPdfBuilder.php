@@ -17,9 +17,11 @@ final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterf
 {
     use ChromiumPdfTrait;
 
+    public const ENDPOINT = '/forms/chromium/convert/html';
+
     protected function getEndpoint(): string
     {
-        return '/forms/chromium/convert/html';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

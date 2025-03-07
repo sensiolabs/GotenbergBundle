@@ -30,6 +30,8 @@ final class SplitPdfBuilder extends AbstractBuilder
     use SplitTrait;
     use WebhookTrait;
 
+    public const ENDPOINT = '/forms/pdfengines/split';
+
     public function files(string|\Stringable ...$paths): self
     {
         foreach ($paths as $path) {
@@ -47,7 +49,7 @@ final class SplitPdfBuilder extends AbstractBuilder
 
     protected function getEndpoint(): string
     {
-        return '/forms/pdfengines/split';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

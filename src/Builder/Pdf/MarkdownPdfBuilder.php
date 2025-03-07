@@ -23,6 +23,8 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
         contentFile as wrapperFile;
     }
 
+    public const ENDPOINT = '/forms/chromium/convert/markdown';
+
     /**
      * Add Markdown into a PDF.
      *
@@ -58,7 +60,7 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
 
     protected function getEndpoint(): string
     {
-        return '/forms/chromium/convert/markdown';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

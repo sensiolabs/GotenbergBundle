@@ -19,6 +19,8 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
 {
     use ChromiumPdfTrait;
 
+    public const ENDPOINT = '/forms/chromium/convert/url';
+
     private RequestContext|null $requestContext = null;
 
     /**
@@ -51,7 +53,7 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
 
     protected function getEndpoint(): string
     {
-        return '/forms/chromium/convert/url';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

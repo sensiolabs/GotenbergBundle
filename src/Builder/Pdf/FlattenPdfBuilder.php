@@ -22,6 +22,8 @@ final class FlattenPdfBuilder extends AbstractBuilder
     use DownloadFromTrait;
     use WebhookTrait;
 
+    public const ENDPOINT = '/forms/pdfengines/flatten';
+
     public function files(string ...$paths): self
     {
         foreach ($paths as $path) {
@@ -38,7 +40,7 @@ final class FlattenPdfBuilder extends AbstractBuilder
 
     protected function getEndpoint(): string
     {
-        return '/forms/pdfengines/flatten';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void

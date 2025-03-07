@@ -19,6 +19,8 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
 {
     use ChromiumScreenshotTrait;
 
+    public const ENDPOINT = '/forms/chromium/screenshot/url';
+
     private RequestContext|null $requestContext = null;
 
     /**
@@ -51,7 +53,7 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
 
     protected function getEndpoint(): string
     {
-        return '/forms/chromium/screenshot/url';
+        return self::ENDPOINT;
     }
 
     protected function validatePayloadBody(): void
