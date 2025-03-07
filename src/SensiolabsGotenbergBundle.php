@@ -15,6 +15,7 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
+use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\TraceablePass;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -47,6 +48,7 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
         $extension->registerBuilder(UrlScreenshotBuilder::class);
 
-        $container->addCompilerPass(new GotenbergPass($builderStack));
+        $container->addCompilerPass(new GotenbergPass($builderStack), priority: 128);
+        $container->addCompilerPass(new TraceablePass());
     }
 }
