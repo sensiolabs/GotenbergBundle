@@ -190,7 +190,10 @@ class SensiolabsGotenbergExtension extends Extension
         $webhookConfigName = $serviceWebhookConfigName ?? $webhookDefaultConfigName;
         $defaultConfig = $webhookConfig[$webhookConfigName] ?? [];
 
-        $serviceConfig['webhook'] = array_merge($defaultConfig, $serviceWebhookConfig);
+        $serviceConfig['webhook'] = array_merge(
+            $this->cleanUserOptions($defaultConfig),
+            $this->cleanUserOptions($serviceWebhookConfig),
+        );
 
         return $serviceConfig;
     }

@@ -48,6 +48,8 @@ class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
             foreach ($this->children as $child) {
                 $node->append($child->create());
             }
+
+            $node->addDefaultsIfNotSet();
         }
 
         return $node;

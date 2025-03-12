@@ -275,6 +275,40 @@ final class ConfigurationTest extends TestCase
                         'split_span' => null,
                         'split_unify' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'url' => [
                         'single_page' => null,
@@ -309,6 +343,40 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'markdown' => [
                         'single_page' => null,
@@ -343,6 +411,40 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'office' => [
                         'password' => null,
@@ -375,17 +477,81 @@ final class ConfigurationTest extends TestCase
                         'split_span' => null,
                         'split_unify' => null,
                         'flatten' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
                     ],
                     'merge' => [
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
                         'flatten' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
                     ],
                     'convert' => [
                         'pdf_format' => null,
                         'pdf_universal_access' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
                     ],
                     'split' => [
                         'split_mode' => null,
@@ -395,6 +561,32 @@ final class ConfigurationTest extends TestCase
                         'pdf_format' => null,
                         'download_from' => [],
                         'flatten' => null,
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                            'Author' => null,
+                            'Copyright' => null,
+                            'CreationDate' => null,
+                            'Creator' => null,
+                            'Keywords' => null,
+                            'Marked' => null,
+                            'ModDate' => null,
+                            'PDFVersion' => null,
+                            'Producer' => null,
+                            'Subject' => null,
+                            'Title' => null,
+                            'Trapped' => null,
+                        ],
                     ],
                 ],
                 'screenshot' => [
@@ -418,6 +610,26 @@ final class ConfigurationTest extends TestCase
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'url' => [
                         'width' => null,
@@ -439,6 +651,26 @@ final class ConfigurationTest extends TestCase
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                     'markdown' => [
                         'width' => null,
@@ -460,6 +692,26 @@ final class ConfigurationTest extends TestCase
                         'fail_on_console_exceptions' => null,
                         'skip_network_idle_event' => null,
                         'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'footer' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
+                        'header' => [
+                            'template' => null,
+                            'context' => [],
+                        ],
                     ],
                 ],
             ],
@@ -473,12 +725,18 @@ final class ConfigurationTest extends TestCase
      */
     private function cleanOptions(array $userConfigurations): array
     {
-        return array_filter($userConfigurations, static function ($config): bool {
-            if (\is_array($config)) {
-                return 0 !== \count($config);
-            }
+        foreach ($userConfigurations as $key => $value) {
+            if (\is_array($value)) {
+                $userConfigurations[$key] = $this->cleanOptions($value);
 
-            return null !== $config;
-        });
+                if ([] === $userConfigurations[$key]) {
+                    unset($userConfigurations[$key]);
+                }
+            } elseif (null === $value) {
+                unset($userConfigurations[$key]);
+            }
+        }
+
+        return $userConfigurations;
     }
 }
