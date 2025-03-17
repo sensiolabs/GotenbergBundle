@@ -72,6 +72,7 @@ class SensiolabsGotenbergExtension extends Extension
          * @var SensiolabsGotenbergConfiguration $config
          */
         $config = $this->processConfiguration($configuration, $configs);
+        $defaultConfiguration = $this->processDefaultConfiguration($config);
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
 
@@ -84,10 +85,10 @@ class SensiolabsGotenbergExtension extends Extension
         $loader->load('builder_screenshot.php');
 
         // HTTP Client
-        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($config['http_client'] ?? 'http_client', false));
+        $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($defaultConfiguration['http_client'] ?? 'http_client', false));
 
         // Request context
-        $baseUri = $config['request_context']['base_uri'] ?? null;
+        $baseUri = $defaultConfiguration['request_context']['base_uri'] ?? null;
         if (null !== $baseUri) {
             $container
                 ->register('.sensiolabs_gotenberg.request_context', RequestContext::class)
@@ -99,10 +100,10 @@ class SensiolabsGotenbergExtension extends Extension
         // Asset base dir formatter
         $container
             ->getDefinition('.sensiolabs_gotenberg.asset.base_dir_formatter')
-            ->replaceArgument(1, $config['assets_directory'])
+            ->replaceArgument(1, $defaultConfiguration['assets_directory'])
         ;
 
-        if (false === $config['controller_listener']) {
+        if (false === $defaultConfiguration['controller_listener']) {
             $container->removeDefinition('sensiolabs_gotenberg.http_kernel.stream_builder');
         }
 
@@ -110,20 +111,8 @@ class SensiolabsGotenbergExtension extends Extension
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
                 ->replaceArgument(4, [
-                    'pdf' => [
-                        'html' => $this->processDefaultOptions($config, $config['default_options']['pdf']['html']),
-                        'url' => $this->processDefaultOptions($config, $config['default_options']['pdf']['url']),
-                        'markdown' => $this->processDefaultOptions($config, $config['default_options']['pdf']['markdown']),
-                        'office' => $this->processDefaultOptions($config, $config['default_options']['pdf']['office']),
-                        'merge' => $this->processDefaultOptions($config, $config['default_options']['pdf']['merge']),
-                        'convert' => $this->processDefaultOptions($config, $config['default_options']['pdf']['convert']),
-                        'split' => $this->processDefaultOptions($config, $config['default_options']['pdf']['split']),
-                    ],
-                    'screenshot' => [
-                        'html' => $this->processDefaultOptions($config, $config['default_options']['screenshot']['html']),
-                        'url' => $this->processDefaultOptions($config, $config['default_options']['screenshot']['url']),
-                        'markdown' => $this->processDefaultOptions($config, $config['default_options']['screenshot']['markdown']),
-                    ],
+                    'pdf' => $defaultConfiguration['default_options']['pdf'],
+                    'screenshot' => $defaultConfiguration['default_options']['screenshot'],
                 ])
             ;
         }
@@ -134,14 +123,14 @@ class SensiolabsGotenbergExtension extends Extension
 
         // Configurators
         $configValueMapping = [];
-        foreach ($config['default_options'] as $type => $buildersOptions) {
+        foreach ($defaultConfiguration['default_options'] as $type => $buildersOptions) {
             if ('webhook' === $type) {
                 continue;
             }
 
             foreach ($buildersOptions as $builderName => $builderOptions) {
                 $class = $this->builderStack->getTypeReverseMapping()[$type][$builderName];
-                $configValueMapping[$class] = $this->processDefaultOptions($config, $builderOptions);
+                $configValueMapping[$class] = $defaultConfiguration['default_options'][$type][$builderName];
             }
         }
 
@@ -153,49 +142,44 @@ class SensiolabsGotenbergExtension extends Extension
 
     /**
      * @param array<string, mixed> $config
-     * @param array<string, mixed> $serviceConfig
-     *
      * @return array<string, mixed>
      */
-    private function processDefaultOptions(array $config, array $serviceConfig): array
+    private function processDefaultConfiguration(array $config): array
     {
-        $serviceOptions = $this->processWebhookOptions($config['webhook'], $config['default_options']['webhook'] ?? null, $serviceConfig);
-
-        return $this->cleanUserOptions($serviceOptions);
-    }
-
-    /**
-     * @param array<string, WebhookConfiguration> $webhookConfig
-     * @param array<string, mixed>                $serviceConfig
-     *
-     * @return array<string, mixed>
-     */
-    private function processWebhookOptions(array $webhookConfig, string|null $webhookDefaultConfigName, array $serviceConfig): array
-    {
-        $serviceWebhookConfig = [];
-        $serviceWebhookConfigName = null;
-        if (isset($serviceConfig['webhook'])) {
-            if (\is_array($serviceConfig['webhook'])) {
-                $serviceWebhookConfig = $serviceConfig['webhook'];
-
-                /** @var string|null $serviceWebhookConfigName */
-                $serviceWebhookConfigName = $serviceConfig['webhook']['config_name'] ?? null;
+        foreach ($config['default_options'] as $type => $builders) {
+            if ('webhook' === $type) {
+                continue;
             }
 
-            if (\is_string($serviceConfig['webhook'])) {
-                $serviceWebhookConfigName = $serviceConfig['webhook'];
+            foreach ($builders as $builderName => $builderOptions) {
+                $builderWebhookConfig = [];
+                $builderWebhookConfigName = null;
+                if (isset($builderOptions['webhook'])) {
+                    if (\is_array($builderOptions['webhook'])) {
+                        $builderWebhookConfig = $builderOptions['webhook'];
+
+                        /** @var string|null $builderWebhookConfigName */
+                        $builderWebhookConfigName = $builderOptions['webhook']['config_name'] ?? null;
+                    }
+
+                    if (\is_string($builderOptions['webhook'])) {
+                        $builderWebhookConfigName = $builderOptions['webhook'];
+                    }
+                }
+
+                $webhookConfigName = $builderWebhookConfigName ?? $config['default_options']['webhook'] ?? null;
+                $defaultWebhookConfig = $config['webhook'][$webhookConfigName] ?? [];
+
+                $config['default_options'][$type][$builderName]['webhook'] = array_merge(
+                    $this->cleanBuilderConfiguration($defaultWebhookConfig),
+                    $this->cleanBuilderConfiguration($builderWebhookConfig),
+                );
+
+                $config['default_options'][$type][$builderName] = $this->cleanBuilderConfiguration($config['default_options'][$type][$builderName]);
             }
         }
 
-        $webhookConfigName = $serviceWebhookConfigName ?? $webhookDefaultConfigName;
-        $defaultConfig = $webhookConfig[$webhookConfigName] ?? [];
-
-        $serviceConfig['webhook'] = array_merge(
-            $this->cleanUserOptions($defaultConfig),
-            $this->cleanUserOptions($serviceWebhookConfig),
-        );
-
-        return $serviceConfig;
+        return $config;
     }
 
     /**
@@ -203,11 +187,11 @@ class SensiolabsGotenbergExtension extends Extension
      *
      * @return array<string, mixed>
      */
-    private function cleanUserOptions(array $userConfigurations): array
+    private function cleanBuilderConfiguration(array $userConfigurations): array
     {
         foreach ($userConfigurations as $key => $value) {
             if (\is_array($value)) {
-                $userConfigurations[$key] = $this->cleanUserOptions($value);
+                $userConfigurations[$key] = $this->cleanBuilderConfiguration($value);
 
                 if ([] === $userConfigurations[$key]) {
                     unset($userConfigurations[$key]);
