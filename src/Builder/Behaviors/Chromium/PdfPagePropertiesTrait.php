@@ -14,6 +14,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\FloatNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\UnitNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#page-properties-chromium.
@@ -38,7 +39,7 @@ trait PdfPagePropertiesTrait
     /**
      * Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
      */
-    #[ExposeSemantic(new ScalarNodeBuilder('paper_width'))]
+    #[ExposeSemantic(new UnitNodeBuilder('paper_width'))]
     public function paperWidth(float $width, Unit $unit = Unit::Inches): static
     {
         $this->getBodyBag()->set('paperWidth', $width.$unit->value);
@@ -49,7 +50,7 @@ trait PdfPagePropertiesTrait
     /**
      * Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
      */
-    #[ExposeSemantic(new ScalarNodeBuilder('paper_height'))]
+    #[ExposeSemantic(new UnitNodeBuilder('paper_height'))]
     public function paperHeight(float $height, Unit $unit = Unit::Inches): static
     {
         $this->getBodyBag()->set('paperHeight', $height.$unit->value);
@@ -94,7 +95,7 @@ trait PdfPagePropertiesTrait
     /**
      * Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
      */
-    #[ExposeSemantic(new ScalarNodeBuilder('margin_top'))]
+    #[ExposeSemantic(new UnitNodeBuilder('margin_top'))]
     public function marginTop(float $top, Unit $unit = Unit::Inches): static
     {
         $this->getBodyBag()->set('marginTop', $top.$unit->value);
@@ -105,7 +106,7 @@ trait PdfPagePropertiesTrait
     /**
      * Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
      */
-    #[ExposeSemantic(new ScalarNodeBuilder('margin_bottom'))]
+    #[ExposeSemantic(new UnitNodeBuilder('margin_bottom'))]
     public function marginBottom(float $bottom, Unit $unit = Unit::Inches): static
     {
         $this->getBodyBag()->set('marginBottom', $bottom.$unit->value);
@@ -116,7 +117,7 @@ trait PdfPagePropertiesTrait
     /**
      * Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
      */
-    #[ExposeSemantic(new ScalarNodeBuilder('margin_left'))]
+    #[ExposeSemantic(new UnitNodeBuilder('margin_left'))]
     public function marginLeft(float $left, Unit $unit = Unit::Inches): static
     {
         $this->getBodyBag()->set('marginLeft', $left.$unit->value);
@@ -127,7 +128,7 @@ trait PdfPagePropertiesTrait
     /**
      * Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
      */
-    #[ExposeSemantic(new ScalarNodeBuilder('margin_right'))]
+    #[ExposeSemantic(new UnitNodeBuilder('margin_right'))]
     public function marginRight(float $right, Unit $unit = Unit::Inches): static
     {
         $this->getBodyBag()->set('marginRight', $right.$unit->value);
