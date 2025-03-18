@@ -257,4 +257,14 @@ trait PagePropertiesTestCaseTrait
         $builder->maxImageResolution(null);
         self::assertArrayNotHasKey('maxImageResolution', $builder->getBodyBag()->all());
     }
+
+    public function testDoNotUpdateIndexes(): void
+    {
+        $this->getDefaultBuilder()
+            ->doNotUpdateIndexes()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('updateIndexes', 'false');
+    }
 }

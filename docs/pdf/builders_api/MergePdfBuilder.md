@@ -1,7 +1,7 @@
 # MergePdfBuilder
 
 
-* `files(string $paths)`:
+* `files(Stringable|string $paths)`:
 Add PDF files to merge.
 
 * `type()`:

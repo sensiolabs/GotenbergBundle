@@ -503,6 +503,7 @@ final class ConfigurationTest extends TestCase
                             'Title' => null,
                             'Trapped' => null,
                         ],
+                        'update_indexes' => null,
                     ],
                     'merge' => [
                         'pdf_format' => null,

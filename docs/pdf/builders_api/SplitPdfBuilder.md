@@ -1,7 +1,7 @@
 # SplitPdfBuilder
 
 
-* `files(string $paths)`:
+* `files(Stringable|string $paths)`:
 
 * `type()`:
 

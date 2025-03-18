@@ -1,7 +1,7 @@
 # LibreOfficePdfBuilder
 
 
-* `files(string $paths)`:
+* `files(Stringable|string $paths)`:
 Adds office files to convert (overrides any previous files).
 
 * `type()`:
@@ -85,6 +85,9 @@ Specify if the resolution of each image is reduced to the resolution specified b
 
 * `maxImageResolution(?Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI $resolution)`:
 If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
+
+* `doNotUpdateIndexes(bool $bool)`:
+Specify whether to update the indexes before conversion, keeping in mind that doing so might result in missing links in the final PDF.
 
 * `metadata(array $metadata)`:
 Resets the metadata.

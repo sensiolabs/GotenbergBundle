@@ -90,7 +90,8 @@ class YourController
 [exportLinksRelativeFsys](#exportLinksRelativeFsys)  
 [exportHiddenSlides](#exportHiddenSlides)  
 [addOriginalDocumentAsStream](#addOriginalDocumentAsStream)  
-[download from](#download-from)
+[downloadFrom](#downloadFrom)
+[doNotUpdateIndexes](#doNotUpdateIndexes)
 
 ### Formatting
 [metadata](#metadata)  
@@ -767,7 +768,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-### download from
+### downloadFrom
 
 > [!WARNING]  
 > URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
@@ -811,6 +812,35 @@ class YourController
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#download-from).
+
+### doNotUpdateIndexes
+
+Default: `true`
+
+Specify whether to update the indexes before conversion, keeping in mind that 
+doing so might result in missing links in the final PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->office()
+            ->doNotUpdateIndexes() // is same as `->doNotUpdateIndexes(false)`
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
 ## Formatting
 

@@ -278,6 +278,17 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Specify whether to update the indexes before conversion, keeping in mind that doing so might result in missing links in the final PDF.
+     */
+    #[ExposeSemantic(new BooleanNodeBuilder('update_indexes'))]
+    public function doNotUpdateIndexes(bool $bool = false): self
+    {
+        $this->getBodyBag()->set('updateIndexes', $bool);
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -302,5 +313,6 @@ trait PagePropertiesTrait
         yield 'quality' => NormalizerFactory::int();
         yield 'reduceImageResolution' => NormalizerFactory::bool();
         yield 'maxImageResolution' => NormalizerFactory::enum();
+        yield 'updateIndexes' => NormalizerFactory::bool();
     }
 }

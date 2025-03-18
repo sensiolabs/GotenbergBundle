@@ -219,6 +219,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                     'split_mode' => SplitMode::Pages,
                     'split_span' => '1-2',
                     'split_unify' => true,
+                    'update_indexes' => false,
                 ],
                 'merge' => [
                     'pdf_format' => PdfFormat::Pdf3b,

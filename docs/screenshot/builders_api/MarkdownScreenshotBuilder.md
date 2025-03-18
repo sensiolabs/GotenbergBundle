@@ -1,7 +1,7 @@
 # MarkdownScreenshotBuilder
 
 
-* `files(string $paths)`:
+* `files(Stringable|string $paths)`:
 Add Markdown into a PDF.
 
 * `content(string $template, array $context)`:
