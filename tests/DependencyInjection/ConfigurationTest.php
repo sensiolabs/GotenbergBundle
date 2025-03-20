@@ -245,30 +245,12 @@ final class ConfigurationTest extends TestCase
                     'html' => [
                         'single_page' => null,
                         'paper_standard_size' => null,
-                        'paper_width' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'paper_height' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_top' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_bottom' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_left' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_right' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
+                        'paper_width' => null,
+                        'paper_height' => null,
+                        'margin_top' => null,
+                        'margin_bottom' => null,
+                        'margin_left' => null,
+                        'margin_right' => null,
                         'prefer_css_page_size' => null,
                         'generate_document_outline' => null,
                         'print_background' => null,
@@ -331,30 +313,12 @@ final class ConfigurationTest extends TestCase
                     'url' => [
                         'single_page' => null,
                         'paper_standard_size' => null,
-                        'paper_width' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'paper_height' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_top' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_bottom' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_left' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_right' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
+                        'paper_width' => null,
+                        'paper_height' => null,
+                        'margin_top' => null,
+                        'margin_bottom' => null,
+                        'margin_left' => null,
+                        'margin_right' => null,
                         'prefer_css_page_size' => null,
                         'generate_document_outline' => null,
                         'print_background' => null,
@@ -417,30 +381,12 @@ final class ConfigurationTest extends TestCase
                     'markdown' => [
                         'single_page' => null,
                         'paper_standard_size' => null,
-                        'paper_width' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'paper_height' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_top' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_bottom' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_left' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
-                        'margin_right' => [
-                            'value' => null,
-                            'unit' => null,
-                        ],
+                        'paper_width' => null,
+                        'paper_height' => null,
+                        'margin_top' => null,
+                        'margin_bottom' => null,
+                        'margin_left' => null,
+                        'margin_right' => null,
                         'prefer_css_page_size' => null,
                         'generate_document_outline' => null,
                         'print_background' => null,

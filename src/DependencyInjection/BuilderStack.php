@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NodeBuilderInterface;
@@ -26,7 +27,7 @@ final class BuilderStack
     private array $typeReverseMapping = [];
 
     /**
-     * @var array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': array{class-string<\BackedEnum>, 'from'}|null}>>
+     * @var array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': array<array-key, string>|null}>>
      */
     private array $configMapping = [];
 
@@ -85,6 +86,7 @@ final class BuilderStack
             } elseif ($attribute->node instanceof NativeEnumNodeBuilder) {
                 $callback = [$attribute->node->enumClass, 'from'];
             } elseif ($attribute->node instanceof UnitNodeBuilder) {
+                $callback = [Unit::class, 'parse'];
                 $mustUseVariadic = true;
             }
 
@@ -116,7 +118,7 @@ final class BuilderStack
     }
 
     /**
-     * @return array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': array{class-string<\BackedEnum>, 'from'}|null}>>
+     * @return array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': array<array-key, string>|null}>>
      */
     public function getConfigMapping(): array
     {
