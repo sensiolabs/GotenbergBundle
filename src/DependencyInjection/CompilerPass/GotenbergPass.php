@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
 final class GotenbergPass implements CompilerPassInterface
 {
     public function __construct(
-        private BuilderStack $builderStack,
+        private readonly BuilderStack $builderStack,
     ) {
     }
 

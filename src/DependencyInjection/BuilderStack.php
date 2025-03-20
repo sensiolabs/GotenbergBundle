@@ -7,8 +7,8 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NodeBuilderInterface;
+use Sensiolabs\GotenbergBundle\NodeBuilder\UnitNodeBuilder;
 
 /**
  * @internal
@@ -31,7 +31,7 @@ final class BuilderStack
     private array $configMapping = [];
 
     /**
-     * @var array<string, array<class-string<BuilderInterface>, NodeDefinition>>
+     * @var array<string, array<string, array<array-key, NodeBuilderInterface>>>
      */
     private array $configNode = [];
 
@@ -68,9 +68,6 @@ final class BuilderStack
 
         $this->typeReverseMapping[$type][$semanticNode->name] = $class;
 
-        $treeBuilder = new TreeBuilder($semanticNode->name);
-        $root = $treeBuilder->getRootNode()->addDefaultsIfNotSet();
-
         foreach (array_reverse($reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $method) {
             $attributes = $method->getAttributes(ExposeSemantic::class);
             if (\count($attributes) === 0) {
@@ -80,8 +77,6 @@ final class BuilderStack
             /** @var ExposeSemantic $attribute */
             $attribute = $attributes[0]->newInstance();
 
-            $root->append($attribute->node->create());
-
             $mustUseVariadic = false;
             $callback = null;
 
@@ -89,6 +84,8 @@ final class BuilderStack
                 $mustUseVariadic = null === $attribute->node->prototype;
             } elseif ($attribute->node instanceof NativeEnumNodeBuilder) {
                 $callback = [$attribute->node->enumClass, 'from'];
+            } elseif ($attribute->node instanceof UnitNodeBuilder) {
+                $mustUseVariadic = true;
             }
 
             $this->configMapping[$class] ??= [];
@@ -97,10 +94,9 @@ final class BuilderStack
                 'mustUseVariadic' => $mustUseVariadic,
                 'callback' => $callback,
             ];
-        }
 
-        $this->configNode[$type] ??= [];
-        $this->configNode[$type][$class] = $root;
+            $this->configNode[$type][$semanticNode->name][] = $attribute->node;
+        }
     }
 
     /**
@@ -128,7 +124,7 @@ final class BuilderStack
     }
 
     /**
-     * @return array<string, array<class-string<BuilderInterface>, NodeDefinition>>
+     * @return array<string, array<string, array<array-key, NodeBuilderInterface>>>
      */
     public function getConfigNode(): array
     {

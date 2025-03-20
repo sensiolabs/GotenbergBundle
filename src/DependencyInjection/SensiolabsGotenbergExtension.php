@@ -142,6 +142,7 @@ class SensiolabsGotenbergExtension extends Extension
 
     /**
      * @param array<string, mixed> $config
+     *
      * @return array<string, mixed>
      */
     private function processDefaultConfiguration(array $config): array

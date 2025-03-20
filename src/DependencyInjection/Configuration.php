@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\NodeBuilder\NodeBuilderInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * @param array<string, array<class-string<BuilderInterface>, NodeDefinition>> $builders
+     * @param array<string, array<string, array<array-key, NodeBuilderInterface>>> $builders
      */
     public function __construct(
         private readonly array $builders,
@@ -73,8 +73,16 @@ class Configuration implements ConfigurationInterface
                 ->addDefaultsIfNotSet()
             ;
 
-            foreach ($innerBuilders as $innerBuilder) {
-                $typeTreeBuilder->getRootNode()->append($innerBuilder);
+            foreach ($innerBuilders as $builderType => $builderNodes) {
+                $builderTypeTreeBuilder = new TreeBuilder($builderType);
+                $builderTypeTreeBuilder->getRootNode()
+                    ->addDefaultsIfNotSet()
+                ;
+                foreach ($builderNodes as $node) {
+                    $builderTypeTreeBuilder->getRootNode()->append($node->create());
+                }
+
+                $typeTreeBuilder->getRootNode()->append($builderTypeTreeBuilder->getRootNode());
             }
 
             $defaultOptionsTreeBuilder->getRootNode()->append($typeTreeBuilder->getRootNode());
