@@ -80,17 +80,11 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
-    /**
-     * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
-     */
     public function cookies(array $cookies): static
     {
         return $this->withCookies($this->formFields, $cookies);
     }
 
-    /**
-     * @param Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null} $cookie
-     */
     public function setCookie(string $key, Cookie|array $cookie): static
     {
         return $this->withCookie($this->formFields, $key, $cookie);
@@ -105,6 +99,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Define whether to print the entire content in one single page.
      *
      * If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function singlePage(bool $bool = true): static
     {
@@ -131,6 +127,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * A6 - 4.13 x 5.83
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function paperSize(float $width, float $height, Unit $unit = Unit::Inches): static
     {
@@ -140,6 +138,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @package Behavior\\Chromium\\PageProperties
+     */
     public function paperStandardSize(PaperSizeInterface $paperSize): static
     {
         $this->paperWidth($paperSize->width(), $paperSize->unit());
@@ -148,6 +149,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @package Behavior\\Chromium\\PageProperties
+     */
     public function paperWidth(float $width, Unit $unit = Unit::Inches): static
     {
         $this->formFields['paperWidth'] = $width.$unit->value;
@@ -155,6 +159,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @package Behavior\\Chromium\\PageProperties
+     */
     public function paperHeight(float $height, Unit $unit = Unit::Inches): static
     {
         $this->formFields['paperHeight'] = $height.$unit->value;
@@ -166,6 +173,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Overrides the default margins (e.g., 0.39), in inches.
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function margins(float $top, float $bottom, float $left, float $right, Unit $unit = Unit::Inches): static
     {
@@ -177,6 +186,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @package Behavior\\Chromium\\PageProperties
+     */
     public function marginTop(float $top, Unit $unit = Unit::Inches): static
     {
         $this->formFields['marginTop'] = $top.$unit->value;
@@ -184,6 +196,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @package Behavior\\Chromium\\PageProperties
+     */
     public function marginBottom(float $bottom, Unit $unit = Unit::Inches): static
     {
         $this->formFields['marginBottom'] = $bottom.$unit->value;
@@ -191,6 +206,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @package Behavior\\Chromium\\PageProperties
+     */
     public function marginLeft(float $left, Unit $unit = Unit::Inches): static
     {
         $this->formFields['marginLeft'] = $left.$unit->value;
@@ -198,6 +216,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @package Behavior\\Chromium\\PageProperties
+     */
     public function marginRight(float $right, Unit $unit = Unit::Inches): static
     {
         $this->formFields['marginRight'] = $right.$unit->value;
@@ -209,6 +230,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Define whether to prefer page size as defined by CSS. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function preferCssPageSize(bool $bool = true): static
     {
@@ -221,6 +244,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Define whether the document outline should be embedded into the PDF. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function generateDocumentOutline(bool $bool = true): static
     {
@@ -233,6 +258,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Prints the background graphics. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function printBackground(bool $bool = true): static
     {
@@ -246,6 +273,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * transparency. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function omitBackground(bool $bool = true): static
     {
@@ -258,6 +287,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Sets the paper orientation to landscape. (Default false).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function landscape(bool $bool = true): static
     {
@@ -270,6 +301,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * The scale of the page rendering (e.g., 1.0). (Default 1.0).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function scale(float $scale): static
     {
@@ -282,6 +315,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Page ranges to print, e.g., '1-5, 8, 11-13'. (default All pages).
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @package Behavior\\Chromium\\PageProperties
      */
     public function nativePageRanges(string $range): static
     {
@@ -294,6 +329,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
+     * @package Behavior\\Content
+     *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
     public function header(string $template, array $context = []): static
@@ -305,6 +342,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
+     * @package Behavior\\Content
+     *
      * @throws PdfPartRenderingException if the template could not be rendered
      */
     public function footer(string $template, array $context = []): static
@@ -314,6 +353,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     /**
      * HTML file containing the header. (default None).
+     *
+     * @package Behavior\\Content
      */
     public function headerFile(string $path): static
     {
@@ -322,6 +363,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     /**
      * HTML file containing the footer. (default None).
+     *
+     * @package Behavior\\Content
      */
     public function footerFile(string $path): static
     {
@@ -330,6 +373,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     /**
      * Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
+     *
+     * @package Behavior\\Assets
      */
     public function assets(string ...$paths): static
     {
@@ -344,6 +389,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
 
     /**
      * Adds a file, like an image, font, stylesheet, and so on.
+     *
+     * @package Behavior\\Assets
      */
     public function addAsset(string $path): static
     {
@@ -361,6 +408,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * document before converting it to PDF. (default None).
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
+     *
+     * @package Behavior\\Chromium\\WaitFor
      */
     public function waitDelay(string $delay): static
     {
@@ -376,6 +425,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * For instance: "window.status === 'ready'".
      *
      * @see https://gotenberg.dev/docs/routes#wait-before-rendering
+     *
+     * @package Behavior\\Chromium\\WaitFor
      */
     public function waitForExpression(string $expression): static
     {
@@ -388,6 +439,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * Forces Chromium to emulate, either "screen" or "print". (default "print").
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
+     *
+     * @package Behavior\\MediaType
      */
     public function emulatedMediaType(EmulatedMediaType $mediaType): static
     {
@@ -399,9 +452,11 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
     /**
      * Override the default User-Agent HTTP header. (default None).
      *
+     * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+     *
      * @param UserAgent::*|string $userAgent
      *
-     * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+     * @package Behavior\\Http\\CustomHeaders
      */
     public function userAgent(string $userAgent): static
     {
@@ -417,6 +472,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      *
      * @param array<string, string> $headers
+     *
+     * @package Behavior\\Http\\CustomHeaders
      */
     public function extraHttpHeaders(array $headers): static
     {
@@ -438,6 +495,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * @see https://gotenberg.dev/docs/routes#custom-http-headers
      *
      * @param array<string, string> $headers
+     *
+     * @package Behavior\\Http\\CustomHeaders
      */
     public function addExtraHttpHeaders(array $headers): static
     {
@@ -457,6 +516,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
      *
      * @param array<int, int> $statusCodes
+     *
+     * @package Behavior\\FailOn
      */
     public function failOnHttpStatusCodes(array $statusCodes): static
     {
@@ -472,6 +533,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
      *
      * @param list<int<100, 599>> $statusCodes
+     *
+     * @package Behavior\\FailOn
      */
     public function failOnResourceHttpStatusCodes(array $statusCodes): static
     {
@@ -485,6 +548,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * exceptions load at least one resource. (default false).
      *
      * @see https://gotenberg.dev/docs/routes#network-errors-chromium
+     *
+     * @package Behavior\\FailOn
      */
     public function failOnResourceLoadingFailed(bool $bool = true): static
     {
@@ -498,6 +563,8 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      * exceptions in the Chromium console. (default false).
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions
+     *
+     * @package Behavior\\FailOn
      */
     public function failOnConsoleExceptions(bool $bool = true): static
     {
@@ -506,6 +573,9 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * @package Behavior\\Performance
+     */
     public function skipNetworkIdleEvent(bool $bool = true): static
     {
         $this->formFields['skipNetworkIdleEvent'] = $bool;

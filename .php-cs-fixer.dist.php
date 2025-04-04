@@ -26,6 +26,7 @@ return (new PhpCsFixer\Config())
         'nullable_type_declaration' => [
             'syntax' => 'union',
         ],
+        'phpdoc_no_package' => false,
         'return_assignment' => true,
         'strict_param' => true,
         'trailing_comma_in_multiline' => [
