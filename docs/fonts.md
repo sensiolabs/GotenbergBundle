@@ -1,8 +1,8 @@
 # Working with fonts
 
-You can add fonts in the same way as assets. The `gotenberg_font()` function follows 
-the same path resolution logic as [gotenberg_asset()](assets.md), but it generates an `@font-face`
-rule that can be used inside a `<style>` block.
+You can add fonts in the same way as assets. The `gotenberg_font(path_to_font, font_family)` 
+function follows the same path resolution logic as [gotenberg_asset()](assets.md), 
+but it generates a `@font-face` rule that can be used inside a `<style>` block.
 
 |            |         HTML         |        URL         |      Markdown      |
 |:----------:|:--------------------:|:------------------:|:------------------:|
@@ -20,8 +20,6 @@ rule that can be used inside a `<style>` block.
 
 The `{{ gotenberg_font() }}` function helps generate an `@font-face` 
 declaration with the correct asset path expected by gotenberg.
-
-You can provide an absolute path.
 
 ### Example
 
@@ -95,7 +93,8 @@ class YourController
 If your file is an HTML file (not a Twig template), you can still include 
 fonts manually.
 
-The only requirement is that their paths in the HTML file are on the root level.
+The only requirement is that their paths in the HTML file must be on the root 
+level.
 
 ```html
 <!DOCTYPE html>
