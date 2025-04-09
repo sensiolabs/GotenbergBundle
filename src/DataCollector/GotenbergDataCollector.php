@@ -33,7 +33,6 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 
     public function collect(Request $request, Response $response, \Throwable|null $exception = null): void
     {
-        $this->data['request_total_memory'] = 0;
         $this->data['request_total_size'] = 0;
         $this->data['request_total_time'] = 0;
         $this->data['request_count'] = 0;
@@ -78,7 +77,6 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
         foreach ($builders as [$id, $builder]) {
             foreach ($builder->getFiles() as $request) {
                 $this->data['request_total_time'] += $request['time'];
-                $this->data['request_total_memory'] += $request['memory'];
                 $this->data['request_total_size'] += $request['size'] ?? 0;
                 $this->data['files'][] = [
                     'builderClass' => $builder->getInner()::class,
@@ -161,11 +159,6 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     public function getRequestTotalTime(): int|float
     {
         return $this->data['request_total_time'] ?? 0.0;
-    }
-
-    public function getRequestTotalMemory(): int
-    {
-        return $this->data['request_total_memory'] ?? 0;
     }
 
     /**

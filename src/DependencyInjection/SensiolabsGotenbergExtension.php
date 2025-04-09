@@ -68,7 +68,7 @@ class SensiolabsGotenbergExtension extends Extension
     {
         $configuration = $this->getConfiguration($configs, $container);
 
-        /*
+        /**
          * @var SensiolabsGotenbergConfiguration $config
          */
         $config = $this->processConfiguration($configuration, $configs);
@@ -110,10 +110,7 @@ class SensiolabsGotenbergExtension extends Extension
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
-                ->replaceArgument(4, [
-                    'pdf' => $defaultConfiguration['default_options']['pdf'],
-                    'screenshot' => $defaultConfiguration['default_options']['screenshot'],
-                ])
+                ->replaceArgument(4, $defaultConfiguration['default_options'])
             ;
         }
 

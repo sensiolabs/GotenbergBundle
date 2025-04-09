@@ -22,6 +22,10 @@ final class GotenbergPass implements CompilerPassInterface
         $builderPerType = [];
         foreach ($container->findTaggedServiceIds('sensiolabs_gotenberg.builder') as $serviceId => $tags) {
             $serviceDefinition = $container->getDefinition($serviceId);
+            $serviceDefinition
+                ->setShared(false)
+            ;
+
             $class = $serviceDefinition->getClass();
 
             $type = $this->builderStack->getBuilders()[$class];

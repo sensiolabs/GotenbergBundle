@@ -67,15 +67,6 @@
                 <span class="label">Total time</span>
             </div>
             <div class="metric">
-                {% if collector.requestTotalMemory is null %}
-                    <span class="value" title="To enable memory usage tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
-                {% else %}
-                    <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span
-                                class="unit">MiB</span></span>
-                {% endif %}
-                <span class="label">Total memory</span>
-            </div>
-            <div class="metric">
                 {% set total_size = collector.requestTotalSize %}
                 {% set total_size_value = total_size[0] %}
                 {% set total_size_unit = total_size[1] %}

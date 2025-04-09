@@ -42,17 +42,20 @@ final class BuilderStack
     public function push(string $class): void
     {
         if (!is_a($class, BuilderInterface::class, true)) {
-            throw new \LogicException('logic');
+            throw new \LogicException(\sprintf('Only classes implementing %s are supported.', BuilderInterface::class));
         }
 
         if (\array_key_exists($class, $this->builders)) {
-            return; // TODO : understand why this is called two times on fresh cache with tests
-            throw new \LogicException('logic');
+            throw new \LogicException("{$class} has already been added.");
         }
 
         $type = 'custom';
         if (method_exists($class, 'type')) {
             $type = $class::type();
+        }
+
+        if (!\in_array($type, ['pdf', 'screenshot'], true)) { // TODO : temporary soft lock
+            throw new \LogicException('Invalid builder type. Must be one of "pdf" or "screenshot".');
         }
 
         $this->builders[$class] = $type;
