@@ -8,7 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\AbstractChromiumScreenshotBuil
 /**
  * @internal
  */
-final class GotenbergAssetRuntime
+final class GotenbergRuntime
 {
     private AbstractChromiumPdfBuilder|AbstractChromiumScreenshotBuilder|null $builder = null;
 
@@ -26,12 +26,31 @@ final class GotenbergAssetRuntime
      */
     public function getAssetUrl(string $path): string
     {
+        $this->addAsset($path, 'gotenberg_asset');
+
+        return basename($path);
+    }
+
+    public function getFont(string $path, string $name): string
+    {
+        $this->addAsset($path, 'gotenberg_font');
+
+        $name = htmlspecialchars($name);
+        $basename = htmlspecialchars(basename($path));
+
+        return '@font-face {
+                font-family: "'.$name.'";
+                src: url("'.$basename.'");
+            }'
+        ;
+    }
+
+    private function addAsset(string $path, string $function): void
+    {
         if (null === $this->builder) {
-            throw new \LogicException('The gotenberg_asset function must be used in a Gotenberg context.');
+            throw new \LogicException(\sprintf('The %s function must be used in a Gotenberg context.', $function));
         }
 
         $this->builder->addAsset($path);
-
-        return basename($path);
     }
 }
