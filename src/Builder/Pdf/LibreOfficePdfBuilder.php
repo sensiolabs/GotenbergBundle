@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#convert-with-libreoffice
  */
-#[SemanticNode('office')]
+#[SemanticNode('office', 'pdf')]
 final class LibreOfficePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
@@ -75,10 +75,5 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
-    }
-
-    public static function type(): string
-    {
-        return 'pdf';
     }
 }

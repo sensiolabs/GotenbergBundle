@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#flatten-pdfs-route
  */
-#[SemanticNode('flatten')]
+#[SemanticNode('flatten', 'pdf')]
 final class FlattenPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
@@ -56,10 +56,5 @@ final class FlattenPdfBuilder extends AbstractBuilder
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
-    }
-
-    public static function type(): string
-    {
-        return 'pdf';
     }
 }

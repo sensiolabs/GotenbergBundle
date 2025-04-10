@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RequestContext;
 /**
  * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
  */
-#[SemanticNode('url')]
+#[SemanticNode('url', 'pdf')]
 final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait;
@@ -25,6 +25,8 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
 
     /**
      * URL of the page you want to convert into PDF.
+     *
+     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function url(string $url): self
     {
@@ -36,6 +38,8 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
     /**
      * @param string       $name       #Route
      * @param array<mixed> $parameters
+     *
+     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function route(string $name, array $parameters = []): self
     {
@@ -74,10 +78,5 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
     private function normalizeRoute(): \Generator
     {
         yield 'route' => NormalizerFactory::route($this->requestContext, $this->getUrlGenerator());
-    }
-
-    public static function type(): string
-    {
-        return 'pdf';
     }
 }

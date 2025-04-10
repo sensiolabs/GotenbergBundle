@@ -18,7 +18,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
-#[SemanticNode('merge')]
+#[SemanticNode('merge', 'pdf')]
 final class MergePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
@@ -67,10 +67,5 @@ final class MergePdfBuilder extends AbstractBuilder
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
-    }
-
-    public static function type(): string
-    {
-        return 'pdf';
     }
 }

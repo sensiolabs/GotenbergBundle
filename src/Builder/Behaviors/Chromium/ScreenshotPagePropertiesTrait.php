@@ -76,8 +76,9 @@ trait ScreenshotPagePropertiesTrait
     }
 
     /**
-     * Hides default white background and allows generating screenshot with
-     * transparency. (Default false).
+     * Hides default white background and allows generating screenshot with transparency.
+     *
+     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new BooleanNodeBuilder('omit_background'))]
     public function omitBackground(bool $bool = true): static
