@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#convert-into-pdfa--pdfua-route
  */
-#[SemanticNode('convert')]
+#[SemanticNode('convert', 'pdf')]
 final class ConvertPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
@@ -61,10 +61,5 @@ final class ConvertPdfBuilder extends AbstractBuilder
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
-    }
-
-    public static function type(): string
-    {
-        return 'pdf';
     }
 }

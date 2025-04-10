@@ -49,16 +49,16 @@ final class BuilderStack
             throw new \LogicException("{$class} has already been added.");
         }
 
-        $type = 'custom';
-        if (method_exists($class, 'type')) {
-            $type = $class::type();
-        }
-
-        if (!\in_array($type, ['pdf', 'screenshot'], true)) { // TODO : temporary soft lock
-            throw new \LogicException('Invalid builder type. Must be one of "pdf" or "screenshot".');
-        }
-
-        $this->builders[$class] = $type;
+//        $type = 'custom';
+//        if (method_exists($class, 'type')) {
+//            $type = $class::type();
+//        }
+//
+//        if (!\in_array($type, ['pdf', 'screenshot'], true)) { // TODO : temporary soft lock
+//            throw new \LogicException('Invalid builder type. Must be one of "pdf" or "screenshot".');
+//        }
+//
+//        $this->builders[$class] = $type;
 
         $reflection = new \ReflectionClass($class);
         $nodeAttributes = $reflection->getAttributes(SemanticNode::class);
@@ -70,7 +70,11 @@ final class BuilderStack
         /** @var SemanticNode $semanticNode */
         $semanticNode = $nodeAttributes[0]->newInstance();
 
-        $this->typeReverseMapping[$type][$semanticNode->name] = $class;
+        if (!\in_array($semanticNode->type, ['pdf', 'screenshot'], true)) { // TODO : temporary soft lock
+            throw new \LogicException('Invalid builder type. Must be one of "pdf" or "screenshot".');
+        }
+
+        $this->typeReverseMapping[$semanticNode->type][$semanticNode->name] = $class;
 
         foreach (array_reverse($reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $method) {
             $attributes = $method->getAttributes(ExposeSemantic::class);

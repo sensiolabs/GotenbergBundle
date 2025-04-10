@@ -13,7 +13,7 @@ Add cookies to store in the Chromium cookie jar.<br />
 > See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
 
 ### addExtraHttpHeaders(array $headers)
-Adds extra HTTP headers that Chromium will send when loading the HTML<br />document. (default None).<br />
+Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )
@@ -30,13 +30,16 @@ The HTML file to convert into PDF.
 
 ### cookies(array $cookies)
 ### downloadFrom(array $downloadFrom)
-Sets download from to download each entry (file) in parallel (default None).<br />(URLs MUST return a Content-Disposition header with a filename parameter.).<br />
+Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
 
 ### emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
 ### extraHttpHeaders(array $headers)
-Sets extra HTTP headers that Chromium will send when loading the HTML<br />document. (default None). (overrides any previous headers).<br />
+Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )
@@ -54,7 +57,7 @@ Return a 409 Conflict response if the HTTP status code from<br />the main page i
 > See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium ](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium )
 
 ### failOnResourceHttpStatusCodes(array $statusCodes)
-Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.<br />(default None). (overrides any previous configuration).<br />
+Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable. (overrides any previous configuration).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium ](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium )
@@ -67,23 +70,24 @@ Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load 
 
 ### footer(string $template, array $context)
 ### footerFile(string $path)
-HTML file containing the footer. (default None).
+HTML file containing the footer.
 
 ### format(Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat $format)
 The image compression format, either "png", "jpeg" or "webp". (default png).
 
 ### forwardCookie(string $name)
-### getBodyBag()
-### getHeadersBag()
 ### header(string $template, array $context)
 ### headerFile(string $path)
-HTML file containing the header. (default None).
+HTML file containing the header.
 
 ### height(int $height)
 The device screen width in pixels. (Default 600).
 
 ### omitBackground(bool $bool)
-Hides default white background and allows generating screenshot with<br />transparency. (Default false).
+Hides default white background and allows generating screenshot with transparency.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### optimizeForSpeed(bool $bool)
 Define whether to optimize image encoding for speed, not for resulting size. (Default false).
@@ -100,29 +104,50 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).<br />
 URL of the page you want to convert into PDF.
 
 ### userAgent(string $userAgent)
-Override the default User-Agent HTTP header. (default None).<br />
+Override the default User-Agent HTTP header.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium](https://gotenberg.dev/docs/routes#custom-http-headers-chromium)
 
 ### waitDelay(string $delay)
-Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF. (default None).<br />
+Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering-chromium](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium)
 
 ### waitForExpression(string $expression)
-Sets the JavaScript expression to wait before converting an HTML<br />document to PDF until it returns true. (default None).<br /><br />For instance: "window.status === 'ready'".<br />
+Sets the JavaScript expression to wait before converting an HTML document to PDF until it returns true.<br /><br />For instance: "window.status === 'ready'".<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering](https://gotenberg.dev/docs/routes#wait-before-rendering)
 
 ### webhook(array $webhook)
 ### webhookErrorRoute(string $route, array $parameters, ?string $method)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookErrorUrl(string $url, ?string $method)
+Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookExtraHeaders(array $extraHttpHeaders)
+Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookRoute(string $route, array $parameters, ?string $method)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookUrl(string $url, ?string $method)
+Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### width(int $width)
 The device screen width in pixels. (Default 800).
 

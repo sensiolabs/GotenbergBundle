@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
-#[SemanticNode('markdown')]
+#[SemanticNode('markdown', 'pdf')]
 final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait {
@@ -78,10 +78,5 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
-    }
-
-    public static function type(): string
-    {
-        return 'pdf';
     }
 }

@@ -12,7 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route
  */
-#[SemanticNode('html')]
+#[SemanticNode('html', 'screenshot')]
 final class HtmlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait;
@@ -29,10 +29,5 @@ final class HtmlScreenshotBuilder extends AbstractBuilder implements BuilderAsse
         if ($this->getBodyBag()->get(Part::Body->value) === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('Content is required');
         }
-    }
-
-    public static function type(): string
-    {
-        return 'screenshot';
     }
 }

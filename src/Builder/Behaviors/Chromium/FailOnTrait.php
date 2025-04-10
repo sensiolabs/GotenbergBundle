@@ -30,8 +30,7 @@ trait FailOnTrait
     }
 
     /**
-     * Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.
-     * (default None). (overrides any previous configuration).
+     * Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable. (overrides any previous configuration).
      *
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
      *

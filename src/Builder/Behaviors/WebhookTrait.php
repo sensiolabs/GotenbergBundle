@@ -106,7 +106,12 @@ trait WebhookTrait
     }
 
     /**
+     * Sets the webhook for cases of success.
+     * Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+     *
      * @param 'POST'|'PUT'|'PATCH'|null $method
+     *
+     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookUrl(string $url, string|null $method = null): static
     {
@@ -119,7 +124,12 @@ trait WebhookTrait
     }
 
     /**
+     * Sets the webhook for cases of success.
+     * Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
+     *
      * @param 'POST'|'PUT'|'PATCH'|null $method
+     *
+     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookErrorUrl(string $url, string|null $method = null): static
     {
@@ -132,7 +142,11 @@ trait WebhookTrait
     }
 
     /**
+     * Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
+     *
      * @param array<string, string> $extraHttpHeaders
+     *
+     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookExtraHeaders(array $extraHttpHeaders): static
     {
@@ -144,15 +158,19 @@ trait WebhookTrait
     /**
      * @param array<string, mixed>      $parameters
      * @param 'PATCH'|'POST'|'PUT'|null $method
+     *
+     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookRoute(string $route, array $parameters = [], string|null $method = null): static
     {
         return $this->webhookUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method);
     }
 
-    /**
+    /**     *
      * @param array<string, mixed>      $parameters
      * @param 'PATCH'|'POST'|'PUT'|null $method
+     *
+     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookErrorRoute(string $route, array $parameters = [], string|null $method = null): static
     {

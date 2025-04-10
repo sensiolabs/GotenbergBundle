@@ -12,7 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
  */
-#[SemanticNode('html')]
+#[SemanticNode('html', 'pdf')]
 final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait;
@@ -29,10 +29,5 @@ final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterf
         if ($this->getBodyBag()->get(Part::Body->value) === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('Content is required');
         }
-    }
-
-    public static function type(): string
-    {
-        return 'pdf';
     }
 }

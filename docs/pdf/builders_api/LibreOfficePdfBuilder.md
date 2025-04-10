@@ -25,7 +25,10 @@ Specify whether form fields are exported as widgets or only their fixed print re
 Specify whether to update the indexes before conversion, keeping in mind that doing so might result in missing links in the final PDF.
 
 ### downloadFrom(array $downloadFrom)
-Sets download from to download each entry (file) in parallel (default None).<br />(URLs MUST return a Content-Disposition header with a filename parameter.).<br />
+Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
 
 ### exportBookmarksToPdfDestination(bool $bool)
 Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
@@ -57,10 +60,11 @@ Adds office files to convert (overrides any previous files).
 ### flatten(bool $bool)
 Flattening a PDF combines all its contents into a single layer. (default false).
 
-### getBodyBag()
-### getHeadersBag()
 ### landscape(bool $bool)
-Set the paper orientation to landscape.
+Set the paper orientation to landscape.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### losslessImageCompression(bool $bool)
 Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.
@@ -82,7 +86,10 @@ Resets the metadata.<br />
 > See: [https://exiftool.org/TagNames/XMP.html#pdf ](https://exiftool.org/TagNames/XMP.html#pdf )
 
 ### nativePageRanges(string $ranges)
-Page ranges to print, e.g., '1-4' - empty means all pages.
+Page ranges to print, e.g., '1-4' - empty means all pages.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### password(string $password)
 Set the password for opening the source file.
@@ -91,7 +98,7 @@ Set the password for opening the source file.
 Convert the resulting PDF into the given PDF/A format.
 
 ### pdfUniversalAccess(bool $bool)
-Enable PDF for Universal Access for optimal accessibility. (default false).
+Enable PDF for Universal Access for optimal accessibility.
 
 ### quality(int $quality)
 Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.<br />
@@ -106,18 +113,51 @@ Ignore each sheet’s paper size, print ranges and shown/hidden status and puts 
 Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.
 
 ### splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)
-Either intervals or pages. (default None).
+Either intervals or pages.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
+> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 ### splitSpan(string $splitSpan)
-Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
+Either the intervals or the page ranges to extract, depending on the selected mode.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
+> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 ### splitUnify(bool $bool)
-Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
+Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
+> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 ### type()
 ### webhook(array $webhook)
 ### webhookErrorRoute(string $route, array $parameters, ?string $method)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookErrorUrl(string $url, ?string $method)
+Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookExtraHeaders(array $extraHttpHeaders)
+Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookRoute(string $route, array $parameters, ?string $method)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookUrl(string $url, ?string $method)
+Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+

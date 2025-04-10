@@ -13,7 +13,7 @@ Add cookies to store in the Chromium cookie jar.<br />
 > See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
 
 ### addExtraHttpHeaders(array $headers)
-Adds extra HTTP headers that Chromium will send when loading the HTML<br />document. (default None).<br />
+Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )
@@ -30,13 +30,16 @@ The HTML file to convert into PDF.
 
 ### cookies(array $cookies)
 ### downloadFrom(array $downloadFrom)
-Sets download from to download each entry (file) in parallel (default None).<br />(URLs MUST return a Content-Disposition header with a filename parameter.).<br />
+Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
 
 ### emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)
 Forces Chromium to emulate, either "screen" or "print". (default "print").
 
 ### extraHttpHeaders(array $headers)
-Sets extra HTTP headers that Chromium will send when loading the HTML<br />document. (default None). (overrides any previous headers).<br />
+Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )
@@ -54,7 +57,7 @@ Return a 409 Conflict response if the HTTP status code from<br />the main page i
 > See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium ](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium )
 
 ### failOnResourceHttpStatusCodes(array $statusCodes)
-Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable.<br />(default None). (overrides any previous configuration).<br />
+Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable. (overrides any previous configuration).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium ](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium )
@@ -73,35 +76,54 @@ Add Markdown into a PDF.<br />
 
 ### footer(string $template, array $context)
 ### footerFile(string $path)
-HTML file containing the footer. (default None).
+HTML file containing the footer.
 
 ### forwardCookie(string $name)
 ### generateDocumentOutline(bool $bool)
-Define whether the document outline should be embedded into the PDF.
+Define whether the document outline should be embedded into the PDF.<br />
 
-### getBodyBag()
-### getHeadersBag()
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
+
 ### header(string $template, array $context)
 ### headerFile(string $path)
-HTML file containing the header. (default None).
+HTML file containing the header.
 
 ### landscape(bool $bool)
-Set the paper orientation to landscape. (Default false).
+Set the paper orientation to landscape.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### marginBottom(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
-Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### marginLeft(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
-Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### marginRight(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
-Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### marginTop(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
-Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### margins(float $top, float $bottom, float $left, float $right, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
-Overrides the default margins (e.g., 0.39), in inches.
+Overrides the default margins (e.g., 0.39), in inches.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### metadata(array $metadata)
 Resets the metadata.<br />
@@ -114,10 +136,16 @@ Resets the metadata.<br />
 > See: [https://exiftool.org/TagNames/XMP.html#pdf ](https://exiftool.org/TagNames/XMP.html#pdf )
 
 ### nativePageRanges(string $ranges)
-Page ranges to print, e.g., '1-5, 8, 11-13'. (default All pages).
+Page ranges to print, e.g., '1-5, 8, 11-13'.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### omitBackground(bool $bool)
-Hide the default white background and allow generating PDFs with transparency.
+Hide the default white background and allow generating PDFs with transparency.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### paperHeight(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
@@ -133,16 +161,25 @@ Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. De
 Convert the resulting PDF into the given PDF/A format.
 
 ### pdfUniversalAccess(bool $bool)
-Enable PDF for Universal Access for optimal accessibility. (default false).
+Enable PDF for Universal Access for optimal accessibility.
 
 ### preferCssPageSize(bool $bool)
-Define whether to prefer page size as defined by CSS. (Default false).
+Define whether to prefer page size as defined by CSS.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### printBackground(bool $bool)
-Prints the background graphics. (Default false).
+Prints the background graphics.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### scale(float $scale)
-The scale of the page rendering (e.g., 1.0). (Default 1.0).
+The scale of the page rendering (e.g., 1.0).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
 ### singlePage(bool $bool)
@@ -150,39 +187,72 @@ Define whether to print the entire content in one single page.<br /><br />If the
 
 ### skipNetworkIdleEvent(bool $bool)
 ### splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)
-Either intervals or pages. (default None).
+Either intervals or pages.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
+> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 ### splitSpan(string $splitSpan)
-Either the intervals or the page ranges to extract, depending on the selected mode. (default None).
+Either the intervals or the page ranges to extract, depending on the selected mode.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
+> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 ### splitUnify(bool $bool)
-Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
+Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
+> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
 ### type()
 ### userAgent(string $userAgent)
-Override the default User-Agent HTTP header. (default None).<br />
+Override the default User-Agent HTTP header.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium](https://gotenberg.dev/docs/routes#custom-http-headers-chromium)
 
 ### waitDelay(string $delay)
-Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF. (default None).<br />
+Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering-chromium](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium)
 
 ### waitForExpression(string $expression)
-Sets the JavaScript expression to wait before converting an HTML<br />document to PDF until it returns true. (default None).<br /><br />For instance: "window.status === 'ready'".<br />
+Sets the JavaScript expression to wait before converting an HTML document to PDF until it returns true.<br /><br />For instance: "window.status === 'ready'".<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering](https://gotenberg.dev/docs/routes#wait-before-rendering)
 
 ### webhook(array $webhook)
 ### webhookErrorRoute(string $route, array $parameters, ?string $method)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookErrorUrl(string $url, ?string $method)
+Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookExtraHeaders(array $extraHttpHeaders)
+Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookRoute(string $route, array $parameters, ?string $method)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookUrl(string $url, ?string $method)
+Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### wrapper(string $template, array $context)
 ### wrapperFile(string $path)
 The HTML file to convert into PDF.
