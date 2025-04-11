@@ -3,6 +3,7 @@
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -75,18 +76,19 @@ class BuilderParser
      */
     public const BUILDERS = [
         'pdf' => [
-            HtmlPdfBuilder::class,
-            UrlPdfBuilder::class,
-            MarkdownPdfBuilder::class,
-            LibreOfficePdfBuilder::class,
-            MergePdfBuilder::class,
             ConvertPdfBuilder::class,
+            FlattenPdfBuilder::class,
+            HtmlPdfBuilder::class,
+            LibreOfficePdfBuilder::class,
+            MarkdownPdfBuilder::class,
+            MergePdfBuilder::class,
             SplitPdfBuilder::class,
+            UrlPdfBuilder::class,
         ],
         'screenshot' => [
             HtmlScreenshotBuilder::class,
-            UrlScreenshotBuilder::class,
             MarkdownScreenshotBuilder::class,
+            UrlScreenshotBuilder::class,
         ],
     ];
 

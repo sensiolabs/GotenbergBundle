@@ -3,6 +3,7 @@
 ## Pdf
 
 * [ConvertPdfBuilder](./pdf/builders_api/ConvertPdfBuilder.md)
+* [FlattenPdfBuilder](./pdf/builders_api/FlattenPdfBuilder.md)
 * [HtmlPdfBuilder](./pdf/builders_api/HtmlPdfBuilder.md)
 * [LibreOfficePdfBuilder](./pdf/builders_api/LibreOfficePdfBuilder.md)
 * [MarkdownPdfBuilder](./pdf/builders_api/MarkdownPdfBuilder.md)
