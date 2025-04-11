@@ -14,6 +14,7 @@ trait AssetTestCaseTrait
     use BehaviorTrait;
 
     abstract protected function assertContentFile(string $filename, string $contentType = 'text/html', string|null $expectedContent = null): void;
+
     abstract protected function assertGotenbergFormDataFile(string $name, string $contentType, string $path): void;
 
     /**

@@ -137,7 +137,9 @@ abstract class GotenbergBuilderTestCase extends TestCase
                 self::assertSame($expectedContent, $part->getBody());
             }
 
-            iterator_to_array($part->bodyToIterable());
+            return;
         }
+
+        $this->fail(\sprintf('No matching content file found with name "%s" and content type "%s".', $filename, $contentType));
     }
 }

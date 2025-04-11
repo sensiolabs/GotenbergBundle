@@ -73,6 +73,7 @@ HTML file containing the footer.
 The image compression format, either "png", "jpeg" or "webp". (default png).
 
 ### forwardCookie(string $name)
+### getHeadersBag()
 ### header(string $template, array $context)
 ### headerFile(string $path)
 HTML file containing the header.
@@ -124,6 +125,12 @@ Sets the JavaScript expression to wait before converting an HTML document to PDF
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering](https://gotenberg.dev/docs/routes#wait-before-rendering)
 
 ### webhook(array $webhook)
+### webhookConfiguration(string $name)
+Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
 ### webhookErrorRoute(string $route, array $parameters, ?string $method)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)

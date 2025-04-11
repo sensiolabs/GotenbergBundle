@@ -12,6 +12,8 @@ use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergExtension;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -68,5 +70,13 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.http_kernel.stream_builder', ProcessBuilderOnControllerResponse::class)
         ->tag('kernel.event_listener', ['method' => 'streamBuilder', 'event' => 'kernel.view'])
+    ;
+
+    $services->set('.sensiolabs_gotenberg.webhook_configuration_registry', WebhookConfigurationRegistry::class)
+        ->args([
+            service('router'),
+            service('.sensiolabs_gotenberg.request_context')->nullOnInvalid(),
+        ])
+        ->alias(WebhookConfigurationRegistryInterface::class, '.sensiolabs_gotenberg.webhook_configuration_registry')
     ;
 };

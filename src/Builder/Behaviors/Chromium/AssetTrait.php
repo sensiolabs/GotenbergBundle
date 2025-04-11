@@ -24,6 +24,8 @@ trait AssetTrait
         $this->getBodyBag()->unset('assets');
 
         foreach ($paths as $path) {
+            $path = (string) $path;
+
             $this->addAsset($path);
         }
 
@@ -35,6 +37,8 @@ trait AssetTrait
      */
     public function addAsset(string|\Stringable $path): static
     {
+        $path = (string) $path;
+
         $assets = $this->getBodyBag()->get('assets', []);
 
         if (\array_key_exists($path, $assets)) {
