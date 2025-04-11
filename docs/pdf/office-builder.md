@@ -90,14 +90,16 @@ class YourController
 [exportLinksRelativeFsys](#exportLinksRelativeFsys)  
 [exportHiddenSlides](#exportHiddenSlides)  
 [addOriginalDocumentAsStream](#addOriginalDocumentAsStream)  
-[download from](#download-from)
+[downloadFrom](#downloadFrom)
+[doNotUpdateIndexes](#doNotUpdateIndexes)
 
 ### Formatting
 [metadata](#metadata)  
 [addMetadata](#addMetadata)  
 [pdfFormat](#pdfFormat)  
 [pdfUniversalAccess](#pdfUniversalAccess)  
-[convertOooTargetToPdfTarget](#convertOooTargetToPdfTarget)
+[convertOooTargetToPdfTarget](#convertOooTargetToPdfTarget)  
+[flatten](#flatten)
 
 ### Security
 [password](#password)
@@ -766,7 +768,7 @@ class YourController
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
-### download from
+### downloadFrom
 
 > [!WARNING]  
 > URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
@@ -810,6 +812,35 @@ class YourController
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#download-from).
+
+### doNotUpdateIndexes
+
+Default: `true`
+
+Specify whether to update the indexes before conversion, keeping in mind that 
+doing so might result in missing links in the final PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->office()
+            ->doNotUpdateIndexes() // is same as `->doNotUpdateIndexes(false)`
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
 
 ## Formatting
 
@@ -926,7 +957,9 @@ class YourController
 
 Default: `false`
 
-Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.
+Specify that the target documents with .od[tpgs] extension, will have that
+extension changed to .pdf when the link is exported to PDF. The source 
+document remains untouched.
 
 ```php
 namespace App\Controller;
@@ -948,6 +981,35 @@ class YourController
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#page-properties-libreoffice).
+
+### flatten
+
+Default: `false`
+
+You may have the possibility to flatten several PDF pages.
+It combines all its contents into a single layer, making it non-editable and
+ensuring that the document's integrity is maintained.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->flatten()  // is same as `->flatten(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#flatten-libreoffice).
 
 ## Security
 

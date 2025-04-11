@@ -2,131 +2,103 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
-use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Mime\Part\DataPart;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
-#[CoversClass(MergePdfBuilder::class)]
-#[UsesClass(AbstractPdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(GotenbergFileResult::class)]
-final class MergePdfBuilderTest extends AbstractBuilderTestCase
+/**
+ * @extends GotenbergBuilderTestCase<MergePdfBuilder>
+ */
+final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
-    private const PDF_DOCUMENTS_DIR = 'pdf';
+    /** @use DownloadFromTestCaseTrait<MergePdfBuilder> */
+    use DownloadFromTestCaseTrait;
 
-    public function testEndpointIsCorrect(): void
+    /** @use FlattenTestCaseTrait<MergePdfBuilder> */
+    use FlattenTestCaseTrait;
+
+    /** @use MetadataTestCaseTrait<MergePdfBuilder> */
+    use MetadataTestCaseTrait;
+
+    /** @use PdfFormatTestCaseTrait<MergePdfBuilder> */
+    use PdfFormatTestCaseTrait;
+
+    /** @use WebhookTestCaseTrait<MergePdfBuilder> */
+    use WebhookTestCaseTrait;
+
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): MergePdfBuilder
     {
-        $this->gotenbergClient
-            ->expects($this->once())
-            ->method('call')
-            ->with(
-                $this->equalTo('/forms/pdfengines/merge'),
-                $this->anything(),
-                $this->anything(),
-            )
+        return new MergePdfBuilder($client, $dependencies);
+    }
+
+    /**
+     * @param MergePdfBuilder $builder
+     */
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): MergePdfBuilder
+    {
+        return $builder
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf_1.pdf')
+        ;
+    }
+
+    public function testAddFilesAsContent(): void
+    {
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf_1.pdf')
+            ->generate()
         ;
 
-        $this->getMergePdfBuilder()
-            ->files(
-                self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf',
-                self::PDF_DOCUMENTS_DIR.'/simple_pdf_1.pdf',
-            )
+        $this->assertGotenbergEndpoint('/forms/pdfengines/merge');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf_1.pdf');
+    }
+
+    public function testWithStringableObject(): void
+    {
+        $class = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'pdf/simple_pdf.pdf';
+            }
+        };
+
+        $this->getBuilder()
+            ->files($class, 'pdf/simple_pdf_1.pdf')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/pdfengines/merge');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf_1.pdf');
+    }
+
+    public function testFilesExtensionRequirement(): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
+
+        $this->getBuilder()
+            ->files('simple_pdf.pdf', 'b.png')
             ->generate()
         ;
     }
 
-    public static function configurationIsCorrectlySetProvider(): \Generator
+    public function testRequirementMissingFile(): void
     {
-        yield 'pdf_format' => ['pdf_format', 'PDF/A-1b', [
-            'pdfa' => 'PDF/A-1b',
-        ]];
-        yield 'pdf_universal_access' => ['pdf_universal_access', false, [
-            'pdfua' => 'false',
-        ]];
-        yield 'metadata' => ['metadata', ['Author' => 'SensioLabs'], [
-            'metadata' => '{"Author":"SensioLabs"}',
-        ]];
-    }
-
-    /**
-     * @param array<mixed> $expected
-     */
-    #[DataProvider('configurationIsCorrectlySetProvider')]
-    public function testConfigurationIsCorrectlySet(string $key, mixed $value, array $expected): void
-    {
-        $builder = $this->getMergePdfBuilder();
-        $builder->setConfigurations([
-            $key => $value,
-        ]);
-        $builder->files(
-            self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf',
-            self::PDF_DOCUMENTS_DIR.'/simple_pdf_1.pdf',
-        );
-
-        self::assertEquals($expected, $builder->getMultipartFormData()[0]);
-    }
-
-    public function testRequiredFormData(): void
-    {
-        $builder = $this->getMergePdfBuilder();
-
         $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('At least one PDF file is required');
+        $this->expectExceptionMessage('At least one PDF file is required.');
 
-        $builder->getMultipartFormData();
-    }
-
-    public function testStringableObject(): void
-    {
-        $stringable = new class(self::PDF_DOCUMENTS_DIR) implements \Stringable {
-            public function __construct(private string $directory)
-            {
-            }
-
-            public function __toString(): string
-            {
-                return $this->directory.'/simple_pdf.pdf';
-            }
-        };
-        $builder = $this->getMergePdfBuilder();
-        $builder
-            ->files($stringable)
-        ;
-
-        $data = $builder->getMultipartFormData();
-
-        /* @var DataPart $dataPart */
-        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $stringable), $dataPart->getFilename());
-    }
-
-    public function testSplFileInfoObject(): void
-    {
-        $splFileInfo = new \SplFileInfo(self::PDF_DOCUMENTS_DIR.'/simple_pdf.pdf');
-        $builder = $this->getMergePdfBuilder();
-        $builder
-            ->files($splFileInfo)
-        ;
-
-        $data = $builder->getMultipartFormData();
-
-        /* @var DataPart $dataPart */
-        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $splFileInfo), $dataPart->getFilename());
-    }
-
-    private function getMergePdfBuilder(): MergePdfBuilder
-    {
-        return (new MergePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry))
-            ->processor(new NullProcessor())
+        $this->getBuilder()
+            ->generate()
         ;
     }
 }
