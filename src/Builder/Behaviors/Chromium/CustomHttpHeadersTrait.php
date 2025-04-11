@@ -15,7 +15,7 @@ trait CustomHttpHeadersTrait
     abstract protected function getBodyBag(): BodyBag;
 
     /**
-     * Override the default User-Agent HTTP header.
+     * Override the default User-Agent HTTP header. (default None).
      *
      * @param UserAgent::*|string $userAgent
      *
@@ -30,7 +30,8 @@ trait CustomHttpHeadersTrait
     }
 
     /**
-     * Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).
+     * Sets extra HTTP headers that Chromium will send when loading the HTML
+     * document. (default None). (overrides any previous headers).
      *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      *
@@ -51,7 +52,8 @@ trait CustomHttpHeadersTrait
     }
 
     /**
-     * Adds extra HTTP headers that Chromium will send when loading the HTML document.
+     * Adds extra HTTP headers that Chromium will send when loading the HTML
+     * document. (default None).
      *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      *

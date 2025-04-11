@@ -12,14 +12,11 @@ use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergExtension;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
-use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
-use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -47,14 +44,14 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.pdf', GotenbergPdf::class)
         ->args([
-            tagged_locator('sensiolabs_gotenberg.pdf_builder'),
+            abstract_arg('PDF builders services'),
         ])
         ->alias(GotenbergPdfInterface::class, 'sensiolabs_gotenberg.pdf')
     ;
 
     $services->set('sensiolabs_gotenberg.screenshot', GotenbergScreenshot::class)
         ->args([
-            tagged_locator('sensiolabs_gotenberg.screenshot_builder'),
+            abstract_arg('Screenshot builders services'),
         ])
         ->alias(GotenbergScreenshotInterface::class, 'sensiolabs_gotenberg.screenshot')
     ;
@@ -71,13 +68,5 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.http_kernel.stream_builder', ProcessBuilderOnControllerResponse::class)
         ->tag('kernel.event_listener', ['method' => 'streamBuilder', 'event' => 'kernel.view'])
-    ;
-
-    $services->set('.sensiolabs_gotenberg.webhook_configuration_registry', WebhookConfigurationRegistry::class)
-        ->args([
-            service('router'),
-            service('.sensiolabs_gotenberg.request_context')->nullOnInvalid(),
-        ])
-        ->alias(WebhookConfigurationRegistryInterface::class, '.sensiolabs_gotenberg.webhook_configuration_registry')
     ;
 };

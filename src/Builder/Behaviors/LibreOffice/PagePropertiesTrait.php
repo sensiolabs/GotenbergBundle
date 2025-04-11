@@ -30,8 +30,6 @@ trait PagePropertiesTrait
 
     /**
      * Set the paper orientation to landscape.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new BooleanNodeBuilder('landscape'))]
     public function landscape(bool $bool = true): static
@@ -43,8 +41,6 @@ trait PagePropertiesTrait
 
     /**
      * Page ranges to print, e.g., '1-4' - empty means all pages.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new ScalarNodeBuilder('native_page_ranges'))]
     public function nativePageRanges(string $ranges): static

@@ -18,11 +18,10 @@ trait DownloadFromTrait
     abstract protected function getBodyBag(): BodyBag;
 
     /**
-     * Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).
+     * Sets download from to download each entry (file) in parallel (default None).
+     * (URLs MUST return a Content-Disposition header with a filename parameter.).
      *
      * @param list<array{url: string, extraHttpHeaders?: array<string, string>}> $downloadFrom
-     *
-     * @see https://gotenberg.dev/docs/routes#download-from
      */
     #[ExposeSemantic(new ArrayNodeBuilder('download_from', prototype: 'array', children: [
         new ScalarNodeBuilder('url', required: true, restrictTo: 'string'),

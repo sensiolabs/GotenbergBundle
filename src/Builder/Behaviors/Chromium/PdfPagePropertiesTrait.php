@@ -94,8 +94,6 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new UnitNodeBuilder('margin_top'))]
     public function marginTop(float $value, Unit $unit = Unit::Inches): static
@@ -107,8 +105,6 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new UnitNodeBuilder('margin_bottom'))]
     public function marginBottom(float $value, Unit $unit = Unit::Inches): static
@@ -120,8 +116,6 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new UnitNodeBuilder('margin_left'))]
     public function marginLeft(float $value, Unit $unit = Unit::Inches): static
@@ -133,8 +127,6 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new UnitNodeBuilder('margin_right'))]
     public function marginRight(float $value, Unit $unit = Unit::Inches): static
@@ -146,8 +138,6 @@ trait PdfPagePropertiesTrait
 
     /**
      * Overrides the default margins (e.g., 0.39), in inches.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     public function margins(float $top, float $bottom, float $left, float $right, Unit $unit = Unit::Inches): static
     {
@@ -160,9 +150,7 @@ trait PdfPagePropertiesTrait
     }
 
     /**
-     * Define whether to prefer page size as defined by CSS.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * Define whether to prefer page size as defined by CSS. (Default false).
      */
     #[ExposeSemantic(new BooleanNodeBuilder('prefer_css_page_size'))]
     public function preferCssPageSize(bool $bool): static
@@ -174,8 +162,6 @@ trait PdfPagePropertiesTrait
 
     /**
      * Define whether the document outline should be embedded into the PDF.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new BooleanNodeBuilder('generate_document_outline'))]
     public function generateDocumentOutline(bool $bool): static
@@ -186,9 +172,7 @@ trait PdfPagePropertiesTrait
     }
 
     /**
-     * Prints the background graphics.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * Prints the background graphics. (Default false).
      */
     #[ExposeSemantic(new BooleanNodeBuilder('print_background'))]
     public function printBackground(bool $bool): static
@@ -200,8 +184,6 @@ trait PdfPagePropertiesTrait
 
     /**
      * Hide the default white background and allow generating PDFs with transparency.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new BooleanNodeBuilder('omit_background'))]
     public function omitBackground(bool $bool): static
@@ -212,9 +194,7 @@ trait PdfPagePropertiesTrait
     }
 
     /**
-     * Set the paper orientation to landscape.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * Set the paper orientation to landscape. (Default false).
      */
     #[ExposeSemantic(new BooleanNodeBuilder('landscape'))]
     public function landscape(bool $bool = true): static
@@ -225,9 +205,7 @@ trait PdfPagePropertiesTrait
     }
 
     /**
-     * The scale of the page rendering (e.g., 1.0).
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * The scale of the page rendering (e.g., 1.0). (Default 1.0).
      */
     #[ExposeSemantic(new FloatNodeBuilder('scale'))]
     public function scale(float $scale): static
@@ -238,9 +216,7 @@ trait PdfPagePropertiesTrait
     }
 
     /**
-     * Page ranges to print, e.g., '1-5, 8, 11-13'.
-     *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * Page ranges to print, e.g., '1-5, 8, 11-13'. (default All pages).
      */
     #[ExposeSemantic(new ScalarNodeBuilder('native_page_ranges'))]
     public function nativePageRanges(string $ranges): static

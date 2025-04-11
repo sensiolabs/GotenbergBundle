@@ -19,7 +19,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#split-pdfs-route
  */
-#[SemanticNode('split', 'pdf')]
+#[SemanticNode('split')]
 final class SplitPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
@@ -71,5 +71,10 @@ final class SplitPdfBuilder extends AbstractBuilder
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
+    }
+
+    public static function type(): string
+    {
+        return 'pdf';
     }
 }

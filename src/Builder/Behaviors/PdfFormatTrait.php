@@ -33,7 +33,7 @@ trait PdfFormatTrait
     }
 
     /**
-     * Enable PDF for Universal Access for optimal accessibility.
+     * Enable PDF for Universal Access for optimal accessibility. (default false).
      */
     #[ExposeSemantic(new BooleanNodeBuilder('pdf_universal_access'))]
     public function pdfUniversalAccess(bool $bool = true): self

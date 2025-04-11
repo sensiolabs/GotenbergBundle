@@ -155,12 +155,12 @@ class BuilderParser
 
                 $isLast = $lastKey === $key;
 
-                if ($isLast === false) {
+                if (false === $isLast) {
                     $markdown .= '<br />';
                 }
             }
 
-            return rtrim($markdown, "<br />");
+            return rtrim($markdown, '<br />');
         };
 
         /**

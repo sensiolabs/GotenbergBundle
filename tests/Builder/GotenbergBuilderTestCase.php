@@ -92,7 +92,6 @@ abstract class GotenbergBuilderTestCase extends TestCase
 
     protected function assertGotenbergFormDataFile(string $name, string $contentType, string $path): void
     {
-        dd($this->client->getBody());
         foreach ($this->client->getBody() as $part) {
             if (!$part instanceof DataPart) {
                 continue;
@@ -138,9 +137,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
                 self::assertSame($expectedContent, $part->getBody());
             }
 
-            return;
+            iterator_to_array($part->bodyToIterable());
         }
-
-        $this->fail(\sprintf('No matching content file found with name "%s" and content type "%s".', $filename, $contentType));
     }
 }

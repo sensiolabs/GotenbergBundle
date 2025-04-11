@@ -102,12 +102,12 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         );
     }
 
-    protected function getBodyBag(): BodyBag
+    public function getBodyBag(): BodyBag
     {
         return $this->bodyBag;
     }
 
-    protected function getHeadersBag(): HeadersBag
+    public function getHeadersBag(): HeadersBag
     {
         return $this->headersBag;
     }

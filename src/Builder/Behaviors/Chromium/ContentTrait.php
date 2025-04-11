@@ -76,7 +76,7 @@ trait ContentTrait
     }
 
     /**
-     * HTML file containing the header.
+     * HTML file containing the header. (default None).
      */
     public function headerFile(string $path): static
     {
@@ -84,7 +84,7 @@ trait ContentTrait
     }
 
     /**
-     * HTML file containing the footer.
+     * HTML file containing the footer. (default None).
      */
     public function footerFile(string $path): static
     {

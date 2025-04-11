@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route
  */
-#[SemanticNode('markdown', 'screenshot')]
+#[SemanticNode('markdown')]
 final class MarkdownScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait {
@@ -78,5 +78,10 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
+    }
+
+    public static function type(): string
+    {
+        return 'screenshot';
     }
 }

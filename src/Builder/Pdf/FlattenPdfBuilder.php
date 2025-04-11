@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#flatten-pdfs-route
  */
-#[SemanticNode('flatten', 'pdf')]
+#[SemanticNode('flatten')]
 final class FlattenPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
@@ -24,10 +24,9 @@ final class FlattenPdfBuilder extends AbstractBuilder
 
     public const ENDPOINT = '/forms/pdfengines/flatten';
 
-    public function files(string|\Stringable ...$paths): self
+    public function files(string ...$paths): self
     {
         foreach ($paths as $path) {
-            $path = (string) $path;
             $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
             ValidatorFactory::filesExtension([$info], ['pdf']);
 
@@ -55,5 +54,10 @@ final class FlattenPdfBuilder extends AbstractBuilder
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
+    }
+
+    public static function type(): string
+    {
+        return 'pdf';
     }
 }

@@ -11,7 +11,10 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Routing\RequestContext;
 
-#[SemanticNode('url', 'screenshot')]
+/**
+ * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+ */
+#[SemanticNode('url')]
 final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait;
@@ -22,8 +25,6 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
 
     /**
      * URL of the page you want to convert into PDF.
-     *
-     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function url(string $url): self
     {
@@ -35,8 +36,6 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
     /**
      * @param string       $name       #Route
      * @param array<mixed> $parameters
-     *
-     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function route(string $name, array $parameters = []): self
     {
@@ -72,5 +71,10 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
     private function normalizeRoute(): \Generator
     {
         yield 'route' => NormalizerFactory::route($this->requestContext, $this->getUrlGenerator());
+    }
+
+    public static function type(): string
+    {
+        return 'screenshot';
     }
 }
