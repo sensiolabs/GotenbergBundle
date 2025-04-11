@@ -7,9 +7,6 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
-/**
- * @see https://gotenberg.dev/docs/routes#wait-before-rendering-chromium.
- */
 trait WaitBeforeRenderingTrait
 {
     abstract protected function getBodyBag(): BodyBag;

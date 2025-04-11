@@ -47,7 +47,7 @@ trait ContentTrait
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      *
-     * See https://gotenberg.dev/docs/routes#header-footer-chromium.
+     * @see https://gotenberg.dev/docs/routes#header-footer-chromium.
      */
     #[ExposeSemantic(new ArrayNodeBuilder('header', children: [
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
@@ -64,7 +64,7 @@ trait ContentTrait
      *
      * @throws PdfPartRenderingException if the template could not be rendered
      *
-     * See https://gotenberg.dev/docs/routes#header-footer-chromium.
+     * @see https://gotenberg.dev/docs/routes#header-footer-chromium.
      */
     #[ExposeSemantic(new ArrayNodeBuilder('footer', children: [
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),

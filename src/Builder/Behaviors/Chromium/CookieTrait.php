@@ -53,8 +53,6 @@ trait CookieTrait
     /**
      * Add cookies to store in the Chromium cookie jar.
      *
-     * @see https://gotenberg.dev/docs/routes#cookies-chromium
-     *
      * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
      */
     public function addCookies(array $cookies): static

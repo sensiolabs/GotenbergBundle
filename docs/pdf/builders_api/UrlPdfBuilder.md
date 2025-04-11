@@ -7,20 +7,19 @@
 Adds a file, like an image, font, stylesheet, and so on.
 
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#html-file-into-pdf-route.](https://gotenberg.dev/docs/routes#html-file-into-pdf-route.)<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### addCookies(array $cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### addExtraHttpHeaders(array $headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### addMetadata(string $key, string $value)
@@ -66,7 +65,6 @@ Forces Chromium to emulate, either "screen" or "print". (default "print").
 Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### failOnConsoleExceptions(bool $bool)
@@ -99,6 +97,7 @@ Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load 
 
 ### footer(string $template, array $context)
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium.](https://gotenberg.dev/docs/routes#header-footer-chromium.)<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### footerFile(string $path)
@@ -124,6 +123,7 @@ Define whether the document outline should be embedded into the PDF.<br />
 
 ### header(string $template, array $context)
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium.](https://gotenberg.dev/docs/routes#header-footer-chromium.)<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### headerFile(string $path)
@@ -301,7 +301,6 @@ URL of the page you want to convert into PDF.<br />
 Override the default User-Agent HTTP header.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium](https://gotenberg.dev/docs/routes#custom-http-headers-chromium)<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### waitDelay(string $delay)

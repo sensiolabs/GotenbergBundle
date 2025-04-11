@@ -8,7 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 
 /**
- * See https://gotenberg.dev/docs/routes#html-file-into-pdf-route.
+ * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route.
  */
 trait AssetTrait
 {

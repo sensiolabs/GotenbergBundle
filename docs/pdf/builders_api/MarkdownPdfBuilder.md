@@ -7,20 +7,19 @@
 Adds a file, like an image, font, stylesheet, and so on.
 
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#html-file-into-pdf-route.](https://gotenberg.dev/docs/routes#html-file-into-pdf-route.)<br />
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
 
 ### addCookies(array $cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )<br />
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
 
 ### addExtraHttpHeaders(array $headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )<br />
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
 
 ### addMetadata(string $key, string $value)
@@ -66,7 +65,6 @@ Forces Chromium to emulate, either "screen" or "print". (default "print").
 Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )<br />
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
 
 ### failOnConsoleExceptions(bool $bool)
@@ -105,6 +103,7 @@ Add Markdown into a PDF.<br />
 
 ### footer(string $template, array $context)
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium.](https://gotenberg.dev/docs/routes#header-footer-chromium.)<br />
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
 
 ### footerFile(string $path)
@@ -130,6 +129,7 @@ Define whether the document outline should be embedded into the PDF.<br />
 
 ### header(string $template, array $context)
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium.](https://gotenberg.dev/docs/routes#header-footer-chromium.)<br />
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
 
 ### headerFile(string $path)
@@ -295,7 +295,6 @@ Specify whether to put extracted pages into a single file or as many files as th
 Override the default User-Agent HTTP header.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium](https://gotenberg.dev/docs/routes#custom-http-headers-chromium)<br />
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
 
 ### waitDelay(string $delay)

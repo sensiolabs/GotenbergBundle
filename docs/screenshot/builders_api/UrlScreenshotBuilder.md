@@ -3,17 +3,14 @@
 ### addAsset(Stringable|string $path)
 Adds a file, like an image, font, stylesheet, and so on.
 
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#html-file-into-pdf-route.](https://gotenberg.dev/docs/routes#html-file-into-pdf-route.)
+
 ### addCookies(array $cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium ](https://gotenberg.dev/docs/routes#cookies-chromium )
-
 ### addExtraHttpHeaders(array $headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )
 
 ### assets(Stringable|string $paths)
 Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
@@ -37,9 +34,6 @@ Forces Chromium to emulate, either "screen" or "print". (default "print").
 
 ### extraHttpHeaders(array $headers)
 Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium ](https://gotenberg.dev/docs/routes#custom-http-headers-chromium )
 
 ### failOnConsoleExceptions(bool $bool)
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
@@ -66,6 +60,9 @@ Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load 
 > See: [https://gotenberg.dev/docs/routes#network-errors-chromium](https://gotenberg.dev/docs/routes#network-errors-chromium)
 
 ### footer(string $template, array $context)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium.](https://gotenberg.dev/docs/routes#header-footer-chromium.)
+
 ### footerFile(string $path)
 HTML file containing the footer.
 
@@ -75,6 +72,9 @@ The image compression format, either "png", "jpeg" or "webp". (default png).
 ### forwardCookie(string $name)
 ### getHeadersBag()
 ### header(string $template, array $context)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium.](https://gotenberg.dev/docs/routes#header-footer-chromium.)
+
 ### headerFile(string $path)
 HTML file containing the header.
 
@@ -108,9 +108,6 @@ URL of the page you want to convert into PDF.<br />
 
 ### userAgent(string $userAgent)
 Override the default User-Agent HTTP header.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium](https://gotenberg.dev/docs/routes#custom-http-headers-chromium)
 
 ### waitDelay(string $delay)
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />

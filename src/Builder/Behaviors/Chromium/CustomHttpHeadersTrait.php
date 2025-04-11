@@ -10,6 +10,9 @@ use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
+/**
+ * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+ */
 trait CustomHttpHeadersTrait
 {
     abstract protected function getBodyBag(): BodyBag;
@@ -18,8 +21,6 @@ trait CustomHttpHeadersTrait
      * Override the default User-Agent HTTP header.
      *
      * @param UserAgent::*|string $userAgent
-     *
-     * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      */
     #[ExposeSemantic(new ScalarNodeBuilder('user_agent', restrictTo: 'string'))]
     public function userAgent(string $userAgent): static
@@ -31,8 +32,6 @@ trait CustomHttpHeadersTrait
 
     /**
      * Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).
-     *
-     * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      *
      * @param array<string, string> $headers
      */
@@ -52,8 +51,6 @@ trait CustomHttpHeadersTrait
 
     /**
      * Adds extra HTTP headers that Chromium will send when loading the HTML document.
-     *
-     * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      *
      * @param array<string, string> $headers
      */
