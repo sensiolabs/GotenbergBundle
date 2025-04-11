@@ -39,6 +39,7 @@ final class MergePdfBuilder extends AbstractBuilder
     {
         foreach ($paths as $path) {
             $path = (string) $path;
+
             $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
             ValidatorFactory::filesExtension([$info], ['pdf']);
 

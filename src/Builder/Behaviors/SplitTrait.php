@@ -14,6 +14,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#split-chromium
+ * @see https://gotenberg.dev/docs/routes#split-libreoffice
  */
 trait SplitTrait
 {

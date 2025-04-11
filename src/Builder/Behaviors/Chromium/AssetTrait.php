@@ -19,7 +19,7 @@ trait AssetTrait
     /**
      * Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
      */
-    public function assets(string ...$paths): static
+    public function assets(string|\Stringable ...$paths): static
     {
         $this->getBodyBag()->unset('assets');
 
@@ -33,7 +33,7 @@ trait AssetTrait
     /**
      * Adds a file, like an image, font, stylesheet, and so on.
      */
-    public function addAsset(string $path): static
+    public function addAsset(string|\Stringable $path): static
     {
         $assets = $this->getBodyBag()->get('assets', []);
 
