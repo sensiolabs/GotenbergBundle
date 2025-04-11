@@ -146,12 +146,20 @@ class BuilderParser
                 return '';
             }
 
+            $lastKey = array_key_last($seeList);
+
             $markdown = '> [!TIP]';
-            foreach ($seeList as $see) {
+            foreach ($seeList as $key => $see) {
                 $markdown .= "\n> See: [{$see}]({$see})";
+
+                $isLast = $lastKey === $key;
+
+                if ($isLast === false) {
+                    $markdown .= '<br />';
+                }
             }
 
-            return $markdown;
+            return rtrim($markdown, "<br />");
         };
 
         /**
