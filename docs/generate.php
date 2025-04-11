@@ -1,17 +1,16 @@
 #!/usr/bin/env php
 <?php
 
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +21,7 @@ require_once \dirname(__DIR__).'/vendor/autoload.php';
 class Summary
 {
     /**
-     * @var array<string, array<string, ReflectionClass<PdfBuilderInterface|ScreenshotBuilderInterface>>>
+     * @var array<string, array<string, ReflectionClass<BuilderInterface>>>
      */
     private array $builders = [];
 
@@ -32,7 +31,7 @@ class Summary
     private array $filenames = [];
 
     /**
-     * @param ReflectionClass<PdfBuilderInterface|ScreenshotBuilderInterface> $class
+     * @param ReflectionClass<BuilderInterface> $class
      */
     public function register(string $type, ReflectionClass $class): void
     {
@@ -122,7 +121,7 @@ class BuilderParser
     private array $methodsSignature = [];
 
     /**
-     * @param class-string<PdfBuilderInterface|ScreenshotBuilderInterface> $builder
+     * @param class-string<BuilderInterface> $builder
      */
     public function prepare(Summary $summary, string $type, string $builder): void
     {
@@ -221,7 +220,7 @@ class BuilderParser
     }
 
     /**
-     * @param ReflectionClass<PdfBuilderInterface|ScreenshotBuilderInterface> $class
+     * @param ReflectionClass<BuilderInterface> $class
      */
     private function prepareBuilder(ReflectionClass $class): void
     {
