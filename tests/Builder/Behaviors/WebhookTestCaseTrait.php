@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
@@ -272,5 +273,45 @@ trait WebhookTestCaseTrait
         self::assertArrayNotHasKey('Gotenberg-Webhook-Error-Url', $builder->getHeadersBag()->all());
         self::assertArrayNotHasKey('Gotenberg-Webhook-Error-Method', $builder->getHeadersBag()->all());
         self::assertArrayNotHasKey('Gotenberg-Webhook-Extra-Http-Headers', $builder->getHeadersBag()->all());
+    }
+
+    public function testWebhookUrlsCanBeSetUsingTheRegistry(): void
+    {
+        $registry = new class implements WebhookConfigurationRegistryInterface {
+            public function add(string $name, array $configuration): void
+            {
+                // TODO: Implement add() method.
+            }
+
+            public function get(string $name): array
+            {
+                return [
+                    'success' => [
+                        'url' => 'https://webhook.local',
+                        'method' => 'PUT',
+                    ],
+                    'error' => [
+                        'url' => 'https://webhook.local/error',
+                        'method' => 'PATCH',
+                    ],
+                    'extra_http_headers' => [
+                        'plop' => 'plop',
+                    ],
+                ];
+            }
+        };
+
+        $this->dependencies->set('webhook_configuration_registry', $registry);
+
+        $this->getDefaultBuilder()
+            ->webhookConfiguration('fake')
+            ->generate()
+        ;
+
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Url', 'https://webhook.local');
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Method', 'PUT');
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Error-Url', 'https://webhook.local/error');
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Error-Method', 'PATCH');
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"plop":"plop"}');
     }
 }

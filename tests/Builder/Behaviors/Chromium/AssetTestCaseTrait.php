@@ -14,15 +14,33 @@ trait AssetTestCaseTrait
     use BehaviorTrait;
 
     abstract protected function assertContentFile(string $filename, string $contentType = 'text/html', string|null $expectedContent = null): void;
+    abstract protected function assertGotenbergFormDataFile(string $name, string $contentType, string $path): void;
 
-    public function testToAddAssets(): void
+    /**
+     * @dataProvider provideTestToAddAssets
+     */
+    public function testToAddAssets(string|\Stringable $asset, string $expectedFilename, string $expectedContentType, string $expectedPath): void
     {
         $this->getDefaultBuilder()
-            ->assets('assets/logo.png')
+            ->assets($asset)
             ->generate()
         ;
 
-        $this->assertContentFile('logo.png', 'image/png');
+        $this->assertContentFile($expectedFilename, $expectedContentType);
+    }
+
+    public static function provideTestToAddAssets(): \Generator
+    {
+        yield 'string' => ['assets/logo.png', 'logo.png', 'image/png', self::FIXTURE_DIR.'/assets/logo.png'];
+        yield 'SplFileInfo' => [new \SplFileInfo('assets/logo.png'), 'logo.png', 'image/png', 'assets/logo.png'];
+
+        $stringable = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'assets/logo.png';
+            }
+        };
+        yield 'Stringable' => [$stringable, 'logo.png', 'image/png', 'assets/logo.png'];
     }
 
     public function testToAddAssetsToExistingAssets(): void

@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\ExposeSemantic;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\WebhookConfigurationRegistryAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
@@ -34,6 +35,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 trait WebhookTrait
 {
     use UrlGeneratorAwareTrait;
+    use WebhookConfigurationRegistryAwareTrait;
 
     abstract protected function getHeadersBag(): HeadersBag;
 
@@ -175,6 +177,33 @@ trait WebhookTrait
     public function webhookErrorRoute(string $route, array $parameters = [], string|null $method = null): static
     {
         return $this->webhookErrorUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method);
+    }
+
+    /**
+     * Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
+     *
+     * @see https://gotenberg.dev/docs/webhook
+     */
+    public function webhookConfiguration(string $name): static
+    {
+        $webhookConfiguration = $this->getWebhookConfigurationRegistry()->get($name);
+
+        $result = $this
+            ->webhookUrl(
+                $webhookConfiguration['success']['url'],
+                $webhookConfiguration['success']['method'],
+            )
+            ->webhookErrorUrl(
+                $webhookConfiguration['error']['url'],
+                $webhookConfiguration['error']['method'],
+            )
+        ;
+
+        if (\array_key_exists('extra_http_headers', $webhookConfiguration)) {
+            $result = $result->webhookExtraHeaders($webhookConfiguration['extra_http_headers']);
+        }
+
+        return $result;
     }
 
     /**

@@ -20,6 +20,7 @@ return static function (ContainerConfigurator $container): void {
             service('sensiolabs_gotenberg.client'),
             service_locator([
                 'asset_base_dir_formatter' => service('.sensiolabs_gotenberg.asset.base_dir_formatter'),
+                'webhook_configuration_registry' => service('.sensiolabs_gotenberg.webhook_configuration_registry'),
                 'logger' => service('logger')->nullOnInvalid(),
                 'request_stack' => service('request_stack')->nullOnInvalid(),
                 'router' => service('router.default')->nullOnInvalid(),
