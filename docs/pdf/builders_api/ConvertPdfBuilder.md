@@ -16,7 +16,6 @@ Convert the resulting PDF into the given PDF/A format.
 ### pdfUniversalAccess(bool $bool)
 Enable PDF for Universal Access for optimal accessibility.
 
-### type()
 ### webhook(array $webhook)
 ### webhookErrorRoute(string $route, array $parameters, ?string $method)
 > [!TIP]

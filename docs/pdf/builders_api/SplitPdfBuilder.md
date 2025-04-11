@@ -53,7 +53,6 @@ Specify whether to put extracted pages into a single file or as many files as th
 > See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
 > See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
-### type()
 ### webhook(array $webhook)
 ### webhookErrorRoute(string $route, array $parameters, ?string $method)
 > [!TIP]

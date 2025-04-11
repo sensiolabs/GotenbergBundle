@@ -170,6 +170,9 @@ Prints the background graphics.<br />
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
 ### route(string $name, array $parameters)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
+
 ### scale(float $scale)
 The scale of the page rendering (e.g., 1.0).<br />
 
@@ -203,9 +206,11 @@ Specify whether to put extracted pages into a single file or as many files as th
 > See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
 > See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
-### type()
 ### url(string $url)
-URL of the page you want to convert into PDF.
+URL of the page you want to convert into PDF.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### userAgent(string $userAgent)
 Override the default User-Agent HTTP header.<br />

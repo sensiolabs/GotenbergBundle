@@ -1,8 +1,5 @@
 # UrlScreenshotBuilder
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
-
 ### addAsset(Stringable|string $path)
 Adds a file, like an image, font, stylesheet, and so on.
 
@@ -96,12 +93,17 @@ Define whether to optimize image encoding for speed, not for resulting size. (De
 The compression quality from range 0 to 100 (jpeg only). (default 100).<br />
 
 ### route(string $name, array $parameters)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
+
 ### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
 ### setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)
 ### skipNetworkIdleEvent(bool $bool)
-### type()
 ### url(string $url)
-URL of the page you want to convert into PDF.
+URL of the page you want to convert into PDF.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### userAgent(string $userAgent)
 Override the default User-Agent HTTP header.<br />

@@ -103,7 +103,6 @@ The compression quality from range 0 to 100 (jpeg only). (default 100).<br />
 
 ### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
 ### skipNetworkIdleEvent(bool $bool)
-### type()
 ### userAgent(string $userAgent)
 Override the default User-Agent HTTP header.<br />
 

@@ -201,7 +201,6 @@ Specify whether to put extracted pages into a single file or as many files as th
 > See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)
 > See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
 
-### type()
 ### userAgent(string $userAgent)
 Override the default User-Agent HTTP header.<br />
 

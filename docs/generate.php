@@ -97,9 +97,11 @@ class BuilderParser
         'setConfigurations',
         'generate',
         'generateAsync',
-        'getMultipartFormData',
         'fileName',
         'processor',
+        'type',
+        'getBodyBag',
+        'getHeaderBag',
     ];
 
     private string $name;
