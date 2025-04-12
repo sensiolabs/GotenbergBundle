@@ -43,6 +43,8 @@ trait WebhookTrait
 
     /**
      * @param WebhookConfiguration $webhook
+     *
+     * @see https://gotenberg.dev/docs/webhook
      */
     #[ExposeSemantic(new WebhookNodeBuilder('webhook', children: [
         new ScalarNodeBuilder('config_name', restrictTo: 'string'),
@@ -114,8 +116,6 @@ trait WebhookTrait
      * Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
      *
      * @param 'POST'|'PUT'|'PATCH'|null $method
-     *
-     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookUrl(string $url, string|null $method = null): static
     {
@@ -132,8 +132,6 @@ trait WebhookTrait
      * Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
      *
      * @param 'POST'|'PUT'|'PATCH'|null $method
-     *
-     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookErrorUrl(string $url, string|null $method = null): static
     {
@@ -149,8 +147,6 @@ trait WebhookTrait
      * Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
      *
      * @param array<string, string> $extraHttpHeaders
-     *
-     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookExtraHeaders(array $extraHttpHeaders): static
     {
@@ -162,8 +158,6 @@ trait WebhookTrait
     /**
      * @param array<string, mixed>      $parameters
      * @param 'PATCH'|'POST'|'PUT'|null $method
-     *
-     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookRoute(string $route, array $parameters = [], string|null $method = null): static
     {
@@ -173,8 +167,6 @@ trait WebhookTrait
     /**     *
      * @param array<string, mixed>      $parameters
      * @param 'PATCH'|'POST'|'PUT'|null $method
-     *
-     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookErrorRoute(string $route, array $parameters = [], string|null $method = null): static
     {
@@ -183,8 +175,6 @@ trait WebhookTrait
 
     /**
      * Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
-     *
-     * @see https://gotenberg.dev/docs/webhook
      */
     public function webhookConfiguration(string $name): static
     {

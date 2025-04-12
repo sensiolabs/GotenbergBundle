@@ -16,37 +16,22 @@ Adds a file, like an image, font, stylesheet, and so on.
 Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
 
 ### webhook(array $webhook)
-### webhookConfiguration(string $name)
-Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.<br />
-
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
+### webhookConfiguration(string $name)
+Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
 
 ### webhookErrorRoute(string $route, array $parameters, ?string $method)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
 ### webhookErrorUrl(string $url, ?string $method)
 Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
 ### webhookExtraHeaders(array $extraHttpHeaders)
 Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.<br />
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
 ### webhookRoute(string $route, array $parameters, ?string $method)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
 ### webhookUrl(string $url, ?string $method)
 Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
 ### addCookies(array $cookies)
 Add cookies to store in the Chromium cookie jar.<br />
@@ -64,10 +49,7 @@ The image compression format, either "png", "jpeg" or "webp". (default png).
 The device screen width in pixels. (Default 600).
 
 ### omitBackground(bool $bool)
-Hides default white background and allows generating screenshot with transparency.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
+Hides default white background and allows generating screenshot with transparency.
 
 ### optimizeForSpeed(bool $bool)
 Define whether to optimize image encoding for speed, not for resulting size. (Default false).
