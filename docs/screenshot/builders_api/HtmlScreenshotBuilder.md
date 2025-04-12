@@ -6,9 +6,6 @@
 ### addAsset(Stringable|string $path)
 Adds a file, like an image, font, stylesheet, and so on.
 
-### addCookies(array $cookies)
-Add cookies to store in the Chromium cookie jar.<br />
-
 ### addExtraHttpHeaders(array $headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
@@ -18,11 +15,6 @@ Adds additional files, like images, fonts, stylesheets, and so on (overrides any
 ### clip(bool $bool)
 Define whether to clip the screenshot according to the device dimensions. (Default false).
 
-### content(string $template, array $context)
-### contentFile(string $path)
-The HTML file to convert into PDF.
-
-### cookies(array $cookies)
 ### downloadFrom(array $downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
@@ -59,23 +51,8 @@ Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#network-errors-chromium](https://gotenberg.dev/docs/routes#network-errors-chromium)
 
-### footer(string $template, array $context)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
-
-### footerFile(string $path)
-HTML file containing the footer.
-
 ### format(Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat $format)
 The image compression format, either "png", "jpeg" or "webp". (default png).
-
-### forwardCookie(string $name)
-### header(string $template, array $context)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
-
-### headerFile(string $path)
-HTML file containing the header.
 
 ### height(int $height)
 The device screen width in pixels. (Default 600).
@@ -92,7 +69,6 @@ Define whether to optimize image encoding for speed, not for resulting size. (De
 ### quality(int $quality)
 The compression quality from range 0 to 100 (jpeg only). (default 100).<br />
 
-### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
 ### skipNetworkIdleEvent(bool $bool)
 ### userAgent(string $userAgent)
 Override the default User-Agent HTTP header.<br />
@@ -108,6 +84,9 @@ Sets the JavaScript expression to wait before converting an HTML document to PDF
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering](https://gotenberg.dev/docs/routes#wait-before-rendering)
+
+### width(int $width)
+The device screen width in pixels. (Default 800).
 
 ### webhook(array $webhook)
 ### webhookConfiguration(string $name)
@@ -142,6 +121,27 @@ Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
-### width(int $width)
-The device screen width in pixels. (Default 800).
+### addCookies(array $cookies)
+Add cookies to store in the Chromium cookie jar.<br />
+
+### cookies(array $cookies)
+### forwardCookie(string $name)
+### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
+### content(string $template, array $context)
+### contentFile(string $path)
+The HTML file to convert into PDF.
+
+### footer(string $template, array $context)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
+
+### footerFile(string $path)
+HTML file containing the footer.
+
+### header(string $template, array $context)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
+
+### headerFile(string $path)
+HTML file containing the header.
 

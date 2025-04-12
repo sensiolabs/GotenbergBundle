@@ -15,6 +15,9 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 
+/**
+ * @package Behavior\\Content
+ */
 trait ContentTrait
 {
     use AssetBaseDirFormatterAwareTrait;

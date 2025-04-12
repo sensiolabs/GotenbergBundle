@@ -31,6 +31,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *      },
  *     extra_http_headers?: array<string, string>
  *  }
+ *
+ * @package Behavior\\Async
  */
 trait WebhookTrait
 {

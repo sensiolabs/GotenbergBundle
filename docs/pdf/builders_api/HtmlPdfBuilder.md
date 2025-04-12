@@ -6,9 +6,6 @@
 ### addAsset(Stringable|string $path)
 Adds a file, like an image, font, stylesheet, and so on.
 
-### addCookies(array $cookies)
-Add cookies to store in the Chromium cookie jar.<br />
-
 ### addExtraHttpHeaders(array $headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
@@ -18,11 +15,6 @@ The metadata to write.
 ### assets(Stringable|string ...$paths)
 Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
 
-### content(string $template, array $context)
-### contentFile(string $path)
-The HTML file to convert into PDF.
-
-### cookies(array $cookies)
 ### downloadFrom(array $downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
@@ -59,26 +51,11 @@ Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#network-errors-chromium](https://gotenberg.dev/docs/routes#network-errors-chromium)
 
-### footer(string $template, array $context)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
-
-### footerFile(string $path)
-HTML file containing the footer.
-
-### forwardCookie(string $name)
 ### generateDocumentOutline(bool $bool)
 Define whether the document outline should be embedded into the PDF.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
-
-### header(string $template, array $context)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
-
-### headerFile(string $path)
-HTML file containing the header.
 
 ### landscape(bool $bool)
 Set the paper orientation to landscape.<br />
@@ -172,7 +149,6 @@ The scale of the page rendering (e.g., 1.0).<br />
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
-### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
 ### singlePage(bool $bool)
 Define whether to print the entire content in one single page.<br /><br />If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
 
@@ -233,4 +209,28 @@ Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
+### addCookies(array $cookies)
+Add cookies to store in the Chromium cookie jar.<br />
+
+### cookies(array $cookies)
+### forwardCookie(string $name)
+### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
+### content(string $template, array $context)
+### contentFile(string $path)
+The HTML file to convert into PDF.
+
+### footer(string $template, array $context)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
+
+### footerFile(string $path)
+HTML file containing the footer.
+
+### header(string $template, array $context)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
+
+### headerFile(string $path)
+HTML file containing the header.
 

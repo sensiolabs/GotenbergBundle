@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * @see https://gotenberg.dev/docs/routes#cookies-chromium
+ *
+ * @package Behavior\\Chromium\\Cookie
  */
 trait CookieTrait
 {
