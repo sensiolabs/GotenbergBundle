@@ -15,7 +15,7 @@ final class AssetBaseDirFormatter
         private readonly string $projectDir,
         string $baseDir,
     ) {
-        $this->baseDir = rtrim($baseDir, '/');
+        $this->baseDir = rtrim($baseDir, '/\\');
     }
 
     public function resolve(string $path): string
