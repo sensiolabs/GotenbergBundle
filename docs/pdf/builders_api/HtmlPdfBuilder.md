@@ -3,17 +3,8 @@
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#html-file-into-pdf-route](https://gotenberg.dev/docs/routes#html-file-into-pdf-route)
 
-### addAsset(Stringable|string $path)
-Adds a file, like an image, font, stylesheet, and so on.
-
-### addExtraHttpHeaders(array $headers)
-Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
-
 ### addMetadata(string $key, string $value)
 The metadata to write.
-
-### assets(Stringable|string ...$paths)
-Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
 
 ### downloadFrom(array $downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
@@ -21,36 +12,76 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
 
-### emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)
-Forces Chromium to emulate, either "screen" or "print". (default "print").
-
-### extraHttpHeaders(array $headers)
-Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
-
-### failOnConsoleExceptions(bool $bool)
-Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
+### metadata(array $metadata)
+Resets the metadata.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#console-exceptions](https://gotenberg.dev/docs/routes#console-exceptions)
+> See: [https://gotenberg.dev/docs/routes#metadata-chromium](https://gotenberg.dev/docs/routes#metadata-chromium)<br />
+> See: [https://gotenberg.dev/docs/routes#metadata-libreoffice](https://gotenberg.dev/docs/routes#metadata-libreoffice)<br />
+> See: [https://gotenberg.dev/docs/routes#write-pdf-metadata-route](https://gotenberg.dev/docs/routes#write-pdf-metadata-route)<br />
+> See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)<br />
+> See: [https://exiftool.org/TagNames/XMP.html#pdf ](https://exiftool.org/TagNames/XMP.html#pdf )
 
-### failOnHttpStatusCodes(array $statusCodes)
-Return a 409 Conflict response if the HTTP status code from<br />the main page is not acceptable. (default [499,599]). (overrides any previous configuration).<br />
+### pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)
+Convert the resulting PDF into the given PDF/A format.
+
+### pdfUniversalAccess(bool $bool)
+Enable PDF for Universal Access for optimal accessibility.
+
+### splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)
+Either intervals or pages.
+
+### splitSpan(string $splitSpan)
+Either the intervals or the page ranges to extract, depending on the selected mode.
+
+### splitUnify(bool $bool)
+Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
+
+### addAsset(Stringable|string $path)
+Adds a file, like an image, font, stylesheet, and so on.
+
+### assets(Stringable|string ...$paths)
+Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
+
+### webhook(array $webhook)
+### webhookConfiguration(string $name)
+Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium ](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium )
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
-### failOnResourceHttpStatusCodes(array $statusCodes)
-Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable. (overrides any previous configuration).<br />
+### webhookErrorRoute(string $route, array $parameters, ?string $method)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
+### webhookErrorUrl(string $url, ?string $method)
+Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium ](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium )
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
-### failOnResourceLoadingFailed(bool $bool)
-Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load at least one resource.<br />(default false).<br />
+### webhookExtraHeaders(array $extraHttpHeaders)
+Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#network-errors-chromium](https://gotenberg.dev/docs/routes#network-errors-chromium)
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
 
+### webhookRoute(string $route, array $parameters, ?string $method)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
+### webhookUrl(string $url, ?string $method)
+Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+
+### addCookies(array $cookies)
+Add cookies to store in the Chromium cookie jar.<br />
+
+### cookies(array $cookies)
+### forwardCookie(string $name)
+### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
 ### generateDocumentOutline(bool $bool)
 Define whether the document outline should be embedded into the PDF.<br />
 
@@ -93,16 +124,6 @@ Overrides the default margins (e.g., 0.39), in inches.<br />
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
-### metadata(array $metadata)
-Resets the metadata.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#metadata-chromium](https://gotenberg.dev/docs/routes#metadata-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#metadata-libreoffice](https://gotenberg.dev/docs/routes#metadata-libreoffice)<br />
-> See: [https://gotenberg.dev/docs/routes#write-pdf-metadata-route](https://gotenberg.dev/docs/routes#write-pdf-metadata-route)<br />
-> See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)<br />
-> See: [https://exiftool.org/TagNames/XMP.html#pdf ](https://exiftool.org/TagNames/XMP.html#pdf )
-
 ### nativePageRanges(string $ranges)
 Page ranges to print, e.g., '1-5, 8, 11-13'.<br />
 
@@ -125,12 +146,6 @@ Overrides the default paper size, in inches.<br /><br />Examples of paper size (
 ### paperWidth(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
 
-### pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)
-Convert the resulting PDF into the given PDF/A format.
-
-### pdfUniversalAccess(bool $bool)
-Enable PDF for Universal Access for optimal accessibility.
-
 ### preferCssPageSize(bool $bool)
 Define whether to prefer page size as defined by CSS.<br />
 
@@ -152,19 +167,6 @@ The scale of the page rendering (e.g., 1.0).<br />
 ### singlePage(bool $bool)
 Define whether to print the entire content in one single page.<br /><br />If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
 
-### skipNetworkIdleEvent(bool $bool)
-### splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)
-Either intervals or pages.
-
-### splitSpan(string $splitSpan)
-Either the intervals or the page ranges to extract, depending on the selected mode.
-
-### splitUnify(bool $bool)
-Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
-
-### userAgent(string $userAgent)
-Override the default User-Agent HTTP header.<br />
-
 ### waitDelay(string $delay)
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
@@ -177,45 +179,6 @@ Sets the JavaScript expression to wait before converting an HTML document to PDF
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#wait-before-rendering](https://gotenberg.dev/docs/routes#wait-before-rendering)
 
-### webhook(array $webhook)
-### webhookConfiguration(string $name)
-Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-### webhookErrorRoute(string $route, array $parameters, ?string $method)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-### webhookErrorUrl(string $url, ?string $method)
-Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-### webhookExtraHeaders(array $extraHttpHeaders)
-Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-### webhookRoute(string $route, array $parameters, ?string $method)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-### webhookUrl(string $url, ?string $method)
-Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
-
-### addCookies(array $cookies)
-Add cookies to store in the Chromium cookie jar.<br />
-
-### cookies(array $cookies)
-### forwardCookie(string $name)
-### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
 ### content(string $template, array $context)
 ### contentFile(string $path)
 The HTML file to convert into PDF.
@@ -234,3 +197,40 @@ HTML file containing the footer.
 ### headerFile(string $path)
 HTML file containing the header.
 
+### failOnConsoleExceptions(bool $bool)
+Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#console-exceptions](https://gotenberg.dev/docs/routes#console-exceptions)
+
+### failOnHttpStatusCodes(array $statusCodes)
+Return a 409 Conflict response if the HTTP status code from<br />the main page is not acceptable. (default [499,599]). (overrides any previous configuration).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium ](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium )
+
+### failOnResourceHttpStatusCodes(array $statusCodes)
+Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable. (overrides any previous configuration).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium ](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium )
+
+### failOnResourceLoadingFailed(bool $bool)
+Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load at least one resource.<br />(default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#network-errors-chromium](https://gotenberg.dev/docs/routes#network-errors-chromium)
+
+### addExtraHttpHeaders(array $headers)
+Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
+
+### extraHttpHeaders(array $headers)
+Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
+
+### userAgent(string $userAgent)
+Override the default User-Agent HTTP header.<br />
+
+### emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType $mediaType)
+Forces Chromium to emulate, either "screen" or "print". (default "print").
+
+### skipNetworkIdleEvent(bool $bool)

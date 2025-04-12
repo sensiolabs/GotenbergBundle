@@ -16,6 +16,9 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\UnitNodeBuilder;
 
+/**
+ * @package Behavior\\Chromium\\PageProperties
+ */
 trait PdfPagePropertiesTrait
 {
     abstract protected function getBodyBag(): BodyBag;

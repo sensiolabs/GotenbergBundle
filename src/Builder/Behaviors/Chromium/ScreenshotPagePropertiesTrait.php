@@ -13,6 +13,8 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route
+ *
+ * @package Behavior\\Chromium\\PageProperties
  */
 trait ScreenshotPagePropertiesTrait
 {

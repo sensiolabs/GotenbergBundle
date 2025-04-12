@@ -12,6 +12,8 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+ *
+ * @package Behavior\\Http\\CustomHeaders
  */
 trait CustomHttpHeadersTrait
 {

@@ -11,6 +11,8 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#emulated-media-type-chromium
+ *
+ * @package Behavior\\MediaType
  */
 trait EmulatedMediaTypeTrait
 {

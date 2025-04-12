@@ -9,6 +9,9 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 
+/**
+ * @package Behavior\\FailOn
+ */
 trait FailOnTrait
 {
     abstract protected function getBodyBag(): BodyBag;

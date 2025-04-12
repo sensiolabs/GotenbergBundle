@@ -10,6 +10,8 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 
 /**
  * @see https://gotenberg.dev/docs/routes#performance-mode-chromium
+ *
+ * @package Behavior\\Performance
  */
 trait PerformanceModeTrait
 {

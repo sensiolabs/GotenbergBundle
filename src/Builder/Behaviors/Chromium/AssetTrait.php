@@ -9,6 +9,8 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 
 /**
  * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
+ *
+ * @package Behavior\\Assets
  */
 trait AssetTrait
 {
