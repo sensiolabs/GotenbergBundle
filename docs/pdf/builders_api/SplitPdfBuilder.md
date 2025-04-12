@@ -1,5 +1,7 @@
 # SplitPdfBuilder
 
+Split `n` pdf files.<br />
+
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#split-pdfs-route](https://gotenberg.dev/docs/routes#split-pdfs-route)
 
