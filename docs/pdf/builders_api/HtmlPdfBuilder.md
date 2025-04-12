@@ -73,7 +73,6 @@ Define whether the document outline should be embedded into the PDF.<br />
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
 
-### getHeadersBag()
 ### header(string $template, array $context)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)

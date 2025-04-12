@@ -16,7 +16,6 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 ### flatten(bool $bool)
 Flattening a PDF combines all its contents into a single layer. (default false).
 
-### getHeadersBag()
 ### metadata(array $metadata)
 Resets the metadata.<br />
 

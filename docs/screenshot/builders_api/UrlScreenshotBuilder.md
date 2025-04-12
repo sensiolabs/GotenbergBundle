@@ -67,7 +67,6 @@ HTML file containing the footer.
 The image compression format, either "png", "jpeg" or "webp". (default png).
 
 ### forwardCookie(string $name)
-### getHeadersBag()
 ### header(string $template, array $context)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)

@@ -101,7 +101,7 @@ class BuilderParser
         'fileName',
         'processor',
         'getBodyBag',
-        'getHeaderBag',
+        'getHeadersBag',
     ];
 
     private string $name;

@@ -10,7 +10,6 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 > See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
 
 ### files(Stringable|string ...$paths)
-### getHeadersBag()
 ### webhook(array $webhook)
 ### webhookConfiguration(string $name)
 Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.<br />

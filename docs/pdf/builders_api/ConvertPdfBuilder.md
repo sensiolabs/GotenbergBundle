@@ -10,7 +10,6 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 > See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
 
 ### files(Stringable|string ...$paths)
-### getHeadersBag()
 ### pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat $format)
 Convert the resulting PDF into the given PDF/A format.
 

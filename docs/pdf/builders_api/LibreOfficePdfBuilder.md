@@ -60,7 +60,6 @@ Adds office files to convert (overrides any previous files).
 ### flatten(bool $bool)
 Flattening a PDF combines all its contents into a single layer. (default false).
 
-### getHeadersBag()
 ### landscape(bool $bool)
 Set the paper orientation to landscape.<br />
 
