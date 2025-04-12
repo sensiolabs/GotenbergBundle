@@ -17,6 +17,8 @@ use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
+ * Split `n` pdf files.
+ *
  * @see https://gotenberg.dev/docs/routes#split-pdfs-route
  */
 #[SemanticNode(type: 'pdf', name: 'split')]
