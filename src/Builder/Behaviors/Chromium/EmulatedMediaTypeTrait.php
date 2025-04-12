@@ -10,7 +10,7 @@ use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
 /**
- * @see https://gotenberg.dev/docs/routes#emulated-media-type-chromium.
+ * @see https://gotenberg.dev/docs/routes#emulated-media-type-chromium
  */
 trait EmulatedMediaTypeTrait
 {

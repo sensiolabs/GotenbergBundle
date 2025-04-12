@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
- * @see https://gotenberg.dev/docs/routes#cookies-chromium.
+ * @see https://gotenberg.dev/docs/routes#cookies-chromium
  */
 trait CookieTrait
 {

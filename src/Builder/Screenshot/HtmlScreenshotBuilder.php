@@ -12,7 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route
  */
-#[SemanticNode('html', 'screenshot')]
+#[SemanticNode(type: 'screenshot', name: 'html')]
 final class HtmlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait;

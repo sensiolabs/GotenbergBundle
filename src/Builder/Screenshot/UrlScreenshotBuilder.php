@@ -11,7 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Routing\RequestContext;
 
-#[SemanticNode('url', 'screenshot')]
+#[SemanticNode(type: 'screenshot', name: 'url')]
 final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait;

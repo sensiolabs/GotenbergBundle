@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RequestContext;
 /**
  * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
  */
-#[SemanticNode('url', 'pdf')]
+#[SemanticNode(type: 'pdf', name: 'url')]
 final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait;

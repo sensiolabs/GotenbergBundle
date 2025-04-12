@@ -19,7 +19,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#split-pdfs-route
  */
-#[SemanticNode('split', 'pdf')]
+#[SemanticNode(type: 'pdf', name: 'split')]
 final class SplitPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;

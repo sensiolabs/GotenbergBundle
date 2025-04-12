@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#flatten-pdfs-route
  */
-#[SemanticNode('flatten', 'pdf')]
+#[SemanticNode(type: 'pdf', name: 'flatten')]
 final class FlattenPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;

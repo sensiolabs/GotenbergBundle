@@ -18,7 +18,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
-#[SemanticNode('merge', 'pdf')]
+#[SemanticNode(type: 'pdf', name: 'merge')]
 final class MergePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;

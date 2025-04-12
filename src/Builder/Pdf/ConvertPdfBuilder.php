@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#convert-into-pdfa--pdfua-route
  */
-#[SemanticNode('convert', 'pdf')]
+#[SemanticNode(type: 'pdf', name: 'convert')]
 final class ConvertPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;

@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
-#[SemanticNode('markdown', 'pdf')]
+#[SemanticNode(type: 'pdf', name: 'markdown')]
 final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait {

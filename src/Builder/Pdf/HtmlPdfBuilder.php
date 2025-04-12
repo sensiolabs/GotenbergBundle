@@ -12,7 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
  */
-#[SemanticNode('html', 'pdf')]
+#[SemanticNode(type: 'pdf', name: 'html')]
 final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait;

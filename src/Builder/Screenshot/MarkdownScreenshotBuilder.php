@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route
  */
-#[SemanticNode('markdown', 'screenshot')]
+#[SemanticNode(type: 'screenshot', name: 'markdown')]
 final class MarkdownScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait {

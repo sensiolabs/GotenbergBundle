@@ -9,7 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 
 /**
- * @see https://gotenberg.dev/docs/routes#performance-mode-chromium.
+ * @see https://gotenberg.dev/docs/routes#performance-mode-chromium
  */
 trait PerformanceModeTrait
 {

@@ -3,16 +3,13 @@
 ### addAsset(Stringable|string $path)
 Adds a file, like an image, font, stylesheet, and so on.
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#html-file-into-pdf-route.](https://gotenberg.dev/docs/routes#html-file-into-pdf-route.)
-
 ### addCookies(array $cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
 ### addExtraHttpHeaders(array $headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
-### assets(Stringable|string $paths)
+### assets(Stringable|string ...$paths)
 Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
 
 ### clip(bool $bool)
@@ -61,7 +58,7 @@ Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load 
 
 ### footer(string $template, array $context)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium.](https://gotenberg.dev/docs/routes#header-footer-chromium.)
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
 
 ### footerFile(string $path)
 HTML file containing the footer.
@@ -73,7 +70,7 @@ The image compression format, either "png", "jpeg" or "webp". (default png).
 ### getHeadersBag()
 ### header(string $template, array $context)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium.](https://gotenberg.dev/docs/routes#header-footer-chromium.)
+> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
 
 ### headerFile(string $path)
 HTML file containing the header.

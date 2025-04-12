@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\WebhookNodeBuilder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @see https://gotenberg.dev/docs/webhook.
+ * @see https://gotenberg.dev/docs/webhook
  *
  * @phpstan-type WebhookConfiguration array{
  *     config_name?: string,
