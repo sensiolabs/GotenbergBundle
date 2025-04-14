@@ -235,6 +235,7 @@ class BuilderParser
         }
 
         $this->prepareBuilderFromClass($class);
+        $this->cleanBuilderFromClass($class);
 
         foreach ($this->parts['methods']['@'] as $methodName => $parts) {
             $package = $parts['package'] ?? '@';
@@ -303,11 +304,22 @@ class BuilderParser
             }
 
             if (isset($parsedDocBlock['tags']['see'])) {
-                $this->parts['methods']['@'][$method->getShortName()]['tags']['see'] = array_unique(array_merge(
+                $this->parts['methods']['@'][$method->getShortName()]['tags']['see'] = array_unique(array_map('trim', array_merge(
                     $this->parts['methods']['@'][$method->getShortName()]['tags']['see'] ?? [],
                     $parsedDocBlock['tags']['see'],
-                ));
+                )));
             }
+        }
+    }
+
+    /**
+     * @param ReflectionClass<object> $class
+     */
+    private function cleanBuilderFromClass(ReflectionClass $class): void
+    {
+        foreach ($class->getMethods(ReflectionMethod::IS_PROTECTED | ReflectionMethod::IS_PRIVATE) as $method) {
+            unset($this->methodsSignature[$method->getName()]);
+            unset($this->parts['methods']['@'][$method->getShortName()]);
         }
     }
 
