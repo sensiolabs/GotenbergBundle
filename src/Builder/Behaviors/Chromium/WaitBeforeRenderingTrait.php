@@ -34,7 +34,7 @@ trait WaitBeforeRenderingTrait
      *
      * For instance: "window.status === 'ready'".
      *
-     * @see https://gotenberg.dev/docs/routes#wait-before-rendering
+     * @see https://gotenberg.dev/docs/routes#wait-before-rendering-chromium
      */
     #[ExposeSemantic(new ScalarNodeBuilder('wait_for_expression'))]
     public function waitForExpression(string $expression): static

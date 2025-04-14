@@ -65,7 +65,7 @@ trait FailOnTrait
      * Forces GotenbergPdf to return a 409 Conflict response if there are
      * exceptions in the Chromium console. (default false).
      *
-     * @see https://gotenberg.dev/docs/routes#console-exceptions
+     * @see https://gotenberg.dev/docs/routes#console-exceptions-chromium
      */
     #[ExposeSemantic(new BooleanNodeBuilder('fail_on_console_exceptions'))]
     public function failOnConsoleExceptions(bool $bool = true): static

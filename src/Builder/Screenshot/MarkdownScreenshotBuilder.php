@@ -21,6 +21,8 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
     use ChromiumScreenshotTrait {
         content as wrapper;
         contentFile as wrapperFile;
+        content as private;
+        contentFile as private;
     }
 
     public const ENDPOINT = '/forms/chromium/screenshot/markdown';
@@ -43,19 +45,6 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
         $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
-    }
-
-    /**
-     * @param array<string, mixed> $context
-     */
-    public function content(string $template, array $context = []): void
-    {
-        throw new \BadMethodCallException('Use wrapper() instead of content().');
-    }
-
-    public function contentFile(string $path): void
-    {
-        throw new \BadMethodCallException('Use wrapperFile() instead of contentFile().');
     }
 
     protected function getEndpoint(): string
