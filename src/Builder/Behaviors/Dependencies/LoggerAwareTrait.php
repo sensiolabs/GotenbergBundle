@@ -3,16 +3,19 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 
 trait LoggerAwareTrait
 {
-    use DependencyAwareTrait;
+    use ServiceMethodsSubscriberTrait;
 
+    #[SubscribedService('logger', nullable: true)]
     protected function getLogger(): LoggerInterface|null
     {
         if (
-            !$this->dependencies->has('logger')
-            || !($logger = $this->dependencies->get('logger')) instanceof LoggerInterface) {
+            !$this->container->has('logger')
+            || !($logger = $this->container->get('logger')) instanceof LoggerInterface) {
             return null;
         }
 

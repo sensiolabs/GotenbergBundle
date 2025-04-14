@@ -21,9 +21,9 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
     /** @use LibreOfficeTestCaseTrait<LibreOfficePdfBuilder> */
     use LibreOfficeTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): LibreOfficePdfBuilder
+    protected function createBuilder(): LibreOfficePdfBuilder
     {
-        return new LibreOfficePdfBuilder($client, $dependencies);
+        return new LibreOfficePdfBuilder();
     }
 
     /**

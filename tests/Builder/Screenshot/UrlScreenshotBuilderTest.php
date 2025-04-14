@@ -27,12 +27,12 @@ final class UrlScreenshotBuilderTest extends GotenbergBuilderTestCase
     {
         parent::setUp();
 
-        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+        $this->container->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
     }
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): UrlScreenshotBuilder
+    protected function createBuilder(): UrlScreenshotBuilder
     {
-        return new UrlScreenshotBuilder($client, $dependencies);
+        return new UrlScreenshotBuilder();
     }
 
     /**
@@ -57,7 +57,7 @@ final class UrlScreenshotBuilderTest extends GotenbergBuilderTestCase
 
     public function testOutputFilename(): void
     {
-        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+        $this->container->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
 
         $this->getBuilder()
             ->url('https://example.com')
@@ -75,7 +75,7 @@ final class UrlScreenshotBuilderTest extends GotenbergBuilderTestCase
         $routeCollection = new RouteCollection();
         $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
 
-        $this->dependencies->set('router', new UrlGenerator($routeCollection, new RequestContext()));
+        $this->container->set('router', new UrlGenerator($routeCollection, new RequestContext()));
 
         $this->getBuilder()
             ->route('article_read', ['id' => 1])
@@ -94,7 +94,7 @@ final class UrlScreenshotBuilderTest extends GotenbergBuilderTestCase
         $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
 
         $requestContext = new RequestContext();
-        $this->dependencies->set('router', new UrlGenerator($routeCollection, new RequestContext()));
+        $this->container->set('router', new UrlGenerator($routeCollection, new RequestContext()));
 
         $requestContext->setHost('example');
 

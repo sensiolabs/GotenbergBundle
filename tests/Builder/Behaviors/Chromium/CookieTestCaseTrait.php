@@ -126,7 +126,7 @@ trait CookieTestCaseTrait
 
     public function testToForwardCookiesWithNoCurrentRequest(): void
     {
-        $this->dependencies->set('request_stack', new RequestStack());
+        $this->container->set('request_stack', new RequestStack());
 
         $builder = $this->getDefaultBuilder()
             ->forwardCookie('my_cookie')
@@ -141,8 +141,8 @@ trait CookieTestCaseTrait
         $request->setMethod('GET');
         $request->cookies->set('my_cookie', new Cookie('my_cookie', 'value', domain: 'symfony.com'));
 
-        $this->dependencies->set('request_stack', new RequestStack([$request]));
-        $this->dependencies->set('logger', $this->getMockBuilder(LoggerInterface::class));
+        $this->container->set('request_stack', new RequestStack([$request]));
+        $this->container->set('logger', $this->getMockBuilder(LoggerInterface::class));
 
         $builder = $this->getDefaultBuilder()
             ->forwardCookie('my_cookie')
@@ -156,8 +156,8 @@ trait CookieTestCaseTrait
         $request = new Request();
         $request->setMethod('GET');
 
-        $this->dependencies->set('request_stack', new RequestStack([$request]));
-        $this->dependencies->set('logger', $this->getMockBuilder(LoggerInterface::class));
+        $this->container->set('request_stack', new RequestStack([$request]));
+        $this->container->set('logger', $this->getMockBuilder(LoggerInterface::class));
 
         $builder = $this->getDefaultBuilder()
             ->forwardCookie('my_cookie')

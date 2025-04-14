@@ -40,9 +40,9 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use WebhookTestCaseTrait<SplitPdfBuilder> */
     use WebhookTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): SplitPdfBuilder
+    protected function createBuilder(): SplitPdfBuilder
     {
-        return new SplitPdfBuilder($client, $dependencies);
+        return new SplitPdfBuilder();
     }
 
     /**

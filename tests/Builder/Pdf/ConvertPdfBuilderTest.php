@@ -27,9 +27,9 @@ final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use WebhookTestCaseTrait<ConvertPdfBuilder> */
     use WebhookTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): ConvertPdfBuilder
+    protected function createBuilder(): ConvertPdfBuilder
     {
-        return new ConvertPdfBuilder($client, $dependencies);
+        return new ConvertPdfBuilder();
     }
 
     /**

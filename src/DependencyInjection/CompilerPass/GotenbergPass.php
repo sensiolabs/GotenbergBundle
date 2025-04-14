@@ -24,6 +24,7 @@ final class GotenbergPass implements CompilerPassInterface
             $serviceDefinition = $container->getDefinition($serviceId);
             $serviceDefinition
                 ->setShared(false)
+                ->addTag('container.service_subscriber')
             ;
 
             $class = $serviceDefinition->getClass();
@@ -32,6 +33,8 @@ final class GotenbergPass implements CompilerPassInterface
 
             $builderPerType[$type] ??= [];
             $builderPerType[$type][] = new Reference($serviceId);
+
+            $serviceDefinition->setAutowired(true);
         }
 
         if ($container->hasDefinition('sensiolabs_gotenberg.pdf')) {

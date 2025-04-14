@@ -4,7 +4,6 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder;
 
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Path;
@@ -20,7 +19,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
     protected const FIXTURE_DIR = __DIR__.'/../Fixtures';
 
     protected GotenbergClientAsserter $client;
-    protected Container $dependencies;
+    protected Container $container;
     /** @var T */
     protected BuilderInterface $builder;
 
@@ -29,27 +28,33 @@ abstract class GotenbergBuilderTestCase extends TestCase
         parent::setUp();
 
         $this->client = new GotenbergClientAsserter();
-        $this->dependencies = new Container();
+        $this->container = new Container();
 
-        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(static::FIXTURE_DIR, static::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(static::FIXTURE_DIR, static::FIXTURE_DIR));
+        $this->container->set('sensiolabs_gotenberg.client', $this->client);
     }
 
     /**
      * @return T
      */
-    abstract protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): BuilderInterface;
+    abstract protected function createBuilder(): BuilderInterface;
 
     /**
      * @return T
      */
     protected function getBuilder(): BuilderInterface
     {
-        return $this->builder ??= $this->createBuilder($this->client, $this->dependencies);
+        $builder = $this->createBuilder();
+        if (method_exists($builder, 'setContainer')) {
+            $builder->setContainer($this->container);
+        }
+
+        return $this->builder ??= $builder;
     }
 
-    protected function getDependencies(): Container
+    protected function getContainer(): Container
     {
-        return $this->dependencies;
+        return $this->container;
     }
 
     protected function assertGotenbergEndpoint(string $endpoint): void

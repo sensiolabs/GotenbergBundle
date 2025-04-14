@@ -35,9 +35,9 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
     /** @use WebhookTestCaseTrait<MergePdfBuilder> */
     use WebhookTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): MergePdfBuilder
+    protected function createBuilder(): MergePdfBuilder
     {
-        return new MergePdfBuilder($client, $dependencies);
+        return new MergePdfBuilder();
     }
 
     /**

@@ -23,9 +23,9 @@ final class FlattenPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use WebhookTestCaseTrait<FlattenPdfBuilder> */
     use WebhookTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): FlattenPdfBuilder
+    protected function createBuilder(): FlattenPdfBuilder
     {
-        return new FlattenPdfBuilder($client, $dependencies);
+        return new FlattenPdfBuilder();
     }
 
     /**

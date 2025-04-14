@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
@@ -10,12 +9,17 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 /**
  * Builder for responses.
  */
-abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface
+abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface, ServiceSubscriberInterface
 {
+    use ServiceSubscriberTrait;
+
     private readonly BodyBag $bodyBag;
     private readonly HeadersBag $headersBag;
 
@@ -27,10 +31,8 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     /** @var ProcessorInterface<mixed>|null */
     private ProcessorInterface|null $processor;
 
-    public function __construct(
-        protected readonly GotenbergClientInterface $client,
-        protected readonly ContainerInterface $dependencies,
-    ) {
+    public function __construct()
+    {
         $this->bodyBag = new BodyBag();
         $this->headersBag = new HeadersBag();
 
@@ -68,7 +70,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         $this->validatePayloadBody();
         $payloadBody = iterator_to_array($this->normalizePayloadBody());
 
-        $response = $this->client->call(
+        $response = $this->getClient()->call(
             $this->getEndpoint(),
             new Payload(
                 $payloadBody,
@@ -78,7 +80,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
         return new GotenbergFileResult(
             $response,
-            $this->client->stream($response),
+            $this->getClient()->stream($response),
             $this->processor ?? new NullProcessor(),
             $this->headerDisposition,
         );
@@ -89,7 +91,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         $this->validatePayloadBody();
         $payloadBody = iterator_to_array($this->normalizePayloadBody());
 
-        $response = $this->client->call(
+        $response = $this->getClient()->call(
             $this->getEndpoint(),
             new Payload(
                 $payloadBody,
@@ -114,6 +116,12 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     protected function validatePayloadBody(): void
     {
+    }
+
+    #[SubscribedService('sensiolabs_gotenberg.client')]
+    protected function getClient(): GotenbergClientInterface
+    {
+        return $this->container->get('sensiolabs_gotenberg.client');
     }
 
     private function normalizePayloadBody(): \Generator

@@ -4,16 +4,19 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 
 trait RequestAwareTrait
 {
-    use DependencyAwareTrait;
+    use ServiceMethodsSubscriberTrait;
 
+    #[SubscribedService('request_stack', nullable: true)]
     protected function getCurrentRequest(): Request|null
     {
         if (
-            !$this->dependencies->has('request_stack')
-            || !($requestStack = $this->dependencies->get('request_stack')) instanceof RequestStack
+            !$this->container->has('request_stack')
+            || !($requestStack = $this->container->get('request_stack')) instanceof RequestStack
         ) {
             throw new \LogicException(\sprintf('RequestStack is required to use "%s" method. Try to run "composer require symfony/http-foundation".', __METHOD__));
         }

@@ -23,9 +23,9 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use ChromiumPdfTestCaseTrait<MarkdownPdfBuilder> */
     use ChromiumPdfTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): MarkdownPdfBuilder
+    protected function createBuilder(): MarkdownPdfBuilder
     {
-        return new MarkdownPdfBuilder($client, $dependencies);
+        return new MarkdownPdfBuilder();
     }
 
     /**
@@ -64,7 +64,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
             }
         });
 
-        $this->dependencies->set('twig', $twig);
+        $this->container->set('twig', $twig);
 
         $this->getBuilder()
             ->files('assets/file.md')

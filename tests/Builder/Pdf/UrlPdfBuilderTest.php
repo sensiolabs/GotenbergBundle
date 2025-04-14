@@ -23,9 +23,9 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use ChromiumPdfTestCaseTrait<UrlPdfBuilder> */
     use ChromiumPdfTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): UrlPdfBuilder
+    protected function createBuilder(): UrlPdfBuilder
     {
-        return new UrlPdfBuilder($client, $dependencies);
+        return new UrlPdfBuilder();
     }
 
     /**
@@ -33,8 +33,8 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
      */
     protected function initializeBuilder(BuilderInterface $builder, Container $container): UrlPdfBuilder
     {
-        if (!$this->dependencies->has('router')) {
-            $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+        if (!$this->container->has('router')) {
+            $this->container->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
         }
 
         return $builder
@@ -54,7 +54,7 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testOutputFilename(): void
     {
-        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+        $this->container->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
 
         $this->getBuilder()
             ->url('https://example.com')
@@ -73,7 +73,7 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
 
         $requestContext = new RequestContext();
-        $this->dependencies->set('router', new UrlGenerator($routeCollection, $requestContext));
+        $this->container->set('router', new UrlGenerator($routeCollection, $requestContext));
 
         $requestContext->setHost('example');
 
@@ -94,7 +94,7 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
         $routeCollection = new RouteCollection();
         $routeCollection->add('article_read', new Route('/article/{id}', methods: Request::METHOD_GET));
 
-        $this->dependencies->set('router', new UrlGenerator($routeCollection, new RequestContext()));
+        $this->container->set('router', new UrlGenerator($routeCollection, new RequestContext()));
 
         $this->getBuilder()
             ->route('article_read', ['id' => 1])

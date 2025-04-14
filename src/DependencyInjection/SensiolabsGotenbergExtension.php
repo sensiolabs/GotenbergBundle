@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Symfony\Component\Config\FileLocator;
@@ -117,6 +118,8 @@ class SensiolabsGotenbergExtension extends Extension
         $container->registerForAutoconfiguration(BuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.builder')
         ;
+
+        $container->registerForAutoconfiguration(AbstractBuilder::class);
 
         // Configurators
         $configValueMapping = [];

@@ -24,9 +24,9 @@ final class MarkdownScreenshotBuilderTest extends GotenbergBuilderTestCase
     /** @use ChromiumScreenshotTestCaseTrait<MarkdownScreenshotBuilder> */
     use ChromiumScreenshotTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): MarkdownScreenshotBuilder
+    protected function createBuilder(): MarkdownScreenshotBuilder
     {
-        return new MarkdownScreenshotBuilder($client, $dependencies);
+        return new MarkdownScreenshotBuilder();
     }
 
     /**
@@ -42,7 +42,7 @@ final class MarkdownScreenshotBuilderTest extends GotenbergBuilderTestCase
 
     public function testOutputFilename(): void
     {
-        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
         $this->getBuilder()
             ->wrapperFile('files/content.html')
@@ -80,7 +80,7 @@ final class MarkdownScreenshotBuilderTest extends GotenbergBuilderTestCase
             }
         });
 
-        $this->dependencies->set('twig', $twig);
+        $this->container->set('twig', $twig);
 
         $this->getBuilder()
             ->files('assets/file.md')

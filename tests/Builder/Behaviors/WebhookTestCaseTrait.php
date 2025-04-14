@@ -23,7 +23,7 @@ trait WebhookTestCaseTrait
 
     public function testAddFullWebhookConfiguration(): void
     {
-        $this->dependencies->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
+        $this->container->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
 
         $this->getDefaultBuilder()
             ->webhook([
@@ -58,7 +58,7 @@ trait WebhookTestCaseTrait
             ->willReturnOnConsecutiveCalls('http://example.com/success', 'http://example.com/error')
         ;
 
-        $this->dependencies->set('router', $router);
+        $this->container->set('router', $router);
 
         $this->getDefaultBuilder()
             ->webhook([
@@ -93,7 +93,7 @@ trait WebhookTestCaseTrait
             ->willReturnOnConsecutiveCalls('http://example.com/success', 'http://example.com/error')
         ;
 
-        $this->dependencies->set('router', $router);
+        $this->container->set('router', $router);
 
         $this->getDefaultBuilder()
             ->webhook([
@@ -301,7 +301,7 @@ trait WebhookTestCaseTrait
             }
         };
 
-        $this->dependencies->set('webhook_configuration_registry', $registry);
+        $this->container->set('webhook_configuration_registry', $registry);
 
         $this->getDefaultBuilder()
             ->webhookConfiguration('fake')

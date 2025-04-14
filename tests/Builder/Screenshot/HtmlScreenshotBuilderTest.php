@@ -23,9 +23,9 @@ final class HtmlScreenshotBuilderTest extends GotenbergBuilderTestCase
     /** @use ChromiumScreenshotTestCaseTrait<HtmlScreenshotBuilder> */
     use ChromiumScreenshotTestCaseTrait;
 
-    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): HtmlScreenshotBuilder
+    protected function createBuilder(): HtmlScreenshotBuilder
     {
-        return new HtmlScreenshotBuilder($client, $dependencies);
+        return new HtmlScreenshotBuilder();
     }
 
     /**
@@ -40,7 +40,7 @@ final class HtmlScreenshotBuilderTest extends GotenbergBuilderTestCase
 
     public function testOutputFilename(): void
     {
-        $this->dependencies->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
         $this->getBuilder()
             ->contentFile('files/content.html')
@@ -65,7 +65,7 @@ final class HtmlScreenshotBuilderTest extends GotenbergBuilderTestCase
             }
         });
 
-        $this->dependencies->set('twig', $twig);
+        $this->container->set('twig', $twig);
 
         $this->getBuilder()
             ->content('templates/content.html.twig', ['name' => 'world'])

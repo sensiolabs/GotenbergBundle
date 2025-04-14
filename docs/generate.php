@@ -94,14 +94,14 @@ class BuilderParser
 
     private const EXCLUDED_METHODS = [
         '__construct',
-        'setLogger',
-        'setConfigurations',
         'generate',
         'generateAsync',
         'fileName',
         'processor',
         'getBodyBag',
         'getHeadersBag',
+        'setContainer',
+        'getSubscribedServices',
     ];
 
     private string $name;

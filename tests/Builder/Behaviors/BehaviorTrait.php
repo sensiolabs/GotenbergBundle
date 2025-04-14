@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Container;
  */
 trait BehaviorTrait
 {
-    protected Container $dependencies;
+    protected Container $container;
 
     /**
      * @return T
@@ -36,6 +36,6 @@ trait BehaviorTrait
     {
         $builder = $this->getBuilder();
 
-        return $this->initializeBuilder($builder, $this->dependencies);
+        return $this->initializeBuilder($builder, $this->container);
     }
 }
