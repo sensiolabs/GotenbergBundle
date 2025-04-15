@@ -59,7 +59,6 @@ trait AsyncBuilderTrait
         }
 
         if (null !== $this->fileName) {
-            // Gotenberg will add the extension to the file name (e.g. filename : "file.pdf" => generated file : "file.pdf.pdf").
             $headers['Gotenberg-Output-Filename'] = $this->fileName;
         }
         $this->client->call($this->getEndpoint(), $this->getMultipartFormData(), $headers);
