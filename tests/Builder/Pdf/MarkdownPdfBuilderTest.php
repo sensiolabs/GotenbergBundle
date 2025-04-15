@@ -48,7 +48,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/chromium/convert/markdown');
-        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR . '/assets/file.md');
+        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
     }
 
     public function testFileWithContent(): void
@@ -73,7 +73,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/chromium/convert/markdown');
-        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR . '/assets/file.md');
+        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
     }
 
     public function testWithStringableObject(): void
@@ -92,7 +92,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/chromium/convert/markdown');
-        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR . '/assets/file.md');
+        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
     }
 
     public function testRequiredFileContent(): void
