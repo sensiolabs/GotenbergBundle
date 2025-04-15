@@ -1,16 +1,47 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sensiolabs\GotenbergBundle\Tests\PHPStanRules;
 
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\Php\PhpMethodReflection;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Methods\AlwaysUsedMethodExtension;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 
-class AlwaysUsedMethodRule implements AlwaysUsedMethodExtension
+final class AlwaysUsedMethodRule implements AlwaysUsedMethodExtension
 {
+    public function __construct(
+        private readonly ReflectionProvider $reflectionProvider,
+    ) {
+    }
+
     public function isAlwaysUsed(MethodReflection $methodReflection): bool
     {
-        return $methodReflection->isPrivate() && str_starts_with($methodReflection->getName(), 'normalize');
+        if (!$methodReflection->isPrivate()) {
+            return false;
+        }
+
+        if (!$methodReflection instanceof PhpMethodReflection) {
+            return false;
+        }
+
+        $declaringClass = $methodReflection->getDeclaringClass();
+        $className = $declaringClass->getName();
+
+        if (!$this->reflectionProvider->hasClass($className)) {
+            return false;
+        }
+
+        try {
+            $refMethod = new \ReflectionMethod($className, $methodReflection->getName());
+            foreach ($refMethod->getAttributes() as $attribute) {
+                if ($attribute->getName() === NormalizeGotenbergPayload::class) {
+                    return true;
+                }
+            }
+        } catch (\ReflectionException) {
+        }
+
+        return false;
     }
 }
