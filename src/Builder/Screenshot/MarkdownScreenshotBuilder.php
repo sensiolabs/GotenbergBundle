@@ -11,21 +11,40 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route
+ * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
  */
 #[SemanticNode(type: 'screenshot', name: 'markdown')]
 final class MarkdownScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait {
-        content as wrapper;
-        contentFile as wrapperFile;
         content as private;
         contentFile as private;
     }
 
     public const ENDPOINT = '/forms/chromium/screenshot/markdown';
+
+    /**
+     * @param string               $template #Template
+     * @param array<string, mixed> $context
+     *
+     * @throws PdfPartRenderingException if the template could not be rendered
+     */
+    public function wrapper(string $template, array $context = []): self
+    {
+        return $this->content($template, $context);
+    }
+
+    /**
+     * The HTML file to convert into PDF.
+     */
+    public function wrapperFile(string $path): self
+    {
+        return $this->contentFile($path);
+    }
 
     /**
      * Add Markdown into a PDF.
