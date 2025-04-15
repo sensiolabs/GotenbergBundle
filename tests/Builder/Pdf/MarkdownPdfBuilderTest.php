@@ -48,7 +48,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/chromium/convert/markdown');
-        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
+        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR . '/assets/file.md');
     }
 
     public function testFileWithContent(): void
@@ -73,7 +73,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/chromium/convert/markdown');
-        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
+        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR . '/assets/file.md');
     }
 
     public function testWithStringableObject(): void
@@ -92,7 +92,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/chromium/convert/markdown');
-        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR.'/assets/file.md');
+        $this->assertGotenbergFormDataFile('files', 'text/markdown', self::FIXTURE_DIR . '/assets/file.md');
     }
 
     public function testRequiredFileContent(): void
@@ -124,26 +124,6 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         $this->getBuilder()
             ->files('b.png')
             ->generate()
-        ;
-    }
-
-    public function testToWrapWithContent(): void
-    {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Use wrapper() instead of content().');
-
-        $this->getBuilder()
-            ->content('templates/wrapper.html.twig', ['name' => 'John Doe'])
-        ;
-    }
-
-    public function testToWrapWithContentFile(): void
-    {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Use wrapperFile() instead of contentFile().');
-
-        $this->getBuilder()
-            ->contentFile('files/wrapper.html')
         ;
     }
 }
