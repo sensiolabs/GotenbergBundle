@@ -1,7 +1,7 @@
 # MarkdownPdfBuilder
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
+> See: [https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route](https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route)
 
 ### addMetadata(string $key, string $value)
 The metadata to write.
@@ -44,8 +44,10 @@ Either the intervals or the page ranges to extract, depending on the selected mo
 Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
 
 ### wrapper(string $template, array $context)
+The template that wraps the markdown content.<br />
+
 ### wrapperFile(string $path)
-The HTML file to convert into PDF.
+The HTML file that wraps the markdown content.
 
 ### addAsset(Stringable|string $path)
 Adds a file, like an image, font, stylesheet, and so on.
