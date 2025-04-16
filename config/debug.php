@@ -1,6 +1,7 @@
 <?php
 
 use Sensiolabs\GotenbergBundle\DataCollector\GotenbergDataCollector;
+use Sensiolabs\GotenbergBundle\Debug\Client\TraceableGotenbergClient;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -26,11 +27,19 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
+    $services->set('sensiolabs_gotenberg.traceable_client', TraceableGotenbergClient::class)
+        ->decorate('sensiolabs_gotenberg.client')
+        ->args([
+            new Reference('.inner'),
+        ])
+    ;
+
     $services->set('sensiolabs_gotenberg.data_collector', GotenbergDataCollector::class)
         ->args([
             service('sensiolabs_gotenberg.pdf'),
             service('sensiolabs_gotenberg.screenshot'),
-            tagged_locator('sensiolabs_gotenberg.pdf_builder'),
+            tagged_locator('sensiolabs_gotenberg.builder'),
+            service('sensiolabs_gotenberg.client'),
             abstract_arg('All default options will be set through the configuration.'),
         ])
         ->tag('data_collector', ['template' => '@SensiolabsGotenberg/Collector/sensiolabs_gotenberg.html.twig', 'id' => 'sensiolabs_gotenberg'])

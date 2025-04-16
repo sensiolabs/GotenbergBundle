@@ -2,68 +2,89 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumScreenshotTrait;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Exception\ScreenshotPartRenderingException;
-use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\File as DataPartFile;
+use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
 
-final class MarkdownScreenshotBuilder extends AbstractChromiumScreenshotBuilder
+/**
+ * @see https://gotenberg.dev/docs/routes#screenshots-route
+ * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ */
+#[SemanticNode(type: 'screenshot', name: 'markdown')]
+final class MarkdownScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
-    private const ENDPOINT = '/forms/chromium/screenshot/markdown';
+    use ChromiumScreenshotTrait {
+        content as private;
+        contentFile as private;
+    }
+
+    public const ENDPOINT = '/forms/chromium/screenshot/markdown';
 
     /**
-     * The HTML file that wraps the markdown content, rendered from a Twig template.
-     *
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws ScreenshotPartRenderingException if the template could not be rendered
+     * @throws PdfPartRenderingException if the template could not be rendered
      */
     public function wrapper(string $template, array $context = []): self
     {
-        return $this->withRenderedPart(Part::Body, $template, $context);
+        return $this->content($template, $context);
     }
 
     /**
-     * The HTML file that wraps the markdown content.
+     * The HTML file to convert into PDF.
      */
     public function wrapperFile(string $path): self
     {
-        return $this->withScreenshotPartFile(Part::Body, $path);
+        return $this->contentFile($path);
     }
 
+    /**
+     * Add Markdown into a PDF.
+     *
+     * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+     */
     public function files(string|\Stringable ...$paths): self
     {
-        $this->formFields['files'] = [];
-
         foreach ($paths as $path) {
             $path = (string) $path;
-            $this->assertFileExtension($path, ['md']);
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            ValidatorFactory::filesExtension([$info], ['md']);
 
-            $dataPart = new DataPart(new DataPartFile($this->asset->resolve($path)));
-
-            $this->formFields['files'][$path] = $dataPart;
+            $files[$path] = $info;
         }
+
+        $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
-    }
-
-    public function getMultipartFormData(): array
-    {
-        if (!\array_key_exists(Part::Body->value, $this->formFields)) {
-            throw new MissingRequiredFieldException('HTML template is required');
-        }
-
-        if ([] === ($this->formFields['files'] ?? []) && [] === ($this->formFields['downloadFrom'] ?? [])) {
-            throw new MissingRequiredFieldException('At least one markdown file is required');
-        }
-
-        return parent::getMultipartFormData();
     }
 
     protected function getEndpoint(): string
     {
         return self::ENDPOINT;
+    }
+
+    protected function validatePayloadBody(): void
+    {
+        if ($this->getBodyBag()->get(Part::Body->value) === null) {
+            throw new MissingRequiredFieldException('HTML template is required');
+        }
+
+        if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
+            throw new MissingRequiredFieldException('At least one markdown file is required.');
+        }
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
     }
 }

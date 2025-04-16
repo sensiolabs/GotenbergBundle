@@ -1,6 +1,6 @@
 # Split Builder
 
-You may have the possibility to split several PDF pages or documents.
+You may have the possibility to split several PDF pages.
 
 ## Basic usage
 
@@ -123,3 +123,32 @@ class YourController
     }
 }
 ```
+
+### flatten
+
+Default: `false`
+
+You may have the possibility to flatten several PDF pages.
+It combines all its contents into a single layer, making it non-editable and
+ensuring that the document's integrity is maintained.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->flatten()  // is same as `->flatten(true)`
+            ->generate()
+         ;
+    }
+}
+```
+
+> [!TIP]
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#flatten-libreoffice).

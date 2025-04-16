@@ -2,13 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Formatter;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 
-#[CoversClass(AssetBaseDirFormatter::class)]
 final class AssetBaseDirFormatterTest extends TestCase
 {
     /**

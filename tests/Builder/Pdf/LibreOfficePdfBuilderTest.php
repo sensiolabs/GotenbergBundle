@@ -2,218 +2,99 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\AbstractPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
+use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
-use Sensiolabs\GotenbergBundle\Tests\Builder\AbstractBuilderTestCase;
-use Symfony\Component\Mime\Part\DataPart;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\LibreOfficeTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
-#[CoversClass(LibreOfficePdfBuilder::class)]
-#[UsesClass(AbstractPdfBuilder::class)]
-#[UsesClass(AssetBaseDirFormatter::class)]
-#[UsesClass(GotenbergFileResult::class)]
-final class LibreOfficePdfBuilderTest extends AbstractBuilderTestCase
+/**
+ * @extends GotenbergBuilderTestCase<LibreOfficePdfBuilder>
+ */
+class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
 {
-    private const OFFICE_DOCUMENTS_DIR = 'assets/office';
+    /** @use LibreOfficeTestCaseTrait<LibreOfficePdfBuilder> */
+    use LibreOfficeTestCaseTrait;
 
-    public function testEndpointIsCorrect(): void
+    protected function createBuilder(GotenbergClientInterface $client, Container $dependencies): LibreOfficePdfBuilder
     {
-        $this->gotenbergClient
-            ->expects($this->once())
-            ->method('call')
-            ->with(
-                $this->equalTo('/forms/libreoffice/convert'),
-                $this->anything(),
-                $this->anything(),
-            )
-        ;
-
-        $this->getLibreOfficePdfBuilder()
-            ->files(new \SplFileInfo(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx'))
-            ->generate()
-        ;
-    }
-
-    public function testStringableObject(): void
-    {
-        $supportedFilePath = new class(self::OFFICE_DOCUMENTS_DIR) implements \Stringable {
-            public function __construct(private readonly string $directory)
-            {
-            }
-
-            public function __toString(): string
-            {
-                return $this->directory.'/document_1.docx';
-            }
-        };
-
-        $builder = $this->getLibreOfficePdfBuilder();
-        $builder
-            ->files($supportedFilePath)
-            ->pdfUniversalAccess()
-        ;
-
-        $data = $builder->getMultipartFormData();
-
-        /* @var DataPart $dataPart */
-        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
-    }
-
-    public function testSplFileInfoObject(): void
-    {
-        $supportedFilePath = new \SplFileInfo(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx');
-
-        $builder = $this->getLibreOfficePdfBuilder();
-        $builder
-            ->files($supportedFilePath)
-            ->pdfUniversalAccess()
-        ;
-
-        $data = $builder->getMultipartFormData();
-
-        /* @var DataPart $dataPart */
-        self::assertInstanceOf(DataPart::class, $dataPart = $data[0]['files']);
-        self::assertSame(basename((string) $supportedFilePath), $dataPart->getFilename());
-    }
-
-    public static function configurationIsCorrectlySetProvider(): \Generator
-    {
-        yield 'pdf_format' => ['pdf_format', 'PDF/A-1b', [
-            'pdfa' => 'PDF/A-1b',
-        ]];
-        yield 'pdf_universal_access' => ['pdf_universal_access', false, [
-            'pdfua' => 'false',
-        ]];
-        yield 'landscape' => ['landscape', false, [
-            'landscape' => 'false',
-        ]];
-        yield 'native_page_ranges' => ['native_page_ranges', '1-10', [
-            'nativePageRanges' => '1-10',
-        ]];
-        yield 'do_not_export_form_fields' => ['do_not_export_form_fields', true, [
-            'exportFormFields' => 'true',
-        ]];
-        yield 'single_page_sheets' => ['single_page_sheets', false, [
-            'singlePageSheets' => 'false',
-        ]];
-        yield 'merge' => ['merge', false, [
-            'merge' => 'false',
-        ]];
-        yield 'metadata' => ['metadata', ['Author' => 'SensioLabs'], [
-            'metadata' => '{"Author":"SensioLabs"}',
-        ]];
-        yield 'allow_duplicate_field_names' => ['allow_duplicate_field_names', false, [
-            'allowDuplicateFieldNames' => 'false',
-        ]];
-        yield 'do_not_export_bookmarks' => ['do_not_export_bookmarks', true, [
-            'exportBookmarks' => 'true',
-        ]];
-        yield 'export_bookmarks_to_pdf_destination' => ['export_bookmarks_to_pdf_destination', false, [
-            'exportBookmarksToPdfDestination' => 'false',
-        ]];
-        yield 'export_placeholders' => ['export_placeholders', false, [
-            'exportPlaceholders' => 'false',
-        ]];
-        yield 'export_notes' => ['export_notes', false, [
-            'exportNotes' => 'false',
-        ]];
-        yield 'export_notes_pages' => ['export_notes_pages', false, [
-            'exportNotesPages' => 'false',
-        ]];
-        yield 'export_only_notes_pages' => ['export_only_notes_pages', false, [
-            'exportOnlyNotesPages' => 'false',
-        ]];
-        yield 'export_notes_in_margin' => ['export_notes_in_margin', false, [
-            'exportNotesInMargin' => 'false',
-        ]];
-        yield 'convert_ooo_target_to_pdf_target' => ['convert_ooo_target_to_pdf_target', false, [
-            'convertOooTargetToPdfTarget' => 'false',
-        ]];
-        yield 'export_links_relative_fsys' => ['export_links_relative_fsys', false, [
-            'exportLinksRelativeFsys' => 'false',
-        ]];
-        yield 'export_hidden_slides' => ['export_hidden_slides', false, [
-            'exportHiddenSlides' => 'false',
-        ]];
-        yield 'skip_empty_pages' => ['skip_empty_pages', false, [
-            'skipEmptyPages' => 'false',
-        ]];
-        yield 'add_original_document_as_stream' => ['add_original_document_as_stream', false, [
-            'addOriginalDocumentAsStream' => 'false',
-        ]];
-        yield 'lossless_image_compression' => ['lossless_image_compression', false, [
-            'losslessImageCompression' => 'false',
-        ]];
-        yield 'quality' => ['quality', 90, [
-            'quality' => 90,
-        ]];
-        yield 'reduce_image_resolution' => ['reduce_image_resolution', false, [
-            'reduceImageResolution' => 'false',
-        ]];
-        yield 'max_image_resolution' => ['max_image_resolution', 300, [
-            'maxImageResolution' => 300,
-        ]];
-        yield 'password' => ['password', 'My password', [
-            'password' => 'My password',
-        ]];
+        return new LibreOfficePdfBuilder($client, $dependencies);
     }
 
     /**
-     * @param array<mixed> $expected
+     * @param LibreOfficePdfBuilder $builder
      */
-    #[DataProvider('configurationIsCorrectlySetProvider')]
-    public function testConfigurationIsCorrectlySet(string $key, mixed $value, array $expected): void
+    protected function initializeBuilder(BuilderInterface $builder, Container $container): LibreOfficePdfBuilder
     {
-        $builder = $this->getLibreOfficePdfBuilder();
-        $builder->setConfigurations([
-            $key => $value,
-        ]);
-        $builder->files(self::OFFICE_DOCUMENTS_DIR.'/document_1.docx');
-
-        self::assertEquals($expected, $builder->getMultipartFormData()[0]);
+        return $builder
+            ->files('assets/office/document.odt')
+        ;
     }
 
     public static function provideValidOfficeFiles(): \Generator
     {
-        yield 'odt' => [self::OFFICE_DOCUMENTS_DIR.'/document.odt', 'application/vnd.oasis.opendocument.text', 'document.odt'];
-        yield 'docx' => [self::OFFICE_DOCUMENTS_DIR.'/document_1.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'document_1.docx'];
-        yield 'html' => [self::OFFICE_DOCUMENTS_DIR.'/document_2.html', 'text/html', 'document_2.html'];
-        yield 'xslx' => [self::OFFICE_DOCUMENTS_DIR.'/document_3.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'document_3.xlsx'];
-        yield 'pptx' => [self::OFFICE_DOCUMENTS_DIR.'/document_4.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'document_4.pptx'];
+        yield 'odt' => ['assets/office/document.odt', 'application/vnd.oasis.opendocument.text'];
+        yield 'docx' => ['assets/office/document_1.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        yield 'html' => ['assets/office/document_2.html', 'text/html'];
+        yield 'xslx' => ['assets/office/document_3.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+        yield 'pptx' => ['assets/office/document_4.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
     }
 
     #[DataProvider('provideValidOfficeFiles')]
-    public function testOfficeFiles(string $filePath, string $contentType, string $filename): void
+    public function testOfficeFiles(string $filePath, string $contentType): void
     {
-        $builder = $this->getLibreOfficePdfBuilder();
-        $builder->files($filePath);
+        $this->getBuilder()
+            ->files($filePath)
+            ->generate()
+        ;
 
-        $data = $builder->getMultipartFormData()[0];
-
-        self::assertFile($data, $filename, $contentType);
+        $this->assertGotenbergEndpoint('/forms/libreoffice/convert');
+        $this->assertGotenbergFormDataFile('files', $contentType, self::FIXTURE_DIR.'/'.$filePath);
     }
 
-    public function testRequiredFormData(): void
+    public function testWithStringableObject(): void
     {
-        $builder = $this->getLibreOfficePdfBuilder();
+        $class = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'assets/office/document.odt';
+            }
+        };
 
+        $this->getBuilder()
+            ->files($class)
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/libreoffice/convert');
+        $this->assertGotenbergFormDataFile('files', 'application/vnd.oasis.opendocument.text', self::FIXTURE_DIR.'/assets/office/document.odt');
+    }
+
+    public function testRequiredFileContent(): void
+    {
         $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('At least one office file is required');
+        $this->expectExceptionMessage('At least one office file is required.');
 
-        $builder->getMultipartFormData();
+        $this->getBuilder()
+            ->generate()
+        ;
     }
 
-    private function getLibreOfficePdfBuilder(): LibreOfficePdfBuilder
+    public function testSplitConfigurationRequirement(): void
     {
-        return (new LibreOfficePdfBuilder($this->gotenbergClient, self::$assetBaseDirFormatter, $this->webhookConfigurationRegistry))
-            ->processor(new NullProcessor())
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage('"splitUnify" can only be at "true" with "pages" mode for "splitMode".');
+
+        $this->getBuilder()
+            ->files('assets/office/document.odt')
+            ->splitMode(SplitMode::Intervals)
+            ->splitUnify()
+            ->generate()
         ;
     }
 }
