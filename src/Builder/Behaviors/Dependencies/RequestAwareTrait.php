@@ -5,11 +5,11 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 trait RequestAwareTrait
 {
-    use ServiceMethodsSubscriberTrait;
+    use ServiceSubscriberTrait;
 
     #[SubscribedService('request_stack', nullable: true)]
     protected function getCurrentRequest(): Request|null

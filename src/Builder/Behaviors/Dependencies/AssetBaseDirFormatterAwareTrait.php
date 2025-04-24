@@ -4,11 +4,11 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 trait AssetBaseDirFormatterAwareTrait
 {
-    use ServiceMethodsSubscriberTrait;
+    use ServiceSubscriberTrait;
 
     #[SubscribedService('asset_base_dir_formatter')]
     protected function getAssetBaseDirFormatter(): AssetBaseDirFormatter

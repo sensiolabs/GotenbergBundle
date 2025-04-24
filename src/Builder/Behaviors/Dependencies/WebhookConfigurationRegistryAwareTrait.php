@@ -4,11 +4,11 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 trait WebhookConfigurationRegistryAwareTrait
 {
-    use ServiceMethodsSubscriberTrait;
+    use ServiceSubscriberTrait;
 
     #[SubscribedService('webhook_configuration_registry')]
     protected function getWebhookConfigurationRegistry(): WebhookConfigurationRegistryInterface

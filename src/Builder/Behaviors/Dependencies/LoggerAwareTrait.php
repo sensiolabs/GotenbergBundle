@@ -4,11 +4,11 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 trait LoggerAwareTrait
 {
-    use ServiceMethodsSubscriberTrait;
+    use ServiceSubscriberTrait;
 
     #[SubscribedService('logger', nullable: true)]
     protected function getLogger(): LoggerInterface|null

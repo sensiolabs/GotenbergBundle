@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\RegisterServiceSubscribersPass;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,6 +20,8 @@ final class GotenbergPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
+        $clone = new ContainerBuilder();
+
         $builderPerType = [];
         foreach ($container->findTaggedServiceIds('sensiolabs_gotenberg.builder') as $serviceId => $tags) {
             $serviceDefinition = $container->getDefinition($serviceId);
@@ -34,7 +37,7 @@ final class GotenbergPass implements CompilerPassInterface
             $builderPerType[$type] ??= [];
             $builderPerType[$type][] = new Reference($serviceId);
 
-            $serviceDefinition->setAutowired(true);
+            $clone->setDefinition($serviceId, $serviceDefinition);
         }
 
         if ($container->hasDefinition('sensiolabs_gotenberg.pdf')) {
@@ -47,6 +50,28 @@ final class GotenbergPass implements CompilerPassInterface
             $container->getDefinition('sensiolabs_gotenberg.screenshot')
                 ->replaceArgument(0, ServiceLocatorTagPass::register($container, $builderPerType['screenshot']))
             ;
+        }
+
+        $pass = new RegisterServiceSubscribersPass();
+        $pass->process($clone);
+
+        foreach ($clone->findTaggedServiceIds('sensiolabs_gotenberg.builder') as $serviceId => $tags) {
+            $definition = $clone->getDefinition($serviceId);
+
+            if (!$definition->hasTag('container.service_subscriber.locator')) {
+                continue;
+            }
+
+            $locatorFactoryId = $definition->getTag('container.service_subscriber.locator')[0]['id'];
+            $locatorId = str_replace(".{$serviceId}", '', $locatorFactoryId);
+
+            $locatorMap = $clone->getDefinition($locatorId)->getArgument(0);
+
+            $definition = $container->getDefinition($serviceId);
+            $definition->clearTag('container.service_subscriber');
+
+            $locatorReference = ServiceLocatorTagPass::register($container, $locatorMap, $serviceId);
+            $definition->addMethodCall('setContainer', [$locatorReference]);
         }
 
         if (!$container->has('sensiolabs_gotenberg.data_collector')) {

@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder;
 
+use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
@@ -19,6 +20,8 @@ use Symfony\Contracts\Service\ServiceSubscriberTrait;
 abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface, ServiceSubscriberInterface
 {
     use ServiceSubscriberTrait;
+
+    protected ContainerInterface $container;
 
     private readonly BodyBag $bodyBag;
     private readonly HeadersBag $headersBag;

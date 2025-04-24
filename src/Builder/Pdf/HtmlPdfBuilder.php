@@ -8,7 +8,6 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 /**
  * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route

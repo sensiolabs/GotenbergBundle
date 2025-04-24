@@ -2,17 +2,19 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
+/**
+ * @method UrlGeneratorInterface getUrlGenerator()
+ */
 trait UrlGeneratorAwareTrait
 {
-    use ServiceMethodsSubscriberTrait;
+    use ServiceSubscriberTrait;
 
     #[SubscribedService('router', nullable: true)]
-    protected function getUrlGenerator(): UrlGeneratorInterface
+    protected function getUrlGenerator(): UrlGeneratorInterface|null
     {
         if (
             !$this->container->has('router')
