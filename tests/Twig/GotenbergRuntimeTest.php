@@ -54,7 +54,7 @@ class GotenbergRuntimeTest extends TestCase
         $this->assertSame('foo', $runtime->getAssetUrl('foo'));
     }
 
-    public function testgetFontThrowsPerDefault(): void
+    public function testGetFontThrowsPerDefault(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The gotenberg_font function must be used in a Gotenberg context.');
@@ -62,7 +62,7 @@ class GotenbergRuntimeTest extends TestCase
         $runtime->getFont('foo.ttf', 'my_font');
     }
 
-    public function testgetFontThrowsWhenBuilderIsNotSet(): void
+    public function testGetFontThrowsWhenBuilderIsNotSet(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The gotenberg_font function must be used in a Gotenberg context.');
@@ -71,7 +71,7 @@ class GotenbergRuntimeTest extends TestCase
         $runtime->getFont('foo.ttf', 'my_font');
     }
 
-    public function testgetFontCallChromiumPdfBuilder(): void
+    public function testGetFontCallChromiumPdfBuilder(): void
     {
         $runtime = new GotenbergRuntime();
         $builder = $this->createMock(AbstractChromiumPdfBuilder::class);
@@ -90,7 +90,7 @@ class GotenbergRuntimeTest extends TestCase
         );
     }
 
-    public function testgetFontCallChromiumScreenshotBuilder(): void
+    public function testGetFontCallChromiumScreenshotBuilder(): void
     {
         $runtime = new GotenbergRuntime();
         $builder = $this->createMock(AbstractChromiumScreenshotBuilder::class);
@@ -106,6 +106,69 @@ class GotenbergRuntimeTest extends TestCase
                 src: url("foo.ttf");
             }',
             $runtime->getFont('foo.ttf', 'my_font'),
+        );
+    }
+
+    public function testGetFontStyleTagThrowsPerDefault(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The gotenberg_font_style_tag function must be used in a Gotenberg context.');
+        $runtime = new GotenbergRuntime();
+        $runtime->getFontStyleTag('foo.ttf', 'my_font');
+    }
+
+    public function testGetFontStyleTagThrowsWhenBuilderIsNotSet(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The gotenberg_font_style_tag function must be used in a Gotenberg context.');
+        $runtime = new GotenbergRuntime();
+        $runtime->setBuilder(null);
+        $runtime->getFontStyleTag('foo.ttf', 'my_font');
+    }
+
+    public function testGetFontStyleTagCallChromiumPdfBuilder(): void
+    {
+        $runtime = new GotenbergRuntime();
+        $builder = $this->createMock(AbstractChromiumPdfBuilder::class);
+        $builder
+            ->expects($this->once())
+            ->method('addAsset')
+            ->with('foo.ttf')
+        ;
+        $runtime->setBuilder($builder);
+        $this->assertSame(
+            <<<HTML
+                <style>
+                    @font-face {
+                        font-family: "my_font";
+                        src: url("foo.ttf");
+                    }
+                </style>
+            HTML,
+            $runtime->getFontStyleTag('foo.ttf', 'my_font'),
+        );
+    }
+
+    public function testGetFontStyleTagCallChromiumScreenshotBuilder(): void
+    {
+        $runtime = new GotenbergRuntime();
+        $builder = $this->createMock(AbstractChromiumScreenshotBuilder::class);
+        $builder
+            ->expects($this->once())
+            ->method('addAsset')
+            ->with('foo.ttf')
+        ;
+        $runtime->setBuilder($builder);
+        $this->assertSame(
+            <<<HTML
+                <style>
+                    @font-face {
+                        font-family: "my_font";
+                        src: url("foo.ttf");
+                    }
+                </style>
+            HTML,
+            $runtime->getFontStyleTag('foo.ttf', 'my_font'),
         );
     }
 }
