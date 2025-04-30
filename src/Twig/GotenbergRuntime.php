@@ -55,14 +55,7 @@ final class GotenbergRuntime
         $name = htmlspecialchars($name);
         $basename = htmlspecialchars(basename($path));
 
-        return <<<HTML
-            <style>
-                @font-face {
-                    font-family: "{$name}";
-                    src: url("{$basename}");
-                }
-            </style>
-        HTML;
+        return '<style>@font-face {font-family: "'.$name.'";src: url("'.$basename.'");}</style>';
     }
 
     private function addAsset(string $path, string $function): void

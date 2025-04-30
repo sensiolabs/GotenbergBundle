@@ -137,14 +137,7 @@ class GotenbergRuntimeTest extends TestCase
         ;
         $runtime->setBuilder($builder);
         $this->assertSame(
-            <<<HTML
-                <style>
-                    @font-face {
-                        font-family: "my_font";
-                        src: url("foo.ttf");
-                    }
-                </style>
-            HTML,
+            '<style>@font-face {font-family: "my_font";src: url("foo.ttf");}</style>',
             $runtime->getFontStyleTag('foo.ttf', 'my_font'),
         );
     }
@@ -160,14 +153,7 @@ class GotenbergRuntimeTest extends TestCase
         ;
         $runtime->setBuilder($builder);
         $this->assertSame(
-            <<<HTML
-                <style>
-                    @font-face {
-                        font-family: "my_font";
-                        src: url("foo.ttf");
-                    }
-                </style>
-            HTML,
+            '<style>@font-face {font-family: "my_font";src: url("foo.ttf");}</style>',
             $runtime->getFontStyleTag('foo.ttf', 'my_font'),
         );
     }

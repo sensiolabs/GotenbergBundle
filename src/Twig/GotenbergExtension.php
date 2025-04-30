@@ -12,7 +12,7 @@ final class GotenbergExtension extends AbstractExtension
     {
         return [
             new TwigFunction('gotenberg_asset', [GotenbergRuntime::class, 'getAssetUrl']),
-            new TwigFunction('gotenberg_font', [GotenbergRuntime::class, 'getFont'], ['is_safe' => ['html'], 'deprecation_info' => new DeprecatedCallableInfo('GotenbergBundle', 'v1.x', 'gotenberg_font_style_tag')]),
+            new TwigFunction('gotenberg_font', [GotenbergRuntime::class, 'getFont'], ['is_safe' => ['html'], 'deprecation_info' => new DeprecatedCallableInfo('GotenbergBundle', '0.4.0', 'gotenberg_font_style_tag')]),
             new TwigFunction('gotenberg_font_style_tag', [GotenbergRuntime::class, 'getFontStyleTag'], ['is_safe' => ['html']]),
         ];
     }
