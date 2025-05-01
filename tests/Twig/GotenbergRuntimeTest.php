@@ -157,4 +157,53 @@ class GotenbergRuntimeTest extends TestCase
             $runtime->getFontStyleTag('foo.ttf', 'my_font'),
         );
     }
+
+    public function testGetFontFaceThrowsPerDefault(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The gotenberg_font_face function must be used in a Gotenberg context.');
+        $runtime = new GotenbergRuntime();
+        $runtime->getFontFace('foo.ttf', 'my_font');
+    }
+
+    public function testGetFontFaceThrowsWhenBuilderIsNotSet(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The gotenberg_font_face function must be used in a Gotenberg context.');
+        $runtime = new GotenbergRuntime();
+        $runtime->setBuilder(null);
+        $runtime->getFontFace('foo.ttf', 'my_font');
+    }
+
+    public function testGetFontFaceCallChromiumPdfBuilder(): void
+    {
+        $runtime = new GotenbergRuntime();
+        $builder = $this->createMock(AbstractChromiumPdfBuilder::class);
+        $builder
+            ->expects($this->once())
+            ->method('addAsset')
+            ->with('foo.ttf')
+        ;
+        $runtime->setBuilder($builder);
+        $this->assertSame(
+            '@font-face {font-family: "my_font";src: url("foo.ttf");}',
+            $runtime->getFontFace('foo.ttf', 'my_font'),
+        );
+    }
+
+    public function testGetFontFaceCallChromiumScreenshotBuilder(): void
+    {
+        $runtime = new GotenbergRuntime();
+        $builder = $this->createMock(AbstractChromiumScreenshotBuilder::class);
+        $builder
+            ->expects($this->once())
+            ->method('addAsset')
+            ->with('foo.ttf')
+        ;
+        $runtime->setBuilder($builder);
+        $this->assertSame(
+            '@font-face {font-family: "my_font";src: url("foo.ttf");}',
+            $runtime->getFontFace('foo.ttf', 'my_font'),
+        );
+    }
 }

@@ -52,10 +52,22 @@ final class GotenbergRuntime
     {
         $this->addAsset($path, 'gotenberg_font_style_tag');
 
+        return '<style>'.$this->generateFontFace($path, $name).'</style>';
+    }
+
+    public function getFontFace(string $path, string $name): string
+    {
+        $this->addAsset($path, 'gotenberg_font_face');
+
+        return $this->generateFontFace($path, $name);
+    }
+
+    private function generateFontFace(string $path, string $name): string
+    {
         $name = htmlspecialchars($name);
         $basename = htmlspecialchars(basename($path));
 
-        return '<style>@font-face {font-family: "'.$name.'";src: url("'.$basename.'");}</style>';
+        return '@font-face {font-family: "'.$name.'";src: url("'.$basename.'");}';
     }
 
     private function addAsset(string $path, string $function): void
