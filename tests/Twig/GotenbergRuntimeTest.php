@@ -117,15 +117,6 @@ class GotenbergRuntimeTest extends TestCase
         $runtime->getFontStyleTag('foo.ttf', 'my_font');
     }
 
-    public function testGetFontStyleTagThrowsWhenBuilderIsNotSet(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The gotenberg_font_style_tag function must be used in a Gotenberg context.');
-        $runtime = new GotenbergRuntime();
-        $runtime->setBuilder(null);
-        $runtime->getFontStyleTag('foo.ttf', 'my_font');
-    }
-
     public function testGetFontStyleTagCallChromiumPdfBuilder(): void
     {
         $runtime = new GotenbergRuntime();
@@ -163,15 +154,6 @@ class GotenbergRuntimeTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The gotenberg_font_face function must be used in a Gotenberg context.');
         $runtime = new GotenbergRuntime();
-        $runtime->getFontFace('foo.ttf', 'my_font');
-    }
-
-    public function testGetFontFaceThrowsWhenBuilderIsNotSet(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The gotenberg_font_face function must be used in a Gotenberg context.');
-        $runtime = new GotenbergRuntime();
-        $runtime->setBuilder(null);
         $runtime->getFontFace('foo.ttf', 'my_font');
     }
 
