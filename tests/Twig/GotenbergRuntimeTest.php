@@ -54,59 +54,13 @@ class GotenbergRuntimeTest extends TestCase
         $this->assertSame('foo', $runtime->getAssetUrl('foo'));
     }
 
-    public function testGetFontThrowsPerDefault(): void
+    public function testGetFontStyleTagThrowsWhenBuilderIsNotSet(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The gotenberg_font function must be used in a Gotenberg context.');
-        $runtime = new GotenbergRuntime();
-        $runtime->getFont('foo.ttf', 'my_font');
-    }
-
-    public function testGetFontThrowsWhenBuilderIsNotSet(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The gotenberg_font function must be used in a Gotenberg context.');
+        $this->expectExceptionMessage('The gotenberg_font_style_tag function must be used in a Gotenberg context.');
         $runtime = new GotenbergRuntime();
         $runtime->setBuilder(null);
-        $runtime->getFont('foo.ttf', 'my_font');
-    }
-
-    public function testGetFontCallChromiumPdfBuilder(): void
-    {
-        $runtime = new GotenbergRuntime();
-        $builder = $this->createMock(AbstractChromiumPdfBuilder::class);
-        $builder
-            ->expects($this->once())
-            ->method('addAsset')
-            ->with('foo.ttf')
-        ;
-        $runtime->setBuilder($builder);
-        $this->assertSame(
-            '@font-face {
-                font-family: "my_font";
-                src: url("foo.ttf");
-            }',
-            $runtime->getFont('foo.ttf', 'my_font'),
-        );
-    }
-
-    public function testGetFontCallChromiumScreenshotBuilder(): void
-    {
-        $runtime = new GotenbergRuntime();
-        $builder = $this->createMock(AbstractChromiumScreenshotBuilder::class);
-        $builder
-            ->expects($this->once())
-            ->method('addAsset')
-            ->with('foo.ttf')
-        ;
-        $runtime->setBuilder($builder);
-        $this->assertSame(
-            '@font-face {
-                font-family: "my_font";
-                src: url("foo.ttf");
-            }',
-            $runtime->getFont('foo.ttf', 'my_font'),
-        );
+        $runtime->getFontStyleTag('foo.ttf', 'my_font');
     }
 
     public function testGetFontStyleTagThrowsPerDefault(): void
