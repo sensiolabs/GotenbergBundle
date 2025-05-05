@@ -31,6 +31,9 @@ final class GotenbergRuntime
         return basename($path);
     }
 
+    /**
+     * @deprecated use "gotenberg_font_style_tag" instead
+     */
     public function getFont(string $path, string $name): string
     {
         $this->addAsset($path, 'gotenberg_font');
@@ -43,6 +46,28 @@ final class GotenbergRuntime
                 src: url("'.$basename.'");
             }'
         ;
+    }
+
+    public function getFontStyleTag(string $path, string $name): string
+    {
+        $this->addAsset($path, 'gotenberg_font_style_tag');
+
+        return '<style>'.$this->generateFontFace($path, $name).'</style>';
+    }
+
+    public function getFontFace(string $path, string $name): string
+    {
+        $this->addAsset($path, 'gotenberg_font_face');
+
+        return $this->generateFontFace($path, $name);
+    }
+
+    private function generateFontFace(string $path, string $name): string
+    {
+        $name = htmlspecialchars($name);
+        $basename = htmlspecialchars(basename($path));
+
+        return '@font-face {font-family: "'.$name.'";src: url("'.$basename.'");}';
     }
 
     private function addAsset(string $path, string $function): void

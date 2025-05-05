@@ -21,7 +21,12 @@ but it generates a `@font-face` rule that can be used inside a `<style>` block.
 The `{{ gotenberg_font() }}` function helps generate an `@font-face` 
 declaration with the correct asset path expected by gotenberg.
 
-### Example
+> [!NOTE]
+> "gotenberg_font" is deprecated and will be removed in v1.x. use 
+> "gotenberg_font_face" to get the same behavior, or use 
+> "gotenberg_font_style_tag" to get a `style` tag around your font import.
+
+### Example with "gotenberg_font"
 
 ```html
 <!DOCTYPE html>
@@ -56,6 +61,55 @@ declaration with the correct asset path expected by gotenberg.
                 font-family: "my_font";
                 src: url("custom-font.ttf");
             }
+            h1 {
+                color: red;
+                font-family: "my_font";
+            }
+        </style>
+    </head>
+    <body>
+        <h1>This text uses the custom font.</h1>
+    </body>
+</html>
+```
+
+### Example with "gotenberg_font_style_tag"
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>PDF with Custom Font</title>
+        {{ gotenberg_font_style_tag('fonts/custom-font.ttf', 'my_font') }}
+        <style>
+            h1 {
+                color: red;
+                font-family: "my_font";
+            }
+        </style>
+    </head>
+    <body>
+        <h1>This text uses the custom font.</h1>
+    </body>
+</html>
+```
+
+### Output
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>PDF with Custom Font</title>
+        <style>
+            @font-face {
+                font-family: "my_font";
+                src: url("custom-font.ttf");
+            }
+        </style>
+        <style>
             h1 {
                 color: red;
                 font-family: "my_font";
