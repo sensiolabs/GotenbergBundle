@@ -5,7 +5,6 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Compiler\RegisterServiceSubscribersPass;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;

@@ -59,11 +59,8 @@ final class BuilderStack
         /** @var SemanticNode $semanticNode */
         $semanticNode = $nodeAttributes[0]->newInstance();
 
-        if (!\in_array($semanticNode->type, ['pdf', 'screenshot'], true)) { // TODO : temporary soft lock
-            throw new \LogicException('Invalid builder type. Must be one of "pdf" or "screenshot".');
-        }
-
         $this->builders[$class] = $semanticNode->type;
+
         $this->typeReverseMapping[$semanticNode->type][$semanticNode->name] = $class;
 
         foreach (array_reverse($reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $method) {

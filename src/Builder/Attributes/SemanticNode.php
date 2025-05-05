@@ -9,7 +9,7 @@ final class SemanticNode
         public readonly string $type,
         public readonly string $name,
     ) {
-        if (!\in_array($this->type, ['pdf', 'screenshot'], true)) {
+        if (!\in_array($this->type, ['pdf', 'screenshot'], true)) { // TODO : temporary soft lock
             throw new \LogicException('Invalid builder type. Must be one of "pdf" or "screenshot".');
         }
     }

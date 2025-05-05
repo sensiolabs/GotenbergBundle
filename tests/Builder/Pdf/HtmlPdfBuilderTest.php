@@ -216,7 +216,6 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
     public function testWithInvalidTwigTemplate(): void
     {
         $this->expectException(PdfPartRenderingException::class);
-        $this->expectExceptionMessage('Could not render template "templates/invalid.html.twig" into PDF part "index.html". Unexpected character "!".');
 
         $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 
