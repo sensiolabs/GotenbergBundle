@@ -221,9 +221,10 @@ class YourController
 
 1. [Configuration](./docs/configuration.md)
 2. [Processing (saving for example)](./docs/processing.md)
-2. [Working with assets](./docs/assets.md)
-3. [Builders API](./docs/builders_api.md)
-4. [Async & Webhooks](./docs/webhook.md)
+3. [Working with assets](./docs/assets.md)
+4. [Builders API](./docs/builders_api.md)
+5. [Async & Webhooks](./docs/webhook.md)
+6. [Working with fonts](./docs/fonts.md)
 
 #### PDF
 

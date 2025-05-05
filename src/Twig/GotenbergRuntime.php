@@ -31,23 +31,6 @@ final class GotenbergRuntime
         return basename($path);
     }
 
-    /**
-     * @deprecated use "gotenberg_font_style_tag" instead
-     */
-    public function getFont(string $path, string $name): string
-    {
-        $this->addAsset($path, 'gotenberg_font');
-
-        $name = htmlspecialchars($name);
-        $basename = htmlspecialchars(basename($path));
-
-        return '@font-face {
-                font-family: "'.$name.'";
-                src: url("'.$basename.'");
-            }'
-        ;
-    }
-
     public function getFontStyleTag(string $path, string $name): string
     {
         $this->addAsset($path, 'gotenberg_font_style_tag');

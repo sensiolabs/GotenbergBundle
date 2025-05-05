@@ -1,6 +1,6 @@
 # Working with fonts
 
-You can add fonts in the same way as assets. The `gotenberg_font(path_to_font, font_family)` 
+You can add fonts in the same way as assets. The `gotenberg_font_face(path_to_font, font_family)` 
 function follows the same path resolution logic as [gotenberg_asset()](assets.md), 
 but it generates a `@font-face` rule that can be used inside a `<style>` block.
 
@@ -13,20 +13,15 @@ but it generates a `@font-face` rule that can be used inside a `<style>` block.
 > As a reminder, we can only load assets in the content. And not in Header or Footer.  
 > For more information about [Header and Footer restriction](https://gotenberg.dev/docs/routes#header-footer-chromium).
 >
-> For header and footer, only fonts installed in the Docker image are loaded - 
-> see the [fonts configuration section](https://gotenberg.dev/docs/configuration#fonts).
+> For header and footer, only fonts installed in the Docker image are loaded. 
+> For more information about, see the [fonts configuration section](https://gotenberg.dev/docs/configuration#fonts).
 
 ## Twig file
 
-The `{{ gotenberg_font() }}` function helps generate an `@font-face` 
+The `{{ gotenberg_font_face() }}` function helps generate an `@font-face` 
 declaration with the correct asset path expected by gotenberg.
 
-> [!NOTE]
-> "gotenberg_font" is deprecated and will be removed in v1.x. use 
-> "gotenberg_font_face" to get the same behavior, or use 
-> "gotenberg_font_style_tag" to get a `style` tag around your font import.
-
-### Example with "gotenberg_font"
+### Example with "gotenberg_font_face"
 
 ```html
 <!DOCTYPE html>
@@ -35,7 +30,7 @@ declaration with the correct asset path expected by gotenberg.
         <meta charset="utf-8" />
         <title>PDF with Custom Font</title>
         <style>
-            {{ gotenberg_font('fonts/custom-font.ttf', 'my_font') }}
+            {{ gotenberg_font_face('fonts/custom-font.ttf', 'my_font') }}
             h1 {
                 color: red;
                 font-family: "my_font";
