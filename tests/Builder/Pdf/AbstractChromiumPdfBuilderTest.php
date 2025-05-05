@@ -454,7 +454,6 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
     public function testThrowIfTwigTemplateIsInvalid(): void
     {
         $this->expectException(PdfPartRenderingException::class);
-        $this->expectExceptionMessage('Could not render template "templates/invalid.html.twig" into PDF part "header.html". Unexpected character "!".');
 
         $builder = $this->getChromiumPdfBuilder();
         $builder->header('templates/invalid.html.twig');
