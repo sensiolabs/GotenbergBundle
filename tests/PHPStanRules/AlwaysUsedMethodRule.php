@@ -34,10 +34,8 @@ final class AlwaysUsedMethodRule implements AlwaysUsedMethodExtension
 
         try {
             $refMethod = new \ReflectionMethod($className, $methodReflection->getName());
-            foreach ($refMethod->getAttributes() as $attribute) {
-                if ($attribute->getName() === NormalizeGotenbergPayload::class) {
-                    return true;
-                }
+            if ([] !== $refMethod->getAttributes(NormalizeGotenbergPayload::class)) {
+                return true;
             }
         } catch (\ReflectionException) {
         }

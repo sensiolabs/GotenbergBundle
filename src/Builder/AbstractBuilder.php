@@ -26,9 +26,6 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     private readonly BodyBag $bodyBag;
     private readonly HeadersBag $headersBag;
 
-    /** @var \ReflectionClass<BuilderInterface> */
-    private readonly \ReflectionClass $reflection;
-
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     /** @var ProcessorInterface<mixed>|null */
@@ -38,8 +35,6 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     {
         $this->bodyBag = new BodyBag();
         $this->headersBag = new HeadersBag();
-
-        $this->reflection = new \ReflectionClass(static::class);
     }
 
     abstract protected function getEndpoint(): string;
@@ -129,7 +124,9 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     private function normalizePayloadBody(): \Generator
     {
-        foreach (array_reverse($this->reflection->getMethods()) as $method) {
+        $reflection = new \ReflectionClass(static::class);
+
+        foreach (array_reverse($reflection->getMethods()) as $method) {
             $attributes = $method->getAttributes(NormalizeGotenbergPayload::class);
 
             if (\count($attributes) === 0) {
