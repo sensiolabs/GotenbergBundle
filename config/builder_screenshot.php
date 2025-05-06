@@ -35,6 +35,5 @@ return static function (ContainerConfigurator $container): void {
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.builder')
         ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
-        ->call('setRequestContext', [service('.sensiolabs_gotenberg.request_context')->nullOnInvalid()])
     ;
 };

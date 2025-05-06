@@ -343,45 +343,6 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         }
     }
 
-    public static function urlBuildersCanChangeTheirRequestContextProvider(): \Generator
-    {
-        yield '.sensiolabs_gotenberg.pdf_builder.url' => ['.sensiolabs_gotenberg.pdf_builder.url'];
-        yield '.sensiolabs_gotenberg.screenshot_builder.url' => ['.sensiolabs_gotenberg.screenshot_builder.url'];
-    }
-
-    #[DataProvider('urlBuildersCanChangeTheirRequestContextProvider')]
-    public function testUrlBuildersCanChangeTheirRequestContext(string $serviceName): void
-    {
-        $extension = $this->getExtension();
-
-        $containerBuilder = $this->getContainerBuilder();
-        self::assertNotContains('.sensiolabs_gotenberg.request_context', $containerBuilder->getServiceIds());
-
-        $extension->load([[
-            'http_client' => 'http_client',
-            'request_context' => [
-                'base_uri' => 'https://sensiolabs.com',
-            ],
-        ]], $containerBuilder);
-
-        self::assertContains('.sensiolabs_gotenberg.request_context', $containerBuilder->getServiceIds());
-
-        $requestContextDefinition = $containerBuilder->getDefinition('.sensiolabs_gotenberg.request_context');
-        self::assertSame('https://sensiolabs.com', $requestContextDefinition->getArgument(0));
-
-        $urlBuilderDefinition = $containerBuilder->getDefinition($serviceName);
-
-        $indexedMethodCalls = [];
-        foreach ($urlBuilderDefinition->getMethodCalls() as $methodCall) {
-            [$name, $arguments] = $methodCall;
-            $indexedMethodCalls[$name] ??= [];
-            $indexedMethodCalls[$name][] = $arguments;
-        }
-
-        self::assertArrayHasKey('setRequestContext', $indexedMethodCalls);
-        self::assertCount(1, $indexedMethodCalls['setRequestContext']);
-    }
-
     public function testDataCollectorIsNotEnabledWhenKernelDebugIsFalse(): void
     {
         $extension = $this->getExtension();

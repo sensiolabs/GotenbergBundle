@@ -10,6 +10,8 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 /**
  * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
@@ -18,10 +20,9 @@ use Symfony\Component\Routing\RequestContext;
 final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait;
+    use ServiceSubscriberTrait;
 
     public const ENDPOINT = '/forms/chromium/convert/url';
-
-    private RequestContext|null $requestContext = null;
 
     /**
      * URL of the page you want to convert into PDF.
@@ -48,11 +49,17 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
         return $this;
     }
 
-    public function setRequestContext(RequestContext|null $requestContext = null): self
+    #[SubscribedService('.sensiolabs_gotenberg.request_context', nullable: true)]
+    protected function getRequestContext(): RequestContext|null
     {
-        $this->requestContext = $requestContext;
+        if (
+            !$this->container->has('.sensiolabs_gotenberg.request_context')
+            || !($requestContext = $this->container->get('.sensiolabs_gotenberg.request_context')) instanceof RequestContext
+        ) {
+            return null;
+        }
 
-        return $this;
+        return $requestContext;
     }
 
     protected function getEndpoint(): string
@@ -77,6 +84,6 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
     #[NormalizeGotenbergPayload]
     private function normalizeRoute(): \Generator
     {
-        yield 'route' => NormalizerFactory::route($this->requestContext, $this->getUrlGenerator());
+        yield 'route' => NormalizerFactory::route($this->getRequestContext(), $this->getUrlGenerator());
     }
 }

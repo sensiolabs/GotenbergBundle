@@ -10,15 +10,16 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 #[SemanticNode(type: 'screenshot', name: 'url')]
 final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait;
+    use ServiceSubscriberTrait;
 
     public const ENDPOINT = '/forms/chromium/screenshot/url';
-
-    private RequestContext|null $requestContext = null;
 
     /**
      * URL of the page you want to convert into PDF.
@@ -45,11 +46,17 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
         return $this;
     }
 
-    public function setRequestContext(RequestContext|null $requestContext = null): self
+    #[SubscribedService('.sensiolabs_gotenberg.request_context', nullable: true)]
+    protected function getRequestContext(): RequestContext|null
     {
-        $this->requestContext = $requestContext;
+        if (
+            !$this->container->has('.sensiolabs_gotenberg.request_context')
+            || !($requestContext = $this->container->get('.sensiolabs_gotenberg.request_context')) instanceof RequestContext
+        ) {
+            return null;
+        }
 
-        return $this;
+        return $requestContext;
     }
 
     protected function getEndpoint(): string
@@ -71,6 +78,6 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
     #[NormalizeGotenbergPayload]
     private function normalizeRoute(): \Generator
     {
-        yield 'route' => NormalizerFactory::route($this->requestContext, $this->getUrlGenerator());
+        yield 'route' => NormalizerFactory::route($this->getRequestContext(), $this->getUrlGenerator());
     }
 }

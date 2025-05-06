@@ -76,9 +76,10 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 
         $requestContext->setHost('example');
 
+        $this->container->set('.sensiolabs_gotenberg.request_context', $requestContext);
+
         $this->getBuilder()
             ->route('article_read', ['id' => 1])
-            ->setRequestContext($requestContext)
             ->filename('article')
             ->generate()
         ;
