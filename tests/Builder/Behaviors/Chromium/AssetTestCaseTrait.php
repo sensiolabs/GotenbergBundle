@@ -19,7 +19,7 @@ trait AssetTestCaseTrait
     abstract protected function assertGotenbergFormDataFile(string $name, string $contentType, string $path): void;
 
     #[DataProvider('provideTestToAddAssets')]
-    public function testToAddAssets(string|\Stringable $asset, string $expectedFilename, string $expectedContentType, string $expectedPath): void
+    public function testToAddAssets(string|\Stringable $asset, string $expectedFilename, string $expectedContentType): void
     {
         $this->getDefaultBuilder()
             ->assets($asset)
@@ -31,8 +31,8 @@ trait AssetTestCaseTrait
 
     public static function provideTestToAddAssets(): \Generator
     {
-        yield 'string' => ['assets/logo.png', 'logo.png', 'image/png', self::FIXTURE_DIR.'/assets/logo.png'];
-        yield 'SplFileInfo' => [new \SplFileInfo('assets/logo.png'), 'logo.png', 'image/png', 'assets/logo.png'];
+        yield 'string' => ['assets/logo.png', 'logo.png', 'image/png'];
+        yield 'SplFileInfo' => [new \SplFileInfo('assets/logo.png'), 'logo.png', 'image/png'];
 
         $stringable = new class implements \Stringable {
             public function __toString(): string
@@ -40,7 +40,7 @@ trait AssetTestCaseTrait
                 return 'assets/logo.png';
             }
         };
-        yield 'Stringable' => [$stringable, 'logo.png', 'image/png', 'assets/logo.png'];
+        yield 'Stringable' => [$stringable, 'logo.png', 'image/png'];
     }
 
     public function testToAddAssetsToExistingAssets(): void
