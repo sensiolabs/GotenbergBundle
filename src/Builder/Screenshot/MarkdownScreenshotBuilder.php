@@ -11,7 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
 
 /**
  * @see https://gotenberg.dev/docs/routes#screenshots-route
@@ -31,7 +31,7 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws PartRenderingException if the template could not be rendered
      */
     public function wrapper(string $template, array $context = []): self
     {
@@ -39,7 +39,7 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
     }
 
     /**
-     * The HTML file to convert into PDF.
+     * The HTML file that wraps the markdown content.
      */
     public function wrapperFile(string $path): self
     {
@@ -47,8 +47,9 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
     }
 
     /**
-     * Add Markdown into a PDF.
+     * Add Markdown into a screenshot.
      *
+     * @see https://gotenberg.dev/docs/routes#screenshots-route
      * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
      */
     public function files(string|\Stringable ...$paths): self

@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\GotenbergBuilderTestCase;
@@ -215,7 +215,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWithInvalidTwigTemplate(): void
     {
-        $this->expectException(PdfPartRenderingException::class);
+        $this->expectException(PartRenderingException::class);
 
         $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
 

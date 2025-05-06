@@ -22,8 +22,9 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
     public const ENDPOINT = '/forms/chromium/screenshot/url';
 
     /**
-     * URL of the page you want to convert into PDF.
+     * URL of the page you want to convert into a screenshot.
      *
+     * @see https://gotenberg.dev/docs/routes#screenshots-route
      * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function url(string $url): self
@@ -37,6 +38,7 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
      * @param string       $name       #Route
      * @param array<mixed> $parameters
      *
+     * @see https://gotenberg.dev/docs/routes#screenshots-route
      * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function route(string $name, array $parameters = []): self

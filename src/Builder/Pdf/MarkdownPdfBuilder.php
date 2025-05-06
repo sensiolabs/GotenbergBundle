@@ -11,7 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
 
 /**
  * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
@@ -32,7 +32,7 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws PartRenderingException if the template could not be rendered
      */
     public function wrapper(string $template, array $context = []): self
     {

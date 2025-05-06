@@ -10,7 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
-use Sensiolabs\GotenbergBundle\Exception\PdfPartRenderingException;
+use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
@@ -29,7 +29,7 @@ trait ContentTrait
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws PartRenderingException if the template could not be rendered
      */
     public function content(string $template, array $context = []): self
     {
@@ -48,7 +48,7 @@ trait ContentTrait
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws PartRenderingException if the template could not be rendered
      *
      * @see https://gotenberg.dev/docs/routes#header-footer-chromium
      */
@@ -65,7 +65,7 @@ trait ContentTrait
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws PartRenderingException if the template could not be rendered
      *
      * @see https://gotenberg.dev/docs/routes#header-footer-chromium
      */
@@ -98,7 +98,7 @@ trait ContentTrait
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
-     * @throws PdfPartRenderingException if the template could not be rendered
+     * @throws PartRenderingException if the template could not be rendered
      */
     protected function withRenderedPart(Part $part, string $template, array $context = []): static
     {
@@ -106,7 +106,7 @@ trait ContentTrait
         try {
             $renderedPart = new RenderedPart($part, $this->getTwig()->render($template, array_merge($context, ['_builder' => $this])));
         } catch (\Throwable $t) {
-            throw new PdfPartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
+            throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
         } finally {
             $this->getTwig()->getRuntime(GotenbergRuntime::class)->setBuilder(null);
         }
