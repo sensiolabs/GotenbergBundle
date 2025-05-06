@@ -32,7 +32,6 @@ Enable PDF for Universal Access for optimal accessibility.
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
-### setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)
 ### splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode $splitMode)
 Either intervals or pages.
 

@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
@@ -17,9 +18,7 @@ trait AssetTestCaseTrait
 
     abstract protected function assertGotenbergFormDataFile(string $name, string $contentType, string $path): void;
 
-    /**
-     * @dataProvider provideTestToAddAssets
-     */
+    #[DataProvider('provideTestToAddAssets')]
     public function testToAddAssets(string|\Stringable $asset, string $expectedFilename, string $expectedContentType, string $expectedPath): void
     {
         $this->getDefaultBuilder()

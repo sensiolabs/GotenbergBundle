@@ -202,8 +202,6 @@ final class ConfigurationTest extends TestCase
 
     /**
      * @param array<array<string, mixed>> $config
-     *
-     * @dataProvider invalidWebhookConfigurationProvider
      */
     #[DataProvider('invalidWebhookConfigurationProvider')]
     public function testInvalidWebhookConfiguration(array $config): void

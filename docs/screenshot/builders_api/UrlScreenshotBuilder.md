@@ -8,13 +8,14 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 
 ### route(string $name, array $parameters)
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
-### setRequestContext(?Symfony\Component\Routing\RequestContext $requestContext)
 ### url(string $url)
-URL of the page you want to convert into PDF.<br />
+URL of the page you want to convert into a screenshot.<br />
 
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)<br />
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
 
 ### addAsset(Stringable|string $path)

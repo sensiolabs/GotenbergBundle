@@ -11,14 +11,15 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 > See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
 
 ### files(Stringable|string ...$paths)
-Add Markdown into a PDF.<br />
+Add Markdown into a screenshot.<br />
 
 > [!TIP]
+> See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)<br />
 > See: [https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route](https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route)
 
 ### wrapper(string $template, array $context)
 ### wrapperFile(string $path)
-The HTML file to convert into PDF.
+The HTML file that wraps the markdown content.
 
 ### addAsset(Stringable|string $path)
 Adds a file, like an image, font, stylesheet, and so on.
