@@ -2,12 +2,14 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Processor;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Symfony\Component\HttpClient\Chunk\DataChunk;
 use Symfony\Component\HttpClient\Chunk\FirstChunk;
 use Symfony\Component\HttpClient\Chunk\LastChunk;
 
+#[CoversClass(NullProcessor::class)]
 class NullProcessorTest extends TestCase
 {
     public function testProcess(): void
