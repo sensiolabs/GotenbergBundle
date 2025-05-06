@@ -2,12 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Twig;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 
-#[CoversClass(GotenbergRuntime::class)]
 class GotenbergRuntimeTest extends TestCase
 {
     public function testGetAsset(): void
