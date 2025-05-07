@@ -18,6 +18,10 @@ Markdown or any Office file. Different options are available depending on the so
 It also helps you to generate, stream and save images locally from URL, HTML and
 Markdown by taking a screenshot.
 
+> [!NOTE]
+> To use this bundle, you first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation)
+> which is used under the hood.
+
 ## How to install
 
 Install the bundle using composer:
@@ -38,9 +42,6 @@ run in a container, the host will be `gotenberg`.
 You can now adapt the configuration file to your needs.
 
 ### Without Symfony Flex
-
-> [!CAUTION]
-> To use this bundle, you first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation).
 
 Enable the bundle by adding it to the list of registered bundles in the ``config/bundles.php``
 file of your project:
