@@ -18,10 +18,6 @@ Markdown or any Office file. Different options are available depending on the so
 It also helps you to generate, stream and save images locally from URL, HTML and
 Markdown by taking a screenshot.
 
-> [!NOTE]
-> To use this bundle, you first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation)
-> which is used under the hood.
-
 ## How to install
 
 Install the bundle using composer:
@@ -30,21 +26,26 @@ Install the bundle using composer:
 composer require sensiolabs/gotenberg-bundle
 ```
 
+> [!NOTE]
+> This bundle interacts with [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation) which is used
+> under the hood.
+
 ### With Symfony Flex
 
-If you accept the Symfony Flex recipe during installation, the bundle is registered,
-the configuration skeleton file is created, the `.env` file is updated with `GOTENBERG_DSN`
-and dockerfile is also created to get the [gotenberg image](https://hub.docker.com/r/gotenberg/gotenberg),
-you need to configure the ports related to `GOTENBERG_DSN` in your `.env` file. 
-The host could be updated too since it's localhost by default. If your script is
-run in a container, the host will be `gotenberg`.
-
-You can now adapt the configuration file to your needs.
+If you accept the Symfony Flex recipe during installation:
+* The bundle will be automatically registered. 
+* A configuration skeleton file will be created. 
+* Docker Compose will be updated with a new gotenberg service. 
+* The `.env` file will be updated with a `GOTENBERG_DSN` value pointing to `gotenberg:3000`. You can update this value
+  if your Gotenberg instance is hosted elsewhere.
 
 ### Without Symfony Flex
 
-Enable the bundle by adding it to the list of registered bundles in the ``config/bundles.php``
-file of your project:
+> [!NOTE]
+> You first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation) by 
+> yourself.
+
+Manually enable the bundle by adding it to the list of registered bundles in your `config/bundles.php` file:
 
 ```php
 // config/bundles.php
