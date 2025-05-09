@@ -221,10 +221,14 @@ trait PdfPagePropertiesTrait
      * Page ranges to print, e.g., '1-5, 8, 11-13'.
      */
     #[ExposeSemantic(new ScalarNodeBuilder('native_page_ranges'))]
-    public function nativePageRanges(string $ranges): static
+    public function nativePageRanges(string|null $ranges = null): static
     {
-        ValidatorFactory::range($ranges);
-        $this->getBodyBag()->set('nativePageRanges', $ranges);
+        if (!$ranges) {
+            $this->getBodyBag()->unset('nativePageRanges');
+        } else {
+            ValidatorFactory::range($ranges);
+            $this->getBodyBag()->set('nativePageRanges', $ranges);
+        }
 
         return $this;
     }

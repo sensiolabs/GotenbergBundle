@@ -47,10 +47,14 @@ trait PagePropertiesTrait
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
     #[ExposeSemantic(new ScalarNodeBuilder('native_page_ranges'))]
-    public function nativePageRanges(string $ranges): static
+    public function nativePageRanges(string|null $ranges = null): static
     {
-        ValidatorFactory::range($ranges);
-        $this->getBodyBag()->set('nativePageRanges', $ranges);
+        if (!$ranges) {
+            $this->getBodyBag()->unset('nativePageRanges');
+        } else {
+            ValidatorFactory::range($ranges);
+            $this->getBodyBag()->set('nativePageRanges', $ranges);
+        }
 
         return $this;
     }

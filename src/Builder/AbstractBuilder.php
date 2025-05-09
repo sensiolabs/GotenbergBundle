@@ -14,9 +14,6 @@ use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
-/**
- * Builder for responses.
- */
 abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface, ServiceSubscriberInterface
 {
     use ServiceSubscriberTrait;
@@ -40,15 +37,18 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     abstract protected function getEndpoint(): string;
 
     /**
+     *  The API automatically appends the file extension, so there's no need for you to set it manually.
+     *  Indeed, the Gotenberg behavior is confusing.
+     *
      * @see https://gotenberg.dev/docs/routes#output-filename.
      *
      * @param HeaderUtils::DISPOSITION_* $headerDisposition
      */
-    public function fileName(string $fileName, string $headerDisposition = HeaderUtils::DISPOSITION_INLINE): static
+    public function fileName(string $fileNameWithoutExtension, string $headerDisposition = HeaderUtils::DISPOSITION_INLINE): static
     {
         $this->headerDisposition = $headerDisposition;
 
-        $this->headersBag->set('Gotenberg-Output-Filename', $fileName);
+        $this->headersBag->set('Gotenberg-Output-Filename', $fileNameWithoutExtension);
 
         return $this;
     }
