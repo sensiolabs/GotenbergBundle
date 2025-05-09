@@ -2,47 +2,36 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
-use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
+use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\SemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
+use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
-use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
-use Twig\Environment;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
-final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
+/**
+ * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+ */
+#[SemanticNode(type: 'pdf', name: 'url')]
+final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
-    private const ENDPOINT = '/forms/chromium/convert/url';
+    use ChromiumPdfTrait;
+    use ServiceSubscriberTrait;
 
-    private RequestContext|null $requestContext = null;
-
-    public function __construct(
-        GotenbergClientInterface $gotenbergClient,
-        AssetBaseDirFormatter $asset,
-        WebhookConfigurationRegistryInterface $webhookConfigurationRegistry,
-        RequestStack $requestStack,
-        Environment|null $twig = null,
-        private readonly UrlGeneratorInterface|null $urlGenerator = null,
-    ) {
-        parent::__construct($gotenbergClient, $asset, $webhookConfigurationRegistry, $requestStack, $twig);
-
-        $this->addNormalizer('route', $this->generateUrlFromRoute(...));
-    }
-
-    public function setRequestContext(RequestContext|null $requestContext = null): self
-    {
-        $this->requestContext = $requestContext;
-
-        return $this;
-    }
+    public const ENDPOINT = '/forms/chromium/convert/url';
 
     /**
      * URL of the page you want to convert into PDF.
+     *
+     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function url(string $url): self
     {
-        $this->formFields['url'] = $url;
+        $this->getBodyBag()->set('url', $url);
 
         return $this;
     }
@@ -51,56 +40,50 @@ final class UrlPdfBuilder extends AbstractChromiumPdfBuilder
      * @param string       $name       #Route
      * @param array<mixed> $parameters
      *
-     * @phpstan-assert !null $this->urlGenerator
+     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      */
     public function route(string $name, array $parameters = []): self
     {
-        if (null === $this->urlGenerator) {
-            throw new \LogicException(\sprintf('Router is required to use "%s" method. Try to run "composer require symfony/routing".', __METHOD__));
-        }
-
-        $this->formFields['route'] = [$name, $parameters];
+        $this->getBodyBag()->set('route', [$name, $parameters]);
 
         return $this;
     }
 
-    /**
-     * @param array{string, array<mixed>} $value
-     *
-     * @return array{url: string}
-     */
-    private function generateUrlFromRoute(array $value): array
+    #[SubscribedService('.sensiolabs_gotenberg.request_context', nullable: true)]
+    protected function getRequestContext(): RequestContext|null
     {
-        [$route, $parameters] = $value;
-
-        $requestContext = $this->urlGenerator->getContext();
-
-        if (null !== $this->requestContext) {
-            $this->urlGenerator->setContext($this->requestContext);
+        if (
+            !$this->container->has('.sensiolabs_gotenberg.request_context')
+            || !($requestContext = $this->container->get('.sensiolabs_gotenberg.request_context')) instanceof RequestContext
+        ) {
+            return null;
         }
 
-        try {
-            return ['url' => $this->urlGenerator->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL)];
-        } finally {
-            $this->urlGenerator->setContext($requestContext);
-        }
-    }
-
-    public function getMultipartFormData(): array
-    {
-        if (!\array_key_exists('url', $this->formFields) && !\array_key_exists('route', $this->formFields)) {
-            throw new MissingRequiredFieldException('URL (or route) is required');
-        }
-
-        if (\array_key_exists('url', $this->formFields) && \array_key_exists('route', $this->formFields)) {
-            throw new MissingRequiredFieldException('Provide only one of ["route", "url"] parameter. Not both.');
-        }
-
-        return parent::getMultipartFormData();
+        return $requestContext;
     }
 
     protected function getEndpoint(): string
     {
         return self::ENDPOINT;
+    }
+
+    protected function validatePayloadBody(): void
+    {
+        if ($this->getBodyBag()->get('url') === null && $this->getBodyBag()->get('route') === null) {
+            throw new MissingRequiredFieldException('"url" (or "route") is required');
+        }
+
+        if ($this->getBodyBag()->get('url') !== null && $this->getBodyBag()->get('route') !== null) {
+            throw new MissingRequiredFieldException('Provide only one of ["route", "url"] parameter. Not both.');
+        }
+    }
+
+    /**
+     * @internal
+     */
+    #[NormalizeGotenbergPayload]
+    private function normalizeRoute(): \Generator
+    {
+        yield 'route' => NormalizerFactory::route($this->getRequestContext(), $this->getUrlGenerator());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\EventListener;
 
-use Sensiolabs\GotenbergBundle\Builder\GotenbergFileResult;
+use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 final class ProcessBuilderOnControllerResponse

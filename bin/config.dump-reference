@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
+use Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle;
+use Symfony\Component\Config\Definition\Dumper\YamlReferenceDumper;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+$yamlDumper = new YamlReferenceDumper();
+
+$containerBuilder = new ContainerBuilder();
+$gotenbergBundle = new SensiolabsGotenbergBundle();
+
+$containerBuilder->registerExtension($gotenbergBundle->getContainerExtension());
+
+$gotenbergBundle->build($containerBuilder);
+
+/** @var SensiolabsGotenbergExtension $gotenbergExtension */
+$gotenbergExtension = $containerBuilder->getExtension('sensiolabs_gotenberg');
+
+echo $yamlDumper->dump($gotenbergExtension->getConfiguration([], $containerBuilder));

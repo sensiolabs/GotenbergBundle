@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Processor;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Processor\ChainProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
@@ -10,7 +9,6 @@ use Symfony\Component\HttpClient\Chunk\DataChunk;
 use Symfony\Component\HttpClient\Chunk\FirstChunk;
 use Symfony\Component\HttpClient\Chunk\LastChunk;
 
-#[CoversClass(ChainProcessor::class)]
 class ChainProcessorTest extends TestCase
 {
     public function testProcess(): void

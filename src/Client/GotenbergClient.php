@@ -2,10 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Client;
 
+use Sensiolabs\GotenbergBundle\Builder\Payload;
 use Sensiolabs\GotenbergBundle\Exception\ClientException;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Mime\Part\Multipart\FormDataPart;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 final class GotenbergClient implements GotenbergClientInterface
 {
@@ -14,39 +16,30 @@ final class GotenbergClient implements GotenbergClientInterface
     ) {
     }
 
-    public function call(string $endpoint, array $multipartFormData, array $headers = []): GotenbergResponse
+    public function call(string $endpoint, Payload $payload): ResponseInterface
     {
-        $formData = new FormDataPart($multipartFormData);
-        $headers = array_merge($headers, $this->prepareHeaders($formData));
-
-        $response = $this->client->request(
-            'POST',
-            $endpoint,
-            [
-                'headers' => $headers,
-                'body' => $formData->bodyToString(),
-            ],
-        );
-
-        if (!\in_array($response->getStatusCode(), [200, 204], true)) {
-            throw new ClientException($response->getContent(false), $response->getStatusCode());
+        $headers = $payload->getHeaders();
+        $formDataPart = $payload->getFormData();
+        foreach ($formDataPart->getPreparedHeaders()->all() as $header) {
+            $headers->add($header);
         }
 
-        return new GotenbergResponse($this->client->stream($response), $response->getStatusCode(), new ResponseHeaderBag($response->getHeaders()));
+        try {
+            return $this->client->request(
+                'POST',
+                $endpoint,
+                [
+                    'headers' => $headers->toArray(),
+                    'body' => $formDataPart->bodyToIterable(),
+                ],
+            );
+        } catch (ExceptionInterface $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
-    /**
-     * @return array<string|int, mixed>
-     */
-    private function prepareHeaders(FormDataPart $dataPart): array
+    public function stream(ResponseInterface $response): ResponseStreamInterface
     {
-        $preparedHeaders = $dataPart->getPreparedHeaders();
-
-        $headers = [];
-        foreach ($preparedHeaders->getNames() as $header) {
-            $headers[$header] = $preparedHeaders->get($header)?->getBodyAsString();
-        }
-
-        return $headers;
+        return $this->client->stream($response);
     }
 }
