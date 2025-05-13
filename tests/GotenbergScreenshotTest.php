@@ -86,9 +86,6 @@ final class GotenbergScreenshotTest extends KernelTestCase
         self::assertArrayHasKey('width', $data);
         self::assertSame(500, $data['width']);
 
-        self::assertArrayHasKey('width', $data);
-        self::assertSame(500, $data['width']);
-
         self::assertArrayHasKey('height', $data);
         self::assertSame(200, $data['height']);
     }

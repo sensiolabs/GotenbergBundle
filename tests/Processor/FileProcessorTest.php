@@ -22,7 +22,7 @@ class FileProcessorTest extends TestCase
 
         $return = $generator->getReturn();
 
-        self::assertInstanceOf(\SplFileInfo::class, $return);
+        self::assertInstanceOf(\SplFileInfo::class, $return); // @phpstan-ignore staticMethod.impossibleType
         self::assertSame('abc', (string) $return->openFile());
     }
 }
