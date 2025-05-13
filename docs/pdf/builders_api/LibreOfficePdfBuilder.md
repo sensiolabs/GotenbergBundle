@@ -85,7 +85,7 @@ Resets the metadata.<br />
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)<br />
 > See: [https://exiftool.org/TagNames/XMP.html#pdf](https://exiftool.org/TagNames/XMP.html#pdf)
 
-### nativePageRanges(string $ranges)
+### nativePageRanges(?string $ranges)
 Page ranges to print, e.g., '1-4' - empty means all pages.<br />
 
 > [!TIP]

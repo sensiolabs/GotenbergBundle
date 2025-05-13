@@ -73,35 +73,35 @@ Define whether the document outline should be embedded into the PDF.
 ### landscape(bool $bool)
 Set the paper orientation to landscape.
 
-### marginBottom(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
+### marginBottom(float $bottom, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
 
-### marginLeft(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
+### marginLeft(float $left, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
 
-### marginRight(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
+### marginRight(float $right, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
 
-### marginTop(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
+### marginTop(float $top, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
 
 ### margins(float $top, float $bottom, float $left, float $right, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Overrides the default margins (e.g., 0.39), in inches.
 
-### nativePageRanges(string $ranges)
+### nativePageRanges(?string $ranges)
 Page ranges to print, e.g., '1-5, 8, 11-13'.
 
 ### omitBackground(bool $bool)
 Hide the default white background and allow generating PDFs with transparency.
 
-### paperHeight(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
+### paperHeight(float $height, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
 
 ### paperSize(float $width, float $height, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Overrides the default paper size, in inches.<br /><br />Examples of paper size (width x height):<br /><br />Letter - 8.5 x 11 (default)<br />Legal - 8.5 x 14<br />Tabloid - 11 x 17<br />Ledger - 17 x 11<br />A0 - 33.1 x 46.8<br />A1 - 23.4 x 33.1<br />A2 - 16.54 x 23.4<br />A3 - 11.7 x 16.54<br />A4 - 8.27 x 11.7<br />A5 - 5.83 x 8.27<br />A6 - 4.13 x 5.83
 
 ### paperStandardSize(Sensiolabs\GotenbergBundle\Enumeration\PaperSizeInterface $paperSize)
-### paperWidth(float $value, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
+### paperWidth(float $width, Sensiolabs\GotenbergBundle\Enumeration\Unit $unit)
 Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
 
 ### preferCssPageSize(bool $bool)
