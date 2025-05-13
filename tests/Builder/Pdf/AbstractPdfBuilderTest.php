@@ -30,16 +30,20 @@ final class AbstractPdfBuilderTest extends AbstractBuilderTestCase
     {
         // @phpstan-ignore-next-line
         $this->gotenbergClient = new GotenbergClient(new MockHttpClient([
-            new MockResponse(),
+            new MockResponse(info: [
+                'response_headers' => [
+                    'Content-Disposition' => 'attachment; filename="some_file.pdf"',
+                ],
+            ]),
         ]));
 
         $response = $this->getPdfBuilder()
-            ->fileName('some_file.png', HeaderUtils::DISPOSITION_ATTACHMENT)
+            ->fileName('some_file.pdf', HeaderUtils::DISPOSITION_ATTACHMENT)
             ->generate()
             ->stream()
         ;
 
-        self::assertSame('attachment; filename=some_file.png', $response->headers->get('Content-Disposition'));
+        self::assertSame('attachment; filename=some_file.pdf', $response->headers->get('Content-Disposition'));
     }
 
     public static function nativeNormalizersProvider(): \Generator

@@ -21,7 +21,7 @@ final class FileProcessor implements ProcessorInterface
     public function __invoke(string|null $fileName): \Generator
     {
         if (null === $fileName) {
-            $fileName = uniqid('gotenberg_', true).'.pdf';
+            $fileName = uniqid('gotenberg_', true);
             $this->logger?->debug('{processor}: no filename given. Content will be dumped to "{file}".', ['processor' => self::class, 'file' => $fileName]);
         }
 
