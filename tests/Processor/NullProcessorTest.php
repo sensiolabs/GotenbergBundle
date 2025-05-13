@@ -21,6 +21,6 @@ class NullProcessorTest extends TestCase
 
         $return = $generator->getReturn();
 
-        self::assertNull($return);
+        self::assertNull($return); // @phpstan-ignore staticMethod.alreadyNarrowedType
     }
 }

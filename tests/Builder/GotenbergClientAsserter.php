@@ -15,7 +15,7 @@ class GotenbergClientAsserter implements GotenbergClientInterface
     private readonly MockHttpClient $httpClient;
 
     private string|null $endpoint = null;
-    /** @var list<AbstractPart>|null */
+    /** @var array<AbstractPart>|null */
     private array|null $body = null;
     private \Throwable|null $throwable = null;
     private Payload|null $payload = null;
@@ -62,7 +62,7 @@ class GotenbergClientAsserter implements GotenbergClientInterface
     }
 
     /**
-     * @return list<AbstractPart>
+     * @return array<AbstractPart>
      */
     public function getBody(): array
     {

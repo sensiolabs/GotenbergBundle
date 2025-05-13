@@ -35,7 +35,7 @@ final class PaperSizeTest extends TestCase
     public function testEveryCasesHasWidth(): void
     {
         foreach (PaperSize::cases() as $size) {
-            $size->width();
+            $size->width(); // @phpstan-ignore method.resultUnused
             self::addToAssertionCount(1);
         }
     }
@@ -43,7 +43,7 @@ final class PaperSizeTest extends TestCase
     public function testEveryCasesHasHeight(): void
     {
         foreach (PaperSize::cases() as $size) {
-            $size->height();
+            $size->height(); // @phpstan-ignore method.resultUnused
             self::addToAssertionCount(1);
         }
     }

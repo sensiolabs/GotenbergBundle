@@ -26,7 +26,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
     /** @var ProcessorInterface<mixed>|null */
-    private ProcessorInterface|null $processor;
+    private ProcessorInterface|null $processor = null;
 
     public function __construct()
     {
@@ -122,6 +122,9 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         return $this->container->get('sensiolabs_gotenberg.client');
     }
 
+    /**
+     * @return \Generator<int, array<string, string>>
+     */
     private function normalizePayloadBody(): \Generator
     {
         $reflection = new \ReflectionClass(static::class);

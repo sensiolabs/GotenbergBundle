@@ -31,7 +31,7 @@ class GotenbergFileResult extends AbstractGotenbergResult
     }
 
     /**
-     * @return array<string, list<string>>
+     * @return array<string, array<string>>
      */
     public function getHeaders(): array
     {

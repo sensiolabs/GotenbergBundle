@@ -414,7 +414,6 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         ]], $containerBuilder);
 
         $dataCollector = $containerBuilder->getDefinition('sensiolabs_gotenberg.data_collector');
-        self::assertNotNull($dataCollector);
 
         $dataCollectorOptions = $dataCollector->getArguments()[4];
         self::assertEquals([

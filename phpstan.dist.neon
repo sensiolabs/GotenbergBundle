@@ -3,6 +3,7 @@ services:
 		class: Sensiolabs\GotenbergBundle\Tests\PHPStanRules\AlwaysUsedMethodRule
 		tags:
 			- phpstan.methods.alwaysUsedMethodExtension
+
 parameters:
 	phpVersion: 80100
 	level: 8
@@ -12,14 +13,178 @@ parameters:
 		- 'tests'
 	ignoreErrors:
 		-
-			message: "#^Cannot use array destructuring on array\\<int, string\\|null\\>\\|null\\.$#"
+			message: "#^Cannot use array destructuring on list\\<string\\|null\\>\\|null\\.$#"
 			count: 1
 			path: src/DataCollector/GotenbergDataCollector.php
+
 		-
 			message: "#^Method Sensiolabs\\\\GotenbergBundle\\\\Tests\\\\Kernel\\:\\:configureContainer\\(\\) is unused\\.$#"
 			count: 1
 			path: tests/Kernel.php
+
 		-
 			message: "#^ Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition|Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\VariableNodeDefinition::append\\(\\)\\.$#"
 			count: 1
 			path: src/NodeBuilder/ArrayNodeBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$bodyOptions of class Sensiolabs\\GotenbergBundle\\Builder\\Payload constructor expects list\<array\<string, string\>\>, array\<int, array\<string, string\>\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Builder/AbstractBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/ConvertPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/ConvertPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/FlattenPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/FlattenPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/HtmlPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/HtmlPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/LibreOfficePdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/LibreOfficePdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/MarkdownPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/MarkdownPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/MergePdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/MergePdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/SplitPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/SplitPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/UrlPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/UrlPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/HtmlScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/HtmlScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/MarkdownScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/MarkdownScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
+
+		-
+			message: '#^Call to function array_key_exists\(\) with ''url'' and array\{url\: string, extraHttpHeaders\?\: array\<string, string\>\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Util/ValidatorFactory.php
+
+		-
+			message: '#^Instanceof between SplFileInfo and SplFileInfo will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Builder/Util/ValidatorFactory.php
+
+		- # TODO : fix this
+			message: '#^Although PHPStan\\Reflection\\Php\\PhpMethodReflection is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
+			identifier: phpstanApi.instanceofAssumption
+			count: 1
+			path: tests/PHPStanRules/AlwaysUsedMethodRule.php
+
+		- # TODO : fix this
+			message: '#^Creating new ReflectionMethod is a runtime reflection concept that might not work in PHPStan because it uses fully static reflection engine\. Use objects retrieved from ReflectionProvider instead\.$#'
+			identifier: phpstanApi.runtimeReflection
+			count: 1
+			path: tests/PHPStanRules/AlwaysUsedMethodRule.php

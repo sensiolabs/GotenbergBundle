@@ -75,7 +75,7 @@ class ValidatorFactory
 
     public static function splitSpan(string $value): void
     {
-        if (!preg_match('/([\d]+[-][\d]+)/', $value) !== 1 && preg_match('/(\d+)/', $value) !== 1) {
+        if (preg_match('/([\d]+[-][\d]+)/', $value) !== 1 && preg_match('/(\d+)/', $value) !== 1) {
             throw new InvalidBuilderConfiguration('Invalid value, the range value format need to look like e.g 1-20 or as a single int value e.g 2.');
         }
     }
