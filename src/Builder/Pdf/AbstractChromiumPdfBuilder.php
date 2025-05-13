@@ -154,7 +154,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function paperWidth(float $width, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['paperWidth'] = $width.$unit->value;
+        $this->formFields['paperWidth'] = $width.(Unit::Inches !== $unit ? $unit->value : '');
 
         return $this;
     }
@@ -164,7 +164,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function paperHeight(float $height, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['paperHeight'] = $height.$unit->value;
+        $this->formFields['paperHeight'] = $height.(Unit::Inches !== $unit ? $unit->value : '');
 
         return $this;
     }
@@ -191,7 +191,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function marginTop(float $top, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['marginTop'] = $top.$unit->value;
+        $this->formFields['marginTop'] = $top.(Unit::Inches !== $unit ? $unit->value : '');
 
         return $this;
     }
@@ -201,7 +201,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function marginBottom(float $bottom, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['marginBottom'] = $bottom.$unit->value;
+        $this->formFields['marginBottom'] = $bottom.(Unit::Inches !== $unit ? $unit->value : '');
 
         return $this;
     }
@@ -211,7 +211,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function marginLeft(float $left, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['marginLeft'] = $left.$unit->value;
+        $this->formFields['marginLeft'] = $left.(Unit::Inches !== $unit ? $unit->value : '');
 
         return $this;
     }
@@ -221,7 +221,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
      */
     public function marginRight(float $right, Unit $unit = Unit::Inches): static
     {
-        $this->formFields['marginRight'] = $right.$unit->value;
+        $this->formFields['marginRight'] = $right.(Unit::Inches !== $unit ? $unit->value : '');
 
         return $this;
     }
