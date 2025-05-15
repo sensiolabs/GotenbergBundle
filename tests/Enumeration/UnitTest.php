@@ -2,12 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Enumeration;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 
-#[CoversClass(Unit::class)]
 final class UnitTest extends TestCase
 {
     public static function itCanBeParsedCorrectlyProvider(): \Generator

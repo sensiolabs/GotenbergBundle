@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Bridge\LeagueFlysystem\Processor;
 
+use Closure;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
