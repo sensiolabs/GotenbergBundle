@@ -5,7 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Processor;
 use Symfony\Contracts\HttpClient\ChunkInterface;
 
 /**
- * @template T
+ * @template-covariant T of mixed = mixed
  */
 interface ProcessorInterface
 {

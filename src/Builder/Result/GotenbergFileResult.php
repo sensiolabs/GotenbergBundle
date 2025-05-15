@@ -9,10 +9,13 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
+/**
+ * @template-covariant TProcessorResult of mixed = mixed
+ */
 class GotenbergFileResult extends AbstractGotenbergResult
 {
     /**
-     * @param ProcessorInterface<mixed> $processor
+     * @param ProcessorInterface<TProcessorResult> $processor
      */
     public function __construct(
         ResponseInterface $response,
@@ -64,6 +67,9 @@ class GotenbergFileResult extends AbstractGotenbergResult
         return null;
     }
 
+    /**
+     * @return TProcessorResult
+     */
     public function process(): mixed
     {
         $this->ensureExecution();

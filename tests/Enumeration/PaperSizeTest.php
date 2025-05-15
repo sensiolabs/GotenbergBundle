@@ -22,7 +22,7 @@ final class PaperSizeTest extends TestCase
 
     public function testItImplementsPaperSizeInterface(): void
     {
-        $this->assertTrue(is_a(PaperSize::class, PaperSizeInterface::class, true));
+        $this->assertTrue(is_a(PaperSize::class, PaperSizeInterface::class, true)); // @phpstan-ignore function.alreadyNarrowedType
     }
 
     public function testUnitIsAlwaysInches(): void

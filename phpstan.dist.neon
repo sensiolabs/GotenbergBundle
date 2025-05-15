@@ -13,6 +13,12 @@ parameters:
 		- 'tests'
 	ignoreErrors:
 		-
+			message: '#^Call to function is_a\(\) with arguments class\-string\<Sensiolabs\\GotenbergBundle\\Builder\\BuilderInterface\>, ''Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\BuilderInterface'' and true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/DependencyInjection/BuilderStack.php
+
+		-
 			message: "#^Cannot use array destructuring on list\\<string\\|null\\>\\|null\\.$#"
 			count: 1
 			path: src/DataCollector/GotenbergDataCollector.php

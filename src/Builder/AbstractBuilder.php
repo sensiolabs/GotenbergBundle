@@ -14,6 +14,9 @@ use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
+/**
+ * @template-covariant TProcessorResult of mixed = null
+ */
 abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface, ServiceSubscriberInterface
 {
     use ServiceSubscriberTrait;
@@ -25,13 +28,13 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     private string $headerDisposition = HeaderUtils::DISPOSITION_INLINE;
 
-    /** @var ProcessorInterface<mixed>|null */
-    private ProcessorInterface|null $processor = null;
+    private ProcessorInterface $processor;
 
     public function __construct()
     {
         $this->bodyBag = new BodyBag();
         $this->headersBag = new HeadersBag();
+        $this->processor = new NullProcessor();
     }
 
     abstract protected function getEndpoint(): string;
@@ -54,7 +57,13 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     }
 
     /**
-     * @param ProcessorInterface<mixed> $processor
+     * @template TNewProcessorResult of mixed = mixed
+     *
+     * @param ProcessorInterface<TNewProcessorResult> $processor
+     *
+     * @phpstan-assert ProcessorInterface<TNewProcessorResult> $this->processor
+     *
+     * @phpstan-this-out self<TNewProcessorResult>
      */
     public function processor(ProcessorInterface $processor): static
     {
@@ -63,6 +72,9 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         return $this;
     }
 
+    /**
+     * @return GotenbergFileResult<TProcessorResult>
+     */
     public function generate(): GotenbergFileResult
     {
         $this->validatePayloadBody();
@@ -79,7 +91,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         return new GotenbergFileResult(
             $response,
             $this->getClient()->stream($response),
-            $this->processor ?? new NullProcessor(),
+            $this->processor,
             $this->headerDisposition,
         );
     }
