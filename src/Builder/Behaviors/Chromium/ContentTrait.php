@@ -38,6 +38,8 @@ trait ContentTrait
 
     /**
      * The HTML file to convert into PDF.
+     *
+     * @throws PartRenderingException if the template could not be rendered
      */
     public function contentFile(string $path): self
     {
@@ -80,6 +82,8 @@ trait ContentTrait
 
     /**
      * HTML file containing the header.
+     *
+     * @throws PartRenderingException if the template could not be rendered
      */
     public function headerFile(string $path): static
     {
@@ -88,6 +92,8 @@ trait ContentTrait
 
     /**
      * HTML file containing the footer.
+     *
+     * @throws PartRenderingException if the template could not be rendered
      */
     public function footerFile(string $path): static
     {
@@ -116,9 +122,17 @@ trait ContentTrait
         return $this;
     }
 
+    /**
+     * @throws PartRenderingException if the template could not be rendered
+     */
     protected function withFilePart(Part $part, string $path): static
     {
-        $this->getBodyBag()->set($part->value, new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path)));
+        $resolvedPath = $this->getAssetBaseDirFormatter()->resolve($path);
+        if (!file_exists($resolvedPath)) {
+            throw new PartRenderingException(\sprintf('Could not render file into PDF part "%s". File located at "%s" is not found.', $part->value, $resolvedPath));
+        }
+
+        $this->getBodyBag()->set($part->value, new \SplFileInfo($resolvedPath));
 
         return $this;
     }
