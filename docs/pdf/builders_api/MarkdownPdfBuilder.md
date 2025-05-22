@@ -82,6 +82,9 @@ Add cookies to store in the Chromium cookie jar.<br />
 ### generateDocumentOutline(bool $bool)
 Define whether the document outline should be embedded into the PDF.
 
+### generateTaggedPdf(bool $bool)
+Define whether to generate tagged (accessible) PDF.
+
 ### landscape(bool $bool)
 Set the paper orientation to landscape.
 
@@ -145,14 +148,14 @@ Sets the JavaScript expression to wait before converting an HTML document to PDF
 > See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
 
 ### footerFile(string $path)
-HTML file containing the footer.
+HTML file containing the footer.<br />
 
 ### header(string $template, array $context)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
 
 ### headerFile(string $path)
-HTML file containing the header.
+HTML file containing the header.<br />
 
 ### failOnConsoleExceptions(bool $bool)
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />

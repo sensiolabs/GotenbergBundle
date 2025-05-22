@@ -2,8 +2,8 @@
 
 The default configuration for the bundle looks like :
 
-> [!WARNING]  
-> If you don't configure anything or configure `null` / `[]`, 
+> [!WARNING]
+> If you don't configure anything or configure `null` / `[]`,
 > the defaults values on Gotenberg API will be used.
 
 Assuming you have the following client configured.
@@ -247,6 +247,9 @@ sensiolabs_gotenberg:
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
                 split_unify: null
 
+                # Define whether to generate tagged (accessible) PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                generate_tagged_pdf: null
+
                 # Webhook configuration name or definition.
                 webhook:
 
@@ -382,7 +385,7 @@ sensiolabs_gotenberg:
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
                 extra_http_headers: []
-                
+
                     # Example:
                     # 'X-Custom-Header': 'custom-header-value'
 
@@ -445,6 +448,9 @@ sensiolabs_gotenberg:
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
                 split_unify: null
 
+                # Define whether to generate tagged (accessible) PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                generate_tagged_pdf: null
+
                 # Webhook configuration name or definition.
                 webhook:
 
@@ -484,7 +490,7 @@ sensiolabs_gotenberg:
 
                         # Example:
                         # 'X-Custom-Header': 'custom-header-value'
-    
+
                         # Or the syntax below is also possible
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             markdown:
@@ -578,7 +584,7 @@ sensiolabs_gotenberg:
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
                 extra_http_headers: []
-                
+
                     # Example:
                     # 'X-Custom-Header': 'custom-header-value'
 
@@ -641,6 +647,9 @@ sensiolabs_gotenberg:
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
                 split_unify: null
 
+                # Define whether to generate tagged (accessible) PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                generate_tagged_pdf: null
+
                 # Webhook configuration name or definition.
                 webhook:
 
@@ -680,7 +689,7 @@ sensiolabs_gotenberg:
 
                         # Example:
                         # 'X-Custom-Header': 'custom-header-value'
-    
+
                         # Or the syntax below is also possible
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             office:
@@ -787,13 +796,13 @@ sensiolabs_gotenberg:
 
                 # Enable PDF for Universal Access for optimal accessibility - default false.
                 pdf_universal_access: null
-                
+
                 # Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
                 split_mode: null
-                
+
                 # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
                 split_span: null
-                
+
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-libreoffice
                 split_unify: null
             merge:
@@ -913,7 +922,7 @@ sensiolabs_gotenberg:
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
                 extra_http_headers: []
-                
+
                     # Example:
                     # 'X-Custom-Header': 'custom-header-value'
 
@@ -985,7 +994,7 @@ sensiolabs_gotenberg:
 
                         # Example:
                         # 'X-Custom-Header': 'custom-header-value'
-    
+
                         # Or the syntax below is also possible
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             url:
@@ -1040,7 +1049,7 @@ sensiolabs_gotenberg:
 
                 # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
                 extra_http_headers: []
-                
+
                     # Example:
                     # 'X-Custom-Header': 'custom-header-value'
 
@@ -1112,7 +1121,7 @@ sensiolabs_gotenberg:
 
                         # Example:
                         # 'X-Custom-Header': 'custom-header-value'
-    
+
                         # Or the syntax below is also possible
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             markdown:
@@ -1239,7 +1248,7 @@ sensiolabs_gotenberg:
 
                         # Example:
                         # 'X-Custom-Header': 'custom-header-value'
-                    
+
                         # Or the syntax below is also possible
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 ```
@@ -1247,7 +1256,7 @@ sensiolabs_gotenberg:
 </details>
 
 > [!TIP]
-> For more information about the [PDF properties](https://gotenberg.dev/docs/routes#page-properties-chromium) 
+> For more information about the [PDF properties](https://gotenberg.dev/docs/routes#page-properties-chromium)
 > or [screenshot properties](https://gotenberg.dev/docs/routes#screenshots-route).
 
 ## Header and footer defaults templates
@@ -1325,7 +1334,7 @@ sensiolabs_gotenberg:
 ```
 > [!TIP]
 > A X99 entry means every HTTP status codes between X00 and X99 (e.g., 499 means every HTTP status codes between 400 and 499).
-> `fail_on_http_status_codes: [499, 599]` would fail on any 4XX or 5XX code. 
+> `fail_on_http_status_codes: [499, 599]` would fail on any 4XX or 5XX code.
 
 > [!TIP]
 > For more information about [Invalid HTTP Status Codes](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium).
@@ -1373,7 +1382,7 @@ Enabled by default but can be disabled via the `sensiolabs_gotenberg.controller_
 
 ## Download from
 
-> [!WARNING]  
+> [!WARNING]
 > URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
 
 To download files resource from URLs.

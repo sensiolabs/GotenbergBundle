@@ -74,21 +74,21 @@ Sets the JavaScript expression to wait before converting an HTML document to PDF
 
 ### content(string $template, array $context)
 ### contentFile(string $path)
-The HTML file to convert into PDF.
+The HTML file to convert into PDF.<br />
 
 ### footer(string $template, array $context)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
 
 ### footerFile(string $path)
-HTML file containing the footer.
+HTML file containing the footer.<br />
 
 ### header(string $template, array $context)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
 
 ### headerFile(string $path)
-HTML file containing the header.
+HTML file containing the header.<br />
 
 ### failOnConsoleExceptions(bool $bool)
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />

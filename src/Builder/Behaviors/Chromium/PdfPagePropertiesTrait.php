@@ -155,7 +155,7 @@ trait PdfPagePropertiesTrait
      * Define whether to prefer page size as defined by CSS.
      */
     #[ExposeSemantic(new BooleanNodeBuilder('prefer_css_page_size'))]
-    public function preferCssPageSize(bool $bool): static
+    public function preferCssPageSize(bool $bool = true): static
     {
         $this->getBodyBag()->set('preferCssPageSize', $bool);
 
@@ -166,7 +166,7 @@ trait PdfPagePropertiesTrait
      * Define whether the document outline should be embedded into the PDF.
      */
     #[ExposeSemantic(new BooleanNodeBuilder('generate_document_outline'))]
-    public function generateDocumentOutline(bool $bool): static
+    public function generateDocumentOutline(bool $bool = true): static
     {
         $this->getBodyBag()->set('generateDocumentOutline', $bool);
 
@@ -177,7 +177,7 @@ trait PdfPagePropertiesTrait
      * Prints the background graphics.
      */
     #[ExposeSemantic(new BooleanNodeBuilder('print_background'))]
-    public function printBackground(bool $bool): static
+    public function printBackground(bool $bool = true): static
     {
         $this->getBodyBag()->set('printBackground', $bool);
 
@@ -188,7 +188,7 @@ trait PdfPagePropertiesTrait
      * Hide the default white background and allow generating PDFs with transparency.
      */
     #[ExposeSemantic(new BooleanNodeBuilder('omit_background'))]
-    public function omitBackground(bool $bool): static
+    public function omitBackground(bool $bool = true): static
     {
         $this->getBodyBag()->set('omitBackground', $bool);
 
@@ -233,6 +233,17 @@ trait PdfPagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Define whether to generate tagged (accessible) PDF.
+     */
+    #[ExposeSemantic(new BooleanNodeBuilder('generate_tagged_pdf'))]
+    public function generateTaggedPdf(bool $bool = true): static
+    {
+        $this->getBodyBag()->set('generateTaggedPdf', $bool);
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -249,5 +260,6 @@ trait PdfPagePropertiesTrait
         yield 'omitBackground' => NormalizerFactory::bool();
         yield 'landscape' => NormalizerFactory::bool();
         yield 'scale' => NormalizerFactory::float();
+        yield 'generateTaggedPdf' => NormalizerFactory::bool();
     }
 }

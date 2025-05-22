@@ -209,7 +209,7 @@ trait PdfPagePropertiesTestCaseTrait
     public function testPreferCssPageSizeOnRendering(): void
     {
         $this->getDefaultBuilder()
-           ->preferCssPageSize(true)
+           ->preferCssPageSize()
            ->generate()
         ;
 
@@ -219,7 +219,7 @@ trait PdfPagePropertiesTestCaseTrait
     public function testGenerateDocumentOutlineEmbeddedIntoPdf(): void
     {
         $this->getDefaultBuilder()
-           ->generateDocumentOutline(true)
+           ->generateDocumentOutline()
            ->generate()
         ;
 
@@ -229,7 +229,7 @@ trait PdfPagePropertiesTestCaseTrait
     public function testPrintBackgroundIntoPdf(): void
     {
         $this->getDefaultBuilder()
-           ->printBackground(true)
+           ->printBackground()
            ->generate()
         ;
 
@@ -239,7 +239,7 @@ trait PdfPagePropertiesTestCaseTrait
     public function testSetOmitBackgroundOnRendering(): void
     {
         $this->getDefaultBuilder()
-           ->omitBackground(true)
+           ->omitBackground()
            ->generate()
         ;
 
@@ -274,5 +274,15 @@ trait PdfPagePropertiesTestCaseTrait
         ;
 
         $this->assertGotenbergFormData('nativePageRanges', '1-5');
+    }
+
+    public function testGenerateTaggedPdfIntoPdf(): void
+    {
+        $this->getDefaultBuilder()
+            ->generateTaggedPdf()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('generateTaggedPdf', 'true');
     }
 }

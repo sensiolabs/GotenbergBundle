@@ -272,6 +272,7 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'generate_tagged_pdf' => null,
                         'download_from' => [],
                         'webhook' => [
                             'config_name' => null,
@@ -341,6 +342,7 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'generate_tagged_pdf' => null,
                         'webhook' => [
                             'config_name' => null,
                             'success' => [
@@ -409,6 +411,7 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'generate_tagged_pdf' => null,
                         'webhook' => [
                             'config_name' => null,
                             'success' => [
