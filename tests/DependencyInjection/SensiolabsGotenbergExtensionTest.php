@@ -67,6 +67,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                     'skip_network_idle_event' => true,
                     'pdf_format' => 'PDF/A-1b',
                     'pdf_universal_access' => true,
+                    'generate_tagged_pdf' => true,
                     'download_from' => [],
                 ],
                 'url' => [
@@ -615,6 +616,7 @@ final class SensiolabsGotenbergExtensionTest extends TestCase
                             'pdf_format' => PdfFormat::Pdf1b->value,
                             'pdf_universal_access' => true,
                             'webhook' => 'bar',
+                            'generate_tagged_pdf' => true,
                         ],
                         'url' => [
                             'paper_width' => 21,
