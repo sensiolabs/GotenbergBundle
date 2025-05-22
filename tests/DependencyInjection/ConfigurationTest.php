@@ -283,6 +283,7 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'generate_tagged_pdf' => null,
                     ],
                     'url' => [
                         'single_page' => null,
@@ -317,6 +318,7 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'generate_tagged_pdf' => null,
                     ],
                     'markdown' => [
                         'single_page' => null,
@@ -351,6 +353,7 @@ final class ConfigurationTest extends TestCase
                         'split_mode' => null,
                         'split_span' => null,
                         'split_unify' => null,
+                        'generate_tagged_pdf' => null,
                     ],
                     'office' => [
                         'password' => null,

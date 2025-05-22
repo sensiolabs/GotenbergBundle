@@ -247,6 +247,9 @@ sensiolabs_gotenberg:
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
                 split_unify: null
 
+                # Define whether to generate tagged (accessible) PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                generate_tagged_pdf: null
+
                 # Webhook configuration name or definition.
                 webhook:
 
@@ -445,6 +448,9 @@ sensiolabs_gotenberg:
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
                 split_unify: null
 
+                # Define whether to generate tagged (accessible) PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                generate_tagged_pdf: null
+
                 # Webhook configuration name or definition.
                 webhook:
 
@@ -640,6 +646,9 @@ sensiolabs_gotenberg:
 
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
                 split_unify: null
+
+                # Define whether to generate tagged (accessible) PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                generate_tagged_pdf: null
 
                 # Webhook configuration name or definition.
                 webhook:

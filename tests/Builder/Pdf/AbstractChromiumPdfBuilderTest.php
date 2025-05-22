@@ -119,6 +119,9 @@ class AbstractChromiumPdfBuilderTest extends AbstractBuilderTestCase
         yield 'metadata' => ['metadata', ['Author' => 'SensioLabs'], [
             ['metadata' => '{"Author":"SensioLabs"}'],
         ]];
+        yield 'generate_tagged_pdf' => ['generate_tagged_pdf', false, [
+            ['generateTaggedPdf' => 'false'],
+        ]];
     }
 
     /**

@@ -681,6 +681,18 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
         return $this;
     }
 
+    /**
+     * Define whether to generate tagged (accessible) PDF.
+     *
+     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     */
+    public function generateTaggedPdf(bool $bool = true): static
+    {
+        $this->formFields['generateTaggedPdf'] = $bool;
+
+        return $this;
+    }
+
     protected function withPdfPartFile(Part $pdfPart, string $path): static
     {
         $dataPart = new DataPart(
@@ -758,6 +770,7 @@ abstract class AbstractChromiumPdfBuilder extends AbstractPdfBuilder
             'split_mode' => $this->splitMode(SplitMode::from($value)),
             'split_span' => $this->splitSpan($value),
             'split_unify' => $this->splitUnify($value),
+            'generate_tagged_pdf' => $this->generateTaggedPdf($value),
             default => throw new InvalidBuilderConfiguration(\sprintf('Invalid option "%s": no method does not exist in class "%s" to configured it.', $configurationName, static::class)),
         };
     }

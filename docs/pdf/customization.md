@@ -57,6 +57,8 @@
 [addMetadata](#addMetadata)  
 [pdfFormat](#pdfFormat)  
 [pdfUniversalAccess](#pdfUniversalAccess)  
+[generateDocumentOutline](#generateDocumentOutline)  
+[generateTaggedPdf](#generateTaggedPdf)
 
 ## Render
 
@@ -1246,3 +1248,59 @@ class YourController
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#pdfa-chromium).
+
+### generateDocumentOutline
+
+default: `false`
+
+Define whether the document outline should be embedded into the PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->generateDocumentOutline()
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+### generateTaggedPdf
+
+default: `false`
+
+Define whether to generate tagged (accessible) PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->generateTaggedPdf()
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```

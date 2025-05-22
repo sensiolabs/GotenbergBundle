@@ -8,6 +8,12 @@ The metadata to write.
 > See: [https://gotenberg.dev/docs/routes#download-from ](https://gotenberg.dev/docs/routes#download-from )
 
 ### files(Stringable|string $paths)
+### generateTaggedPdf(bool $bool)
+Define whether to generate tagged (accessible) PDF.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
+
 ### metadata(array $metadata)
 Resets the metadata.<br />
 
