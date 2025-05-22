@@ -3,9 +3,9 @@
 namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Screenshot\ScreenshotBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 
 final class GotenbergScreenshot implements GotenbergScreenshotInterface
@@ -15,7 +15,7 @@ final class GotenbergScreenshot implements GotenbergScreenshotInterface
     ) {
     }
 
-    public function get(string $builder): ScreenshotBuilderInterface
+    public function get(string $builder): BuilderInterface
     {
         return $this->container->get($builder);
     }
@@ -27,25 +27,25 @@ final class GotenbergScreenshot implements GotenbergScreenshotInterface
      *   $key is 'html' ? HtmlScreenshotBuilder :
      *   $key is 'url' ? UrlScreenshotBuilder :
      *   $key is 'markdown' ? MarkdownScreenshotBuilder :
-     *   ScreenshotBuilderInterface
+     *   BuilderInterface
      * )
      */
-    private function getInternal(string $key): ScreenshotBuilderInterface
+    private function getInternal(string $key): BuilderInterface
     {
         return $this->get(".sensiolabs_gotenberg.screenshot_builder.{$key}");
     }
 
-    public function html(): ScreenshotBuilderInterface
+    public function html(): BuilderInterface
     {
         return $this->getInternal('html');
     }
 
-    public function url(): ScreenshotBuilderInterface
+    public function url(): BuilderInterface
     {
         return $this->getInternal('url');
     }
 
-    public function markdown(): ScreenshotBuilderInterface
+    public function markdown(): BuilderInterface
     {
         return $this->getInternal('markdown');
     }

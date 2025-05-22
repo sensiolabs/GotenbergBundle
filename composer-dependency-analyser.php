@@ -8,6 +8,7 @@ use ShipMonk\ComposerDependencyAnalyser\Config\ErrorType;
 $config = new Configuration();
 
 return $config
+    ->addPathToScan(__DIR__.'/bin', isDev: true)
     ->addPathToScan(__DIR__.'/src', isDev: false)
     ->addPathToScan(__DIR__.'/src/DataCollector', isDev: true)
     ->addPathToScan(__DIR__.'/src/Debug', isDev: true)
@@ -16,7 +17,9 @@ return $config
     ->ignoreErrorsOnPackage('async-aws/s3', [
         ErrorType::DEV_DEPENDENCY_IN_PROD,
     ])
-    ->disableExtensionsAnalysis() // TODO : Bug waiting for https://github.com/shipmonk-rnd/composer-dependency-analyser/issues/217
+    ->ignoreErrorsOnExtension('ext-mbstring', [
+        ErrorType::DEV_DEPENDENCY_IN_PROD,
+    ])
     ->ignoreErrorsOnPackage('league/flysystem', [
         ErrorType::DEV_DEPENDENCY_IN_PROD,
     ])

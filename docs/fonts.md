@@ -52,10 +52,7 @@ declaration with the correct asset path expected by gotenberg.
         <meta charset="utf-8" />
         <title>PDF with Custom Font</title>
         <style>
-            @font-face {
-                font-family: "my_font";
-                src: url("custom-font.ttf");
-            }
+            @font-face {font-family: "my_font";src: url("custom-font.ttf");}
             h1 {
                 color: red;
                 font-family: "my_font";
@@ -98,12 +95,7 @@ declaration with the correct asset path expected by gotenberg.
     <head>
         <meta charset="utf-8" />
         <title>PDF with Custom Font</title>
-        <style>
-            @font-face {
-                font-family: "my_font";
-                src: url("custom-font.ttf");
-            }
-        </style>
+        <style>@font-face {font-family: "my_font";src: url("custom-font.ttf");}</style>
         <style>
             h1 {
                 color: red;

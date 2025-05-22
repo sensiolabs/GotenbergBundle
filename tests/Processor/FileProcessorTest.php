@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Processor;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Processor\FileProcessor;
 use Symfony\Component\Filesystem\Filesystem;
@@ -10,7 +9,6 @@ use Symfony\Component\HttpClient\Chunk\DataChunk;
 use Symfony\Component\HttpClient\Chunk\FirstChunk;
 use Symfony\Component\HttpClient\Chunk\LastChunk;
 
-#[CoversClass(FileProcessor::class)]
 class FileProcessorTest extends TestCase
 {
     public function testProcess(): void
@@ -24,7 +22,7 @@ class FileProcessorTest extends TestCase
 
         $return = $generator->getReturn();
 
-        self::assertInstanceOf(\SplFileInfo::class, $return);
+        self::assertInstanceOf(\SplFileInfo::class, $return); // @phpstan-ignore staticMethod.alreadyNarrowedType
         self::assertSame('abc', (string) $return->openFile());
     }
 }

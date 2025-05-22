@@ -2,58 +2,64 @@
 
 namespace Sensiolabs\GotenbergBundle;
 
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 
 interface GotenbergPdfInterface
 {
     /**
-     * @template T of PdfBuilderInterface
+     * @template T of BuilderInterface
      *
      * @param string|class-string<T> $builder
      *
-     * @return ($builder is class-string ? T : PdfBuilderInterface)
+     * @return ($builder is class-string ? T : BuilderInterface)
      */
-    public function get(string $builder): PdfBuilderInterface;
+    public function get(string $builder): BuilderInterface;
 
     /**
      * @return HtmlPdfBuilder
      */
-    public function html(): PdfBuilderInterface;
+    public function html(): BuilderInterface;
 
     /**
      * @return UrlPdfBuilder
      */
-    public function url(): PdfBuilderInterface;
-
-    /**
-     * @return LibreOfficePdfBuilder
-     */
-    public function office(): PdfBuilderInterface;
+    public function url(): BuilderInterface;
 
     /**
      * @return MarkdownPdfBuilder
      */
-    public function markdown(): PdfBuilderInterface;
+    public function markdown(): BuilderInterface;
+
+    /**
+     * @return LibreOfficePdfBuilder
+     */
+    public function office(): BuilderInterface;
 
     /**
      * @return MergePdfBuilder
      */
-    public function merge(): PdfBuilderInterface;
+    public function merge(): BuilderInterface;
 
     /**
      * @return ConvertPdfBuilder
      */
-    public function convert(): PdfBuilderInterface;
+    public function convert(): BuilderInterface;
 
     /**
      * @return SplitPdfBuilder
      */
-    public function split(): PdfBuilderInterface;
+    public function split(): BuilderInterface;
+
+    /**
+     * @return FlattenPdfBuilder
+     */
+    public function flatten(): BuilderInterface;
 }

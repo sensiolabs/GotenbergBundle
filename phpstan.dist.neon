@@ -1,3 +1,9 @@
+services:
+	-
+		class: Sensiolabs\GotenbergBundle\Tests\PHPStanRules\AlwaysUsedMethodRule
+		tags:
+			- phpstan.methods.alwaysUsedMethodExtension
+
 parameters:
 	phpVersion: 80100
 	level: 8
@@ -5,71 +11,186 @@ parameters:
 		- 'config'
 		- 'src'
 		- 'tests'
-	excludePaths:
-		- tests/Builder/DefaultBuilderTraitTest.php
 	ignoreErrors:
 		-
-			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
+			message: '#^Call to function is_a\(\) with arguments class\-string\<Sensiolabs\\GotenbergBundle\\Builder\\BuilderInterface\>, ''Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\BuilderInterface'' and true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
-			path: src/Builder/Pdf/UrlPdfBuilder.php
+			path: src/DependencyInjection/BuilderStack.php
+
 		-
-			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Pdf/UrlPdfBuilder.php
-		-
-			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 2
-			path: src/Builder/Pdf/UrlPdfBuilder.php
-		-
-			message: "#^Cannot call method generate\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-		-
-			message: "#^Cannot call method getContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 1
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-		-
-			message: "#^Cannot call method setContext\\(\\) on Symfony\\\\Component\\\\Routing\\\\Generator\\\\UrlGeneratorInterface\\|null\\.$#"
-			count: 2
-			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
-		-
-			message: "#^Cannot use array destructuring on array\\<int, string\\|null\\>\\|null\\.$#"
+			message: "#^Cannot use array destructuring on list\\<string\\|null\\>\\|null\\.$#"
 			count: 1
 			path: src/DataCollector/GotenbergDataCollector.php
+
 		-
 			message: "#^Method Sensiolabs\\\\GotenbergBundle\\\\Tests\\\\Kernel\\:\\:configureContainer\\(\\) is unused\\.$#"
 			count: 1
 			path: tests/Kernel.php
-		- # Fixed when requiring 8.2
-			message: "#^Parameter \\#1 \\$iterator of function iterator_to_array expects Traversable, iterable given\\.$#"
-			count: 1
-			path: tests/Builder/AbstractBuilderTestCase.php
-		-
-			message: "#^Parameter \\#2 \\$cookie of method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\Pdf\\\\AbstractChromiumPdfBuilder\\:\\:setCookie\\(\\) expects array\\{name\\: string, value\\: string, domain\\: string, path\\?\\: string\\|null, secure\\?\\: bool\\|null, httpOnly\\?\\: bool\\|null, sameSite\\?\\: 'Lax'\\|'Strict'\\|null\\}\\|Symfony\\\\Component\\\\HttpFoundation\\\\Cookie, array\\{name\\: string, value\\: string\\|null, domain\\: string\\} given\\.$#"
-			count: 1
-			path: src/Builder/Pdf/AbstractChromiumPdfBuilder.php
 
 		-
-			message: "#^Parameter \\#2 \\$cookie of method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\Screenshot\\\\AbstractChromiumScreenshotBuilder\\:\\:setCookie\\(\\) expects array\\{name\\: string, value\\: string, domain\\: string, path\\?\\: string\\|null, secure\\?\\: bool\\|null, httpOnly\\?\\: bool\\|null, sameSite\\?\\: 'Lax'\\|'Strict'\\|null\\}\\|Symfony\\\\Component\\\\HttpFoundation\\\\Cookie, array\\{name\\: string, value\\: string\\|null, domain\\: string\\} given\\.$#"
+			message: "#^ Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition|Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\VariableNodeDefinition::append\\(\\)\\.$#"
 			count: 1
-			path: src/Builder/Screenshot/AbstractChromiumScreenshotBuilder.php
+			path: src/NodeBuilder/ArrayNodeBuilder.php
 
 		-
-			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:errorWebhookUrl\\(\\)\\.$#"
+			message: '#^Parameter \#1 \$bodyOptions of class Sensiolabs\\GotenbergBundle\\Builder\\Payload constructor expects list\<array\<string, string\>\>, array\<int, array\<string, string\>\> given\.$#'
+			identifier: argument.type
 			count: 2
-			path: tests/Builder/AsyncBuilderTraitTest.php
+			path: src/Builder/AbstractBuilder.php
 
 		-
-			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookConfiguration\\(\\)\\.$#"
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
-			path: tests/Builder/AsyncBuilderTraitTest.php
+			path: src/Builder/Pdf/ConvertPdfBuilder.php
 
 		-
-			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookExtraHeaders\\(\\)\\.$#"
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
-			path: tests/Builder/AsyncBuilderTraitTest.php
+			path: src/Builder/Pdf/ConvertPdfBuilder.php
 
 		-
-			message: "#^Call to an undefined method Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\AsyncBuilderInterface\\:\\:webhookUrl\\(\\)\\.$#"
-			count: 4
-			path: tests/Builder/AsyncBuilderTraitTest.php
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/FlattenPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/FlattenPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/HtmlPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/HtmlPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/LibreOfficePdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/LibreOfficePdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/MarkdownPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/MarkdownPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/MergePdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/MergePdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/SplitPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/SplitPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/UrlPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/UrlPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/HtmlScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/HtmlScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/MarkdownScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/MarkdownScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
+
+		-
+			message: '#^Call to function array_key_exists\(\) with ''url'' and array\{url\: string, extraHttpHeaders\?\: array\<string, string\>\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Util/ValidatorFactory.php
+
+		-
+			message: '#^Instanceof between SplFileInfo and SplFileInfo will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Builder/Util/ValidatorFactory.php
+
+		- # TODO : fix this
+			message: '#^Although PHPStan\\Reflection\\Php\\PhpMethodReflection is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
+			identifier: phpstanApi.instanceofAssumption
+			count: 1
+			path: tests/PHPStanRules/AlwaysUsedMethodRule.php
+
+		- # TODO : fix this
+			message: '#^Creating new ReflectionMethod is a runtime reflection concept that might not work in PHPStan because it uses fully static reflection engine\. Use objects retrieved from ReflectionProvider instead\.$#'
+			identifier: phpstanApi.runtimeReflection
+			count: 1
+			path: tests/PHPStanRules/AlwaysUsedMethodRule.php

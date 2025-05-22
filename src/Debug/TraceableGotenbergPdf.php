@@ -2,21 +2,22 @@
 
 namespace Sensiolabs\GotenbergBundle\Debug;
 
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\PdfBuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
-use Sensiolabs\GotenbergBundle\Debug\Builder\TraceablePdfBuilder;
+use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
 final class TraceableGotenbergPdf implements GotenbergPdfInterface
 {
     /**
-     * @var list<array{string, TraceablePdfBuilder}>
+     * @var list<array{string, TraceableBuilder}>
      */
     private array $builders = [];
 
@@ -25,11 +26,11 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     ) {
     }
 
-    public function get(string $builder): PdfBuilderInterface
+    public function get(string $builder): BuilderInterface
     {
         $traceableBuilder = $this->inner->get($builder);
 
-        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -39,14 +40,14 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @return HtmlPdfBuilder|TraceablePdfBuilder
+     * @return HtmlPdfBuilder|TraceableBuilder
      */
-    public function html(): PdfBuilderInterface
+    public function html(): BuilderInterface
     {
-        /** @var HtmlPdfBuilder|TraceablePdfBuilder $traceableBuilder */
+        /** @var HtmlPdfBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->html();
 
-        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -56,14 +57,14 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @return UrlPdfBuilder|TraceablePdfBuilder
+     * @return UrlPdfBuilder|TraceableBuilder
      */
-    public function url(): PdfBuilderInterface
+    public function url(): BuilderInterface
     {
-        /** @var UrlPdfBuilder|TraceablePdfBuilder $traceableBuilder */
+        /** @var UrlPdfBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->url();
 
-        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -73,31 +74,14 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @return LibreOfficePdfBuilder|TraceablePdfBuilder
+     * @return MarkdownPdfBuilder|TraceableBuilder
      */
-    public function office(): PdfBuilderInterface
+    public function markdown(): BuilderInterface
     {
-        /** @var LibreOfficePdfBuilder|TraceablePdfBuilder $traceableBuilder */
-        $traceableBuilder = $this->inner->office();
-
-        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
-            return $traceableBuilder;
-        }
-
-        $this->builders[] = ['office', $traceableBuilder];
-
-        return $traceableBuilder;
-    }
-
-    /**
-     * @return MarkdownPdfBuilder|TraceablePdfBuilder
-     */
-    public function markdown(): PdfBuilderInterface
-    {
-        /** @var MarkdownPdfBuilder|TraceablePdfBuilder $traceableBuilder */
+        /** @var MarkdownPdfBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->markdown();
 
-        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -107,14 +91,31 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @return MergePdfBuilder|TraceablePdfBuilder
+     * @return LibreOfficePdfBuilder|TraceableBuilder
      */
-    public function merge(): PdfBuilderInterface
+    public function office(): BuilderInterface
     {
-        /** @var MergePdfBuilder|TraceablePdfBuilder $traceableBuilder */
+        /** @var LibreOfficePdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->office();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['office', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return MergePdfBuilder|TraceableBuilder
+     */
+    public function merge(): BuilderInterface
+    {
+        /** @var MergePdfBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->merge();
 
-        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -124,14 +125,14 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @return ConvertPdfBuilder|TraceablePdfBuilder
+     * @return ConvertPdfBuilder|TraceableBuilder
      */
-    public function convert(): PdfBuilderInterface
+    public function convert(): BuilderInterface
     {
-        /** @var ConvertPdfBuilder|TraceablePdfBuilder $traceableBuilder */
+        /** @var ConvertPdfBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->convert();
 
-        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -141,14 +142,14 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @return SplitPdfBuilder|TraceablePdfBuilder
+     * @return SplitPdfBuilder|TraceableBuilder
      */
-    public function split(): PdfBuilderInterface
+    public function split(): BuilderInterface
     {
-        /** @var SplitPdfBuilder|TraceablePdfBuilder $traceableBuilder */
+        /** @var SplitPdfBuilder|TraceableBuilder $traceableBuilder */
         $traceableBuilder = $this->inner->split();
 
-        if (!$traceableBuilder instanceof TraceablePdfBuilder) {
+        if (!$traceableBuilder instanceof TraceableBuilder) {
             return $traceableBuilder;
         }
 
@@ -158,7 +159,24 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @return list<array{string, TraceablePdfBuilder}>
+     * @return FlattenPdfBuilder|TraceableBuilder
+     */
+    public function flatten(): BuilderInterface
+    {
+        /** @var FlattenPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->flatten();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['flatten', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return list<array{string, TraceableBuilder}>
      */
     public function getBuilders(): array
     {

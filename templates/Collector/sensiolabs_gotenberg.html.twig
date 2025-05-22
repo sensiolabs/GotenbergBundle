@@ -67,15 +67,6 @@
                 <span class="label">Total time</span>
             </div>
             <div class="metric">
-                {% if collector.requestTotalMemory is null %}
-                    <span class="value" title="To enable memory usage tracking, the Stopwatch component is required. Try running 'composer require symfony/stopwatch'.">n/a</span>
-                {% else %}
-                    <span class="value">{{ '%.1f'|format(collector.requestTotalMemory / 1024 / 1024) }} <span
-                                class="unit">MiB</span></span>
-                {% endif %}
-                <span class="label">Total memory</span>
-            </div>
-            <div class="metric">
                 {% set total_size = collector.requestTotalSize %}
                 {% set total_size_value = total_size[0] %}
                 {% set total_size_unit = total_size[1] %}
@@ -87,10 +78,11 @@
         </div>
     </section>
     <h2>Files</h2>
+    {% for index, file in collector.files %}
     <table>
         <thead>
         <tr>
-            <th></th>
+            <th>Type</th>
             <th>File</th>
             <th>Time</th>
             <th>Memory</th>
@@ -99,7 +91,6 @@
         </tr>
         </thead>
         <tbody>
-        {% for index, file in collector.files %}
             <tr class="file-info">
                 <td class="font-normal">
                     <span class="icon">
@@ -116,11 +107,12 @@
                 <td class="font-normal">
                     {{ file.fileName }}
                     <div>
-
-                    <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#method-calls-{{ index }}"
-                       data-toggle-alt-content="Hide method calls">View method calls</a>
-                    <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#configuration-{{ index }}"
-                       data-toggle-alt-content="Hide context">View context</a>
+                        <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#configuration-{{ index }}"
+                           data-toggle-alt-content="Hide configuration">View configuration</a>
+                        <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#method-calls-{{ index }}"
+                           data-toggle-alt-content="Hide method calls">View method calls</a>
+                        <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#data-sent-{{ index }}"
+                           data-toggle-alt-content="Hide normalized data sent">View normalized data sent</a>
                     </div>
                 </td>
                 <td class="font-normal">
@@ -152,26 +144,7 @@
                 </td>
             </tr>
             <tr class="file-details">
-                <td></td>
-                <td colspan="5">
-                    <div id="method-calls-{{ index }}" class="sf-toggle-hidden">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Method</th>
-                                <th>Arguments</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for call in file.calls %}
-                                <tr>
-                                    <td>{{ call.method }}</td>
-                                    <td>{{ profiler_dump(call.stub.value, maxDepth=2) }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                <td colspan="6">
                     <div id="configuration-{{ index }}" class="sf-toggle-hidden">
                         <table>
                             <thead>
@@ -190,9 +163,45 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="method-calls-{{ index }}" class="sf-toggle-hidden">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Arguments</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for call in file.calls %}
+                                <tr>
+                                    <td>{{ call.method }}</td>
+                                    <td>{{ profiler_dump(call.stub.value, maxDepth=2) }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="data-sent-{{ index }}" class="sf-toggle-hidden">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Request component</th>
+                                <th>Normalized data sent</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for payload, value in file.payload %}
+                                <tr>
+                                    <td>{{ payload }}</td>
+                                    <td>{{ profiler_dump(value, maxDepth=5) }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </td>
             </tr>
-        {% endfor %}
         <tbody>
     </table>
+    {% endfor %}
 {% endblock %}
