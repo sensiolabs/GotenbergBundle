@@ -38,7 +38,7 @@ final class FileProcessor implements ProcessorInterface
             $path = $this->directory.'/'.$fileName;
 
             $this->filesystem->dumpFile($path, $resource);
-            $this->logger?->debug('{processor}: content dumped to "{file}" on {path}.', ['processor' => self::class, 'file' => $fileName, 'path' => $path]);
+            $this->logger?->debug('{processor}: content dumped to "{path}".', ['processor' => self::class, 'path' => $path]);
 
             return new \SplFileInfo($path);
         } catch (\Throwable $t) {
