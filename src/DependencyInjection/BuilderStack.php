@@ -2,8 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemantic;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
@@ -50,26 +50,26 @@ final class BuilderStack
         }
 
         $reflection = new \ReflectionClass($class);
-        $nodeAttributes = $reflection->getAttributes(WithSemantic::class);
+        $nodeAttributes = $reflection->getAttributes(WithBuilderConfiguration::class);
 
         if (\count($nodeAttributes) === 0) {
-            throw new \LogicException(\sprintf('%s is missing the %s attribute', $class, WithSemantic::class));
+            throw new \LogicException(\sprintf('%s is missing the %s attribute', $class, WithBuilderConfiguration::class));
         }
 
-        /** @var WithSemantic $semanticNode */
-        $semanticNode = $nodeAttributes[0]->newInstance();
+        /** @var WithBuilderConfiguration $builderConfiguration */
+        $builderConfiguration = $nodeAttributes[0]->newInstance();
 
-        $this->builders[$class] = $semanticNode->type;
+        $this->builders[$class] = $builderConfiguration->type;
 
-        $this->typeReverseMapping[$semanticNode->type][$semanticNode->name] = $class;
+        $this->typeReverseMapping[$builderConfiguration->type][$builderConfiguration->name] = $class;
 
         foreach (array_reverse($reflection->getMethods(\ReflectionMethod::IS_PUBLIC)) as $method) {
-            $attributes = $method->getAttributes(WithSemanticNode::class);
+            $attributes = $method->getAttributes(WithConfigurationNode::class);
             if (\count($attributes) === 0) {
                 continue;
             }
 
-            /** @var WithSemanticNode $attribute */
+            /** @var WithConfigurationNode $attribute */
             $attribute = $attributes[0]->newInstance();
 
             $mustUseVariadic = false;
@@ -91,7 +91,7 @@ final class BuilderStack
                 'callback' => $callback,
             ];
 
-            $this->configNode[$semanticNode->type][$semanticNode->name][] = $attribute->node;
+            $this->configNode[$builderConfiguration->type][$builderConfiguration->name][] = $attribute->node;
         }
     }
 

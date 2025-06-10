@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
 /**
  * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
  */
-#[WithSemantic(type: 'pdf', name: 'markdown')]
+#[WithBuilderConfiguration(type: 'pdf', name: 'markdown')]
 final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait {

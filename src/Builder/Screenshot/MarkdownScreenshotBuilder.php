@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Screenshot;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumScreenshotTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
@@ -17,7 +17,7 @@ use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
  * @see https://gotenberg.dev/docs/routes#screenshots-route
  * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
  */
-#[WithSemantic(type: 'screenshot', name: 'markdown')]
+#[WithBuilderConfiguration(type: 'screenshot', name: 'markdown')]
 final class MarkdownScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait {

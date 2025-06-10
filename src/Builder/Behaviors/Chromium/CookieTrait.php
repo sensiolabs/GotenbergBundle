@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
@@ -30,7 +30,7 @@ trait CookieTrait
     /**
      * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
      */
-    #[WithSemanticNode(new ArrayNodeBuilder('cookies', prototype: 'array', children: [
+    #[WithConfigurationNode(new ArrayNodeBuilder('cookies', prototype: 'array', children: [
         new ScalarNodeBuilder('name', required: true, restrictTo: 'string'),
         new ScalarNodeBuilder('value', required: true),
         new ScalarNodeBuilder('domain', required: true, restrictTo: 'string'),

@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
@@ -12,7 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
  */
-#[WithSemantic(type: 'pdf', name: 'html')]
+#[WithBuilderConfiguration(type: 'pdf', name: 'html')]
 final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait;

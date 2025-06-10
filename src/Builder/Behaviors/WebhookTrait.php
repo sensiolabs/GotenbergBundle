@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\WebhookConfigurationRegistryAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
@@ -46,7 +46,7 @@ trait WebhookTrait
      *
      * @see https://gotenberg.dev/docs/webhook
      */
-    #[WithSemanticNode(new WebhookNodeBuilder('webhook', children: [
+    #[WithConfigurationNode(new WebhookNodeBuilder('webhook', children: [
         new ScalarNodeBuilder('config_name', restrictTo: 'string'),
         new ArrayNodeBuilder('success', children: [
             new ScalarNodeBuilder('url', restrictTo: 'string'),

@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
@@ -16,7 +16,7 @@ use Symfony\Contracts\Service\ServiceSubscriberTrait;
 /**
  * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
  */
-#[WithSemantic(type: 'pdf', name: 'url')]
+#[WithBuilderConfiguration(type: 'pdf', name: 'url')]
 final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumPdfTrait;

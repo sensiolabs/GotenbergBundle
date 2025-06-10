@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
@@ -17,7 +17,7 @@ trait PerformanceModeTrait
 {
     abstract protected function getBodyBag(): BodyBag;
 
-    #[WithSemanticNode(new BooleanNodeBuilder('skip_network_idle_event'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('skip_network_idle_event'))]
     public function skipNetworkIdleEvent(bool $bool = true): static
     {
         $this->getBodyBag()->set('skipNetworkIdleEvent', $bool);

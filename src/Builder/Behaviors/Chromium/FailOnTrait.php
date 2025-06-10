@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
@@ -24,7 +24,7 @@ trait FailOnTrait
      *
      * @param array<int, int> $statusCodes
      */
-    #[WithSemanticNode(new ArrayNodeBuilder('fail_on_http_status_codes', prototype: 'integer'))]
+    #[WithConfigurationNode(new ArrayNodeBuilder('fail_on_http_status_codes', prototype: 'integer'))]
     public function failOnHttpStatusCodes(array $statusCodes): static
     {
         $this->getBodyBag()->set('failOnHttpStatusCodes', $statusCodes);
@@ -39,7 +39,7 @@ trait FailOnTrait
      *
      * @param list<int<100, 599>> $statusCodes
      */
-    #[WithSemanticNode(new ArrayNodeBuilder('fail_on_resource_http_status_codes', prototype: 'integer'))]
+    #[WithConfigurationNode(new ArrayNodeBuilder('fail_on_resource_http_status_codes', prototype: 'integer'))]
     public function failOnResourceHttpStatusCodes(array $statusCodes): static
     {
         $this->getBodyBag()->set('failOnResourceHttpStatusCodes', $statusCodes);
@@ -53,7 +53,7 @@ trait FailOnTrait
      *
      * @see https://gotenberg.dev/docs/routes#network-errors-chromium
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('fail_on_resource_loading_failed'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('fail_on_resource_loading_failed'))]
     public function failOnResourceLoadingFailed(bool $bool = true): static
     {
         $this->getBodyBag()->set('failOnResourceLoadingFailed', $bool);
@@ -67,7 +67,7 @@ trait FailOnTrait
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions-chromium
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('fail_on_console_exceptions'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('fail_on_console_exceptions'))]
     public function failOnConsoleExceptions(bool $bool = true): static
     {
         $this->getBodyBag()->set('failOnConsoleExceptions', $bool);

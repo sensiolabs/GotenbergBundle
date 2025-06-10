@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
@@ -54,7 +54,7 @@ trait ContentTrait
      *
      * @see https://gotenberg.dev/docs/routes#header-footer-chromium
      */
-    #[WithSemanticNode(new ArrayNodeBuilder('header', children: [
+    #[WithConfigurationNode(new ArrayNodeBuilder('header', children: [
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
         new ArrayNodeBuilder('context', normalizeKeys: false, prototype: 'variable'),
     ]))]
@@ -71,7 +71,7 @@ trait ContentTrait
      *
      * @see https://gotenberg.dev/docs/routes#header-footer-chromium
      */
-    #[WithSemanticNode(new ArrayNodeBuilder('footer', children: [
+    #[WithConfigurationNode(new ArrayNodeBuilder('footer', children: [
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
         new ArrayNodeBuilder('context', normalizeKeys: false, prototype: 'variable'),
     ]))]

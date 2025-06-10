@@ -4,7 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemantic;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
@@ -21,7 +21,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  *
  * @see https://gotenberg.dev/docs/routes#split-pdfs-route
  */
-#[WithSemantic(type: 'pdf', name: 'split')]
+#[WithBuilderConfiguration(type: 'pdf', name: 'split')]
 final class SplitPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;

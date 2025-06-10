@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
@@ -18,7 +18,7 @@ trait FlattenTrait
     /**
      * Flattening a PDF combines all its contents into a single layer. (default false).
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('flatten'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('flatten'))]
     public function flatten(bool $bool = true): self
     {
         $this->getBodyBag()->set('flatten', $bool);

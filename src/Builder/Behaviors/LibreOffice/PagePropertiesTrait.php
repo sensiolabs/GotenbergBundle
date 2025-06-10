@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\LibreOffice;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
@@ -20,7 +20,7 @@ trait PagePropertiesTrait
     /**
      * Set the password for opening the source file.
      */
-    #[WithSemanticNode(new ScalarNodeBuilder('password'))]
+    #[WithConfigurationNode(new ScalarNodeBuilder('password'))]
     public function password(#[\SensitiveParameter] string $password): static
     {
         $this->getBodyBag()->set('password', $password);
@@ -33,7 +33,7 @@ trait PagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('landscape'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('landscape'))]
     public function landscape(bool $bool = true): static
     {
         $this->getBodyBag()->set('landscape', $bool);
@@ -46,7 +46,7 @@ trait PagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/routes#page-properties-chromium
      */
-    #[WithSemanticNode(new ScalarNodeBuilder('native_page_ranges'))]
+    #[WithConfigurationNode(new ScalarNodeBuilder('native_page_ranges'))]
     public function nativePageRanges(string|null $ranges = null): static
     {
         if (!$ranges) {
@@ -62,7 +62,7 @@ trait PagePropertiesTrait
     /**
      * Specify whether form fields are exported as widgets or only their fixed print representation is exported.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('do_not_export_form_fields'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('do_not_export_form_fields'))]
     public function doNotExportFormFields(bool $bool = false): static
     {
         $this->getBodyBag()->set('exportFormFields', $bool);
@@ -73,7 +73,7 @@ trait PagePropertiesTrait
     /**
      * Specify whether multiple form fields exported are allowed to have the same field name.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('allow_duplicate_field_names'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('allow_duplicate_field_names'))]
     public function allowDuplicateFieldNames(bool $bool = true): static
     {
         $this->getBodyBag()->set('allowDuplicateFieldNames', $bool);
@@ -84,7 +84,7 @@ trait PagePropertiesTrait
     /**
      * Specify if bookmarks are exported to PDF.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('do_not_export_bookmarks'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('do_not_export_bookmarks'))]
     public function doNotExportBookmarks(bool $bool = false): static
     {
         $this->getBodyBag()->set('exportBookmarks', $bool);
@@ -95,7 +95,7 @@ trait PagePropertiesTrait
     /**
      * Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('export_bookmarks_to_pdf_destination'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('export_bookmarks_to_pdf_destination'))]
     public function exportBookmarksToPdfDestination(bool $bool = true): static
     {
         $this->getBodyBag()->set('exportBookmarksToPdfDestination', $bool);
@@ -106,7 +106,7 @@ trait PagePropertiesTrait
     /**
      * Export the placeholders fields visual markings only. The exported placeholder is ineffective.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('export_placeholders'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('export_placeholders'))]
     public function exportPlaceholders(bool $bool = true): static
     {
         $this->getBodyBag()->set('exportPlaceholders', $bool);
@@ -117,7 +117,7 @@ trait PagePropertiesTrait
     /**
      * Specify if notes are exported to PDF.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('export_notes'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('export_notes'))]
     public function exportNotes(bool $bool = true): static
     {
         $this->getBodyBag()->set('exportNotes', $bool);
@@ -128,7 +128,7 @@ trait PagePropertiesTrait
     /**
      * Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('export_notes_pages'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('export_notes_pages'))]
     public function exportNotesPages(bool $bool = true): static
     {
         $this->getBodyBag()->set('exportNotesPages', $bool);
@@ -139,7 +139,7 @@ trait PagePropertiesTrait
     /**
      * Specify, if the form field exportNotesPages is set to true, if only notes pages are exported to PDF.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('export_only_notes_pages'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('export_only_notes_pages'))]
     public function exportOnlyNotesPages(bool $bool = true): static
     {
         $this->getBodyBag()->set('exportOnlyNotesPages', $bool);
@@ -150,7 +150,7 @@ trait PagePropertiesTrait
     /**
      * Specify if notes in margin are exported to PDF.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('export_notes_in_margin'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('export_notes_in_margin'))]
     public function exportNotesInMargin(bool $bool = true): static
     {
         $this->getBodyBag()->set('exportNotesInMargin', $bool);
@@ -161,7 +161,7 @@ trait PagePropertiesTrait
     /**
      * Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('convert_ooo_target_to_pdf_target'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('convert_ooo_target_to_pdf_target'))]
     public function convertOooTargetToPdfTarget(bool $bool = true): static
     {
         $this->getBodyBag()->set('convertOooTargetToPdfTarget', $bool);
@@ -172,7 +172,7 @@ trait PagePropertiesTrait
     /**
      * Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('export_links_relative_fsys'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('export_links_relative_fsys'))]
     public function exportLinksRelativeFsys(bool $bool = true): static
     {
         $this->getBodyBag()->set('exportLinksRelativeFsys', $bool);
@@ -183,7 +183,7 @@ trait PagePropertiesTrait
     /**
      * Export, for LibreOffice Impress, slides that are not included in slide shows.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('export_hidden_slides'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('export_hidden_slides'))]
     public function exportHiddenSlides(bool $bool = true): static
     {
         $this->getBodyBag()->set('exportHiddenSlides', $bool);
@@ -194,7 +194,7 @@ trait PagePropertiesTrait
     /**
      * Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('skip_empty_pages'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('skip_empty_pages'))]
     public function skipEmptyPages(bool $bool = true): static
     {
         $this->getBodyBag()->set('skipEmptyPages', $bool);
@@ -205,7 +205,7 @@ trait PagePropertiesTrait
     /**
      * Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('add_original_document_as_stream'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('add_original_document_as_stream'))]
     public function addOriginalDocumentAsStream(bool $bool = true): static
     {
         $this->getBodyBag()->set('addOriginalDocumentAsStream', $bool);
@@ -216,7 +216,7 @@ trait PagePropertiesTrait
     /**
      * Ignore each sheet’s paper size, print ranges and shown/hidden status and puts every sheet (even hidden sheets) on exactly one page.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('single_page_sheets'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('single_page_sheets'))]
     public function singlePageSheets(bool $bool = true): static
     {
         $this->getBodyBag()->set('singlePageSheets', $bool);
@@ -227,7 +227,7 @@ trait PagePropertiesTrait
     /**
      * Merge alphanumerically the resulting PDFs.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('merge'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('merge'))]
     public function merge(bool $bool = true): self
     {
         $this->getBodyBag()->set('merge', $bool);
@@ -238,7 +238,7 @@ trait PagePropertiesTrait
     /**
      * Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('lossless_image_compression'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('lossless_image_compression'))]
     public function losslessImageCompression(bool $bool = true): self
     {
         $this->getBodyBag()->set('losslessImageCompression', $bool);
@@ -251,7 +251,7 @@ trait PagePropertiesTrait
      *
      * @param int<0, 100> $quality
      */
-    #[WithSemanticNode(new IntegerNodeBuilder('quality', min: 0, max: 100))]
+    #[WithConfigurationNode(new IntegerNodeBuilder('quality', min: 0, max: 100))]
     public function quality(int $quality): self
     {
         ValidatorFactory::quality($quality);
@@ -263,7 +263,7 @@ trait PagePropertiesTrait
     /**
      * Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('reduce_image_resolution'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('reduce_image_resolution'))]
     public function reduceImageResolution(bool $bool = true): self
     {
         $this->getBodyBag()->set('reduceImageResolution', $bool);
@@ -274,7 +274,7 @@ trait PagePropertiesTrait
     /**
      * If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.
      */
-    #[WithSemanticNode(new NativeEnumNodeBuilder('max_image_resolution', enumClass: ImageResolutionDPI::class))]
+    #[WithConfigurationNode(new NativeEnumNodeBuilder('max_image_resolution', enumClass: ImageResolutionDPI::class))]
     public function maxImageResolution(ImageResolutionDPI|null $resolution): self
     {
         if (!$resolution) {
@@ -289,7 +289,7 @@ trait PagePropertiesTrait
     /**
      * Specify whether to update the indexes before conversion, keeping in mind that doing so might result in missing links in the final PDF.
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('update_indexes'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('update_indexes'))]
     public function doNotUpdateIndexes(bool $bool = false): self
     {
         $this->getBodyBag()->set('updateIndexes', $bool);

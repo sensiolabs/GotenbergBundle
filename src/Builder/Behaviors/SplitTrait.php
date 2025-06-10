@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
@@ -23,7 +23,7 @@ trait SplitTrait
     /**
      * Either intervals or pages.
      */
-    #[WithSemanticNode(new NativeEnumNodeBuilder('split_mode', enumClass: SplitMode::class))]
+    #[WithConfigurationNode(new NativeEnumNodeBuilder('split_mode', enumClass: SplitMode::class))]
     public function splitMode(SplitMode|null $splitMode = null): self
     {
         if (!$splitMode) {
@@ -38,7 +38,7 @@ trait SplitTrait
     /**
      * Either the intervals or the page ranges to extract, depending on the selected mode.
      */
-    #[WithSemanticNode(new ScalarNodeBuilder('split_span'))]
+    #[WithConfigurationNode(new ScalarNodeBuilder('split_span'))]
     public function splitSpan(string $splitSpan): self
     {
         ValidatorFactory::splitSpan($splitSpan);
@@ -50,7 +50,7 @@ trait SplitTrait
     /**
      * Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
      */
-    #[WithSemanticNode(new BooleanNodeBuilder('split_unify'))]
+    #[WithConfigurationNode(new BooleanNodeBuilder('split_unify'))]
     public function splitUnify(bool $bool = true): self
     {
         $this->getBodyBag()->set('splitUnify', $bool);

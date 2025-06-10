@@ -3,7 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\WithSemanticNode;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\UserAgent;
@@ -24,7 +24,7 @@ trait CustomHttpHeadersTrait
      *
      * @param UserAgent::*|string $userAgent
      */
-    #[WithSemanticNode(new ScalarNodeBuilder('user_agent', restrictTo: 'string'))]
+    #[WithConfigurationNode(new ScalarNodeBuilder('user_agent', restrictTo: 'string'))]
     public function userAgent(string $userAgent): static
     {
         $this->getBodyBag()->set('userAgent', $userAgent);
@@ -37,7 +37,7 @@ trait CustomHttpHeadersTrait
      *
      * @param array<string, string> $headers
      */
-    #[WithSemanticNode(new ArrayNodeBuilder('extra_http_headers', normalizeKeys: false, useAttributeAsKey: 'name', prototype: 'variable'))]
+    #[WithConfigurationNode(new ArrayNodeBuilder('extra_http_headers', normalizeKeys: false, useAttributeAsKey: 'name', prototype: 'variable'))]
     public function extraHttpHeaders(array $headers): static
     {
         if ([] === $headers) {
