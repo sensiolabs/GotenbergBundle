@@ -14,6 +14,8 @@ use Symfony\Contracts\HttpClient\ResponseStreamInterface;
  */
 class GotenbergFileResult extends AbstractGotenbergResult
 {
+    private bool $processed = false;
+
     /**
      * @param ProcessorInterface<TProcessorResult> $processor
      */
@@ -24,6 +26,22 @@ class GotenbergFileResult extends AbstractGotenbergResult
         private readonly string $disposition,
     ) {
         parent::__construct($response);
+    }
+
+    /**
+     * @template TNewProcessorResult of mixed = mixed
+     *
+     * @param ProcessorInterface<TNewProcessorResult> $processor
+     *
+     * @return self<TNewProcessorResult>
+     */
+    public function processor(ProcessorInterface $processor): self
+    {
+        if ($this->processed) {
+            throw new ProcessorException('Already processed query.');
+        }
+
+        return new self($this->response, $this->stream, $processor, $this->disposition);
     }
 
     public function getStatusCode(): int
@@ -73,6 +91,7 @@ class GotenbergFileResult extends AbstractGotenbergResult
     public function process(): mixed
     {
         $this->ensureExecution();
+        $this->processed = true;
 
         if (!$this->stream->valid()) {
             throw new ProcessorException('Already processed query.');
@@ -89,6 +108,7 @@ class GotenbergFileResult extends AbstractGotenbergResult
     public function stream(): StreamedResponse
     {
         $this->ensureExecution();
+        $this->processed = true;
 
         $filename = $this->getFileName();
 
