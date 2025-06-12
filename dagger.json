@@ -1,0 +1,12 @@
+{
+  "name": "GotenbergBundle",
+  "engineVersion": "v0.18.10",
+  "sdk": {
+    "source": "php"
+  },
+  "include": [
+    "!.dagger/sdk",
+    "!.dagger/vendor"
+  ],
+  "source": ".dagger"
+}
