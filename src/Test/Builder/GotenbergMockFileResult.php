@@ -4,15 +4,22 @@ namespace Sensiolabs\GotenbergBundle\Test\Builder;
 
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 /**
  * @extends GotenbergFileResult<null>
  */
 class GotenbergMockFileResult extends GotenbergFileResult
 {
+    private function __construct(ResponseStreamInterface $stream, ProcessorInterface $processor, string $disposition)
+    {
+        parent::__construct($stream, $processor, $disposition);
+    }
+
     /**
      * @param array<string, array<string>> $headers
      */

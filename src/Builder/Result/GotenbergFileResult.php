@@ -22,7 +22,7 @@ class GotenbergFileResult extends AbstractGotenbergResult
     public function __construct(
         private readonly ResponseStreamInterface $stream,
         private ProcessorInterface $processor,
-        private readonly string $disposition,
+        private string $disposition,
     ) {
     }
 
@@ -47,6 +47,17 @@ class GotenbergFileResult extends AbstractGotenbergResult
         }
 
         $this->processor = $processor;
+
+        return $this;
+    }
+
+    public function setDisposition(string $disposition): self
+    {
+        if ($this->processed) {
+            throw new ProcessorException('Already processed query.');
+        }
+
+        $this->disposition = $disposition;
 
         return $this;
     }
