@@ -4,9 +4,6 @@ namespace Sensiolabs\GotenbergBundle\Twig;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 
-/**
- * @internal
- */
 final class GotenbergRuntime
 {
     private BuilderAssetInterface|null $builder = null;
