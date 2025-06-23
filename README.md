@@ -76,8 +76,20 @@ return [
 ];
 ```
 
-Update your configuration to add an HttpClient for the Gotenberg API and update the `sensiolabs_gotenberg.http_client`
-property to use it.
+Create a configuration and adapt to your needs:
+
+```yaml
+# ./config/packages/sensiolabs_gotenberg.yaml
+
+framework:
+    http_client:
+        scoped_clients:
+            gotenberg.client:
+                base_uri: 'http://gotenberg:3000'
+
+sensiolabs_gotenberg:
+    http_client: 'gotenberg.client'
+```
 
 ## Basic Usage
 
