@@ -4,6 +4,12 @@ namespace Sensiolabs\GotenbergBundle\Twig;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 
+/**
+ * @internal
+ *
+ *  This class is marked as internal to allow flexibility in evolving the runtime API.
+ *  However, it is considered safe to use for custom builders or test purposes.
+ */
 final class GotenbergRuntime
 {
     private BuilderAssetInterface|null $builder = null;
