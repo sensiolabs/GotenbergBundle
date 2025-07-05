@@ -55,16 +55,16 @@ class GotenbergBundle
         return dag()
             ->container()
             ->from("php:{$phpVersion}")
-            ->withWorkdir('/GotenbergBundle')
-            ->withMountedDirectory('/GotenbergBundle', $source)
-            ->withMountedFile('/usr/bin/composer', $composerBin)
-            ->withEnvVariable('COMPOSER_ALLOW_SUPERUSER', '1')
             ->withMountedCache('/var/cache/apt/archives', $aptCache)
             ->withExec(['apt', 'update'])
             ->withExec(['apt', 'install', '--yes',
                 'git',
                 'zip',
             ])
+            ->withMountedFile('/usr/bin/composer', $composerBin)
+            ->withEnvVariable('COMPOSER_ALLOW_SUPERUSER', '1')
+            ->withWorkdir('/GotenbergBundle')
+            ->withMountedDirectory('/GotenbergBundle', $source)
         ;
     }
 
@@ -83,10 +83,10 @@ class GotenbergBundle
         $vendorCache = dag()->cacheVolume("php-{$phpVersion}-symfony-{$symfonyVersion}-vendor-cache");
 
         return $phpContainer
+            ->withMountedCache('/GotenbergBundle/vendor', $vendorCache)
+            ->withEnvVariable('SYMFONY_REQUIRE', $symfonyVersion)
             ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
             ->withExec(['composer', 'global', 'require', 'symfony/flex'])
-            ->withEnvVariable('SYMFONY_REQUIRE', $symfonyVersion)
-            ->withMountedCache('/GotenbergBundle/vendor', $vendorCache)
             ->withExec(['composer', 'update'])
         ;
     }
