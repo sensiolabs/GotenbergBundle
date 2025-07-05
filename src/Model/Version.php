@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Sensiolabs\GotenbergBundle\Model;
 
-use LogicException;
-use Stringable;
-
-final class Version implements Stringable
+final class Version implements \Stringable
 {
     private function __construct(
         public readonly int $major,
@@ -26,7 +23,7 @@ final class Version implements Stringable
             $raw,
             $matches,
         )) {
-            throw new LogicException();
+            throw new \LogicException();
         }
 
         return new self(
