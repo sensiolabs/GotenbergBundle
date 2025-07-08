@@ -31,7 +31,7 @@ jobs:
 
       - name: 'Check documentation'
         run: |
-          DIFF=$(git status --short --renames)
+          DIFF=$(git status --short --renames ./docs)
           if [[ $DIFF != '' ]]; then
             echo "::warning::Builders API documentation is not up to date. Please run \"php ./docs/generate.php\""
             echo "::warning::$DIFF"

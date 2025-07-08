@@ -1,6 +1,6 @@
 # Contributing to GotenbergBundle
 
-Thank you for your interest in contributing to GotenbergBundle! 
+Thank you for your interest in contributing to GotenbergBundle!
 
 
 Your support helps make this project better for everyone.
@@ -92,7 +92,7 @@ Address any warnings or errors reported by the tools above.
 
 ## Documentation
 
-The project documentation is partially built from the source code. 
+The project documentation is partially built from the source code.
 
 > [!IMPORTANT]
 > When you make changes to the codebase, update the documentation accordingly.
@@ -101,7 +101,7 @@ The project documentation is partially built from the source code.
 
 ```shell
 $ php ./docs/generate.php
-``` 
+```
 
 
 ---

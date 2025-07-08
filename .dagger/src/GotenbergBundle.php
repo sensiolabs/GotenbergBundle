@@ -12,7 +12,10 @@ use Dagger\Attribute\ListOfType;
 use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
 use Dagger\Directory;
+use Dagger\Error;
 use Dagger\Service;
+use PhpParser\Node\Scalar\MagicConst\Dir;
+use function array_diff;
 use function Dagger\dag;
 
 #[DaggerObject]
@@ -126,6 +129,22 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
+    #[Doc('Runs PHP CS Fixer and returns the container in which it ran.')]
+    public function testCsFixer(
+        #[DefaultPath('.')]
+        Directory $source,
+
+        string $phpVersion = '8.4',
+        Container|null $symfonyContainer = null,
+    ): Container {
+        $symfonyContainer ??= $this->phpContainer($source, $phpVersion);
+
+        return $symfonyContainer
+            ->withExec(['./vendor/bin/php-cs-fixer', 'check', '-v'])
+        ;
+    }
+
+    #[DaggerFunction]
     #[Doc('Generates documentation and returns the Directory to export locally.')]
     public function generateDocs(
         #[DefaultPath('.')]
@@ -153,12 +172,21 @@ class GotenbergBundle
         string $phpVersion = '8.4',
         string $symfonyVersion = '7.3',
     ): array {
-        $result = [];
+        $result = [
+            "Running tests for PHP {$phpVersion}, Symfony {$symfonyVersion}",
+            "==============================================================\n"
+        ];
 
         $symfonyContainer = $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
 
+        $result[] = '  >> Running PHPUnit tests...';
         $result[] = $this->testPhpunitUnit($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
+
+        $result[] = '  >> Validating dependencies...';
         $result[] = $this->testValidateDependencies($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
+
+        $result[] = '  >> Checking code style...';
+        $result[] = $this->testCsFixer($source, $phpVersion, $symfonyContainer)->stdout();
 
         return $result;
     }
@@ -173,11 +201,19 @@ class GotenbergBundle
         $result = [];
         foreach (['8.2', '8.3', '8.4'] as $phpVersion) {
             foreach (['6.4.*', '7.2.*', '7.3.*'] as $symfonyVersion) {
-                $result[] = "PHP {$phpVersion}, Symfony {$symfonyVersion}";
+                $result[] = "Running tests for PHP {$phpVersion}, Symfony {$symfonyVersion}";
+                $result[] = "==============================================================\n";
+
                 $symfonyContainer = $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
 
+                $result[] = '  >> Running PHPUnit tests...';
                 $result[] = $this->testPhpunitUnit($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
+
+                $result[] = '  >> Validating dependencies...';
                 $result[] = $this->testValidateDependencies($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
+
+                $result[] = '  >> Checking code style...';
+                $result[] = $this->testCsFixer($source, $phpVersion, $symfonyContainer)->stdout();
             }
         }
 
