@@ -147,9 +147,10 @@ class GotenbergBundle
         Directory $source,
 
         string $phpVersion = '8.4',
+        string $symfonyVersion = '7.3',
         Container|null $symfonyContainer = null,
     ): Container {
-        $symfonyContainer ??= $this->phpContainer($source, $phpVersion);
+        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
 
         return $symfonyContainer
             ->withExec(['php', '-dmemory_limit=-1', './vendor/bin/phpstan', 'analyse'])
