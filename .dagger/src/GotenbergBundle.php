@@ -131,9 +131,10 @@ class GotenbergBundle
         Directory $source,
 
         string $phpVersion = '8.4',
+        string $symfonyVersion = '7.3',
         Container|null $symfonyContainer = null,
     ): Container {
-        $symfonyContainer ??= $this->phpContainer($source, $phpVersion);
+        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
 
         return $symfonyContainer
             ->withExec(['./vendor/bin/php-cs-fixer', 'check', '-v'])
