@@ -4,11 +4,10 @@ namespace Sensiolabs\GotenbergBundle\Processor;
 
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
-use SplFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @implements ProcessorInterface<SplFileInfo>
+ * @implements ProcessorInterface<\SplFileInfo>
  */
 final class FileProcessor implements ProcessorInterface
 {
