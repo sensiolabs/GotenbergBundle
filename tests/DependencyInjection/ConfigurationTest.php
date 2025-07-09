@@ -234,6 +234,7 @@ final class ConfigurationTest extends TestCase
     private static function getBundleDefaultConfig(): array
     {
         return [
+            'version' => null,
             'assets_directory' => '%kernel.project_dir%/assets',
             'http_client' => 'http_client',
             'webhook' => [],
