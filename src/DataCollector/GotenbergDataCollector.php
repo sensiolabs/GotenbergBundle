@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Client\TraceableGotenbergClient;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergPdf;
 use Sensiolabs\GotenbergBundle\Debug\TraceableGotenbergScreenshot;
+use Sensiolabs\GotenbergBundle\GotenbergInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
      * @param array<mixed>                                      $defaultOptions
      */
     public function __construct(
+        private readonly GotenbergInterface $gotenberg,
         private readonly TraceableGotenbergPdf $traceableGotenbergPdf,
         private readonly TraceableGotenbergScreenshot $traceableGotenbergScreenshot,
         private readonly ServiceLocator $builders,
@@ -33,6 +35,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 
     public function collect(Request $request, Response $response, \Throwable|null $exception = null): void
     {
+        $this->data['version'] = (string) $this->gotenberg->version();
         $this->data['request_total_size'] = 0;
         $this->data['request_total_time'] = 0;
         $this->data['request_count'] = 0;
@@ -128,6 +131,11 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
             ($size / (1024 ** 5) < 1) => [round($size / (1024 ** 4), 2), 'TB'],
             default => throw new \LogicException('File too big'),
         };
+    }
+
+    public function getVersion(): string
+    {
+        return $this->data['version'] ?? '';
     }
 
     /**

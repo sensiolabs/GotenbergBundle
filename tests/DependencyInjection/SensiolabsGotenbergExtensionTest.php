@@ -415,7 +415,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
 
         $dataCollector = $containerBuilder->getDefinition('sensiolabs_gotenberg.data_collector');
 
-        $dataCollectorOptions = $dataCollector->getArguments()[4];
+        $dataCollectorOptions = $dataCollector->getArguments()[5];
         self::assertEquals([
             'pdf' => [
                 'html' => [

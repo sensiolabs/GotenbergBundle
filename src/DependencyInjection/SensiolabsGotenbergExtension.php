@@ -111,7 +111,7 @@ class SensiolabsGotenbergExtension extends Extension
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
             $container->getDefinition('sensiolabs_gotenberg.data_collector')
-                ->replaceArgument(4, $defaultConfiguration['default_options'])
+                ->replaceArgument(5, $defaultConfiguration['default_options'])
             ;
         }
 

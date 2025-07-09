@@ -2,7 +2,6 @@
 
 namespace Sensiolabs\GotenbergBundle\Bridge\LeagueFlysystem\Processor;
 
-use Closure;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
@@ -10,7 +9,7 @@ use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Sensiolabs\GotenbergBundle\Processor\TempfileProcessor;
 
 /**
- * @implements ProcessorInterface<(Closure(): string)>
+ * @implements ProcessorInterface<(\Closure(): string)>
  */
 final class FlysystemProcessor implements ProcessorInterface
 {

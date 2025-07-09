@@ -36,6 +36,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('sensiolabs_gotenberg.data_collector', GotenbergDataCollector::class)
         ->args([
+            service('sensiolabs_gotenberg'),
             service('sensiolabs_gotenberg.pdf'),
             service('sensiolabs_gotenberg.screenshot'),
             tagged_locator('sensiolabs_gotenberg.builder'),

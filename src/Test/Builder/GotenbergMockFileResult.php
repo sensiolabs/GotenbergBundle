@@ -30,7 +30,7 @@ class GotenbergMockFileResult extends GotenbergFileResult
         string $disposition = HeaderUtils::DISPOSITION_INLINE,
     ): self {
         $client = new MockHttpClient([
-            MockResponse::fromFile($path, [
+            new MockResponse(file_get_contents($path) ?: throw new \InvalidArgumentException(\sprintf('File not found: "%s".', $path)), [
                 'http_code' => 200,
                 'response_headers' => array_merge($headers, [
                     'Content-Disposition' => HeaderUtils::makeDisposition($disposition, $fileName ?? basename($path)),

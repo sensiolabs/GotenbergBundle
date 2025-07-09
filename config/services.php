@@ -64,6 +64,7 @@ return static function (ContainerConfigurator $container): void {
                 GotenbergPdfInterface::class => service('sensiolabs_gotenberg.pdf'),
                 GotenbergScreenshotInterface::class => service('sensiolabs_gotenberg.screenshot'),
             ]),
+            service('sensiolabs_gotenberg.http_client'),
         ])
         ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')
     ;
