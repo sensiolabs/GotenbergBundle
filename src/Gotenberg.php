@@ -3,14 +3,14 @@
 namespace Sensiolabs\GotenbergBundle;
 
 use Psr\Container\ContainerInterface;
-use Sensiolabs\GotenbergBundle\Model\Version;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Sensiolabs\GotenbergBundle\Version\Version;
+use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 
 final class Gotenberg implements GotenbergInterface
 {
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly HttpClientInterface $client,
+        private readonly VersionFetcherInterface $versionFetcher,
     ) {
     }
 
@@ -26,6 +26,6 @@ final class Gotenberg implements GotenbergInterface
 
     public function version(): Version
     {
-        return Version::parse($this->client->request('GET', '/version')->getContent());
+        return $this->versionFetcher->get();
     }
 }

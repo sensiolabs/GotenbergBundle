@@ -12,6 +12,9 @@ use Sensiolabs\GotenbergBundle\GotenbergScreenshot;
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergExtension;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
+use Sensiolabs\GotenbergBundle\Version\HttpVersionFetcher;
+use Sensiolabs\GotenbergBundle\Version\StaticVersionFetcher;
+use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -58,13 +61,27 @@ return static function (ContainerConfigurator $container): void {
         ->alias(GotenbergScreenshotInterface::class, 'sensiolabs_gotenberg.screenshot')
     ;
 
+    $services->set('sensiolabs_gotenberg.http_version_fetcher', HttpVersionFetcher::class)
+        ->args([
+            service('sensiolabs_gotenberg.http_client'),
+        ])
+    ;
+
+    $services->set('sensiolabs_gotenberg.static_version_fetcher', StaticVersionFetcher::class)
+        ->args([
+            abstract_arg('Gotenberg version'),
+        ])
+    ;
+
+    $services->set('sensiolabs_gotenberg.version_fetcher', VersionFetcherInterface::class);
+
     $services->set('sensiolabs_gotenberg', Gotenberg::class)
         ->args([
             service_locator([
                 GotenbergPdfInterface::class => service('sensiolabs_gotenberg.pdf'),
                 GotenbergScreenshotInterface::class => service('sensiolabs_gotenberg.screenshot'),
             ]),
-            service('sensiolabs_gotenberg.http_client'),
+            service('sensiolabs_gotenberg.version_fetcher'),
         ])
         ->alias(GotenbergInterface::class, 'sensiolabs_gotenberg')
     ;

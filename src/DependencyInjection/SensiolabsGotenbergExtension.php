@@ -17,6 +17,7 @@ use Symfony\Component\Routing\RequestContext;
  *
  * @phpstan-type SensiolabsGotenbergConfiguration array{
  *      assets_directory: string,
+ *      version?: string,
  *      http_client?: string,
  *      request_context?: array{base_uri?: string},
  *      controller_listener: bool,
@@ -87,6 +88,20 @@ class SensiolabsGotenbergExtension extends Extension
 
         // HTTP Client
         $container->setAlias('sensiolabs_gotenberg.http_client', new Alias($defaultConfiguration['http_client'] ?? 'http_client', false));
+
+        // Version
+        if (null !== $defaultConfiguration['version']) {
+            $container->getDefinition('sensiolabs_gotenberg.static_version_fetcher')
+                ->replaceArgument(0, $defaultConfiguration['version'])
+                ->setDecoratedService('sensiolabs_gotenberg.version_fetcher')
+            ;
+            $container->removeDefinition('sensiolabs_gotenberg.http_version_fetcher');
+        } else {
+            $container->getDefinition('sensiolabs_gotenberg.http_version_fetcher')
+                ->setDecoratedService('sensiolabs_gotenberg.version_fetcher')
+            ;
+            $container->removeDefinition('sensiolabs_gotenberg.static_version_fetcher');
+        }
 
         // Request context
         $baseUri = $defaultConfiguration['request_context']['base_uri'] ?? null;

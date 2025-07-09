@@ -2,7 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle;
 
-use Sensiolabs\GotenbergBundle\Model\Version;
+use Sensiolabs\GotenbergBundle\Version\Version;
 
 interface GotenbergInterface
 {

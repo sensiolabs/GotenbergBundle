@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sensiolabs\GotenbergBundle\Model;
+namespace Sensiolabs\GotenbergBundle\Version;
 
 final class Version implements \Stringable
 {
