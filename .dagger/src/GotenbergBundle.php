@@ -8,14 +8,10 @@ use Dagger\Attribute\DaggerFunction;
 use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\DefaultPath;
 use Dagger\Attribute\Doc;
-use Dagger\Attribute\ListOfType;
 use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
 use Dagger\Directory;
-use Dagger\Error;
 use Dagger\Service;
-use PhpParser\Node\Scalar\MagicConst\Dir;
-use function array_diff;
 use function Dagger\dag;
 
 #[DaggerObject]
@@ -95,7 +91,7 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
-    #[Doc('Runs PHPUnit tests and returns the container in which it ran.')]
+    #[Doc('Runs PHPUnit unit tests and returns the container in which it ran.')]
     public function testPhpunitUnit(
         #[DefaultPath('.')]
         Directory $source,
@@ -145,6 +141,22 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
+    #[Doc('Runs PHPStan and returns the container in which it ran.')]
+    public function testPhpstan(
+        #[DefaultPath('.')]
+        Directory $source,
+
+        string $phpVersion = '8.4',
+        Container|null $symfonyContainer = null,
+    ): Container {
+        $symfonyContainer ??= $this->phpContainer($source, $phpVersion);
+
+        return $symfonyContainer
+            ->withExec(['php', '-dmemory_limit=-1', './vendor/bin/phpstan', 'analyse'])
+        ;
+    }
+
+    #[DaggerFunction]
     #[Doc('Generates documentation and returns the Directory to export locally.')]
     public function generateDocs(
         #[DefaultPath('.')]
@@ -188,11 +200,14 @@ class GotenbergBundle
         $result[] = '  >> Checking code style...';
         $result[] = $this->testCsFixer($source, $phpVersion, $symfonyContainer)->stdout();
 
+        $result[] = '  >> Checking phpstan...';
+        $result[] = $this->testPhpstan($source, $phpVersion, $symfonyContainer)->stdout();
+
         return $result;
     }
 
     #[DaggerFunction]
-    #[Doc('Execute all tests within matrix (PHP version, Symfony version.')]
+    #[Doc('Execute all tests within matrix (PHP version, Symfony version).')]
     #[ReturnsListOfType('string')]
     public function testsMatrix(
         #[DefaultPath('.')]
@@ -214,6 +229,9 @@ class GotenbergBundle
 
                 $result[] = '  >> Checking code style...';
                 $result[] = $this->testCsFixer($source, $phpVersion, $symfonyContainer)->stdout();
+
+                $result[] = '  >> Checking phpstan...';
+                $result[] = $this->testPhpstan($source, $phpVersion, $symfonyContainer)->stdout();
             }
         }
 

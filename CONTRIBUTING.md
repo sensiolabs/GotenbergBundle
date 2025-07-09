@@ -40,10 +40,56 @@ $ composer install
 
 Ensure your changes work as expected by running the test suite:
 
+### Requirements
+
+Make sure you have [dagger >= v0.18.10](https://docs.dagger.io/install) installed. Then run
+
+```shell
+$ dagger develop
+```
+
 ### Run Tests
 
 ```shell
-$ ./vendor/bin/phpunit
+$ # Run the PHPUnit 'unit' test suite with specific symfony or / and php version
+$ dagger call test-phpunit-unit --symfony-version '6.4.*' --php-version '8.2' stdout
+
+$ # Make sure all dependencies are explicitly added to composer.json
+$ dagger call test-validate-dependencies --symfony-version '6.4.*' --php-version '8.2' stdout
+
+$ # Generate the auto documentation for builders
+$ dagger call generate-docs export --path ./docs
+
+$ # Run all tests available with specific symfony / php versions
+$ dagger call tests --symfony-version '6.4.*' --php-version '8.2'
+
+$ # Run all tests available with all supported version of both PHP and Symfony
+$ dagger call tests-matrix
+```
+
+About the list of flags available :
+
+| flag                | description                                                                                                                                                          |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--symfony-version` | Can be any SemVer compatible value (eg : `6.4.*`, `^6.4`, ...)                                                                                                       |
+| `--php-version`     | Can be any tag from the [official PHP Docker image](https://github.com/docker-library/docs/blob/master/php/README.md#supported-tags-and-respective-dockerfile-links) |
+
+Here is the list of all `dagger call` functions you can do :
+
+```shell
+$ dagger functions
+Name                         Description
+generate-docs                Generates documentation and returns the Directory to export locally.
+gotenberg-container          Returns a Gotenberg container.
+gotenberg-service            Returns a Gotenberg service.
+php-container                Returns a PHP container.
+symfony-container            Returns a PHP container with symfony set to the desired version.
+test-cs-fixer                Runs PHP CS Fixer and returns the container in which it ran.
+test-phpstan                 Runs PHPStan and returns the container in which it ran.
+test-phpunit-unit            Runs PHPUnit unit tests and returns the container in which it ran.
+test-validate-dependencies   Runs composer dependency analyser and returns the container in which it ran.
+tests                        Execute all tests.
+tests-matrix                 Execute all tests within matrix (PHP version, Symfony version).
 ```
 
 ### Run Tests with Coverage (optional)
@@ -61,19 +107,19 @@ Maintain high code quality by following these steps before submitting a pull req
 Check your code for style violations:
 
 ```shell
-$ PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer check --diff
+$ ./vendor/bin/php-cs-fixer check --diff
 ```
 
 Eventually, you can fix the issues automatically:
 
 ```shell
-$ PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --diff
+$ ./vendor/bin/php-cs-fixer fix --diff
 ```
 
 ### Static Analysis
 
 ```shell
-$ php -dmemory_limit=-1 ./vendor/bin/phpstan analyse --debug
+$ dagger call test-phpstan stdout
 ```
 
 Detect potential issues in your code.
@@ -81,7 +127,7 @@ Detect potential issues in your code.
 ### Dependencies
 
 ```shell
-$ ./vendor/bin/composer-dependency-analyser --show-all-usages
+$ dagger call test-validate-dependencies stdout
 ```
 
 Detect potential issues in composer.json dependencies.
@@ -100,9 +146,8 @@ The project documentation is partially built from the source code.
 ### Update the documentation
 
 ```shell
-$ php ./docs/generate.php
+$ dagger call generate-docs export --path ./docs
 ```
-
 
 ---
 
