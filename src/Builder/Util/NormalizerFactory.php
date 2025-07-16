@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Util;
 
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
+use Sensiolabs\GotenbergBundle\Version\Version;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
@@ -25,7 +26,15 @@ class NormalizerFactory
      */
     public static function unit(): \Closure
     {
-        return static fn (string $key, mixed $value) => yield [$key => is_numeric($value) ? $value.'in' : (string) $value];
+        return static function (string $key, mixed $value, Version $version): \Generator {
+            if ($version->isLowerThan('8.3')) {
+                yield [$key => trim((string) $value, 'in')];
+
+                return;
+            }
+
+            yield [$key => is_numeric($value) ? $value.'in' : (string) $value];
+        };
     }
 
     /**

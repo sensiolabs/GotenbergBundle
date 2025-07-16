@@ -14,7 +14,6 @@ use Sensiolabs\GotenbergBundle\Twig\GotenbergExtension;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 use Sensiolabs\GotenbergBundle\Version\HttpVersionFetcher;
 use Sensiolabs\GotenbergBundle\Version\StaticVersionFetcher;
-use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistry;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;

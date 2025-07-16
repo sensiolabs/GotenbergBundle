@@ -14,6 +14,42 @@ final class Version implements \Stringable
     ) {
     }
 
+    public function isLowerThan(string|self $version): bool
+    {
+        return version_compare(
+            (string) $this,
+            (string) $version,
+            '<',
+        );
+    }
+
+    public function isLowerThanOrEqual(string|self $version): bool
+    {
+        return version_compare(
+            (string) $this,
+            (string) $version,
+            '<=',
+        );
+    }
+
+    public function isGreaterThan(string|self $version): bool
+    {
+        return version_compare(
+            (string) $this,
+            (string) $version,
+            '>',
+        );
+    }
+
+    public function isGreaterThanOrEqual(string|self $version): bool
+    {
+        return version_compare(
+            (string) $this,
+            (string) $version,
+            '>=',
+        );
+    }
+
     public static function parse(string $raw): self
     {
         $matches = [];

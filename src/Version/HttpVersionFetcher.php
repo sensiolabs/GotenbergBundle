@@ -8,6 +8,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class HttpVersionFetcher implements VersionFetcherInterface
 {
+    private readonly Version $version;
+
     public function __construct(
         private readonly HttpClientInterface $client,
     ) {
@@ -15,6 +17,6 @@ final class HttpVersionFetcher implements VersionFetcherInterface
 
     public function get(): Version
     {
-        return Version::parse($this->client->request('GET', '/version')->getContent());
+        return $this->version ??= Version::parse($this->client->request('GET', '/version')->getContent());
     }
 }

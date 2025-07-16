@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -98,6 +99,8 @@ class SensiolabsGotenbergExtension extends Extension
         } else {
             $container->setAlias('sensiolabs_gotenberg.version_fetcher', new Alias('sensiolabs_gotenberg.http_version_fetcher'));
         }
+
+        $container->setAlias(VersionFetcherInterface::class, new Alias('sensiolabs_gotenberg.version_fetcher'));
 
         // Request context
         $baseUri = $defaultConfiguration['request_context']['base_uri'] ?? null;

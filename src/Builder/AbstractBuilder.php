@@ -11,6 +11,8 @@ use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidNormalizerException;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
+use Sensiolabs\GotenbergBundle\Version\Version;
+use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -134,6 +136,17 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         return $this->container->get('sensiolabs_gotenberg.client');
     }
 
+    #[SubscribedService('sensiolabs_gotenberg.version_fetcher')]
+    private function getVersionFetcher(): VersionFetcherInterface
+    {
+        return $this->container->get('sensiolabs_gotenberg.version_fetcher');
+    }
+
+    protected function getVersion(): Version
+    {
+        return $this->getVersionFetcher()->get();
+    }
+
     /**
      * @return \Generator<int, array<string, string>>
      */
@@ -154,6 +167,8 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
             }
         }
 
+        $version = $this->getVersion();
+
         foreach ($this->getBodyBag()->all() as $key => $value) {
             $normalizer = $normalizers[$key] ?? NormalizerFactory::noop();
 
@@ -161,7 +176,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                 throw new InvalidNormalizerException(\sprintf('Normalizer "%s" is not a valid callable function.', $key));
             }
 
-            yield from $normalizer($key, $value);
+            yield from $normalizer($key, $value, $version);
         }
     }
 }
