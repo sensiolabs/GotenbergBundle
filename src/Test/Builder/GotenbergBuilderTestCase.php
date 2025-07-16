@@ -21,7 +21,8 @@ abstract class GotenbergBuilderTestCase extends TestCase
     protected const FIXTURE_DIR = __DIR__.'/../../../tests/Fixtures';
 
     protected GotenbergClientAsserter $client;
-    protected VersionFetcherInterface $versionFetcher;
+    protected string $gotenbergVersion = '8.21.0';
+
     protected Container $container;
     /** @var T */
     protected BuilderInterface $builder;
@@ -31,12 +32,17 @@ abstract class GotenbergBuilderTestCase extends TestCase
         parent::setUp();
 
         $this->client = new GotenbergClientAsserter();
-        $this->versionFetcher = new StaticVersionFetcher('99.99.99');
         $this->container = new Container();
 
         $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(static::FIXTURE_DIR, static::FIXTURE_DIR));
         $this->container->set('sensiolabs_gotenberg.client', $this->client);
-        $this->container->set('sensiolabs_gotenberg.version_fetcher', $this->versionFetcher);
+        $this->container->set('sensiolabs_gotenberg.version_fetcher', new StaticVersionFetcher($this->gotenbergVersion));
+    }
+
+    protected function withGotenbergVersion(string $version): void
+    {
+        $this->gotenbergVersion = $version;
+        $this->container->set('sensiolabs_gotenberg.version_fetcher', new StaticVersionFetcher($this->gotenbergVersion));
     }
 
     /**

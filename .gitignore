@@ -1,4 +1,5 @@
 /.phpunit.cache/
+/coverage/
 /tests/fixtures/cache/
 /tests/fixtures/var/
 /var/

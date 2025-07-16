@@ -27,6 +27,18 @@ trait PdfPagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('singlePage', 'true');
     }
 
+    public function testSetWidthOnRenderingBefore8_3(): void
+    {
+        $this->withGotenbergVersion('8.2.2');
+
+        $this->getDefaultBuilder()
+            ->paperWidth(200)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('paperWidth', '200');
+    }
+
     public function testSetWidthOnRendering(): void
     {
         $this->getDefaultBuilder()
