@@ -200,10 +200,10 @@ class GotenbergBundle
         $result[] = $this->testValidateDependencies($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
 
         $result[] = '  >> Checking code style...';
-        $result[] = $this->testCsFixer($source, $phpVersion, $symfonyContainer)->stdout();
+        $result[] = $this->testCsFixer($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
 
         $result[] = '  >> Checking phpstan...';
-        $result[] = $this->testPhpstan($source, $phpVersion, $symfonyContainer)->stdout();
+        $result[] = $this->testPhpstan($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
 
         return $result;
     }
@@ -230,10 +230,10 @@ class GotenbergBundle
                 $result[] = $this->testValidateDependencies($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
 
                 $result[] = '  >> Checking code style...';
-                $result[] = $this->testCsFixer($source, $phpVersion, $symfonyContainer)->stdout();
+                $result[] = $this->testCsFixer($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
 
                 $result[] = '  >> Checking phpstan...';
-                $result[] = $this->testPhpstan($source, $phpVersion, $symfonyContainer)->stdout();
+                $result[] = $this->testPhpstan($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
             }
         }
 
