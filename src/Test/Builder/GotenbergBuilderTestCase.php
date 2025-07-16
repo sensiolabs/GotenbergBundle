@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Version\StaticVersionFetcher;
-use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\Part\DataPart;
