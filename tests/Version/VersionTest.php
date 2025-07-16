@@ -91,7 +91,7 @@ class VersionTest extends TestCase
         string $raw,
         string $expectedString,
     ): void {
-        self::assertTrue(is_a(Version::class, \Stringable::class, true));
+        self::assertTrue(is_a(Version::class, \Stringable::class, true)); // @phpstan-ignore function.alreadyNarrowedType
 
         $version = Version::parse($raw);
 
