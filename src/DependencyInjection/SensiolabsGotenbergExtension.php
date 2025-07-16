@@ -93,14 +93,10 @@ class SensiolabsGotenbergExtension extends Extension
         if (null !== $defaultConfiguration['version']) {
             $container->getDefinition('sensiolabs_gotenberg.static_version_fetcher')
                 ->replaceArgument(0, $defaultConfiguration['version'])
-                ->setDecoratedService('sensiolabs_gotenberg.version_fetcher')
             ;
-            $container->removeDefinition('sensiolabs_gotenberg.http_version_fetcher');
+            $container->setAlias('sensiolabs_gotenberg.version_fetcher', new Alias('sensiolabs_gotenberg.static_version_fetcher'));
         } else {
-            $container->getDefinition('sensiolabs_gotenberg.http_version_fetcher')
-                ->setDecoratedService('sensiolabs_gotenberg.version_fetcher')
-            ;
-            $container->removeDefinition('sensiolabs_gotenberg.static_version_fetcher');
+            $container->setAlias('sensiolabs_gotenberg.version_fetcher', new Alias('sensiolabs_gotenberg.http_version_fetcher'));
         }
 
         // Request context

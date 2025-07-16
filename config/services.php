@@ -73,8 +73,6 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set('sensiolabs_gotenberg.version_fetcher', VersionFetcherInterface::class);
-
     $services->set('sensiolabs_gotenberg', Gotenberg::class)
         ->args([
             service_locator([
