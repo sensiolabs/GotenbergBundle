@@ -18,9 +18,7 @@ use function Dagger\dag;
 #[Doc('Module for GotenbergBundle')]
 class GotenbergBundle
 {
-    #[DaggerFunction]
-    #[Doc('Returns a Gotenberg container.')]
-    public function gotenbergContainer(
+    private function gotenbergContainer(
         string $gotenbergVersion = '8.0',
     ): Container {
         return dag()
@@ -29,9 +27,7 @@ class GotenbergBundle
         ;
     }
 
-    #[DaggerFunction]
-    #[Doc('Returns a Gotenberg service.')]
-    public function gotenbergService(
+    private function gotenbergService(
         string $gotenbergVersion = '8.0',
     ): Service {
         return $this->gotenbergContainer($gotenbergVersion)
@@ -40,9 +36,7 @@ class GotenbergBundle
         ;
     }
 
-    #[DaggerFunction]
-    #[Doc('Returns a PHP container.')]
-    public function phpContainer(
+    private function phpContainer(
         #[DefaultPath('.')]
         Directory $source,
 
@@ -67,9 +61,7 @@ class GotenbergBundle
         ;
     }
 
-    #[DaggerFunction]
-    #[Doc('Returns a PHP container with symfony set to the desired version.')]
-    public function symfonyContainer(
+    private function symfonyContainer(
         #[DefaultPath('.')]
         Directory $source,
 
@@ -87,74 +79,6 @@ class GotenbergBundle
             ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
             ->withExec(['composer', 'global', 'require', 'symfony/flex'])
             ->withExec(['composer', 'update'])
-        ;
-    }
-
-    #[DaggerFunction]
-    #[Doc('Runs PHPUnit unit tests and returns the container in which it ran.')]
-    public function testPhpunitUnit(
-        #[DefaultPath('.')]
-        Directory $source,
-
-        string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3',
-        Container|null $symfonyContainer = null,
-    ): Container {
-        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
-
-        return $symfonyContainer
-            ->withExec(['./vendor/bin/phpunit', '--display-deprecations'])
-        ;
-    }
-
-    #[DaggerFunction]
-    #[Doc('Runs composer dependency analyser and returns the container in which it ran.')]
-    public function testValidateDependencies(
-        #[DefaultPath('.')]
-        Directory $source,
-
-        string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3',
-        Container|null $symfonyContainer = null,
-    ): Container {
-        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
-
-        return $symfonyContainer
-            ->withExec(['./vendor/bin/composer-dependency-analyser', '--show-all-usages'])
-        ;
-    }
-
-    #[DaggerFunction]
-    #[Doc('Runs PHP CS Fixer and returns the container in which it ran.')]
-    public function testCsFixer(
-        #[DefaultPath('.')]
-        Directory $source,
-
-        string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3',
-        Container|null $symfonyContainer = null,
-    ): Container {
-        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
-
-        return $symfonyContainer
-            ->withExec(['./vendor/bin/php-cs-fixer', 'check', '-v'])
-        ;
-    }
-
-    #[DaggerFunction]
-    #[Doc('Runs PHPStan and returns the container in which it ran.')]
-    public function testPhpstan(
-        #[DefaultPath('.')]
-        Directory $source,
-
-        string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3',
-        Container|null $symfonyContainer = null,
-    ): Container {
-        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
-
-        return $symfonyContainer
-            ->withExec(['php', '-dmemory_limit=-1', './vendor/bin/phpstan', 'analyse'])
         ;
     }
 
@@ -177,6 +101,21 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
+    #[Doc('Provide a container with all dependencies installed and ready to run tests.')]
+    public function test(
+        #[DefaultPath('.')]
+        Directory $source,
+
+        string $phpVersion = '8.4',
+        string $symfonyVersion = '7.3',
+        Container|null $symfonyContainer = null,
+    ): TestsGotenbergBundle {
+        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
+
+        return new TestsGotenbergBundle($symfonyContainer);
+    }
+
+    #[DaggerFunction]
     #[Doc('Execute all tests.')]
     #[ReturnsListOfType('string')]
     public function tests(
@@ -193,19 +132,9 @@ class GotenbergBundle
 
         $symfonyContainer = $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
 
-        $result[] = '  >> Running PHPUnit tests...';
-        $result[] = $this->testPhpunitUnit($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
+        $test = new TestsGotenbergBundle($symfonyContainer);
 
-        $result[] = '  >> Validating dependencies...';
-        $result[] = $this->testValidateDependencies($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
-
-        $result[] = '  >> Checking code style...';
-        $result[] = $this->testCsFixer($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
-
-        $result[] = '  >> Checking phpstan...';
-        $result[] = $this->testPhpstan($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
-
-        return $result;
+        return [...$result, ...$test->all()];
     }
 
     #[DaggerFunction]
@@ -218,25 +147,10 @@ class GotenbergBundle
         $result = [];
         foreach (['8.2', '8.3', '8.4'] as $phpVersion) {
             foreach (['6.4.*', '7.2.*', '7.3.*'] as $symfonyVersion) {
-                $result[] = "Running tests for PHP {$phpVersion}, Symfony {$symfonyVersion}";
-                $result[] = "==============================================================\n";
-
-                $symfonyContainer = $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
-
-                $result[] = '  >> Running PHPUnit tests...';
-                $result[] = $this->testPhpunitUnit($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
-
-                $result[] = '  >> Validating dependencies...';
-                $result[] = $this->testValidateDependencies($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
-
-                $result[] = '  >> Checking code style...';
-                $result[] = $this->testCsFixer($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
-
-                $result[] = '  >> Checking phpstan...';
-                $result[] = $this->testPhpstan($source, $phpVersion, $symfonyVersion, $symfonyContainer)->stdout();
+                $result[] = $this->tests($source, $phpVersion, $symfonyVersion);
             }
         }
 
-        return $result;
+        return array_merge(...$result);
     }
 }

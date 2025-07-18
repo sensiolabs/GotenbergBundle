@@ -52,10 +52,10 @@ $ dagger develop
 
 ```shell
 $ # Run the PHPUnit 'unit' test suite with specific symfony or / and php version
-$ dagger call test-phpunit-unit --symfony-version '6.4.*' --php-version '8.2' stdout
+$ dagger call test phpunit --symfony-version '6.4.*' --php-version '8.2' stdout
 
 $ # Make sure all dependencies are explicitly added to composer.json
-$ dagger call test-validate-dependencies --symfony-version '6.4.*' --php-version '8.2' stdout
+$ dagger call test validate-dependencies --symfony-version '6.4.*' --php-version '8.2' stdout
 
 $ # Generate the auto documentation for builders
 $ dagger call generate-docs export --path ./docs
@@ -78,18 +78,23 @@ Here is the list of all `dagger call` functions you can do :
 
 ```shell
 $ dagger functions
-Name                         Description
-generate-docs                Generates documentation and returns the Directory to export locally.
-gotenberg-container          Returns a Gotenberg container.
-gotenberg-service            Returns a Gotenberg service.
-php-container                Returns a PHP container.
-symfony-container            Returns a PHP container with symfony set to the desired version.
-test-cs-fixer                Runs PHP CS Fixer and returns the container in which it ran.
-test-phpstan                 Runs PHPStan and returns the container in which it ran.
-test-phpunit-unit            Runs PHPUnit unit tests and returns the container in which it ran.
-test-validate-dependencies   Runs composer dependency analyser and returns the container in which it ran.
-tests                        Execute all tests.
-tests-matrix                 Execute all tests within matrix (PHP version, Symfony version).
+Name            Description
+generate-docs   Generates documentation and returns the Directory to export locally.
+test            Provide a container with all dependencies installed and ready to run tests.
+tests           Execute all tests.
+tests-matrix    Execute all tests within matrix (PHP version, Symfony version).
+```
+
+and here is the list of all tests available in `dagger call test` :
+
+```shell
+$ dagger functions test # e.g.: dagger call test phpunit
+Name                    Description
+all                     Run all tests.
+php-cs-fixer            Validate PHP-CS-Fixer.
+phpstan                 Run PHPStan.
+phpunit                 Run phpunit tests.
+validate-dependencies   Validate composer dependencies.
 ```
 
 ### Run Tests with Coverage (optional)
