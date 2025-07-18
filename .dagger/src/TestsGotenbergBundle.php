@@ -28,7 +28,7 @@ final class TestsGotenbergBundle
 
     private function getSymfonyVersion(): string
     {
-        return $this->symfonyVersion ??= $this->symfonyContainer->envVariable('SYMFONY_VERSION');
+        return $this->symfonyVersion ??= $this->symfonyContainer->envVariable('SYMFONY_REQUIRE');
     }
 
     #[DaggerFunction]
