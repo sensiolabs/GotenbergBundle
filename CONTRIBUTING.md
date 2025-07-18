@@ -52,22 +52,22 @@ $ dagger develop
 
 ```shell
 $ # Run the PHPUnit 'unit' test suite with specific symfony or / and php version
-$ dagger call test phpunit --symfony-version '6.4.*' --php-version '8.2' stdout
+$ dagger call test --symfony-version '6.4.*' --php-version '8.2' phpunit stdout
 
 $ # Make sure all dependencies are explicitly added to composer.json
-$ dagger call test validate-dependencies --symfony-version '6.4.*' --php-version '8.2' stdout
+$ dagger call test --symfony-version '6.4.*' --php-version '8.2' validate-dependencies stdout
 
 $ # Generate the auto documentation for builders
 $ dagger call generate-docs export --path ./docs
 
 $ # Run all tests available with specific symfony / php versions
-$ dagger call tests --symfony-version '6.4.*' --php-version '8.2'
+$ dagger call test --symfony-version '6.4.*' --php-version '8.2' all
 
 $ # Run all tests available with all supported version of both PHP and Symfony
 $ dagger call tests-matrix
 ```
 
-About the list of flags available :
+About the list of flags available (`dagger call test --help` or `dagger call tests-matrix --help`) :
 
 | flag                | description                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -81,20 +81,20 @@ $ dagger functions
 Name            Description
 generate-docs   Generates documentation and returns the Directory to export locally.
 test            Provide a container with all dependencies installed and ready to run tests.
-tests           Execute all tests.
 tests-matrix    Execute all tests within matrix (PHP version, Symfony version).
 ```
 
 and here is the list of all tests available in `dagger call test` :
 
 ```shell
-$ dagger functions test # e.g.: dagger call test phpunit
+$ dagger functions test # e.g.: dagger call test phpunit stdout
 Name                    Description
 all                     Run all tests.
-php-cs-fixer            Validate PHP-CS-Fixer.
-phpstan                 Run PHPStan.
-phpunit                 Run phpunit tests.
-validate-dependencies   Validate composer dependencies.
+php-cs-fixer            Validate PHP-CS-Fixer and returns the container it ran in.
+phpstan                 Run PHPStan and returns the container it ran in.
+phpunit                 Run phpunit tests and returns the container it ran in.
+terminal                Get the container for tests.
+validate-dependencies   Validate composer dependencies and returns the container it ran in.
 ```
 
 ### Run Tests with Coverage (optional)

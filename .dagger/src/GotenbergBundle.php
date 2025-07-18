@@ -116,28 +116,6 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
-    #[Doc('Execute all tests.')]
-    #[ReturnsListOfType('string')]
-    public function tests(
-        #[DefaultPath('.')]
-        Directory $source,
-
-        string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3',
-    ): array {
-        $result = [
-            "Running tests for PHP {$phpVersion}, Symfony {$symfonyVersion}",
-            "==============================================================\n"
-        ];
-
-        $symfonyContainer = $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
-
-        $test = new TestsGotenbergBundle($symfonyContainer);
-
-        return [...$result, ...$test->all()];
-    }
-
-    #[DaggerFunction]
     #[Doc('Execute all tests within matrix (PHP version, Symfony version).')]
     #[ReturnsListOfType('string')]
     public function testsMatrix(
@@ -147,7 +125,7 @@ class GotenbergBundle
         $result = [];
         foreach (['8.2', '8.3', '8.4'] as $phpVersion) {
             foreach (['6.4.*', '7.2.*', '7.3.*'] as $symfonyVersion) {
-                $result[] = $this->tests($source, $phpVersion, $symfonyVersion);
+                $result[] = $this->test($source, $phpVersion, $symfonyVersion)->all();
             }
         }
 
