@@ -83,7 +83,7 @@ final class TestsGotenbergBundle
 
         $result = [
             $title,
-            \str_repeat('=', \strlen($title))."\n",
+            str_repeat('=', \strlen($title))."\n",
         ];
 
         $result[] = '  >> Running PHPUnit tests...';
