@@ -7,7 +7,7 @@ use ShipMonk\ComposerDependencyAnalyser\Config\ErrorType;
 
 $config = new Configuration();
 
-return $config
+$config = $config
     ->addPathToScan(__DIR__.'/bin', isDev: true)
     ->addPathToScan(__DIR__.'/src', isDev: false)
     ->addPathToScan(__DIR__.'/src/DataCollector', isDev: true)
@@ -32,3 +32,13 @@ return $config
         ErrorType::DEV_DEPENDENCY_IN_PROD,
     ])
 ;
+
+if (\PHP_VERSION_ID < 80200) { // TODO: Requires PHP >= 8.2
+    $config = $config
+        ->ignoreUnknownClasses([
+            SensitiveParameter::class,
+        ])
+    ;
+}
+
+return $config;

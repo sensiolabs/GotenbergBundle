@@ -22,10 +22,19 @@ jobs:
           - '6.4.*'
           - '7.2.*'
           - '7.3.*'
+          - '7.4.x-dev'
         php:
           - '8.2'
           - '8.3'
           - '8.4'
+          - '8.5-rc'
+        include:
+          - symfony-version: '6.4.*'
+            php: '8.1'
+          - symfony-version: '8.0.x-dev'
+            php: '8.4'
+          - symfony-version: '8.0.x-dev'
+            php: '8.5-rc'
     steps:
       - uses: 'actions/checkout@v4'
 

@@ -18,6 +18,14 @@ use function Dagger\dag;
 #[Doc('Module for GotenbergBundle')]
 class GotenbergBundle
 {
+    private const SYMFONY_VERSIONS = [
+        '6.4.*' => ['8.1', '8.2', '8.3', '8.4', '8.5-rc'],
+        '7.2.*' => ['8.2', '8.3', '8.4', '8.5-rc'],
+        '7.3.*' => ['8.2', '8.3', '8.4', '8.5-rc'],
+        '7.4.x-dev' => ['8.2', '8.3', '8.4', '8.5-rc'],
+        '8.0.x-dev' => ['8.4', '8.5-rc'],
+    ];
+
     private function gotenbergContainer(
         string $gotenbergVersion = '8.0',
     ): Container {
@@ -123,8 +131,9 @@ class GotenbergBundle
         Directory $source,
     ): array {
         $result = [];
-        foreach (['8.2', '8.3', '8.4'] as $phpVersion) {
-            foreach (['6.4.*', '7.2.*', '7.3.*'] as $symfonyVersion) {
+
+        foreach (self::SYMFONY_VERSIONS as $symfonyVersion => $phpVersions) {
+            foreach ($phpVersions as $phpVersion) {
                 $result[] = $this->test($source, $phpVersion, $symfonyVersion)->all();
             }
         }
