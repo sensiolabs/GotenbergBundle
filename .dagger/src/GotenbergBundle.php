@@ -12,6 +12,8 @@ use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
 use Dagger\Directory;
 use Dagger\Service;
+use function Amp\async;
+use function Amp\Future\await;
 use function Dagger\dag;
 
 #[DaggerObject]
@@ -130,12 +132,18 @@ class GotenbergBundle
         #[DefaultPath('.')]
         Directory $source,
     ): array {
-        $result = [];
+        $tests = [];
 
         foreach (self::SYMFONY_VERSIONS as $symfonyVersion => $phpVersions) {
             foreach ($phpVersions as $phpVersion) {
-                $result[] = $this->test($source, $phpVersion, $symfonyVersion)->all();
+                $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion)->all());
             }
+        }
+
+        $result = [];
+
+        foreach (await($tests) as $test) {
+            $result[] = $test;
         }
 
         return array_merge(...$result);

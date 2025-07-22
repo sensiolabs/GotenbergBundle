@@ -9,6 +9,8 @@ use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\Doc;
 use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
+use function Amp\async;
+use function Amp\Future\await;
 
 #[DaggerObject]
 final class TestsGotenbergBundle
@@ -52,7 +54,7 @@ final class TestsGotenbergBundle
     public function phpunit(): Container
     {
         return $this->symfonyContainer
-            ->withExec(['./vendor/bin/phpunit', '--display-deprecations'])
+            ->withExec(['./vendor/bin/phpunit', '--display-all-issues'])
         ;
     }
 
@@ -79,6 +81,28 @@ final class TestsGotenbergBundle
     #[ReturnsListOfType('string')]
     public function all(): array
     {
+        $outputs = [];
+
+        $outputs[] = async(fn (): array => [
+            '  >> Running PHPUnit tests...',
+            $this->phpunit()->stdout(),
+        ]);
+
+        $outputs[] = async(fn (): array => [
+            '  >> Validating dependencies...',
+            $this->validateDependencies()->stdout(),
+        ]);
+
+        $outputs[] = async(fn (): array => [
+            '  >> Checking code style...',
+            $this->phpCsFixer()->stdout(),
+        ]);
+
+        $outputs[] = async(fn (): array => [
+            '  >> Checking phpstan...',
+            $this->phpstan()->stdout(),
+        ]);
+
         $title = "Running tests for PHP {$this->getPhpVersion()}, Symfony {$this->getSymfonyVersion()}";
 
         $result = [
@@ -86,17 +110,10 @@ final class TestsGotenbergBundle
             str_repeat('=', \strlen($title))."\n",
         ];
 
-        $result[] = '  >> Running PHPUnit tests...';
-        $result[] = $this->phpunit()->stdout();
-
-        $result[] = '  >> Validating dependencies...';
-        $result[] = $this->validateDependencies()->stdout();
-
-        $result[] = '  >> Checking code style...';
-        $result[] = $this->phpCsFixer()->stdout();
-
-        $result[] = '  >> Checking phpstan...';
-        $result[] = $this->phpstan()->stdout();
+        foreach (await($outputs) as [$label, $output]) {
+            $result[] = $label;
+            $result[] = $output;
+        }
 
         return $result;
     }
