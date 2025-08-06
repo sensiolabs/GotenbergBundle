@@ -20,14 +20,6 @@ use function Dagger\dag;
 #[Doc('Module for GotenbergBundle')]
 class GotenbergBundle
 {
-    private const SYMFONY_VERSIONS = [
-        '6.4.*' => ['8.1', '8.2', '8.3', '8.4', '8.5-rc'],
-        '7.2.*' => ['8.2', '8.3', '8.4', '8.5-rc'],
-        '7.3.*' => ['8.2', '8.3', '8.4', '8.5-rc'],
-        '7.4.x-dev' => ['8.2', '8.3', '8.4', '8.5-rc'],
-        '8.0.x-dev' => ['8.4', '8.5-rc'],
-    ];
-
     private function gotenbergContainer(
         string $gotenbergVersion = '8.0',
     ): Container {
@@ -47,9 +39,7 @@ class GotenbergBundle
     }
 
     private function phpContainer(
-        #[DefaultPath('.')]
         Directory $source,
-
         string $phpVersion = '8.4',
     ): Container {
         $aptCache = dag()->cacheVolume("apt-cache-{$phpVersion}");
@@ -72,9 +62,7 @@ class GotenbergBundle
     }
 
     private function symfonyContainer(
-        #[DefaultPath('.')]
         Directory $source,
-
         string $phpVersion = '8.4',
         string $symfonyVersion = '7.3',
         Container|null $phpContainer = null,
@@ -92,17 +80,24 @@ class GotenbergBundle
         ;
     }
 
+    private function getMatrix(): \Generator
+    {
+        /** @var list<array{name: string, symfony-version: string, php: string, 'allow-failure': bool}> $matrix */
+        $matrix = json_decode(file_get_contents(__DIR__.'/matrix-versions.json'), associative: true);
+
+        foreach ($matrix as $row) {
+            yield $row['name'] => [$row['symfony-version'], $row['php']];
+        }
+    }
+
     #[DaggerFunction]
     #[Doc('Generates documentation and returns the Directory to export locally.')]
     public function generateDocs(
         #[DefaultPath('.')]
         Directory $source,
-
-        string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3',
         Container|null $symfonyContainer = null,
     ): Directory {
-        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
+        $symfonyContainer ??= $this->symfonyContainer($source);
 
         return $symfonyContainer
             ->withExec(['./docs/generate.php'])
@@ -134,10 +129,8 @@ class GotenbergBundle
     ): array {
         $tests = [];
 
-        foreach (self::SYMFONY_VERSIONS as $symfonyVersion => $phpVersions) {
-            foreach ($phpVersions as $phpVersion) {
-                $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion)->all());
-            }
+        foreach ($this->getMatrix() as [$symfonyVersion, $phpVersion]) {
+            $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion)->all());
         }
 
         $result = [];

@@ -12,29 +12,23 @@ permissions:
   contents: 'read'
 
 jobs:
+  setup:
+    runs-on: 'ubuntu-latest'
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: 'actions/checkout@v4'
+      - id: 'set-matrix'
+        run: |
+          echo "matrix=$(cat ./.dagger/src/matrix-versions.json)" >> $GITHUB_OUTPUT
 
   test:
-    name: 'Build and Test - PHP ${{ matrix.php }} - Symfony ${{ matrix.symfony-version }}'
+    name: 'Build and Test - ${{ matrix.name }}'
     runs-on: 'ubuntu-latest'
+    needs: 'setup'
     strategy:
-      matrix:
-        symfony-version:
-          - '6.4.*'
-          - '7.2.*'
-          - '7.3.*'
-          - '7.4.x-dev'
-        php:
-          - '8.2'
-          - '8.3'
-          - '8.4'
-          - '8.5-rc'
-        include:
-          - symfony-version: '6.4.*'
-            php: '8.1'
-          - symfony-version: '8.0.x-dev'
-            php: '8.4'
-          - symfony-version: '8.0.x-dev'
-            php: '8.5-rc'
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+    continue-on-error: ${{ matrix.allow-failure }}
     steps:
       - uses: 'actions/checkout@v4'
 
