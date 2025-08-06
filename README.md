@@ -75,7 +75,7 @@ Manually enable the bundle by adding it to the list of registered bundles in you
 
 return [
     // ...
-    SensioLabs\GotenbergBundle\SensioLabsGotenbergBundle::class => ['all' => true],
+    Sensiolabs\GotenbergBundle\SensiolabsGotenbergBundle::class => ['all' => true],
 ];
 ```
 
