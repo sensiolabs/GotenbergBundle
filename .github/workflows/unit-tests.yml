@@ -27,7 +27,8 @@ jobs:
     runs-on: 'ubuntu-latest'
     needs: 'setup'
     strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+      matrix:
+        include: ${{ fromJson(needs.setup.outputs.matrix) }}
     continue-on-error: ${{ matrix.allow-failure }}
     steps:
       - uses: 'actions/checkout@v4'
