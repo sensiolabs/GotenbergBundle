@@ -18,7 +18,7 @@ jobs:
       - uses: 'actions/checkout@v4'
       - id: 'set-matrix'
         run: |
-          echo "matrix=$(cat ./.dagger/src/matrix-versions.json)" >> $GITHUB_OUTPUT
+          echo "matrix=$(jq -c '.' ./.dagger/src/matrix-versions.json)" >> $GITHUB_OUTPUT
 
   php-cs-fixer:
     name: 'PHP CS Fixer'
