@@ -35,6 +35,7 @@ final class Kernel extends BaseKernel implements CompilerPassInterface
         ]);
         $builder->loadFromExtension('sensiolabs_gotenberg', [
             'http_client' => 'http_client',
+            'version' => '50000.0.0',
         ]);
         $builder->addCompilerPass($this);
     }

@@ -14,6 +14,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Exception\VersionCompatibilityException;
 
 /**
  * Merge `n` pdf files into a single one.
@@ -60,6 +61,10 @@ final class MergePdfBuilder extends AbstractBuilder
 
     protected function validatePayloadBody(): void
     {
+        if ($this->getVersion()->isLowerThan('8.3')) {
+            throw VersionCompatibilityException::requires('>=', '8.3', 'This builder is not available.');
+        }
+
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }

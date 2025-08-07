@@ -59,6 +59,8 @@ trait CookieTrait
      */
     public function addCookies(array $cookies): static
     {
+        $this->warningIf('<', '8.4', 'Cookies are not available.');
+
         ValidatorFactory::cookies($cookies);
         $c = $this->getBodyBag()->get('cookies', []);
 
@@ -82,6 +84,8 @@ trait CookieTrait
      */
     public function setCookie(string $name, Cookie|array $cookie): static
     {
+        $this->warningIf('<', '8.4', 'Cookies are not available.');
+
         $current = $this->getBodyBag()->get('cookies', []);
         $current[$name] = $cookie;
 

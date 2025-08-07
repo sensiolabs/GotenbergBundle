@@ -27,7 +27,7 @@ class NormalizerFactory
     public static function unit(): \Closure
     {
         return static function (string $key, mixed $value, Version $version): \Generator {
-            if ($version->isLowerThan('8.3')) {
+            if ($version->isLowerThan('8.3')) { // TODO : add warning ?
                 yield [$key => trim((string) $value, 'in')];
 
                 return;

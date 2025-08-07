@@ -27,6 +27,8 @@ trait CustomHttpHeadersTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('user_agent', restrictTo: 'string'))]
     public function userAgent(string $userAgent): static
     {
+        $this->warningIf('<', '8.7', 'The option userAgent is not available.');
+
         $this->getBodyBag()->set('userAgent', $userAgent);
 
         return $this;

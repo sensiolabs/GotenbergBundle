@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
+use Sensiolabs\GotenbergBundle\Exception\VersionCompatibilityException;
 
 /**
  * @see https://gotenberg.dev/docs/routes#flatten-pdfs-route
@@ -47,6 +48,10 @@ final class FlattenPdfBuilder extends AbstractBuilder
 
     protected function validatePayloadBody(): void
     {
+        if ($this->getVersion()->isLowerThan('8.16')) {
+            throw VersionCompatibilityException::requires('>=', '8.16', 'This builder is not available.');
+        }
+
         if ($this->getBodyBag()->get('files') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }

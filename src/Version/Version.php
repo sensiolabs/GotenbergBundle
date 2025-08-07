@@ -50,6 +50,18 @@ final class Version implements \Stringable
         );
     }
 
+    /**
+     * @param '>'|'<'|'>='|'<='|'=' $operator
+     */
+    public function compare(string $operator, string|self $version): bool
+    {
+        return version_compare(
+            (string) $this,
+            (string) $version,
+            $operator,
+        );
+    }
+
     public static function parse(string $raw): self
     {
         $matches = [];

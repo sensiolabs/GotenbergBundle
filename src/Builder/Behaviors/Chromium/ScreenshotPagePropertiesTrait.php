@@ -26,6 +26,8 @@ trait ScreenshotPagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('width'))]
     public function width(int $width): static
     {
+        $this->warningIf('<', '8.5', 'The option width is not available.');
+
         $this->getBodyBag()->set('width', $width);
 
         return $this;
@@ -37,6 +39,8 @@ trait ScreenshotPagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('height'))]
     public function height(int $height): static
     {
+        $this->warningIf('<', '8.5', 'The option height is not available.');
+
         $this->getBodyBag()->set('height', $height);
 
         return $this;
@@ -48,6 +52,8 @@ trait ScreenshotPagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('clip'))]
     public function clip(bool $bool = true): static
     {
+        $this->warningIf('<', '8.5', 'The option clip is not available.');
+
         $this->getBodyBag()->set('clip', $bool);
 
         return $this;
