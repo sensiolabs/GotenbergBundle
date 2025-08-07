@@ -42,37 +42,41 @@ final class TestsGotenbergBundle
 
     #[DaggerFunction]
     #[Doc('Validate composer dependencies and returns the container it ran in.')]
-    public function validateDependencies(): Container
+    public function validateDependencies(): string
     {
         return $this->symfonyContainer
             ->withExec(['./vendor/bin/composer-dependency-analyser', '--show-all-usages'])
+            ->stdout()
         ;
     }
 
     #[DaggerFunction]
     #[Doc('Run phpunit tests and returns the container it ran in.')]
-    public function phpunit(): Container
+    public function phpunit(): string
     {
         return $this->symfonyContainer
             ->withExec(['./vendor/bin/phpunit', '--display-all-issues'])
+            ->stdout()
         ;
     }
 
     #[DaggerFunction]
     #[Doc('Run PHPStan and returns the container it ran in.')]
-    public function phpstan(): Container
+    public function phpstan(): string
     {
         return $this->symfonyContainer
             ->withExec(['php', '-dmemory_limit=-1', './vendor/bin/phpstan', 'analyse'])
+            ->stdout()
         ;
     }
 
     #[DaggerFunction]
     #[Doc('Validate PHP-CS-Fixer and returns the container it ran in.')]
-    public function phpCsFixer(): Container
+    public function phpCsFixer(): string
     {
         return $this->symfonyContainer
             ->withExec(['./vendor/bin/php-cs-fixer', 'check', '-v', '--diff'])
+            ->stdout()
         ;
     }
 
@@ -85,22 +89,22 @@ final class TestsGotenbergBundle
 
         $outputs[] = async(fn (): array => [
             '  >> Running PHPUnit tests...',
-            $this->phpunit()->stdout(),
+            $this->phpunit(),
         ]);
 
         $outputs[] = async(fn (): array => [
             '  >> Validating dependencies...',
-            $this->validateDependencies()->stdout(),
+            $this->validateDependencies(),
         ]);
 
         $outputs[] = async(fn (): array => [
             '  >> Checking code style...',
-            $this->phpCsFixer()->stdout(),
+            $this->phpCsFixer(),
         ]);
 
         $outputs[] = async(fn (): array => [
             '  >> Checking phpstan...',
-            $this->phpstan()->stdout(),
+            $this->phpstan(),
         ]);
 
         $title = "Running tests for PHP {$this->getPhpVersion()}, Symfony {$this->getSymfonyVersion()}";

@@ -53,10 +53,10 @@ $ dagger develop
 
 ```shell
 $ # Run the PHPUnit 'unit' test suite with specific symfony or / and php version
-$ dagger call test --symfony-version '6.4.*' --php-version '8.2' phpunit stdout
+$ dagger call test --symfony-version '6.4.*' --php-version '8.2' phpunit
 
 $ # Make sure all dependencies are explicitly added to composer.json
-$ dagger call test --symfony-version '6.4.*' --php-version '8.2' validate-dependencies stdout
+$ dagger call test --symfony-version '6.4.*' --php-version '8.2' validate-dependencies
 
 $ # Generate the auto documentation for builders
 $ dagger call generate-docs export --path ./docs
@@ -88,7 +88,7 @@ tests-matrix    Execute all tests within matrix (PHP version, Symfony version).
 and here is the list of all tests available in `dagger call test` :
 
 ```shell
-$ dagger functions test # e.g.: dagger call test phpunit stdout
+$ dagger functions test # e.g.: dagger call test phpunit
 Name                    Description
 all                     Run all tests.
 php-cs-fixer            Validate PHP-CS-Fixer and returns the container it ran in.
@@ -128,7 +128,7 @@ $ ./vendor/bin/php-cs-fixer fix --diff
 ### Static Analysis
 
 ```shell
-$ dagger call test phpstan stdout
+$ dagger call test phpstan
 $ # or without dagger
 $ php -dmemory_limit=-1 ./vendor/bin/phpstan analyse
 ```
@@ -138,7 +138,7 @@ Detect potential issues in your code.
 ### Dependencies
 
 ```shell
-$ dagger call test validate-dependencies stdout
+$ dagger call test validate-dependencies
 $ # or without dagger
 $ ./vendor/bin/composer-dependency-analyser
 ```
