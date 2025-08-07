@@ -114,9 +114,9 @@ Maintain high code quality by following these steps before submitting a pull req
 Check your code for style violations:
 
 ```shell
-$ ./vendor/bin/php-cs-fixer check --diff
-$ # or using dagger
 $ dagger call test php-cs-fixer
+$ # or without dagger
+$ ./vendor/bin/php-cs-fixer check --diff
 ```
 
 Eventually, you can fix the issues automatically (without dagger):

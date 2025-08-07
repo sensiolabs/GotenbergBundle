@@ -80,13 +80,16 @@ class GotenbergBundle
         ;
     }
 
+    /**
+     * @return \Generator<int, array{string, string}>
+     */
     private function getMatrix(): \Generator
     {
         /** @var list<array{name: string, symfony-version: string, php: string, 'allow-failure': bool}> $matrix */
         $matrix = json_decode(file_get_contents(__DIR__.'/matrix-versions.json'), associative: true);
 
         foreach ($matrix as $row) {
-            yield $row['name'] => [$row['symfony-version'], $row['php']];
+            yield [$row['symfony-version'], $row['php']];
         }
     }
 
