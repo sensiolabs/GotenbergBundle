@@ -72,7 +72,7 @@ final class TestsGotenbergBundle
     public function phpCsFixer(): Container
     {
         return $this->symfonyContainer
-            ->withExec(['./vendor/bin/php-cs-fixer', 'check', '-v'])
+            ->withExec(['./vendor/bin/php-cs-fixer', 'check', '-v', '--diff'])
         ;
     }
 

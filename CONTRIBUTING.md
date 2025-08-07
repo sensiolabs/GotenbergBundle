@@ -40,7 +40,8 @@ $ composer install
 
 Ensure your changes work as expected by running the test suite:
 
-### Requirements
+### With dagger (recommended)
+#### Requirements
 
 Make sure you have [dagger >= v0.18.10](https://docs.dagger.io/install) installed. Then run
 
@@ -48,7 +49,7 @@ Make sure you have [dagger >= v0.18.10](https://docs.dagger.io/install) installe
 $ dagger develop
 ```
 
-### Run Tests
+#### Run Tests
 
 ```shell
 $ # Run the PHPUnit 'unit' test suite with specific symfony or / and php version
@@ -97,7 +98,8 @@ terminal                Get the container for tests.
 validate-dependencies   Validate composer dependencies and returns the container it ran in.
 ```
 
-### Run Tests with Coverage (optional)
+### Without dagger
+#### Run Tests with Coverage (optional)
 
 ```shell
 $ ./vendor/bin/phpunit --coverage-text
@@ -113,9 +115,11 @@ Check your code for style violations:
 
 ```shell
 $ ./vendor/bin/php-cs-fixer check --diff
+$ # or using dagger
+$ dagger call test php-cs-fixer
 ```
 
-Eventually, you can fix the issues automatically:
+Eventually, you can fix the issues automatically (without dagger):
 
 ```shell
 $ ./vendor/bin/php-cs-fixer fix --diff
@@ -124,7 +128,9 @@ $ ./vendor/bin/php-cs-fixer fix --diff
 ### Static Analysis
 
 ```shell
-$ dagger call test-phpstan stdout
+$ dagger call test phpstan stdout
+$ # or without dagger
+$ php -dmemory_limit=-1 ./vendor/bin/phpstan analyse
 ```
 
 Detect potential issues in your code.
@@ -132,7 +138,9 @@ Detect potential issues in your code.
 ### Dependencies
 
 ```shell
-$ dagger call test-validate-dependencies stdout
+$ dagger call test validate-dependencies stdout
+$ # or without dagger
+$ ./vendor/bin/composer-dependency-analyser
 ```
 
 Detect potential issues in composer.json dependencies.
