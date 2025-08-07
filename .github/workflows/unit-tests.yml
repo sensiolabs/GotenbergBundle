@@ -72,6 +72,6 @@ jobs:
         uses: 'dagger/dagger-for-github@8.0.0'
         with:
           version: "latest"
-          args: "test --symfony-version '^7.0' --php-version '8' validate-dependencies"
+          args: "test validate-dependencies"
         env:
           DAGGER_NO_NAG: '1'
