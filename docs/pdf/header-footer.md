@@ -25,6 +25,13 @@ You may have the possibility to add header or footer to your generated PDF.
 > When using header or footer, you need to think about adding margins to your content. Or your header/footer will be under your content.
 > By default, the content will occupy all available space.
 
+> [!TIP]
+> Chromium offers a neat trick to display the page number and the total number of pages.
+> You can use the following HTML code in your header or footer template:
+> ```html
+> Page <span class="pageNumber"></span> / <span class="totalPages"></span>
+> ```
+
 ## Twig file
 
 ```php
