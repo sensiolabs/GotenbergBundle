@@ -58,6 +58,8 @@ trait MetadataTrait
     ]))]
     public function metadata(array $metadata): static
     {
+        $this->warningIf('<', '8.3', 'The metadata option is not available.');
+
         $this->getBodyBag()->set('metadata', $metadata);
 
         return $this;
@@ -68,6 +70,8 @@ trait MetadataTrait
      */
     public function addMetadata(string $key, string $value): static
     {
+        $this->warningIf('<', '8.3', 'The metadata option is not available.');
+
         $this->getBodyBag()->set('metadata', [$key => $value] + $this->getBodyBag()->get('metadata', []));
 
         return $this;
