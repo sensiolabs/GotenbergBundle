@@ -12,7 +12,7 @@ final class VersionCompatibilityException extends RuntimeException
     public static function requires(string $operator, string|Version $version, string|\Stringable $message, \Throwable|null $previous = null): self
     {
         return new self(
-            message: "[Requires Gotenberg {$operator} {$version}] {$message}",
+            message: "Gotenberg {$operator} {$version} required: {$message}",
             previous: $previous,
         );
     }

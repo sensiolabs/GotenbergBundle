@@ -3,7 +3,9 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
@@ -23,6 +25,7 @@ use Symfony\Contracts\Service\ServiceSubscriberTrait;
  */
 abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface, ServiceSubscriberInterface
 {
+    use LoggerAwareTrait;
     use ServiceSubscriberTrait;
 
     protected ContainerInterface $container;
@@ -152,6 +155,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
      */
     private function normalizePayloadBody(): \Generator
     {
+        /** @var array<string, (\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, string>>)> $normalizers */
         $normalizers = [];
 
         $reflection = new \ReflectionClass(static::class);
@@ -168,6 +172,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         }
 
         $version = $this->getVersion();
+        $logger = $this->getLogger();
 
         foreach ($this->getBodyBag()->all() as $key => $value) {
             $normalizer = $normalizers[$key] ?? NormalizerFactory::noop();
@@ -176,7 +181,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                 throw new InvalidNormalizerException(\sprintf('Normalizer "%s" is not a valid callable function.', $key));
             }
 
-            yield from $normalizer($key, $value, $version);
+            yield from $normalizer($key, $value, $version, $logger);
         }
     }
 }

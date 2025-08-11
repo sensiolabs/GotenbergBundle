@@ -39,7 +39,11 @@ trait LoggerAwareTrait
                 '=' => '!=',
             };
 
-            $this->getLogger()?->warning("[Requires Gotenberg {$inversedOperator} {$version}] {$message}");
+            $this->getLogger()?->warning('Gotenberg {$operator} {$version} required: {$message}', [
+                'operator' => $inversedOperator,
+                'version' => $version,
+                'message' => $message,
+            ]);
         }
     }
 }

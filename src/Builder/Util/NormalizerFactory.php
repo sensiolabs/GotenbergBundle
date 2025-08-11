@@ -2,7 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Util;
 
+use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
+use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Version\Version;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -22,18 +24,28 @@ class NormalizerFactory
     }
 
     /**
-     * @return (\Closure(string, mixed): list<array<string, string>>)
+     * @return (\Closure(string, mixed, Version, LoggerInterface|null): list<array<string, string>>)
      */
     public static function unit(): \Closure
     {
-        return static function (string $key, mixed $value, Version $version): \Generator {
-            if ($version->isLowerThan('8.3')) { // TODO : add warning ?
-                yield [$key => trim((string) $value, 'in')];
+        return static function (string $key, mixed $value, Version $version, LoggerInterface|null $logger): \Generator {
+            [$value, $unit] = Unit::parse($value, Unit::Inches);
+
+            if ($version->isLowerThan('8.3')) {
+                if (Unit::Inches !== $unit) {
+                    $logger?->warning('Gotenberg {$operator} {$version} required: {$message}', [
+                        'operator' => '>=',
+                        'version' => '8.3',
+                        'message' => "Forcing inches unit instead of '{$unit->value}'.",
+                    ]);
+                }
+
+                yield [$key => (string) $value];
 
                 return;
             }
 
-            yield [$key => is_numeric($value) ? $value.'in' : (string) $value];
+            yield [$key => $value.$unit->value];
         };
     }
 
