@@ -15,6 +15,23 @@
 * Renamed arguments of the `fileName` method `$fileName` to `$fileNameWithoutExtension`
 * No file extension needed anymore for the `$fileNameWithoutExtension` argument of the `fileName` method
 
+```diff
+- $filename = 'my_filename.pdf'
++ $filename = 'my_filename'
+
+/** @var \SplFileInfo $file */
+$file = $gotenberg
+    ->html()
+    ->content('content.html.twig')
+    ->fileName($filename)
+    ->processor(new FileProcessor(new Filesystem(), \sys_get_temp_dir()))
+    ->generate()
+    ->process();
+;
+
+$file->getFilename();
+```
+
 ### Class and Behavior Changes
 Removed `CookieAwareTrait`, `DefaultBuilderTrait` and `AsyncBuilderTrait` in favor of a more flexible approach
 
