@@ -372,6 +372,10 @@ sensiolabs_gotenberg:
 
 </details>
 
+## Upgrade
+
+[UPGRADE FROM 0.4.0 to 1.0.0](./UPGRADE-1.0.md)
+
 ## Credits
 
 This bundle was inspired by [Gotenberg PHP](https://github.com/gotenberg/gotenberg-php).
