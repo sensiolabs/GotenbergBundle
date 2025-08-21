@@ -29,6 +29,9 @@ jobs:
       - name: 'Generate builder API doc'
         run: 'php ./docs/generate.php'
 
+      - name: 'Check links into PhpDoc'
+        run: 'php ./docs/CheckPhpDoc.php'
+
       - name: 'Check documentation'
         run: |
           DIFF=$(git status --short --renames ./docs)
