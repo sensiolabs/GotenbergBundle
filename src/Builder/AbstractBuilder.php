@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidNormalizerException;
+use Sensiolabs\GotenbergBundle\Exception\VersionCompatibilityException;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Sensiolabs\GotenbergBundle\Version\Version;
@@ -148,6 +149,13 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     protected function getVersion(): Version
     {
         return $this->getVersionFetcher()->get();
+    }
+
+    protected function introducedIn(string|Version $version): void
+    {
+        if ($this->getVersion()->isLowerThan($version)) {
+            throw VersionCompatibilityException::requires('>=', $version, 'This builder is not available.');
+        }
     }
 
     /**
