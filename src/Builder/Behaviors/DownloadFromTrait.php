@@ -43,7 +43,7 @@ trait DownloadFromTrait
             return $this;
         }
 
-        $this->warningIf('<', '8.10', 'The option downloadFrom is not available.');
+        $this->logWarningIfVersionIs('<', '8.10', 'The option downloadFrom is not available.');
 
         $value = $this->getBodyBag()->get('downloadFrom', []);
 

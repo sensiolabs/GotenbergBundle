@@ -24,7 +24,7 @@ trait FlattenTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('flatten'))]
     public function flatten(bool $bool = true): self
     {
-        $this->warningIf('<', '8.16', 'The flatten option is not available.');
+        $this->logWarningIfVersionIs('<', '8.16', 'The flatten option is not available.');
 
         $this->getBodyBag()->set('flatten', $bool);
 

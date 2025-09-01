@@ -42,7 +42,7 @@ trait FailOnTrait
     #[WithConfigurationNode(new ArrayNodeBuilder('fail_on_resource_http_status_codes', prototype: 'integer'))]
     public function failOnResourceHttpStatusCodes(array $statusCodes): static
     {
-        $this->warningIf('<', '8.13', 'The option failOnResourceHttpStatusCodes is not available.');
+        $this->logWarningIfVersionIs('<', '8.13', 'The option failOnResourceHttpStatusCodes is not available.');
 
         $this->getBodyBag()->set('failOnResourceHttpStatusCodes', $statusCodes);
 
@@ -58,7 +58,7 @@ trait FailOnTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('fail_on_resource_loading_failed'))]
     public function failOnResourceLoadingFailed(bool $bool = true): static
     {
-        $this->warningIf('<', '8.13', 'The option failOnResourceLoadingFailed is not available.');
+        $this->logWarningIfVersionIs('<', '8.13', 'The option failOnResourceLoadingFailed is not available.');
 
         $this->getBodyBag()->set('failOnResourceLoadingFailed', $bool);
 

@@ -28,7 +28,7 @@ trait LoggerAwareTrait
     /**
      * @param '>'|'<'|'>='|'<='|'=' $operator
      */
-    protected function warningIf(string $operator, string|Version $version, string|\Stringable $message): void
+    protected function logWarningIfVersionIs(string $operator, string|Version $version, string|\Stringable $message): void
     {
         if ($this->getVersion()->compare($operator, $version)) {
             $inversedOperator = match ($operator) {
