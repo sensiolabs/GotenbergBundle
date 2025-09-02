@@ -52,7 +52,7 @@ class CheckPhpDoc
     /**
      * @param 'php'|'md' $extension
      */
-    private function getFiles(array $dir, string $extension): \Generator
+    private function getFiles(array $dir, string $extension): Generator
     {
         foreach ($dir as $path) {
             $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
@@ -64,6 +64,7 @@ class CheckPhpDoc
             }
         }
     }
+
     private function extractUrls(string $file, string $extension): array
     {
         $content = file_get_contents($file);
