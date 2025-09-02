@@ -6,67 +6,86 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpClient\HttpClient;
 
 require_once \dirname(__DIR__).'/vendor/autoload.php';
 
 class CheckPhpDoc
 {
-    public function checkAllSeeUrls(array $dirs, OutputInterface $output): void
-    {
-        $files = $this->getPhpFiles($dirs);
+    private const BUILDERS_DIR = [
+        __DIR__.'/../src/Builder/Pdf',
+        __DIR__.'/../src/Builder/Screenshot',
+    ];
 
+    private const DOCS_DIR = __DIR__;
+
+    private const README_DIR = __DIR__.'/../README.md';
+
+    public function checkAllUrls(OutputInterface $output): void
+    {
         $progressBar = new ProgressIndicator($output);
         $progressBar->start('Processing...');
 
+        $urls = [];
+        $files = $this->getFiles(self::BUILDERS_DIR, 'php');
         foreach ($files as $file) {
-            $urls = $this->extractSeeUrls($file);
+            array_push($urls, ...$this->extractUrls($file, 'php'));
+        }
 
-            foreach ($urls as $url) {
-                $this->checkUrl($url);
-                $progressBar->advance();
-            }
+        $files = $this->getFiles([self::DOCS_DIR], 'md');
+        foreach ($files as $file) {
+            array_push($urls, ...$this->extractUrls($file, 'md'));
+        }
+
+        array_push($urls, ...$this->extractUrls(self::README_DIR, 'md'));
+        $urls = array_unique($urls);
+
+        foreach ($urls as $url) {
+            $this->checkUrl($url);
+            $progressBar->advance();
         }
 
         $progressBar->finish('Finished');
     }
 
-    private function getPhpFiles(array $paths): array
+    /**
+     * @param 'php'|'md' $extension
+     */
+    private function getFiles(array $dir, string $extension): \Generator
     {
-        $files = [];
-
-        foreach ($paths as $path) {
+        foreach ($dir as $path) {
             $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
 
             foreach ($iterator as $file) {
-                if ($file->isFile() && pathinfo($file, \PATHINFO_EXTENSION) === 'php') {
-                    $files[] = $file->getPathname();
+                if ($file->isFile() && pathinfo($file, \PATHINFO_EXTENSION) === $extension) {
+                    yield $file->getPathname();
                 }
             }
         }
-
-        return $files;
     }
-
-    private function extractSeeUrls(string $file): array
+    private function extractUrls(string $file, string $extension): array
     {
         $content = file_get_contents($file);
-        preg_match_all('/@see\s+(https?:\/\/[^\s\*]+)/', $content, $matches);
+
+        match ($extension) {
+            'php' => preg_match_all('/@see\s+(https?:\/\/[^\s\*]+)/', $content, $matches),
+            'md' => preg_match_all('/\[[^\]]+\]\((https?:\/\/[^\s\*)]+)\)/', $content, $matches),
+        };
 
         return $matches[1] ?? [];
     }
 
     private function checkUrl(string $url): void
     {
-        $externalDoc = @file_get_contents($url);
-        if (!$externalDoc) {
-            throw new RuntimeException('Unable to read document');
-        }
+        $client = HttpClient::create();
+        $response = $client->request('GET', $url);
 
+        $crawler = new Crawler($response->getContent());
         $anchor = strstr($url, '#');
-        if ($anchor) {
-            $id = str_replace('#', '', $anchor);
 
-            if (str_contains($externalDoc, 'id="'.$id.'"') || str_contains($externalDoc, "name='{$id}'")) {
+        if ($anchor) {
+            if ($crawler->filter($anchor)->count() > 0 || $crawler->filter('a[name="'.str_replace('#', '', $anchor).'"]')->count() > 0) {
                 return;
             }
 
@@ -80,20 +99,15 @@ $application->register('check')
     ->setCode(function (OutputInterface $output, SymfonyStyle $io) {
         $checkPhpDoc = new CheckPhpDoc();
 
-        $buildersDir = [
-            __DIR__.'/../src/Builder/Pdf',
-            __DIR__.'/../src/Builder/Screenshot',
-        ];
-
         try {
-            $checkPhpDoc->checkAllSeeUrls($buildersDir, $output);
+            $checkPhpDoc->checkAllUrls($output);
         } catch (RuntimeException $e) {
             $io->error($e->getMessage());
 
             return Command::FAILURE;
         }
 
-        $io->success('All external docs are availble.');
+        $io->success('All external links are valid.');
 
         return Command::SUCCESS;
     })

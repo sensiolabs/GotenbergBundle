@@ -178,7 +178,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('extra_http_headers');
 
         return $treeBuilder->getRootNode()
-            ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers')
+            ->info('HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium')
             ->defaultValue([])
             ->normalizeKeys(false)
             ->useAttributeAsKey('name')

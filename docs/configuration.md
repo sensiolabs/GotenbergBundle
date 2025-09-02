@@ -183,7 +183,7 @@ sensiolabs_gotenberg:
                 # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 extra_http_headers:
 
                     # Prototype
@@ -386,7 +386,7 @@ sensiolabs_gotenberg:
                 # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 extra_http_headers: []
 
                     # Example:
@@ -588,7 +588,7 @@ sensiolabs_gotenberg:
                 # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 extra_http_headers: []
 
                     # Example:
@@ -775,16 +775,16 @@ sensiolabs_gotenberg:
                 # Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes. - default false. https://gotenberg.dev/docs/routes#page-properties-libreoffice
                 add_original_document_as_stream: null
 
-                # Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format. - default false. https://gotenberg.dev/docs/routes#images-libreoffice
+                # Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format. - default false. https://gotenberg.dev/docs/routes#compress-libreoffice
                 lossless_image_compression: null
 
-                # Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100. - default 90. https://gotenberg.dev/docs/routes#images-libreoffice
+                # Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100. - default 90. https://gotenberg.dev/docs/routes#compress-libreoffice
                 quality:              null
 
-                # Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution. - default false. https://gotenberg.dev/docs/routes#images-libreoffice
+                # Specify if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution. - default false. https://gotenberg.dev/docs/routes#compress-libreoffice
                 reduce_image_resolution: null
 
-                # If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200. - default 300. https://gotenberg.dev/docs/routes#images-libreoffice
+                # If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200. - default 300. https://gotenberg.dev/docs/routes#compress-libreoffice
                 max_image_resolution: null # One of 75; 150; 300; 600; 1200
 
                 # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
@@ -972,7 +972,7 @@ sensiolabs_gotenberg:
                 # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 extra_http_headers: []
 
                     # Example:
@@ -1099,7 +1099,7 @@ sensiolabs_gotenberg:
                 # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 extra_http_headers: []
 
                     # Example:
@@ -1226,7 +1226,7 @@ sensiolabs_gotenberg:
                 # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
                 extra_http_headers: []
 
                     # Example:
@@ -1370,7 +1370,7 @@ sensiolabs_gotenberg:
 ```
 
 > [!TIP]
-> For more information about [custom HTTP headers](https://gotenberg.dev/docs/routes#custom-http-headers) & [webhook custom HTTP headers](https://gotenberg.dev/docs/configuration#webhook).
+> For more information about [custom HTTP headers](https://gotenberg.dev/docs/routes#custom-http-headers-chromium) & [webhook custom HTTP headers](https://gotenberg.dev/docs/configuration#webhook).
 
 ## Invalid HTTP Status Codes
 
