@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Routing\RequestContext;
 
 /**
@@ -131,6 +132,7 @@ class SensiolabsGotenbergExtension extends Extension
 
         $container->registerForAutoconfiguration(BuilderInterface::class)
             ->addTag('sensiolabs_gotenberg.builder')
+            ->setConfigurator(new Reference('sensiolabs_gotenberg.builder_configurator'))
         ;
 
         $container->registerForAutoconfiguration(AbstractBuilder::class);
