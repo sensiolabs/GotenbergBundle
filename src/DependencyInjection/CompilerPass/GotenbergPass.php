@@ -28,8 +28,12 @@ final class GotenbergPass implements CompilerPassInterface
             ;
 
             $class = $serviceDefinition->getClass();
+            $builders = $this->builderStack->getBuilders();
+            if (null === $class || !\array_key_exists($class, $builders)) {
+                throw new \RuntimeException(\sprintf('Unknown builder class "%s"', $class));
+            }
 
-            $type = $this->builderStack->getBuilders()[$class];
+            $type = $builders[$class];
 
             $builderPerType[$type] ??= [];
             $builderPerType[$type][$serviceId] = new Reference($serviceId);
