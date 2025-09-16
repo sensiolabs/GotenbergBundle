@@ -89,14 +89,15 @@ class CheckPhpDoc
     private function checkContentResponse(string $url, string $content): void
     {
         $crawler = new Crawler($content);
-        $anchor = strstr($url, '#');
+        $parsedUrl = parse_url($url);
 
-        if ($anchor) {
-            if ($crawler->filter($anchor)->count() > 0 || $crawler->filter('a[name="'.str_replace('#', '', $anchor).'"]')->count() > 0) {
+        if (\array_key_exists('fragment', $parsedUrl)) {
+            $fragment = $parsedUrl['fragment'];
+            if ($crawler->filter('#'.$fragment)->count() > 0 || $crawler->filter('a[name="'.$fragment.'"]')->count() > 0) {
                 return;
             }
 
-            throw new RuntimeException("Cannot find anchor '{$anchor}' for {$url}, remove or update the link in the PHPdoc");
+            throw new RuntimeException("Cannot find anchor '{$fragment}' for {$url}, remove or update the link in the PHPdoc");
         }
     }
 }
