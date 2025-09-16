@@ -13,14 +13,15 @@ require_once \dirname(__DIR__).'/vendor/autoload.php';
 
 class CheckPhpDoc
 {
-    private const BUILDERS_DIR = [
+    private const AVAILABLE_EXTENSIONS = ['php', 'md'];
+
+    private const DIR_AND_FILES_TO_CHECK = [
         __DIR__.'/../src/Builder/Pdf',
         __DIR__.'/../src/Builder/Screenshot',
+        __DIR__,
+        __DIR__.'/../README.md',
+        __DIR__.'/../src/DependencyInjection/Configuration.php',
     ];
-
-    private const DOCS_DIR = __DIR__;
-
-    private const README_DIR = __DIR__.'/../README.md';
 
     public function checkAllUrls(OutputInterface $output): void
     {
@@ -28,61 +29,66 @@ class CheckPhpDoc
         $progressBar->start('Processing...');
 
         $urls = [];
-        $files = $this->getFiles(self::BUILDERS_DIR, 'php');
+        $files = $this->getFiles(self::DIR_AND_FILES_TO_CHECK);
         foreach ($files as $file) {
-            array_push($urls, ...$this->extractUrls($file, 'php'));
+            array_push($urls, ...$this->extractUrls($file));
         }
 
-        $files = $this->getFiles([self::DOCS_DIR], 'md');
-        foreach ($files as $file) {
-            array_push($urls, ...$this->extractUrls($file, 'md'));
-        }
-
-        array_push($urls, ...$this->extractUrls(self::README_DIR, 'md'));
         $urls = array_unique($urls);
 
+        $client = HttpClient::create();
+        $allResponses = [];
         foreach ($urls as $url) {
-            $this->checkUrl($url);
-            $progressBar->advance();
+            $allResponses[] = $client->request('GET', $url);
+        }
+
+        foreach ($client->stream($allResponses) as $response => $chunk) {
+            if ($chunk->isLast()) {
+                $this->checkContentResponse($response->getInfo('url'), $response->getContent());
+                $progressBar->advance();
+            }
         }
 
         $progressBar->finish('Finished');
     }
 
-    /**
-     * @param 'php'|'md' $extension
-     */
-    private function getFiles(array $dir, string $extension): Generator
+    private function getFiles(array $paths): Generator
     {
-        foreach ($dir as $path) {
-            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+        foreach ($paths as $path) {
+            if (is_file($path)) {
+                $splInfo = new SplFileInfo($path);
+                if (!\in_array($splInfo->getExtension(), self::AVAILABLE_EXTENSIONS, true)) {
+                    throw new RuntimeException(\sprintf('File "%s" with "%s" extension is not allowed.', $splInfo->getFilename(), $splInfo->getExtension()));
+                }
 
+                yield $splInfo;
+                continue;
+            }
+
+            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
             foreach ($iterator as $file) {
-                if ($file->isFile() && pathinfo($file, \PATHINFO_EXTENSION) === $extension) {
-                    yield $file->getPathname();
+                if ($file->isFile() && \in_array(pathinfo($file, \PATHINFO_EXTENSION), self::AVAILABLE_EXTENSIONS, true)) {
+                    yield $file;
                 }
             }
         }
     }
 
-    private function extractUrls(string $file, string $extension): array
+    private function extractUrls(SplFileInfo $file): array
     {
-        $content = file_get_contents($file);
+        $content = file_get_contents($file->getPathname());
 
-        match ($extension) {
-            'php' => preg_match_all('/@see\s+(https?:\/\/[^\s\*]+)/', $content, $matches),
+        match ($file->getExtension()) {
+            'php' => preg_match_all('/(?:@see\s+|->info\([^)]*)(https?:\/\/[^\s\'")]+)(?:[^)]*\))?/', $content, $matches),
             'md' => preg_match_all('/\[[^\]]+\]\((https?:\/\/[^\s\*)]+)\)/', $content, $matches),
         };
 
         return $matches[1] ?? [];
     }
 
-    private function checkUrl(string $url): void
+    private function checkContentResponse(string $url, string $content): void
     {
-        $client = HttpClient::create();
-        $response = $client->request('GET', $url);
-
-        $crawler = new Crawler($response->getContent());
+        $crawler = new Crawler($content);
         $anchor = strstr($url, '#');
 
         if ($anchor) {

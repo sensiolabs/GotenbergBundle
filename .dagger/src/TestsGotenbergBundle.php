@@ -106,6 +106,16 @@ final class TestsGotenbergBundle
     }
 
     #[DaggerFunction]
+    #[Doc('Validate all URL docs.')]
+    public function checkUrlDocs(): string
+    {
+        return $this->symfonyContainer
+            ->withExec(['php', './docs/CheckPhpDoc.php'])
+            ->stdout()
+        ;
+    }
+
+    #[DaggerFunction]
     #[Doc('Run all tests.')]
     #[ReturnsListOfType('string')]
     public function all(): array
@@ -130,6 +140,11 @@ final class TestsGotenbergBundle
         $outputs[] = async(fn (): array => [
             '  >> Checking phpstan...',
             $this->phpstan(),
+        ]);
+
+        $outputs[] = async(fn (): array => [
+            '  >> Checking URL docs...',
+            $this->checkUrlDocs(),
         ]);
 
         $title = "Running tests for PHP {$this->getPhpVersion()}, Symfony {$this->getSymfonyVersion()}";
