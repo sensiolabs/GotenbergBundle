@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\SecurityTokenStorageTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
@@ -14,6 +15,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @see https://gotenberg.dev/docs/routes#cookies-chromium
@@ -24,6 +26,7 @@ trait CookieTrait
 {
     use LoggerAwareTrait;
     use RequestAwareTrait;
+    use SecurityTokenStorageTrait;
 
     abstract protected function getBodyBag(): BodyBag;
 
@@ -92,7 +95,7 @@ trait CookieTrait
 
     public function forwardCookie(string $name): static
     {
-        $request = $this->getCurrentRequest();
+        $request = $this->getRequestStack()->getCurrentRequest();
 
         if (null === $request) {
             $this->getLogger()?->debug('Cookie {sensiolabs_gotenberg.cookie_name} cannot be forwarded because there is no Request.', [
@@ -102,6 +105,26 @@ trait CookieTrait
             return $this;
         }
 
+        return $this->setForwardCookie($request, $name);
+    }
+
+    public function forwardAuthentication(): static
+    {
+        $request = $this->getRequestStack()->getCurrentRequest();
+
+        if (null === $request) {
+            $this->getLogger()?->debug('Cookie cannot be forwarded with authentication because there is no Request.');
+
+            return $this;
+        }
+
+        $request->getSession()->save();
+
+        return $this->setForwardCookie($request, $request->getSession()->getName());
+    }
+
+    private function setForwardCookie(Request $request, string $name): static
+    {
         if (false === $request->cookies->has($name)) {
             $this->getLogger()?->debug('Cookie {sensiolabs_gotenberg.cookie_name} does not exists.', [
                 'sensiolabs_gotenberg.cookie_name' => $name,
@@ -110,6 +133,7 @@ trait CookieTrait
             return $this;
         }
 
+        // In docker context: $request->getHost() = localhost (don't work) but works with docker service name, maybe get host from request_context?
         return $this->setCookie($name, [
             'name' => $name,
             'value' => (string) $request->cookies->get($name),

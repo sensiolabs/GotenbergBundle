@@ -50,6 +50,7 @@
         "symfony/http-client": "^6.4 || ^7.0",
         "symfony/monolog-bundle": "^3.10",
         "symfony/routing": "^6.4 || ^7.0",
+        "symfony/security-bundle": "^7.3",
         "symfony/stopwatch": "^6.4 || ^7.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
         "symfony/var-dumper": "^6.4 || ^7.0",
@@ -68,6 +69,7 @@
         "symfony/twig-bundle": "Allows you to use Twig to render templates into PDF.",
         "monolog/monolog": "Enables logging througout the generating process.",
         "async-aws/s3": "Upload any file to aws s3 compatible endpoints supporting multi part upload without memory overhead.",
-        "league/flysystem-bundle": "Upload any file using this filesystem abstraction package."
+        "league/flysystem-bundle": "Upload any file using this filesystem abstraction package.",
+        "symfony/security-bundle": "Allows you to generate PDF as a specific user."
     }
 }
