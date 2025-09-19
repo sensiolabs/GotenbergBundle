@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestContextAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\SecurityTokenStorageTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
@@ -27,6 +28,7 @@ trait CookieTrait
     use LoggerAwareTrait;
     use RequestAwareTrait;
     use SecurityTokenStorageTrait;
+    use RequestContextAwareTrait;
 
     abstract protected function getBodyBag(): BodyBag;
 
@@ -133,11 +135,10 @@ trait CookieTrait
             return $this;
         }
 
-        // In docker context: $request->getHost() = localhost (don't work) but works with docker service name, maybe get host from request_context?
         return $this->setCookie($name, [
             'name' => $name,
             'value' => (string) $request->cookies->get($name),
-            'domain' => $request->getHost(),
+            'domain' => $this->getRequestContext()?->getHost() ?? $request->getHost(),
         ]);
     }
 
