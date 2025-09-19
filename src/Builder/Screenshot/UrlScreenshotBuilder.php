@@ -6,18 +6,16 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumScreenshotTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestContextAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 #[WithBuilderConfiguration(type: 'screenshot', name: 'url')]
 final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
     use ChromiumScreenshotTrait;
-    use ServiceSubscriberTrait;
+    use RequestContextAwareTrait;
 
     public const ENDPOINT = '/forms/chromium/screenshot/url';
 
@@ -46,19 +44,6 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
         $this->getBodyBag()->set('route', [$name, $parameters]);
 
         return $this;
-    }
-
-    #[SubscribedService('.sensiolabs_gotenberg.request_context', nullable: true)]
-    protected function getRequestContext(): RequestContext|null
-    {
-        if (
-            !$this->container->has('.sensiolabs_gotenberg.request_context')
-            || !($requestContext = $this->container->get('.sensiolabs_gotenberg.request_context')) instanceof RequestContext
-        ) {
-            return null;
-        }
-
-        return $requestContext;
     }
 
     protected function getEndpoint(): string
