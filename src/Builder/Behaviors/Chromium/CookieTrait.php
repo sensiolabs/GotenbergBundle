@@ -127,7 +127,7 @@ trait CookieTrait
     }
 
     /**
-     * Usage for CLI command.
+     * For CLI generation usage.
      */
     public function asUser(UserInterface $user, string $firewallName = 'main'): static
     {

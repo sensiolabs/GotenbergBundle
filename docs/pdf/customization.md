@@ -1,63 +1,66 @@
 # PDF customization
 
-> [!NOTE]  
+> [!NOTE]
 > All of these functions are available for `HtmlPdfBuilder`, `UrlPdfBuilder` and
-> `MarkdownPdfBuilder`.  
+> `MarkdownPdfBuilder`.
 > To customize `LibreOfficePdfBuilder` see the related [documentation](office-builder.md).
 
 ## Available functions
 
 ### Render
-[paperSize](#paperSize)  
-[paperStandardSize](#paperStandardSize)  
-[paperWidth](#paperWidth)  
-[paperHeight](#paperHeight)  
-[margins](#margins)  
-[marginTop](#margins)  
-[marginBottom](#margins)  
-[marginLeft](#margins)  
-[marginRight](#margins)  
-[preferCssPageSize](#preferCssPageSize)  
-[printBackground](#printBackground)  
-[omitBackground](#omitBackground)  
-[landscape](#landscape)  
-[scale](#scale)  
-[nativePageRanges](#nativePageRanges)  
-[splitMode](#splitMode)  
-[splitSpan](#splitSpan)  
-[splitUnify](#splitUnify)  
+[paperSize](#paperSize)
+[paperStandardSize](#paperStandardSize)
+[paperWidth](#paperWidth)
+[paperHeight](#paperHeight)
+[margins](#margins)
+[marginTop](#margins)
+[marginBottom](#margins)
+[marginLeft](#margins)
+[marginRight](#margins)
+[preferCssPageSize](#preferCssPageSize)
+[printBackground](#printBackground)
+[omitBackground](#omitBackground)
+[landscape](#landscape)
+[scale](#scale)
+[nativePageRanges](#nativePageRanges)
+[splitMode](#splitMode)
+[splitSpan](#splitSpan)
+[splitUnify](#splitUnify)
 
-### Additional content 
-[header and footer](#header-and-footer)   
-[headerFile and footerFile](#headerfile-and-footerfile)   
+### Additional content
+[header and footer](#header-and-footer)
+[headerFile and footerFile](#headerfile-and-footerfile)
 [download from](#download-from)
 
 ### Style
-[assets](../assets.md)  
-[addAsset](../assets.md)  
+[assets](../assets.md)
+[addAsset](../assets.md)
 
 ### Request
-[waitDelay](#waitDelay)  
-[waitForExpression](#waitForExpression)  
-[emulatedMediaType](#emulatedMediaType)  
-[cookies](#cookies)  
-[setCookie](#setCookie)  
-[addCookies](#addCookies)  
-[userAgent](#userAgent)  
-[extraHttpHeaders](#extraHttpHeaders)  
-[addExtraHttpHeaders](#addExtraHttpHeaders)  
-[failOnHttpStatusCodes](#failOnHttpStatusCodes)  
-[failOnResourceHttpStatusCodes](#failOnResourceHttpStatusCodes)  
-[failOnResourceLoadingFailed](#failOnResourceLoadingFailed)  
-[failOnConsoleExceptions](#failOnConsoleExceptions)  
-[skipNetworkIdleEvent](#skipNetworkIdleEvent)  
+[waitDelay](#waitDelay)
+[waitForExpression](#waitForExpression)
+[emulatedMediaType](#emulatedMediaType)
+[cookies](#cookies)
+[setCookie](#setCookie)
+[addCookies](#addCookies)
+[forwardCookie](#forwardCookie)
+[forwardAuthentication](#forwardAuthentication)
+[asUser](#asUser)
+[userAgent](#userAgent)
+[extraHttpHeaders](#extraHttpHeaders)
+[addExtraHttpHeaders](#addExtraHttpHeaders)
+[failOnHttpStatusCodes](#failOnHttpStatusCodes)
+[failOnResourceHttpStatusCodes](#failOnResourceHttpStatusCodes)
+[failOnResourceLoadingFailed](#failOnResourceLoadingFailed)
+[failOnConsoleExceptions](#failOnConsoleExceptions)
+[skipNetworkIdleEvent](#skipNetworkIdleEvent)
 
 ### Formatting
-[metadata](#metadata)  
-[addMetadata](#addMetadata)  
-[pdfFormat](#pdfFormat)  
-[pdfUniversalAccess](#pdfUniversalAccess)  
-[generateDocumentOutline](#generateDocumentOutline)  
+[metadata](#metadata)
+[addMetadata](#addMetadata)
+[pdfFormat](#pdfFormat)
+[pdfUniversalAccess](#pdfUniversalAccess)
+[generateDocumentOutline](#generateDocumentOutline)
 [generateTaggedPdf](#generateTaggedPdf)
 
 ## Render
@@ -66,7 +69,7 @@
 
 Default: `8.5 inches x 11 inches`
 
-You can override the default paper size with `height`, `width` and `unit`.   
+You can override the default paper size with `height`, `width` and `unit`.
 `unit` is optional but by default in inches.
 
 ```php
@@ -135,7 +138,7 @@ class MyInvoiceSize implements PaperSizeInterface
     {
         return 200;
     }
-    
+
     public function unit(): Unit
     {
         return Unit::Inches;
@@ -147,7 +150,7 @@ class MyInvoiceSize implements PaperSizeInterface
 
 Default: `8.5 inches`
 
-You can override the default `width` and `unit`.   
+You can override the default `width` and `unit`.
 `unit` is optional but by default in inches.
 
 ```php
@@ -179,7 +182,7 @@ class YourController
 
 Default: `11 inches`
 
-You can override the default `height` and `unit`.   
+You can override the default `height` and `unit`.
 `unit` is optional but by default in inches.
 
 ```php
@@ -211,8 +214,8 @@ class YourController
 
 Default: `0.39 inches` on all four sides
 
-You can override the default margins, with the arguments `top`, `bottom`, `right`, 
-`left` and `unit`.   
+You can override the default margins, with the arguments `top`, `bottom`, `right`,
+`left` and `unit`.
 `unit` is optional but by default in inches.
 
 ```php
@@ -237,7 +240,7 @@ class YourController
 }
 ```
 
-Or you can override all margins individually with respective `unit`.   
+Or you can override all margins individually with respective `unit`.
 `unit` is always optional but by default in inches.
 
 ```php
@@ -521,7 +524,7 @@ class YourController
 
 ## Additional content
 
-> [!WARNING]  
+> [!WARNING]
 > Every Header or Footer templates you pass to Gotenberg need to have
 > the following structure.
 > ```html
@@ -537,7 +540,7 @@ class YourController
 >        </html>
 > ```
 >
-> Some other limitations exist about header and footer.  
+> Some other limitations exist about header and footer.
 > For more information about [Header and Footer](https://gotenberg.dev/docs/routes#header-footer-chromium).
 
 ### header and footer
@@ -574,9 +577,9 @@ class YourController
 
 ### headerFile and footerFile
 
-> [!WARNING]  
+> [!WARNING]
 > As assets files, by default the HTML files are fetch in the assets folder of
-> your application.  
+> your application.
 > If your  HTML files are in another folder, you can override the default value
 > of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
 
@@ -626,7 +629,7 @@ class YourController
 
 ### download from
 
-> [!WARNING]  
+> [!WARNING]
 > URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
 
 To download files resource from URLs.
@@ -652,7 +655,7 @@ class YourController
                 ],
                 [
                     'url' => 'http://example.com/url/to/file',
-                    'extraHttpHeaders' => 
+                    'extraHttpHeaders' =>
                     [
                         'MyHeaderOne' => 'MyValue',
                         'MyHeaderTwo' => 'MyValue',
@@ -872,6 +875,96 @@ class YourController
 }
 ```
 
+### forwardCookie
+
+If you want to forward existing cookie from the current request.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->forwardCookie('my_cookie')
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+### forwardAuthentication
+
+If you want to forward the authentication cookie from the current request.
+Can be useful to generate a PDF from restricted route.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->url()
+            ->route('auth_route')
+            ->forwardAuthentication()
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+### asUser
+
+If you want to generate a PDF for a restricted route in a CLI context.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+#[AsCommand(name: 'app:create-pdf', description: 'Create pdf')]
+final class CreatePdf extends Command
+{
+    public function __construct(
+        private readonly GotenbergPdfInterface $gotenberg,
+        private readonly UserProviderInterface $userProvider,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $user = $this->userProvider->loadUserByIdentifier('john_doe');
+
+        return $this->gotenberg
+            ->url()
+            ->route('auth_route')
+            ->asUser($user)
+            ->processor(new FileProcessor(new Filesystem(), dirname(__DIR__).'/../var/pdf'))
+            ->generate()
+            ->process()
+        ;
+
+        $output->writeln('PDF generated');
+
+        return Command::SUCCESS;
+    }
+}
+```
+
 ### userAgent()
 
 default: `None`
@@ -997,7 +1090,7 @@ class YourController
 
 default: `None`
 
-Return a 409 Conflict response if the HTTP status code from at least one resource 
+Return a 409 Conflict response if the HTTP status code from at least one resource
 is not acceptable.
 
 ```php
@@ -1029,7 +1122,7 @@ class YourController
 
 default: `false`
 
-Return a 409 Conflict response if there are exceptions  to load at least one resource 
+Return a 409 Conflict response if there are exceptions  to load at least one resource
 in the Chromium.
 
 ```php

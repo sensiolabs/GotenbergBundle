@@ -3,34 +3,37 @@
 ## Available functions
 
 ### Render
-[width](#width)  
-[height](#height)  
-[clip](#clip)  
-[quality](#quality)  
-[omitBackground](#omitBackground)  
+[width](#width)
+[height](#height)
+[clip](#clip)
+[quality](#quality)
+[omitBackground](#omitBackground)
 
 ### Additional content
 [download from](#download-from)
 
 ### Style
-[assets](../assets.md)  
+[assets](../assets.md)
 [addAsset](../assets.md)
 
 ### Request
 [optimizeForSpeed](#optimizeForSpeed)
-[waitDelay](#waitDelay)  
-[waitForExpression](#waitForExpression)  
-[emulatedMediaType](#emulatedMediaType)  
-[cookies](#cookies)  
-[setCookie](#setCookie)  
-[addCookies](#addCookies)  
-[userAgent](#userAgent)  
-[extraHttpHeaders](#extraHttpHeaders)  
-[addExtraHttpHeaders](#addExtraHttpHeaders)  
-[failOnHttpStatusCodes](#failOnHttpStatusCodes)  
-[failOnResourceHttpStatusCodes](#failOnResourceHttpStatusCodes)  
-[failOnResourceLoadingFailed](#failOnResourceLoadingFailed)  
-[failOnConsoleExceptions](#failOnConsoleExceptions)  
+[waitDelay](#waitDelay)
+[waitForExpression](#waitForExpression)
+[emulatedMediaType](#emulatedMediaType)
+[cookies](#cookies)
+[setCookie](#setCookie)
+[addCookies](#addCookies)
+[forwardCookie](#forwardCookie)
+[forwardAuthentication](#forwardAuthentication)
+[asUser](#asUser)
+[userAgent](#userAgent)
+[extraHttpHeaders](#extraHttpHeaders)
+[addExtraHttpHeaders](#addExtraHttpHeaders)
+[failOnHttpStatusCodes](#failOnHttpStatusCodes)
+[failOnResourceHttpStatusCodes](#failOnResourceHttpStatusCodes)
+[failOnResourceLoadingFailed](#failOnResourceLoadingFailed)
+[failOnConsoleExceptions](#failOnConsoleExceptions)
 [skipNetworkIdleEvent](#skipNetworkIdleEvent)
 
 ### Formatting
@@ -191,7 +194,7 @@ class YourController
 
 ### download from
 
-> [!WARNING]  
+> [!WARNING]
 > URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
 
 To download files resource from URLs.
@@ -217,7 +220,7 @@ class YourController
                 ],
                 [
                     'url' => 'http://example.com/url/to/file',
-                    'extraHttpHeaders' => 
+                    'extraHttpHeaders' =>
                     [
                         'MyHeaderOne' => 'MyValue',
                         'MyHeaderTwo' => 'MyValue',
@@ -283,6 +286,9 @@ class YourController
     {
         return $gotenberg
             ->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
             ->waitDelay('5s')
             ->generate()
             ->stream()
@@ -309,6 +315,9 @@ class YourController
     {
         return $gotenberg
             ->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
             ->waitForExpression("window.globalVar === 'ready'")
             ->generate()
             ->stream()
@@ -400,6 +409,9 @@ class YourController
     {
         return $gotenberg
             ->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
             ->setCookie([
                 'name' => 'my_cookie',
                 'value' => 'symfony',
@@ -431,6 +443,9 @@ class YourController
     {
         return $gotenberg
             ->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
             ->addCookies([[
                 'name' => 'my_cookie',
                 'value' => 'symfony',
@@ -442,6 +457,96 @@ class YourController
             ->generate()
             ->stream()
         ;
+    }
+}
+```
+
+### forwardCookie
+
+If you want to forward existing cookie from the current request.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->forwardCookie('my_cookie')
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+### forwardAuthentication
+
+If you want to forward the authentication cookie from the current request.
+Can be useful to generate a screenshot from restricted route.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->url()
+            ->route('auth_route')
+            ->forwardAuthentication()
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+### asUser
+
+If you want to generate a screenshot for a restricted route in a CLI context.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+#[AsCommand(name: 'app:create-pdf', description: 'Create pdf')]
+final class CreatePdf extends Command
+{
+    public function __construct(
+        private readonly GotenbergScreenshotInterface $gotenberg,
+        private readonly UserProviderInterface $userProvider,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $user = $this->userProvider->loadUserByIdentifier('john_doe');
+
+        return $this->gotenberg
+            ->url()
+            ->route('auth_route')
+            ->asUser($user)
+            ->processor(new FileProcessor(new Filesystem(), dirname(__DIR__).'/../var/screenshot'))
+            ->generate()
+            ->process()
+        ;
+
+        $output->writeln('PDF generated');
+
+        return Command::SUCCESS;
     }
 }
 ```
