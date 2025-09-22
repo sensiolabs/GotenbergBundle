@@ -50,7 +50,7 @@
         "symfony/http-client": "^6.4 || ^7.0",
         "symfony/monolog-bundle": "^3.10",
         "symfony/routing": "^6.4 || ^7.0",
-        "symfony/security-bundle": "^7.3",
+        "symfony/security-bundle": "^6.4 || ^7.0",
         "symfony/stopwatch": "^6.4 || ^7.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
         "symfony/var-dumper": "^6.4 || ^7.0",

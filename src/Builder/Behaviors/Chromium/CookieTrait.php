@@ -7,7 +7,6 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestContextAwareTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\SecurityTokenStorageTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
@@ -17,6 +16,9 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @see https://gotenberg.dev/docs/routes#cookies-chromium
@@ -27,7 +29,6 @@ trait CookieTrait
 {
     use LoggerAwareTrait;
     use RequestAwareTrait;
-    use SecurityTokenStorageTrait;
     use RequestContextAwareTrait;
 
     abstract protected function getBodyBag(): BodyBag;
@@ -123,6 +124,29 @@ trait CookieTrait
         $request->getSession()->save();
 
         return $this->setForwardCookie($request, $request->getSession()->getName());
+    }
+
+    public function asUser(UserInterface $user, string $firewallName = 'main'): static
+    {
+        if (!class_exists(UsernamePasswordToken::class)) {
+            throw new \LogicException(\sprintf('UsernamePasswordToken is required to use "%s" method. Try to run "composer require symfony/security-bundle".', __METHOD__));
+        }
+
+        $token = new UsernamePasswordToken($user, $firewallName, $user->getRoles());
+
+        $session = new Session();
+        $session->set('_security_'.$firewallName, serialize($token));
+        $session->save();
+
+        $request = new Request();
+        $request->setSession($session);
+        $this->getRequestStack()->push($request);
+
+        return $this->setCookie($request->getSession()->getName(), [
+            'name' => $request->getSession()->getName(),
+            'value' => $request->getSession()->getId(),
+            'domain' => $this->getRequestContext()?->getHost(),
+        ]);
     }
 
     private function setForwardCookie(Request $request, string $name): static
