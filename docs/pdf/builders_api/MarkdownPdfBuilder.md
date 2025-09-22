@@ -76,7 +76,11 @@ Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method
 ### addCookies(array $cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
+### asUser(Symfony\Component\Security\Core\User\UserInterface $user, string $firewallName)
+For CLI generation usage.
+
 ### cookies(array $cookies)
+### forwardAuthentication()
 ### forwardCookie(string $name)
 ### setCookie(string $name, Symfony\Component\HttpFoundation\Cookie|array $cookie)
 ### generateDocumentOutline(bool $bool)
