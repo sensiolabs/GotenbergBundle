@@ -21,9 +21,4 @@ final class FakeUser implements UserInterface
     {
         return 'John Doe';
     }
-
-    public function __serialize():array
-    {
-        return [];
-    }
 }

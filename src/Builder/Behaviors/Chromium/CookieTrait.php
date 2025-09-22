@@ -148,7 +148,7 @@ trait CookieTrait
         return $this->setCookie($request->getSession()->getName(), [
             'name' => $request->getSession()->getName(),
             'value' => $request->getSession()->getId(),
-            'domain' => $this->getRequestContext()?->getHost(),
+            'domain' => $this->getRequestContext()?->getHost() ?? $request->getHost(),
         ]);
     }
 

@@ -3,37 +3,37 @@
 ## Available functions
 
 ### Render
-[width](#width)
-[height](#height)
-[clip](#clip)
-[quality](#quality)
-[omitBackground](#omitBackground)
+[width](#width)  
+[height](#height)  
+[clip](#clip)  
+[quality](#quality)  
+[omitBackground](#omitBackground)  
 
 ### Additional content
 [download from](#download-from)
 
 ### Style
-[assets](../assets.md)
+[assets](../assets.md)  
 [addAsset](../assets.md)
 
 ### Request
 [optimizeForSpeed](#optimizeForSpeed)
-[waitDelay](#waitDelay)
-[waitForExpression](#waitForExpression)
-[emulatedMediaType](#emulatedMediaType)
-[cookies](#cookies)
-[setCookie](#setCookie)
-[addCookies](#addCookies)
-[forwardCookie](#forwardCookie)
-[forwardAuthentication](#forwardAuthentication)
-[asUser](#asUser)
-[userAgent](#userAgent)
-[extraHttpHeaders](#extraHttpHeaders)
-[addExtraHttpHeaders](#addExtraHttpHeaders)
-[failOnHttpStatusCodes](#failOnHttpStatusCodes)
-[failOnResourceHttpStatusCodes](#failOnResourceHttpStatusCodes)
-[failOnResourceLoadingFailed](#failOnResourceLoadingFailed)
-[failOnConsoleExceptions](#failOnConsoleExceptions)
+[waitDelay](#waitDelay)  
+[waitForExpression](#waitForExpression)  
+[emulatedMediaType](#emulatedMediaType)  
+[cookies](#cookies)  
+[setCookie](#setCookie)  
+[addCookies](#addCookies)  
+[forwardCookie](#forwardCookie)  
+[forwardAuthentication](#forwardAuthentication)  
+[asUser](#asUser)  
+[userAgent](#userAgent)  
+[extraHttpHeaders](#extraHttpHeaders)  
+[addExtraHttpHeaders](#addExtraHttpHeaders)  
+[failOnHttpStatusCodes](#failOnHttpStatusCodes)  
+[failOnResourceHttpStatusCodes](#failOnResourceHttpStatusCodes)  
+[failOnResourceLoadingFailed](#failOnResourceLoadingFailed)  
+[failOnConsoleExceptions](#failOnConsoleExceptions)  
 [skipNetworkIdleEvent](#skipNetworkIdleEvent)
 
 ### Formatting
@@ -194,7 +194,7 @@ class YourController
 
 ### download from
 
-> [!WARNING]
+> [!WARNING]  
 > URL of the file. It MUST return a `Content-Disposition` header with a filename parameter.
 
 To download files resource from URLs.
@@ -348,6 +348,9 @@ class YourController
     {
         return $gotenberg
             ->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
             ->emulatedMediaType(EmulatedMediaType::Screen)
             ->generate()
             ->stream()
@@ -375,6 +378,9 @@ class YourController
     {
         return $gotenberg
             ->html()
+            ->content('twig_simple_pdf.html.twig', [
+                'my_var' => 'value'
+            ])
             ->cookies([[
                 'name' => 'my_cookie',
                 'value' => 'symfony',
