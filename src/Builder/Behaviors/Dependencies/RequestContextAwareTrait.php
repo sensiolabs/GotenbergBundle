@@ -14,13 +14,10 @@ trait RequestContextAwareTrait
     #[SubscribedService('.sensiolabs_gotenberg.request_context', nullable: true, attributes: new Autowire(service: '.sensiolabs_gotenberg.request_context'))]
     protected function getRequestContext(): RequestContext|null
     {
-        if (
-            !$this->container->has('.sensiolabs_gotenberg.request_context')
-            || !($requestContext = $this->container->get('.sensiolabs_gotenberg.request_context')) instanceof RequestContext
-        ) {
+        if (!$this->container->has('.sensiolabs_gotenberg.request_context')) {
             return null;
         }
 
-        return $requestContext;
+        return $this->container->get('.sensiolabs_gotenberg.request_context');
     }
 }
