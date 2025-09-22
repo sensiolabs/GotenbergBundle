@@ -126,6 +126,9 @@ trait CookieTrait
         return $this->setForwardCookie($request, $request->getSession()->getName());
     }
 
+    /**
+     * Usage for CLI command.
+     */
     public function asUser(UserInterface $user, string $firewallName = 'main'): static
     {
         if (!class_exists(UsernamePasswordToken::class)) {
