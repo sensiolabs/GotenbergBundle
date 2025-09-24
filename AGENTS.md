@@ -41,6 +41,6 @@ test with specific symfony / php versions
 ## PR instructions
 
 - Use English in code, comments, commit messages and branch names.
-- Code must be compatible with Symfony 6.x and 7.x versions.
+- Code must be compatible with Symfony 6.4 and 7.x versions.
 - Always run `php ./docs/generate.php` before committing.
 - Always run `dagger call test all` before committing.
