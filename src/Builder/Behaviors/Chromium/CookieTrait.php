@@ -131,10 +131,6 @@ trait CookieTrait
      */
     public function asUser(UserInterface $user, string $firewallName = 'main'): static
     {
-        if (!class_exists(UsernamePasswordToken::class)) {
-            throw new \LogicException(\sprintf('UsernamePasswordToken is required to use "%s" method. Try to run "composer require symfony/security-bundle".', __METHOD__));
-        }
-
         $token = new UsernamePasswordToken($user, $firewallName, $user->getRoles());
 
         $session = new Session();
