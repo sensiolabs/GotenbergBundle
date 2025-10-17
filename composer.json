@@ -23,8 +23,8 @@
     "require": {
         "php": ">=8.1",
         "ext-json": "*",
-        "psr/container": "^2.0",
-        "psr/log": "^3.0",
+        "psr/container": "^1.0 || ^2.0",
+        "psr/log": "^2.0 || ^3.0",
         "symfony/config": "^6.4 || ^7.0",
         "symfony/dependency-injection": "^6.4 || ^7.0",
         "symfony/filesystem": "^6.4 || ^7.0",
