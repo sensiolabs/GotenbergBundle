@@ -294,6 +294,9 @@ sensiolabs_gotenberg:
                         name:
                             name:                 ~
                             value:                ~
+
+                    # Flattening PDFs. - default None. https://gotenberg.dev/docs/routes#flatten-chromium
+                    flatten: null
             url:
 
                 # Add default header to the builder.
@@ -493,6 +496,9 @@ sensiolabs_gotenberg:
 
                         # Or the syntax below is also possible
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
+
+                    # Flattening PDFs. - default None. https://gotenberg.dev/docs/routes#flatten-chromium
+                    flatten: null
             markdown:
 
                 # Add default header to the builder.
@@ -692,6 +698,9 @@ sensiolabs_gotenberg:
 
                         # Or the syntax below is also possible
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
+
+                    # Flattening PDFs. - default None. https://gotenberg.dev/docs/routes#flatten-chromium
+                    flatten: null
             office:
 
                 # Set the password for opening the source file. https://gotenberg.dev/docs/routes#page-properties-libreoffice
@@ -805,6 +814,9 @@ sensiolabs_gotenberg:
 
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-libreoffice
                 split_unify: null
+
+                # Flatten the resulting PDF. - default None. https://gotenberg.dev/docs/routes#flatten-libreoffice
+                flatten: null
             merge:
 
                 # Convert PDF into the given PDF/A format - default None.
@@ -840,6 +852,9 @@ sensiolabs_gotenberg:
                             name:
                                 name:                 ~
                                 value:                ~
+
+                # Flatten the resulting PDF. - default None. https://gotenberg.dev/docs/routes#merge-pdfs-route
+                flatten: null
             convert:
 
                 # Convert PDF into the given PDF/A format - default None.
@@ -869,6 +884,43 @@ sensiolabs_gotenberg:
 
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-libreoffice
                 split_unify: null
+
+                # Convert PDF into the given PDF/A format - default None.
+                pdf_format:           null # One of "PDF\/A-1b"; "PDF\/A-2b"; "PDF\/A-3b"
+
+                # Enable PDF for Universal Access for optimal accessibility - default false.
+                pdf_universal_access: null
+
+                # The metadata to write. Not all metadata are writable. Consider taking a look at https://exiftool.org/TagNames/XMP.html#pdf for an (exhaustive?) list of available metadata.
+                metadata:
+                    Author:               ~
+                    Copyright:            ~
+                    CreationDate:         ~
+                    Creator:              ~
+                    Keywords:             ~
+                    Marked:               ~
+                    ModDate:              ~
+                    PDFVersion:           ~
+                    Producer:             ~
+                    Subject:              ~
+                    Title:                ~
+                    Trapped:              ~ # One of "True"; "False"; "Unknown"
+
+                # Flatten the resulting PDF. - default None. https://gotenberg.dev/docs/routes#split-pdfs-route
+                flatten: null
+
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#split-pdfs-route
+                download_from:
+
+                    # Prototype
+                    -
+                        url:                  ~
+                        extraHttpHeaders:
+
+                            # Prototype
+                            name:
+                                name:                 ~
+                                value:                ~
         screenshot:
             html:
 
