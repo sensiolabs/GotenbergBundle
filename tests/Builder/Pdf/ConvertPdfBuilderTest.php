@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Symfony\Component\DependencyInjection\Container;
@@ -19,6 +20,9 @@ final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use DownloadFromTestCaseTrait<ConvertPdfBuilder> */
     use DownloadFromTestCaseTrait;
+
+    /** @use FlattenTestCaseTrait<ConvertPdfBuilder> */
+    use FlattenTestCaseTrait;
 
     /** @use PdfFormatTestCaseTrait<ConvertPdfBuilder> */
     use PdfFormatTestCaseTrait;

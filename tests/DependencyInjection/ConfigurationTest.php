@@ -262,6 +262,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'flatten' => null,
                     ],
                     'url' => [
                         'cookies' => [],
@@ -284,6 +285,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'flatten' => null,
                     ],
                     'markdown' => [
                         'cookies' => [],
@@ -306,6 +308,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'flatten' => null,
                     ],
                     'office' => [
                         'download_from' => [],
@@ -340,6 +343,7 @@ final class ConfigurationTest extends TestCase
                             ],
                             'extra_http_headers' => [],
                         ],
+                        'flatten' => null,
                     ],
                     'split' => [
                         'download_from' => [],

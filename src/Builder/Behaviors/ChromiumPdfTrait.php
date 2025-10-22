@@ -14,6 +14,7 @@ trait ChromiumPdfTrait
     use Chromium\PerformanceModeTrait;
     use Chromium\WaitBeforeRenderingTrait;
     use DownloadFromTrait;
+    use FlattenTrait;
     use MetadataTrait;
     use PdfFormatTrait;
     use SplitTrait;
