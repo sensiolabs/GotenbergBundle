@@ -28,8 +28,8 @@ class YourController
 
 Route of the page you want to convert into screenshot.
 
-> [!WARNING]  
-> You must provide a URL accessible by Gotenberg with a public Host.  
+> [!WARNING]
+> You must provide a URL accessible by Gotenberg with a public Host.
 > Or configure `sensiolabs_gotenberg.yaml`
 > ```yaml
 > # config/packages/sensiolabs_gotenberg.yaml
@@ -59,36 +59,9 @@ class YourController
 }
 ```
 
-## Files
-
-Required to generate a screenshot from Markdown builder. You can pass several files with that method.
-
-```php
-namespace App\Controller;
-
-use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
-
-class YourController
-{
-    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
-    {
-        return $gotenberg->markdown()
-            ->wrapper('wrapper.html.twig', [
-                'my_var' => 'value'
-            ])
-            ->files(
-                'header.md', 
-                'content.md', 
-                'footer.md',
-            )
-            ->generate()
-            ->stream()
-         ;
-    }
-}
-```
-
 ## Customization
 
 > [!TIP]
-> For more information go to [screenshot customization](customization.md).
+> This builder use the methods from [ChromiumScreenshotTrait](../behaviors/ChromiumScreenshotTrait.md)
+> to customize the PDF rendering.
+

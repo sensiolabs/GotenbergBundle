@@ -3,8 +3,8 @@
 You may have the possibility to convert Markdown files into screenshot.
 You just need to wrap your markdown file into an HTML or Twig file.
 
-> [!WARNING]  
-> Every HTML or Twig template you pass to Gotenberg need to have the following structure.  
+> [!WARNING]
+> Every HTML or Twig template you pass to Gotenberg need to have the following structure.
 > Even Header or Footer parts.
 > ```html
 >        <!DOCTYPE html>
@@ -23,9 +23,9 @@ You just need to wrap your markdown file into an HTML or Twig file.
 
 The HTML file to wrap markdown file into screenshot.
 
-> [!WARNING]  
+> [!WARNING]
 > As assets files, by default the HTML files are fetch in the assets folder of
-> your application.  
+> your application.
 > If your  HTML files are in another folder, you can override the default value
 > of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
 
@@ -71,7 +71,7 @@ class YourController
 The Twig file to convert into screenshot.
 
 > [!WARNING]
-> In the template, you must use the {{ toHTML "filename.md" }} special directive to reference the Markdown file. 
+> In the template, you must use the {{ toHTML "filename.md" }} special directive to reference the Markdown file.
 > The twig template that receives your markdown file will look like this.
 
 ```html
@@ -88,7 +88,7 @@ The Twig file to convert into screenshot.
     </body>
 </html>
 ```
-Gotenberg expects an HTML template containing the directive {{ toHTML "filename.md" }}. 
+Gotenberg expects an HTML template containing the directive {{ toHTML "filename.md" }}.
 To prevent any conflict, you may want to use the [verbatim](https://twig.symfony.com/doc/3.x/tags/verbatim.html) tag to encapsulate the directive.
 
 ```php
@@ -130,8 +130,8 @@ class YourController
                 'my_var' => 'value'
             ])
             ->files(
-                'header.md', 
-                'content.md', 
+                'header.md',
+                'content.md',
                 'footer.md',
             )
             ->generate()
@@ -144,4 +144,8 @@ class YourController
 ## Customization
 
 > [!TIP]
-> For more information go to [screenshot customization](customization.md).
+> This builder use the methods from [ChromiumScreenshotTrait](../behaviors/ChromiumScreenshotTrait.md)
+> to customize the PDF rendering.
+
+> [!WARNING]
+> Methods `content` and `contentFile` are not available for this builder.

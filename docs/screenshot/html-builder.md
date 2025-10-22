@@ -2,8 +2,8 @@
 
 You may have the possibility to convert HTML or Twig files into screenshot.
 
-> [!WARNING]  
-> Every HTML or Twig template you pass to Gotenberg need to have the following structure.  
+> [!WARNING]
+> Every HTML or Twig template you pass to Gotenberg need to have the following structure.
 > Even Header or Footer parts.
 > ```html
 >        <!DOCTYPE html>
@@ -22,9 +22,9 @@ You may have the possibility to convert HTML or Twig files into screenshot.
 
 The HTML file to convert into screenshot.
 
-> [!WARNING]  
+> [!WARNING]
 > As assets files, by default the HTML files are fetch in the assets folder of
-> your application.  
+> your application.
 > If your  HTML files are in another folder, you can override the default value
 > of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
 
@@ -73,4 +73,5 @@ class YourController
 ## Customization
 
 > [!TIP]
-> For more information go to [screenshot customization](customization.md).
+> This builder use the methods from [ChromiumScreenshotTrait](../behaviors/ChromiumScreenshotTrait.md)
+> to customize the PDF rendering.

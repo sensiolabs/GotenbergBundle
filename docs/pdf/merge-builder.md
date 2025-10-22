@@ -4,9 +4,9 @@ You may have the possibility to merge several PDF document.
 
 ## Basic usage
 
-> [!WARNING]  
+> [!WARNING]
 > As assets files, by default the PDF files are fetch in the assets folder of
-> your application.  
+> your application.
 > For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php
@@ -171,5 +171,12 @@ class YourController
 }
 ```
 
+## Customization
+
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#flatten-libreoffice).
+> The PDF rendering can be customized with methods of several traits as:
+> [DownloadFromTrait](../behaviors/DownloadFromTrait.md)
+> [FlattenTrait](../behaviors/FlattenTrait.md)
+> [MetadataTrait](../behaviors/MetadataTrait.md)
+> [PdfFormatTrait](../behaviors/PdfFormatTrait.md)
+> [WebhookTrait](../behaviors/WebhookTrait.md)

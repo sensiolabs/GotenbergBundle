@@ -1,14 +1,14 @@
 # Flatten Builder
 
 You may have the possibility to flatten several PDF pages.
-It combines all its contents into a single layer, making it non-editable and 
+It combines all its contents into a single layer, making it non-editable and
 ensuring that the document's integrity is maintained.
 
 ## Basic usage
 
-> [!WARNING]  
+> [!WARNING]
 > As assets files, by default the PDF files are fetch in the assets folder of
-> your application.  
+> your application.
 > For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php
@@ -34,3 +34,10 @@ class YourController
 
 > [!TIP]
 > For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#flatten-pdfs-route).
+
+## Customization
+
+> [!TIP]
+> The PDF rendering can be customized with methods of several traits as:
+> [DownloadFromTrait](../behaviors/DownloadFromTrait.md)
+> [WebhookTrait](../behaviors/WebhookTrait.md)
