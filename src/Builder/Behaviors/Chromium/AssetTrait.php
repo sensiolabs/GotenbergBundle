@@ -61,7 +61,12 @@ trait AssetTrait
             return $this;
         }
 
-        $assets[$path] = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+        $splInfo = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+        if (!$splInfo->isFile()) {
+            $splInfo = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path, true));
+        }
+
+        $assets[$path] = $splInfo;
 
         $this->getBodyBag()->set('assets', $assets);
 

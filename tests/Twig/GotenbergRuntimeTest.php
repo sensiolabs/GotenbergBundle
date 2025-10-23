@@ -5,12 +5,14 @@ namespace Sensiolabs\GotenbergBundle\Tests\Twig;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
+use Symfony\Component\DependencyInjection\Container;
 
 class GotenbergRuntimeTest extends TestCase
 {
     public function testGetAsset(): void
     {
         $runtime = new GotenbergRuntime();
+        $runtime->setContainer($this->createMock(Container::class));
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder
             ->expects($this->once())
@@ -26,12 +28,14 @@ class GotenbergRuntimeTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The gotenberg_asset function must be used in a Gotenberg context.');
         $runtime = new GotenbergRuntime();
+        $runtime->setContainer($this->createMock(Container::class));
         $runtime->getAssetUrl('foo');
     }
 
     public function testGetFontFace(): void
     {
         $runtime = new GotenbergRuntime();
+        $runtime->setContainer($this->createMock(Container::class));
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder
             ->expects($this->once())
@@ -48,6 +52,7 @@ class GotenbergRuntimeTest extends TestCase
     public function testGetFontStyleTag(): void
     {
         $runtime = new GotenbergRuntime();
+        $runtime->setContainer($this->createMock(Container::class));
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder
             ->expects($this->once())

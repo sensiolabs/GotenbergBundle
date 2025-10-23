@@ -31,6 +31,9 @@ $config = $config
     ->ignoreErrorsOnPackage('twig/twig', [
         ErrorType::DEV_DEPENDENCY_IN_PROD,
     ])
+    ->ignoreErrorsOnPackage('symfony/asset', [
+        ErrorType::DEV_DEPENDENCY_IN_PROD,
+    ])
 ;
 
 if (\PHP_VERSION_ID < 80200) { // TODO: Requires PHP >= 8.2

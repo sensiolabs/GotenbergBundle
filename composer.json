@@ -45,6 +45,7 @@
         "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^10.5.46",
         "shipmonk/composer-dependency-analyser": "^1.8",
+        "symfony/asset": "^6.4 || ^7.0 || ^8.0",
         "symfony/error-handler": "^6.4 || ^7.0 || ^8.0",
         "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
         "symfony/http-client": "^6.4 || ^7.0 || ^8.0",

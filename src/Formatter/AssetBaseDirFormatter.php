@@ -18,10 +18,14 @@ final class AssetBaseDirFormatter
         $this->baseDir = rtrim($baseDir, '/\\');
     }
 
-    public function resolve(string $path): string
+    public function resolve(string $path, bool $isVersioned = false): string
     {
         if (Path::isAbsolute($path)) {
             return $path;
+        }
+
+        if ($isVersioned) {
+            return Path::join($this->projectDir, 'public', $path);
         }
 
         if (Path::isAbsolute($this->baseDir)) {

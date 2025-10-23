@@ -2,7 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Twig;
 
+use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
+use Symfony\Component\Asset\Packages;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 /**
  * @internal
@@ -10,8 +15,12 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
  *  This class is marked as internal to allow flexibility in evolving the runtime API.
  *  However, it is considered safe to use for custom builders or test purposes.
  */
-final class GotenbergRuntime
+final class GotenbergRuntime implements ServiceSubscriberInterface
 {
+    use ServiceSubscriberTrait;
+
+    protected ContainerInterface $container;
+
     private BuilderAssetInterface|null $builder = null;
 
     public function setBuilder(BuilderAssetInterface|null $builder): void
@@ -27,6 +36,7 @@ final class GotenbergRuntime
      */
     public function getAssetUrl(string $path): string
     {
+        $path = $this->getVersionedPathIfExist($path);
         $this->addAsset($path, 'gotenberg_asset');
 
         return basename($path);
@@ -34,6 +44,7 @@ final class GotenbergRuntime
 
     public function getFontStyleTag(string $path, string $name): string
     {
+        $path = $this->getVersionedPathIfExist($path);
         $this->addAsset($path, 'gotenberg_font_style_tag');
 
         return '<style>'.$this->generateFontFace($path, $name).'</style>';
@@ -41,6 +52,7 @@ final class GotenbergRuntime
 
     public function getFontFace(string $path, string $name): string
     {
+        $path = $this->getVersionedPathIfExist($path);
         $this->addAsset($path, 'gotenberg_font_face');
 
         return $this->generateFontFace($path, $name);
@@ -61,5 +73,27 @@ final class GotenbergRuntime
         }
 
         $this->builder->addAsset($path);
+    }
+
+    private function getVersionedPathIfExist(string $path): string
+    {
+        $packages = $this->getPackages();
+        if (null !== $packages) {
+            $path = ltrim($packages->getUrl($path), '/');
+        }
+
+        return $path;
+    }
+
+    #[SubscribedService('assets.packages', nullable: true)]
+    private function getPackages(): Packages|null
+    {
+        if (
+            !$this->container->has('assets.packages')
+            || !($packages = $this->container->get('assets.packages')) instanceof Packages) {
+            return null;
+        }
+
+        return $packages;
     }
 }
