@@ -50,7 +50,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testOutputFilename(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
 
         $this->getBuilder()
             ->contentFile('files/content.html')
@@ -64,7 +64,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWidth(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
 
         $this->getBuilder()
             ->contentFile('files/content.html')
@@ -83,7 +83,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWithTwigContentFile(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
 
         $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
             'strict_variables' => true,
@@ -123,7 +123,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWithTwigAndHeaderFooterParts(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
 
         $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
             'strict_variables' => true,
@@ -195,7 +195,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testFilesAsHeaderAndFooter(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
 
         $this->getBuilder()
             ->headerFile('files/header.html')
@@ -217,7 +217,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
     {
         $this->expectException(PartRenderingException::class);
 
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, self::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
 
         $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
             'strict_variables' => true,

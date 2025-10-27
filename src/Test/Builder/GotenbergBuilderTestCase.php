@@ -33,7 +33,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
         $this->client = new GotenbergClientAsserter();
         $this->container = new Container();
 
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(static::FIXTURE_DIR, static::FIXTURE_DIR));
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(static::FIXTURE_DIR, [static::FIXTURE_DIR]));
         $this->container->set('sensiolabs_gotenberg.client', $this->client);
         $this->container->set('sensiolabs_gotenberg.version_fetcher', new StaticVersionFetcher($this->gotenbergVersion));
     }

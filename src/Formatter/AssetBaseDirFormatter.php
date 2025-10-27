@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Formatter;
 
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Path;
 
 /**
@@ -9,29 +10,41 @@ use Symfony\Component\Filesystem\Path;
  */
 final class AssetBaseDirFormatter
 {
-    private readonly string $baseDir;
+    private readonly array $baseDir;
 
     public function __construct(
         private readonly string $projectDir,
-        string $baseDir,
+        array $baseDir,
     ) {
-        $this->baseDir = rtrim($baseDir, '/\\');
+        $this->baseDir = array_map(function ($value) {
+            return rtrim($value, '/\\');
+        }, $baseDir);
     }
 
-    public function resolve(string $path, bool $isVersioned = false): string
+    public function resolve(string $path): string
     {
         if (Path::isAbsolute($path)) {
             return $path;
         }
 
-        if ($isVersioned) {
-            return Path::join($this->projectDir, 'public', $path);
+        foreach ($this->baseDir as $baseDir) {
+            if (Path::isAbsolute($baseDir)) {
+                $filename = Path::join($baseDir, $path);
+                if (!file_exists($filename)) {
+                    continue;
+                }
+
+                return $filename;
+            }
+
+            $filename = Path::join($this->projectDir, $baseDir, $path);
+            if (!file_exists($filename)) {
+                continue;
+            }
+
+            return $filename;
         }
 
-        if (Path::isAbsolute($this->baseDir)) {
-            return Path::join($this->baseDir, $path);
-        }
-
-        return Path::join($this->projectDir, $this->baseDir, $path);
+        throw new FileNotFoundException(\sprintf('File "%s" does not exist.', $path));
     }
 }
