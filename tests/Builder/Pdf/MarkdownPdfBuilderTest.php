@@ -61,7 +61,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
             public function load(string $class): object|null
             {
-                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime(null) : null;
             }
         });
 
