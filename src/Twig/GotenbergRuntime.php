@@ -2,12 +2,8 @@
 
 namespace Sensiolabs\GotenbergBundle\Twig;
 
-use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Symfony\Component\Asset\Packages;
-use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
-use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 /**
  * @internal
@@ -15,13 +11,13 @@ use Symfony\Contracts\Service\ServiceSubscriberTrait;
  *  This class is marked as internal to allow flexibility in evolving the runtime API.
  *  However, it is considered safe to use for custom builders or test purposes.
  */
-final class GotenbergRuntime implements ServiceSubscriberInterface
+final class GotenbergRuntime
 {
-    use ServiceSubscriberTrait;
-
-    protected ContainerInterface $container;
-
     private BuilderAssetInterface|null $builder = null;
+
+    public function __construct(private readonly Packages|null $packages)
+    {
+    }
 
     public function setBuilder(BuilderAssetInterface|null $builder): void
     {
@@ -77,23 +73,11 @@ final class GotenbergRuntime implements ServiceSubscriberInterface
 
     private function getVersionedPathIfExist(string $path): string
     {
-        $packages = $this->getPackages();
+        $packages = $this->packages;
         if (null !== $packages) {
             $path = ltrim($packages->getUrl($path), '/');
         }
 
         return $path;
-    }
-
-    #[SubscribedService('assets.packages', nullable: true)]
-    private function getPackages(): Packages|null
-    {
-        if (
-            !$this->container->has('assets.packages')
-            || !($packages = $this->container->get('assets.packages')) instanceof Packages) {
-            return null;
-        }
-
-        return $packages;
     }
 }

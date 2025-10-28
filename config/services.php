@@ -43,9 +43,8 @@ return static function (ContainerConfigurator $container): void {
         ->tag('twig.extension')
     ;
     $services->set('sensiolabs_gotenberg.twig.asset_runtime', GotenbergRuntime::class)
-        ->call('setContainer')
+        ->args([service('assets.packages')->nullOnInvalid()])
         ->tag('twig.runtime')
-        ->tag('container.service_subscriber')
     ;
 
     $services->set('sensiolabs_gotenberg.pdf', GotenbergPdf::class)
