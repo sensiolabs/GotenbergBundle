@@ -13,7 +13,7 @@ final class AssetBaseDirFormatterTest extends TestCase
     private const ASSETS_DIR = __DIR__.'/../Fixtures/assets';
 
     /**
-     * @return iterable<string, array<int, string|bool>>
+     * @return iterable<string, array<int, list<string>|string>>
      */
     public static function generateBaseDirectoryAndPath(): iterable
     {
@@ -22,8 +22,13 @@ final class AssetBaseDirFormatterTest extends TestCase
         yield 'relative path and relative base dir' => ['file.md', ['Fixtures/assets'], \dirname(self::PROJECT_DIR, 2).'/Fixtures/assets/file.md'];
         yield 'relative path and absolute base dir' => ['office/document.odt', [self::ASSETS_DIR], \dirname(self::PROJECT_DIR, 2).'/Fixtures/assets/office/document.odt'];
         yield 'relative path and relative base dir with end slash' => ['document.odt', ['Fixtures/assets/office/'], \dirname(self::PROJECT_DIR, 2).'/Fixtures/assets/office/document.odt'];
+        yield 'URL path and absolute base dir' => ['https://sensiolabs.com/assets/images/sensiolabs/sensiolabs.fr-OAnPSf0.png', [self::ASSETS_DIR], 'https://sensiolabs.com/assets/images/sensiolabs/sensiolabs.fr-OAnPSf0.png'];
+        yield 'URL path and relative base dir' => ['https://sensiolabs.com/assets/images/sensiolabs/sensiolabs.fr-OAnPSf0.png', ['assets'], 'https://sensiolabs.com/assets/images/sensiolabs/sensiolabs.fr-OAnPSf0.png'];
     }
 
+    /**
+     * @param string[] $baseDirectories
+     */
     #[DataProvider('generateBaseDirectoryAndPath')]
     #[TestDox('Resolve path when "$_dataName"')]
     public function testResolvePathCorrectly(string $path, array $baseDirectories, string $expectedResult): void

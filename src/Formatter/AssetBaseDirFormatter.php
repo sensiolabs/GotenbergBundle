@@ -10,8 +10,12 @@ use Symfony\Component\Filesystem\Path;
  */
 final class AssetBaseDirFormatter
 {
+    /** @var string[] */
     private readonly array $baseDir;
 
+    /**
+     * @param string[] $baseDir
+     */
     public function __construct(
         private readonly string $projectDir,
         array $baseDir,
@@ -23,7 +27,7 @@ final class AssetBaseDirFormatter
 
     public function resolve(string $path): string
     {
-        if (Path::isAbsolute($path)) {
+        if (Path::isAbsolute($path) || filter_var($path, \FILTER_VALIDATE_URL)) {
             return $path;
         }
 
