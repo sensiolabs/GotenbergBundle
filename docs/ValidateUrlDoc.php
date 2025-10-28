@@ -44,6 +44,13 @@ class ValidateUrlDoc
 
         foreach ($client->stream($allResponses) as $response => $chunk) {
             if ($chunk->isLast()) {
+                $statusCode = $response->getStatusCode();
+                $url = $response->getInfo('url');
+
+                if (200 !== $statusCode) {
+                    throw new RuntimeException("HTTP {$statusCode} error for: {$url}");
+                }
+
                 $this->checkContentResponse($response->getInfo('url'), $response->getContent());
                 $progressBar->advance();
             }
