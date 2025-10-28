@@ -11,7 +11,7 @@ use Symfony\Component\HttpClient\HttpClient;
 
 require_once \dirname(__DIR__).'/vendor/autoload.php';
 
-class CheckPhpDoc
+class ValidateUrlDoc
 {
     private const AVAILABLE_EXTENSIONS = ['php', 'md'];
 
@@ -23,7 +23,7 @@ class CheckPhpDoc
         __DIR__.'/../src/DependencyInjection/Configuration.php',
     ];
 
-    public function checkAllUrls(OutputInterface $output): void
+    public function validate(OutputInterface $output): void
     {
         $progressBar = new ProgressIndicator($output);
         $progressBar->start('Processing...');
@@ -105,10 +105,10 @@ class CheckPhpDoc
 $application = new Application();
 $application->register('check')
     ->setCode(function (OutputInterface $output, SymfonyStyle $io) {
-        $checkPhpDoc = new CheckPhpDoc();
+        $checkPhpDoc = new ValidateUrlDoc();
 
         try {
-            $checkPhpDoc->checkAllUrls($output);
+            $checkPhpDoc->validate($output);
         } catch (RuntimeException $e) {
             $io->error($e->getMessage());
 
