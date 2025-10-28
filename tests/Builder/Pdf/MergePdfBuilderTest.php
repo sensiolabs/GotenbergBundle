@@ -34,6 +34,8 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
     /** @use WebhookTestCaseTrait<MergePdfBuilder> */
     use WebhookTestCaseTrait;
 
+    private const ASSETS_DIR = __DIR__.'/../../Fixtures/assets';
+
     protected function createBuilder(): MergePdfBuilder
     {
         return new MergePdfBuilder();
@@ -86,7 +88,7 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
         $this->getBuilder()
-            ->files('simple_pdf.pdf', 'b.png')
+            ->files(self::ASSETS_DIR.'logo.png')
             ->generate()
         ;
     }

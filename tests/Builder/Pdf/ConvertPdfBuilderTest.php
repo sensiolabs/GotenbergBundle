@@ -26,6 +26,8 @@ final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use WebhookTestCaseTrait<ConvertPdfBuilder> */
     use WebhookTestCaseTrait;
 
+    private const ASSETS_DIR = __DIR__.'/../../Fixtures/assets';
+
     protected function createBuilder(): ConvertPdfBuilder
     {
         return new ConvertPdfBuilder();
@@ -100,7 +102,7 @@ final class ConvertPdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
         $this->getBuilder()
-            ->files('b.png')
+            ->files(self::ASSETS_DIR.'logo.png')
             ->generate()
         ;
     }

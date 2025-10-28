@@ -22,6 +22,8 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use ChromiumPdfTestCaseTrait<MarkdownPdfBuilder> */
     use ChromiumPdfTestCaseTrait;
 
+    private const ASSETS_DIR = __DIR__.'/../../Fixtures/assets';
+
     protected function createBuilder(): MarkdownPdfBuilder
     {
         return new MarkdownPdfBuilder();
@@ -121,7 +123,7 @@ final class MarkdownPdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
         $this->getBuilder()
-            ->files('b.png')
+            ->files(self::ASSETS_DIR.'logo.png')
             ->generate()
         ;
     }

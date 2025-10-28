@@ -216,7 +216,7 @@ final class ConfigurationTest extends TestCase
 
     /**
      * @return array{
-     *     'assets_directory': string,
+     *     'assets_directory': string[],
      *     'http_client': string,
      *     'webhook': array<void>,
      *     'default_options': array{
@@ -235,7 +235,7 @@ final class ConfigurationTest extends TestCase
     {
         return [
             'version' => null,
-            'assets_directory' => '%kernel.project_dir%/assets',
+            'assets_directory' => ['%kernel.project_dir%/assets'],
             'http_client' => 'http_client',
             'webhook' => [],
             'controller_listener' => true,
