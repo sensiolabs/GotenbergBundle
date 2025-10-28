@@ -1,25 +1,35 @@
 name: 'URL check'
 
 on:
+  push:
+    branches: [ 'main', '1.x' ]
+  pull_request:
+    branches: [ 'main', '1.x' ]
   schedule:
     - cron: '0 1 1 * *'
 
 jobs:
 
   check:
-    name: 'URLs doc'
+    name: 'Validate URL docs'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: 'actions/checkout@v4'
 
-      - name: 'Setup PHP'
-        uses: 'shivammathur/setup-php@v2'
+      - name: 'Cache Dagger'
+        uses: 'actions/cache@v4'
         with:
-          php-version: '8.3'
-          coverage: 'none'
-
-      - name: 'Install dependencies'
-        uses: 'ramsey/composer-install@v3'
+          path: |
+            ~/.config/dagger
+            ~/.cache/dagger
+          key: ${{ runner.os }}-dagger-${{ hashFiles('dagger.json', '.dagger/src/**') }}
+          restore-keys: |
+            ${{ runner.os }}-dagger-
 
       - name: 'Check links into PhpDoc'
-        run: 'php ./docs/CheckPhpDoc.php'
+        uses: 'dagger/dagger-for-github@8.0.0'
+        with:
+          version: "latest"
+          args: "test check-url-docs"
+        env:
+          DAGGER_NO_NAG: '1'
