@@ -20,9 +20,7 @@ final class AssetBaseDirFormatter
         private readonly string $projectDir,
         array $baseDir,
     ) {
-        $this->baseDir = array_map(function ($value) {
-            return rtrim($value, '/\\');
-        }, $baseDir);
+        $this->baseDir = array_map(static fn ($value) => rtrim($value, '/\\'), $baseDir);
     }
 
     public function resolve(string $path): string
