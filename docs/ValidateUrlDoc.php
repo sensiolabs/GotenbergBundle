@@ -85,6 +85,8 @@ class ValidateUrlDoc
     {
         $content = file_get_contents($file->getPathname());
 
+        // https://regex101.com/r/t5uiUp/1
+        // https://regex101.com/r/p62cij/1
         match ($file->getExtension()) {
             'php' => preg_match_all('/(?:@see\s+|->info\([^)]*)(https?:\/\/[^\s\'")]+)(?:[^)]*\))?/', $content, $matches),
             'md' => preg_match_all('/\[[^\]]+\]\((https?:\/\/[^\s\*)]+)\)/', $content, $matches),
