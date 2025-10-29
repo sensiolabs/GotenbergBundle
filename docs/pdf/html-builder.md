@@ -2,8 +2,8 @@
 
 You may have the possibility to convert HTML or Twig files into PDF.
 
-> [!WARNING]
-> Every HTML or Twig template you pass to Gotenberg need to have the following structure.
+> [!WARNING]  
+> Every HTML or Twig template you pass to Gotenberg need to have the following structure.  
 > Even Header or Footer parts.
 > ```html
 >        <!DOCTYPE html>
@@ -22,9 +22,9 @@ You may have the possibility to convert HTML or Twig files into PDF.
 
 The HTML file to convert into PDF.
 
-> [!WARNING]
+> [!WARNING]  
 > As assets files, by default the HTML files are fetch in the assets folder of
-> your application.
+> your application.  
 > For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php
@@ -72,5 +72,4 @@ class YourController
 ## Customization
 
 > [!TIP]
-> This builder use the methods from [ChromiumPdfTrait](../behaviors/ChromiumPdfTrait.md)
-> to customize the PDF rendering.
+> For more information go to [PDF customization](customization.md).

@@ -306,12 +306,14 @@ class YourController
 7. [Convert Builder](./docs/pdf/convert-builder.md)
 8. [Split Builder](./docs/pdf/split-builder.md)
 9. [Flatten Builder](./docs/pdf/flatten-builder.md)
+10. [PDF customization](./docs/pdf/customization.md) (available for HTML, Markdown and Url builder)
 
 ### Screenshot
 
 1. [HTML Builder](./docs/screenshot/html-builder.md)
 2. [Markdown Builder](./docs/screenshot/markdown-builder.md)
 3. [Url Builder](./docs/screenshot/url-builder.md)
+4. [Screenshot customization](./docs/screenshot/customization.md)
 
 ## Profiler
 

@@ -28,8 +28,8 @@ class YourController
 
 Route of the page you want to convert into PDF.
 
-> [!WARNING]
-> You must provide a URL accessible by Gotenberg with a public Host.
+> [!WARNING]  
+> You must provide a URL accessible by Gotenberg with a public Host.  
 > Or configure `sensiolabs_gotenberg.yaml`
 > ```yaml
 > # config/packages/sensiolabs_gotenberg.yaml
@@ -59,8 +59,36 @@ class YourController
 }
 ```
 
+## Files
+
+Required to generate a PDF from Markdown builder. You can pass several files with that method.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->markdown()
+            ->wrapper('wrapper.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->files(
+                'header.md', 
+                'content.md', 
+                'footer.md',
+            )
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
 ## Customization
 
 > [!TIP]
-> This builder use the methods from [ChromiumPdfTrait](../behaviors/ChromiumPdfTrait.md)
-> to customize the PDF rendering.
+> For more information go to [PDF customization](customization.md).
