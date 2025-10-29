@@ -30,6 +30,8 @@ trait ContentTrait
      * @param array<string, mixed> $context
      *
      * @throws PartRenderingException if the template could not be rendered
+     *
+     * @example ->content('content.html.twig', ['my_var' => 'value'])
      */
     public function content(string $template, array $context = []): self
     {
@@ -39,7 +41,13 @@ trait ContentTrait
     /**
      * The HTML file to convert into PDF.
      *
+     * As assets files, by default the HTML files are fetch in the assets folder of your application.
+     * If your HTML files are in another folder, you can override the default value of assets_directory in your
+     * configuration file config/sensiolabs_gotenberg.yml.
+     *
      * @throws PartRenderingException if the template could not be rendered
+     *
+     * @example ->contentFile('../public/content.html')
      */
     public function contentFile(string $path): self
     {
@@ -53,6 +61,8 @@ trait ContentTrait
      * @throws PartRenderingException if the template could not be rendered
      *
      * @see https://gotenberg.dev/docs/routes#header-footer-chromium
+     *
+     * @example ->header('header.html.twig', ['my_var' => 'value'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('header', children: [
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
@@ -70,6 +80,8 @@ trait ContentTrait
      * @throws PartRenderingException if the template could not be rendered
      *
      * @see https://gotenberg.dev/docs/routes#header-footer-chromium
+     *
+     * @example ->footer('header.html.twig', ['my_var' => 'value'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('footer', children: [
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
@@ -83,7 +95,15 @@ trait ContentTrait
     /**
      * HTML file containing the header.
      *
+     * As assets files, by default the HTML files are fetch in the assets folder of your application.
+     * If your HTML files are in another folder, you can override the default value of assets_directory in your
+     * configuration file config/sensiolabs_gotenberg.yml.
+     *
+     * @see https://gotenberg.dev/docs/routes#header-footer-chromium
+     *
      * @throws PartRenderingException if the template could not be rendered
+     *
+     * @example ->headerFile('../templates/html/header.html')
      */
     public function headerFile(string $path): static
     {
@@ -93,7 +113,15 @@ trait ContentTrait
     /**
      * HTML file containing the footer.
      *
+     * As assets files, by default the HTML files are fetch in the assets folder of your application.
+     * If your HTML files are in another folder, you can override the default value of assets_directory in your
+     * configuration file config/sensiolabs_gotenberg.yml.
+     *
+     * @see https://gotenberg.dev/docs/routes#header-footer-chromium
+     *
      * @throws PartRenderingException if the template could not be rendered
+     *
+     * @example ->footerFile('../templates/html/footer.html')
      */
     public function footerFile(string $path): static
     {

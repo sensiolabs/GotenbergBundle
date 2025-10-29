@@ -11,8 +11,6 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
- * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
- *
  * @package Behavior\\Http\\CustomHeaders
  */
 trait CustomHttpHeadersTrait
@@ -23,6 +21,8 @@ trait CustomHttpHeadersTrait
      * Override the default User-Agent HTTP header.
      *
      * @param UserAgent::*|string $userAgent
+     *
+     * @example ->userAgent(UserAgent::AndroidChrome)
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('user_agent', restrictTo: 'string'))]
     public function userAgent(string $userAgent): static
@@ -36,6 +36,10 @@ trait CustomHttpHeadersTrait
      * Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).
      *
      * @param array<string, string> $headers
+     *
+     * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+     *
+     * @example ->extraHttpHeaders(['MyHeader' => 'MyValue'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('extra_http_headers', normalizeKeys: false, useAttributeAsKey: 'name', prototype: 'variable'))]
     public function extraHttpHeaders(array $headers): static
@@ -55,6 +59,8 @@ trait CustomHttpHeadersTrait
      * Adds extra HTTP headers that Chromium will send when loading the HTML document.
      *
      * @param array<string, string> $headers
+     *
+     * @example ->addExtraHttpHeaders(['MyHeader' => 'MyValue'])
      */
     public function addExtraHttpHeaders(array $headers): static
     {

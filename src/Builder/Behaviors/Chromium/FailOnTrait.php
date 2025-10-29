@@ -23,6 +23,8 @@ trait FailOnTrait
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
      *
      * @param array<int, int> $statusCodes
+     *
+     * @example ->failOnHttpStatusCodes([401, 403])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('fail_on_http_status_codes', prototype: 'integer'))]
     public function failOnHttpStatusCodes(array $statusCodes): static
@@ -38,6 +40,8 @@ trait FailOnTrait
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
      *
      * @param list<int<100, 599>> $statusCodes
+     *
+     * @example ->failOnResourceHttpStatusCodes([401, 403])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('fail_on_resource_http_status_codes', prototype: 'integer'))]
     public function failOnResourceHttpStatusCodes(array $statusCodes): static
@@ -52,6 +56,8 @@ trait FailOnTrait
      * (default false).
      *
      * @see https://gotenberg.dev/docs/routes#network-errors-chromium
+     *
+     * @example ->failOnResourceLoadingFailed() // is same as `->failOnResourceLoadingFailed(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('fail_on_resource_loading_failed'))]
     public function failOnResourceLoadingFailed(bool $bool = true): static
@@ -66,6 +72,8 @@ trait FailOnTrait
      * exceptions in the Chromium console. (default false).
      *
      * @see https://gotenberg.dev/docs/routes#console-exceptions-chromium
+     *
+     * @example ->failOnConsoleExceptions() // is same as `->failOnConsoleExceptions(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('fail_on_console_exceptions'))]
     public function failOnConsoleExceptions(bool $bool = true): static

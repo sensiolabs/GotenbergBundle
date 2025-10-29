@@ -11,6 +11,11 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
+/**
+ * You may have the possibility to generate a screenshot from a URL.
+ *
+ * @see https://gotenberg.dev/docs/routes#screenshots-route
+ */
 #[WithBuilderConfiguration(type: 'screenshot', name: 'url')]
 final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
 {
@@ -23,7 +28,8 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
      * URL of the page you want to convert into a screenshot.
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
-     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+     *
+     * @example ->url('https://sensiolabs.com/fr/')
      */
     public function url(string $url): self
     {
@@ -33,11 +39,17 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
     }
 
     /**
+     * Route of the page you want to convert into PDF.
+     *
+     * You must provide a URL accessible by Gotenberg with a public Host.
+     * Or configure request_context.base_uri in sensiolabs_gotenberg.yaml
+     *
      * @param string       $name       #Route
      * @param array<mixed> $parameters
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
-     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+     *
+     * @example ->route('home', ['my_var' => 'value'])
      */
     public function route(string $name, array $parameters = []): self
     {

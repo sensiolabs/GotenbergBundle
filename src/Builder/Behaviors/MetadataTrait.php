@@ -11,9 +11,6 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\MetadataNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
-/**
- * @see https://gotenberg.dev/docs/routes#pdfa-chromium
- */
 trait MetadataTrait
 {
     abstract protected function getBodyBag(): BodyBag;
@@ -41,6 +38,8 @@ trait MetadataTrait
      *     Title?: string,
      *     Trapped?: 'True'|'False'|'Unknown',
      * } $metadata
+     *
+     * @example ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
      */
     #[WithConfigurationNode(new MetadataNodeBuilder('metadata', children: [
         new ScalarNodeBuilder('Author'),
@@ -64,7 +63,9 @@ trait MetadataTrait
     }
 
     /**
-     * The metadata to write.
+     * If you want to add metadata from the ones already loaded in the configuration.
+     *
+     * @example ->addMetadata('key', 'value')
      */
     public function addMetadata(string $key, string $value): static
     {

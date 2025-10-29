@@ -12,16 +12,17 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
-/**
- * @see https://gotenberg.dev/docs/routes#split-chromium
- * @see https://gotenberg.dev/docs/routes#split-libreoffice
- */
 trait SplitTrait
 {
     abstract protected function getBodyBag(): BodyBag;
 
     /**
      * Either intervals or pages.
+     *
+     * @see https://gotenberg.dev/docs/routes#split-chromium
+     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     *
+     * @example ->splitMode(SplitMode::Intervals)
      */
     #[WithConfigurationNode(new NativeEnumNodeBuilder('split_mode', enumClass: SplitMode::class))]
     public function splitMode(SplitMode|null $splitMode = null): self
@@ -37,6 +38,11 @@ trait SplitTrait
 
     /**
      * Either the intervals or the page ranges to extract, depending on the selected mode.
+     *
+     * @see https://gotenberg.dev/docs/routes#split-chromium
+     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     *
+     * @example ->splitSpan('1')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('split_span'))]
     public function splitSpan(string $splitSpan): self
@@ -49,6 +55,11 @@ trait SplitTrait
 
     /**
      * Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
+     *
+     * @see https://gotenberg.dev/docs/routes#split-chromium
+     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     *
+     * @example ->splitUnify() // is same as `->splitUnify(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('split_unify'))]
     public function splitUnify(bool $bool = true): self

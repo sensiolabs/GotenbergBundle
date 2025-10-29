@@ -264,17 +264,16 @@ class YourController
 1. [Configuration](./docs/configuration.md)
 2. [Processing (saving for example)](./docs/processing.md)
 3. [Working with assets](./docs/assets.md)
-4. [Builders API](./docs/builders_api.md)
-5. [Async & Webhooks](./docs/webhook.md)
-6. [Working with fonts](./docs/fonts.md)
+4. [Async & Webhooks](./docs/webhook.md)
+5. [Working with fonts](./docs/fonts.md)
 
 ### PDF
 
 1. [Add header / footer](./docs/pdf/header-footer.md)
-2. [HTML Builder](./docs/pdf/html-builder.md)
-3. [Markdown Builder](./docs/pdf/markdown-builder.md)
-4. [Url Builder](./docs/pdf/url-builder.md)
-5. [Office Builder](./docs/pdf/office-builder.md) (available extensions for conversion below)
+2. [HTML Builder](./docs/pdf/HtmlPdfBuilder.md)
+3. [Markdown Builder](./docs/pdf/MarkdownPdfBuilder.md)
+4. [Url Builder](./docs/pdf/UrlPdfBuilder.md)
+5. [Office Builder](./docs/pdf/LibreOfficePdfBuilder.md) (available extensions for conversion below)
 
    📝 `doc`, `docx`, `docm`, `dot`, `dotx`, `dotm`, `odt`, `ott`, `sdw`, `stw`, `sxw`, `sxg`, `fodt`, `rtf`, `txt`,
 
@@ -302,18 +301,16 @@ class YourController
 
    🧪 `sxm`, `mml`, `ltx`, `mw`
 
-6. [Merge Builder](./docs/pdf/merge-builder.md)
-7. [Convert Builder](./docs/pdf/convert-builder.md)
-8. [Split Builder](./docs/pdf/split-builder.md)
-9. [Flatten Builder](./docs/pdf/flatten-builder.md)
-10. [PDF customization](./docs/pdf/customization.md) (available for HTML, Markdown and Url builder)
+6. [Merge Builder](./docs/pdf/MergePdfBuilder.md)
+7. [Convert Builder](./docs/pdf/ConvertPdfBuilder.md)
+8. [Split Builder](./docs/pdf/SplitPdfBuilder.md)
+9. [Flatten Builder](./docs/pdf/FlattenPdfBuilder.md)
 
 ### Screenshot
 
-1. [HTML Builder](./docs/screenshot/html-builder.md)
-2. [Markdown Builder](./docs/screenshot/markdown-builder.md)
-3. [Url Builder](./docs/screenshot/url-builder.md)
-4. [Screenshot customization](./docs/screenshot/customization.md)
+1. [HTML Builder](./docs/screenshot/HtmlScreenshotBuilder.md)
+2. [Markdown Builder](./docs/screenshot/MarkdownScreenshotBuilder.md)
+3. [Url Builder](./docs/screenshot/UrlScreenshotBuilder.md)
 
 ## Profiler
 

@@ -10,8 +10,6 @@ use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
 /**
- * @see https://gotenberg.dev/docs/routes#emulated-media-type-chromium
- *
  * @package Behavior\\MediaType
  */
 trait EmulatedMediaTypeTrait
@@ -20,6 +18,10 @@ trait EmulatedMediaTypeTrait
 
     /**
      * Forces Chromium to emulate, either "screen" or "print". (default "print").
+     *
+     * @see https://gotenberg.dev/docs/routes#emulated-media-type-chromium
+     *
+     * @example ->emulatedMediaType(EmulatedMediaType::Screen)
      */
     #[WithConfigurationNode(new NativeEnumNodeBuilder('emulated_media_type', enumClass: EmulatedMediaType::class))]
     public function emulatedMediaType(EmulatedMediaType $mediaType): static

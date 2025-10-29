@@ -29,6 +29,8 @@ trait PdfPagePropertiesTrait
      * Define whether to print the entire content in one single page.
      *
      * If the singlePage form field is set to true, it automatically overrides the values from the paperHeight and nativePageRanges form fields.
+     *
+     * @example ->singlePage() // is same as `->singlePage(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('single_page'))]
     public function singlePage(bool $bool = true): static
@@ -40,6 +42,10 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     *
+     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @example ->paperWidth(15, Unit::Inches)
      */
     #[WithConfigurationNode(new UnitNodeBuilder('paper_width'))]
     public function paperWidth(float $width, Unit $unit = Unit::Inches): static
@@ -51,6 +57,10 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     *
+     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @example ->paperHeight(15, Unit::Inches)
      */
     #[WithConfigurationNode(new UnitNodeBuilder('paper_height'))]
     public function paperHeight(float $height, Unit $unit = Unit::Inches): static
@@ -76,6 +86,8 @@ trait PdfPagePropertiesTrait
      * A4 - 8.27 x 11.7
      * A5 - 5.83 x 8.27
      * A6 - 4.13 x 5.83
+     *
+     * @example ->paperSize(21, 29.7, Unit::Centimeters)
      */
     public function paperSize(float $width, float $height, Unit $unit = Unit::Inches): static
     {
@@ -85,6 +97,11 @@ trait PdfPagePropertiesTrait
         return $this;
     }
 
+    /**
+     * You can also create your own paper size values, you just need to implement PaperSizeInterface.
+     *
+     * @example ->paperStandardSize(PaperSize::A4)
+     */
     #[WithConfigurationNode(new NativeEnumNodeBuilder('paper_standard_size', enumClass: PaperSize::class))]
     public function paperStandardSize(PaperSizeInterface $paperSize): static
     {
@@ -96,6 +113,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     *
+     * @example ->marginTop(4, Unit::Points)
      */
     #[WithConfigurationNode(new UnitNodeBuilder('margin_top'))]
     public function marginTop(float $top, Unit $unit = Unit::Inches): static
@@ -107,6 +126,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     *
+     * @example ->marginBottom(4, Unit::Pixels)
      */
     #[WithConfigurationNode(new UnitNodeBuilder('margin_bottom'))]
     public function marginBottom(float $bottom, Unit $unit = Unit::Inches): static
@@ -118,6 +139,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     *
+     * @example ->marginLeft(4, Unit::Picas)
      */
     #[WithConfigurationNode(new UnitNodeBuilder('margin_left'))]
     public function marginLeft(float $left, Unit $unit = Unit::Inches): static
@@ -129,6 +152,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
+     *
+     * @example ->marginRight(4, Unit::Millimeters)
      */
     #[WithConfigurationNode(new UnitNodeBuilder('margin_right'))]
     public function marginRight(float $right, Unit $unit = Unit::Inches): static
@@ -140,6 +165,10 @@ trait PdfPagePropertiesTrait
 
     /**
      * Overrides the default margins (e.g., 0.39), in inches.
+     *
+     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     *
+     * @example ->margins(1, 2, 3, 4, Unit::Inches)
      */
     public function margins(float $top, float $bottom, float $left, float $right, Unit $unit = Unit::Inches): static
     {
@@ -153,6 +182,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Define whether to prefer page size as defined by CSS.
+     *
+     * @example ->preferCssPageSize() // is same as `->preferCssPageSize(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('prefer_css_page_size'))]
     public function preferCssPageSize(bool $bool = true): static
@@ -164,6 +195,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Define whether the document outline should be embedded into the PDF.
+     *
+     * @example ->generateDocumentOutline() // is same as `->generateDocumentOutline(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('generate_document_outline'))]
     public function generateDocumentOutline(bool $bool = true): static
@@ -175,6 +208,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Prints the background graphics.
+     *
+     * @example ->printBackground() // is same as `->printBackground(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('print_background'))]
     public function printBackground(bool $bool = true): static
@@ -186,6 +221,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Hide the default white background and allow generating PDFs with transparency.
+     *
+     * @example ->omitBackground() // is same as `->omitBackground(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('omit_background'))]
     public function omitBackground(bool $bool = true): static
@@ -197,6 +234,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Set the paper orientation to landscape.
+     *
+     * @example ->landscape() // is same as `->landscape(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('landscape'))]
     public function landscape(bool $bool = true): static
@@ -208,6 +247,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * The scale of the page rendering (e.g., 1.0).
+     *
+     * @example ->scale(2.5)
      */
     #[WithConfigurationNode(new FloatNodeBuilder('scale'))]
     public function scale(float $scale): static
@@ -218,7 +259,9 @@ trait PdfPagePropertiesTrait
     }
 
     /**
-     * Page ranges to print, e.g., '1-5, 8, 11-13'.
+     * Page ranges to print, e.g., '1-5, 8, 11-13'. (Default All pages).
+     *
+     * @example ->nativePageRanges('1-5')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('native_page_ranges'))]
     public function nativePageRanges(string|null $ranges = null): static
@@ -235,6 +278,8 @@ trait PdfPagePropertiesTrait
 
     /**
      * Define whether to generate tagged (accessible) PDF.
+     *
+     * @example ->generateTaggedPdf() // is same as `->generateTaggedPdf(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('generate_tagged_pdf'))]
     public function generateTaggedPdf(bool $bool = true): static

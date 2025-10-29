@@ -10,9 +10,6 @@ use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
-/**
- * @see https://gotenberg.dev/docs/routes#download-from
- */
 trait DownloadFromTrait
 {
     abstract protected function getBodyBag(): BodyBag;
@@ -23,6 +20,8 @@ trait DownloadFromTrait
      * @param list<array{url: string, extraHttpHeaders?: array<string, string>}> $downloadFrom
      *
      * @see https://gotenberg.dev/docs/routes#download-from
+     *
+     * @example ->downloadFrom([['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeader' => 'MyValue']], ['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeaderOne' => 'MyValue', 'MyHeaderTwo' => 'MyValue']]])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('download_from', prototype: 'array', children: [
         new ScalarNodeBuilder('url', required: true, restrictTo: 'string'),

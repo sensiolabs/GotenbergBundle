@@ -8,15 +8,16 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 
-/**
- * @see https://gotenberg.dev/docs/routes#flatten-libreoffice
- */
 trait FlattenTrait
 {
     abstract protected function getBodyBag(): BodyBag;
 
     /**
      * Flattening a PDF combines all its contents into a single layer. (default false).
+     *
+     * @see https://gotenberg.dev/docs/routes#flatten-libreoffice
+     *
+     * @example ->flatten() // is same as `->flatten(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('flatten'))]
     public function flatten(bool $bool = true): self

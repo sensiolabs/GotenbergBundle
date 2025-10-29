@@ -39,25 +39,7 @@ class Summary
         $this->builders[$type] ??= [];
         $this->builders[$type][$class->getShortName()] = $class;
 
-        $this->filenames[$class->getName()] = "{$type}/builders_api/{$class->getShortName()}.md";
-    }
-
-    public function extract(): string
-    {
-        $summary = "# Builders API\n\n";
-        ksort($this->builders);
-
-        foreach ($this->builders as $type => $builders) {
-            $summary .= '## '.ucfirst($type)."\n\n";
-            ksort($builders);
-
-            foreach ($builders as $builder) {
-                $summary .= "* [{$builder->getShortName()}](./{$this->getFilename($builder->getName())})\n";
-            }
-            $summary .= "\n";
-        }
-
-        return $summary;
+        $this->filenames[$class->getName()] = "{$type}/{$class->getShortName()}.md";
     }
 
     public function getFilename(string $className): string
@@ -103,6 +85,17 @@ class BuilderParser
         'setContainer',
         'getSubscribedServices',
     ];
+
+    private const EXAMPLE_TEMPLATE = '
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    {% method %}
+    ->generate()
+    ->stream()
+;
+```
+    ';
 
     private string $name;
 
@@ -163,9 +156,32 @@ class BuilderParser
         };
 
         /**
+         * @param list<string> $exampleList
+         */
+        $renderExample = static function (array $exampleList): string {
+            if ([] === $exampleList) {
+                return '';
+            }
+
+            $lastKey = array_key_last($exampleList);
+
+            foreach ($exampleList as $key => $example) {
+                $markdown = str_replace('{% method %}', $example, self::EXAMPLE_TEMPLATE);
+
+                $isLast = $lastKey === $key;
+
+                if (false === $isLast) {
+                    $markdown .= '<br />';
+                }
+            }
+
+            return rtrim($markdown, '<br />');
+        };
+
+        /**
          * @param ParsedDocBlock $parts
          */
-        $renderParts = static function (array $parts) use ($renderDescription, $renderSee): string {
+        $renderParts = static function (array $parts) use ($renderDescription, $renderSee, $renderExample): string {
             $markdown = '';
 
             $description = $renderDescription($parts['description']);
@@ -180,6 +196,11 @@ class BuilderParser
                 }
 
                 $markdown .= $see."\n";
+            }
+
+            $example = $renderExample($parts['tags']['example'] ?? []);
+            if ('' !== $example) {
+                $markdown .= $example;
             }
 
             return $markdown;
@@ -406,7 +427,7 @@ class BuilderParser
                 $prefixParameter = '...';
             }
 
-            $parameters[] = "{$parameterType} {$prefixParameter}\${$parameterName}";
+            $parameters[] = "{$parameterType} {$prefixParameter}\\\${$parameterName}";
         }
 
         return $methodName.'('.implode(', ', $parameters).')';
@@ -437,7 +458,6 @@ $application->register('generate')
                 file_put_contents(__DIR__.'/'.$filename, $builderParser->extract());
             }
         }
-        file_put_contents(__DIR__.'/builders_api.md', $summary->extract());
 
         return Command::SUCCESS;
     })

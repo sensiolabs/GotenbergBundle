@@ -35,7 +35,13 @@ final class MergePdfBuilder extends AbstractBuilder
     /**
      * Add PDF files to merge.
      *
+     * As assets files, by default the PDF files are fetch in the assets folder
+     * of your application. For more information about path resolution go to
+     * assets documentation.
+     *
      * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
+     *
+     * @example ->files('document.pdf','document_2.pdf')
      */
     public function files(string|\Stringable ...$paths): self
     {

@@ -17,7 +17,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
- * Split `n` pdf files.
+ * You may have the possibility to split several PDF pages.
  *
  * @see https://gotenberg.dev/docs/routes#split-pdfs-route
  */
@@ -34,6 +34,17 @@ final class SplitPdfBuilder extends AbstractBuilder
 
     public const ENDPOINT = '/forms/pdfengines/split';
 
+    /**
+     * Add PDF files to split.
+     *
+     * As assets files, by default the PDF files are fetch in the assets folder
+     * of your application. For more information about path resolution go to
+     * assets documentation.
+     *
+     * @see https://gotenberg.dev/docs/routes#split-pdfs-route
+     *
+     * @example ->files('document.pdf','document_2.pdf')
+     */
     public function files(string|\Stringable ...$paths): self
     {
         foreach ($paths as $path) {

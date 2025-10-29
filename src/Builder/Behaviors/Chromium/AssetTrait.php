@@ -8,8 +8,6 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 
 /**
- * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
- *
  * @package Behavior\\Assets
  */
 trait AssetTrait
@@ -20,6 +18,14 @@ trait AssetTrait
 
     /**
      * Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).
+     *
+     * By default, the assets files are fetch in the assets folder of your application.
+     * If your assets are in another folder, you can override the default value of assets_directory in your
+     * configuration file config/sensiolabs_gotenberg.yml.
+     *
+     * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
+     *
+     * @example ->assets('../img/ceo.jpeg', __DIR__'/../../public/admin.jpeg')
      */
     public function assets(string|\Stringable ...$paths): static
     {
@@ -36,6 +42,14 @@ trait AssetTrait
 
     /**
      * Adds a file, like an image, font, stylesheet, and so on.
+     *
+     * By default, the assets files are fetch in the assets folder of your application.
+     * If your assets are in another folder, you can override the default value of assets_directory in your
+     * configuration file config/sensiolabs_gotenberg.yml.
+     *
+     * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
+     *
+     * @example ->addAsset('../img/ceo.jpeg', __DIR__'/../../public/admin.jpeg')
      */
     public function addAsset(string|\Stringable $path): static
     {

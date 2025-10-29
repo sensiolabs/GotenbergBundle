@@ -15,8 +15,6 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\WebhookNodeBuilder;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @see https://gotenberg.dev/docs/webhook
- *
  * @phpstan-type WebhookConfiguration array{
  *     config_name?: string,
  *     success?: array{
@@ -45,6 +43,8 @@ trait WebhookTrait
      * @param WebhookConfiguration $webhook
      *
      * @see https://gotenberg.dev/docs/webhook
+     *
+     * @example ->webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST']])
      */
     #[WithConfigurationNode(new WebhookNodeBuilder('webhook', children: [
         new ScalarNodeBuilder('config_name', restrictTo: 'string'),
@@ -116,6 +116,8 @@ trait WebhookTrait
      * Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
      *
      * @param 'POST'|'PUT'|'PATCH'|null $method
+     *
+     * @example ->webhookUrl('https://my.webhook.url', 'PUT')
      */
     public function webhookUrl(string $url, string|null $method = null): static
     {
@@ -132,6 +134,8 @@ trait WebhookTrait
      * Optionally sets a custom HTTP method for such endpoint among : POST, PUT or PATCH.
      *
      * @param 'POST'|'PUT'|'PATCH'|null $method
+     *
+     * @example ->webhookErrorUrl('https://my.webhook.url', 'PUT')
      */
     public function webhookErrorUrl(string $url, string|null $method = null): static
     {
@@ -147,6 +151,8 @@ trait WebhookTrait
      * Extra headers that will be provided to the webhook endpoint. May it either be Success or Error.
      *
      * @param array<string, string> $extraHttpHeaders
+     *
+     * @example ->webhookExtraHeaders(['Authorization' => 'Bearer my-secret-token','X-Custom-Header' => 'CustomValue'])
      */
     public function webhookExtraHeaders(array $extraHttpHeaders): static
     {
@@ -156,17 +162,25 @@ trait WebhookTrait
     }
 
     /**
+     * Sets the webhook route with params and method for cases of success.
+     *
      * @param array<string, mixed>      $parameters
      * @param 'PATCH'|'POST'|'PUT'|null $method
+     *
+     * @example ->webhookRoute('my_route_success', ['foo' => 'bar'], 'PUT')
      */
     public function webhookRoute(string $route, array $parameters = [], string|null $method = null): static
     {
         return $this->webhookUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL), $method);
     }
 
-    /**     *
+    /**
+     * Sets the webhook route with params and method for cases of error.
+     *
      * @param array<string, mixed>      $parameters
      * @param 'PATCH'|'POST'|'PUT'|null $method
+     *
+     * @example ->webhookErrorRoute('my_route_error', ['foo' => 'bar'], 'PUT')
      */
     public function webhookErrorRoute(string $route, array $parameters = [], string|null $method = null): static
     {
@@ -175,6 +189,8 @@ trait WebhookTrait
 
     /**
      * Providing an existing $name from the configuration file, it will correctly set both success and error webhook URLs as well as extra_http_headers if defined.
+     *
+     * @example ->webhookConfiguration('my_webhook_config')
      */
     public function webhookConfiguration(string $name): static
     {

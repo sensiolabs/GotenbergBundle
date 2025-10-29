@@ -9,14 +9,21 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 
 /**
- * @see https://gotenberg.dev/docs/routes#performance-mode-chromium
- *
  * @package Behavior\\Performance
  */
 trait PerformanceModeTrait
 {
     abstract protected function getBodyBag(): BodyBag;
 
+    /**
+     * Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during
+     * conversion. However, this often significantly slows down the conversion process. Setting this form field to true
+     * can greatly enhance the conversion speed.
+     *
+     * @see https://gotenberg.dev/docs/routes#performance-mode-chromium
+     *
+     * @example ->skipNetworkIdleEvent() // is same as `->skipNetworkIdleEvent(true)`
+     */
     #[WithConfigurationNode(new BooleanNodeBuilder('skip_network_idle_event'))]
     public function skipNetworkIdleEvent(bool $bool = true): static
     {

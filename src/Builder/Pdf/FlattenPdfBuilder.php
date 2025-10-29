@@ -13,6 +13,10 @@ use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
+ * You may have the possibility to flatten several PDF pages.
+ * It combines all its contents into a single layer, making it non-editable
+ * and ensuring that the document's integrity is maintained.
+ *
  * @see https://gotenberg.dev/docs/routes#flatten-pdfs-route
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'flatten')]
@@ -24,6 +28,11 @@ final class FlattenPdfBuilder extends AbstractBuilder
 
     public const ENDPOINT = '/forms/pdfengines/flatten';
 
+    /**
+     * If you provide multiple PDF files you will get ZIP folder containing all the converted PDF.
+     *
+     * @example ->files('document.pdf', __DIR__'/../../public/document_2.pdf')
+     */
     public function files(string|\Stringable ...$paths): self
     {
         foreach ($paths as $path) {

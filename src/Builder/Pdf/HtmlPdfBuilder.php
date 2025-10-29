@@ -10,6 +10,8 @@ use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
+ * You may have the possibility to convert HTML or Twig files into PDF.
+ *
  * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'html')]

@@ -16,8 +16,6 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
- * @see https://gotenberg.dev/docs/routes#cookies-chromium
- *
  * @package Behavior\\Chromium\\Cookie
  */
 trait CookieTrait
@@ -28,7 +26,13 @@ trait CookieTrait
     abstract protected function getBodyBag(): BodyBag;
 
     /**
+     * Cookies to store in the Chromium cookie jar.
+     *
      * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
+     *
+     * @see https://gotenberg.dev/docs/routes#cookies-chromium
+     *
+     * @example ->cookies([[ 'name' => 'my_cookie', 'value' => 'symfony', 'domain' => 'symfony.com', 'secure' => true, 'httpOnly' => true, 'sameSite' => 'Lax']])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('cookies', prototype: 'array', children: [
         new ScalarNodeBuilder('name', required: true, restrictTo: 'string'),
@@ -56,6 +60,10 @@ trait CookieTrait
      * Add cookies to store in the Chromium cookie jar.
      *
      * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
+     *
+     * @see https://gotenberg.dev/docs/routes#cookies-chromium
+     *
+     * @example ->addCookies([['name' => 'my_cookie','value' => 'symfony','domain' => 'symfony.com','secure' => true,'httpOnly' => true,'sameSite' => 'Lax']])
      */
     public function addCookies(array $cookies): static
     {
@@ -78,7 +86,11 @@ trait CookieTrait
     }
 
     /**
+     * If you want to add cookies and delete the ones already loaded in the configuration .
+     *
      * @param Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null} $cookie
+     *
+     * @example ->setCookie([ 'name' => 'my_cookie', 'value' => 'symfony', 'domain' => 'symfony.com', 'secure' => true, 'httpOnly' => true, 'sameSite' => 'Lax'])
      */
     public function setCookie(string $name, Cookie|array $cookie): static
     {
@@ -90,6 +102,11 @@ trait CookieTrait
         return $this;
     }
 
+    /**
+     * If you want to forward cookies from the current request.
+     *
+     * @example ->forwardCookie('my_cookie')
+     */
     public function forwardCookie(string $name): static
     {
         $request = $this->getCurrentRequest();
