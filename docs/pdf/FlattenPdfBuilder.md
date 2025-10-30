@@ -34,7 +34,7 @@ class YourController
     }
 }
 ```
-
+<!-- AUTO generated doc from generate.php -->
 <!-- AUTO-GENERATED:START -->
 ## Customization
 
