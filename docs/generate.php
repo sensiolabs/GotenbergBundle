@@ -438,8 +438,6 @@ return $gotenberg
         return $methodName.'('.implode(', ', $parameters).')';
     }
 
-//     check see before class and description
-
     public function parseMethodLink(ReflectionMethod $method): string
     {
         $methodName = $method->getName();
