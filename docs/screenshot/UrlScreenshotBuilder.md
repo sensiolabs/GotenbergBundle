@@ -1,9 +1,111 @@
 # UrlScreenshotBuilder
 
-You may have the possibility to generate a screenshot from a URL.<br />
+You may have the possibility to generate a screenshot from a URL.
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
+## Basic usage
+
+### url
+
+URL of the page you want to convert into screenshot.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg->url()
+            ->url('https://sensiolabs.com/fr/')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+### route
+
+Route of the page you want to convert into screenshot.
+
+> [!WARNING]
+> You must provide a URL accessible by Gotenberg with a public Host.
+> Or configure `sensiolabs_gotenberg.yaml`
+> ```yaml
+> # config/packages/sensiolabs_gotenberg.yaml
+> sensiolabs_gotenberg:
+>   request_context:
+>       base_uri: 'http://host.docker.internal:3000'
+> ```
+
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg->url()
+            ->route('home', [
+                'my_var' => 'value'
+            ])
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+<!-- AUTO-GENERATED:START -->
+## Customization
+
+### Available functions
+
+- [downloadFrom](#downloadfromarray-downloadfrom)
+- [route](#routestring-name-array-parameters)
+- [url](#urlstring-url)
+- [addAsset](#addassetstringablestring-path)
+- [assets](#assetsstringablestring-paths)
+- [webhook](#webhookarray-webhook)
+- [webhookConfiguration](#webhookconfigurationstring-name)
+- [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
+- [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
+- [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
+- [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
+- [webhookUrl](#webhookurlstring-url-string-method)
+- [addCookies](#addcookiesarray-cookies)
+- [cookies](#cookiesarray-cookies)
+- [forwardCookie](#forwardcookiestring-name)
+- [setCookie](#setcookiestring-name-symfonycomponenthttpfoundationcookiearray-cookie)
+- [clip](#clipbool-bool)
+- [format](#formatsensiolabsgotenbergbundleenumerationscreenshotformat-format)
+- [height](#heightint-height)
+- [omitBackground](#omitbackgroundbool-bool)
+- [optimizeForSpeed](#optimizeforspeedbool-bool)
+- [quality](#qualityint-quality)
+- [width](#widthint-width)
+- [waitDelay](#waitdelaystring-delay)
+- [waitForExpression](#waitforexpressionstring-expression)
+- [content](#contentstring-template-array-context)
+- [contentFile](#contentfilestring-path)
+- [footer](#footerstring-template-array-context)
+- [footerFile](#footerfilestring-path)
+- [header](#headerstring-template-array-context)
+- [headerFile](#headerfilestring-path)
+- [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
+- [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
+- [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
+- [failOnResourceLoadingFailed](#failonresourceloadingfailedbool-bool)
+- [addExtraHttpHeaders](#addextrahttpheadersarray-headers)
+- [extraHttpHeaders](#extrahttpheadersarray-headers)
+- [userAgent](#useragentstring-useragent)
+- [emulatedMediaType](#emulatedmediatypesensiolabsgotenbergbundleenumerationemulatedmediatype-mediatype)
+- [skipNetworkIdleEvent](#skipnetworkidleeventbool-bool)
 
 ### downloadFrom(array \$downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
@@ -50,6 +152,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addAsset(Stringable|string \$path)
 Adds a file, like an image, font, stylesheet, and so on.<br /><br />By default, the assets files are fetch in the assets folder of your application.<br />If your assets are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
@@ -70,6 +173,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### webhook(array \$webhook)
 > [!TIP]
@@ -156,6 +260,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addCookies(array \$cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
@@ -209,6 +314,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### clip(bool \$bool)
 Define whether to clip the screenshot according to the device dimensions. (Default false).<br />
@@ -309,6 +415,7 @@ return $gotenberg
 ;
 ```
 
+
 ### waitDelay(string \$delay)
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
@@ -338,6 +445,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### content(string \$template, array \$context)
 
@@ -418,6 +526,7 @@ return $gotenberg
 ;
 ```
 
+
 ### failOnConsoleExceptions(bool \$bool)
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
 
@@ -478,6 +587,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addExtraHttpHeaders(array \$headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
@@ -517,6 +627,7 @@ return $gotenberg
 ;
 ```
 
+
 ### emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType \$mediaType)
 Forces Chromium to emulate, either "screen" or "print". (default "print").<br />
 
@@ -531,6 +642,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### skipNetworkIdleEvent(bool \$bool)
 Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during<br />conversion. However, this often significantly slows down the conversion process. Setting this form field to true<br />can greatly enhance the conversion speed.<br />

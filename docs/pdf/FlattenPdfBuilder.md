@@ -1,9 +1,54 @@
 # FlattenPdfBuilder
 
-You may have the possibility to flatten several PDF pages.<br />It combines all its contents into a single layer, making it non-editable<br />and ensuring that the document's integrity is maintained.<br />
+You may have the possibility to flatten several PDF pages.
+It combines all its contents into a single layer, making it non-editable and
+ensuring that the document's integrity is maintained.
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#flatten-pdfs-route](https://gotenberg.dev/docs/routes#flatten-pdfs-route)
+
+## Basic usage
+
+> [!WARNING]
+> As assets files, by default the PDF files are fetch in the assets folder of
+> your application.
+> For more information about path resolution go to [assets documentation](../assets.md).
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->flatten()
+            ->files(
+                'document_1.pdf',
+                'document_2.pdf',
+            )
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+<!-- AUTO-GENERATED:START -->
+## Customization
+
+### Available functions
+
+- [downloadFrom](#downloadfromarray-downloadfrom)
+- [files](#filesstringablestring-paths)
+- [webhook](#webhookarray-webhook)
+- [webhookConfiguration](#webhookconfigurationstring-name)
+- [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
+- [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
+- [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
+- [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
+- [webhookUrl](#webhookurlstring-url-string-method)
 
 ### downloadFrom(array \$downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
@@ -31,6 +76,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### webhook(array \$webhook)
 > [!TIP]

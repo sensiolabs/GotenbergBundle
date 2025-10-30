@@ -1,9 +1,183 @@
 # MarkdownPdfBuilder
 
-You may have the possibility to convert Markdown files into PDF.<br />You just need to wrap your markdown file into an HTML or Twig file.<br />
+You may have the possibility to convert Markdown files into PDF.
+You just need to wrap your markdown file into an HTML or Twig file.
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route](https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route)
+
+## Basic usage
+
+> [!WARNING]
+> Every HTML or Twig template you pass to Gotenberg need to have the following structure.
+> Even Header or Footer parts.
+> ```html
+>        <!DOCTYPE html>
+>        <html lang="en">
+>          <head>
+>            <meta charset="utf-8" />
+>            <title>My PDF</title>
+>          </head>
+>          <body>
+>            <!-- Your code goes here -->
+>          </body>
+>        </html>
+> ```
+
+### HTML wrapper
+
+The HTML file to wrap markdown file into PDF.
+
+> [!WARNING]
+> As assets files, by default the HTML files are fetch in the assets folder of
+> your application.
+> For more information about path resolution go to [assets documentation](../assets.md).
+
+
+> [!WARNING]
+> In the template, you must use the {{ toHTML "filename.md" }} special directive to reference the Markdown file.
+> The HTML template that receives your markdown file will look like this.
+
+```html
+<!doctype html>
+<html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <title>My PDF</title>
+        </head>
+    <body>
+        {{ toHTML "content.md" }}
+    </body>
+</html>
+```
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->markdown()
+            ->wrapperFile('../templates/wrapper.html')
+            ->files('content.md')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+### Twig wrapper
+
+The Twig file to convert into PDF.
+
+> [!WARNING]
+> In the template, you must use the {{ toHTML "filename.md" }} special directive to reference the Markdown file.
+> The twig template that receives your markdown file will look like this.
+
+```html
+<!doctype html>
+<html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <title>My PDF</title>
+        </head>
+    <body>
+        {% verbatim %}
+            {{ toHTML "content.md" }}
+        {% endverbatim %}
+    </body>
+</html>
+```
+Gotenberg expects an HTML template containing the directive {{ toHTML "filename.md" }}.
+To prevent any conflict, you may want to use the [verbatim](https://twig.symfony.com/doc/3.x/tags/verbatim.html) tag to encapsulate the directive.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->markdown()
+            ->wrapper('wrapper.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->files('content.md')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+<!-- AUTO-GENERATED:START -->
+## Customization
+
+### Available functions
+
+- [addMetadata](#addmetadatastring-key-string-value)
+- [downloadFrom](#downloadfromarray-downloadfrom)
+- [files](#filesstringablestring-paths)
+- [metadata](#metadataarray-metadata)
+- [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
+- [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
+- [splitMode](#splitmodesensiolabsgotenbergbundleenumerationsplitmode-splitmode)
+- [splitSpan](#splitspanstring-splitspan)
+- [splitUnify](#splitunifybool-bool)
+- [wrapper](#wrapperstring-template-array-context)
+- [wrapperFile](#wrapperfilestring-path)
+- [addAsset](#addassetstringablestring-path)
+- [assets](#assetsstringablestring-paths)
+- [webhook](#webhookarray-webhook)
+- [webhookConfiguration](#webhookconfigurationstring-name)
+- [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
+- [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
+- [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
+- [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
+- [webhookUrl](#webhookurlstring-url-string-method)
+- [addCookies](#addcookiesarray-cookies)
+- [cookies](#cookiesarray-cookies)
+- [forwardCookie](#forwardcookiestring-name)
+- [setCookie](#setcookiestring-name-symfonycomponenthttpfoundationcookiearray-cookie)
+- [generateDocumentOutline](#generatedocumentoutlinebool-bool)
+- [generateTaggedPdf](#generatetaggedpdfbool-bool)
+- [landscape](#landscapebool-bool)
+- [marginBottom](#marginbottomfloat-bottom-sensiolabsgotenbergbundleenumerationunit-unit)
+- [marginLeft](#marginleftfloat-left-sensiolabsgotenbergbundleenumerationunit-unit)
+- [marginRight](#marginrightfloat-right-sensiolabsgotenbergbundleenumerationunit-unit)
+- [marginTop](#margintopfloat-top-sensiolabsgotenbergbundleenumerationunit-unit)
+- [margins](#marginsfloat-top-float-bottom-float-left-float-right-sensiolabsgotenbergbundleenumerationunit-unit)
+- [nativePageRanges](#nativepagerangesstring-ranges)
+- [omitBackground](#omitbackgroundbool-bool)
+- [paperHeight](#paperheightfloat-height-sensiolabsgotenbergbundleenumerationunit-unit)
+- [paperSize](#papersizefloat-width-float-height-sensiolabsgotenbergbundleenumerationunit-unit)
+- [paperStandardSize](#paperstandardsizesensiolabsgotenbergbundleenumerationpapersizeinterface-papersize)
+- [paperWidth](#paperwidthfloat-width-sensiolabsgotenbergbundleenumerationunit-unit)
+- [preferCssPageSize](#prefercsspagesizebool-bool)
+- [printBackground](#printbackgroundbool-bool)
+- [scale](#scalefloat-scale)
+- [singlePage](#singlepagebool-bool)
+- [waitDelay](#waitdelaystring-delay)
+- [waitForExpression](#waitforexpressionstring-expression)
+- [footer](#footerstring-template-array-context)
+- [footerFile](#footerfilestring-path)
+- [header](#headerstring-template-array-context)
+- [headerFile](#headerfilestring-path)
+- [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
+- [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
+- [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
+- [failOnResourceLoadingFailed](#failonresourceloadingfailedbool-bool)
+- [addExtraHttpHeaders](#addextrahttpheadersarray-headers)
+- [extraHttpHeaders](#extrahttpheadersarray-headers)
+- [userAgent](#useragentstring-useragent)
+- [emulatedMediaType](#emulatedmediatypesensiolabsgotenbergbundleenumerationemulatedmediatype-mediatype)
+- [skipNetworkIdleEvent](#skipnetworkidleeventbool-bool)
 
 ### addMetadata(string \$key, string \$value)
 If you want to add metadata from the ones already loaded in the configuration.<br />
@@ -175,6 +349,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addAsset(Stringable|string \$path)
 Adds a file, like an image, font, stylesheet, and so on.<br /><br />By default, the assets files are fetch in the assets folder of your application.<br />If your assets are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
@@ -195,6 +370,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### webhook(array \$webhook)
 > [!TIP]
@@ -281,6 +457,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addCookies(array \$cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
@@ -334,6 +511,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### generateDocumentOutline(bool \$bool)
 Define whether the document outline should be embedded into the PDF.<br />
@@ -560,6 +738,7 @@ return $gotenberg
 ;
 ```
 
+
 ### waitDelay(string \$delay)
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
@@ -589,6 +768,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### footer(string \$template, array \$context)
 > [!TIP]
@@ -645,6 +825,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### failOnConsoleExceptions(bool \$bool)
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
@@ -706,6 +887,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addExtraHttpHeaders(array \$headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
@@ -745,6 +927,7 @@ return $gotenberg
 ;
 ```
 
+
 ### emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType \$mediaType)
 Forces Chromium to emulate, either "screen" or "print". (default "print").<br />
 
@@ -759,6 +942,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### skipNetworkIdleEvent(bool \$bool)
 Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during<br />conversion. However, this often significantly slows down the conversion process. Setting this form field to true<br />can greatly enhance the conversion speed.<br />

@@ -1,9 +1,123 @@
 # HtmlScreenshotBuilder
 
-You may have the possibility to convert HTML or Twig files into screenshot.<br />
+You may have the possibility to convert HTML or Twig files into screenshot.
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
+
+## Basic usage
+
+> [!WARNING]
+> Every HTML or Twig template you pass to Gotenberg need to have the following structure.
+> Even Header or Footer parts.
+> ```html
+>        <!DOCTYPE html>
+>        <html lang="en">
+>          <head>
+>            <meta charset="utf-8" />
+>            <title>My screenshot</title>
+>          </head>
+>          <body>
+>            <!-- Your code goes here -->
+>          </body>
+>        </html>
+> ```
+
+### HTML content
+
+The HTML file to convert into screenshot.
+
+> [!WARNING]
+> As assets files, by default the HTML files are fetch in the assets folder of
+> your application.
+> If your  HTML files are in another folder, you can override the default value
+> of assets_directory in your configuration file config/sensiolabs_gotenberg.yml.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg->html()
+            ->contentFile('../templates/content.html')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+### Twig content
+
+The Twig file to convert into screenshot.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergScreenshotInterface $gotenberg): Response
+    {
+        return $gotenberg->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+<!-- AUTO-GENERATED:START -->
+## Customization
+
+### Available functions
+
+- [downloadFrom](#downloadfromarray-downloadfrom)
+- [addAsset](#addassetstringablestring-path)
+- [assets](#assetsstringablestring-paths)
+- [webhook](#webhookarray-webhook)
+- [webhookConfiguration](#webhookconfigurationstring-name)
+- [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
+- [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
+- [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
+- [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
+- [webhookUrl](#webhookurlstring-url-string-method)
+- [addCookies](#addcookiesarray-cookies)
+- [cookies](#cookiesarray-cookies)
+- [forwardCookie](#forwardcookiestring-name)
+- [setCookie](#setcookiestring-name-symfonycomponenthttpfoundationcookiearray-cookie)
+- [clip](#clipbool-bool)
+- [format](#formatsensiolabsgotenbergbundleenumerationscreenshotformat-format)
+- [height](#heightint-height)
+- [omitBackground](#omitbackgroundbool-bool)
+- [optimizeForSpeed](#optimizeforspeedbool-bool)
+- [quality](#qualityint-quality)
+- [width](#widthint-width)
+- [waitDelay](#waitdelaystring-delay)
+- [waitForExpression](#waitforexpressionstring-expression)
+- [content](#contentstring-template-array-context)
+- [contentFile](#contentfilestring-path)
+- [footer](#footerstring-template-array-context)
+- [footerFile](#footerfilestring-path)
+- [header](#headerstring-template-array-context)
+- [headerFile](#headerfilestring-path)
+- [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
+- [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
+- [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
+- [failOnResourceLoadingFailed](#failonresourceloadingfailedbool-bool)
+- [addExtraHttpHeaders](#addextrahttpheadersarray-headers)
+- [extraHttpHeaders](#extrahttpheadersarray-headers)
+- [userAgent](#useragentstring-useragent)
+- [emulatedMediaType](#emulatedmediatypesensiolabsgotenbergbundleenumerationemulatedmediatype-mediatype)
+- [skipNetworkIdleEvent](#skipnetworkidleeventbool-bool)
 
 ### downloadFrom(array \$downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
@@ -19,6 +133,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### addAsset(Stringable|string \$path)
 Adds a file, like an image, font, stylesheet, and so on.<br /><br />By default, the assets files are fetch in the assets folder of your application.<br />If your assets are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
@@ -40,6 +155,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### webhook(array \$webhook)
 > [!TIP]
@@ -126,6 +242,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addCookies(array \$cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
@@ -179,6 +296,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### clip(bool \$bool)
 Define whether to clip the screenshot according to the device dimensions. (Default false).<br />
@@ -279,6 +397,7 @@ return $gotenberg
 ;
 ```
 
+
 ### waitDelay(string \$delay)
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
@@ -308,6 +427,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### content(string \$template, array \$context)
 
@@ -388,6 +508,7 @@ return $gotenberg
 ;
 ```
 
+
 ### failOnConsoleExceptions(bool \$bool)
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
 
@@ -448,6 +569,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addExtraHttpHeaders(array \$headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
@@ -487,6 +609,7 @@ return $gotenberg
 ;
 ```
 
+
 ### emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType \$mediaType)
 Forces Chromium to emulate, either "screen" or "print". (default "print").<br />
 
@@ -501,6 +624,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### skipNetworkIdleEvent(bool \$bool)
 Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during<br />conversion. However, this often significantly slows down the conversion process. Setting this form field to true<br />can greatly enhance the conversion speed.<br />

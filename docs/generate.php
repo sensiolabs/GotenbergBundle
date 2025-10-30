@@ -97,11 +97,8 @@ return $gotenberg
 ```
     ';
 
-    private string $name;
-
     /**
      * @var array{
-     *     '@'?: ParsedDocBlock,
      *     'methods': array<string, array<string, ParsedDocBlock>>,
      * }
      */
@@ -115,6 +112,11 @@ return $gotenberg
     private array $methodsSignature = [];
 
     /**
+     * @var array<string, string>
+     */
+    private array $methodsLink = [];
+
+    /**
      * @param class-string<BuilderInterface> $builder
      */
     public function prepare(Summary $summary, string $type, string $builder): void
@@ -122,13 +124,14 @@ return $gotenberg
         $class = new ReflectionClass($builder);
         $summary->register($type, $class);
 
-        $this->name = $class->getShortName();
         $this->prepareBuilder($class);
     }
 
     public function extract(): string
     {
-        $markdown = "# {$this->name}\n\n";
+        $markdown = "## Customization\n\n";
+        $markdown .= "### Available functions\n\n";
+
         $renderDescription = static fn (array $parts) => trim(implode('<br />', $parts), "\ \n\r\t\v\0");
 
         /**
@@ -206,11 +209,6 @@ return $gotenberg
             return $markdown;
         };
 
-        if (isset($this->parts['@'])) {
-            $markdown .= $renderParts($this->parts['@']);
-            $markdown .= "\n";
-        }
-
         uksort($this->parts['methods'], static function ($a, $b) {
             if ('@' === $a) {
                 return -1;
@@ -226,6 +224,16 @@ return $gotenberg
         foreach ($this->parts['methods'] as $package => $methods) {
             ksort($methods);
 
+            foreach ($methods as $methodName => $parts) {
+                $link = $this->methodsLink[$methodName];
+                $markdown .= "- [{$methodName}](#{$link})\n";
+            }
+        }
+
+        foreach ($this->parts['methods'] as $package => $methods) {
+            ksort($methods);
+
+            $markdown .= "\n";
             foreach ($methods as $methodName => $parts) {
                 $markdown .= "### {$this->methodsSignature[$methodName]}";
 
@@ -249,11 +257,6 @@ return $gotenberg
         $this->parts = [
             'methods' => [],
         ];
-
-        $classDocComment = $class->getDocComment() ?: '';
-        if ('' !== $classDocComment) {
-            $this->parts['@'] = $this->parsePhpDoc($classDocComment);
-        }
 
         $this->prepareBuilderFromClass($class);
         $this->cleanBuilderFromClass($class);
@@ -296,6 +299,7 @@ return $gotenberg
             }
 
             $this->methodsSignature[$method->getName()] = $this->parseMethodSignature($method);
+            $this->methodsLink[$method->getName()] = $this->parseMethodLink($method);
 
             $methodDocComment = $method->getDocComment() ?: '';
             $this->parts['methods']['@'][$method->getShortName()] ??= [];
@@ -340,6 +344,7 @@ return $gotenberg
     {
         foreach ($class->getMethods(ReflectionMethod::IS_PROTECTED | ReflectionMethod::IS_PRIVATE) as $method) {
             unset($this->methodsSignature[$method->getName()]);
+            unset($this->methodsLink[$method->getName()]);
             unset($this->parts['methods']['@'][$method->getShortName()]);
         }
     }
@@ -432,6 +437,30 @@ return $gotenberg
 
         return $methodName.'('.implode(', ', $parameters).')';
     }
+
+//     check see before class and description
+
+    public function parseMethodLink(ReflectionMethod $method): string
+    {
+        $methodName = $method->getName();
+
+        $parameters = [];
+
+        foreach ($method->getParameters() as $parameter) {
+            $parameterName = $parameter->getName();
+            $parameterType = $parameter->getType();
+
+            $parameters[] = "{$parameterType}-{$parameterName}";
+        }
+
+        $output = preg_replace(
+            ['/\\|/', '/\\\\/', '/, /', '/\?/'],
+            ['', '', '-', ''],
+            $methodName.implode(', ', $parameters),
+        );
+
+        return mb_strtolower($output);
+    }
 }
 
 $application = new Application();
@@ -455,7 +484,16 @@ $application->register('generate')
                     throw new RuntimeException(\sprintf('Directory "%s" was not created', $directory));
                 }
 
-                file_put_contents(__DIR__.'/'.$filename, $builderParser->extract());
+                $beforeGeneratedContent = strstr(file_get_contents(__DIR__.'/'.$filename), '<!-- AUTO-GENERATED:START -->', true);
+
+                if (false !== $beforeGeneratedContent) {
+                    file_put_contents(
+                        __DIR__.'/'.$filename,
+                        $beforeGeneratedContent."<!-- AUTO-GENERATED:START -->\n".$builderParser->extract(),
+                    );
+                } else {
+                    file_put_contents(__DIR__.'/'.$filename, $builderParser->extract());
+                }
             }
         }
 

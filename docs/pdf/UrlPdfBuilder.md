@@ -1,9 +1,132 @@
 # UrlPdfBuilder
 
-You may have the possibility to generate a PDF from a URL.<br />
+You may have the possibility to generate a PDF from a URL.
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#url-into-pdf-route](https://gotenberg.dev/docs/routes#url-into-pdf-route)
+
+## Basic usage
+
+### url
+
+URL of the page you want to convert into PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->url()
+            ->url('https://sensiolabs.com/fr/')
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+### route
+
+Route of the page you want to convert into PDF.
+
+> [!WARNING]
+> You must provide a URL accessible by Gotenberg with a public Host.
+> Or configure `sensiolabs_gotenberg.yaml`
+> ```yaml
+> # config/packages/sensiolabs_gotenberg.yaml
+> sensiolabs_gotenberg:
+>   request_context:
+>       base_uri: 'http://host.docker.internal:3000'
+> ```
+
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->url()
+            ->route('home', [
+                'my_var' => 'value'
+            ])
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+<!-- AUTO-GENERATED:START -->
+## Customization
+
+### Available functions
+
+- [addMetadata](#addmetadatastring-key-string-value)
+- [downloadFrom](#downloadfromarray-downloadfrom)
+- [metadata](#metadataarray-metadata)
+- [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
+- [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
+- [route](#routestring-name-array-parameters)
+- [splitMode](#splitmodesensiolabsgotenbergbundleenumerationsplitmode-splitmode)
+- [splitSpan](#splitspanstring-splitspan)
+- [splitUnify](#splitunifybool-bool)
+- [url](#urlstring-url)
+- [addAsset](#addassetstringablestring-path)
+- [assets](#assetsstringablestring-paths)
+- [webhook](#webhookarray-webhook)
+- [webhookConfiguration](#webhookconfigurationstring-name)
+- [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
+- [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
+- [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
+- [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
+- [webhookUrl](#webhookurlstring-url-string-method)
+- [addCookies](#addcookiesarray-cookies)
+- [cookies](#cookiesarray-cookies)
+- [forwardCookie](#forwardcookiestring-name)
+- [setCookie](#setcookiestring-name-symfonycomponenthttpfoundationcookiearray-cookie)
+- [generateDocumentOutline](#generatedocumentoutlinebool-bool)
+- [generateTaggedPdf](#generatetaggedpdfbool-bool)
+- [landscape](#landscapebool-bool)
+- [marginBottom](#marginbottomfloat-bottom-sensiolabsgotenbergbundleenumerationunit-unit)
+- [marginLeft](#marginleftfloat-left-sensiolabsgotenbergbundleenumerationunit-unit)
+- [marginRight](#marginrightfloat-right-sensiolabsgotenbergbundleenumerationunit-unit)
+- [marginTop](#margintopfloat-top-sensiolabsgotenbergbundleenumerationunit-unit)
+- [margins](#marginsfloat-top-float-bottom-float-left-float-right-sensiolabsgotenbergbundleenumerationunit-unit)
+- [nativePageRanges](#nativepagerangesstring-ranges)
+- [omitBackground](#omitbackgroundbool-bool)
+- [paperHeight](#paperheightfloat-height-sensiolabsgotenbergbundleenumerationunit-unit)
+- [paperSize](#papersizefloat-width-float-height-sensiolabsgotenbergbundleenumerationunit-unit)
+- [paperStandardSize](#paperstandardsizesensiolabsgotenbergbundleenumerationpapersizeinterface-papersize)
+- [paperWidth](#paperwidthfloat-width-sensiolabsgotenbergbundleenumerationunit-unit)
+- [preferCssPageSize](#prefercsspagesizebool-bool)
+- [printBackground](#printbackgroundbool-bool)
+- [scale](#scalefloat-scale)
+- [singlePage](#singlepagebool-bool)
+- [waitDelay](#waitdelaystring-delay)
+- [waitForExpression](#waitforexpressionstring-expression)
+- [content](#contentstring-template-array-context)
+- [contentFile](#contentfilestring-path)
+- [footer](#footerstring-template-array-context)
+- [footerFile](#footerfilestring-path)
+- [header](#headerstring-template-array-context)
+- [headerFile](#headerfilestring-path)
+- [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
+- [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
+- [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
+- [failOnResourceLoadingFailed](#failonresourceloadingfailedbool-bool)
+- [addExtraHttpHeaders](#addextrahttpheadersarray-headers)
+- [extraHttpHeaders](#extrahttpheadersarray-headers)
+- [userAgent](#useragentstring-useragent)
+- [emulatedMediaType](#emulatedmediatypesensiolabsgotenbergbundleenumerationemulatedmediatype-mediatype)
+- [skipNetworkIdleEvent](#skipnetworkidleeventbool-bool)
 
 ### addMetadata(string \$key, string \$value)
 If you want to add metadata from the ones already loaded in the configuration.<br />
@@ -159,6 +282,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addAsset(Stringable|string \$path)
 Adds a file, like an image, font, stylesheet, and so on.<br /><br />By default, the assets files are fetch in the assets folder of your application.<br />If your assets are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
@@ -179,6 +303,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### webhook(array \$webhook)
 > [!TIP]
@@ -265,6 +390,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addCookies(array \$cookies)
 Add cookies to store in the Chromium cookie jar.<br />
 
@@ -318,6 +444,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### generateDocumentOutline(bool \$bool)
 Define whether the document outline should be embedded into the PDF.<br />
@@ -544,6 +671,7 @@ return $gotenberg
 ;
 ```
 
+
 ### waitDelay(string \$delay)
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
@@ -573,6 +701,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### content(string \$template, array \$context)
 
@@ -653,6 +782,7 @@ return $gotenberg
 ;
 ```
 
+
 ### failOnConsoleExceptions(bool \$bool)
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
 
@@ -713,6 +843,7 @@ return $gotenberg
 ;
 ```
 
+
 ### addExtraHttpHeaders(array \$headers)
 Adds extra HTTP headers that Chromium will send when loading the HTML document.<br />
 
@@ -752,6 +883,7 @@ return $gotenberg
 ;
 ```
 
+
 ### emulatedMediaType(Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType \$mediaType)
 Forces Chromium to emulate, either "screen" or "print". (default "print").<br />
 
@@ -766,6 +898,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### skipNetworkIdleEvent(bool \$bool)
 Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during<br />conversion. However, this often significantly slows down the conversion process. Setting this form field to true<br />can greatly enhance the conversion speed.<br />

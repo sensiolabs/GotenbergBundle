@@ -1,9 +1,115 @@
 # LibreOfficePdfBuilder
 
-You may have the possibility to convert Office files into PDF.<br />
+You may have the possibility to convert Office files into PDF.
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#convert-with-libreoffice](https://gotenberg.dev/docs/routes#convert-with-libreoffice)
+
+## Available extensions
+
+`123`, `602`, `abw`, `bib`, `bmp`, `cdr`, `cgm`, `cmx`, `csv`, `cwk`, `dbf`, `dif`, `doc`, `docm`,
+`docx`, `dot`, `dotm`, `dotx`, `dxf`, `emf`, `eps`, `epub`, `fodg`, `fodp`, `fods`, `fodt`, `fopd`,
+`gif`, `htm`, `html`, `hwp`, `jpeg`, `jpg`, `key`, `ltx`, `lwp`, `mcw`, `met`, `mml`, `mw`, `numbers`,
+`odd`, `odg`, `odm`, `odp`, `ods`, `odt`, `otg`, `oth`, `otp`, `ots`, `ott`, `pages`, `pbm`, `pcd`,
+`pct`, `pcx`, `pdb`, `pdf`, `pgm`, `png`, `pot`, `potm`, `potx`, `ppm`, `pps`, `ppt`, `pptm`, `pptx`,
+`psd`, `psw`, `pub`, `pwp`, `pxl`, `ras`, `rtf`, `sda`, `sdc`, `sdd`, `sdp`, `sdw`, `sgl`, `slk`,
+`smf`, `stc`, `std`, `sti`, `stw`, `svg`, `svm`, `swf`, `sxc`, `sxd`, `sxg`, `sxi`, `sxm`, `sxw`,
+`tga`, `tif`, `tiff`, `txt`, `uof`, `uop`, `uos`, `uot`, `vdx`, `vor`, `vsd`, `vsdm`, `vsdx`, `wb2`,
+`wk1`, `wks`, `wmf`, `wpd`, `wpg`, `wps`, `xbm`, `xhtml`, `xls`, `xlsb`, `xlsm`, `xlsx`, `xlt`, `xltm`,
+`xltx`, `xlw`, `xml`, `xpm`, `zabw`
+
+## Basic usage
+
+> [!WARNING]
+> As assets files, by default the office files are fetch in the assets folder of
+> your application.
+> For more information about path resolution go to [assets documentation](../assets.md).
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document.txt')
+            ->generate()
+            ->stream() // will return directly a stream response
+         ;
+    }
+}
+```
+
+You have the possibility to add more than one file, but you will generate
+a ZIP folder instead of PDF.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->office()
+            ->files('document_one.txt', 'document_two.odt')
+            ->generate()
+            ->stream() // will download a zip file with two PDF files
+         ;
+    }
+}
+```
+
+<!-- AUTO-GENERATED:START -->
+## Customization
+
+### Available functions
+
+- [addMetadata](#addmetadatastring-key-string-value)
+- [addOriginalDocumentAsStream](#addoriginaldocumentasstreambool-bool)
+- [allowDuplicateFieldNames](#allowduplicatefieldnamesbool-bool)
+- [convertOooTargetToPdfTarget](#convertoootargettopdftargetbool-bool)
+- [doNotExportBookmarks](#donotexportbookmarksbool-bool)
+- [doNotExportFormFields](#donotexportformfieldsbool-bool)
+- [doNotUpdateIndexes](#donotupdateindexesbool-bool)
+- [downloadFrom](#downloadfromarray-downloadfrom)
+- [exportBookmarksToPdfDestination](#exportbookmarkstopdfdestinationbool-bool)
+- [exportHiddenSlides](#exporthiddenslidesbool-bool)
+- [exportLinksRelativeFsys](#exportlinksrelativefsysbool-bool)
+- [exportNotes](#exportnotesbool-bool)
+- [exportNotesInMargin](#exportnotesinmarginbool-bool)
+- [exportNotesPages](#exportnotespagesbool-bool)
+- [exportOnlyNotesPages](#exportonlynotespagesbool-bool)
+- [exportPlaceholders](#exportplaceholdersbool-bool)
+- [files](#filesstringablestring-paths)
+- [flatten](#flattenbool-bool)
+- [landscape](#landscapebool-bool)
+- [losslessImageCompression](#losslessimagecompressionbool-bool)
+- [maxImageResolution](#maximageresolutionsensiolabsgotenbergbundleenumerationimageresolutiondpi-resolution)
+- [merge](#mergebool-bool)
+- [metadata](#metadataarray-metadata)
+- [nativePageRanges](#nativepagerangesstring-ranges)
+- [password](#passwordstring-password)
+- [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
+- [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
+- [quality](#qualityint-quality)
+- [reduceImageResolution](#reduceimageresolutionbool-bool)
+- [singlePageSheets](#singlepagesheetsbool-bool)
+- [skipEmptyPages](#skipemptypagesbool-bool)
+- [splitMode](#splitmodesensiolabsgotenbergbundleenumerationsplitmode-splitmode)
+- [splitSpan](#splitspanstring-splitspan)
+- [splitUnify](#splitunifybool-bool)
+- [webhook](#webhookarray-webhook)
+- [webhookConfiguration](#webhookconfigurationstring-name)
+- [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
+- [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
+- [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
+- [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
+- [webhookUrl](#webhookurlstring-url-string-method)
 
 ### addMetadata(string \$key, string \$value)
 If you want to add metadata from the ones already loaded in the configuration.<br />
@@ -464,6 +570,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### webhook(array \$webhook)
 > [!TIP]

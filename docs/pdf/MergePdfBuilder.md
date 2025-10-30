@@ -1,9 +1,57 @@
 # MergePdfBuilder
 
-Merge `n` pdf files into a single one.<br />
+You may have the possibility to merge several PDF document.
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)
+
+## Basic usage
+
+> [!WARNING]
+> As assets files, by default the PDF files are fetch in the assets folder of
+> your application.
+> For more information about path resolution go to [assets documentation](../assets.md).
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg->merge()
+            ->files(
+                'document.pdf',
+                'document_2.pdf',
+            )
+            ->generate()
+            ->stream()
+         ;
+    }
+}
+```
+
+<!-- AUTO-GENERATED:START -->
+## Customization
+
+### Available functions
+
+- [addMetadata](#addmetadatastring-key-string-value)
+- [downloadFrom](#downloadfromarray-downloadfrom)
+- [files](#filesstringablestring-paths)
+- [flatten](#flattenbool-bool)
+- [metadata](#metadataarray-metadata)
+- [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
+- [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
+- [webhook](#webhookarray-webhook)
+- [webhookConfiguration](#webhookconfigurationstring-name)
+- [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
+- [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
+- [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
+- [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
+- [webhookUrl](#webhookurlstring-url-string-method)
 
 ### addMetadata(string \$key, string \$value)
 If you want to add metadata from the ones already loaded in the configuration.<br />
@@ -110,6 +158,7 @@ return $gotenberg
     ->stream()
 ;
 ```
+
 
 ### webhook(array \$webhook)
 > [!TIP]
