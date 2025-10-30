@@ -64,7 +64,7 @@ class YourController
 <!-- AUTO-GENERATED:START -->
 ## Customization
 
-### Available functions
+### Available methods
 
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [route](#routestring-name-array-parameters)

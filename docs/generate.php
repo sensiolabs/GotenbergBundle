@@ -130,7 +130,7 @@ return $gotenberg
     public function extract(): string
     {
         $markdown = "## Customization\n\n";
-        $markdown .= "### Available functions\n\n";
+        $markdown .= "### Available methods\n\n";
 
         $renderDescription = static fn (array $parts) => trim(implode('<br />', $parts), "\ \n\r\t\v\0");
 

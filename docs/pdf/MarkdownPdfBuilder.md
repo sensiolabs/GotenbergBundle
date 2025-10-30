@@ -119,7 +119,7 @@ class YourController
 <!-- AUTO-GENERATED:START -->
 ## Customization
 
-### Available functions
+### Available methods
 
 - [addMetadata](#addmetadatastring-key-string-value)
 - [downloadFrom](#downloadfromarray-downloadfrom)

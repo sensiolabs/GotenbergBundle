@@ -121,7 +121,7 @@ class YourController
 <!-- AUTO-GENERATED:START -->
 ## Customization
 
-### Available functions
+### Available methods
 
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [files](#filesstringablestring-paths)
