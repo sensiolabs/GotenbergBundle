@@ -2,23 +2,23 @@
 
 You may have the possibility to add header or footer to your generated PDF.
 
-> [!WARNING]  
-> Every Header or Footer templates you pass to Gotenberg need to have 
+> [!WARNING]
+> Every Header or Footer templates you pass to Gotenberg need to have
 > the following structure. It cannot be only the body but the full HTML template structure.
 > ```html
->        <!DOCTYPE html>
->        <html lang="en">
->          <head>
->            <meta charset="utf-8" />
->            <title>My PDF</title>
->          </head>
->          <body>
->            <!-- Your code goes here -->
->          </body>
->        </html>
+><!DOCTYPE html>
+><html lang="en">
+>  <head>
+>    <meta charset="utf-8" />
+>    <title>My PDF</title>
+>  </head>
+>  <body>
+>    <!-- Your code goes here -->
+>  </body>
+></html>
 > ```
 >
-> Some other limitations exist about header and footer.  
+> Some other limitations exist about header and footer.
 > For more information about [Header and Footer](https://gotenberg.dev/docs/routes#header-footer-chromium).
 
 > [!TIP]
@@ -63,9 +63,9 @@ class YourController
 
 ## HTML file
 
-> [!WARNING]  
-> As assets files, by default the HTML files are fetch in the assets folder of 
-> your application.  
+> [!WARNING]
+> As assets files, by default the HTML files are fetch in the assets folder of
+> your application.
 > For more information about path resolution go to [assets documentation](../assets.md).
 
 ```php

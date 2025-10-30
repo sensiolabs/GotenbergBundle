@@ -12,16 +12,16 @@ You just need to wrap your markdown file into an HTML or Twig file.
 > Every HTML or Twig template you pass to Gotenberg need to have the following structure.
 > Even Header or Footer parts.
 > ```html
->        <!DOCTYPE html>
->        <html lang="en">
->          <head>
->            <meta charset="utf-8" />
->            <title>My PDF</title>
->          </head>
->          <body>
->            <!-- Your code goes here -->
->          </body>
->        </html>
+><!DOCTYPE html>
+><html lang="en">
+>  <head>
+>    <meta charset="utf-8" />
+>    <title>My PDF</title>
+>  </head>
+>  <body>
+>    <!-- Your code goes here -->
+>  </body>
+></html>
 > ```
 
 ### HTML wrapper
