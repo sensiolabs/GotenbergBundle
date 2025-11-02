@@ -13,7 +13,6 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
-use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,13 +25,9 @@ class SensiolabsGotenbergBundle extends Bundle
         return \dirname(__DIR__);
     }
 
-    public function build(ContainerBuilder $container): void
+    protected function createContainerExtension(): SensiolabsGotenbergExtension
     {
-        $builderStack = new BuilderStack();
-
-        /** @var SensiolabsGotenbergExtension $extension */
-        $extension = $container->getExtension('sensiolabs_gotenberg');
-        $extension->setBuilderStack($builderStack);
+        $extension = new SensiolabsGotenbergExtension();
 
         $extension->registerBuilder(ConvertPdfBuilder::class);
         $extension->registerBuilder(FlattenPdfBuilder::class);
@@ -47,6 +42,11 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
         $extension->registerBuilder(UrlScreenshotBuilder::class);
 
-        $container->addCompilerPass(new GotenbergPass($builderStack));
+        return $extension;
+    }
+
+    public function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new GotenbergPass());
     }
 }

@@ -36,10 +36,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
 
     private function getExtension(): SensiolabsGotenbergExtension
     {
-        $builderStack = new BuilderStack();
-
         $extension = new SensiolabsGotenbergExtension();
-        $extension->setBuilderStack($builderStack);
 
         $extension->registerBuilder(ConvertPdfBuilder::class);
         $extension->registerBuilder(HtmlPdfBuilder::class);
@@ -52,8 +49,6 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         $extension->registerBuilder(HtmlScreenshotBuilder::class);
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
         $extension->registerBuilder(UrlScreenshotBuilder::class);
-
-        $this->getContainerBuilder()->addCompilerPass(new GotenbergPass($builderStack));
 
         return $extension;
     }

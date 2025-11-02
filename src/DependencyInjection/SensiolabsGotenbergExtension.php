@@ -47,6 +47,11 @@ class SensiolabsGotenbergExtension extends Extension
 {
     private BuilderStack $builderStack;
 
+    public function __construct()
+    {
+        $this->builderStack = new BuilderStack();
+    }
+
     /**
      * @param class-string<BuilderInterface> $class
      */
@@ -55,6 +60,17 @@ class SensiolabsGotenbergExtension extends Extension
         $this->builderStack->push($class);
     }
 
+    /**
+     * @param class-string<BuilderInterface> $class
+     */
+    public function getBuilder(string $class): string
+    {
+        return $this->builderStack->getBuilders()[$class] ?? throw new \InvalidArgumentException(\sprintf('The builder "%s" is not registered.', $class));
+    }
+
+    /**
+     * @deprecated The BuilderStack is created by the extension itself
+     */
     public function setBuilderStack(BuilderStack $builderStack): void
     {
         $this->builderStack = $builderStack;

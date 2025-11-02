@@ -4,8 +4,8 @@ namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection\CompilerPass;
 
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
-use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass\GotenbergPass;
+use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -33,23 +33,24 @@ class GotenbergPassTest extends TestCase
         return $container;
     }
 
-    private function getBuilderStack(): BuilderStack
+    private function getExtension(): SensiolabsGotenbergExtension
     {
-        $builderStack = new BuilderStack();
-        $builderStack->push(self::BUILDER);
+        $extension = new SensiolabsGotenbergExtension();
+        $extension->registerBuilder(self::BUILDER);
 
-        return $builderStack;
+        return $extension;
     }
 
     public function testItDoesNothingIfDataCollectorNotRegistered(): void
     {
         $container = $this->getContainerBuilder();
+        $container->registerExtension($this->getExtension());
 
         $serviceIds = $container->getServiceIds();
 
         self::assertNotContains('sensiolabs_gotenberg.data_collector', $serviceIds);
 
-        $compilerPass = new GotenbergPass($this->getBuilderStack());
+        $compilerPass = new GotenbergPass();
         $compilerPass->process($container);
 
         self::assertSame($serviceIds, $container->getServiceIds());

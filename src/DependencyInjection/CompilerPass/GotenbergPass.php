@@ -2,8 +2,9 @@
 
 namespace Sensiolabs\GotenbergBundle\DependencyInjection\CompilerPass;
 
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
-use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
+use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,13 +13,10 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class GotenbergPass implements CompilerPassInterface
 {
-    public function __construct(
-        private readonly BuilderStack $builderStack,
-    ) {
-    }
-
     public function process(ContainerBuilder $container): void
     {
+        /** @var SensiolabsGotenbergExtension $extension */
+        $extension = $container->getExtension('sensiolabs_gotenberg');
         $builderPerType = [];
         foreach ($container->findTaggedServiceIds('sensiolabs_gotenberg.builder') as $serviceId => $tags) {
             $serviceDefinition = $container->getDefinition($serviceId);
@@ -27,9 +25,9 @@ final class GotenbergPass implements CompilerPassInterface
                 ->addTag('container.service_subscriber')
             ;
 
-            /** @var string $class */
+            /** @var class-string<BuilderInterface> $class */
             $class = $serviceDefinition->getClass();
-            $type = $this->builderStack->getBuilders()[$class];
+            $type = $extension->getBuilder($class);
 
             $builderPerType[$type] ??= [];
             $builderPerType[$type][$serviceId] = new Reference($serviceId);
