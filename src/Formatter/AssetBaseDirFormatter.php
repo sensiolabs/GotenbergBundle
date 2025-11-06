@@ -47,6 +47,6 @@ final class AssetBaseDirFormatter
             return $filename;
         }
 
-        throw new FileNotFoundException(\sprintf('File "%s" does not exist.', $path));
+        throw new FileNotFoundException(\sprintf('File "%s" not found in assets directories: "%s".', $path, implode('", "', $this->baseDir)));
     }
 }
