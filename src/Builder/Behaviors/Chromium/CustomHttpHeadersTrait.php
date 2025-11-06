@@ -22,7 +22,7 @@ trait CustomHttpHeadersTrait
      *
      * @param UserAgent::*|string $userAgent
      *
-     * @example ->userAgent(UserAgent::AndroidChrome)
+     * @example userAgent(UserAgent::AndroidChrome)
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('user_agent', restrictTo: 'string'))]
     public function userAgent(string $userAgent): static
@@ -39,7 +39,7 @@ trait CustomHttpHeadersTrait
      *
      * @see https://gotenberg.dev/docs/routes#custom-http-headers-chromium
      *
-     * @example ->extraHttpHeaders(['MyHeader' => 'MyValue'])
+     * @example extraHttpHeaders(['MyHeader' => 'MyValue'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('extra_http_headers', normalizeKeys: false, useAttributeAsKey: 'name', prototype: 'variable'))]
     public function extraHttpHeaders(array $headers): static
@@ -60,7 +60,7 @@ trait CustomHttpHeadersTrait
      *
      * @param array<string, string> $headers
      *
-     * @example ->addExtraHttpHeaders(['MyHeader' => 'MyValue'])
+     * @example addExtraHttpHeaders(['MyHeader' => 'MyValue'])
      */
     public function addExtraHttpHeaders(array $headers): static
     {

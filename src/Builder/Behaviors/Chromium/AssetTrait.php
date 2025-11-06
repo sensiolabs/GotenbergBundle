@@ -25,7 +25,7 @@ trait AssetTrait
      *
      * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
      *
-     * @example ->assets('../img/ceo.jpeg', __DIR__'/../../public/admin.jpeg')
+     * @example assets('../img/ceo.jpeg', __DIR__'/../../public/admin.jpeg')
      */
     public function assets(string|\Stringable ...$paths): static
     {
@@ -49,7 +49,7 @@ trait AssetTrait
      *
      * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
      *
-     * @example ->addAsset('../img/ceo.jpeg', __DIR__'/../../public/admin.jpeg')
+     * @example addAsset('../img/ceo.jpeg', __DIR__'/../../public/admin.jpeg')
      */
     public function addAsset(string|\Stringable $path): static
     {

@@ -31,7 +31,7 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @example ->content('content.html.twig', ['my_var' => 'value'])
+     * @example content('content.html.twig', ['my_var' => 'value'])
      */
     public function content(string $template, array $context = []): self
     {
@@ -47,7 +47,7 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @example ->contentFile('../public/content.html')
+     * @example contentFile('../public/content.html')
      */
     public function contentFile(string $path): self
     {
@@ -62,7 +62,7 @@ trait ContentTrait
      *
      * @see https://gotenberg.dev/docs/routes#header-footer-chromium
      *
-     * @example ->header('header.html.twig', ['my_var' => 'value'])
+     * @example header('header.html.twig', ['my_var' => 'value'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('header', children: [
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
@@ -81,7 +81,7 @@ trait ContentTrait
      *
      * @see https://gotenberg.dev/docs/routes#header-footer-chromium
      *
-     * @example ->footer('header.html.twig', ['my_var' => 'value'])
+     * @example footer('header.html.twig', ['my_var' => 'value'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('footer', children: [
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
@@ -103,7 +103,7 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @example ->headerFile('../templates/html/header.html')
+     * @example headerFile('../templates/html/header.html')
      */
     public function headerFile(string $path): static
     {
@@ -121,7 +121,7 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @example ->footerFile('../templates/html/footer.html')
+     * @example footerFile('../templates/html/footer.html')
      */
     public function footerFile(string $path): static
     {

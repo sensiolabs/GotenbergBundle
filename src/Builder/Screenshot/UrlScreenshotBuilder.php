@@ -29,7 +29,7 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      *
-     * @example ->url('https://sensiolabs.com/fr/')
+     * @example url('https://sensiolabs.com/fr/')
      */
     public function url(string $url): self
     {
@@ -49,7 +49,7 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      *
-     * @example ->route('home', ['my_var' => 'value'])
+     * @example route('home', ['my_var' => 'value'])
      */
     public function route(string $name, array $parameters = []): self
     {

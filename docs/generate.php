@@ -86,17 +86,6 @@ class BuilderParser
         'getSubscribedServices',
     ];
 
-    private const EXAMPLE_TEMPLATE = '
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    {% method %}
-    ->generate()
-    ->stream()
-;
-```
-    ';
-
     /**
      * @var array{
      *     'methods': array<string, array<string, ParsedDocBlock>>,
@@ -127,128 +116,6 @@ return $gotenberg
         $this->prepareBuilder($class);
     }
 
-    public function extract(): string
-    {
-        $markdown = "## Customization\n\n";
-        $markdown .= "### Available methods\n\n";
-
-        $renderDescription = static fn (array $parts) => trim(implode('<br />', $parts), "\ \n\r\t\v\0");
-
-        /**
-         * @param list<string> $seeList
-         */
-        $renderSee = static function (array $seeList): string {
-            if ([] === $seeList) {
-                return '';
-            }
-
-            $lastKey = array_key_last($seeList);
-
-            $markdown = '> [!TIP]';
-            foreach ($seeList as $key => $see) {
-                $markdown .= "\n> See: [{$see}]({$see})";
-
-                $isLast = $lastKey === $key;
-
-                if (false === $isLast) {
-                    $markdown .= '<br />';
-                }
-            }
-
-            return rtrim($markdown, '<br />');
-        };
-
-        /**
-         * @param list<string> $exampleList
-         */
-        $renderExample = static function (array $exampleList): string {
-            if ([] === $exampleList) {
-                return '';
-            }
-
-            $lastKey = array_key_last($exampleList);
-
-            foreach ($exampleList as $key => $example) {
-                $markdown = str_replace('{% method %}', $example, self::EXAMPLE_TEMPLATE);
-
-                $isLast = $lastKey === $key;
-
-                if (false === $isLast) {
-                    $markdown .= '<br />';
-                }
-            }
-
-            return rtrim($markdown, '<br />');
-        };
-
-        /**
-         * @param ParsedDocBlock $parts
-         */
-        $renderParts = static function (array $parts) use ($renderDescription, $renderSee, $renderExample): string {
-            $markdown = '';
-
-            $description = $renderDescription($parts['description']);
-            if ('' !== $description) {
-                $markdown .= $description."\n";
-            }
-
-            $see = $renderSee($parts['tags']['see'] ?? []);
-            if ('' !== $see) {
-                if ('' !== $markdown) {
-                    $markdown .= "\n";
-                }
-
-                $markdown .= $see."\n";
-            }
-
-            $example = $renderExample($parts['tags']['example'] ?? []);
-            if ('' !== $example) {
-                $markdown .= $example;
-            }
-
-            return $markdown;
-        };
-
-        uksort($this->parts['methods'], static function ($a, $b) {
-            if ('@' === $a) {
-                return -1;
-            }
-
-            if ('@' === $b) {
-                return +1;
-            }
-
-            return strcmp($a, $b);
-        });
-
-        foreach ($this->parts['methods'] as $package => $methods) {
-            ksort($methods);
-
-            foreach ($methods as $methodName => $parts) {
-                $link = $this->methodsLink[$methodName];
-                $markdown .= "- [{$methodName}](#{$link})\n";
-            }
-        }
-
-        foreach ($this->parts['methods'] as $package => $methods) {
-            ksort($methods);
-
-            $markdown .= "\n";
-            foreach ($methods as $methodName => $parts) {
-                $markdown .= "### {$this->methodsSignature[$methodName]}";
-
-                $renderedParts = $renderParts($parts);
-                if ('' !== $renderedParts) {
-                    $markdown .= "\n{$renderedParts}";
-                }
-
-                $markdown .= "\n";
-            }
-        }
-
-        return $markdown;
-    }
-
     /**
      * @param ReflectionClass<BuilderInterface> $class
      */
@@ -269,6 +136,147 @@ return $gotenberg
                 unset($this->parts['methods']['@'][$methodName]);
             }
         }
+    }
+
+    public function extract(): string
+    {
+        $markdown = "## Customization\n\n";
+        $markdown .= "### Available methods\n\n";
+
+        uksort($this->parts['methods'], static function ($a, $b) {
+            if ('@' === $a) {
+                return -1;
+            }
+
+            if ('@' === $b) {
+                return +1;
+            }
+
+            return strcmp($a, $b);
+        });
+
+        foreach ($this->parts['methods'] as $methods) {
+            ksort($methods);
+
+            foreach ($methods as $methodName => $parts) {
+                $link = $this->methodsLink[$methodName];
+                $markdown .= "- [{$methodName}](#{$link})\n";
+            }
+        }
+
+        foreach ($this->parts['methods'] as $methods) {
+            ksort($methods);
+
+            $markdown .= "\n";
+            foreach ($methods as $methodName => $parts) {
+                $markdown .= "### {$this->methodsSignature[$methodName]}";
+
+                $renderedParts = $this->renderParts($parts);
+                if ('' !== $renderedParts) {
+                    $markdown .= "\n{$renderedParts}";
+                }
+
+                $markdown .= "\n";
+            }
+        }
+
+        return $markdown;
+    }
+
+    /**
+     * @param ParsedDocBlock $parts
+     */
+    private function renderParts(array $parts): string
+    {
+        $markdown = '';
+
+        $description = $this->renderDescription($parts['description']);
+        if ('' !== $description) {
+            $markdown .= $description."\n";
+        }
+
+        $see = $this->renderSee($parts['tags']['see'] ?? []);
+        if ('' !== $see) {
+            if ('' !== $markdown) {
+                $markdown .= "\n";
+            }
+
+            $markdown .= $see."\n";
+        }
+
+        $example = $this->renderExample($parts['tags']['example'] ?? []);
+        if ('' !== $example) {
+            if ('' !== $markdown) {
+                $markdown .= "\n";
+            }
+
+            $markdown .= $example."\n";
+        }
+
+        return $markdown;
+    }
+
+    private function renderDescription(array $parts): string
+    {
+        return trim(implode('<br />', $parts), "\ \n\r\t\v\0");
+    }
+
+    /**
+     * @param list<string> $seeList
+     */
+    private function renderSee(array $seeList): string
+    {
+        if ([] === $seeList) {
+            return '';
+        }
+
+        $lastKey = array_key_last($seeList);
+
+        $markdown = '> [!TIP]';
+        foreach ($seeList as $key => $see) {
+            $markdown .= "\n> See: [{$see}]({$see})";
+
+            $isLast = $lastKey === $key;
+
+            if (false === $isLast) {
+                $markdown .= '<br />';
+            }
+        }
+
+        return rtrim($markdown, '<br />');
+    }
+
+    /**
+     * @param list<string> $exampleList
+     */
+    private function renderExample(array $exampleList): string
+    {
+        if ([] === $exampleList) {
+            return '';
+        }
+
+        $markdown = '';
+        $lastKey = array_key_last($exampleList);
+        foreach ($exampleList as $key => $example) {
+            $markdown = <<<MARKDOWN
+                ```php
+                return \$gotenberg
+                    // Your builder call as ->html() and the rest of your configuration code
+                    ->$example
+                    ->generate()
+                    ->stream()
+                ;
+                ```
+                MARKDOWN;
+
+            $isLast = $lastKey === $key;
+
+            if (false === $isLast) {
+                $markdown .= '<br />';
+            }
+        }
+
+        return rtrim($markdown, '<br />');
     }
 
     /**

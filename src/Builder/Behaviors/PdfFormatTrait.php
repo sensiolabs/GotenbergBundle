@@ -19,7 +19,7 @@ trait PdfFormatTrait
      *
      * @see https://gotenberg.dev/docs/routes#pdfa-chromium
      *
-     * @example ->pdfFormat(PdfFormat::Pdf1b)
+     * @example pdfFormat(PdfFormat::Pdf1b)
      */
     #[WithConfigurationNode(new NativeEnumNodeBuilder('pdf_format', enumClass: PdfFormat::class))]
     public function pdfFormat(PdfFormat|null $format): self
@@ -38,7 +38,7 @@ trait PdfFormatTrait
      *
      * @see https://gotenberg.dev/docs/routes#pdfa-chromium
      *
-     * @example ->pdfUniversalAccess()  // is same as `->pdfUniversalAccess(true)`
+     * @example pdfUniversalAccess()  // is same as `->pdfUniversalAccess(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('pdf_universal_access'))]
     public function pdfUniversalAccess(bool $bool = true): self

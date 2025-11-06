@@ -17,7 +17,7 @@ trait FlattenTrait
      *
      * @see https://gotenberg.dev/docs/routes#flatten-libreoffice
      *
-     * @example ->flatten() // is same as `->flatten(true)`
+     * @example flatten() // is same as `->flatten(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('flatten'))]
     public function flatten(bool $bool = true): self

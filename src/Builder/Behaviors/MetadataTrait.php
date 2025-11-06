@@ -39,7 +39,7 @@ trait MetadataTrait
      *     Trapped?: 'True'|'False'|'Unknown',
      * } $metadata
      *
-     * @example ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
+     * @example metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
      */
     #[WithConfigurationNode(new MetadataNodeBuilder('metadata', children: [
         new ScalarNodeBuilder('Author'),
@@ -65,7 +65,7 @@ trait MetadataTrait
     /**
      * If you want to add metadata from the ones already loaded in the configuration.
      *
-     * @example ->addMetadata('key', 'value')
+     * @example addMetadata('key', 'value')
      */
     public function addMetadata(string $key, string $value): static
     {

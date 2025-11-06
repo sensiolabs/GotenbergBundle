@@ -682,7 +682,6 @@ return $gotenberg
 
 
 ### content(string \$template, array \$context)
-
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code

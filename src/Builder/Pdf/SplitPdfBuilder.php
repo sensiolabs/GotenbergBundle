@@ -43,7 +43,7 @@ final class SplitPdfBuilder extends AbstractBuilder
      *
      * @see https://gotenberg.dev/docs/routes#split-pdfs-route
      *
-     * @example ->files('document.pdf','document_2.pdf')
+     * @example files('document.pdf','document_2.pdf')
      */
     public function files(string|\Stringable ...$paths): self
     {

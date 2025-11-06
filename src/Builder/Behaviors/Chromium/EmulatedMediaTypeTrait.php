@@ -21,7 +21,7 @@ trait EmulatedMediaTypeTrait
      *
      * @see https://gotenberg.dev/docs/routes#emulated-media-type-chromium
      *
-     * @example ->emulatedMediaType(EmulatedMediaType::Screen)
+     * @example emulatedMediaType(EmulatedMediaType::Screen)
      */
     #[WithConfigurationNode(new NativeEnumNodeBuilder('emulated_media_type', enumClass: EmulatedMediaType::class))]
     public function emulatedMediaType(EmulatedMediaType $mediaType): static

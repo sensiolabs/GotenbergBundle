@@ -43,7 +43,7 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
      * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
      * @see https://twig.symfony.com/doc/3.x/tags/verbatim.html
      *
-     * @example ->wrapper('wrapper.html.twig', ['my_var' => 'value'])
+     * @example wrapper('wrapper.html.twig', ['my_var' => 'value'])
      */
     public function wrapper(string $template, array $context = []): self
     {
@@ -60,7 +60,7 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
      *
      * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
      *
-     * @example ->wrapperFile('../templates/wrapper.html')
+     * @example wrapperFile('../templates/wrapper.html')
      */
     public function wrapperFile(string $path): self
     {
@@ -76,7 +76,7 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
      *
      * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
      *
-     * @example ->files('header.md','content.md','footer.md')
+     * @example files('header.md','content.md','footer.md')
      */
     public function files(string|\Stringable ...$paths): self
     {

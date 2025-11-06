@@ -23,7 +23,7 @@ trait ScreenshotPagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      *
-     * @example ->width(600)
+     * @example width(600)
      */
     #[WithConfigurationNode(new IntegerNodeBuilder('width'))]
     public function width(int $width): static
@@ -38,7 +38,7 @@ trait ScreenshotPagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      *
-     * @example ->height(600)
+     * @example height(600)
      */
     #[WithConfigurationNode(new IntegerNodeBuilder('height'))]
     public function height(int $height): static
@@ -53,7 +53,7 @@ trait ScreenshotPagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      *
-     * @example ->clip() // is same as `->clip(true)`
+     * @example clip() // is same as `->clip(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('clip'))]
     public function clip(bool $bool = true): static
@@ -68,7 +68,7 @@ trait ScreenshotPagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-route
      *
-     * @example ->format(ScreenshotFormat::Webp)
+     * @example format(ScreenshotFormat::Webp)
      */
     #[WithConfigurationNode(new NativeEnumNodeBuilder('format', enumClass: ScreenshotFormat::class))]
     public function format(ScreenshotFormat $format): static
@@ -85,7 +85,7 @@ trait ScreenshotPagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/routes#screenshots-rout
      *
-     * @example ->quality(50)
+     * @example quality(50)
      */
     #[WithConfigurationNode(new IntegerNodeBuilder('quality', min: 0, max: 100))]
     public function quality(int $quality): static
@@ -98,7 +98,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * Hides default white background and allows generating screenshot with transparency.
      *
-     * @example ->omitBackground() // is same as `->omitBackground(true)`
+     * @example omitBackground() // is same as `->omitBackground(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('omit_background'))]
     public function omitBackground(bool $bool = true): static
@@ -111,7 +111,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * Define whether to optimize image encoding for speed, not for resulting size. (Default false).
      *
-     * @example ->optimizeForSpeed() // is same as `->optimizeForSpeed(true)`
+     * @example optimizeForSpeed() // is same as `->optimizeForSpeed(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('optimize_for_speed'))]
     public function optimizeForSpeed(bool $bool = true): static

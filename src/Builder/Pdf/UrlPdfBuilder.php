@@ -29,7 +29,7 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
      *
      * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      *
-     * @example ->url('https://sensiolabs.com/fr/')
+     * @example url('https://sensiolabs.com/fr/')
      */
     public function url(string $url): self
     {
@@ -49,7 +49,7 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
      *
      * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
      *
-     * @example ->route('home', ['my_var' => 'value'])
+     * @example route('home', ['my_var' => 'value'])
      */
     public function route(string $name, array $parameters = []): self
     {

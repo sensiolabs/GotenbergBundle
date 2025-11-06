@@ -42,7 +42,7 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
     /**
      * Adds office files to convert (overrides any previous files).
      *
-     * @example ->files('document.pdf', __DIR__'/../../public/document_2.pdf')
+     * @example files('document.pdf', __DIR__'/../../public/document_2.pdf')
      */
     public function files(string|\Stringable ...$paths): self
     {

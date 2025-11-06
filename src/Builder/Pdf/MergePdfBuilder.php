@@ -41,7 +41,7 @@ final class MergePdfBuilder extends AbstractBuilder
      *
      * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
      *
-     * @example ->files('document.pdf','document_2.pdf')
+     * @example files('document.pdf','document_2.pdf')
      */
     public function files(string|\Stringable ...$paths): self
     {

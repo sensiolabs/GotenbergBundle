@@ -21,7 +21,7 @@ trait DownloadFromTrait
      *
      * @see https://gotenberg.dev/docs/routes#download-from
      *
-     * @example ->downloadFrom([['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeader' => 'MyValue']], ['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeaderOne' => 'MyValue', 'MyHeaderTwo' => 'MyValue']]])
+     * @example downloadFrom([['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeader' => 'MyValue']], ['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeaderOne' => 'MyValue', 'MyHeaderTwo' => 'MyValue']]])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('download_from', prototype: 'array', children: [
         new ScalarNodeBuilder('url', required: true, restrictTo: 'string'),

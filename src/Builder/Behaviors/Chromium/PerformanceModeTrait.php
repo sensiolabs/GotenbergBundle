@@ -22,7 +22,7 @@ trait PerformanceModeTrait
      *
      * @see https://gotenberg.dev/docs/routes#performance-mode-chromium
      *
-     * @example ->skipNetworkIdleEvent() // is same as `->skipNetworkIdleEvent(true)`
+     * @example skipNetworkIdleEvent() // is same as `->skipNetworkIdleEvent(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('skip_network_idle_event'))]
     public function skipNetworkIdleEvent(bool $bool = true): static

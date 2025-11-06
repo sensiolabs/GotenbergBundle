@@ -22,7 +22,7 @@ trait SplitTrait
      * @see https://gotenberg.dev/docs/routes#split-chromium
      * @see https://gotenberg.dev/docs/routes#split-libreoffice
      *
-     * @example ->splitMode(SplitMode::Intervals)
+     * @example splitMode(SplitMode::Intervals)
      */
     #[WithConfigurationNode(new NativeEnumNodeBuilder('split_mode', enumClass: SplitMode::class))]
     public function splitMode(SplitMode|null $splitMode = null): self
@@ -42,7 +42,7 @@ trait SplitTrait
      * @see https://gotenberg.dev/docs/routes#split-chromium
      * @see https://gotenberg.dev/docs/routes#split-libreoffice
      *
-     * @example ->splitSpan('1')
+     * @example splitSpan('1')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('split_span'))]
     public function splitSpan(string $splitSpan): self
@@ -59,7 +59,7 @@ trait SplitTrait
      * @see https://gotenberg.dev/docs/routes#split-chromium
      * @see https://gotenberg.dev/docs/routes#split-libreoffice
      *
-     * @example ->splitUnify() // is same as `->splitUnify(true)`
+     * @example splitUnify() // is same as `->splitUnify(true)`
      */
     #[WithConfigurationNode(new BooleanNodeBuilder('split_unify'))]
     public function splitUnify(bool $bool = true): self
