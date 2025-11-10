@@ -71,12 +71,20 @@ class GotenbergBundle
 
         $vendorCache = dag()->cacheVolume("php-{$phpVersion}-symfony-{$symfonyVersion}-vendor-cache");
 
-        return $phpContainer
+        $phpContainer = $phpContainer
             ->withMountedCache('/GotenbergBundle/vendor', $vendorCache)
-            ->withEnvVariable('SYMFONY_REQUIRE', $symfonyVersion)
             ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
             ->withExec(['composer', 'global', 'require', 'symfony/flex'])
-            ->withExec(['composer', 'update'])
+        ;
+        if (1 !== preg_match('#^\d+\.\d\.\*$#', $symfonyVersion)) {
+            $phpContainer = $phpContainer
+                ->withExec(['composer', 'config', 'minimum-stability', 'dev'])
+                ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
+            ;
+        }
+
+        return $phpContainer
+            ->withExec(['composer', 'update', '--prefer-dist', '--no-progress'])
         ;
     }
 

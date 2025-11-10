@@ -52,10 +52,15 @@ final class TestsGotenbergBundle
 
     #[DaggerFunction]
     #[Doc('Run phpunit tests and returns the container it ran in.')]
-    public function phpunit(): string
+    public function phpunit(string $filter = ''): string
     {
+        $exec = ['./vendor/bin/phpunit', '--display-all-issues'];
+        if ($filter) {
+            $exec[] = "--filter=$filter";
+        }
+
         return $this->symfonyContainer
-            ->withExec(['./vendor/bin/phpunit', '--display-all-issues'])
+            ->withExec($exec)
             ->stdout()
         ;
     }
