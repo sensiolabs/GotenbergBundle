@@ -48,7 +48,8 @@ jobs:
         uses: 'dagger/dagger-for-github@8.0.0'
         with:
           version: "latest"
-          args: "test --symfony-version '${{ matrix.symfony-version }}' --php-version '${{ matrix.php }}' phpunit"
+          call: "test --symfony-version '${{ matrix.symfony-version }}' --php-version '${{ matrix.php }}' phpunit"
+          dagger-flags: '--quiet'
         env:
           DAGGER_NO_NAG: '1'
 
@@ -72,6 +73,7 @@ jobs:
         uses: 'dagger/dagger-for-github@8.0.0'
         with:
           version: "latest"
-          args: "test validate-dependencies"
+          call: "test validate-dependencies"
+          dagger-flags: '--quiet'
         env:
           DAGGER_NO_NAG: '1'
