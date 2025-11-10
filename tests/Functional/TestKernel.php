@@ -59,6 +59,9 @@ final class TestKernel extends BaseKernel implements ExtensionInterface, Configu
         return 'foo';
     }
 
+    /**
+     * @return TreeBuilder<'array'>
+     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         return new TreeBuilder('foo');

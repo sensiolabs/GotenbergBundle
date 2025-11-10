@@ -56,7 +56,7 @@ final class TestsGotenbergBundle
     {
         $exec = ['./vendor/bin/phpunit', '--display-all-issues'];
         if ($filter) {
-            $exec[] = "--filter=$filter";
+            $exec[] = "--filter={$filter}";
         }
 
         return $this->symfonyContainer
