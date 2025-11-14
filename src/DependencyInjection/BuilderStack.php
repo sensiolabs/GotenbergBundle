@@ -46,7 +46,7 @@ final class BuilderStack
         }
 
         if (\array_key_exists($class, $this->builders)) {
-            throw new \LogicException("{$class} has already been added.");
+            return;
         }
 
         $reflection = new \ReflectionClass($class);
