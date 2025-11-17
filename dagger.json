@@ -1,6 +1,6 @@
 {
   "name": "GotenbergBundle",
-  "engineVersion": "v0.18.14",
+  "engineVersion": "v0.19.6",
   "sdk": {
     "source": "php"
   },
@@ -8,5 +8,6 @@
     "!.dagger/sdk",
     "!.dagger/vendor"
   ],
-  "source": ".dagger"
+  "source": ".dagger",
+  "disableDefaultFunctionCaching": true
 }

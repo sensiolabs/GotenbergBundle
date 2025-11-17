@@ -19,7 +19,7 @@ if (file_exists(__DIR__.'/../../autoload.php')) {
 
 $console = new Application();
 
-$console->add(new EntrypointCommand());
+$console->addCommand(new EntrypointCommand());
 $console->setDefaultCommand('dagger:entrypoint');
 
 $console->run();

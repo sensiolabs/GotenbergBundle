@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaggerModule;
 
+use Composer\Semver\VersionParser;
 use Dagger\Attribute\DaggerFunction;
 use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\DefaultPath;
@@ -43,7 +44,7 @@ class GotenbergBundle
         string $phpVersion = '8.4',
     ): Container {
         $aptCache = dag()->cacheVolume("apt-cache-{$phpVersion}");
-        $composerBin = dag()->container()->from('composer/composer')->file('/usr/bin/composer');
+        $composerBin = dag()->container()->from('composer/composer:latest-bin')->file('/composer');
 
         return dag()
             ->container()
@@ -69,21 +70,15 @@ class GotenbergBundle
     ): Container {
         $phpContainer ??= $this->phpContainer($source, $phpVersion);
 
-        $vendorCache = dag()->cacheVolume("php-{$phpVersion}-symfony-{$symfonyVersion}-vendor-cache");
-
-        $phpContainer = $phpContainer
-            ->withMountedCache('/GotenbergBundle/vendor', $vendorCache)
-            ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
-            ->withExec(['composer', 'global', 'require', 'symfony/flex'])
-            ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
-        ;
-        if (str_ends_with($symfonyVersion, '-dev')) {
-            $phpContainer = $phpContainer
-                ->withExec(['composer', 'config', 'minimum-stability', 'dev'])
-            ;
-        }
+        $composerCache = dag()->cacheVolume("php-{$phpVersion}-symfony-{$symfonyVersion}-composer-cache");
 
         return $phpContainer
+            ->withMountedCache('/root/.composer/cache/files', $composerCache)
+            ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
+            ->withExec(['composer', 'global', 'require', 'symfony/flex'])
+            ->withExec(['composer', 'config', 'audit.ignore', 'PKSA-365x-2zjk-pt47'])
+            ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
+            ->withExec(['composer', 'config', 'minimum-stability', VersionParser::parseStability($symfonyVersion)])
             ->withExec(['composer', 'update', '--prefer-dist', '--no-progress'])
         ;
     }
