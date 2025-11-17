@@ -55,7 +55,7 @@ final class TestsGotenbergBundle
     public function phpunit(string $filter = ''): string
     {
         $exec = ['./vendor/bin/phpunit', '--display-all-issues'];
-        if ($filter) {
+        if ('' !== $filter) {
             $exec[] = "--filter={$filter}";
         }
 

@@ -75,11 +75,11 @@ class GotenbergBundle
             ->withMountedCache('/GotenbergBundle/vendor', $vendorCache)
             ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
             ->withExec(['composer', 'global', 'require', 'symfony/flex'])
+            ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
         ;
         if (str_ends_with($symfonyVersion, '-dev')) {
             $phpContainer = $phpContainer
                 ->withExec(['composer', 'config', 'minimum-stability', 'dev'])
-                ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
             ;
         }
 
