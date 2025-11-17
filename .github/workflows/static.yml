@@ -10,17 +10,6 @@ permissions:
   contents: 'read'
 
 jobs:
-  setup:
-    name: 'Setup matrix'
-    runs-on: 'ubuntu-latest'
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - uses: 'actions/checkout@v4'
-      - id: 'set-matrix'
-        run: |
-          echo "matrix=$(jq -c '.' ./.dagger/src/matrix-versions.json)" >> $GITHUB_OUTPUT
-
   php-cs-fixer:
     name: 'PHP CS Fixer'
     runs-on: 'ubuntu-latest'
@@ -40,20 +29,15 @@ jobs:
       - name: 'Run test suite'
         uses: 'dagger/dagger-for-github@8.0.0'
         with:
-          version: "latest"
-          call: "test php-cs-fixer"
+          version: 'latest'
+          args: 'test php-cs-fixer'
           dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
 
   phpstan:
-    name: 'PHPStan - ${{ matrix.name }}'
+    name: 'PHPStan'
     runs-on: 'ubuntu-latest'
-    needs: 'setup'
-    strategy:
-      matrix:
-        include: ${{ fromJson(needs.setup.outputs.matrix) }}
-    continue-on-error: ${{ matrix.allow-failure }}
     steps:
       - uses: 'actions/checkout@v4'
 
@@ -70,8 +54,8 @@ jobs:
       - name: 'Run test suite'
         uses: 'dagger/dagger-for-github@8.0.0'
         with:
-          version: "latest"
-          call: "test --symfony-version '${{ matrix.symfony-version }}' --php-version '${{ matrix.php }}' --minimum-stability '${{ matrix.minimum-stability }}' phpstan"
+          version: 'latest'
+          call: 'test phpstan'
           dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
