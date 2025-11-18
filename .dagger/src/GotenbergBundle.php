@@ -65,7 +65,7 @@ class GotenbergBundle
     private function symfonyContainer(
         Directory $source,
         string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3',
+        string $symfonyVersion = '7.3.*',
         Container|null $phpContainer = null,
     ): Container {
         $phpContainer ??= $this->phpContainer($source, $phpVersion);
@@ -76,7 +76,6 @@ class GotenbergBundle
             ->withMountedCache('/root/.composer/cache/files', $composerCache)
             ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
             ->withExec(['composer', 'global', 'require', 'symfony/flex'])
-            ->withExec(['composer', 'config', 'audit.ignore', 'PKSA-365x-2zjk-pt47'])
             ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
             ->withExec(['composer', 'config', 'minimum-stability', VersionParser::parseStability($symfonyVersion)])
             ->withExec(['composer', 'update', '--prefer-dist', '--no-progress'])
@@ -118,7 +117,7 @@ class GotenbergBundle
         Directory $source,
 
         string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3',
+        string $symfonyVersion = '7.3.*',
         Container|null $symfonyContainer = null,
     ): TestsGotenbergBundle {
         $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
