@@ -34,6 +34,26 @@ final class TestsGotenbergBundle
     }
 
     #[DaggerFunction]
+    #[Doc('Output the versions used for tests.')]
+    #[ReturnsListOfType('string')]
+    public function versions(): array
+    {
+        $phpVersion = $this->symfonyContainer->withExec(['php', '-v'])->stdout();
+        $composerPackages = $this->symfonyContainer->withExec(['composer', 'show'])->stdout();
+
+        return [
+            'PHP Version Debug:',
+            '==================',
+            $phpVersion,
+            '',
+            '',
+            'Composer Packages:',
+            '==================',
+            $composerPackages,
+        ];
+    }
+
+    #[DaggerFunction]
     #[Doc('Get the container for tests.')]
     public function terminal(): Container
     {

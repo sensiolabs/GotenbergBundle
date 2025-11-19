@@ -66,6 +66,7 @@ class GotenbergBundle
         Directory $source,
         string $phpVersion = '8.4',
         string $symfonyVersion = '7.3.*',
+        string $minimumStability = 'stable',
         Container|null $phpContainer = null,
     ): Container {
         $phpContainer ??= $this->phpContainer($source, $phpVersion);
@@ -77,7 +78,7 @@ class GotenbergBundle
             ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
             ->withExec(['composer', 'global', 'require', 'symfony/flex'])
             ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
-            ->withExec(['composer', 'config', 'minimum-stability', VersionParser::parseStability($symfonyVersion)])
+            ->withExec(['composer', 'config', 'minimum-stability', $minimumStability])
             ->withExec(['composer', 'update', '--prefer-dist', '--no-progress'])
         ;
     }
@@ -91,7 +92,7 @@ class GotenbergBundle
         $matrix = json_decode(file_get_contents(__DIR__.'/matrix-versions.json'), associative: true);
 
         foreach ($matrix as $row) {
-            yield [$row['symfony-version'], $row['php']];
+            yield [$row['symfony-version'], $row['php'], $row['minimum-stability'] ?? 'stable'];
         }
     }
 
@@ -118,9 +119,10 @@ class GotenbergBundle
 
         string $phpVersion = '8.4',
         string $symfonyVersion = '7.3.*',
+        string $minimumStability = 'stable',
         Container|null $symfonyContainer = null,
     ): TestsGotenbergBundle {
-        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
+        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion, $minimumStability);
 
         return new TestsGotenbergBundle($symfonyContainer);
     }
@@ -134,8 +136,8 @@ class GotenbergBundle
     ): array {
         $tests = [];
 
-        foreach ($this->getMatrix() as [$symfonyVersion, $phpVersion]) {
-            $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion)->all());
+        foreach ($this->getMatrix() as [$symfonyVersion, $phpVersion, $minimumStability]) {
+            $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion, $minimumStability)->all());
         }
 
         $result = [];
