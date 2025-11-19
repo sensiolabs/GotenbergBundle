@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaggerModule;
 
-use Composer\Semver\VersionParser;
 use Dagger\Attribute\DaggerFunction;
 use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\DefaultPath;
