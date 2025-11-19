@@ -49,7 +49,7 @@ jobs:
         with:
           version: "latest"
           call: "test --symfony-version '${{ matrix.symfony-version }}' --php-version '${{ matrix.php }}' --minimum-stability '${{ matrix.minimum-stability }}' phpunit"
-          dagger-flags: '--quiet'
+          dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
 
@@ -74,6 +74,6 @@ jobs:
         with:
           version: "latest"
           call: "test validate-dependencies"
-          dagger-flags: '--quiet'
+          dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
