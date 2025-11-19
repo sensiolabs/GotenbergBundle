@@ -15,6 +15,7 @@ use Dagger\Service;
 use function Amp\async;
 use function Amp\Future\await;
 use function Dagger\dag;
+use function sleep;
 
 #[DaggerObject]
 #[Doc('Module for GotenbergBundle')]
@@ -70,6 +71,11 @@ class GotenbergBundle
     ): Container {
         $phpContainer ??= $this->phpContainer($source, $phpVersion);
 
+        $minimumStability = trim($minimumStability);
+        if ('' === $minimumStability) {
+            $minimumStability = 'stable';
+        }
+
         $composerCache = dag()->cacheVolume("php-{$phpVersion}-symfony-{$symfonyVersion}-composer-cache");
 
         return $phpContainer
@@ -118,10 +124,9 @@ class GotenbergBundle
 
         string $phpVersion = '8.4',
         string $symfonyVersion = '7.3.*',
-        string $minimumStability = 'stable',
         Container|null $symfonyContainer = null,
     ): TestsGotenbergBundle {
-        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion, $minimumStability);
+        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion);
 
         return new TestsGotenbergBundle($symfonyContainer);
     }
