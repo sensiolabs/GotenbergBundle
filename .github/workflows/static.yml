@@ -42,7 +42,7 @@ jobs:
         with:
           version: "latest"
           call: "test php-cs-fixer"
-          dagger-flags: '--quiet'
+          dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
 
@@ -72,6 +72,6 @@ jobs:
         with:
           version: "latest"
           call: "test --symfony-version '${{ matrix.symfony-version }}' --php-version '${{ matrix.php }}' --minimum-stability '${{ matrix.minimum-stability }}' phpstan"
-          dagger-flags: '--quiet'
+          dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
