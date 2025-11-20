@@ -20,8 +20,12 @@ use function Dagger\dag;
 #[Doc('Module for GotenbergBundle')]
 class GotenbergBundle
 {
+    private const DEFAULT_PHP_VERSION = '8.4';
+    private const DEFAULT_SYMFONY_VERSION = '7.3.*';
+    private const DEFAULT_GOTENBERG_VERSION = '8.0';
+
     private function gotenbergContainer(
-        string $gotenbergVersion = '8.0',
+        string $gotenbergVersion = self::DEFAULT_GOTENBERG_VERSION,
     ): Container {
         return dag()
             ->container()
@@ -30,7 +34,7 @@ class GotenbergBundle
     }
 
     private function gotenbergService(
-        string $gotenbergVersion = '8.0',
+        string $gotenbergVersion = self::DEFAULT_GOTENBERG_VERSION,
     ): Service {
         return $this->gotenbergContainer($gotenbergVersion)
             ->withExposedPort(3000)
@@ -40,7 +44,7 @@ class GotenbergBundle
 
     private function phpContainer(
         Directory $source,
-        string $phpVersion = '8.4',
+        string $phpVersion = self::DEFAULT_PHP_VERSION,
     ): Container {
         $aptCache = dag()->cacheVolume("apt-cache-{$phpVersion}");
         $composerBin = dag()->container()->from('composer/composer:latest-bin')->file('/composer');
@@ -63,8 +67,8 @@ class GotenbergBundle
 
     private function symfonyContainer(
         Directory $source,
-        string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3.*',
+        string $phpVersion = self::DEFAULT_PHP_VERSION,
+        string $symfonyVersion = self::DEFAULT_SYMFONY_VERSION,
         string $minimumStability = 'stable',
         Container|null $phpContainer = null,
     ): Container {
@@ -120,9 +124,8 @@ class GotenbergBundle
     public function test(
         #[DefaultPath('.')]
         Directory $source,
-
-        string $phpVersion = '8.4',
-        string $symfonyVersion = '7.3.*',
+        string $phpVersion = self::DEFAULT_PHP_VERSION,
+        string $symfonyVersion = self::DEFAULT_SYMFONY_VERSION,
         string $minimumStability = 'stable',
         Container|null $symfonyContainer = null,
     ): TestsGotenbergBundle {

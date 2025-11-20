@@ -30,7 +30,7 @@ jobs:
         uses: 'dagger/dagger-for-github@8.0.0'
         with:
           version: 'latest'
-          args: 'test php-cs-fixer'
+          call: 'test php-cs-fixer'
           dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
