@@ -42,10 +42,10 @@ class IntegerNodeBuilder extends NodeBuilder implements NodeBuilderInterface
             }
         }
 
-        if ($this->required && null === $this->defaultValue) {
-            $node->isRequired();
-        } elseif (null !== $this->defaultValue) {
+        if (null !== $this->defaultValue) {
             $node->defaultValue($this->defaultValue);
+        } elseif ($this->required) {
+            $node->isRequired();
         }
 
         return $node;

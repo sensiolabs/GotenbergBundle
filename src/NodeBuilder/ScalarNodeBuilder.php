@@ -25,10 +25,10 @@ class ScalarNodeBuilder extends NodeBuilder implements NodeBuilderInterface
     {
         $node = new ScalarNodeDefinition($this->name);
 
-        if ($this->required && null === $this->defaultValue) {
-            $node->isRequired();
-        } elseif (null !== $this->defaultValue) {
+        if (null !== $this->defaultValue) {
             $node->defaultValue($this->defaultValue);
+        } elseif ($this->required) {
+            $node->isRequired();
         }
 
         if ($this->cannotBeEmpty) {
