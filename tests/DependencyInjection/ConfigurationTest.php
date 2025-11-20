@@ -242,26 +242,19 @@ final class ConfigurationTest extends TestCase
             'default_options' => [
                 'pdf' => [
                     'html' => [
-                        'paper_standard_size' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
-                        'emulated_media_type' => null,
                         'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
-                        'pdf_format' => null,
-                        'split_mode' => null,
                         'download_from' => [],
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
                         'metadata' => [
-                            'Trapped' => null,
                         ],
                         'footer' => [
                             'context' => [],
@@ -271,26 +264,19 @@ final class ConfigurationTest extends TestCase
                         ],
                     ],
                     'url' => [
-                        'paper_standard_size' => null,
-                        'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
                         'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
-                        'pdf_format' => null,
-                        'split_mode' => null,
                         'download_from' => [],
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
                         'metadata' => [
-                            'Trapped' => null,
                         ],
                         'footer' => [
                             'context' => [],
@@ -300,26 +286,19 @@ final class ConfigurationTest extends TestCase
                         ],
                     ],
                     'markdown' => [
-                        'paper_standard_size' => null,
-                        'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
                         'fail_on_http_status_codes' => [],
                         'fail_on_resource_http_status_codes' => [],
-                        'pdf_format' => null,
                         'download_from' => [],
-                        'split_mode' => null,
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
                         'metadata' => [
-                            'Trapped' => null,
                         ],
                         'footer' => [
                             'context' => [],
@@ -329,74 +308,54 @@ final class ConfigurationTest extends TestCase
                         ],
                     ],
                     'office' => [
-                        'pdf_format' => null,
-                        'max_image_resolution' => null,
                         'download_from' => [],
-                        'split_mode' => null,
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
                         'metadata' => [
-                            'Trapped' => null,
                         ],
                     ],
                     'merge' => [
-                        'pdf_format' => null,
                         'download_from' => [],
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
                         'metadata' => [
-                            'Trapped' => null,
                         ],
                     ],
                     'convert' => [
-                        'pdf_format' => null,
                         'download_from' => [],
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
                     ],
                     'split' => [
-                        'split_mode' => null,
-                        'pdf_format' => null,
                         'download_from' => [],
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
                         'metadata' => [
-                            'Trapped' => null,
                         ],
                     ],
                 ],
                 'screenshot' => [
                     'html' => [
-                        'format' => null,
-                        'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
                         'fail_on_http_status_codes' => [],
@@ -404,10 +363,8 @@ final class ConfigurationTest extends TestCase
                         'download_from' => [],
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
@@ -419,8 +376,6 @@ final class ConfigurationTest extends TestCase
                         ],
                     ],
                     'url' => [
-                        'format' => null,
-                        'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
                         'fail_on_http_status_codes' => [],
@@ -428,10 +383,8 @@ final class ConfigurationTest extends TestCase
                         'download_from' => [],
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
@@ -443,8 +396,6 @@ final class ConfigurationTest extends TestCase
                         ],
                     ],
                     'markdown' => [
-                        'format' => null,
-                        'emulated_media_type' => null,
                         'cookies' => [],
                         'extra_http_headers' => [],
                         'fail_on_http_status_codes' => [],
@@ -452,10 +403,8 @@ final class ConfigurationTest extends TestCase
                         'download_from' => [],
                         'webhook' => [
                             'success' => [
-                                'method' => null,
                             ],
                             'error' => [
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],

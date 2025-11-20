@@ -15,6 +15,8 @@ class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 
         public string|null $defaultValue = null,
 
+        public bool $required = false,
+
         /**
          * @var array<array-key, mixed>
          */
@@ -66,9 +68,11 @@ class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
             if (!\in_array($this->defaultValue, $values, true)) {
                 throw new InvalidBuilderConfiguration(\sprintf('The default value "%s" is not part of the configured values "%s".', $this->defaultValue, implode(', ', $values)));
             }
-        }
 
-        $node->defaultValue($this->defaultValue);
+            $node->defaultValue($this->defaultValue);
+        } elseif ($this->required) {
+            $node->isRequired();
+        }
 
         return $node;
     }
