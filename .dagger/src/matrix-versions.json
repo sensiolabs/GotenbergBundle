@@ -24,9 +24,9 @@
         "allow-failure": false
     },
     {
-        "name": "Symfony '6.4' with PHP '8.5-rc'",
+        "name": "Symfony '6.4' with PHP '8.5'",
         "symfony-version": "6.4.*",
-        "php": "8.5-rc",
+        "php": "8.5",
         "allow-failure": true
     },
     {
@@ -48,9 +48,9 @@
         "allow-failure": false
     },
     {
-        "name": "Symfony '7.3' with PHP '8.5-rc'",
+        "name": "Symfony '7.3' with PHP '8.5'",
         "symfony-version": "7.3.*",
-        "php": "8.5-rc",
+        "php": "8.5",
         "allow-failure": true
     },
     {
@@ -75,10 +75,10 @@
         "allow-failure": true
     },
     {
-        "name": "Symfony '7.4' with PHP '8.5-rc'",
+        "name": "Symfony '7.4' with PHP '8.5'",
         "symfony-version": "7.4.*",
         "minimum-stability": "dev",
-        "php": "8.5-rc",
+        "php": "8.5",
         "allow-failure": true
     },
     {
@@ -89,10 +89,10 @@
         "allow-failure": true
     },
     {
-        "name": "Symfony '8.0' with PHP '8.5-rc'",
+        "name": "Symfony '8.0' with PHP '8.5'",
         "symfony-version": "8.0.*",
         "minimum-stability": "dev",
-        "php": "8.5-rc",
+        "php": "8.5",
         "allow-failure": true
     }
 ]
