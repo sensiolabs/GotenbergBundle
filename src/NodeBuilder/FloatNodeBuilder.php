@@ -10,6 +10,8 @@ class FloatNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         protected string $name,
 
         public int|float|null $defaultValue = null,
+
+        public bool $required = false,
     ) {
         parent::__construct($name);
     }
@@ -17,7 +19,12 @@ class FloatNodeBuilder extends NodeBuilder implements NodeBuilderInterface
     public function create(): FloatNodeDefinition
     {
         $node = new FloatNodeDefinition($this->name);
-        $node->defaultValue($this->defaultValue);
+
+        if ($this->required && null === $this->defaultValue) {
+            $node->isRequired();
+        } elseif (null !== $this->defaultValue) {
+            $node->defaultValue($this->defaultValue);
+        }
 
         return $node;
     }

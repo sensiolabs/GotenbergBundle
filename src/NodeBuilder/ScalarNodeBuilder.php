@@ -25,8 +25,10 @@ class ScalarNodeBuilder extends NodeBuilder implements NodeBuilderInterface
     {
         $node = new ScalarNodeDefinition($this->name);
 
-        if ($this->required) {
+        if ($this->required && null === $this->defaultValue) {
             $node->isRequired();
+        } elseif (null !== $this->defaultValue) {
+            $node->defaultValue($this->defaultValue);
         }
 
         if ($this->cannotBeEmpty) {
@@ -41,8 +43,6 @@ class ScalarNodeBuilder extends NodeBuilder implements NodeBuilderInterface
                 'float' => $node->validate()->ifTrue(static fn ($option): bool => !\is_float($option))->thenInvalid('Invalid value %s, available type is "float".'),
             };
         }
-
-        $node->defaultValue($this->defaultValue);
 
         return $node;
     }

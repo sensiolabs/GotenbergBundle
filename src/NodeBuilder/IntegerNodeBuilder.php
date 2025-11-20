@@ -14,6 +14,8 @@ class IntegerNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         public int|null $min = null,
 
         public int|null $max = null,
+
+        public bool $required = false,
     ) {
         parent::__construct($name);
     }
@@ -40,7 +42,11 @@ class IntegerNodeBuilder extends NodeBuilder implements NodeBuilderInterface
             }
         }
 
-        $node->defaultValue($this->defaultValue);
+        if ($this->required && null === $this->defaultValue) {
+            $node->isRequired();
+        } elseif (null !== $this->defaultValue) {
+            $node->defaultValue($this->defaultValue);
+        }
 
         return $node;
     }

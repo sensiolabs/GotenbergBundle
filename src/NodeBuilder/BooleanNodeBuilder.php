@@ -20,11 +20,11 @@ class BooleanNodeBuilder extends NodeBuilder implements NodeBuilderInterface
     {
         $node = new BooleanNodeDefinition($this->name);
 
-        if ($this->required) {
+        if ($this->required && null === $this->defaultValue) {
             $node->isRequired();
+        } elseif (null !== $this->defaultValue) {
+            $node->defaultValue($this->defaultValue);
         }
-
-        $node->defaultValue($this->defaultValue);
 
         return $node;
     }
