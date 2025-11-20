@@ -85,8 +85,9 @@ Here is the list of all `dagger call` functions you can do :
 $ dagger functions
 Name            Description
 generate-docs   Generates documentation and returns the Directory to export locally.
+php-cs-fixer    Run php-cs-fixer. Returns the Directory diff.
 test            Provide a container with all dependencies installed and ready to run tests.
-tests-matrix    Execute all tests within matrix (PHP version, Symfony version).
+tests-matrix    Execute all tests within matrix (PHP version, Symfony version)
 ```
 
 and here is the list of all tests available in `dagger call test` :
@@ -95,12 +96,21 @@ and here is the list of all tests available in `dagger call test` :
 $ dagger functions test # e.g.: dagger call test phpunit
 Name                    Description
 all                     Run all tests.
-php-cs-fixer            Validate PHP-CS-Fixer and returns the container it ran in.
 phpstan                 Run PHPStan and returns the container it ran in.
 phpunit                 Run phpunit tests and returns the container it ran in.
 terminal                Get the container for tests.
 validate-dependencies   Validate composer dependencies and returns the container it ran in.
 versions                Output the versions used for tests.
+```
+
+and here is the list of all tests available in `dagger call php-cs-fixer` :
+
+```shell
+$ dagger functions php-cs-fixer # e.g.: dagger call php-cs-fixer fix
+Name    Description
+check   Throw an error if php-cs-fixer found some issues.
+diff    See diff from php-cs-fixer.
+fix     Apply changes from php-cs-fixer.
 ```
 
 ### Without dagger
@@ -119,14 +129,11 @@ Maintain high code quality by following these steps before submitting a pull req
 Check your code for style violations:
 
 ```shell
-$ dagger call test php-cs-fixer
+$ # Apply fixes
+$ dagger call php-cs-fixer fix
+$ # See diff
+$ dagger call php-cs-fixer diff
 $ # or without dagger
-$ ./vendor/bin/php-cs-fixer check --diff
-```
-
-Eventually, you can fix the issues automatically (without dagger):
-
-```shell
 $ ./vendor/bin/php-cs-fixer fix --diff
 ```
 

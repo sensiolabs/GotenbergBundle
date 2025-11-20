@@ -96,16 +96,6 @@ final class TestsGotenbergBundle
     }
 
     #[DaggerFunction]
-    #[Doc('Validate PHP-CS-Fixer and returns the container it ran in.')]
-    public function phpCsFixer(): string
-    {
-        return $this->symfonyContainer
-            ->withExec(['./vendor/bin/php-cs-fixer', 'check', '-v', '--diff'])
-            ->stdout()
-        ;
-    }
-
-    #[DaggerFunction]
     #[Doc('Validate all URL docs.')]
     public function validateUrlDoc(): string
     {
@@ -130,11 +120,6 @@ final class TestsGotenbergBundle
         $outputs[] = async(fn (): array => [
             '  >> Validating dependencies...',
             $this->validateDependencies(),
-        ]);
-
-        $outputs[] = async(fn (): array => [
-            '  >> Checking code style...',
-            $this->phpCsFixer(),
         ]);
 
         $outputs[] = async(fn (): array => [

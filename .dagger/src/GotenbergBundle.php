@@ -12,6 +12,7 @@ use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
 use Dagger\Directory;
 use Dagger\Service;
+use DaggerModule\Test\PhpCsFixer;
 use function Amp\async;
 use function Amp\Future\await;
 use function Dagger\dag;
@@ -117,6 +118,18 @@ class GotenbergBundle
             ->withExec(['./docs/generate.php'])
             ->directory('./docs')
         ;
+    }
+
+    #[DaggerFunction]
+    #[Doc('Run php-cs-fixer. Returns the Directory diff.')]
+    public function phpCsFixer(
+        #[DefaultPath('.')]
+        Directory $source,
+        Container|null $symfonyContainer = null,
+    ): PhpCsFixer {
+        $symfonyContainer ??= $this->symfonyContainer($source, phpVersion: self::DEFAULT_PHP_VERSION);
+
+        return new PhpCsFixer($source, $symfonyContainer);
     }
 
     #[DaggerFunction]
