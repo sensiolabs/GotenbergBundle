@@ -5,9 +5,11 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
+use Sensiolabs\GotenbergBundle\Tests\Fixtures\Entity\FakeUser;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @template T of BuilderInterface
@@ -175,10 +177,44 @@ trait CookieTestCaseTrait
     public function testRequestStackDependencyRequirementForForwardCookies(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('RequestStack is required to use "Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait::getCurrentRequest" method. Try to run "composer require symfony/http-foundation".');
+        $this->expectExceptionMessage('RequestStack is required to use "Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\RequestAwareTrait::getRequestStack" method. Try to run "composer require symfony/http-foundation".');
 
         $this->getDefaultBuilder()
             ->forwardCookie('my_cookie')
         ;
+    }
+
+    public function testForwardAuthentication(): void
+    {
+        $request = new Request();
+        $request->setMethod('GET');
+        $request->setSession(new Session());
+        $request->cookies->set($request->getSession()->getName(), $request->getSession()->getId());
+
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $this->container->set('request_stack', $requestStack);
+
+        $builder = $this->getDefaultBuilder()
+            ->forwardAuthentication()
+        ;
+
+        self::assertArrayHasKey('cookies', $builder->getBodyBag()->all());
+
+        $cookies = $builder->getBodyBag()->all()['cookies'];
+        self::assertSame($cookies[$request->getSession()->getName()]['name'], $request->getSession()->getName());
+        self::assertSame($cookies[$request->getSession()->getName()]['value'], $request->getSession()->getId());
+    }
+
+    public function testAsUser(): void
+    {
+        $this->container->set('request_stack', new RequestStack());
+
+        $builder = $this->getDefaultBuilder()
+            ->asUser(new FakeUser())
+        ;
+
+        self::assertArrayHasKey('cookies', $builder->getBodyBag()->all());
     }
 }

@@ -43,6 +43,9 @@
 [cookies](#cookies)  
 [setCookie](#setCookie)  
 [addCookies](#addCookies)  
+[forwardCookie](#forwardCookie)  
+[forwardAuthentication](#forwardAuthentication)  
+[asUser](#asUser)  
 [userAgent](#userAgent)  
 [extraHttpHeaders](#extraHttpHeaders)  
 [addExtraHttpHeaders](#addExtraHttpHeaders)  
@@ -868,6 +871,96 @@ class YourController
             ->generate()
             ->stream()
         ;
+    }
+}
+```
+
+### forwardCookie
+
+If you want to forward existing cookie from the current request.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->html()
+            ->content('content.html.twig', [
+                'my_var' => 'value'
+            ])
+            ->forwardCookie('my_cookie')
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+### forwardAuthentication
+
+If you want to forward the authentication cookie from the current request.
+Can be useful to generate a PDF from restricted route.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+class YourController
+{
+    public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
+    {
+        return $gotenberg
+            ->url()
+            ->route('auth_route')
+            ->forwardAuthentication()
+            ->generate()
+            ->stream()
+        ;
+    }
+}
+```
+
+### asUser
+
+If you want to generate a PDF for a restricted route in a CLI context.
+
+```php
+namespace App\Controller;
+
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+
+#[AsCommand(name: 'app:create-pdf', description: 'Create pdf')]
+final class CreatePdf extends Command
+{
+    public function __construct(
+        private readonly GotenbergPdfInterface $gotenberg,
+        private readonly UserProviderInterface $userProvider,
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $user = $this->userProvider->loadUserByIdentifier('john_doe');
+
+        return $this->gotenberg
+            ->url()
+            ->route('auth_route')
+            ->asUser($user)
+            ->processor(new FileProcessor(new Filesystem(), dirname(__DIR__).'/../var/pdf'))
+            ->generate()
+            ->process()
+        ;
+
+        $output->writeln('PDF generated');
+
+        return Command::SUCCESS;
     }
 }
 ```
