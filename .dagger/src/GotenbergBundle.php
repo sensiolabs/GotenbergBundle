@@ -136,7 +136,7 @@ class GotenbergBundle
 
     #[DaggerFunction]
     #[Doc('Execute all tests within matrix (PHP version, Symfony version).')]
-    #[ReturnsListOfType('string')]
+    #[ReturnsListOfType(TestsGotenbergBundle::class)]
     public function testsMatrix(
         #[DefaultPath('.')]
         Directory $source,
@@ -144,7 +144,7 @@ class GotenbergBundle
         $tests = [];
 
         foreach ($this->getMatrix() as [$symfonyVersion, $phpVersion, $minimumStability]) {
-            $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion, $minimumStability)->all());
+            $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion, $minimumStability));
         }
 
         $result = [];
@@ -153,6 +153,6 @@ class GotenbergBundle
             $result[] = $test;
         }
 
-        return array_merge(...$result);
+        return $result;
     }
 }

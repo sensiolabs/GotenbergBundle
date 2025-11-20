@@ -8,6 +8,5 @@
     "!.dagger/sdk",
     "!.dagger/vendor"
   ],
-  "source": ".dagger",
-  "disableDefaultFunctionCaching": true
+  "source": ".dagger"
 }
