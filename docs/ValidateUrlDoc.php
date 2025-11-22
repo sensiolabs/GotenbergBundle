@@ -23,7 +23,7 @@ class ValidateUrlDoc
         __DIR__.'/../src/DependencyInjection/Configuration.php',
     ];
 
-    public function validate(OutputInterface $output): void
+    public function validate(OutputInterface $output, SymfonyStyle $io): int
     {
         $progressBar = new ProgressIndicator($output);
         $progressBar->start('Processing...');
@@ -42,21 +42,36 @@ class ValidateUrlDoc
             $allResponses[] = $client->request('GET', $url);
         }
 
+        $urlsWithErrors = [];
         foreach ($client->stream($allResponses) as $response => $chunk) {
             if ($chunk->isLast()) {
                 $statusCode = $response->getStatusCode();
                 $url = $response->getInfo('url');
 
                 if (200 !== $statusCode) {
-                    throw new RuntimeException("HTTP {$statusCode} error for: {$url}");
+                    $urlsWithErrors[] = "HTTP {$statusCode} error for: {$url}";
+                    continue;
                 }
 
-                $this->checkContentResponse($response->getInfo('url'), $response->getContent());
+                $checkError = $this->checkContentResponse($response->getInfo('url'), $response->getContent());
+                if (\is_string($checkError)) {
+                    $urlsWithErrors[] = $checkError;
+                }
+
                 $progressBar->advance();
             }
         }
 
+        if (\count($urlsWithErrors) > 0) {
+            $io->error($urlsWithErrors);
+
+            return Command::FAILURE;
+        }
+
         $progressBar->finish('Finished');
+        $io->success('All external links are valid.');
+
+        return Command::SUCCESS;
     }
 
     private function getFiles(array $paths): Generator
@@ -95,7 +110,7 @@ class ValidateUrlDoc
         return $matches[1] ?? [];
     }
 
-    private function checkContentResponse(string $url, string $content): void
+    private function checkContentResponse(string $url, string $content): string|null
     {
         $crawler = new Crawler($content);
         $parsedUrl = parse_url($url);
@@ -103,30 +118,20 @@ class ValidateUrlDoc
         if (\array_key_exists('fragment', $parsedUrl)) {
             $fragment = $parsedUrl['fragment'];
             if ($crawler->filter('#'.$fragment)->count() > 0 || $crawler->filter('a[name="'.$fragment.'"]')->count() > 0) {
-                return;
+                return null;
             }
 
-            throw new RuntimeException("Cannot find anchor '{$fragment}' for {$url}, remove or update the link in the PHPdoc");
+            return \sprintf('Cannot find anchor "%s" for "%s", remove or update the link in the PHPdoc', $fragment, $url);
         }
+
+        return null;
     }
 }
 
 $application = new Application();
 $application->register('check')
     ->setCode(function (OutputInterface $output, SymfonyStyle $io) {
-        $checkPhpDoc = new ValidateUrlDoc();
-
-        try {
-            $checkPhpDoc->validate($output);
-        } catch (RuntimeException $e) {
-            $io->error($e->getMessage());
-
-            return Command::FAILURE;
-        }
-
-        $io->success('All external links are valid.');
-
-        return Command::SUCCESS;
+        return (new ValidateUrlDoc())->validate($output, $io);
     })
 ;
 

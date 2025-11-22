@@ -107,7 +107,7 @@ final class TestsGotenbergBundle
 
     #[DaggerFunction]
     #[Doc('Validate all URL docs.')]
-    public function ValidateUrlDoc(): string
+    public function validateUrlDoc(): string
     {
         return $this->symfonyContainer
             ->withExec(['php', './docs/ValidateUrlDoc.php'])
@@ -144,7 +144,7 @@ final class TestsGotenbergBundle
 
         $outputs[] = async(fn (): array => [
             '  >> Validating URL docs...',
-            $this->ValidateUrlDoc(),
+            $this->validateUrlDoc(),
         ]);
 
         $title = "Running tests for PHP {$this->getPhpVersion()}, Symfony {$this->getSymfonyVersion()}";

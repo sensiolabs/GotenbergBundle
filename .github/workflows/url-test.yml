@@ -19,7 +19,8 @@ jobs:
       - name: 'Validate URLS into PhpDoc'
         uses: 'dagger/dagger-for-github@8.0.0'
         with:
-          version: "latest"
-          args: "test validate-url-doc"
+          version: 'latest'
+          call: 'test validate-url-doc'
+          dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
