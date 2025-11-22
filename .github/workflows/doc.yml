@@ -29,7 +29,7 @@ jobs:
 
       - name: 'Check documentation'
         run: |
-          echo ${{ steps.generate-docs-patch.outputs.output }} | git apply
+          echo '${{ steps.generate-docs-patch.outputs.output }}' | git apply
           DIFF=$(git status --short --renames ./docs)
           if [[ $DIFF != '' ]]; then
             echo "::warning::Builders API documentation is not up to date. Please run \"php ./docs/generate.php\""
