@@ -117,7 +117,7 @@ class GotenbergBundle
 
         $generatedDocs = dag()->directory()->withDirectory('./docs', $symfonyContainer
             ->withExec(['./docs/generate.php'])
-            ->directory('./docs')
+            ->directory('./docs'),
         );
 
         return $generatedDocs->changes(dag()->directory()->withDirectory('./docs', $source->directory('./docs')));
