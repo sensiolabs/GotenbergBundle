@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
- * Merge `n` pdf files into a single one. test
+ * Merge `n` pdf files into a single one.
  *
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
@@ -31,6 +31,14 @@ final class MergePdfBuilder extends AbstractBuilder
     use WebhookTrait;
 
     public const ENDPOINT = '/forms/pdfengines/merge';
+
+    /**
+     * Do something
+     */
+    public function testToDelete(): self
+    {
+        return $this;
+    }
 
     /**
      * Add PDF files to merge.
