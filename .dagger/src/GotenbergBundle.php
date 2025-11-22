@@ -9,6 +9,7 @@ use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\DefaultPath;
 use Dagger\Attribute\Doc;
 use Dagger\Attribute\ReturnsListOfType;
+use Dagger\Changeset;
 use Dagger\Container;
 use Dagger\Directory;
 use Dagger\Service;
@@ -80,7 +81,7 @@ class GotenbergBundle
             $minimumStability = 'stable';
         }
 
-        $composerCache = dag()->cacheVolume("composer-cache");
+        $composerCache = dag()->cacheVolume('composer-cache');
 
         return $phpContainer
             ->withMountedCache('/root/.composer/cache/files', $composerCache)
@@ -106,18 +107,20 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
-    #[Doc('Generates documentation and returns the Directory to export locally.')]
+    #[Doc('Generates documentation and returns the ChangeSet to apply locally.')]
     public function generateDocs(
         #[DefaultPath('.')]
         Directory $source,
         Container|null $symfonyContainer = null,
-    ): Directory {
+    ): Changeset {
         $symfonyContainer ??= $this->symfonyContainer($source);
 
-        return $symfonyContainer
+        $generatedDocs = dag()->directory()->withDirectory('./docs', $symfonyContainer
             ->withExec(['./docs/generate.php'])
             ->directory('./docs')
-        ;
+        );
+
+        return $generatedDocs->changes(dag()->directory()->withDirectory('./docs', $source->directory('./docs')));
     }
 
     #[DaggerFunction]

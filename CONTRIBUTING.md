@@ -43,7 +43,7 @@ Ensure your changes work as expected by running the test suite:
 ### With dagger (recommended)
 #### Requirements
 
-Make sure you have [dagger >= v0.19.6](https://docs.dagger.io/install) installed. Then run
+Make sure you have [dagger >= v0.19.7](https://docs.dagger.io/install) installed. Then run
 
 ```shell
 $ dagger develop

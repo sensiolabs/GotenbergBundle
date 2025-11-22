@@ -9,6 +9,7 @@ $config = new Configuration();
 
 $config = $config
     ->addPathToScan(__DIR__.'/bin', isDev: true)
+    ->addPathToScan(__DIR__.'/docs', isDev: true)
     ->addPathToScan(__DIR__.'/src', isDev: false)
     ->addPathToScan(__DIR__.'/src/DataCollector', isDev: true)
     ->addPathToScan(__DIR__.'/src/Debug', isDev: true)
