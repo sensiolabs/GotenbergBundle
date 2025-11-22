@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
- * Merge `n` pdf files into a single one.
+ * Merge `n` pdf files into a single one. test
  *
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  */
