@@ -33,14 +33,6 @@ final class MergePdfBuilder extends AbstractBuilder
     public const ENDPOINT = '/forms/pdfengines/merge';
 
     /**
-     * Do something
-     */
-    public function testToDelete(): self
-    {
-        return $this;
-    }
-
-    /**
      * Add PDF files to merge.
      *
      * As assets files, by default the PDF files are fetch in the assets folder
