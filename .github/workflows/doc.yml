@@ -17,17 +17,19 @@ jobs:
     steps:
       - uses: 'actions/checkout@v4'
 
-      - name: 'Generate docs'
+      - id: 'generate-docs-patch'
+        name: 'Generate docs'
         uses: 'dagger/dagger-for-github@v8.2.0'
         with:
           version: "latest"
-          call: "generate-docs"
+          call: "generate-docs as-patch contents"
           dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
 
       - name: 'Check documentation'
         run: |
+          echo ${{ steps.generate-docs-patch.outputs.output }} | git apply
           DIFF=$(git status --short --renames ./docs)
           if [[ $DIFF != '' ]]; then
             echo "::warning::Builders API documentation is not up to date. Please run \"php ./docs/generate.php\""
