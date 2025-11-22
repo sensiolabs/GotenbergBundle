@@ -59,7 +59,10 @@ $ # Make sure all dependencies are explicitly added to composer.json
 $ dagger call test --symfony-version='6.4.*' --php-version='8.2' validate-dependencies
 
 $ # Generate the auto documentation for builders
-$ dagger call generate-docs export --path='./docs'
+$ dagger call generate-docs
+
+$ # Apply coding style fixes
+$ dagger call php-cs-fixer fix
 
 $ # Run all tests available with specific symfony / php versions
 $ dagger call test --symfony-version='6.4.*' --php-version='8.2' all
@@ -84,10 +87,10 @@ Here is the list of all `dagger call` functions you can do :
 ```shell
 $ dagger functions
 Name            Description
-generate-docs   Generates documentation and returns the Directory to export locally.
+generate-docs   Generates documentation and returns the ChangeSet to apply locally.
 php-cs-fixer    Run php-cs-fixer. Returns the Directory diff.
 test            Provide a container with all dependencies installed and ready to run tests.
-tests-matrix    Execute all tests within matrix (PHP version, Symfony version)
+tests-matrix    Execute all tests within matrix (PHP version, Symfony version).
 ```
 
 and here is the list of all tests available in `dagger call test` :
@@ -171,7 +174,9 @@ The project documentation is partially built from the source code.
 ### Update the documentation
 
 ```shell
-$ dagger call generate-docs export --path ./docs
+$ dagger call generate-docs
+$ # Or without dagger
+$ ./docs/generate.php
 ```
 
 ---
