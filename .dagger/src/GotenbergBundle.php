@@ -80,7 +80,7 @@ class GotenbergBundle
             $minimumStability = 'stable';
         }
 
-        $composerCache = dag()->cacheVolume("php-{$phpVersion}-symfony-{$symfonyVersion}-composer-cache");
+        $composerCache = dag()->cacheVolume("composer-cache");
 
         return $phpContainer
             ->withMountedCache('/root/.composer/cache/files', $composerCache)

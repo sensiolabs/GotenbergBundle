@@ -201,7 +201,10 @@ class SensiolabsGotenbergExtension extends Extension
                 }
 
                 $webhookConfigName = $builderWebhookConfigName ?? $config['default_options']['webhook'] ?? null;
-                $defaultWebhookConfig = $config['webhook'][$webhookConfigName] ?? [];
+                $defaultWebhookConfig = [];
+                if (null !== $webhookConfigName) {
+                    $defaultWebhookConfig = $config['webhook'][$webhookConfigName] ?? $defaultWebhookConfig;
+                }
 
                 $config['default_options'][$type][$builderName]['webhook'] = array_merge(
                     $this->cleanBuilderConfiguration($defaultWebhookConfig),
