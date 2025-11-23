@@ -51,10 +51,13 @@ class GotenbergBundle
         $aptCache = dag()->cacheVolume("apt-cache-{$phpVersion}");
         $composerBin = dag()->container()->from('composer/composer:latest-bin')->file('/composer');
 
+        $composerCache = dag()->cacheVolume('composer-cache');
+
         return dag()
             ->container()
             ->from("php:{$phpVersion}")
             ->withMountedCache('/var/cache/apt/archives', $aptCache)
+            ->withMountedCache('/root/.composer/cache/files', $composerCache)
             ->withExec(['apt', 'update'])
             ->withExec(['apt', 'install', '--yes',
                 'git',
@@ -81,10 +84,7 @@ class GotenbergBundle
             $minimumStability = 'stable';
         }
 
-        $composerCache = dag()->cacheVolume('composer-cache');
-
         return $phpContainer
-            ->withMountedCache('/root/.composer/cache/files', $composerCache)
             ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
             ->withExec(['composer', 'global', 'require', 'symfony/flex'])
             ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
