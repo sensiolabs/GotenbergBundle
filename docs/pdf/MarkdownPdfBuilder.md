@@ -124,6 +124,7 @@ class YourController
 - [addMetadata](#addmetadatastring-key-string-value)
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [files](#filesstringablestring-paths)
+- [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
@@ -216,6 +217,21 @@ Add Markdown into a PDF.<br /><br />Required to generate a PDF from Markdown bui
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->files('header.md','content.md','footer.md')
+    ->generate()
+    ->stream()
+;
+```
+
+### flatten(bool \$bool)
+Flattening a PDF combines all its contents into a single layer. (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#flatten-libreoffice](https://gotenberg.dev/docs/routes#flatten-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->flatten() // is same as `->flatten(true)`
     ->generate()
     ->stream()
 ;

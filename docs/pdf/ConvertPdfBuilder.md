@@ -45,6 +45,7 @@ class YourController
 
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [files](#filesstringablestring-paths)
+- [flatten](#flattenbool-bool)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
 - [webhook](#webhookarray-webhook)
@@ -77,6 +78,21 @@ If you provide multiple PDF files you will get ZIP folder containing all the con
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->files('document.pdf', __DIR__'/../../public/document_2.pdf')
+    ->generate()
+    ->stream()
+;
+```
+
+### flatten(bool \$bool)
+Flattening a PDF combines all its contents into a single layer. (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#flatten-libreoffice](https://gotenberg.dev/docs/routes#flatten-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->flatten() // is same as `->flatten(true)`
     ->generate()
     ->stream()
 ;

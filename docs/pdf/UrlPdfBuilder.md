@@ -71,6 +71,7 @@ class YourController
 
 - [addMetadata](#addmetadatastring-key-string-value)
 - [downloadFrom](#downloadfromarray-downloadfrom)
+- [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
@@ -150,6 +151,21 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->downloadFrom([['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeader' => 'MyValue']], ['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeaderOne' => 'MyValue', 'MyHeaderTwo' => 'MyValue']]])
+    ->generate()
+    ->stream()
+;
+```
+
+### flatten(bool \$bool)
+Flattening a PDF combines all its contents into a single layer. (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#flatten-libreoffice](https://gotenberg.dev/docs/routes#flatten-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->flatten() // is same as `->flatten(true)`
     ->generate()
     ->stream()
 ;
