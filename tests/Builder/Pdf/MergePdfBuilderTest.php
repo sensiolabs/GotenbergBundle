@@ -88,7 +88,7 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
         $this->getBuilder()
-            ->files(self::ASSETS_DIR.'logo.png')
+            ->files(self::ASSETS_DIR.'/logo.png')
             ->generate()
         ;
     }

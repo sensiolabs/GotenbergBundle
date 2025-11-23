@@ -13,6 +13,9 @@ final class AssetBaseDirFormatter
     /** @var string[] */
     private readonly array $baseDir;
 
+    /** @var array<string, string> */
+    private array $resolvedPathsCache = [];
+
     /**
      * @param string[] $baseDir
      */
@@ -25,8 +28,12 @@ final class AssetBaseDirFormatter
 
     public function resolve(string $path): string
     {
+        if (\array_key_exists($path, $this->resolvedPathsCache)) {
+            return $this->resolvedPathsCache[$path];
+        }
+
         if (Path::isAbsolute($path) || filter_var($path, \FILTER_VALIDATE_URL)) {
-            return $path;
+            return $this->resolvedPathsCache[$path] = $path;
         }
 
         foreach ($this->baseDir as $baseDir) {
@@ -36,7 +43,7 @@ final class AssetBaseDirFormatter
                     continue;
                 }
 
-                return $filename;
+                return $this->resolvedPathsCache[$path] = $filename;
             }
 
             $filename = Path::join($this->projectDir, $baseDir, $path);
@@ -44,7 +51,7 @@ final class AssetBaseDirFormatter
                 continue;
             }
 
-            return $filename;
+            return $this->resolvedPathsCache[$path] = $filename;
         }
 
         throw new FileNotFoundException(\sprintf('File "%s" not found in assets directories: "%s".', $path, implode('", "', $this->baseDir)));
