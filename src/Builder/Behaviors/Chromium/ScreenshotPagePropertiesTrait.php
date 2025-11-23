@@ -89,7 +89,7 @@ trait ScreenshotPagePropertiesTrait
      *
      * @param int<0, 100> $quality
      *
-     * @see https://gotenberg.dev/docs/routes#screenshots-rout
+     * @see https://gotenberg.dev/docs/routes#screenshots-route
      *
      * @example quality(50)
      */

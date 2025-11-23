@@ -462,7 +462,7 @@ return $gotenberg
 The compression quality from range 0 to 100 (jpeg only). (default 100).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#screenshots-rout](https://gotenberg.dev/docs/routes#screenshots-rout)
+> See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)
 
 ```php
 return $gotenberg

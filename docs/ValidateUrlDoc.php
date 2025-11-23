@@ -18,6 +18,7 @@ class ValidateUrlDoc
     private const DIR_AND_FILES_TO_CHECK = [
         __DIR__.'/../src/Builder/Pdf',
         __DIR__.'/../src/Builder/Screenshot',
+        __DIR__.'/../src/Builder/Behaviors',
         __DIR__,
         __DIR__.'/../README.md',
         __DIR__.'/../src/DependencyInjection/Configuration.php',
@@ -42,28 +43,39 @@ class ValidateUrlDoc
             $allResponses[] = $client->request('GET', $url);
         }
 
-        $urlsWithErrors = [];
+        $failedUrls = [];
         foreach ($client->stream($allResponses) as $response => $chunk) {
-            if ($chunk->isLast()) {
-                $statusCode = $response->getStatusCode();
+            try {
                 $url = $response->getInfo('url');
 
-                if (200 !== $statusCode) {
-                    $urlsWithErrors[] = "HTTP {$statusCode} error for: {$url}";
-                    continue;
+                if ($chunk->isTimeout()) {
+                    if (!isset($failedUrls[$url])) {
+                        $failedUrls[$url] = "Timeout for: {$url}";
+                    }
+                } elseif ($chunk->isFirst()) {
+                    $statusCode = $response->getStatusCode();
+                    if (200 !== $statusCode) {
+                        $failedUrls[$url] = "HTTP {$statusCode} error for: {$url}";
+                    }
+                } elseif ($chunk->isLast()) {
+                    if (!\array_key_exists($url, $failedUrls)) {
+                        $checkError = $this->checkContentResponse($response->getInfo('url'), $response->getContent());
+                        if (\is_string($checkError)) {
+                            $failedUrls[$url] = $checkError;
+                        }
+                    }
                 }
-
-                $checkError = $this->checkContentResponse($response->getInfo('url'), $response->getContent());
-                if (\is_string($checkError)) {
-                    $urlsWithErrors[] = $checkError;
-                }
-
+            } catch (Throwable $e) {
+                $url = $response->getInfo('url');
+                $failedUrls[$url] = "Error for {$url}: {$e->getMessage()}";
+            } finally {
                 $progressBar->advance();
             }
         }
 
-        if (\count($urlsWithErrors) > 0) {
-            $io->error($urlsWithErrors);
+        if (\count($failedUrls) > 0) {
+            $io->error('Some external links are invalid:');
+            $io->listing($failedUrls);
 
             return Command::FAILURE;
         }
