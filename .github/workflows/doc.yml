@@ -32,7 +32,7 @@ jobs:
           echo '${{ steps.generate-docs-patch.outputs.output }}' | git apply --allow-empty
           DIFF=$(git status --short --renames ./docs)
           if [[ $DIFF != '' ]]; then
-            echo "::warning::Builders API documentation is not up to date. Please run \"dagger call generate-docs""
+            echo "::warning::Builders API documentation is not up to date. Please run \"dagger call generate-docs\""
             echo "::warning::$DIFF"
             exit 1
           fi
