@@ -142,11 +142,6 @@ final class TestsGotenbergBundle
             $this->phpstan(),
         ]);
 
-        $outputs[] = async(fn (): array => [
-            '  >> Validating URL docs...',
-            $this->validateUrlDoc(),
-        ]);
-
         $title = "Running tests for PHP {$this->getPhpVersion()}, Symfony {$this->getSymfonyVersion()}";
 
         $result = [

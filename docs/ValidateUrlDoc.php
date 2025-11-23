@@ -73,6 +73,9 @@ class ValidateUrlDoc
             }
         }
 
+        $progressBar->finish('Finished');
+        $failedUrls = array_unique($failedUrls);
+
         if (\count($failedUrls) > 0) {
             $io->error('Some external links are invalid:');
             $io->listing($failedUrls);
@@ -80,7 +83,6 @@ class ValidateUrlDoc
             return Command::FAILURE;
         }
 
-        $progressBar->finish('Finished');
         $io->success('All external links are valid.');
 
         return Command::SUCCESS;
