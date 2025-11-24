@@ -37,7 +37,6 @@
     },
     "require-dev": {
         "ext-mbstring": "*",
-        "amphp/http-client": "^5.3",
         "async-aws/s3": "^2.6",
         "friendsofphp/php-cs-fixer": "^3.41 || dev-master",
         "league/flysystem": "^3.29",

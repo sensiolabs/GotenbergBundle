@@ -44,25 +44,19 @@ class ValidateUrlDoc
         }
 
         $failedUrls = [];
-        foreach ($client->stream($allResponses) as $response => $chunk) {
+        foreach ($allResponses as $response) {
             try {
                 $url = $response->getInfo('url');
 
-                if ($chunk->isTimeout()) {
-                    if (!isset($failedUrls[$url])) {
-                        $failedUrls[$url] = "Timeout for: {$url}";
-                    }
-                } elseif ($chunk->isFirst()) {
-                    $statusCode = $response->getStatusCode();
-                    if (200 !== $statusCode) {
-                        $failedUrls[$url] = "HTTP {$statusCode} error for: {$url}";
-                    }
-                } elseif ($chunk->isLast()) {
-                    if (!\array_key_exists($url, $failedUrls)) {
-                        $checkError = $this->checkContentResponse($response->getInfo('url'), $response->getContent());
-                        if (\is_string($checkError)) {
-                            $failedUrls[$url] = $checkError;
-                        }
+                $statusCode = $response->getStatusCode();
+                if (200 !== $statusCode) {
+                    $failedUrls[$url] = "HTTP {$statusCode} error for: {$url}";
+                }
+
+                if (!\array_key_exists($url, $failedUrls)) {
+                    $checkError = $this->checkContentResponse($response->getInfo('url'), $response->getContent());
+                    if (\is_string($checkError)) {
+                        $failedUrls[$url] = $checkError;
                     }
                 }
             } catch (Throwable $e) {
