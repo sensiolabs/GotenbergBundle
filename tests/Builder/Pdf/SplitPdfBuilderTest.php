@@ -39,8 +39,6 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use WebhookTestCaseTrait<SplitPdfBuilder> */
     use WebhookTestCaseTrait;
 
-    private const ASSETS_DIR = __DIR__.'/../../Fixtures/assets';
-
     protected function createBuilder(): SplitPdfBuilder
     {
         return new SplitPdfBuilder();
@@ -97,7 +95,7 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('The file extension "png" is not valid in this context.');
 
         $this->getBuilder()
-            ->files(self::ASSETS_DIR.'/logo.png')
+            ->files(self::FIXTURE_DIR.'/assets/logo.png')
             ->splitMode(SplitMode::Pages)
             ->splitSpan('1-2')
             ->generate()

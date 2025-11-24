@@ -37,16 +37,11 @@ final class AssetBaseDirFormatter
         }
 
         foreach ($this->baseDir as $baseDir) {
-            if (Path::isAbsolute($baseDir)) {
-                $filename = Path::join($baseDir, $path);
-                if (!file_exists($filename)) {
-                    continue;
-                }
-
-                return $this->resolvedPathsCache[$path] = $filename;
+            if (!Path::isAbsolute($baseDir)) {
+                $baseDir = Path::join($this->projectDir, $baseDir);
             }
 
-            $filename = Path::join($this->projectDir, $baseDir, $path);
+            $filename = Path::join($baseDir, $path);
             if (!file_exists($filename)) {
                 continue;
             }
