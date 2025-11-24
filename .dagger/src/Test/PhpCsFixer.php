@@ -11,6 +11,7 @@ use Dagger\Attribute\Doc;
 use Dagger\Changeset;
 use Dagger\Container;
 use Dagger\Directory;
+use GraphQL\Exception\QueryError;
 use function Dagger\dag;
 
 #[DaggerObject]
@@ -80,6 +81,20 @@ final class PhpCsFixer
     #[Doc('Throw an error if php-cs-fixer found some issues.')]
     public function check(): void
     {
-        $this->fix()->isEmpty() ?: throw new \RuntimeException('PHP-CS-Fixer found some issues.');
+        $changeSet = $this->fix();
+
+        $exitCode = $changeSet->isEmpty() ? 0 : 1;
+        $stdout = $changeSet->asPatch()->contents();
+
+        if ($exitCode !== 0) {
+            throw new QueryError(['errors' => [[
+                'message' => 'Please run "dagger call php-cs-fixer fix" to fix the issues.',
+                'extensions' => [
+                    'exitCode' => $exitCode,
+                    'stdout' => $stdout,
+                    'stderr' => '',
+                ]],
+            ]]);
+        }
     }
 }
