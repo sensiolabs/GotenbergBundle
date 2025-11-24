@@ -22,14 +22,13 @@ jobs:
         uses: 'dagger/dagger-for-github@v8.2.0'
         with:
           version: 'latest'
-          call: 'generate-docs as-patch contents'
-          dagger-flags: '--silent'
+          call: 'generate-docs'
+          dagger-flags: '--silent --auto-apply'
         env:
           DAGGER_NO_NAG: '1'
 
       - name: 'Check documentation'
         run: |
-          echo '${{ steps.generate-docs-patch.outputs.output }}' | git apply --allow-empty
           DIFF=$(git status --short --renames ./docs)
           if [[ $DIFF != '' ]]; then
             echo "::warning::Builders API documentation is not up to date. Please run \"dagger call generate-docs\""
