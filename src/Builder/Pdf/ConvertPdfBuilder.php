@@ -31,6 +31,14 @@ final class ConvertPdfBuilder extends AbstractBuilder
     public const ENDPOINT = '/forms/pdfengines/convert';
 
     /**
+     * Trying something
+     */
+    public function toDelete(): string
+    {
+
+    }
+
+    /**
      * If you provide multiple PDF files you will get ZIP folder containing all the converted PDF.
      *
      * @example files('document.pdf', __DIR__'/../../public/document_2.pdf')
