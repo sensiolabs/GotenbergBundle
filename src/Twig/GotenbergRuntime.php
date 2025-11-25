@@ -15,7 +15,7 @@ final class GotenbergRuntime
 {
     private BuilderAssetInterface|null $builder = null;
 
-    public function __construct(private readonly Packages|null $packages)
+    public function __construct(private readonly Packages|null $packages = null)
     {
     }
 

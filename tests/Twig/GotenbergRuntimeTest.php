@@ -10,7 +10,7 @@ class GotenbergRuntimeTest extends TestCase
 {
     public function testGetAsset(): void
     {
-        $runtime = new GotenbergRuntime(null);
+        $runtime = new GotenbergRuntime();
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder
             ->expects($this->once())
@@ -25,13 +25,13 @@ class GotenbergRuntimeTest extends TestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The gotenberg_asset function must be used in a Gotenberg context.');
-        $runtime = new GotenbergRuntime(null);
+        $runtime = new GotenbergRuntime();
         $runtime->getAssetUrl('foo');
     }
 
     public function testGetFontFace(): void
     {
-        $runtime = new GotenbergRuntime(null);
+        $runtime = new GotenbergRuntime();
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder
             ->expects($this->once())
@@ -47,7 +47,7 @@ class GotenbergRuntimeTest extends TestCase
 
     public function testGetFontStyleTag(): void
     {
-        $runtime = new GotenbergRuntime(null);
+        $runtime = new GotenbergRuntime();
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder
             ->expects($this->once())

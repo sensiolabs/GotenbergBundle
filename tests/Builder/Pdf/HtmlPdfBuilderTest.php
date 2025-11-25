@@ -92,7 +92,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
             public function load(string $class): object|null
             {
-                return GotenbergRuntime::class === $class ? new GotenbergRuntime(null) : null;
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
             }
         });
 
@@ -132,7 +132,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
             public function load(string $class): object|null
             {
-                return GotenbergRuntime::class === $class ? new GotenbergRuntime(null) : null;
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
             }
         });
 
@@ -226,7 +226,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
             public function load(string $class): object|null
             {
-                return GotenbergRuntime::class === $class ? new GotenbergRuntime(null) : null;
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
             }
         });
 
