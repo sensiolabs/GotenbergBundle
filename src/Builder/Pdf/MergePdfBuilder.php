@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
@@ -26,6 +27,7 @@ final class MergePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
     use DownloadFromTrait;
+    use EncryptTrait;
     use EmbedTrait;
     use FlattenTrait;
     use MetadataTrait;

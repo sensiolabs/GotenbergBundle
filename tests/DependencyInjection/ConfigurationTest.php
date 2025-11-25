@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -51,6 +52,7 @@ final class ConfigurationTest extends TestCase
                     MergePdfBuilder::class,
                     UrlPdfBuilder::class,
                     SplitPdfBuilder::class,
+                    EncryptPdfBuilder::class,
                 ],
                 'screenshot' => [
                     HtmlScreenshotBuilder::class,
@@ -262,6 +264,8 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'owner_password' => null,
+                        'user_password' => null,
                     ],
                     'url' => [
                         'cookies' => [],
@@ -284,6 +288,8 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'owner_password' => null,
+                        'user_password' => null,
                     ],
                     'markdown' => [
                         'cookies' => [],
@@ -306,6 +312,8 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'owner_password' => null,
+                        'user_password' => null,
                     ],
                     'office' => [
                         'download_from' => [],
@@ -318,6 +326,8 @@ final class ConfigurationTest extends TestCase
                         ],
                         'metadata' => [
                         ],
+                        'owner_password' => null,
+                        'user_password' => null,
                     ],
                     'merge' => [
                         'download_from' => [],
@@ -330,6 +340,8 @@ final class ConfigurationTest extends TestCase
                         ],
                         'metadata' => [
                         ],
+                        'owner_password' => null,
+                        'user_password' => null,
                     ],
                     'convert' => [
                         'download_from' => [],
@@ -351,6 +363,25 @@ final class ConfigurationTest extends TestCase
                             'extra_http_headers' => [],
                         ],
                         'metadata' => [
+                        ],
+                        'owner_password' => null,
+                        'user_password' => null,
+                    ],
+                    'encrypt' => [
+                        'user_password' => null,
+                        'owner_password' => null,
+                        'download_from' => [],
+                        'webhook' => [
+                            'config_name' => null,
+                            'success' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'error' => [
+                                'url' => null,
+                                'method' => null,
+                            ],
+                            'extra_http_headers' => [],
                         ],
                     ],
                 ],

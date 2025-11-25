@@ -8,47 +8,24 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\SplitTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
- * You may have the possibility to split several PDF pages.
- *
- * @see https://gotenberg.dev/docs/routes#split-pdfs-route
+ * @see https://gotenberg.dev/docs/routes#encrypt-route
  */
-#[WithBuilderConfiguration(type: 'pdf', name: 'split')]
-final class SplitPdfBuilder extends AbstractBuilder
+#[WithBuilderConfiguration(type: 'pdf', name: 'encrypt')]
+final class EncryptPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
     use DownloadFromTrait;
     use EncryptTrait;
-    use EmbedTrait;
-    use FlattenTrait;
-    use MetadataTrait;
-    use PdfFormatTrait;
-    use SplitTrait;
     use WebhookTrait;
 
-    public const ENDPOINT = '/forms/pdfengines/split';
+    public const ENDPOINT = '/forms/pdfengines/encrypt';
 
-    /**
-     * Add PDF files to split.
-     *
-     * As assets files, by default the PDF files are fetch in the assets folder
-     * of your application. For more information about path resolution go to
-     * assets documentation.
-     *
-     * @see https://gotenberg.dev/docs/routes#split-pdfs-route
-     *
-     * @example files('document.pdf','document_2.pdf')
-     */
     public function files(string|\Stringable ...$paths): self
     {
         foreach ($paths as $path) {
@@ -71,18 +48,12 @@ final class SplitPdfBuilder extends AbstractBuilder
 
     protected function validatePayloadBody(): void
     {
-        $this->introducedIn('8.15');
+        if ($this->getBodyBag()->get('userPassword') === null) {
+            throw new MissingRequiredFieldException('At least userPassword must be provided.');
+        }
 
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
-        }
-
-        if ($this->getBodyBag()->get('splitMode') === null) {
-            throw new MissingRequiredFieldException('Field "splitMode" must be provided.');
-        }
-
-        if ($this->getBodyBag()->get('splitSpan') === null) {
-            throw new MissingRequiredFieldException('Field "splitSpan" must be provided.');
         }
     }
 
@@ -90,6 +61,5 @@ final class SplitPdfBuilder extends AbstractBuilder
     private function normalizeFiles(): \Generator
     {
         yield 'files' => NormalizerFactory::asset();
-        yield 'embeds' => NormalizerFactory::embed();
     }
 }

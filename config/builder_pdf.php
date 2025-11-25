@@ -1,6 +1,7 @@
 <?php
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
@@ -77,6 +78,14 @@ return static function (ContainerConfigurator $container): void {
 
     // Flatten
     $services->set('.sensiolabs_gotenberg.pdf_builder.flatten', FlattenPdfBuilder::class)
+        ->share(false)
+        ->parent('.sensiolabs_gotenberg.abstract_builder')
+        ->tag('sensiolabs_gotenberg.builder')
+        ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
+    ;
+
+    // Encrypt
+    $services->set('.sensiolabs_gotenberg.pdf_builder.encrypt', EncryptPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.builder')

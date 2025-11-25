@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Debug;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
@@ -172,6 +173,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['flatten', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return EncryptPdfBuilder|TraceableBuilder
+     */
+    public function encrypt(): BuilderInterface
+    {
+        /** @var EncryptPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->encrypt();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['encrypt', $traceableBuilder];
 
         return $traceableBuilder;
     }

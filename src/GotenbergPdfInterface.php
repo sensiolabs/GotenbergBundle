@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
@@ -63,6 +64,11 @@ interface GotenbergPdfInterface
      * @return FlattenPdfBuilder
      */
     public function flatten(): BuilderInterface;
+
+    /**
+     * @return EncryptPdfBuilder
+     */
+    public function encrypt(): BuilderInterface;
 
     /**
      * @return EmbedPdfBuilder
