@@ -6,11 +6,6 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
-/**
- * @see https://gotenberg.dev/docs/routes#encrypt-route
- * @see https://gotenberg.dev/docs/routes#encrypt-chromium
- * @see https://gotenberg.dev/docs/routes#encrypt-libreoffice
- */
 trait EncryptTrait
 {
     abstract protected function getBodyBag(): BodyBag;
@@ -18,12 +13,16 @@ trait EncryptTrait
     /**
      * Set PDF user password.
      *
-     * @param string|null $userPassword #userPassword
+     * @see https://gotenberg.dev/docs/routes#encrypt-route
+     * @see https://gotenberg.dev/docs/routes#encrypt-chromium
+     * @see https://gotenberg.dev/docs/routes#encrypt-libreoffice
+     *
+     * @example userPassword('UserDefinedPassword')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('user_password', restrictTo: 'string'))]
     public function userPassword(#[\SensitiveParameter] string|null $userPassword): self
     {
-        if (!$userPassword) {
+        if (null === $userPassword || '' === $userPassword) {
             $this->getBodyBag()->unset('userPassword');
         } else {
             $this->getBodyBag()->set('userPassword', $userPassword);
@@ -35,12 +34,16 @@ trait EncryptTrait
     /**
      * Set PDF owner password.
      *
-     * @param string|null $ownerPassword #ownerPassword
+     * @see https://gotenberg.dev/docs/routes#encrypt-route
+     * @see https://gotenberg.dev/docs/routes#encrypt-chromium
+     * @see https://gotenberg.dev/docs/routes#encrypt-libreoffice
+     *
+     * @example ownerPassword('OwnerDefinedPassword')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('owner_password', restrictTo: 'string'))]
     public function ownerPassword(#[\SensitiveParameter] string|null $ownerPassword): self
     {
-        if (!$ownerPassword) {
+        if (null === $ownerPassword || '' === $ownerPassword) {
             $this->getBodyBag()->unset('ownerPassword');
         } else {
             $this->getBodyBag()->set('ownerPassword', $ownerPassword);

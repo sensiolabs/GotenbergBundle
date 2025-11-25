@@ -14,6 +14,10 @@ use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
+ * You may encrypt a PDF after it is created.
+ *
+ * You must provide at least a user password.
+ *
  * @see https://gotenberg.dev/docs/routes#encrypt-route
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'encrypt')]

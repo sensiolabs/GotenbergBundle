@@ -94,6 +94,7 @@ class YourController
 - [merge](#mergebool-bool)
 - [metadata](#metadataarray-metadata)
 - [nativePageRanges](#nativepagerangesstring-ranges)
+- [ownerPassword](#ownerpasswordstring-ownerpassword)
 - [password](#passwordstring-password)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
@@ -104,6 +105,7 @@ class YourController
 - [splitMode](#splitmodesensiolabsgotenbergbundleenumerationsplitmode-splitmode)
 - [splitSpan](#splitspanstring-splitspan)
 - [splitUnify](#splitunifybool-bool)
+- [userPassword](#userpasswordstring-userpassword)
 - [webhook](#webhookarray-webhook)
 - [webhookConfiguration](#webhookconfigurationstring-name)
 - [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
@@ -449,6 +451,23 @@ return $gotenberg
 ;
 ```
 
+### ownerPassword(?string \$ownerPassword)
+Set PDF owner password.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)<br />
+> See: [https://gotenberg.dev/docs/routes#encrypt-chromium](https://gotenberg.dev/docs/routes#encrypt-chromium)<br />
+> See: [https://gotenberg.dev/docs/routes#encrypt-libreoffice](https://gotenberg.dev/docs/routes#encrypt-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->ownerPassword('OwnerDefinedPassword')
+    ->generate()
+    ->stream()
+;
+```
+
 ### password(string \$password)
 Set the password for opening the source file.<br />
 
@@ -582,6 +601,23 @@ Specify whether to put extracted pages into a single file or as many files as th
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->splitUnify() // is same as `->splitUnify(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### userPassword(?string \$userPassword)
+Set PDF user password.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)<br />
+> See: [https://gotenberg.dev/docs/routes#encrypt-chromium](https://gotenberg.dev/docs/routes#encrypt-chromium)<br />
+> See: [https://gotenberg.dev/docs/routes#encrypt-libreoffice](https://gotenberg.dev/docs/routes#encrypt-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->userPassword('UserDefinedPassword')
     ->generate()
     ->stream()
 ;
