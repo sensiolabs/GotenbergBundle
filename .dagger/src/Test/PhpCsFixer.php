@@ -81,18 +81,22 @@ final class PhpCsFixer
     #[Doc('Throw an error if php-cs-fixer found some issues.')]
     public function check(): void
     {
-        $changeSet = $this->fix();
+        $exec = $this->symfonyContainer
+            ->withExec(['php-cs-fixer', 'fix', '--dry-run', '--diff', '--verbose'])
+        ;
 
-        $exitCode = $changeSet->isEmpty() ? 0 : 1;
-        $stdout = $changeSet->asPatch()->contents();
+        $stdout = $exec->stdout();
+        $stderr = $exec->stderr();
 
-        if ($exitCode !== 0) {
+        $exitCode = '' === $stdout ? 0 : 1;
+
+        if (0 !== $exitCode) {
             throw new QueryError(['errors' => [[
                 'message' => 'Please run "dagger call php-cs-fixer fix" to fix the issues.',
                 'extensions' => [
                     'exitCode' => $exitCode,
                     'stdout' => $stdout,
-                    'stderr' => '',
+                    'stderr' => $stderr,
                 ]],
             ]]);
         }

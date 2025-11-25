@@ -8,6 +8,7 @@ use Dagger\Attribute\DaggerFunction;
 use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\DefaultPath;
 use Dagger\Attribute\Doc;
+use Dagger\Attribute\Ignore;
 use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Changeset;
 use Dagger\Container;
@@ -110,6 +111,13 @@ class GotenbergBundle
     #[Doc('Generates documentation and returns the ChangeSet to apply locally.')]
     public function generateDocs(
         #[DefaultPath('.')]
+        #[Ignore(
+            './.github/',
+            './.phpunit.cache/',
+            './.coverage/',
+            './var/',
+            './vendor/',
+        )]
         Directory $source,
         Container|null $symfonyContainer = null,
     ): Changeset {
@@ -127,6 +135,13 @@ class GotenbergBundle
     #[Doc('Run php-cs-fixer. Returns the Directory diff.')]
     public function phpCsFixer(
         #[DefaultPath('.')]
+        #[Ignore(
+            './.github/',
+            './.phpunit.cache/',
+            './.coverage/',
+            './var/',
+            './vendor/',
+        )]
         Directory $source,
         Container|null $symfonyContainer = null,
     ): PhpCsFixer {
@@ -139,6 +154,13 @@ class GotenbergBundle
     #[Doc('Provide a container with all dependencies installed and ready to run tests.')]
     public function test(
         #[DefaultPath('.')]
+        #[Ignore(
+            './.github/',
+            './.phpunit.cache/',
+            './.coverage/',
+            './var/',
+            './vendor/',
+        )]
         Directory $source,
         string $phpVersion = self::DEFAULT_PHP_VERSION,
         string $symfonyVersion = self::DEFAULT_SYMFONY_VERSION,
@@ -155,6 +177,13 @@ class GotenbergBundle
     #[ReturnsListOfType(TestsGotenbergBundle::class)]
     public function testsMatrix(
         #[DefaultPath('.')]
+        #[Ignore(
+            './.github/',
+            './.phpunit.cache/',
+            './.coverage/',
+            './var/',
+            './vendor/',
+        )]
         Directory $source,
     ): array {
         $tests = [];
