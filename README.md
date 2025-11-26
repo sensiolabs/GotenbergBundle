@@ -305,6 +305,7 @@ class YourController
 7. [Convert Builder](./docs/pdf/ConvertPdfBuilder.md)
 8. [Split Builder](./docs/pdf/SplitPdfBuilder.md)
 9. [Flatten Builder](./docs/pdf/FlattenPdfBuilder.md)
+10. [Encrypt Builder](./docs/pdf/EncryptPdfBuilder.md)
 
 ### Screenshot
 
