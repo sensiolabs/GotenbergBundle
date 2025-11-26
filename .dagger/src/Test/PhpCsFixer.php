@@ -24,18 +24,8 @@ final class PhpCsFixer
         private Directory $source,
         Container $symfonyContainer,
     ) {
-        $symfonyContainer = $symfonyContainer
-            ->withExec(['composer', 'global', 'require', 'friendsofphp/php-cs-fixer'])
-        ;
-
-        $globalDataDir = trim($symfonyContainer->withExec(['composer', 'global', 'config', 'data-dir'])->stdout());
-        $globalBinDir = trim($symfonyContainer->withExec(['composer', 'global', 'config', 'bin-dir'])->stdout());
-
         $this->symfonyContainer = $symfonyContainer
-            ->withEnvVariable(
-                'PATH',
-                "{$symfonyContainer->envVariable('PATH')}:{$globalDataDir}/{$globalBinDir}",
-            )
+            ->withExec(['composer', 'global', 'require', 'friendsofphp/php-cs-fixer'])
         ;
     }
 

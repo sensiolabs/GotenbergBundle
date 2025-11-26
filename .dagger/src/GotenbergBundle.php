@@ -54,7 +54,7 @@ class GotenbergBundle
 
         $composerCache = dag()->cacheVolume('composer-cache');
 
-        return dag()
+        $phpContainer = dag()
             ->container()
             ->from("php:{$phpVersion}")
             ->withMountedCache('/var/cache/apt/archives', $aptCache)
@@ -68,6 +68,16 @@ class GotenbergBundle
             ->withEnvVariable('COMPOSER_ALLOW_SUPERUSER', '1')
             ->withWorkdir('/GotenbergBundle')
             ->withMountedDirectory('/GotenbergBundle', $source)
+        ;
+
+        $globalDataDir = trim($phpContainer->withExec(['composer', 'global', 'config', 'data-dir'])->stdout());
+        $globalBinDir = trim($phpContainer->withExec(['composer', 'global', 'config', 'bin-dir'])->stdout());
+
+        return $phpContainer
+            ->withEnvVariable(
+                'PATH',
+                "{$phpContainer->envVariable('PATH')}:{$globalDataDir}/{$globalBinDir}",
+            )
         ;
     }
 
