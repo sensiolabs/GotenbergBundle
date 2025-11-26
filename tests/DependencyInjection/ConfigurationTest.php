@@ -229,6 +229,7 @@ final class ConfigurationTest extends TestCase
      *              'office': array<string, mixed>,
      *              'merge': array<string, mixed>,
      *              'convert': array<string, mixed>,
+     *              'encrypt': array<string, mixed>,
      *          }
      *     }
      * }
@@ -264,8 +265,6 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
-                        'owner_password' => null,
-                        'user_password' => null,
                     ],
                     'url' => [
                         'cookies' => [],
@@ -288,8 +287,6 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
-                        'owner_password' => null,
-                        'user_password' => null,
                     ],
                     'markdown' => [
                         'cookies' => [],
@@ -312,8 +309,6 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
-                        'owner_password' => null,
-                        'user_password' => null,
                     ],
                     'office' => [
                         'download_from' => [],
@@ -326,8 +321,6 @@ final class ConfigurationTest extends TestCase
                         ],
                         'metadata' => [
                         ],
-                        'owner_password' => null,
-                        'user_password' => null,
                     ],
                     'merge' => [
                         'download_from' => [],
@@ -340,8 +333,6 @@ final class ConfigurationTest extends TestCase
                         ],
                         'metadata' => [
                         ],
-                        'owner_password' => null,
-                        'user_password' => null,
                     ],
                     'convert' => [
                         'download_from' => [],
@@ -364,22 +355,13 @@ final class ConfigurationTest extends TestCase
                         ],
                         'metadata' => [
                         ],
-                        'owner_password' => null,
-                        'user_password' => null,
                     ],
                     'encrypt' => [
-                        'user_password' => null,
-                        'owner_password' => null,
                         'download_from' => [],
                         'webhook' => [
-                            'config_name' => null,
                             'success' => [
-                                'url' => null,
-                                'method' => null,
                             ],
                             'error' => [
-                                'url' => null,
-                                'method' => null,
                             ],
                             'extra_http_headers' => [],
                         ],
