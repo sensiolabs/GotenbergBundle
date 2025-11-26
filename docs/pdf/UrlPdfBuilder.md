@@ -192,7 +192,7 @@ return $gotenberg
 ;
 ```
 
-### ownerPassword(?string \$ownerPassword)
+### ownerPassword(string \$ownerPassword)
 Set PDF owner password.<br />
 
 > [!TIP]
@@ -317,7 +317,7 @@ return $gotenberg
 ;
 ```
 
-### userPassword(?string \$userPassword)
+### userPassword(string \$userPassword)
 Set PDF user password.<br />
 
 > [!TIP]
