@@ -84,16 +84,12 @@
     {
         "name": "Symfony '8.0' with PHP '8.4'",
         "symfony-version": "8.0.*",
-        "minimum-stability": "dev",
-        "php": "8.4",
-        "allow-failure": true
+        "php": "8.4"
     },
     {
         "name": "Symfony '8.0' with PHP '8.5'",
         "symfony-version": "8.0.*",
-        "minimum-stability": "dev",
-        "php": "8.5",
-        "allow-failure": true
+        "php": "8.5"
     },
     {
         "name": "Symfony '8.1' with PHP '8.4'",
