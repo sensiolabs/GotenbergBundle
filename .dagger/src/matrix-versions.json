@@ -51,45 +51,43 @@
         "name": "Symfony '7.3' with PHP '8.5'",
         "symfony-version": "7.3.*",
         "php": "8.5",
-        "allow-failure": true
+        "allow-failure": false
     },
     {
         "name": "Symfony '7.4' with PHP '8.2'",
         "symfony-version": "7.4.*",
-        "minimum-stability": "dev",
         "php": "8.2",
-        "allow-failure": true
+        "allow-failure": false
     },
     {
         "name": "Symfony '7.4' with PHP '8.3'",
         "symfony-version": "7.4.*",
-        "minimum-stability": "dev",
         "php": "8.3",
-        "allow-failure": true
+        "allow-failure": false
     },
     {
         "name": "Symfony '7.4' with PHP '8.4'",
         "symfony-version": "7.4.*",
-        "minimum-stability": "dev",
         "php": "8.4",
-        "allow-failure": true
+        "allow-failure": false
     },
     {
         "name": "Symfony '7.4' with PHP '8.5'",
         "symfony-version": "7.4.*",
-        "minimum-stability": "dev",
         "php": "8.5",
-        "allow-failure": true
+        "allow-failure": false
     },
     {
         "name": "Symfony '8.0' with PHP '8.4'",
         "symfony-version": "8.0.*",
-        "php": "8.4"
+        "php": "8.4",
+        "allow-failure": false
     },
     {
         "name": "Symfony '8.0' with PHP '8.5'",
         "symfony-version": "8.0.*",
-        "php": "8.5"
+        "php": "8.5",
+        "allow-failure": false
     },
     {
         "name": "Symfony '8.1' with PHP '8.4'",
