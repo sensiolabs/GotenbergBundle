@@ -75,18 +75,15 @@ final class PhpCsFixer
             ->withExec(['php-cs-fixer', 'fix', '--dry-run', '--diff', '--verbose'])
         ;
 
-        $stdout = $exec->stdout();
-        $stderr = $exec->stderr();
-
-        $exitCode = '' === $stdout ? 0 : 1;
+        $exitCode = $exec->exitCode();
 
         if (0 !== $exitCode) {
             throw new QueryError(['errors' => [[
                 'message' => 'Please run "dagger call php-cs-fixer fix" to fix the issues.',
                 'extensions' => [
                     'exitCode' => $exitCode,
-                    'stdout' => $stdout,
-                    'stderr' => $stderr,
+                    'stdout' => $exec->stdout(),
+                    'stderr' => $exec->stderr(),
                 ]],
             ]]);
         }
