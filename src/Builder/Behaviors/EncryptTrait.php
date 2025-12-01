@@ -20,9 +20,13 @@ trait EncryptTrait
      * @example userPassword('UserDefinedPassword')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('user_password', restrictTo: 'string'))]
-    public function userPassword(#[\SensitiveParameter] string $userPassword): self
+    public function userPassword(#[\SensitiveParameter] string|null $userPassword): self
     {
-        $this->getBodyBag()->set('userPassword', $userPassword);
+        if (null === $userPassword) {
+            $this->getBodyBag()->unset('user_password');
+        } else {
+            $this->getBodyBag()->set('userPassword', $userPassword);
+        }
 
         return $this;
     }
@@ -37,9 +41,13 @@ trait EncryptTrait
      * @example ownerPassword('OwnerDefinedPassword')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('owner_password', restrictTo: 'string'))]
-    public function ownerPassword(#[\SensitiveParameter] string $ownerPassword): self
+    public function ownerPassword(#[\SensitiveParameter] string|null $ownerPassword): self
     {
-        $this->getBodyBag()->set('ownerPassword', $ownerPassword);
+        if (null === $ownerPassword) {
+            $this->getBodyBag()->unset('owner_password');
+        } else {
+            $this->getBodyBag()->set('ownerPassword', $ownerPassword);
+        }
 
         return $this;
     }
