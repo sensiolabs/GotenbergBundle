@@ -3,12 +3,12 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceSubscriberTrait;
+use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 use Twig\Environment;
 
 trait TwigAwareTrait
 {
-    use ServiceSubscriberTrait;
+    use ServiceMethodsSubscriberTrait;
 
     #[SubscribedService('twig', nullable: true)]
     protected function getTwig(): Environment

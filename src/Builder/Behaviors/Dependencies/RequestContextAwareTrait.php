@@ -5,11 +5,11 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceSubscriberTrait;
+use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 
 trait RequestContextAwareTrait
 {
-    use ServiceSubscriberTrait;
+    use ServiceMethodsSubscriberTrait;
 
     #[SubscribedService('.sensiolabs_gotenberg.request_context', nullable: true, attributes: new Autowire(service: '.sensiolabs_gotenberg.request_context'))]
     protected function getRequestContext(): RequestContext|null

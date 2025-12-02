@@ -4,11 +4,11 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceSubscriberTrait;
+use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 
 trait UrlGeneratorAwareTrait
 {
-    use ServiceSubscriberTrait;
+    use ServiceMethodsSubscriberTrait;
 
     #[SubscribedService('router', nullable: true)]
     protected function getUrlGenerator(): UrlGeneratorInterface

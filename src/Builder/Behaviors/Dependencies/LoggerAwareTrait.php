@@ -5,11 +5,11 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Version\Version;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
-use Symfony\Contracts\Service\ServiceSubscriberTrait;
+use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 
 trait LoggerAwareTrait
 {
-    use ServiceSubscriberTrait;
+    use ServiceMethodsSubscriberTrait;
 
     abstract protected function getVersion(): Version;
 

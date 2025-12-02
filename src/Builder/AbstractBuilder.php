@@ -18,8 +18,8 @@ use Sensiolabs\GotenbergBundle\Version\Version;
 use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
-use Symfony\Contracts\Service\ServiceSubscriberTrait;
 
 /**
  * @template-covariant TProcessorResult of mixed = null
@@ -27,7 +27,7 @@ use Symfony\Contracts\Service\ServiceSubscriberTrait;
 abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface, ServiceSubscriberInterface
 {
     use LoggerAwareTrait;
-    use ServiceSubscriberTrait;
+    use ServiceMethodsSubscriberTrait;
 
     protected ContainerInterface $container;
 
