@@ -3,6 +3,7 @@
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
@@ -66,6 +67,7 @@ class BuilderParser
             MergePdfBuilder::class,
             SplitPdfBuilder::class,
             UrlPdfBuilder::class,
+            EmbedPdfBuilder::class,
         ],
         'screenshot' => [
             HtmlScreenshotBuilder::class,

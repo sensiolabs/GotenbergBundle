@@ -77,6 +77,7 @@ class YourController
 - [doNotExportFormFields](#donotexportformfieldsbool-bool)
 - [doNotUpdateIndexes](#donotupdateindexesbool-bool)
 - [downloadFrom](#downloadfromarray-downloadfrom)
+- [embeds](#embedsstringablestring-paths)
 - [exportBookmarksToPdfDestination](#exportbookmarkstopdfdestinationbool-bool)
 - [exportHiddenSlides](#exporthiddenslidesbool-bool)
 - [exportLinksRelativeFsys](#exportlinksrelativefsysbool-bool)
@@ -214,6 +215,21 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->downloadFrom([['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeader' => 'MyValue']], ['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeaderOne' => 'MyValue', 'MyHeaderTwo' => 'MyValue']]])
+    ->generate()
+    ->stream()
+;
+```
+
+### embeds(Stringable|string ...\$paths)
+Add file to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#embeds-libreoffice ](https://gotenberg.dev/docs/routes#embeds-libreoffice )
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->embeds('document.xml','document_2.json')
     ->generate()
     ->stream()
 ;

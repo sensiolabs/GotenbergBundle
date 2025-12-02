@@ -248,4 +248,22 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
+
+    public function testWithFileToEmbed(): void
+    {
+        $this->withGotenbergVersion('8.25.0');
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
+
+        $this->getBuilder()
+            ->contentFile('files/content.html')
+            ->filename('testEmbed.pdf')
+            ->embeds('embed/facturX.xml')
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormDataFile('files', 'application/xml', self::FIXTURE_DIR.'/embed/facturX.xml');
+
+        $this->assertGotenbergEndpoint('/forms/chromium/convert/html');
+        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'testEmbed.pdf');
+    }
 }

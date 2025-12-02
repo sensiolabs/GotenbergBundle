@@ -33,7 +33,8 @@ use Symfony\Component\Routing\RequestContext;
  *              office: array<string, mixed>,
  *              merge: array<string, mixed>,
  *              convert: array<string, mixed>,
- *              split: array<string, mixed>
+ *              split: array<string, mixed>,
+ *              embed: array<string, mixed>
  *          },
  *          screenshot: array{
  *              html: array<string, mixed>,

@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle;
 use Psr\Container\ContainerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
@@ -26,7 +27,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'embeds' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -37,6 +38,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'convert' ? ConvertPdfBuilder :
      *   $key is 'split' ? SplitPdfBuilder :
      *   $key is 'flatten' ? FlattenPdfBuilder :
+     *   $key is 'embeds' ? EmbedPdfBuilder :
      *   BuilderInterface
      * )
      */
@@ -83,5 +85,10 @@ final class GotenbergPdf implements GotenbergPdfInterface
     public function flatten(): BuilderInterface
     {
         return $this->getInternal('flatten');
+    }
+
+    public function embed(): BuilderInterface
+    {
+        return $this->getInternal('embeds');
     }
 }

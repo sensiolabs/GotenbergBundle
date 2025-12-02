@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -43,6 +44,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         $extension->registerBuilder(MergePdfBuilder::class);
         $extension->registerBuilder(SplitPdfBuilder::class);
         $extension->registerBuilder(UrlPdfBuilder::class);
+        $extension->registerBuilder(EmbedPdfBuilder::class);
 
         $extension->registerBuilder(HtmlScreenshotBuilder::class);
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
@@ -402,6 +404,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                             'Author' => 'SensioLabs SPLIT',
                         ],
                     ],
+                    'embed' => [],
                 ],
             ],
         ]], $containerBuilder);
@@ -444,6 +447,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                         'Author' => 'SensioLabs SPLIT',
                     ],
                 ],
+                'embed' => [],
             ],
             'screenshot' => [
                 'html' => [],
@@ -587,6 +591,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
      *                  'merge': array<string, mixed>,
      *                  'convert': array<string, mixed>,
      *                  'split': array<string, mixed>,
+     *                  'embed': array<string, mixed>,
      *              },
      *              'screenshot': array{
      *                  'html': array<string, mixed>,
@@ -787,6 +792,19 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                         'split' => [
                             'split_mode' => SplitMode::Intervals->value,
                             'split_span' => 1,
+                        ],
+                        'embed' => [
+                            'download_from' => [
+                                [
+                                    'url' => 'http://example.com',
+                                    'extraHttpHeaders' => [
+                                        [
+                                            'name' => 'MyHeader',
+                                            'value' => 'MyValue',
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                     'screenshot' => [

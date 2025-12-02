@@ -81,6 +81,7 @@ class YourController
 
 - [addMetadata](#addmetadatastring-key-string-value)
 - [downloadFrom](#downloadfromarray-downloadfrom)
+- [embeds](#embedsstringablestring-paths)
 - [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
@@ -159,6 +160,21 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->downloadFrom([['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeader' => 'MyValue']], ['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeaderOne' => 'MyValue', 'MyHeaderTwo' => 'MyValue']]])
+    ->generate()
+    ->stream()
+;
+```
+
+### embeds(Stringable|string ...\$paths)
+Add file to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#embeds-chromium ](https://gotenberg.dev/docs/routes#embeds-chromium )
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->embeds('document.xml','document_2.json')
     ->generate()
     ->stream()
 ;

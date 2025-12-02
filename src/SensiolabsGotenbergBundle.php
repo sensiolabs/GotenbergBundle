@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle;
 
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
@@ -37,6 +38,7 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder(MergePdfBuilder::class);
         $extension->registerBuilder(SplitPdfBuilder::class);
         $extension->registerBuilder(UrlPdfBuilder::class);
+        $extension->registerBuilder(EmbedPdfBuilder::class);
 
         $extension->registerBuilder(HtmlScreenshotBuilder::class);
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
