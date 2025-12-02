@@ -23,7 +23,7 @@ trait EncryptTrait
     public function userPassword(#[\SensitiveParameter] string|null $userPassword): self
     {
         if (null === $userPassword) {
-            $this->getBodyBag()->unset('user_password');
+            $this->getBodyBag()->unset('userPassword');
         } else {
             $this->getBodyBag()->set('userPassword', $userPassword);
         }
@@ -44,7 +44,7 @@ trait EncryptTrait
     public function ownerPassword(#[\SensitiveParameter] string|null $ownerPassword): self
     {
         if (null === $ownerPassword) {
-            $this->getBodyBag()->unset('owner_password');
+            $this->getBodyBag()->unset('ownerPassword');
         } else {
             $this->getBodyBag()->set('ownerPassword', $ownerPassword);
         }
