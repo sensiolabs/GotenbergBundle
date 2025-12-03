@@ -163,7 +163,7 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
 
-        $this->assertGotenbergFormDataFile('files', 'application/xml', self::FIXTURE_DIR.'/embed/facturX.xml');
+        $this->assertGotenbergFormDataFile('embeds', 'application/xml', self::FIXTURE_DIR.'/embed/facturX.xml');
 
         $this->assertGotenbergEndpoint('/forms/pdfengines/split');
         $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'testEmbedSplit.pdf');

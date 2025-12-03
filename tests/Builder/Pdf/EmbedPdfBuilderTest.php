@@ -66,7 +66,7 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testRequiredEmbedFileContent(): void
+    public function testRequiredEmbedFile(): void
     {
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('At least one embed file is required.');
@@ -79,13 +79,6 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWithStringableObjects(): void
     {
-        $class = new class implements \Stringable {
-            public function __toString(): string
-            {
-                return 'pdf/simple_pdf.pdf';
-            }
-        };
-
         $classEmbed = new class implements \Stringable {
             public function __toString(): string
             {
@@ -94,7 +87,7 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
         };
 
         $this->getBuilder()
-            ->files($class)
+            ->files('pdf/simple_pdf.pdf')
             ->embeds($classEmbed)
             ->generate()
         ;

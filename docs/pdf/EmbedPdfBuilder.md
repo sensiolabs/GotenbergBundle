@@ -22,7 +22,7 @@ class YourController
 {
     public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        return $gotenberg->encrypt()
+        return $gotenberg->embed()
             ->files('document_1.pdf')
             ->embed('document.xml')
             ->generate()
