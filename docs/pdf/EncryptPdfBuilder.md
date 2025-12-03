@@ -9,7 +9,7 @@
 > your application.
 > For more information about path resolution go to [assets documentation](../assets.md).
 > [!WARNING]
-> You must provide
+> You must provide at least the User Password
 ```php
 namespace App\Controller;
 

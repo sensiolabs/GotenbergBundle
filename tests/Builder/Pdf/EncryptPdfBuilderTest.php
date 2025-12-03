@@ -42,13 +42,12 @@ final class EncryptPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
-    public function testRequiredSplitModeField(): void
+    public function testRequiredUserPassword(): void
     {
         $this->expectException(MissingRequiredFieldException::class);
         $this->expectExceptionMessage('At least userPassword must be provided.');
 
         $this->getBuilder()
-            ->files('pdf/simple_pdf.pdf')
             ->ownerPassword('owner_password')
             ->generate()
         ;
