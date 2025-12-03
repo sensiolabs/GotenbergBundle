@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -17,6 +18,9 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use DownloadFromTestCaseTrait<EmbedPdfBuilder> */
     use DownloadFromTestCaseTrait;
+
+    /** @use EmbedTestCaseTrait<EmbedPdfBuilder> */
+    use EmbedTestCaseTrait;
 
     /** @use WebhookTestCaseTrait<EmbedPdfBuilder> */
     use WebhookTestCaseTrait;
@@ -45,9 +49,7 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testAddFilesAndEmbedAsContent(): void
     {
-        $this->getBuilder()
-            ->files('pdf/simple_pdf.pdf')
-            ->embeds('embed/facturX.xml')
+        $this->getDefaultBuilder()
             ->generate()
         ;
 

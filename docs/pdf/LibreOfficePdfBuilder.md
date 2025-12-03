@@ -224,7 +224,7 @@ return $gotenberg
 Add file to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#embeds-libreoffice ](https://gotenberg.dev/docs/routes#embeds-libreoffice )
+> See: [https://gotenberg.dev/docs/routes#embed-files-route](https://gotenberg.dev/docs/routes#embed-files-route)
 
 ```php
 return $gotenberg

@@ -40,6 +40,9 @@ return (new PhpCsFixer\Config())
         'yoda_style' => [
             'always_move_variable' => true,
         ],
+        'phpdoc_to_comment' => [
+            'ignored_tags' => ['var']
+        ],
     ])
     ->setFinder($finder)
 ;

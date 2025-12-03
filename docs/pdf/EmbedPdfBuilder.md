@@ -12,7 +12,7 @@ It is compatible with standards like [ZUGFeRD/Factur-X](https://fnfe-mpe.org/fac
 > your application.
 > For more information about path resolution go to [assets documentation](../assets.md).
 > [!WARNING]
-> You must provide
+> You must provide file to embed
 ```php
 namespace App\Controller;
 
@@ -24,7 +24,7 @@ class YourController
     {
         return $gotenberg->embed()
             ->files('document_1.pdf')
-            ->embed('document.xml')
+            ->embeds('document.xml')
             ->generate()
          ;
     }
@@ -67,7 +67,7 @@ return $gotenberg
 Add file to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#embed-files-route ](https://gotenberg.dev/docs/routes#embed-files-route )
+> See: [https://gotenberg.dev/docs/routes#embed-files-route](https://gotenberg.dev/docs/routes#embed-files-route)
 
 ```php
 return $gotenberg
