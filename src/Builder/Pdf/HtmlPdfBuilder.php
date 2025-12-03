@@ -9,7 +9,6 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
