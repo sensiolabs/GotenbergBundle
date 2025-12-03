@@ -52,6 +52,8 @@ final class EncryptPdfBuilder extends AbstractBuilder
 
     protected function validatePayloadBody(): void
     {
+        $this->introducedIn('8.25');
+
         if ($this->getBodyBag()->get('userPassword') === null) {
             throw new MissingRequiredFieldException('At least userPassword must be provided.');
         }

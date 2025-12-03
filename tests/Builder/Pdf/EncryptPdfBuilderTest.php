@@ -25,6 +25,12 @@ final class EncryptPdfBuilderTest extends GotenbergBuilderTestCase
     /** @use WebhookTestCaseTrait<EncryptPdfBuilder> */
     use WebhookTestCaseTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withGotenbergVersion('8.25.0');
+    }
+
     protected function createBuilder(): EncryptPdfBuilder
     {
         return new EncryptPdfBuilder();

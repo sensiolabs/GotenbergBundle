@@ -22,6 +22,8 @@ trait EncryptTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('user_password', restrictTo: 'string'))]
     public function userPassword(#[\SensitiveParameter] string|null $userPassword): self
     {
+        $this->logWarningIfVersionIs('<', '8.25', 'User password option is not available.');
+
         if (null === $userPassword) {
             $this->getBodyBag()->unset('userPassword');
         } else {
@@ -43,6 +45,8 @@ trait EncryptTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('owner_password', restrictTo: 'string'))]
     public function ownerPassword(#[\SensitiveParameter] string|null $ownerPassword): self
     {
+        $this->logWarningIfVersionIs('<', '8.25', 'Owner password option is not available.');
+
         if (null === $ownerPassword) {
             $this->getBodyBag()->unset('ownerPassword');
         } else {
