@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
@@ -26,6 +27,7 @@ final class SplitPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
     use DownloadFromTrait;
+    use EmbedTrait;
     use FlattenTrait;
     use MetadataTrait;
     use PdfFormatTrait;
@@ -56,35 +58,6 @@ final class SplitPdfBuilder extends AbstractBuilder
         }
 
         $this->getBodyBag()->set('files', $files ?? null);
-
-        return $this;
-    }
-
-    /**
-     * Add file to embed.
-     *
-     * As assets files, by default the files to embed are fetch in the assets folder
-     * of your application. For more information about path resolution go to
-     * assets documentation.
-     *
-     * @see https://gotenberg.dev/docs/routes#split-pdfs-route
-     *
-     * @example embeds('document.xml','document_2.json')
-     */
-    public function embeds(string|\Stringable ...$paths): self
-    {
-        $this->introducedIn('8.25');
-
-        foreach ($paths as $path) {
-            $path = (string) $path;
-
-            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
-            ValidatorFactory::filesExtension([$info], ['xml', 'json']);
-
-            $files[$path] = $info;
-        }
-
-        $this->getBodyBag()->set('embeds', $files ?? null);
 
         return $this;
     }

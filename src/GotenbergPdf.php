@@ -27,7 +27,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'embeds' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'embed' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -38,7 +38,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'convert' ? ConvertPdfBuilder :
      *   $key is 'split' ? SplitPdfBuilder :
      *   $key is 'flatten' ? FlattenPdfBuilder :
-     *   $key is 'embeds' ? EmbedPdfBuilder :
+     *   $key is 'embed' ? EmbedPdfBuilder :
      *   BuilderInterface
      * )
      */
@@ -89,6 +89,6 @@ final class GotenbergPdf implements GotenbergPdfInterface
 
     public function embed(): BuilderInterface
     {
-        return $this->getInternal('embeds');
+        return $this->getInternal('embed');
     }
 }

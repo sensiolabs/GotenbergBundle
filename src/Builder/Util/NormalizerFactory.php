@@ -151,8 +151,8 @@ class NormalizerFactory
      */
     public static function asset(): \Closure
     {
-        // @phpstan-ignore-next-line
-        return static::files('files');
+        /** @var \Closure(string, array<string, \SplFileInfo>): list<array{files: DataPart}> */
+        return self::files('files');
     }
 
     /**
@@ -160,8 +160,8 @@ class NormalizerFactory
      */
     public static function embed(): \Closure
     {
-        // @phpstan-ignore-next-line
-        return static::files('embeds');
+        /** @var \Closure(string, array<string, \SplFileInfo>): list<array{embeds: DataPart}> */
+        return self::files('embeds');
     }
 
     /**
