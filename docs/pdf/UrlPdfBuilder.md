@@ -73,7 +73,6 @@ class YourController
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
-- [ownerPassword](#ownerpasswordstring-ownerpassword)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
 - [route](#routestring-name-array-parameters)
@@ -81,7 +80,6 @@ class YourController
 - [splitSpan](#splitspanstring-splitspan)
 - [splitUnify](#splitunifybool-bool)
 - [url](#urlstring-url)
-- [userPassword](#userpasswordstring-userpassword)
 - [addAsset](#addassetstringablestring-path)
 - [assets](#assetsstringablestring-paths)
 - [webhook](#webhookarray-webhook)
@@ -121,6 +119,8 @@ class YourController
 - [footerFile](#footerfilestring-path)
 - [header](#headerstring-template-array-context)
 - [headerFile](#headerfilestring-path)
+- [ownerPassword](#ownerpasswordstring-ownerpassword)
+- [userPassword](#userpasswordstring-userpassword)
 - [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
 - [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
 - [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
@@ -187,23 +187,6 @@ Resets the metadata.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
-    ->generate()
-    ->stream()
-;
-```
-
-### ownerPassword(?string \$ownerPassword)
-Set PDF owner password.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-chromium](https://gotenberg.dev/docs/routes#encrypt-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-libreoffice](https://gotenberg.dev/docs/routes#encrypt-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->ownerPassword('OwnerDefinedPassword')
     ->generate()
     ->stream()
 ;
@@ -312,23 +295,6 @@ URL of the page you want to convert into PDF.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->url('https://sensiolabs.com/fr/')
-    ->generate()
-    ->stream()
-;
-```
-
-### userPassword(?string \$userPassword)
-Set PDF user password.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-chromium](https://gotenberg.dev/docs/routes#encrypt-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-libreoffice](https://gotenberg.dev/docs/routes#encrypt-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->userPassword('UserDefinedPassword')
     ->generate()
     ->stream()
 ;
@@ -828,6 +794,31 @@ HTML file containing the header.<br /><br />As assets files, by default the HTML
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->headerFile('../templates/html/header.html')
+    ->generate()
+    ->stream()
+;
+```
+
+
+### ownerPassword(?string \$ownerPassword)
+Set PDF owner password.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->ownerPassword('OwnerDefinedPassword')
+    ->generate()
+    ->stream()
+;
+```
+
+### userPassword(?string \$userPassword)
+Set PDF user password.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->userPassword('UserDefinedPassword')
     ->generate()
     ->stream()
 ;

@@ -6,16 +6,18 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
+/**
+ * @package Behavior\\Encrypt
+ * @see https://gotenberg.dev/docs/routes#encrypt-route
+ * @see https://gotenberg.dev/docs/routes#encrypt-chromium
+ * @see https://gotenberg.dev/docs/routes#encrypt-libreoffice
+ */
 trait EncryptTrait
 {
     abstract protected function getBodyBag(): BodyBag;
 
     /**
      * Set PDF user password.
-     *
-     * @see https://gotenberg.dev/docs/routes#encrypt-route
-     * @see https://gotenberg.dev/docs/routes#encrypt-chromium
-     * @see https://gotenberg.dev/docs/routes#encrypt-libreoffice
      *
      * @example userPassword('UserDefinedPassword')
      */
@@ -35,10 +37,6 @@ trait EncryptTrait
 
     /**
      * Set PDF owner password.
-     *
-     * @see https://gotenberg.dev/docs/routes#encrypt-route
-     * @see https://gotenberg.dev/docs/routes#encrypt-chromium
-     * @see https://gotenberg.dev/docs/routes#encrypt-libreoffice
      *
      * @example ownerPassword('OwnerDefinedPassword')
      */

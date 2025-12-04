@@ -36,8 +36,6 @@ class YourController
 
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [files](#filesstringablestring-paths)
-- [ownerPassword](#ownerpasswordstring-ownerpassword)
-- [userPassword](#userpasswordstring-userpassword)
 - [webhook](#webhookarray-webhook)
 - [webhookConfiguration](#webhookconfigurationstring-name)
 - [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
@@ -45,6 +43,8 @@ class YourController
 - [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
 - [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
 - [webhookUrl](#webhookurlstring-url-string-method)
+- [ownerPassword](#ownerpasswordstring-ownerpassword)
+- [userPassword](#userpasswordstring-userpassword)
 
 ### downloadFrom(array \$downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
@@ -62,40 +62,6 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-### ownerPassword(?string \$ownerPassword)
-Set PDF owner password.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-chromium](https://gotenberg.dev/docs/routes#encrypt-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-libreoffice](https://gotenberg.dev/docs/routes#encrypt-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->ownerPassword('OwnerDefinedPassword')
-    ->generate()
-    ->stream()
-;
-```
-
-### userPassword(?string \$userPassword)
-Set PDF user password.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-chromium](https://gotenberg.dev/docs/routes#encrypt-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-libreoffice](https://gotenberg.dev/docs/routes#encrypt-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->userPassword('UserDefinedPassword')
-    ->generate()
-    ->stream()
-;
-```
-
 
 ### webhook(array \$webhook)
 > [!TIP]
@@ -177,6 +143,31 @@ Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->webhookUrl('https://my.webhook.url', 'PUT')
+    ->generate()
+    ->stream()
+;
+```
+
+
+### ownerPassword(?string \$ownerPassword)
+Set PDF owner password.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->ownerPassword('OwnerDefinedPassword')
+    ->generate()
+    ->stream()
+;
+```
+
+### userPassword(?string \$userPassword)
+Set PDF user password.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->userPassword('UserDefinedPassword')
     ->generate()
     ->stream()
 ;

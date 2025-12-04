@@ -84,13 +84,11 @@ class YourController
 - [embeds](#embedsstringablestring-paths)
 - [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
-- [ownerPassword](#ownerpasswordstring-ownerpassword)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
 - [splitMode](#splitmodesensiolabsgotenbergbundleenumerationsplitmode-splitmode)
 - [splitSpan](#splitspanstring-splitspan)
 - [splitUnify](#splitunifybool-bool)
-- [userPassword](#userpasswordstring-userpassword)
 - [addAsset](#addassetstringablestring-path)
 - [assets](#assetsstringablestring-paths)
 - [webhook](#webhookarray-webhook)
@@ -130,6 +128,8 @@ class YourController
 - [footerFile](#footerfilestring-path)
 - [header](#headerstring-template-array-context)
 - [headerFile](#headerfilestring-path)
+- [ownerPassword](#ownerpasswordstring-ownerpassword)
+- [userPassword](#userpasswordstring-userpassword)
 - [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
 - [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
 - [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
@@ -216,23 +216,6 @@ return $gotenberg
 ;
 ```
 
-### ownerPassword(?string \$ownerPassword)
-Set PDF owner password.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-chromium](https://gotenberg.dev/docs/routes#encrypt-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-libreoffice](https://gotenberg.dev/docs/routes#encrypt-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->ownerPassword('OwnerDefinedPassword')
-    ->generate()
-    ->stream()
-;
-```
-
 ### pdfFormat(?Sensiolabs\GotenbergBundle\Enumeration\PdfFormat \$format)
 Convert the resulting PDF into the given PDF/A format.<br />
 
@@ -306,23 +289,6 @@ Specify whether to put extracted pages into a single file or as many files as th
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->splitUnify() // is same as `->splitUnify(true)`
-    ->generate()
-    ->stream()
-;
-```
-
-### userPassword(?string \$userPassword)
-Set PDF user password.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-chromium](https://gotenberg.dev/docs/routes#encrypt-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#encrypt-libreoffice](https://gotenberg.dev/docs/routes#encrypt-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->userPassword('UserDefinedPassword')
     ->generate()
     ->stream()
 ;
@@ -822,6 +788,31 @@ HTML file containing the header.<br /><br />As assets files, by default the HTML
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->headerFile('../templates/html/header.html')
+    ->generate()
+    ->stream()
+;
+```
+
+
+### ownerPassword(?string \$ownerPassword)
+Set PDF owner password.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->ownerPassword('OwnerDefinedPassword')
+    ->generate()
+    ->stream()
+;
+```
+
+### userPassword(?string \$userPassword)
+Set PDF user password.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->userPassword('UserDefinedPassword')
     ->generate()
     ->stream()
 ;
