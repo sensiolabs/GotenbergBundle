@@ -113,7 +113,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
             }
 
             $body = \Closure::bind(static fn (DataPart $part) => $part->body, null, TextPart::class)($part);
-            if ($part->getContentType() === $contentType && $body instanceof File && $body->getPath() === Path::canonicalize($path)) {
+            if ($part->getName() === $name && $part->getContentType() === $contentType && $body instanceof File && $body->getPath() === Path::canonicalize($path)) {
                 $this->addToAssertionCount(1);
 
                 return;
