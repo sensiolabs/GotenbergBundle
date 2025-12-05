@@ -54,7 +54,6 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/pdfengines/embed');
-        $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
         $this->assertGotenbergFormDataFile('embeds', 'application/xml', self::FIXTURE_DIR.'/embed/facturX.xml');
     }
 

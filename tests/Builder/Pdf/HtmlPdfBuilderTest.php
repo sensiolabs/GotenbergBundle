@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 use Symfony\Component\DependencyInjection\Container;
 use Twig\Environment;
@@ -22,6 +23,9 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use ChromiumPdfTestCaseTrait<HtmlPdfBuilder> */
     use ChromiumPdfTestCaseTrait;
+
+    /** @use EmbedTestCaseTrait<HtmlPdfBuilder> */
+    use EmbedTestCaseTrait;
 
     protected function createBuilder(): HtmlPdfBuilder
     {
@@ -247,23 +251,5 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
             ->content('templates/content.html.twig', ['name' => 'world'])
             ->generate()
         ;
-    }
-
-    public function testWithFileToEmbed(): void
-    {
-        $this->withGotenbergVersion('8.25.0');
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
-
-        $this->getBuilder()
-            ->contentFile('files/content.html')
-            ->filename('testEmbed.pdf')
-            ->embeds('embed/facturX.xml')
-            ->generate()
-        ;
-
-        $this->assertGotenbergFormDataFile('files', 'application/xml', self::FIXTURE_DIR.'/embed/facturX.xml');
-
-        $this->assertGotenbergEndpoint('/forms/chromium/convert/html');
-        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'testEmbed.pdf');
     }
 }

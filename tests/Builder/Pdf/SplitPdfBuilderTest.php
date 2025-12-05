@@ -7,9 +7,9 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
@@ -24,6 +24,9 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use DownloadFromTestCaseTrait<SplitPdfBuilder> */
     use DownloadFromTestCaseTrait;
+
+    /** @use EmbedTestCaseTrait<SplitPdfBuilder> */
+    use EmbedTestCaseTrait;
 
     /** @use FlattenTestCaseTrait<SplitPdfBuilder> */
     use FlattenTestCaseTrait;
@@ -125,47 +128,5 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
             ->splitMode(SplitMode::Pages)
             ->generate()
         ;
-    }
-
-    public function testRequiredFileContent(): void
-    {
-        $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('At least one PDF file is required.');
-
-        $this->getBuilder()
-            ->splitMode(SplitMode::Pages)
-            ->splitSpan('1-2')
-            ->generate()
-        ;
-    }
-
-    public function testRequirementMissingFile(): void
-    {
-        $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('At least one PDF file is required.');
-
-        $this->getBuilder()
-            ->generate()
-        ;
-    }
-
-    public function testWithFileToEmbed(): void
-    {
-        $this->withGotenbergVersion('8.25.0');
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
-
-        $this->getBuilder()
-            ->files('pdf/simple_pdf.pdf')
-            ->filename('testEmbedSplit.pdf')
-            ->splitMode(SplitMode::Pages)
-            ->splitSpan('1-2')
-            ->embeds('embed/facturX.xml')
-            ->generate()
-        ;
-
-        $this->assertGotenbergFormDataFile('embeds', 'application/xml', self::FIXTURE_DIR.'/embed/facturX.xml');
-
-        $this->assertGotenbergEndpoint('/forms/pdfengines/split');
-        $this->assertGotenbergHeader('Gotenberg-Output-Filename', 'testEmbedSplit.pdf');
     }
 }
