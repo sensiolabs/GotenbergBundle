@@ -36,6 +36,9 @@ trait ChromiumPdfTestCaseTrait
     /** @use DownloadFromTestCaseTrait<T> */
     use DownloadFromTestCaseTrait;
 
+    /** @use EncryptTestCaseTrait<T> */
+    use EncryptTestCaseTrait;
+
     /** @use FlattenTestCaseTrait<T> */
     use FlattenTestCaseTrait;
 
