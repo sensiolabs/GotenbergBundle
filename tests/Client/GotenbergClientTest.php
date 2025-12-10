@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Client;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\Payload;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClient;
@@ -61,5 +62,31 @@ final class GotenbergClientTest extends TestCase
         self::assertSame('application/pdf', $responseHeaders['content-type'][0]);
         self::assertSame('attachment; filename="simple_pdf.pdf"', $responseHeaders['content-disposition'][0]);
         self::assertSame('13624', $responseHeaders['content-length'][0]);
+    }
+
+    #[DataProvider('provideFilenameIsUnfolded')]
+    public function testFilenameIsUnfolded(string $filename): void
+    {
+        $mockResponse = new MockResponse();
+        $mockClient = new MockHttpClient([$mockResponse], baseUri: 'http://localhost:3000');
+
+        $payload = new Payload(
+            [['url' => 'https://google.com']],
+            ['Gotenberg-Output-Filename' => $filename],
+        );
+
+        $gotenbergClient = new GotenbergClient($mockClient);
+        $gotenbergClient->call('/some/url', $payload);
+
+        self::assertContains("Gotenberg-Output-Filename: $filename", $mockResponse->getRequestOptions()['headers']);
+    }
+
+    public static function provideFilenameIsUnfolded(): \Generator
+    {
+        yield 'Short filename' => ['my_file'];
+        yield 'Long filename' => ['my_file_with_a_very_long_filename_that_should_be_unfolded'];
+        // @see https://github.com/sensiolabs/GotenbergBundle/issues/216
+        yield 'Long filename with spaces' => ['Reservation - Holiday Park The Mooing Cow - 2025-0110'];
+        yield 'Long filename with long spaces' => ['Reservation   -   Holiday   Park   The   Mooing   Cow   -   2025-0110'];
     }
 }

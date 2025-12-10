@@ -24,12 +24,16 @@ final class GotenbergClient implements GotenbergClientInterface
             $headers->add($header);
         }
 
+        // Unfold header values not accepted by HttpClient
+        // @see https://www.rfc-editor.org/rfc/rfc2822.html#section-2.2.3
+        $unfold = fn (string $v) => str_replace("\r\n", '', $v);
+
         try {
             return $this->client->request(
                 'POST',
                 $endpoint,
                 [
-                    'headers' => $headers->toArray(),
+                    'headers' => array_map($unfold, $headers->toArray()),
                     'body' => $formDataPart->bodyToIterable(),
                 ],
             );
