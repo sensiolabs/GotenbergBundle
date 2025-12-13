@@ -82,6 +82,7 @@ class YourController
 - [addMetadata](#addmetadatastring-key-string-value)
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [embeds](#embedsstringablestring-paths)
+- [files](#filesstringablestring-paths)
 - [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
@@ -177,6 +178,18 @@ Add file to embed.<br /><br />As assets files, by default the files to embed are
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->embeds('document.xml','document_2.json')
+    ->generate()
+    ->stream()
+;
+```
+
+### files(Stringable|string ...\$paths)
+Adds files for the builder (overrides any previous files).<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->files('document.pdf', __DIR__'/../../public/document_2.pdf')
     ->generate()
     ->stream()
 ;

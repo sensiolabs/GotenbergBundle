@@ -72,7 +72,7 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-If you provide multiple PDF files you will get ZIP folder containing all the converted PDF.<br />
+Adds files for the builder (overrides any previous files).<br />
 
 ```php
 return $gotenberg

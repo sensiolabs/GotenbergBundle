@@ -5,10 +5,12 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidNormalizerException;
 use Sensiolabs\GotenbergBundle\Exception\VersionCompatibilityException;
@@ -26,6 +28,7 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
  */
 abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface, ServiceSubscriberInterface
 {
+    use AssetBaseDirFormatterAwareTrait;
     use LoggerAwareTrait;
     use ServiceMethodsSubscriberTrait;
 
@@ -46,6 +49,11 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     }
 
     abstract protected function getEndpoint(): string;
+
+    protected function getAllowedFilesExtensions(): array
+    {
+        return [];
+    }
 
     /**
      *  The API automatically appends the file extension, so there's no need for you to set it manually.
@@ -191,5 +199,25 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
             yield from $normalizer($key, $value, $version, $logger);
         }
+    }
+
+    /**
+     * Adds files for the builder (overrides any previous files).
+     *
+     * @example files('document.pdf', __DIR__'/../../public/document_2.pdf')
+     */
+    public function files(string|\Stringable ...$paths): self
+    {
+        foreach ($paths as $path) {
+            $path = (string) $path;
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
+            ValidatorFactory::filesExtension([$info], $this->getAllowedFilesExtensions());
+
+            $files[$path] = $info;
+        }
+
+        $this->getBodyBag()->set('files', $files ?? null);
+
+        return $this;
     }
 }

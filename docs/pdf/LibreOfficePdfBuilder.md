@@ -340,7 +340,7 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-Adds office files to convert (overrides any previous files).<br />
+Adds files for the builder (overrides any previous files).<br />
 
 ```php
 return $gotenberg

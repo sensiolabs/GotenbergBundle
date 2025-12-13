@@ -8,7 +8,6 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
@@ -36,6 +35,10 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
     }
 
     public const ENDPOINT = '/forms/chromium/convert/markdown';
+
+    private const AVAILABLE_EXTENSIONS = [
+        'md',
+    ];
 
     /**
      * The template that wraps the markdown content.
@@ -75,30 +78,9 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
         return $this->contentFile($path);
     }
 
-    /**
-     * Add Markdown into a PDF.
-     *
-     * Required to generate a PDF from Markdown builder. You can pass several files with that method.
-     *
-     * As assets files, by default the markdown files are fetch in the assets folder of your application.
-     *
-     * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
-     *
-     * @example files('header.md','content.md','footer.md')
-     */
-    public function files(string|\Stringable ...$paths): self
+    protected function getAllowedFilesExtensions(): array
     {
-        foreach ($paths as $path) {
-            $path = (string) $path;
-            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
-            ValidatorFactory::filesExtension([$info], ['md']);
-
-            $files[$path] = $info;
-        }
-
-        $this->getBodyBag()->set('files', $files ?? null);
-
-        return $this;
+        return self::AVAILABLE_EXTENSIONS;
     }
 
     protected function getEndpoint(): string

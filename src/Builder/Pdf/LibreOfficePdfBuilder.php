@@ -10,7 +10,6 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\LibreOfficeTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -47,24 +46,9 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
         'xltx', 'xlw', 'xml', 'xpm', 'zabw',
     ];
 
-    /**
-     * Adds office files to convert (overrides any previous files).
-     *
-     * @example files('document.pdf', __DIR__'/../../public/document_2.pdf')
-     */
-    public function files(string|\Stringable ...$paths): self
+    protected function getAllowedFilesExtensions(): array
     {
-        foreach ($paths as $path) {
-            $path = (string) $path;
-            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
-            ValidatorFactory::filesExtension([$info], self::AVAILABLE_EXTENSIONS);
-
-            $files[$path] = $info;
-        }
-
-        $this->getBodyBag()->set('files', $files ?? null);
-
-        return $this;
+        return self::AVAILABLE_EXTENSIONS;
     }
 
     protected function getEndpoint(): string
