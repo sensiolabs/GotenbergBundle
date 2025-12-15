@@ -71,7 +71,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
         $this->lateCollectFiles($this->traceableGotenbergPdf->getBuilders(), 'pdf');
         $this->lateCollectFiles($this->traceableGotenbergScreenshot->getBuilders(), 'screenshot');
 
-        if (\count($this->data['files']) > 0) {
+        if (\count($this->data['files'] ?? []) > 0) {
             $this->data['version'] = (string) $this->versionFetcher->get();
         }
     }
