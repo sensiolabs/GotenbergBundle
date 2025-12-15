@@ -204,7 +204,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     /**
      * Adds files (overrides any previous files).
      *
-     * @example files('document.pdf', __DIR__'/../../public/document_2.pdf')
+     * @example files('document.pdf', '/absolute/path/document_2.pdf')
      */
     public function files(string|\Stringable ...$paths): self
     {
