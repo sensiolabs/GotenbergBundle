@@ -202,7 +202,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     }
 
     /**
-     * Adds files for the builder (overrides any previous files).
+     * Adds files (overrides any previous files).
      *
      * @example files('document.pdf', __DIR__'/../../public/document_2.pdf')
      */
