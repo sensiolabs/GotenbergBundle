@@ -166,11 +166,9 @@ class SensiolabsGotenbergExtension extends Extension
             }
         }
 
-        if ($container->hasDefinition('.sensiolabs_gotenberg.webhook_configuration_registry')) {
-            $registryDefinition = $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
-            foreach ($defaultConfiguration['webhook'] as $name => $webhookConfig) {
-                $registryDefinition->addMethodCall('add', [$name, $webhookConfig]);
-            }
+        $registryDefinition = $container->getDefinition('.sensiolabs_gotenberg.webhook_configuration_registry');
+        foreach ($defaultConfiguration['webhook'] as $name => $webhookConfig) {
+            $registryDefinition->addMethodCall('add', [$name, $webhookConfig]);
         }
 
         $container->getDefinition('sensiolabs_gotenberg.builder_configurator')
