@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sensiolabs\GotenbergBundle\Version;
 
+use InvalidArgumentException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class HttpVersionFetcher implements VersionFetcherInterface
@@ -17,6 +18,12 @@ final class HttpVersionFetcher implements VersionFetcherInterface
 
     public function get(): Version
     {
-        return $this->version ??= Version::parse($this->client->request('GET', '/version')->getContent());
+        $this->version ??= Version::parse($this->client->request('GET', '/version')->getContent());
+
+        if (version_compare((string) $this->version, '8', '<')) {
+            throw new InvalidArgumentException('Invalid version %s, supported versions are >= 8.0.0');
+        }
+
+        return $this->version;
     }
 }

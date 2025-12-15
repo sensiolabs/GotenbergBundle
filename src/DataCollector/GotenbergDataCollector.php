@@ -35,7 +35,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
 
     public function collect(Request $request, Response $response, \Throwable|null $exception = null): void
     {
-        $this->data['version'] = (string) $this->versionFetcher->get();
+        $this->data['version'] = 'N/A';
         $this->data['request_total_size'] = 0;
         $this->data['request_total_time'] = 0;
         $this->data['request_count'] = 0;
@@ -70,6 +70,10 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
     {
         $this->lateCollectFiles($this->traceableGotenbergPdf->getBuilders(), 'pdf');
         $this->lateCollectFiles($this->traceableGotenbergScreenshot->getBuilders(), 'screenshot');
+
+        if (count($this->data['files']) > 0) {
+            $this->data['version'] = (string) $this->versionFetcher->get();
+        }
     }
 
     /**
