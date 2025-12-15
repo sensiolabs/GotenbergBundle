@@ -1,6 +1,6 @@
 {
     "name": "sensiolabs/gotenberg-bundle",
-    "description": "Gotenberg support for Symfony",
+    "description": "A Symfony bundle that provides seamless integration with Gotenberg for generating PDFs and screenshots from various sources (HTML, Markdown, Office documents, URLs) with a clean, builder-based API.",
     "keywords": ["gotenberg", "symfony", "pdf", "screenshot", "office", "bundle"],
     "type": "symfony-bundle",
     "license": "MIT",
