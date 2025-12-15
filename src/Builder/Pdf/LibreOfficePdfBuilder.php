@@ -6,8 +6,8 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\LibreOfficeTrait;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
@@ -24,8 +24,8 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 final class LibreOfficePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
-    use EncryptTrait;
     use EmbedTrait;
+    use EncryptTrait;
     use LibreOfficeTrait;
 
     public const ENDPOINT = '/forms/libreoffice/convert';

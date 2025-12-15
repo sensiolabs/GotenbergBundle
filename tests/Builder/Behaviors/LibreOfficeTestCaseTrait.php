@@ -12,11 +12,11 @@ trait LibreOfficeTestCaseTrait
     /** @use DownloadFromTestCaseTrait<T> */
     use DownloadFromTestCaseTrait;
 
-    /** @use EncryptTestCaseTrait<T> */
-    use EncryptTestCaseTrait;
-
     /** @use EmbedTestCaseTrait<T> */
     use EmbedTestCaseTrait;
+
+    /** @use EncryptTestCaseTrait<T> */
+    use EncryptTestCaseTrait;
 
     /** @use FlattenTestCaseTrait<T> */
     use FlattenTestCaseTrait;
