@@ -5,7 +5,6 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
