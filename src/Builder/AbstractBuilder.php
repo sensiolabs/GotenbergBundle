@@ -27,7 +27,6 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
  */
 abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInterface, ServiceSubscriberInterface
 {
-    use AssetBaseDirFormatterAwareTrait;
     use LoggerAwareTrait;
     use ServiceMethodsSubscriberTrait;
 
