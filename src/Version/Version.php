@@ -71,7 +71,7 @@ final class Version implements \Stringable
             $raw,
             $matches,
         )) {
-            throw new \LogicException();
+            throw new \LogicException('It should have the format "X.Y.Z(-variant)". Got "'.$raw.'" instead.');
         }
 
         return new self(

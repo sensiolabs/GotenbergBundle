@@ -3,7 +3,9 @@
 namespace Sensiolabs\GotenbergBundle\Twig;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
+use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 /**
  * @internal
@@ -15,8 +17,10 @@ final class GotenbergRuntime
 {
     private BuilderAssetInterface|null $builder = null;
 
-    public function __construct(private readonly Packages|null $packages = null)
-    {
+    public function __construct(
+        private readonly AssetBaseDirFormatter $assetBaseDirFormatter,
+        private readonly Packages|null $packages = null,
+    ) {
     }
 
     public function setBuilder(BuilderAssetInterface|null $builder): void
@@ -73,6 +77,10 @@ final class GotenbergRuntime
 
     private function getVersionedPathIfExist(string $path): string
     {
+        try {
+            return $this->assetBaseDirFormatter->resolve($path);
+        } catch (FileNotFoundException) {}
+
         $packages = $this->packages;
         if (null !== $packages) {
             $path = ltrim($packages->getUrl($path), '/');
