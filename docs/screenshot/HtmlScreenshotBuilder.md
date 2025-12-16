@@ -81,7 +81,6 @@ class YourController
 ### Available methods
 
 - [downloadFrom](#downloadfromarray-downloadfrom)
-- [files](#filesstringablestring-paths)
 - [addAsset](#addassetstringablestring-path)
 - [assets](#assetsstringablestring-paths)
 - [webhook](#webhookarray-webhook)
@@ -130,18 +129,6 @@ Sets download from to download each entry (file) in parallel (URLs MUST return a
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->downloadFrom([['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeader' => 'MyValue']], ['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeaderOne' => 'MyValue', 'MyHeaderTwo' => 'MyValue']]])
-    ->generate()
-    ->stream()
-;
-```
-
-### files(Stringable|string ...\$paths)
-Adds files for the builder (overrides any previous files).<br />
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->files('document.pdf', __DIR__'/../../public/document_2.pdf')
     ->generate()
     ->stream()
 ;

@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
@@ -33,6 +34,7 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
         content as private;
         contentFile as private;
     }
+    use FilesTrait;
 
     public const ENDPOINT = '/forms/chromium/convert/markdown';
 
