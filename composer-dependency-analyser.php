@@ -38,6 +38,9 @@ $config = $config
     ->ignoreErrorsOnPath(__DIR__.'/docs', [
         ErrorType::UNKNOWN_CLASS, // BuilderParser::class
     ])
+    ->ignoreErrorsOnPackage('symfony/asset-mapper', [
+        ErrorType::DEV_DEPENDENCY_IN_PROD,
+    ])
 ;
 
 if (\PHP_VERSION_ID < 80200) { // TODO: Requires PHP >= 8.2
