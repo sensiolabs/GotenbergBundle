@@ -76,7 +76,6 @@ final class GotenbergRuntime
 
     private function getVersionedPathIfExist(string $path): string
     {
-
         $assetRepository = $this->assetMapperRepository;
         if (null !== $assetRepository) {
             $mappedPath = $assetRepository->find($path);
