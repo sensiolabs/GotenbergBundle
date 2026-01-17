@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Twig;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\AssetMapper\AssetMapperRepository;
 
 /**
  * @internal
@@ -15,8 +16,10 @@ final class GotenbergRuntime
 {
     private BuilderAssetInterface|null $builder = null;
 
-    public function __construct(private readonly Packages|null $packages = null)
-    {
+    public function __construct(
+        private readonly Packages|null $packages = null,
+        private readonly AssetMapperRepository|null $assetMapperRepository = null,
+    ) {
     }
 
     public function setBuilder(BuilderAssetInterface|null $builder): void
@@ -73,6 +76,16 @@ final class GotenbergRuntime
 
     private function getVersionedPathIfExist(string $path): string
     {
+
+        $assetRepository = $this->assetMapperRepository;
+        if (null !== $assetRepository) {
+            $mappedPath = $assetRepository->find($path);
+
+            if (null !== $mappedPath) {
+                return $mappedPath;
+            }
+        }
+
         $packages = $this->packages;
         if (null !== $packages) {
             $path = ltrim($packages->getUrl($path), '/');

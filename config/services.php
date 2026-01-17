@@ -43,7 +43,10 @@ return static function (ContainerConfigurator $container): void {
         ->tag('twig.extension')
     ;
     $services->set('sensiolabs_gotenberg.twig.asset_runtime', GotenbergRuntime::class)
-        ->args([service('assets.packages')->nullOnInvalid()])
+        ->args([
+            service('assets.packages')->nullOnInvalid(),
+            service('asset_mapper.repository')->nullOnInvalid(),
+        ])
         ->tag('twig.runtime')
     ;
 
