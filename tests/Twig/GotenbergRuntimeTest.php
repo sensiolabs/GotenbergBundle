@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
@@ -128,6 +129,22 @@ class GotenbergRuntimeTest extends TestCase
         ;
 
         $runtime = new GotenbergRuntime($packages, $assetMapperRepository);
+        $runtime->setBuilder($builder);
+
+        $path = $runtime->getAssetUrl('foo');
+
+        $this->assertSame('foo', $path);
+    }
+
+    public function testGetAssetUrlWhenMissingAssetMapperRepositoryAndPackages(): void
+    {
+        $builder = $this->createMock(BuilderAssetInterface::class);
+        $builder->expects($this->once())
+            ->method('addAsset')
+            ->with('foo')
+        ;
+
+        $runtime = new GotenbergRuntime(null, null);
         $runtime->setBuilder($builder);
 
         $path = $runtime->getAssetUrl('foo');
