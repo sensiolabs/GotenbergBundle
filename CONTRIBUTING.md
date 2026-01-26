@@ -18,7 +18,7 @@ know.
 * Create a new branch for your changes.
 * Ensure your code follows the existing style and includes tests if applicable.
 * Submit a pull request with a clear description of your changes.
-* Update the correct `UPGRADE-*.md` file if it introduce new deprecations, BC breaks or anything that may require changes on developers side.
+* Update the correct `UPGRADE-*.md` file if it introduces new deprecations, BC breaks or anything that may require changes on developers side.
 
 ## Installation
 
