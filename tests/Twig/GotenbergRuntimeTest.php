@@ -97,14 +97,14 @@ class GotenbergRuntimeTest extends TestCase
         $packages = $this->createMock(Packages::class);
         $packages->expects($this->once())
             ->method('getUrl')
-            ->with('image/example.png')
+            ->with('asset/example.png')
             ->willReturn('/image/example.png')
         ;
 
         $runtime = new GotenbergRuntime($packages, null);
         $runtime->setBuilder($builder);
 
-        $path = $runtime->getAssetUrl('image/example.png');
+        $path = $runtime->getAssetUrl('asset/example.png');
 
         $this->assertSame('example.png', $path);
     }
