@@ -32,6 +32,7 @@ return (new PhpCsFixer\Config())
         'phpdoc_no_package' => false,
         'return_assignment' => true,
         'single_line_throw' => false,
+        'static_lambda' => false,
         'strict_param' => true,
         'trailing_comma_in_multiline' => [
             'elements' => ['arguments', 'arrays', 'match', 'parameters'],
