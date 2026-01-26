@@ -68,22 +68,22 @@ class GotenbergRuntimeTest extends TestCase
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder->expects($this->once())
             ->method('addAsset')
-            ->with('/absolute/dir/vendor/package/dist/css/package.min.css')
+            ->with('/image/result.png')
         ;
 
         $assetMapperRepository = $this->createMock(AssetMapperRepository::class);
         $assetMapperRepository->expects($this->once())
             ->method('find')
-            ->with('vendor/package/dist/css/package.min.css')
-            ->willReturn('/absolute/dir/vendor/package/dist/css/package.min.css')
+            ->with('image/origin.png')
+            ->willReturn('/image/result.png')
         ;
 
         $runtime = new GotenbergRuntime(null, $assetMapperRepository);
         $runtime->setBuilder($builder);
 
-        $path = $runtime->getAssetUrl('vendor/package/dist/css/package.min.css');
+        $path = $runtime->getAssetUrl('image/origin.png');
 
-        $this->assertSame('package.min.css', $path);
+        $this->assertSame('result.png', $path);
     }
 
     public function testGetAssetUrlWhenPackages(): void
@@ -91,22 +91,22 @@ class GotenbergRuntimeTest extends TestCase
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder->expects($this->once())
             ->method('addAsset')
-            ->with('image/example.png')
+            ->with('image/result.png')
         ;
 
         $packages = $this->createMock(Packages::class);
         $packages->expects($this->once())
             ->method('getUrl')
-            ->with('asset/example.png')
-            ->willReturn('/image/example.png')
+            ->with('image/origin.png')
+            ->willReturn('/image/result.png')
         ;
 
         $runtime = new GotenbergRuntime($packages, null);
         $runtime->setBuilder($builder);
 
-        $path = $runtime->getAssetUrl('asset/example.png');
+        $path = $runtime->getAssetUrl('image/origin.png');
 
-        $this->assertSame('example.png', $path);
+        $this->assertSame('result.png', $path);
     }
 
     public function testGetAssetUrlWhenAssetMapperRepositoryAndPackages(): void
@@ -114,29 +114,29 @@ class GotenbergRuntimeTest extends TestCase
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder->expects($this->once())
             ->method('addAsset')
-            ->with('image/example.png')
+            ->with('image/result.png')
         ;
 
         $packages = $this->createMock(Packages::class);
         $packages->expects($this->once())
             ->method('getUrl')
-            ->with('image/example.png')
-            ->willReturn('/image/example.png')
+            ->with('image/origin.png')
+            ->willReturn('/image/result.png')
         ;
 
         $assetMapperRepository = $this->createMock(AssetMapperRepository::class);
         $assetMapperRepository->expects($this->once())
             ->method('find')
-            ->with('image/example.png')
+            ->with('image/origin.png')
             ->willReturn(null)
         ;
 
         $runtime = new GotenbergRuntime($packages, $assetMapperRepository);
         $runtime->setBuilder($builder);
 
-        $path = $runtime->getAssetUrl('image/example.png');
+        $path = $runtime->getAssetUrl('image/origin.png');
 
-        $this->assertSame('example.png', $path);
+        $this->assertSame('result.png', $path);
     }
 
     public function testGetAssetUrlWhenMissingAssetMapperRepositoryAndPackages(): void
@@ -144,14 +144,14 @@ class GotenbergRuntimeTest extends TestCase
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder->expects($this->once())
             ->method('addAsset')
-            ->with('image/example.png')
+            ->with('image/origin.png')
         ;
 
         $runtime = new GotenbergRuntime(null, null);
         $runtime->setBuilder($builder);
 
-        $path = $runtime->getAssetUrl('image/example.png');
+        $path = $runtime->getAssetUrl('image/origin.png');
 
-        $this->assertSame('example.png', $path);
+        $this->assertSame('origin.png', $path);
     }
 }
