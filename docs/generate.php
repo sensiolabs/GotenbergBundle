@@ -475,7 +475,7 @@ class BuilderParser
 
 $application = new Application();
 $application->register('generate')
-    ->setCode(function (InputInterface $input) {
+    ->setCode(static function (InputInterface $input) {
         $summary = new Summary();
 
         $buildersByType = BuilderParser::BUILDERS;

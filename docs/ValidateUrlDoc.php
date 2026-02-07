@@ -138,7 +138,7 @@ class ValidateUrlDoc
 
 $application = new Application();
 $application->register('check')
-    ->setCode(function (OutputInterface $output, SymfonyStyle $io) {
+    ->setCode(static function (OutputInterface $output, SymfonyStyle $io) {
         return (new ValidateUrlDoc())->validate($output, $io);
     })
 ;

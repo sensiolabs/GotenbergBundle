@@ -100,7 +100,7 @@ final class GotenbergDataCollector extends DataCollector implements LateDataColl
                     'size' => $this->formatSize($request['size'] ?? 0),
                     'fileName' => $request['fileName'],
                     'calls' => array_map(function (array $call): array {
-                        $args = array_map(function (mixed $arg): mixed {
+                        $args = array_map(static function (mixed $arg): mixed {
                             if (\is_array($arg)) {
                                 return new CutArrayStub($arg, array_keys($arg));
                             }
