@@ -210,10 +210,10 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-Add Markdown into a PDF.<br /><br />Required to generate a PDF from Markdown builder. You can pass several files with that method.<br /><br />As assets files, by default the markdown files are fetch in the assets folder of your application.<br />
+Add Markdown into a PDF.<br />Required to generate a PDF from Markdown builder. You can pass several files with that method.<br />As assets files, by default the markdown files are fetch in the assets folder of your application.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route ](https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route )
+> See: [https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route](https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route)
 
 ```php
 return $gotenberg

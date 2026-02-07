@@ -304,6 +304,7 @@ class BuilderParser
 
         $classPhpDoc = $this->parsePhpDoc($class->getDocComment() ?: '');
         $defaultPackage = $classPhpDoc['package'] ?? null;
+        $methodDocOverrides = $classPhpDoc['method_doc_overrides'] ?? [];
 
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if (\in_array($method->getName(), self::EXCLUDED_METHODS, true) === true) {
@@ -312,6 +313,14 @@ class BuilderParser
 
             $this->methodsSignature[$method->getName()] = $this->parseMethodSignature($method);
             $this->methodsLink[$method->getName()] = $this->parseMethodLink($method);
+
+            if (isset($methodDocOverrides[$method->getName()])) {
+                $this->parts['methods']['@'][$method->getShortName()] = array_merge(
+                    $methodDocOverrides[$method->getName()],
+                    ['package' => $defaultPackage],
+                );
+                continue;
+            }
 
             $methodDocComment = $method->getDocComment() ?: '';
             $this->parts['methods']['@'][$method->getShortName()] ??= [];
@@ -381,6 +390,8 @@ class BuilderParser
         $currentPackage = null;
         $currentTag = null;
         $currentParam = null;
+        $methodDocOverrides = [];
+        $currentMethodDoc = null;
 
         foreach ($lines as $line) {
             $line = trim($line, ' *');
@@ -394,26 +405,64 @@ class BuilderParser
                     if ('package' === $currentTag) {
                         $currentPackage = $value;
                         $currentTag = null;
+                    } elseif ('method-doc' === $currentTag) {
+                        if (preg_match('/^(\S+)\s+(.*)$/', $value, $methodMatches)) {
+                            $methodName = $methodMatches[1];
+                            $currentMethodDoc = $methodName;
+
+                            if (!isset($methodDocOverrides[$methodName])) {
+                                $methodDocOverrides[$methodName] = [
+                                    'description' => [],
+                                    'tags' => ['param' => [], 'see' => [], 'example' => []],
+                                ];
+                            }
+
+                            $methodDocOverrides[$methodName]['description'][] = $methodMatches[2];
+                        }
                     } elseif ('param' === $currentTag) {
                         $paramTagFound = preg_match('/^(\S+)\s+(\$\S+)\s*(.*)$/', $value, $paramMatches);
                         if (false !== $paramTagFound && \count($paramMatches) > 0) {
                             [$type, $name, $desc] = $paramMatches;
 
-                            $tags['param'][$name] = [
-                                'type' => $type,
-                                'description' => $desc,
-                            ];
+                            if (null !== $currentMethodDoc) {
+                                $methodDocOverrides[$currentMethodDoc]['tags']['param'][$name] = [
+                                    'type' => $type,
+                                    'description' => $desc,
+                                ];
+                            } else {
+                                $tags['param'][$name] = [
+                                    'type' => $type,
+                                    'description' => $desc,
+                                ];
+                            }
                             $currentParam = $name;
                         }
+                    } elseif (\in_array($currentTag, ['see', 'example'], true)) {
+                        if (null !== $currentMethodDoc) {
+                            $methodDocOverrides[$currentMethodDoc]['tags'][$currentTag][] = $value;
+                        } else {
+                            $tags[$currentTag][] = $value;
+                        }
+                        $currentParam = null;
                     } else {
                         $tags[$currentTag][] = $value;
                         $currentParam = null;
                     }
                 }
             } elseif ('param' === $currentTag && null !== $currentParam) {
-                $tags['param'][$currentParam]['description'] .= ' '.$line;
-            } elseif (null !== $currentTag) {
-                if (null === array_key_last($tags[$currentTag])) {
+                if (null !== $currentMethodDoc) {
+                    $methodDocOverrides[$currentMethodDoc]['tags']['param'][$currentParam]['description'] .= ' '.$line;
+                } else {
+                    $tags['param'][$currentParam]['description'] .= ' '.$line;
+                }
+            } elseif ('method-doc' === $currentTag && null !== $currentMethodDoc) {
+                $methodDocOverrides[$currentMethodDoc]['description'][] = $line;
+            } elseif (null !== $currentTag && null === $currentMethodDoc) {
+                if (!isset($tags[$currentTag])) {
+                    $tags[$currentTag] = [];
+                }
+
+                if ([] === $tags[$currentTag] || null === array_key_last($tags[$currentTag])) {
                     $tags[$currentTag][] = $line;
                 } else {
                     $tags[$currentTag][array_key_last($tags[$currentTag])] .= ' '.$line;
@@ -427,6 +476,7 @@ class BuilderParser
             'package' => $currentPackage,
             'description' => $description,
             'tags' => $tags,
+            'method_doc_overrides' => $methodDocOverrides,
         ];
     }
 
@@ -475,7 +525,7 @@ class BuilderParser
 
 $application = new Application();
 $application->register('generate')
-    ->setCode(function (InputInterface $input) {
+    ->setCode(static function (InputInterface $input) {
         $summary = new Summary();
 
         $buildersByType = BuilderParser::BUILDERS;

@@ -19,6 +19,11 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * You may have the possibility to convert Office files into PDF.
  *
  * @see https://gotenberg.dev/docs/routes#convert-with-libreoffice
+ *
+ * @method-doc files
+ * Adds office files to convert (overrides any previous files).
+ *
+ * @example files('document.doc', __DIR__'/../../public/document_2.odt')
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'office')]
 final class LibreOfficePdfBuilder extends AbstractBuilder

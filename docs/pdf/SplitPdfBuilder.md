@@ -105,10 +105,10 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-Add PDF files to split.<br /><br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+Add PDF files to split.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-pdfs-route ](https://gotenberg.dev/docs/routes#split-pdfs-route )
+> See: [https://gotenberg.dev/docs/routes#split-pdfs-route](https://gotenberg.dev/docs/routes#split-pdfs-route)
 
 ```php
 return $gotenberg

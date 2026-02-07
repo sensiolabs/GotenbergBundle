@@ -18,6 +18,11 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * You may have the possibility to convert several PDF document.
  *
  * @see https://gotenberg.dev/docs/routes#convert-into-pdfa--pdfua-route
+ *
+ * @method-doc files
+ * If you provide multiple PDF files you will get ZIP folder containing all the converted PDF.
+ *
+ * @example files('document.pdf', __DIR__'/../../public/document_2.pdf')
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'convert')]
 final class ConvertPdfBuilder extends AbstractBuilder

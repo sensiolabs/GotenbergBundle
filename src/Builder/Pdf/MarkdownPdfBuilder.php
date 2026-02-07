@@ -18,6 +18,14 @@ use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
  * You just need to wrap your markdown file into an HTML or Twig file.
  *
  * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ *
+ * @method-doc files Add Markdown into a PDF.
+ * Required to generate a PDF from Markdown builder. You can pass several files with that method.
+ * As assets files, by default the markdown files are fetch in the assets folder of your application.
+ *
+ * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ *
+ * @example files('header.md','content.md','footer.md')
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'markdown')]
 final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
