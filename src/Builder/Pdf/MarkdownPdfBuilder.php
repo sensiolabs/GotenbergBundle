@@ -19,7 +19,7 @@ use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
  *
  * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
  *
- * @method-doc files Add Markdown into a PDF.
+ * @methodDoc files Add Markdown into a PDF.
  * Required to generate a PDF from Markdown builder. You can pass several files with that method.
  * As assets files, by default the markdown files are fetch in the assets folder of your application.
  *

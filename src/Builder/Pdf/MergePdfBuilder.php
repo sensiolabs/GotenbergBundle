@@ -22,7 +22,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  *
  * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
  *
- * @method-doc files Add PDF files to merge.
+ * @methodDoc files Add PDF files to merge.
  * As assets files, by default the PDF files are fetch in the assets folder
  * of your application. For more information about path resolution go to
  * assets documentation.

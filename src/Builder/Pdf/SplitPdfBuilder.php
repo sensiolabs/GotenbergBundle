@@ -23,7 +23,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  *
  * @see https://gotenberg.dev/docs/routes#split-pdfs-route
  *
- * @method-doc files Add PDF files to split.
+ * @methodDoc files Add PDF files to split.
  * As assets files, by default the PDF files are fetch in the assets folder
  * of your application. For more information about path resolution go to
  * assets documentation.

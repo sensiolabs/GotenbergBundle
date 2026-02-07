@@ -405,7 +405,7 @@ class BuilderParser
                     if ('package' === $currentTag) {
                         $currentPackage = $value;
                         $currentTag = null;
-                    } elseif ('method-doc' === $currentTag) {
+                    } elseif ('methodDoc' === $currentTag) {
                         if (preg_match('/^(\S+)\s+(.*)$/', $value, $methodMatches)) {
                             $methodName = $methodMatches[1];
                             $currentMethodDoc = $methodName;
@@ -455,7 +455,7 @@ class BuilderParser
                 } else {
                     $tags['param'][$currentParam]['description'] .= ' '.$line;
                 }
-            } elseif ('method-doc' === $currentTag && null !== $currentMethodDoc) {
+            } elseif ('methodDoc' === $currentTag && null !== $currentMethodDoc) {
                 $methodDocOverrides[$currentMethodDoc]['description'][] = $line;
             } elseif (null !== $currentTag && null === $currentMethodDoc) {
                 if (!isset($tags[$currentTag])) {
