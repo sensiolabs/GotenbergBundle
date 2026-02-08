@@ -15,7 +15,7 @@ final class GotenbergExtension implements Extension
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         $facade->registerSubscriber(
-            new VersionListener()
+            new VersionListener(),
         );
     }
 }

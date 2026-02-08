@@ -11,7 +11,6 @@ use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
 use function Amp\async;
 use function Amp\Future\await;
-use function preg_match;
 
 #[DaggerObject]
 final class TestsGotenbergBundle
@@ -40,7 +39,7 @@ final class TestsGotenbergBundle
 
         $matches = [];
 
-        if (1 !== preg_match('#(?P<MajorMinor>^\d\.\d)#', $symfonyVersion, $matches)) {
+        if (1 !== \preg_match('#(?P<MajorMinor>^\d\.\d)#', $symfonyVersion, $matches)) {
             return $symfonyVersion;
         }
 
