@@ -19,6 +19,9 @@ class NativeEnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return EnumNodeDefinition<null>
+     */
     public function create(): EnumNodeDefinition
     {
         $defaultValue = $this->defaultValue?->value;

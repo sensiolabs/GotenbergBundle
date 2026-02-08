@@ -20,6 +20,12 @@ class IntegerNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return IntegerNodeDefinition<null>
+     *
+     * @throws \InvalidArgumentException if the {$this->defaultValue} is less than the {$this->min} configured value.
+     * @throws \InvalidArgumentException if the {$this->defaultValue} is more than the {$this->max} configured value.
+     */
     public function create(): IntegerNodeDefinition
     {
         $node = new IntegerNodeDefinition($this->name);

@@ -19,6 +19,9 @@ class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return ArrayNodeDefinition<null>
+     */
     public function create(): ArrayNodeDefinition
     {
         $node = new ArrayNodeDefinition($this->name);

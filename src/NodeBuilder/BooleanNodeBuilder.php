@@ -16,6 +16,9 @@ class BooleanNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return BooleanNodeDefinition<null>
+     */
     public function create(): BooleanNodeDefinition
     {
         $node = new BooleanNodeDefinition($this->name);

@@ -12,6 +12,9 @@ class VariableNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return VariableNodeDefinition<null>
+     */
     public function create(): VariableNodeDefinition
     {
         return new VariableNodeDefinition($this->name);

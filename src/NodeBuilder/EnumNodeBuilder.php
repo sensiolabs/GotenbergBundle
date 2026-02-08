@@ -28,6 +28,12 @@ class EnumNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         $this->callback = $callback;
     }
 
+    /**
+     * @return EnumNodeDefinition<null>
+     *
+     * @throws InvalidBuilderConfiguration if no {$this->values} nor {$this->callback} were provided.
+     * @throws InvalidBuilderConfiguration if both {$this->values} and {$this->callback} were provided.
+     */
     public function create(): EnumNodeDefinition
     {
         $node = new EnumNodeDefinition($this->name);

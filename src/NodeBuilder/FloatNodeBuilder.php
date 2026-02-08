@@ -16,6 +16,9 @@ class FloatNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return FloatNodeDefinition<null>
+     */
     public function create(): FloatNodeDefinition
     {
         $node = new FloatNodeDefinition($this->name);

@@ -15,6 +15,9 @@ class WebhookNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return NodeDefinition<null>
+     */
     public function create(): NodeDefinition
     {
         $node = (new ArrayNodeBuilder($this->name, children: $this->children))->create();

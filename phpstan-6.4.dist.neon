@@ -1,0 +1,70 @@
+includes:
+	- phpstan.dist.neon
+
+parameters:
+	ignoreErrors:
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\ArrayNodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\ArrayNodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/ArrayNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\BooleanNodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\BooleanNodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/BooleanNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\EnumNodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\EnumNodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/EnumNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\FloatNodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\FloatNodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/FloatNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\IntegerNodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\IntegerNodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/IntegerNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/MetadataNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\EnumNodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\EnumNodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/NativeEnumNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\ScalarNodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\ScalarNodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/ScalarNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/UnitNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\VariableNodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\VariableNodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/VariableNodeBuilder.php
+
+		-
+			message: '#^PHPDoc tag @return contains generic type Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\<null\> but class Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition is not generic\.$#'
+			identifier: generics.notGeneric
+			count: 1
+			path: src/NodeBuilder/WebhookNodeBuilder.php

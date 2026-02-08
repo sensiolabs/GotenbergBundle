@@ -14,6 +14,9 @@ class MetadataNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return NodeDefinition<null>
+     */
     public function create(): NodeDefinition
     {
         return (new ArrayNodeBuilder(

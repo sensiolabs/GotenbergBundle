@@ -21,6 +21,9 @@ class ScalarNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         parent::__construct($name);
     }
 
+    /**
+     * @return ScalarNodeDefinition<null>
+     */
     public function create(): ScalarNodeDefinition
     {
         $node = new ScalarNodeDefinition($this->name);

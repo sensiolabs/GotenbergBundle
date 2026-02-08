@@ -11,6 +11,7 @@ use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
 use function Amp\async;
 use function Amp\Future\await;
+use function preg_match;
 
 #[DaggerObject]
 final class TestsGotenbergBundle
@@ -31,6 +32,19 @@ final class TestsGotenbergBundle
     private function getSymfonyVersion(): string
     {
         return $this->symfonyVersion ??= $this->symfonyContainer->envVariable('SYMFONY_CONSTRAINT');
+    }
+
+    private function getMajorMinorSymfonyVersion(): string
+    {
+        $symfonyVersion = $this->getSymfonyVersion();
+
+        $matches = [];
+
+        if (1 !== preg_match('#(?P<MajorMinor>^\d\.\d)#', $symfonyVersion, $matches)) {
+            return $symfonyVersion;
+        }
+
+        return $matches['MajorMinor'];
     }
 
     #[DaggerFunction]
@@ -95,8 +109,19 @@ final class TestsGotenbergBundle
     #[Doc('Run PHPStan and returns the container it ran in.')]
     public function phpstan(): string
     {
+        $majorMinorSymfonyVersion = $this->getMajorMinorSymfonyVersion();
+
+        $rootDirectory = $this->symfonyContainer->directory('.');
+        $phpstanSpecificFileName = "phpstan-{$majorMinorSymfonyVersion}.dist.neon";
+
+        $cmd = ['php', '-dmemory_limit=-1', './vendor/bin/phpstan', 'analyse'];
+
+        if ($rootDirectory->exists($phpstanSpecificFileName)) {
+            $cmd = [...$cmd, "--configuration={$phpstanSpecificFileName}"];
+        }
+
         return $this->symfonyContainer
-            ->withExec(['php', '-dmemory_limit=-1', './vendor/bin/phpstan', 'analyse'])
+            ->withExec($cmd)
             ->stdout()
         ;
     }
