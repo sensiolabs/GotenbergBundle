@@ -20,6 +20,10 @@
         <ini name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0"/>
     </php>
 
+    <extensions>
+        <bootstrap class="Sensiolabs\GotenbergBundle\Tests\PHPUnit\GotenbergExtension" />
+    </extensions>
+
     <testsuites>
         <testsuite name="default">
             <directory>tests</directory>

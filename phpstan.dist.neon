@@ -6,6 +6,8 @@ services:
 
 parameters:
 	phpVersion: 80100
+	bootstrapFiles:
+		- phpstan-bootstrap.php
 	level: 8
 	paths:
 		- 'config'

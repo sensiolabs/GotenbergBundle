@@ -30,7 +30,7 @@ final class TestsGotenbergBundle
 
     private function getSymfonyVersion(): string
     {
-        return $this->symfonyVersion ??= $this->symfonyContainer->envVariable('SYMFONY_REQUIRE');
+        return $this->symfonyVersion ??= $this->symfonyContainer->envVariable('SYMFONY_CONSTRAINT');
     }
 
     #[DaggerFunction]
@@ -39,12 +39,18 @@ final class TestsGotenbergBundle
     public function versions(): array
     {
         $phpVersion = $this->symfonyContainer->withExec(['php', '-v'])->stdout();
+        $symfonyVersion = $this->getSymfonyVersion();
         $composerPackages = $this->symfonyContainer->withExec(['composer', 'show'])->stdout();
 
         return [
             'PHP Version Debug:',
             '==================',
             $phpVersion,
+            '',
+            '',
+            'Symfony Version Debug:',
+            '======================',
+            $symfonyVersion,
             '',
             '',
             'Composer Packages:',

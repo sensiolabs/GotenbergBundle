@@ -99,6 +99,7 @@ class GotenbergBundle
             ->withExec(['composer', 'global', 'config', '--no-plugins', 'allow-plugins.symfony/flex', 'true'])
             ->withExec(['composer', 'global', 'require', 'symfony/flex'])
             ->withExec(['composer', 'config', 'extra.symfony.require', $symfonyVersion])
+            ->withEnvVariable('SYMFONY_CONSTRAINT', $symfonyVersion)
             ->withExec(['composer', 'config', 'minimum-stability', $minimumStability])
             ->withExec(['composer', 'update', '--prefer-dist', '--no-progress'])
         ;
