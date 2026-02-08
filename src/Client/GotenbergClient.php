@@ -26,7 +26,7 @@ final class GotenbergClient implements GotenbergClientInterface
 
         // Unfold header values not accepted by HttpClient
         // @see https://www.rfc-editor.org/rfc/rfc2822.html#section-2.2.3
-        $unfold = static fn (string $v) => str_replace("\r\n", '', $v);
+        $unfold = static fn (string $v): string => str_replace("\r\n", '', $v);
 
         try {
             return $this->client->request(
