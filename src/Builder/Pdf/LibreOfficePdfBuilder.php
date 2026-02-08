@@ -20,8 +20,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  *
  * @see https://gotenberg.dev/docs/routes#convert-with-libreoffice
  *
- * @methodDoc files
- * Adds office files to convert (overrides any previous files).
+ * @methodDoc files Adds office files to convert (overrides any previous files).
  *
  * @example files('document.doc', __DIR__'/../../public/document_2.odt')
  */

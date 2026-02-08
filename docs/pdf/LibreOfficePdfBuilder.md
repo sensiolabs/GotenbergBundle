@@ -345,7 +345,7 @@ Adds office files to convert (overrides any previous files).<br />
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->files('document.pdf', __DIR__'/../../public/document_2.pdf')
+    ->files('document.doc', __DIR__'/../../public/document_2.odt')
     ->generate()
     ->stream()
 ;
