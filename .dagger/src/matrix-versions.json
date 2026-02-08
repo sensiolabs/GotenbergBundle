@@ -30,30 +30,6 @@
         "allow-failure": true
     },
     {
-        "name": "Symfony '7.3' with PHP '8.2'",
-        "symfony-version": "7.3.*",
-        "php": "8.2",
-        "allow-failure": false
-    },
-    {
-        "name": "Symfony '7.3' with PHP '8.3'",
-        "symfony-version": "7.3.*",
-        "php": "8.3",
-        "allow-failure": false
-    },
-    {
-        "name": "Symfony '7.3' with PHP '8.4'",
-        "symfony-version": "7.3.*",
-        "php": "8.4",
-        "allow-failure": false
-    },
-    {
-        "name": "Symfony '7.3' with PHP '8.5'",
-        "symfony-version": "7.3.*",
-        "php": "8.5",
-        "allow-failure": false
-    },
-    {
         "name": "Symfony '7.4' with PHP '8.2'",
         "symfony-version": "7.4.*",
         "php": "8.2",

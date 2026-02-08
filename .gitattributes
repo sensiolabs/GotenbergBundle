@@ -1,10 +1,15 @@
+/.git* export-ignore
+/.dagger export-ignore
+/.github export-ignore
 /bin export-ignore
 /docs export-ignore
 /tests export-ignore
 /.editorconfig export-ignore
 /.php-cs-fixer.dist.php export-ignore
+/AGENTS.md export-ignore
 /composer-dependency-analyser.php export-ignore
-/phpstan.neon export-ignore
+/dagger.json export-ignore
 /phpstan.dist.neon export-ignore
+/phpstan-6.4.dist.neon export-ignore
+/phpstan-bootstrap.php export-ignore
 /phpunit.xml export-ignore
-/.git* export-ignore
