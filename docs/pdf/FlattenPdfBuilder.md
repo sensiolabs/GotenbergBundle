@@ -66,12 +66,12 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-Adds files (overrides any previous files).<br />
+If you provide multiple PDF files you will get ZIP folder containing all the converted PDF.<br />
 
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->files('document.pdf', '/absolute/path/document_2.pdf')
+    ->files('document.pdf', __DIR__'/../../public/document_2.pdf')
     ->generate()
     ->stream()
 ;
