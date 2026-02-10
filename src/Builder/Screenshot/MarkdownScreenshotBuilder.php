@@ -19,6 +19,15 @@ use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
  *
  * @see https://gotenberg.dev/docs/routes#screenshots-route
  * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ *
+ * @methodDoc files Add Markdown into a screenshot.
+ *  Required to generate a screenshot from Markdown builder.
+ *  You can pass several files with that method.
+ *
+ * @see https://gotenberg.dev/docs/routes#screenshots-route
+ * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ *
+ * @example files('header.md','content.md','footer.md')
  */
 #[WithBuilderConfiguration(type: 'screenshot', name: 'markdown')]
 final class MarkdownScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface

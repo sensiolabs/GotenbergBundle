@@ -179,12 +179,16 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-Adds files (overrides any previous files).<br />
+Add Markdown into a screenshot.<br />Required to generate a screenshot from Markdown builder.<br />You can pass several files with that method.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#screenshots-route](https://gotenberg.dev/docs/routes#screenshots-route)<br />
+> See: [https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route](https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route)
 
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->files('document.pdf', '/absolute/path/document_2.pdf')
+    ->files('header.md','content.md','footer.md')
     ->generate()
     ->stream()
 ;
