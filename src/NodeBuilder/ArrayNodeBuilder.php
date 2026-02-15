@@ -13,7 +13,7 @@ class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 
         public string|null $useAttributeAsKey = null,
 
-        /** @var 'integer'|'array'|'variable'|null */
+        /** @var 'integer'|'array'|'variable'|'scalar'|null */
         public string|null $prototype = null,
 
         /** @var NodeBuilderInterface[] */
@@ -37,6 +37,7 @@ class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
                 'integer' => $node->integerPrototype(),
                 'array' => $node->arrayPrototype(),
                 'variable' => $node->variablePrototype(),
+                'scalar' => $node->scalarPrototype(),
             };
 
             if (\count($this->children) > 0) {

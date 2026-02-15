@@ -54,4 +54,14 @@ trait FailOnTestCaseTrait
 
         $this->assertGotenbergFormData('failOnConsoleExceptions', 'true');
     }
+
+    public function testSetIgnoreResourceHttpStatusDomains(): void
+    {
+        $this->getDefaultBuilder()
+            ->ignoreResourceHttpStatusDomains(['sentry-cdn.com', 'analytics.example.com'])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('ignoreResourceHttpStatusDomains', '["sentry-cdn.com","analytics.example.com"]');
+    }
 }

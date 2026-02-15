@@ -166,6 +166,7 @@ class YourController
 - [singlePage](#singlepagebool-bool)
 - [waitDelay](#waitdelaystring-delay)
 - [waitForExpression](#waitforexpressionstring-expression)
+- [waitForSelector](#waitforselectorstring-selector)
 - [footer](#footerstring-template-array-context)
 - [footerFile](#footerfilestring-path)
 - [header](#headerstring-template-array-context)
@@ -176,6 +177,7 @@ class YourController
 - [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
 - [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
 - [failOnResourceLoadingFailed](#failonresourceloadingfailedbool-bool)
+- [ignoreResourceHttpStatusDomains](#ignoreresourcehttpstatusdomainsarray-domains)
 - [addExtraHttpHeaders](#addextrahttpheadersarray-headers)
 - [extraHttpHeaders](#extrahttpheadersarray-headers)
 - [userAgent](#useragentstring-useragent)
@@ -787,6 +789,21 @@ return $gotenberg
 ;
 ```
 
+### waitForSelector(string \$selector)
+Selector (e.g. '#id') to query before converting an HTML document into PDF until it matches a node.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#wait-before-rendering-chromium](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->waitForSelector('#special-id')
+    ->generate()
+    ->stream()
+;
+```
+
 
 ### footer(string \$template, array \$context)
 > [!TIP]
@@ -925,6 +942,21 @@ Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load 
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->failOnResourceLoadingFailed() // is same as `->failOnResourceLoadingFailed(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### ignoreResourceHttpStatusDomains(array \$domains)
+Exclude resources from failOnResourceHttpStatusCodes checks based on their hostname.<br /><br />The ignoreResourceHttpStatusDomains option allows you to exclude specific domains from the resource HTTP status<br />code checks. A match happens if the hostname equals the domain or is a subdomain of it<br />(e.g., browser.sentry-cdn.com matches sentry-cdn.com).<br /><br />Values are normalized (trimmed, lowercased) and may be provided as:<br /><br />example.com<br />.example.com or .example.com<br />example.com:443 (port is ignored)<br />https://example.com/path (scheme/path are ignored)<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->ignoreResourceHttpStatusDomains(['sentry-cdn.com','analytics.example.com'])
     ->generate()
     ->stream()
 ;

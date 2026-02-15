@@ -265,6 +265,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'ignore_resource_http_status_domains' => [],
                     ],
                     'url' => [
                         'cookies' => [],
@@ -287,6 +288,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'ignore_resource_http_status_domains' => [],
                     ],
                     'markdown' => [
                         'cookies' => [],
@@ -309,6 +311,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'ignore_resource_http_status_domains' => [],
                     ],
                     'office' => [
                         'download_from' => [],
@@ -387,6 +390,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'ignore_resource_http_status_domains' => [],
                     ],
                     'url' => [
                         'cookies' => [],
@@ -407,6 +411,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'ignore_resource_http_status_domains' => [],
                     ],
                     'markdown' => [
                         'cookies' => [],
@@ -427,6 +432,7 @@ final class ConfigurationTest extends TestCase
                         'header' => [
                             'context' => [],
                         ],
+                        'ignore_resource_http_status_domains' => [],
                     ],
                 ],
             ],

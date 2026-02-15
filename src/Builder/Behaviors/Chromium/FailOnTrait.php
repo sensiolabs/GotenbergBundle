@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
@@ -14,6 +15,8 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
  */
 trait FailOnTrait
 {
+    use LoggerAwareTrait;
+
     abstract protected function getBodyBag(): BodyBag;
 
     /**
@@ -87,6 +90,34 @@ trait FailOnTrait
         return $this;
     }
 
+    /**
+     * Exclude resources from failOnResourceHttpStatusCodes checks based on their hostname.
+     *
+     * The ignoreResourceHttpStatusDomains option allows you to exclude specific domains from the resource HTTP status
+     * code checks. A match happens if the hostname equals the domain or is a subdomain of it
+     * (e.g., browser.sentry-cdn.com matches sentry-cdn.com).
+     *
+     * Values are normalized (trimmed, lowercased) and may be provided as:
+     *
+     * example.com
+     * .example.com or .example.com
+     * example.com:443 (port is ignored)
+     * https://example.com/path (scheme/path are ignored)
+     *
+     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     *
+     * @example ignoreResourceHttpStatusDomains(['sentry-cdn.com', 'analytics.example.com'])
+     */
+    #[WithConfigurationNode(new ArrayNodeBuilder('ignore_resource_http_status_domains', prototype: 'scalar'))]
+    public function ignoreResourceHttpStatusDomains(array $domains): static
+    {
+        $this->logWarningIfVersionIs('<', '8.26', 'The option ignoreResourceHttpStatusDomains is not available.');
+
+        $this->getBodyBag()->set('ignoreResourceHttpStatusDomains', $domains);
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizeFailOn(): \Generator
     {
@@ -94,5 +125,6 @@ trait FailOnTrait
         yield 'failOnResourceHttpStatusCodes' => NormalizerFactory::json(false);
         yield 'failOnResourceLoadingFailed' => NormalizerFactory::bool();
         yield 'failOnConsoleExceptions' => NormalizerFactory::bool();
+        yield 'ignoreResourceHttpStatusDomains' => NormalizerFactory::json(false);
     }
 }

@@ -47,4 +47,21 @@ trait WaitBeforeRenderingTrait
 
         return $this;
     }
+
+    /**
+     * Selector (e.g. '#id') to query before converting an HTML document into PDF until it matches a node.
+     *
+     * @see https://gotenberg.dev/docs/routes#wait-before-rendering-chromium
+     *
+     * @example waitForSelector('#special-id')
+     */
+    #[WithConfigurationNode(new ScalarNodeBuilder('wait_for_selector', restrictTo: 'string'))]
+    public function waitForSelector(string $selector): static
+    {
+        $this->logWarningIfVersionIs('<', '8.26', 'The option waitForSelector is not available.');
+
+        $this->getBodyBag()->set('waitForSelector', $selector);
+
+        return $this;
+    }
 }

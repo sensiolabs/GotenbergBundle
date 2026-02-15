@@ -34,4 +34,14 @@ trait WaitBeforeRenderingTestCaseTrait
 
         $this->assertGotenbergFormData('waitForExpression', "window.status === 'ready'");
     }
+
+    public function testSetWaitForSelector(): void
+    {
+        $this->getDefaultBuilder()
+            ->waitForSelector('#special-id')
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('waitForSelector', '#special-id');
+    }
 }
