@@ -106,6 +106,8 @@ trait FailOnTrait
      *
      * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
      *
+     * @param list<string> $domains
+     *
      * @example ignoreResourceHttpStatusDomains(['sentry-cdn.com', 'analytics.example.com'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('ignore_resource_http_status_domains', prototype: 'scalar'))]

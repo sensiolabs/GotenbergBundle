@@ -956,7 +956,7 @@ Exclude resources from failOnResourceHttpStatusCodes checks based on their hostn
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->ignoreResourceHttpStatusDomains(['sentry-cdn.com','analytics.example.com'])
+    ->ignoreResourceHttpStatusDomains(['sentry-cdn.com', 'analytics.example.com'])
     ->generate()
     ->stream()
 ;
