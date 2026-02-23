@@ -8,6 +8,7 @@ trait ChromiumScreenshotTrait
     use Chromium\ContentTrait;
     use Chromium\CookieTrait;
     use Chromium\CustomHttpHeadersTrait;
+    use Chromium\EmulatedMediaFeaturesTrait;
     use Chromium\EmulatedMediaTypeTrait;
     use Chromium\FailOnTrait;
     use Chromium\PerformanceModeTrait;

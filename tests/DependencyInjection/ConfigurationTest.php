@@ -266,6 +266,7 @@ final class ConfigurationTest extends TestCase
                             'context' => [],
                         ],
                         'ignore_resource_http_status_domains' => [],
+                        'emulated_media_features' => [],
                     ],
                     'url' => [
                         'cookies' => [],
@@ -289,6 +290,7 @@ final class ConfigurationTest extends TestCase
                             'context' => [],
                         ],
                         'ignore_resource_http_status_domains' => [],
+                        'emulated_media_features' => [],
                     ],
                     'markdown' => [
                         'cookies' => [],
@@ -312,6 +314,7 @@ final class ConfigurationTest extends TestCase
                             'context' => [],
                         ],
                         'ignore_resource_http_status_domains' => [],
+                        'emulated_media_features' => [],
                     ],
                     'office' => [
                         'download_from' => [],
@@ -391,6 +394,7 @@ final class ConfigurationTest extends TestCase
                             'context' => [],
                         ],
                         'ignore_resource_http_status_domains' => [],
+                        'emulated_media_features' => [],
                     ],
                     'url' => [
                         'cookies' => [],
@@ -412,6 +416,7 @@ final class ConfigurationTest extends TestCase
                             'context' => [],
                         ],
                         'ignore_resource_http_status_domains' => [],
+                        'emulated_media_features' => [],
                     ],
                     'markdown' => [
                         'cookies' => [],
@@ -433,6 +438,7 @@ final class ConfigurationTest extends TestCase
                             'context' => [],
                         ],
                         'ignore_resource_http_status_domains' => [],
+                        'emulated_media_features' => [],
                     ],
                 ],
             ],

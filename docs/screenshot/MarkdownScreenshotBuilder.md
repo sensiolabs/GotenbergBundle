@@ -154,6 +154,7 @@ class YourController
 - [footerFile](#footerfilestring-path)
 - [header](#headerstring-template-array-context)
 - [headerFile](#headerfilestring-path)
+- [emulatedMediaFeatures](#emulatedmediafeaturesarray-emulatedmediafeatures)
 - [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
 - [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
 - [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
@@ -588,6 +589,22 @@ HTML file containing the header.<br /><br />As assets files, by default the HTML
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->headerFile('../templates/html/header.html')
+    ->generate()
+    ->stream()
+;
+```
+
+
+### emulatedMediaFeatures(array \$emulatedMediaFeatures)
+You can simulate specific browser conditions by overriding CSS media features.<br />This is particularly useful for forcing "Dark Mode" or testing layouts with reduced motion.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#emulated-media-features](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#emulated-media-features)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->emulatedMediaFeatures([['name' => 'prefers-color-scheme', 'value' => 'dark'], ['name' => 'prefers-reduced-motion', 'value' => 'reduce'])
     ->generate()
     ->stream()
 ;

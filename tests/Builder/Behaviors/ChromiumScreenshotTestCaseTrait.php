@@ -15,6 +15,9 @@ trait ChromiumScreenshotTestCaseTrait
     /** @use Chromium\CustomHttpHeadersTestCaseTrait<T> */
     use Chromium\CustomHttpHeadersTestCaseTrait;
 
+    /** @use Chromium\EmulatedMediaFeaturesTestCaseTrait<T> */
+    use Chromium\EmulatedMediaFeaturesTestCaseTrait;
+
     /** @use Chromium\EmulatedMediaTypeTestCaseTrait<T> */
     use Chromium\EmulatedMediaTypeTestCaseTrait;
 
