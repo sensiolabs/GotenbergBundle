@@ -40,7 +40,7 @@ class YourController
 
 - [addMetadata](#addmetadatastring-key-string-value)
 - [downloadFrom](#downloadfromarray-downloadfrom)
-- [embeds](#embedsstringablestring-paths)
+- [embedFiles](#embedfilesstringablestring-paths)
 - [files](#filesstringablestring-paths)
 - [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
@@ -83,8 +83,8 @@ return $gotenberg
 ;
 ```
 
-### embeds(Stringable|string ...\$paths)
-Add file to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+### embedFiles(Stringable|string ...\$paths)
+Add files to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/routes#embed-files-route](https://gotenberg.dev/docs/routes#embed-files-route)
@@ -92,7 +92,7 @@ Add file to embed.<br /><br />As assets files, by default the files to embed are
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->embeds('document.xml','document_2.json')
+    ->embedFiles('document.xml','document_2.json')
     ->generate()
     ->stream()
 ;

@@ -22,7 +22,7 @@ trait EmbedTrait
      *
      * @see https://gotenberg.dev/docs/routes#embed-files-route
      *
-     * @example embeds('document.xml','document_2.json')
+     * @example embedFiles('document.xml','document_2.json')
      */
     public function embedFiles(string|\Stringable ...$paths): self
     {
