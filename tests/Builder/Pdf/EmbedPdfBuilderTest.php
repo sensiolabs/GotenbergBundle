@@ -43,7 +43,7 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
     {
         return $builder
             ->files('pdf/simple_pdf.pdf')
-            ->embeds('embed/facturX.xml')
+            ->embedFiles('embed/facturX.xml')
         ;
     }
 
@@ -89,7 +89,7 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
 
         $this->getBuilder()
             ->files('pdf/simple_pdf.pdf')
-            ->embeds($classEmbed)
+            ->embedFiles($classEmbed)
             ->generate()
         ;
 

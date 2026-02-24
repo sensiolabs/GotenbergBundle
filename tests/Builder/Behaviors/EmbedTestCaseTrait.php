@@ -22,7 +22,7 @@ trait EmbedTestCaseTrait
 
         $this->getDefaultBuilder()
             ->filename('testEmbed.pdf')
-            ->embeds('embed/facturX.xml')
+            ->embedFiles('embed/facturX.xml')
             ->generate()
         ;
 

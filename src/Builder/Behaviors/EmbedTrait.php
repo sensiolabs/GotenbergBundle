@@ -14,7 +14,7 @@ trait EmbedTrait
     abstract protected function getBodyBag(): BodyBag;
 
     /**
-     * Add file to embed.
+     * Add files to embed.
      *
      * As assets files, by default the files to embed are fetch in the assets folder
      * of your application. For more information about path resolution go to
@@ -24,7 +24,7 @@ trait EmbedTrait
      *
      * @example embeds('document.xml','document_2.json')
      */
-    public function embeds(string|\Stringable ...$paths): self
+    public function embedFiles(string|\Stringable ...$paths): self
     {
         $this->logWarningIfVersionIs('<', '8.25', 'The embeds option is not available.');
 
