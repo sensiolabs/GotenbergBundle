@@ -10,8 +10,6 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
  * @package Behavior\\Encrypt
  *
  * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
- * @see https://gotenberg.dev/docs/routes#encrypt-chromium
- * @see https://gotenberg.dev/docs/routes#encrypt-libreoffice
  */
 trait EncryptTrait
 {
