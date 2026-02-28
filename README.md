@@ -257,7 +257,7 @@ class YourController
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/getting-started/introduction).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html).
 
 ## Advanced Usage
 
