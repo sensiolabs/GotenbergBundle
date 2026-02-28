@@ -14,7 +14,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to generate a screenshot from a URL.
  *
- * @see https://gotenberg.dev/docs/routes#screenshots-route
+ * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-url
  */
 #[WithBuilderConfiguration(type: 'screenshot', name: 'url')]
 final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface
@@ -27,7 +27,7 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
     /**
      * URL of the page you want to convert into a screenshot.
      *
-     * @see https://gotenberg.dev/docs/routes#screenshots-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-url
      *
      * @example url('https://sensiolabs.com/fr/')
      */
@@ -46,8 +46,6 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
      *
      * @param string       $name       #Route
      * @param array<mixed> $parameters
-     *
-     * @see https://gotenberg.dev/docs/routes#screenshots-route
      *
      * @example route('home', ['my_var' => 'value'])
      */

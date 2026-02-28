@@ -1,7 +1,7 @@
 # Working with fonts
 
-You can add fonts in the same way as assets. The `gotenberg_font_face(path_to_font, font_family)` 
-function follows the same path resolution logic as [gotenberg_asset()](assets.md), 
+You can add fonts in the same way as assets. The `gotenberg_font_face(path_to_font, font_family)`
+function follows the same path resolution logic as [gotenberg_asset()](assets.md),
 but it generates a `@font-face` rule that can be used inside a `<style>` block.
 
 |            |         HTML         |        URL         |      Markdown      |
@@ -9,16 +9,16 @@ but it generates a `@font-face` rule that can be used inside a `<style>` block.
 |    PDF     |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |
 | Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |
 
-> [!WARNING]  
-> As a reminder, we can only load assets in the content. And not in Header or Footer.  
-> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/routes#header-footer-chromium).
+> [!WARNING]
+> As a reminder, we can only load assets in the content. And not in Header or Footer.
+> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer).
 >
-> For header and footer, only fonts installed in the Docker image are loaded. 
+> For header and footer, only fonts installed in the Docker image are loaded.
 > For more information about, see the [fonts configuration section](https://gotenberg.dev/docs/configuration#fonts).
 
 ## Twig file
 
-The `{{ gotenberg_font_face() }}` function helps generate an `@font-face` 
+The `{{ gotenberg_font_face() }}` function helps generate an `@font-face`
 declaration with the correct asset path expected by gotenberg.
 
 ### Example with "gotenberg_font_face"
@@ -131,10 +131,10 @@ class YourController
 
 ## HTML file
 
-If your file is an HTML file (not a Twig template), you can still include 
+If your file is an HTML file (not a Twig template), you can still include
 fonts manually.
 
-The only requirement is that their paths in the HTML file must be on the root 
+The only requirement is that their paths in the HTML file must be on the root
 level.
 
 ```html
@@ -156,7 +156,7 @@ level.
 </html>
 ```
 
-All you need to do is to add the path of the asset file to either 
+All you need to do is to add the path of the asset file to either
 `assets(...string)` or `addAsset(string)` function.
 
 ```php

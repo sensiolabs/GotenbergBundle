@@ -17,7 +17,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\UnitNodeBuilder;
 
 /**
- * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+ * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
  *
  * @package Behavior\\Chromium\\PageProperties
  */
@@ -45,7 +45,7 @@ trait PdfPagePropertiesTrait
     /**
      * Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
      *
      * @example paperWidth(15, Unit::Inches)
      */
@@ -60,7 +60,7 @@ trait PdfPagePropertiesTrait
     /**
      * Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
      *
      * @example paperHeight(15, Unit::Inches)
      */
@@ -168,7 +168,7 @@ trait PdfPagePropertiesTrait
     /**
      * Overrides the default margins (e.g., 0.39), in inches.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
      *
      * @example margins(1, 2, 3, 4, Unit::Inches)
      */

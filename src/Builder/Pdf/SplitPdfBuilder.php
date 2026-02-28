@@ -21,14 +21,14 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to split several PDF pages.
  *
- * @see https://gotenberg.dev/docs/routes#split-pdfs-route
+ * @see https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs
  *
  * @methodDoc files Add PDF files to split.
  * As assets files, by default the PDF files are fetch in the assets folder
  * of your application. For more information about path resolution go to
  * assets documentation.
  *
- * @see https://gotenberg.dev/docs/routes#split-pdfs-route
+ * @see https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs
  *
  * @example files('document.pdf','document_2.pdf')
  */

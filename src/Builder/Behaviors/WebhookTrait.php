@@ -42,7 +42,7 @@ trait WebhookTrait
     /**
      * @param WebhookConfiguration $webhook
      *
-     * @see https://gotenberg.dev/docs/webhook
+     * @see https://gotenberg.dev/docs/webhook-download#webhooks
      *
      * @example webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST']])
      */

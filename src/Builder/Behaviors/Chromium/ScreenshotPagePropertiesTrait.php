@@ -21,7 +21,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * The device screen width in pixels. (Default 800).
      *
-     * @see https://gotenberg.dev/docs/routes#screenshots-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example width(600)
      */
@@ -38,7 +38,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * The device screen width in pixels. (Default 600).
      *
-     * @see https://gotenberg.dev/docs/routes#screenshots-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example height(600)
      */
@@ -55,7 +55,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * Define whether to clip the screenshot according to the device dimensions. (Default false).
      *
-     * @see https://gotenberg.dev/docs/routes#screenshots-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example clip() // is same as `->clip(true)`
      */
@@ -72,7 +72,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * The image compression format, either "png", "jpeg" or "webp". (default png).
      *
-     * @see https://gotenberg.dev/docs/routes#screenshots-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example format(ScreenshotFormat::Webp)
      */
@@ -89,7 +89,7 @@ trait ScreenshotPagePropertiesTrait
      *
      * @param int<0, 100> $quality
      *
-     * @see https://gotenberg.dev/docs/routes#screenshots-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example quality(50)
      */

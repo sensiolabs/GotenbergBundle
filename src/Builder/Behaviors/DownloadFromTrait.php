@@ -22,7 +22,7 @@ trait DownloadFromTrait
      *
      * @param list<array{url: string, extraHttpHeaders?: array<string, string>}> $downloadFrom
      *
-     * @see https://gotenberg.dev/docs/routes#download-from
+     * @see https://gotenberg.dev/docs/webhook-download#download-from
      *
      * @example downloadFrom([['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeader' => 'MyValue']], ['url' => 'http://example.com/url/to/file', 'extraHttpHeaders' => ['MyHeaderOne' => 'MyValue', 'MyHeaderTwo' => 'MyValue']]])
      */

@@ -19,7 +19,7 @@ You may have the possibility to add header or footer to your generated PDF.
 > ```
 >
 > Some other limitations exist about header and footer.
-> For more information about [Header and Footer](https://gotenberg.dev/docs/routes#header-footer-chromium).
+> For more information about [Header and Footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer).
 
 > [!TIP]
 > When using header or footer, you need to think about adding margins to your content. Or your header/footer will be under your content.

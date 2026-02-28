@@ -12,7 +12,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to convert HTML or Twig files into screenshot.
  *
- * @see https://gotenberg.dev/docs/routes#screenshots-route
+ * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html
  */
 #[WithBuilderConfiguration(type: 'screenshot', name: 'html')]
 final class HtmlScreenshotBuilder extends AbstractBuilder implements BuilderAssetInterface

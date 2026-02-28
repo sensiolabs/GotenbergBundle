@@ -23,7 +23,7 @@ trait FailOnTrait
      * Return a 409 Conflict response if the HTTP status code from
      * the main page is not acceptable. (default [499,599]). (overrides any previous configuration).
      *
-     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
      *
      * @param array<int, int> $statusCodes
      *
@@ -40,7 +40,7 @@ trait FailOnTrait
     /**
      * Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable. (overrides any previous configuration).
      *
-     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
      *
      * @param list<int<100, 599>> $statusCodes
      *
@@ -60,7 +60,7 @@ trait FailOnTrait
      * Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load at least one resource.
      * (default false).
      *
-     * @see https://gotenberg.dev/docs/routes#network-errors-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking
      *
      * @example failOnResourceLoadingFailed() // is same as `->failOnResourceLoadingFailed(true)`
      */
@@ -78,7 +78,7 @@ trait FailOnTrait
      * Forces GotenbergPdf to return a 409 Conflict response if there are
      * exceptions in the Chromium console. (default false).
      *
-     * @see https://gotenberg.dev/docs/routes#console-exceptions-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console
      *
      * @example failOnConsoleExceptions() // is same as `->failOnConsoleExceptions(true)`
      */
@@ -104,7 +104,7 @@ trait FailOnTrait
      * example.com:443 (port is ignored)
      * https://example.com/path (scheme/path are ignored)
      *
-     * @see https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
      *
      * @param list<string> $domains
      *

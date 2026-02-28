@@ -14,7 +14,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to generate a PDF from a URL.
  *
- * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+ * @see https://gotenberg.dev/docs/convert-with-chromium/convert-url-to-pdf
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'url')]
 final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface
@@ -27,7 +27,7 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
     /**
      * URL of the page you want to convert into PDF.
      *
-     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-url-to-pdf
      *
      * @example url('https://sensiolabs.com/fr/')
      */
@@ -47,7 +47,7 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
      * @param string       $name       #Route
      * @param array<mixed> $parameters
      *
-     * @see https://gotenberg.dev/docs/routes#url-into-pdf-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-url-to-pdf
      *
      * @example route('home', ['my_var' => 'value'])
      */

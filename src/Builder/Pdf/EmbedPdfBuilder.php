@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * Embed file(s) into pdf files.
  *
- * @see https://gotenberg.dev/docs/routes#embed-files-route
+ * @see https://gotenberg.dev/docs/manipulate-pdfs/attachments
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'embed')]
 final class EmbedPdfBuilder extends AbstractBuilder
@@ -34,7 +34,7 @@ final class EmbedPdfBuilder extends AbstractBuilder
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @see https://gotenberg.dev/docs/routes#embed-files-route
+     * @see https://gotenberg.dev/docs/manipulate-pdfs/attachments
      *
      * @example files('document.pdf','document_2.pdf')
      */

@@ -18,10 +18,7 @@ trait MetadataTrait
     /**
      * Resets the metadata.
      *
-     * @see https://gotenberg.dev/docs/routes#metadata-chromium
-     * @see https://gotenberg.dev/docs/routes#metadata-libreoffice
-     * @see https://gotenberg.dev/docs/routes#write-pdf-metadata-route
-     * @see https://gotenberg.dev/docs/routes#merge-pdfs-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines
      * @see https://exiftool.org/TagNames/XMP.html#pdf
      *
      * @param array{

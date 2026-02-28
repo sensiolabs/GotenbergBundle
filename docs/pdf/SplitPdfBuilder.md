@@ -3,7 +3,7 @@
 You may have the possibility to split several PDF pages.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-pdfs-route](https://gotenberg.dev/docs/routes#split-pdfs-route)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)
 
 ## Basic usage
 
@@ -78,7 +78,7 @@ return $gotenberg
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
+> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -93,7 +93,7 @@ return $gotenberg
 Add file to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#embed-files-route](https://gotenberg.dev/docs/routes#embed-files-route)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
 
 ```php
 return $gotenberg
@@ -108,7 +108,7 @@ return $gotenberg
 Add PDF files to split.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-pdfs-route](https://gotenberg.dev/docs/routes#split-pdfs-route)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)
 
 ```php
 return $gotenberg
@@ -123,7 +123,7 @@ return $gotenberg
 Flattening a PDF combines all its contents into a single layer. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#flatten-libreoffice](https://gotenberg.dev/docs/routes#flatten-libreoffice)
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
 
 ```php
 return $gotenberg
@@ -138,10 +138,7 @@ return $gotenberg
 Resets the metadata.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#metadata-chromium](https://gotenberg.dev/docs/routes#metadata-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#metadata-libreoffice](https://gotenberg.dev/docs/routes#metadata-libreoffice)<br />
-> See: [https://gotenberg.dev/docs/routes#write-pdf-metadata-route](https://gotenberg.dev/docs/routes#write-pdf-metadata-route)<br />
-> See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)<br />
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines)<br />
 > See: [https://exiftool.org/TagNames/XMP.html#pdf](https://exiftool.org/TagNames/XMP.html#pdf)
 
 ```php
@@ -157,7 +154,7 @@ return $gotenberg
 Convert the resulting PDF into the given PDF/A format.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#pdfa-chromium](https://gotenberg.dev/docs/routes#pdfa-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -172,7 +169,7 @@ return $gotenberg
 Enable PDF for Universal Access for optimal accessibility.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#pdfa-chromium](https://gotenberg.dev/docs/routes#pdfa-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -187,8 +184,8 @@ return $gotenberg
 Either intervals or pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -203,8 +200,8 @@ return $gotenberg
 Either the intervals or the page ranges to extract, depending on the selected mode.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -219,8 +216,8 @@ return $gotenberg
 Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -234,7 +231,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
 
 ```php
 return $gotenberg

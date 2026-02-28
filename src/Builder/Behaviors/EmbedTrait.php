@@ -20,7 +20,7 @@ trait EmbedTrait
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @see https://gotenberg.dev/docs/routes#embed-files-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines
      *
      * @example embeds('document.xml','document_2.json')
      */

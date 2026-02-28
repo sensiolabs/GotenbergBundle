@@ -60,7 +60,7 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @see https://gotenberg.dev/docs/routes#header-footer-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @example header('header.html.twig', ['my_var' => 'value'])
      */
@@ -79,7 +79,7 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @see https://gotenberg.dev/docs/routes#header-footer-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @example footer('header.html.twig', ['my_var' => 'value'])
      */
@@ -99,7 +99,7 @@ trait ContentTrait
      * If your HTML files are in another folder, you can override the default value of assets_directory in your
      * configuration file config/sensiolabs_gotenberg.yml.
      *
-     * @see https://gotenberg.dev/docs/routes#header-footer-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @throws PartRenderingException if the template could not be rendered
      *
@@ -117,7 +117,7 @@ trait ContentTrait
      * If your HTML files are in another folder, you can override the default value of assets_directory in your
      * configuration file config/sensiolabs_gotenberg.yml.
      *
-     * @see https://gotenberg.dev/docs/routes#header-footer-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @throws PartRenderingException if the template could not be rendered
      *

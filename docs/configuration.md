@@ -114,46 +114,46 @@ sensiolabs_gotenberg:
                     # Default context for footer twig template.
                     context:              []
 
-                # Define whether to print the entire content in one single page. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Define whether to print the entire content in one single page. - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 single_page:          null
 
                 # The standard paper size to use, either "letter", "legal", "tabloid", "ledger", "A0", "A1", "A2", "A3", "A4", "A5", "A6" - default None.
                 paper_standard_size:  null # One of "letter"; "legal"; "tabloid"; "ledger"; "A0"; "A1"; "A2"; "A3"; "A4"; "A5"; "A6"
 
-                # Paper width, in inches - default 8.5. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Paper width, in inches - default 8.5. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 paper_width:          null
 
-                # Paper height, in inches - default 11. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Paper height, in inches - default 11. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 paper_height:         null
 
-                # Top margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Top margin, in inches - default 0.39. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 margin_top:           null
 
-                # Bottom margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Bottom margin, in inches - default 0.39. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 margin_bottom:        null
 
-                # Left margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Left margin, in inches - default 0.39. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 margin_left:          null
 
-                # Right margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Right margin, in inches - default 0.39. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 margin_right:         null
 
-                # Define whether to prefer page size as defined by CSS - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Define whether to prefer page size as defined by CSS - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 prefer_css_page_size: null
 
-                # Print the background graphics - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Print the background graphics - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 print_background:     null
 
-                # Hide the default white background and allow generating PDFs with transparency - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Hide the default white background and allow generating PDFs with transparency - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 omit_background:      null
 
-                # The paper orientation to landscape - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # The paper orientation to landscape - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 landscape:            null
 
-                # The scale of the page rendering (e.g., 1.0) - default 1.0. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # The scale of the page rendering (e.g., 1.0) - default 1.0. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
                 scale:                null
 
-                # Page ranges to print, e.g., "1-5, 8, 11-13" - default All pages. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Page ranges to print, e.g., "1-5, 8, 11-13" - default All pages. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
                 native_page_ranges:   null
 
                 # Duration (e.g, "5s") to wait when loading an HTML document before converting it into PDF - default None. https://gotenberg.dev/docs/routes#wait-before-rendering
@@ -165,7 +165,7 @@ sensiolabs_gotenberg:
                 # The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type
                 emulated_media_type:  null # One of "print"; "screen"
 
-                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/routes#cookies-chromium
+                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                 cookies:
 
                     # Prototype
@@ -177,13 +177,13 @@ sensiolabs_gotenberg:
                         secure:               null
                         httpOnly:             null
 
-                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/routes#cookies-chromium
+                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                         sameSite:             null # One of "Strict"; "Lax"; "None"
 
-                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 extra_http_headers:
 
                     # Prototype
@@ -191,7 +191,7 @@ sensiolabs_gotenberg:
                         name:                 ~
                         value:                ~
 
-                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
                 fail_on_http_status_codes:
 
                     # Defaults:
@@ -219,7 +219,7 @@ sensiolabs_gotenberg:
                     Title:                ~
                     Trapped:              ~ # One of "True"; "False"; "Unknown"
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -247,7 +247,7 @@ sensiolabs_gotenberg:
                 # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-chromium
                 split_unify: null
 
-                # Define whether to generate tagged (accessible) PDF. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Define whether to generate tagged (accessible) PDF. - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
                 generate_tagged_pdf: null
 
                 # Webhook configuration name or definition.
@@ -317,46 +317,46 @@ sensiolabs_gotenberg:
                     # Default context for footer twig template.
                     context:              []
 
-                # Define whether to print the entire content in one single page. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Define whether to print the entire content in one single page. - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
                 single_page:          null
 
                 # The standard paper size to use, either "letter", "legal", "tabloid", "ledger", "A0", "A1", "A2", "A3", "A4", "A5", "A6" - default None.
                 paper_standard_size:  null # One of "letter"; "legal"; "tabloid"; "ledger"; "A0"; "A1"; "A2"; "A3"; "A4"; "A5"; "A6"
 
-                # Paper width, in inches - default 8.5. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Paper width, in inches - default 8.5. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
                 paper_width:          null
 
-                # Paper height, in inches - default 11. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Paper height, in inches - default 11. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
                 paper_height:         null
 
-                # Top margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Top margin, in inches - default 0.39. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
                 margin_top:           null
 
-                # Bottom margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Bottom margin, in inches - default 0.39. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
                 margin_bottom:        null
 
-                # Left margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Left margin, in inches - default 0.39. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
                 margin_left:          null
 
-                # Right margin, in inches - default 0.39. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Right margin, in inches - default 0.39. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
                 margin_right:         null
 
                 # Define whether to prefer page size as defined by CSS - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
                 prefer_css_page_size: null
 
-                # Print the background graphics - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Print the background graphics - default false.
                 print_background:     null
 
-                # Hide the default white background and allow generating PDFs with transparency - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Hide the default white background and allow generating PDFs with transparency - default false.
                 omit_background:      null
 
-                # The paper orientation to landscape - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # The paper orientation to landscape - default false.
                 landscape:            null
 
-                # The scale of the page rendering (e.g., 1.0) - default 1.0. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # The scale of the page rendering (e.g., 1.0) - default 1.0.
                 scale:                null
 
-                # Page ranges to print, e.g., "1-5, 8, 11-13" - default All pages. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Page ranges to print, e.g., "1-5, 8, 11-13" - default All pages.
                 native_page_ranges:   null
 
                 # Duration (e.g, "5s") to wait when loading an HTML document before converting it into PDF - default None. https://gotenberg.dev/docs/routes#wait-before-rendering
@@ -368,7 +368,7 @@ sensiolabs_gotenberg:
                 # The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type
                 emulated_media_type:  null # One of "print"; "screen"
 
-                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/routes#cookies-chromium
+                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                 cookies:
 
                     # Prototype
@@ -380,13 +380,13 @@ sensiolabs_gotenberg:
                         secure:               null
                         httpOnly:             null
 
-                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/routes#cookies-chromium
+                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                         sameSite:             null # One of "Strict"; "Lax"; "None"
 
-                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 extra_http_headers: []
 
                     # Example:
@@ -395,7 +395,7 @@ sensiolabs_gotenberg:
                     # Or the syntax below is also possible
                     # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
-                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
                 fail_on_http_status_codes:
 
                     # Defaults:
@@ -423,7 +423,7 @@ sensiolabs_gotenberg:
                     Title:                ~
                     Trapped:              ~ # One of "True"; "False"; "Unknown"
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -570,7 +570,7 @@ sensiolabs_gotenberg:
                 # The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type
                 emulated_media_type:  null # One of "print"; "screen"
 
-                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/routes#cookies-chromium
+                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                 cookies:
 
                     # Prototype
@@ -582,13 +582,13 @@ sensiolabs_gotenberg:
                         secure:               null
                         httpOnly:             null
 
-                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/routes#cookies-chromium
+                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                         sameSite:             null # One of "Strict"; "Lax"; "None"
 
-                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 extra_http_headers: []
 
                     # Example:
@@ -597,7 +597,7 @@ sensiolabs_gotenberg:
                     # Or the syntax below is also possible
                     # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
-                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
                 fail_on_http_status_codes:
 
                     # Defaults:
@@ -625,7 +625,7 @@ sensiolabs_gotenberg:
                     Title:                ~
                     Trapped:              ~ # One of "True"; "False"; "Unknown"
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -787,7 +787,7 @@ sensiolabs_gotenberg:
                 # If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200. - default 300. https://gotenberg.dev/docs/routes#compress-libreoffice
                 max_image_resolution: null # One of 75; 150; 300; 600; 1200
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -806,13 +806,13 @@ sensiolabs_gotenberg:
                 # Enable PDF for Universal Access for optimal accessibility - default false.
                 pdf_universal_access: null
 
-                # Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
+                # Either intervals or pages. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
                 split_mode: null
 
-                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
+                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
                 split_span: null
 
-                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-libreoffice
+                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
                 split_unify: null
 
                 # Flatten the resulting PDF. - default None. https://gotenberg.dev/docs/routes#flatten-libreoffice
@@ -840,7 +840,7 @@ sensiolabs_gotenberg:
                     Title:                ~
                     Trapped:              ~ # One of "True"; "False"; "Unknown"
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -853,7 +853,7 @@ sensiolabs_gotenberg:
                                 name:                 ~
                                 value:                ~
 
-                # Flatten the resulting PDF. - default None. https://gotenberg.dev/docs/routes#merge-pdfs-route
+                # Flatten the resulting PDF. - default None. https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs
                 flatten: null
             convert:
 
@@ -863,7 +863,7 @@ sensiolabs_gotenberg:
                 # Enable PDF for Universal Access for optimal accessibility - default false.
                 pdf_universal_access: null
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -876,13 +876,13 @@ sensiolabs_gotenberg:
                                 name:                 ~
                                 value:                ~
             split:
-                # Either intervals or pages. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
+                # Either intervals or pages. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
                 split_mode: null
 
-                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/routes#split-libreoffice
+                # Either the intervals or the page ranges to extract, depending on the selected mode. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
                 split_span: null
 
-                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/routes#split-libreoffice
+                # Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. - default false. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
                 split_unify: null
 
                 # Convert PDF into the given PDF/A format - default None.
@@ -906,10 +906,10 @@ sensiolabs_gotenberg:
                     Title:                ~
                     Trapped:              ~ # One of "True"; "False"; "Unknown"
 
-                # Flatten the resulting PDF. - default None. https://gotenberg.dev/docs/routes#split-pdfs-route
+                # Flatten the resulting PDF. - default None. https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs
                 flatten: null
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#split-pdfs-route
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs
                 download_from:
 
                     # Prototype
@@ -924,19 +924,19 @@ sensiolabs_gotenberg:
         screenshot:
             html:
 
-                # The device screen width in pixels. - default 800. https://gotenberg.dev/docs/routes#screenshots-route
+                # The device screen width in pixels. - default 800. https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
                 width:                null
 
-                # The device screen height in pixels. - default 600. https://gotenberg.dev/docs/routes#screenshots-route
+                # The device screen height in pixels. - default 600. https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
                 height:               null
 
-                # Define whether to clip the screenshot according to the device dimensions - default false. https://gotenberg.dev/docs/routes#screenshots-route
+                # Define whether to clip the screenshot according to the device dimensions - default false. https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
                 clip:                 null
 
-                # The image compression format, either "png", "jpeg" or "webp" - default png. https://gotenberg.dev/docs/routes#screenshots-route
+                # The image compression format, either "png", "jpeg" or "webp" - default png. https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
                 format:               null # One of "png"; "jpeg"; "webp"
 
-                # The compression quality from range 0 to 100 (jpeg only) - default 100. https://gotenberg.dev/docs/routes#screenshots-route
+                # The compression quality from range 0 to 100 (jpeg only) - default 100. https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
                 quality:              null
 
                 # Hide the default white background and allow generating PDFs with transparency - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
@@ -954,7 +954,7 @@ sensiolabs_gotenberg:
                 # The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type
                 emulated_media_type:  null # One of "print"; "screen"
 
-                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/routes#cookies-chromium
+                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                 cookies:
 
                     # Prototype
@@ -966,13 +966,13 @@ sensiolabs_gotenberg:
                         secure:               null
                         httpOnly:             null
 
-                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/routes#cookies-chromium
+                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                         sameSite:             null # One of "Strict"; "Lax"; "None"
 
-                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 extra_http_headers: []
 
                     # Example:
@@ -981,7 +981,7 @@ sensiolabs_gotenberg:
                     # Or the syntax below is also possible
                     # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
-                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
                 fail_on_http_status_codes:
 
                     # Defaults:
@@ -994,7 +994,7 @@ sensiolabs_gotenberg:
                 # Do not wait for Chromium network to be idle. - default false. https://gotenberg.dev/docs/routes#performance-mode-chromium
                 skip_network_idle_event: null
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -1051,19 +1051,19 @@ sensiolabs_gotenberg:
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             url:
 
-                # The device screen width in pixels. - default 800. https://gotenberg.dev/docs/routes#screenshots-route
+                # The device screen width in pixels. - default 800. https://gotenberg.dev/docs/convert-with-chromium/screenshot-url
                 width:                null
 
-                # The device screen height in pixels. - default 600. https://gotenberg.dev/docs/routes#screenshots-route
+                # The device screen height in pixels. - default 600. https://gotenberg.dev/docs/convert-with-chromium/screenshot-url
                 height:               null
 
-                # Define whether to clip the screenshot according to the device dimensions - default false. https://gotenberg.dev/docs/routes#screenshots-route
+                # Define whether to clip the screenshot according to the device dimensions - default false. https://gotenberg.dev/docs/convert-with-chromium/screenshot-url
                 clip:                 null
 
-                # The image compression format, either "png", "jpeg" or "webp" - default png. https://gotenberg.dev/docs/routes#screenshots-route
+                # The image compression format, either "png", "jpeg" or "webp" - default png. https://gotenberg.dev/docs/convert-with-chromium/screenshot-url#image-format
                 format:               null # One of "png"; "jpeg"; "webp"
 
-                # The compression quality from range 0 to 100 (jpeg only) - default 100. https://gotenberg.dev/docs/routes#screenshots-route
+                # The compression quality from range 0 to 100 (jpeg only) - default 100. https://gotenberg.dev/docs/convert-with-chromium/screenshot-url
                 quality:              null
 
                 # Hide the default white background and allow generating PDFs with transparency - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
@@ -1081,7 +1081,7 @@ sensiolabs_gotenberg:
                 # The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type
                 emulated_media_type:  null # One of "print"; "screen"
 
-                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/routes#cookies-chromium
+                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                 cookies:
 
                     # Prototype
@@ -1093,13 +1093,13 @@ sensiolabs_gotenberg:
                         secure:               null
                         httpOnly:             null
 
-                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/routes#cookies-chromium
+                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                         sameSite:             null # One of "Strict"; "Lax"; "None"
 
-                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 extra_http_headers: []
 
                     # Example:
@@ -1108,7 +1108,7 @@ sensiolabs_gotenberg:
                     # Or the syntax below is also possible
                     # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
-                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
                 fail_on_http_status_codes:
 
                     # Defaults:
@@ -1121,7 +1121,7 @@ sensiolabs_gotenberg:
                 # Do not wait for Chromium network to be idle. - default false. https://gotenberg.dev/docs/routes#performance-mode-chromium
                 skip_network_idle_event: null
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -1178,25 +1178,25 @@ sensiolabs_gotenberg:
                         # - { name: 'X-Custom-Header', value: 'custom-header-value' }
             markdown:
 
-                # The device screen width in pixels. - default 800. https://gotenberg.dev/docs/routes#screenshots-route
+                # The device screen width in pixels. - default 800. https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown#rendering-behavior
                 width:                null
 
-                # The device screen height in pixels. - default 600. https://gotenberg.dev/docs/routes#screenshots-route
+                # The device screen height in pixels. - default 600. https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown#rendering-behavior
                 height:               null
 
-                # Define whether to clip the screenshot according to the device dimensions - default false. https://gotenberg.dev/docs/routes#screenshots-route
+                # Define whether to clip the screenshot according to the device dimensions - default false. https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown#rendering-behavior
                 clip:                 null
 
-                # The image compression format, either "png", "jpeg" or "webp" - default png. https://gotenberg.dev/docs/routes#screenshots-route
+                # The image compression format, either "png", "jpeg" or "webp" - default png. hhttps://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown#image-format
                 format:               null # One of "png"; "jpeg"; "webp"
 
-                # The compression quality from range 0 to 100 (jpeg only) - default 100. https://gotenberg.dev/docs/routes#screenshots-route
+                # The compression quality from range 0 to 100 (jpeg only) - default 100. https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown#rendering-behavior
                 quality:              null
 
-                # Hide the default white background and allow generating PDFs with transparency - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Hide the default white background and allow generating PDFs with transparency - default false.
                 omit_background:      null
 
-                # Define whether to optimize image encoding for speed, not for resulting size. - default false. https://gotenberg.dev/docs/routes#page-properties-chromium
+                # Define whether to optimize image encoding for speed, not for resulting size. - default false.
                 optimize_for_speed:   null
 
                 # Duration (e.g, "5s") to wait when loading an HTML document before converting it into PDF - default None. https://gotenberg.dev/docs/routes#wait-before-rendering
@@ -1208,7 +1208,7 @@ sensiolabs_gotenberg:
                 # The media type to emulate, either "screen" or "print" - default "print". https://gotenberg.dev/docs/routes#emulated-media-type
                 emulated_media_type:  null # One of "print"; "screen"
 
-                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/routes#cookies-chromium
+                # Cookies to store in the Chromium cookie jar - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                 cookies:
 
                     # Prototype
@@ -1220,13 +1220,13 @@ sensiolabs_gotenberg:
                         secure:               null
                         httpOnly:             null
 
-                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/routes#cookies-chromium
+                        # Accepted values are "Strict", "Lax" or "None". https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
                         sameSite:             null # One of "Strict"; "Lax"; "None"
 
-                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # Override the default User-Agent HTTP header. - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 user_agent:           null
 
-                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/routes#custom-http-headers-chromium
+                # HTTP headers to send by Chromium while loading the HTML document - default None. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
                 extra_http_headers: []
 
                     # Example:
@@ -1235,7 +1235,7 @@ sensiolabs_gotenberg:
                     # Or the syntax below is also possible
                     # - { name: 'X-Custom-Header', value: 'custom-header-value' }
 
-                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium
+                # Return a 409 Conflict response if the HTTP status code from the main page is not acceptable. - default [499,599]. https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes
                 fail_on_http_status_codes:
 
                     # Defaults:
@@ -1248,7 +1248,7 @@ sensiolabs_gotenberg:
                 # Do not wait for Chromium network to be idle. - default false. https://gotenberg.dev/docs/routes#performance-mode-chromium
                 skip_network_idle_event: null
 
-                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/routes#download-from
+                # URLs to download files from (JSON format). - default None. https://gotenberg.dev/docs/webhook-download#download-from
                 download_from:
 
                     # Prototype
@@ -1306,10 +1306,6 @@ sensiolabs_gotenberg:
 ```
 
 </details>
-
-> [!TIP]
-> For more information about the [PDF properties](https://gotenberg.dev/docs/routes#page-properties-chromium)
-> or [screenshot properties](https://gotenberg.dev/docs/routes#screenshots-route).
 
 ## Header and footer defaults templates
 
@@ -1370,7 +1366,7 @@ sensiolabs_gotenberg:
 ```
 
 > [!TIP]
-> For more information about [custom HTTP headers](https://gotenberg.dev/docs/routes#custom-http-headers-chromium) & [webhook custom HTTP headers](https://gotenberg.dev/docs/configuration#webhook).
+> For more information about [custom HTTP headers](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers) & [webhook custom HTTP headers](https://gotenberg.dev/docs/configuration#webhook).
 
 ## Invalid HTTP Status Codes
 
@@ -1389,7 +1385,7 @@ sensiolabs_gotenberg:
 > `fail_on_http_status_codes: [499, 599]` would fail on any 4XX or 5XX code.
 
 > [!TIP]
-> For more information about [Invalid HTTP Status Codes](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium).
+> For more information about [Invalid HTTP Status Codes](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes).
 
 ## Cookies
 
@@ -1406,7 +1402,7 @@ sensiolabs_gotenberg:
 ```
 
 > [!TIP]
-> For more information about [cookies](https://gotenberg.dev/docs/routes#cookies-chromium).
+> For more information about [cookies](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies).
 
 ## Metadata
 
@@ -1423,7 +1419,7 @@ sensiolabs_gotenberg:
 ```
 
 > [!TIP]
-> For more information about [metadata](https://gotenberg.dev/docs/routes#metadata-chromium).
+> For more information about [metadata](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines).
 
 ## Controller Listener
 
@@ -1455,4 +1451,4 @@ sensiolabs_gotenberg:
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#download-from).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/webhook-download#download-from).

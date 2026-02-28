@@ -18,7 +18,7 @@ trait FlattenTrait
     /**
      * Flattening a PDF combines all its contents into a single layer. (default false).
      *
-     * @see https://gotenberg.dev/docs/routes#flatten-libreoffice
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines
      *
      * @example flatten() // is same as `->flatten(true)`
      */

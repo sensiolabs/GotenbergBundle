@@ -17,13 +17,13 @@ use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
  * You may have the possibility to convert Markdown files into PDF.
  * You just need to wrap your markdown file into an HTML or Twig file.
  *
- * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ * @see https://gotenberg.dev/docs/convert-with-chromium/convert-markdown-to-pdf
  *
  * @methodDoc files Add Markdown into a PDF.
  * Required to generate a PDF from Markdown builder. You can pass several files with that method.
  * As assets files, by default the markdown files are fetch in the assets folder of your application.
  *
- * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ * @see https://gotenberg.dev/docs/convert-with-chromium/convert-markdown-to-pdf
  *
  * @example files('header.md','content.md','footer.md')
  */
@@ -53,7 +53,7 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-markdown-to-pdf
      * @see https://twig.symfony.com/doc/3.x/tags/verbatim.html
      *
      * @example wrapper('wrapper.html.twig', ['my_var' => 'value'])
@@ -71,7 +71,7 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
      * In the template, you must use the {{ toHTML "filename.md" }} special directive to reference the Markdown file.
      * The HTML template that receives your markdown file will look like this.
      *
-     * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-markdown-to-pdf
      *
      * @example wrapperFile('../templates/wrapper.html')
      */

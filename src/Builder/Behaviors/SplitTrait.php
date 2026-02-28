@@ -19,8 +19,8 @@ trait SplitTrait
     /**
      * Either intervals or pages.
      *
-     * @see https://gotenberg.dev/docs/routes#split-chromium
-     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     * @see https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
      *
      * @example splitMode(SplitMode::Intervals)
      */
@@ -39,8 +39,8 @@ trait SplitTrait
     /**
      * Either the intervals or the page ranges to extract, depending on the selected mode.
      *
-     * @see https://gotenberg.dev/docs/routes#split-chromium
-     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     * @see https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
      *
      * @example splitSpan('1')
      */
@@ -56,8 +56,8 @@ trait SplitTrait
     /**
      * Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).
      *
-     * @see https://gotenberg.dev/docs/routes#split-chromium
-     * @see https://gotenberg.dev/docs/routes#split-libreoffice
+     * @see https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges
      *
      * @example splitUnify() // is same as `->splitUnify(true)`
      */

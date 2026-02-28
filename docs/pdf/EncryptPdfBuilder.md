@@ -1,6 +1,6 @@
 ## EncryptPdfBuilder
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#encrypt-route](https://gotenberg.dev/docs/routes#encrypt-route)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
 
 ## Basic usage
 
@@ -50,7 +50,7 @@ class YourController
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
+> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -65,7 +65,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
 
 ```php
 return $gotenberg

@@ -7,9 +7,9 @@ You can add assets in several ways, and it's available for most builders.
 |    PDF     |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |
 | Screenshot |  :white_check_mark:  | :white_check_mark: | :white_check_mark: |
 
-> [!WARNING]  
-> As a reminder, we can only load assets in the content. And not in Header or Footer.  
-> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/routes#header-footer-chromium).
+> [!WARNING]
+> As a reminder, we can only load assets in the content. And not in Header or Footer.
+> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer).
 >
 > By default, the assets are fetch in the `assets` folder of your application.
 > If your assets files are in another folder, you can override the
@@ -35,13 +35,13 @@ You can add assets in several ways, and it's available for most builders.
 > ```php
 > // Without sensiolabs_gotenberg.assets_directory:
 > $builder->addAsset('/some/absolute/path/img.png'); // (string) '/some/absolute/path/img.png'
-> 
+>
 > // Without sensiolabs_gotenberg.assets_directory:
 > $builder->addAsset('some/relative/img.png'); // (string) '%kernel.project_dir%/assets/some/relative/img.png'
-> 
+>
 > // With sensiolabs_gotenberg.assets_directory: '/some/absolute/path'
 > $builder->addAsset('./some/relative/img.png'); // (string) '/some/absolute/path/some/relative/img.png'
-> 
+>
 > // With sensiolabs_gotenberg.assets_directory: 'some/relative/path'
 > $builder->addAsset('./also/relative/img.png'); // (string) '%kernel.project_dir%/assets/some/relative/path/also/relative/img.png'
 > ```
@@ -191,7 +191,7 @@ class YourController
                 '../img/ceo.jpeg',
                 '../img/admin.jpeg'
             )
-            ->addAsset('../img/developer.jpeg') 
+            ->addAsset('../img/developer.jpeg')
             ->generate()
             ->stream()
         ;
@@ -199,4 +199,4 @@ class YourController
 }
 ```
 
-In the example above `ceo.jpeg`, `admin.jpeg` and `developer.jpeg` will be loaded into 
+In the example above `ceo.jpeg`, `admin.jpeg` and `developer.jpeg` will be loaded into

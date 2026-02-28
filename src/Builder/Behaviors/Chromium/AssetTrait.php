@@ -23,7 +23,7 @@ trait AssetTrait
      * If your assets are in another folder, you can override the default value of assets_directory in your
      * configuration file config/sensiolabs_gotenberg.yml.
      *
-     * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets
      *
      * @example assets('../img/ceo.jpeg', __DIR__'/../../public/admin.jpeg')
      */
@@ -47,7 +47,7 @@ trait AssetTrait
      * If your assets are in another folder, you can override the default value of assets_directory in your
      * configuration file config/sensiolabs_gotenberg.yml.
      *
-     * @see https://gotenberg.dev/docs/routes#html-file-into-pdf-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets
      *
      * @example addAsset('../img/ceo.jpeg', __DIR__'/../../public/admin.jpeg')
      */

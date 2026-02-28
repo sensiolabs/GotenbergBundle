@@ -3,7 +3,7 @@
 You may have the possibility to convert HTML or Twig files into PDF.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#html-file-into-pdf-route](https://gotenberg.dev/docs/routes#html-file-into-pdf-route)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf)
 
 ## Basic usage
 
@@ -158,7 +158,7 @@ return $gotenberg
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#download-from](https://gotenberg.dev/docs/routes#download-from)
+> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -173,7 +173,7 @@ return $gotenberg
 Add file to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#embed-files-route](https://gotenberg.dev/docs/routes#embed-files-route)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
 
 ```php
 return $gotenberg
@@ -188,7 +188,7 @@ return $gotenberg
 Flattening a PDF combines all its contents into a single layer. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#flatten-libreoffice](https://gotenberg.dev/docs/routes#flatten-libreoffice)
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
 
 ```php
 return $gotenberg
@@ -203,10 +203,7 @@ return $gotenberg
 Resets the metadata.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#metadata-chromium](https://gotenberg.dev/docs/routes#metadata-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#metadata-libreoffice](https://gotenberg.dev/docs/routes#metadata-libreoffice)<br />
-> See: [https://gotenberg.dev/docs/routes#write-pdf-metadata-route](https://gotenberg.dev/docs/routes#write-pdf-metadata-route)<br />
-> See: [https://gotenberg.dev/docs/routes#merge-pdfs-route](https://gotenberg.dev/docs/routes#merge-pdfs-route)<br />
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines)<br />
 > See: [https://exiftool.org/TagNames/XMP.html#pdf](https://exiftool.org/TagNames/XMP.html#pdf)
 
 ```php
@@ -222,7 +219,7 @@ return $gotenberg
 Convert the resulting PDF into the given PDF/A format.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#pdfa-chromium](https://gotenberg.dev/docs/routes#pdfa-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -237,7 +234,7 @@ return $gotenberg
 Enable PDF for Universal Access for optimal accessibility.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#pdfa-chromium](https://gotenberg.dev/docs/routes#pdfa-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -252,8 +249,8 @@ return $gotenberg
 Either intervals or pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -268,8 +265,8 @@ return $gotenberg
 Either the intervals or the page ranges to extract, depending on the selected mode.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -284,8 +281,8 @@ return $gotenberg
 Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#split-chromium](https://gotenberg.dev/docs/routes#split-chromium)<br />
-> See: [https://gotenberg.dev/docs/routes#split-libreoffice](https://gotenberg.dev/docs/routes#split-libreoffice)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -301,13 +298,13 @@ return $gotenberg
 Adds a file, like an image, font, stylesheet, and so on.<br /><br />By default, the assets files are fetch in the assets folder of your application.<br />If your assets are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#html-file-into-pdf-route](https://gotenberg.dev/docs/routes#html-file-into-pdf-route)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets)
 
 ### assets(Stringable|string ...\$paths)
 Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).<br /><br />By default, the assets files are fetch in the assets folder of your application.<br />If your assets are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#html-file-into-pdf-route](https://gotenberg.dev/docs/routes#html-file-into-pdf-route)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets)
 
 ```php
 return $gotenberg
@@ -321,7 +318,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook](https://gotenberg.dev/docs/webhook)
+> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -409,7 +406,7 @@ return $gotenberg
 Add cookies to store in the Chromium cookie jar.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium](https://gotenberg.dev/docs/routes#cookies-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies)
 
 ```php
 return $gotenberg
@@ -424,7 +421,7 @@ return $gotenberg
 Cookies to store in the Chromium cookie jar.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#cookies-chromium](https://gotenberg.dev/docs/routes#cookies-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies)
 
 ```php
 return $gotenberg
@@ -548,7 +545,7 @@ return $gotenberg
 Overrides the default margins (e.g., 0.39), in inches.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -587,7 +584,7 @@ return $gotenberg
 Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -626,7 +623,7 @@ return $gotenberg
 Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#page-properties-chromium](https://gotenberg.dev/docs/routes#page-properties-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -690,7 +687,7 @@ return $gotenberg
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#wait-before-rendering-chromium](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-delay](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-delay)
 
 ```php
 return $gotenberg
@@ -705,7 +702,7 @@ return $gotenberg
 Sets the JavaScript expression to wait before converting an HTML document to PDF until it returns true.<br /><br />For instance: "window.status === 'ready'".<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#wait-before-rendering-chromium](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-expression](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-expression)
 
 ```php
 return $gotenberg
@@ -720,7 +717,7 @@ return $gotenberg
 Selector (e.g. '#id') to query before converting an HTML document into PDF until it matches a node.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#wait-before-rendering-chromium](https://gotenberg.dev/docs/routes#wait-before-rendering-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-selector](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-selector)
 
 ```php
 return $gotenberg
@@ -756,7 +753,7 @@ return $gotenberg
 
 ### footer(string \$template, array \$context)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -771,7 +768,7 @@ return $gotenberg
 HTML file containing the footer.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -784,7 +781,7 @@ return $gotenberg
 
 ### header(string \$template, array \$context)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -799,7 +796,7 @@ return $gotenberg
 HTML file containing the header.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#header-footer-chromium](https://gotenberg.dev/docs/routes#header-footer-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -840,7 +837,7 @@ return $gotenberg
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#console-exceptions-chromium](https://gotenberg.dev/docs/routes#console-exceptions-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console)
 
 ```php
 return $gotenberg
@@ -855,7 +852,7 @@ return $gotenberg
 Return a 409 Conflict response if the HTTP status code from<br />the main page is not acceptable. (default [499,599]). (overrides any previous configuration).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
 
 ```php
 return $gotenberg
@@ -870,7 +867,7 @@ return $gotenberg
 Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable. (overrides any previous configuration).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
 
 ```php
 return $gotenberg
@@ -885,7 +882,7 @@ return $gotenberg
 Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load at least one resource.<br />(default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#network-errors-chromium](https://gotenberg.dev/docs/routes#network-errors-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking)
 
 ```php
 return $gotenberg
@@ -900,7 +897,7 @@ return $gotenberg
 Exclude resources from failOnResourceHttpStatusCodes checks based on their hostname.<br /><br />The ignoreResourceHttpStatusDomains option allows you to exclude specific domains from the resource HTTP status<br />code checks. A match happens if the hostname equals the domain or is a subdomain of it<br />(e.g., browser.sentry-cdn.com matches sentry-cdn.com).<br /><br />Values are normalized (trimmed, lowercased) and may be provided as:<br /><br />example.com<br />.example.com or .example.com<br />example.com:443 (port is ignored)<br />https://example.com/path (scheme/path are ignored)<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium](https://gotenberg.dev/docs/routes#invalid-http-status-codes-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
 
 ```php
 return $gotenberg
@@ -928,7 +925,7 @@ return $gotenberg
 Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#custom-http-headers-chromium](https://gotenberg.dev/docs/routes#custom-http-headers-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers)
 
 ```php
 return $gotenberg
@@ -956,7 +953,7 @@ return $gotenberg
 Forces Chromium to emulate, either "screen" or "print". (default "print").<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#emulated-media-type-chromium](https://gotenberg.dev/docs/routes#emulated-media-type-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#print-media](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#print-media)
 
 ```php
 return $gotenberg
@@ -972,7 +969,7 @@ return $gotenberg
 Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during<br />conversion. However, this often significantly slows down the conversion process. Setting this form field to true<br />can greatly enhance the conversion speed.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/routes#performance-mode-chromium](https://gotenberg.dev/docs/routes#performance-mode-chromium)
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking)
 
 ```php
 return $gotenberg

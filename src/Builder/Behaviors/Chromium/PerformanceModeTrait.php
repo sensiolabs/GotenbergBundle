@@ -20,7 +20,7 @@ trait PerformanceModeTrait
      * conversion. However, this often significantly slows down the conversion process. Setting this form field to true
      * can greatly enhance the conversion speed.
      *
-     * @see https://gotenberg.dev/docs/routes#performance-mode-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking
      *
      * @example skipNetworkIdleEvent() // is same as `->skipNetworkIdleEvent(true)`
      */

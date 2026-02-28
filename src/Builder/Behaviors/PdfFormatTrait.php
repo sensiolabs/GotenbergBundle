@@ -17,7 +17,7 @@ trait PdfFormatTrait
     /**
      * Convert the resulting PDF into the given PDF/A format.
      *
-     * @see https://gotenberg.dev/docs/routes#pdfa-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
      *
      * @example pdfFormat(PdfFormat::Pdf1b)
      */
@@ -36,7 +36,7 @@ trait PdfFormatTrait
     /**
      * Enable PDF for Universal Access for optimal accessibility.
      *
-     * @see https://gotenberg.dev/docs/routes#pdfa-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua
      *
      * @example pdfUniversalAccess()  // is same as `->pdfUniversalAccess(true)`
      */

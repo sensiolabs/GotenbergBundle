@@ -17,15 +17,13 @@ use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
  * You may have the possibility to convert Markdown files into screenshot.
  * You just need to wrap your markdown file into an HTML or Twig file.
  *
- * @see https://gotenberg.dev/docs/routes#screenshots-route
- * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown
  *
  * @methodDoc files Add Markdown into a screenshot.
  *  Required to generate a screenshot from Markdown builder.
  *  You can pass several files with that method.
  *
- * @see https://gotenberg.dev/docs/routes#screenshots-route
- * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+ * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown
  *
  * @example files('header.md','content.md','footer.md')
  */
@@ -55,7 +53,7 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown
      * @see https://twig.symfony.com/doc/3.x/tags/verbatim.html
      *
      * @example wrapper('wrapper.html.twig', ['my_var' => 'value'])
@@ -73,7 +71,7 @@ final class MarkdownScreenshotBuilder extends AbstractBuilder implements Builder
      * In the template, you must use the {{ toHTML "filename.md" }} special directive to reference the Markdown file.
      * The HTML template that receives your markdown file will look like this.
      *
-     * @see https://gotenberg.dev/docs/routes#markdown-files-into-pdf-route
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown
      *
      * @example wrapperFile('../templates/wrapper.html')
      */

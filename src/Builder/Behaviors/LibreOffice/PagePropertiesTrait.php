@@ -38,7 +38,7 @@ trait PagePropertiesTrait
     /**
      * Set the paper orientation to landscape.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-chromium
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
      *
      * @example landscape() // is same as `->landscape(true)`
      */
@@ -53,7 +53,7 @@ trait PagePropertiesTrait
     /**
      * Page ranges to print, e.g., '1-4' - empty means all pages.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-libreoffice
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#split--page-ranges
      *
      * @example nativePageRanges('1-5')
      */
@@ -73,7 +73,7 @@ trait PagePropertiesTrait
     /**
      * Specify whether form fields are exported as widgets or only their fixed print representation is exported.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-libreoffice
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata
      *
      * @example doNotExportFormFields() // is same as `->doNotExportFormFields(false)`
      */
@@ -90,7 +90,7 @@ trait PagePropertiesTrait
     /**
      * Specify whether multiple form fields exported are allowed to have the same field name.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-libreoffice
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata
      *
      * @example allowDuplicateFieldNames()  // is same as `->allowDuplicateFieldNames(true)`
      */
@@ -107,7 +107,7 @@ trait PagePropertiesTrait
     /**
      * Specify if bookmarks are exported to PDF.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-libreoffice
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata
      *
      * @example doNotExportBookmarks()  // is same as `->doNotExportBookmarks(false)`
      */
@@ -124,7 +124,7 @@ trait PagePropertiesTrait
     /**
      * Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-libreoffice
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata
      *
      * @example exportBookmarksToPdfDestination()  // is same as `->exportBookmarksToPdfDestination(true)`
      */
@@ -141,7 +141,7 @@ trait PagePropertiesTrait
     /**
      * Export the placeholders fields visual markings only. The exported placeholder is ineffective.
      *
-     * @see https://gotenberg.dev/docs/routes#page-properties-libreoffice
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#rendering-behavior
      *
      * @example exportPlaceholders()  // is same as `->exportPlaceholders(true)`
      */

@@ -127,7 +127,7 @@ class YourController
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#url-into-pdf-route).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/convert-with-chromium/convert-url-to-pdf).
 
 #### Twig
 
@@ -196,7 +196,7 @@ can be relative as well as absolute.
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#html-file-into-pdf-route).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf).
 
 ### Screenshot
 
@@ -257,7 +257,7 @@ class YourController
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/routes#screenshots-route).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/getting-started/introduction).
 
 ## Advanced Usage
 
