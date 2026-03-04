@@ -54,10 +54,10 @@ $ dagger develop
 
 ```shell
 $ # Run the PHPUnit 'unit' test suite with specific symfony or / and php version
-$ dagger call test --symfony-version='6.4.*' --php-version='8.2' phpunit
+$ dagger --progress=logs call test --symfony-version='6.4.*' --php-version='8.2' phpunit
 
 $ # Make sure all dependencies are explicitly added to composer.json
-$ dagger call test --symfony-version='6.4.*' --php-version='8.2' validate-dependencies
+$ dagger --progress=logs call test --symfony-version='6.4.*' --php-version='8.2' validate-dependencies
 
 $ # Generate the auto documentation for builders
 $ dagger call generate-docs
@@ -66,13 +66,13 @@ $ # Apply coding style fixes
 $ dagger call php-cs-fixer fix
 
 $ # Run all tests available with specific symfony / php versions
-$ dagger call test --symfony-version='6.4.*' --php-version='8.2' all
+$ dagger --progress=logs call test --symfony-version='6.4.*' --php-version='8.2' all
 
 $ # Run all tests available with next symfony / php versions
-$ dagger call test --symfony-version='8.0.*' --minimum-stability='dev' --php-version='8.2' all
+$ dagger --progress=logs call test --symfony-version='8.0.*' --minimum-stability='dev' --php-version='8.2' all
 
 $ # Run all tests available with all supported version of both PHP and Symfony
-$ dagger call tests-matrix all
+$ dagger --progress=logs call tests-matrix all
 ```
 
 About the list of flags available (`dagger call test --help` or `dagger call tests-matrix --help`) :

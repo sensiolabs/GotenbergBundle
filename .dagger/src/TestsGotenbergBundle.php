@@ -30,7 +30,7 @@ final class TestsGotenbergBundle
 
     private function getSymfonyVersion(): string
     {
-        return $this->symfonyVersion ??= $this->symfonyContainer->envVariable('SYMFONY_CONSTRAINT');
+        return $this->symfonyVersion ??= $this->symfonyContainer->envVariable('SYMFONY_REQUIRE');
     }
 
     private function getMajorMinorSymfonyVersion(): string
