@@ -16,7 +16,7 @@ final class VersionListener implements StartedSubscriber
 
         $title = "Symfony:       {$symfonyVersion}\n\n";
 
-        \fwrite(
+        fwrite(
             \STDERR,
             $title,
         );

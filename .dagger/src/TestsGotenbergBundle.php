@@ -39,7 +39,7 @@ final class TestsGotenbergBundle
 
         $matches = [];
 
-        if (1 !== \preg_match('#(?P<MajorMinor>^\d\.\d)#', $symfonyVersion, $matches)) {
+        if (1 !== preg_match('#(?P<MajorMinor>^\d\.\d)#', $symfonyVersion, $matches)) {
             return $symfonyVersion;
         }
 
