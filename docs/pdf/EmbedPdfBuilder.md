@@ -79,10 +79,10 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-Add PDF files which is the source of embedded file.<br /><br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+Add PDF files which is the source of embedded file.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/attachments ](https://gotenberg.dev/docs/manipulate-pdfs/attachments )
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/attachments](https://gotenberg.dev/docs/manipulate-pdfs/attachments)
 
 ```php
 return $gotenberg

@@ -2,9 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 
 trait EmbedTrait
 {
@@ -38,5 +40,11 @@ trait EmbedTrait
         $this->getBodyBag()->set('embeds', $files ?? null);
 
         return $this;
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeEmbed(): \Generator
+    {
+        yield 'embeds' => NormalizerFactory::embed();
     }
 }

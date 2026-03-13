@@ -3,7 +3,6 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
@@ -15,7 +14,6 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\SplitTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
@@ -76,12 +74,5 @@ final class SplitPdfBuilder extends AbstractBuilder
         if ($this->getBodyBag()->get('splitSpan') === null) {
             throw new MissingRequiredFieldException('Field "splitSpan" must be provided.');
         }
-    }
-
-    #[NormalizeGotenbergPayload]
-    private function normalizeFiles(): \Generator
-    {
-        yield 'files' => NormalizerFactory::asset();
-        yield 'embeds' => NormalizerFactory::embed();
     }
 }

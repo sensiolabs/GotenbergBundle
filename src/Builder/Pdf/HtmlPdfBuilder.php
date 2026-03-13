@@ -3,12 +3,10 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\ChromiumPdfTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
@@ -35,11 +33,5 @@ final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterf
         if ($this->getBodyBag()->get(Part::Body->value) === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('Content is required');
         }
-    }
-
-    #[NormalizeGotenbergPayload]
-    private function normalizeFiles(): \Generator
-    {
-        yield 'embeds' => NormalizerFactory::embed();
     }
 }

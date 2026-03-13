@@ -2,8 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 
 trait FilesTrait
@@ -35,5 +37,11 @@ trait FilesTrait
         $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
+    }
+
+    #[NormalizeGotenbergPayload]
+    private function normalizeFiles(): \Generator
+    {
+        yield 'files' => NormalizerFactory::asset();
     }
 }

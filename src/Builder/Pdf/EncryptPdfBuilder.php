@@ -3,14 +3,12 @@
 namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
-use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
-use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
@@ -26,23 +24,18 @@ final class EncryptPdfBuilder extends AbstractBuilder
     use AssetBaseDirFormatterAwareTrait;
     use DownloadFromTrait;
     use EncryptTrait;
+    use FilesTrait;
     use WebhookTrait;
 
     public const ENDPOINT = '/forms/pdfengines/encrypt';
 
-    public function files(string|\Stringable ...$paths): self
+    private const AVAILABLE_EXTENSIONS = [
+        'pdf',
+    ];
+
+    protected function getAllowedFilesExtensions(): array
     {
-        foreach ($paths as $path) {
-            $path = (string) $path;
-            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
-            ValidatorFactory::filesExtension([$info], ['pdf']);
-
-            $files[$path] = $info;
-        }
-
-        $this->getBodyBag()->set('files', $files ?? null);
-
-        return $this;
+        return self::AVAILABLE_EXTENSIONS;
     }
 
     protected function getEndpoint(): string
@@ -61,11 +54,5 @@ final class EncryptPdfBuilder extends AbstractBuilder
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
-    }
-
-    #[NormalizeGotenbergPayload]
-    private function normalizeFiles(): \Generator
-    {
-        yield 'files' => NormalizerFactory::asset();
     }
 }
