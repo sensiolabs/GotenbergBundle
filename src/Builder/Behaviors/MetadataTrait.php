@@ -21,22 +21,28 @@ trait MetadataTrait
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines
      * @see https://exiftool.org/TagNames/XMP.html#pdf
      *
-     * @param array{
-     *     Author?: string,
-     *     Copyright?: string,
-     *     CreationDate?: string,
-     *     Creator?: string,
-     *     Keywords?: string,
-     *     Marked?: bool,
-     *     ModDate?: string,
-     *     PDFVersion?: string,
-     *     Producer?: string,
-     *     Subject?: string,
-     *     Title?: string,
-     *     Trapped?: 'True'|'False'|'Unknown',
-     * } $metadata
+     * Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords,
+     * Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.
      *
-     * @example metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
+     * Any ExifTool-compatible key is accepted, including custom XMP namespaces
+     * (e.g., 'XMP-fx:DocumentType' for Factur-X).
+     *
+     * @param array<string, mixed>&array{
+     *      Author?: string,
+     *      Copyright?: string,
+     *      CreationDate?: string,
+     *      Creator?: string,
+     *      Keywords?: string,
+     *      Marked?: bool,
+     *      ModDate?: string,
+     *      PDFVersion?: string,
+     *      Producer?: string,
+     *      Subject?: string,
+     *      Title?: string,
+     *      Trapped?: 'True'|'False'|'Unknown',
+     *  } $metadata
+     *
+     * @example metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg', 'XMP-fx:DocumentType' => 'INVOICE', 'XMP-fx:DocumentFileName' => 'factur-x.xml'])
      */
     #[WithConfigurationNode(new MetadataNodeBuilder('metadata', children: [
         new ScalarNodeBuilder('Author'),

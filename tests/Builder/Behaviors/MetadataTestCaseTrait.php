@@ -44,4 +44,31 @@ trait MetadataTestCaseTrait
 
         $this->assertGotenbergFormData('metadata', '{"Title":"MyBundle","Author":"SensioLabs","Creator":"SensioLabs"}');
     }
+
+    public function testSetCustomXmpMetadata(): void
+    {
+        $this->getDefaultBuilder()
+            ->metadata([
+                'Author' => 'SensioLabs',
+                'XMP-fx:DocumentType' => 'INVOICE',
+                'XMP-fx:DocumentFileName' => 'factur-x.xml',
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('metadata', '{"Author":"SensioLabs","XMP-fx:DocumentType":"INVOICE","XMP-fx:DocumentFileName":"factur-x.xml"}');
+    }
+
+    public function testAddCustomXmpMetadataToExisting(): void
+    {
+        $this->getDefaultBuilder()
+            ->metadata([
+                'Author' => 'SensioLabs',
+            ])
+            ->addMetadata('XMP-fx:DocumentType', 'INVOICE')
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('metadata', '{"XMP-fx:DocumentType":"INVOICE","Author":"SensioLabs"}');
+    }
 }

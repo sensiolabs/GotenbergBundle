@@ -216,6 +216,33 @@ final class ConfigurationTest extends TestCase
         );
     }
 
+    public function testWithExtraMetadataConfiguration(): void
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => [
+                    'pdf' => [
+                        'html' => ['metadata' => [
+                            'Author' => 'SensioLabs',
+                            'Subject' => 'Gotenberg',
+                            'XMP-fx:DocumentType' => 'INVOICE',
+                            'XMP-fx:DocumentFileName' => 'factur-x.xml',
+                        ]],
+                    ],
+                ],
+            ],
+        ]);
+
+        self::assertEquals([
+            'Author' => 'SensioLabs',
+            'Subject' => 'Gotenberg',
+            'XMP-fx:DocumentType' => 'INVOICE',
+            'XMP-fx:DocumentFileName' => 'factur-x.xml',
+        ], $config['default_options']['pdf']['html']['metadata'] ?? []);
+    }
+
     /**
      * @return array{
      *     'assets_directory': string[],

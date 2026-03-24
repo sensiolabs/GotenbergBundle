@@ -8,7 +8,6 @@ class MetadataNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
     public function __construct(
         protected string $name,
-
         /** @var NodeBuilderInterface[] */
         public array $children = [],
     ) {
@@ -17,6 +16,11 @@ class MetadataNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 
     public function create(): NodeDefinition
     {
-        return (new ArrayNodeBuilder($this->name, children: $this->children))->create();
+        return (new ArrayNodeBuilder(
+            name: $this->name,
+            normalizeKeys: false,
+            children: $this->children,
+            ignoreExtraKeys: true,
+        ))->create();
     }
 }

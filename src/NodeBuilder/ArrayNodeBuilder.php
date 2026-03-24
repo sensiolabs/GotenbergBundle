@@ -8,16 +8,13 @@ class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
 {
     public function __construct(
         protected string $name,
-
         public bool $normalizeKeys = true,
-
         public string|null $useAttributeAsKey = null,
-
         /** @var 'integer'|'array'|'variable'|'scalar'|null */
         public string|null $prototype = null,
-
         /** @var NodeBuilderInterface[] */
         public array $children = [],
+        public bool $ignoreExtraKeys = false,
     ) {
         parent::__construct($name);
     }
@@ -27,6 +24,10 @@ class ArrayNodeBuilder extends NodeBuilder implements NodeBuilderInterface
         $node = new ArrayNodeDefinition($this->name);
 
         $node->normalizeKeys($this->normalizeKeys);
+
+        if ($this->ignoreExtraKeys) {
+            $node->ignoreExtraKeys(false);
+        }
 
         if (\is_string($this->useAttributeAsKey)) {
             $node->useAttributeAsKey($this->useAttributeAsKey);
