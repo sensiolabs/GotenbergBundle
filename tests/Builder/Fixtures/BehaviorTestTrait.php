@@ -10,16 +10,16 @@ trait BehaviorTestTrait
 {
     abstract protected function getBodyBag(): BodyBag;
 
-    public function setValue(bool $value): static
+    public function enableFeature(): static
     {
-        $this->getBodyBag()->set('key', $value);
+        $this->getBodyBag()->set('feature', true);
 
         return $this;
     }
 
     #[NormalizeGotenbergPayload]
-    private function normalizeValue(): \Generator
+    private function normalizeFeature(): \Generator
     {
-        yield 'key' => NormalizerFactory::bool();
+        yield 'feature' => NormalizerFactory::bool();
     }
 }

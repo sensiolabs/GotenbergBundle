@@ -18,10 +18,10 @@ final class AbstractBuilderNormalizeTest extends GotenbergBuilderTestCase
     public function testNormalizePayloadFromTraitUsedInAbstractParent(): void
     {
         $this->getBuilder()
-            ->setValue(true)
+            ->enableFeature()
             ->generate()
         ;
 
-        $this->assertGotenbergFormData('key', 'true');
+        $this->assertGotenbergFormData('feature', 'true');
     }
 }
