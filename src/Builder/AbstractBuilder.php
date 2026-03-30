@@ -167,17 +167,23 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         $normalizers = [];
 
         $reflection = new \ReflectionClass(static::class);
-        foreach (array_reverse($reflection->getMethods()) as $method) {
-            $attributes = $method->getAttributes(NormalizeGotenbergPayload::class);
+        do {
+            foreach (array_reverse($reflection->getMethods()) as $method) {
+                if ($method->getDeclaringClass()->getName() !== $reflection->getName()) {
+                    continue;
+                }
 
-            if (\count($attributes) === 0) {
-                continue;
-            }
+                $attributes = $method->getAttributes(NormalizeGotenbergPayload::class);
 
-            foreach ($method->invoke($this) as $key => $value) {
-                $normalizers[$key] = $value;
+                if (\count($attributes) === 0) {
+                    continue;
+                }
+
+                foreach ($method->invoke($this) as $key => $value) {
+                    $normalizers[$key] = $value;
+                }
             }
-        }
+        } while ($reflection = $reflection->getParentClass());
 
         $version = $this->getVersion();
         $logger = $this->getLogger();
