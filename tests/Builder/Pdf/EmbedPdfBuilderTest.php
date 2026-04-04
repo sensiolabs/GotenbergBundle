@@ -43,7 +43,7 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
     {
         return $builder
             ->files('pdf/simple_pdf.pdf')
-            ->embedFiles('embed/facturX.xml')
+            ->embedFiles('embed/factur-x.xml')
         ;
     }
 
@@ -54,7 +54,7 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
         ;
 
         $this->assertGotenbergEndpoint('/forms/pdfengines/embed');
-        $this->assertGotenbergFormDataFile('embeds', 'application/xml', self::FIXTURE_DIR.'/embed/facturX.xml');
+        $this->assertGotenbergFormDataFile('embeds', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
     }
 
     public function testRequiredFileContent(): void
@@ -83,7 +83,7 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
         $classEmbed = new class implements \Stringable {
             public function __toString(): string
             {
-                return 'embed/facturX.xml';
+                return 'embed/factur-x.xml';
             }
         };
 
@@ -95,6 +95,6 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
 
         $this->assertGotenbergEndpoint('/forms/pdfengines/embed');
         $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
-        $this->assertGotenbergFormDataFile('embeds', 'application/xml', self::FIXTURE_DIR.'/embed/facturX.xml');
+        $this->assertGotenbergFormDataFile('embeds', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
     }
 }

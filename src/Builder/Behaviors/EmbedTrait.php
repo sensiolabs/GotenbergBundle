@@ -7,6 +7,8 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormat
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\ValueObject\EmbeddedFile;
+use Symfony\Component\Mime\MimeTypes;
 
 trait EmbedTrait
 {
@@ -25,19 +27,42 @@ trait EmbedTrait
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines
      *
      * @example embedFiles('document.xml','document_2.json')
+     * @example embedFiles(new EmbeddedFile('factur-x.xml', 'Data'))
      */
-    public function embedFiles(string|\Stringable ...$paths): self
+    public function embedFiles(string|\Stringable|EmbeddedFile ...$paths): self
     {
         $this->logWarningIfVersionIs('<', '8.25', 'The embeds option is not available.');
 
-        foreach ($paths as $path) {
-            $path = (string) $path;
+        $files = [];
+        $metadata = [];
 
-            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
-            $files[$path] = $info;
+        foreach ($paths as $item) {
+            // Add the file
+            if ($item instanceof \SplFileInfo) {
+                $filename = $item->getFilename();
+                $file = $item;
+            } else {
+                $filename = (string) $item;
+                $file = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve((string) $item));
+            }
+            $files[$filename] = $file;
+
+            // Add the file metadata
+            if ($item instanceof EmbeddedFile) {
+                $metadata[$filename] = [
+                    'mimeType' => $item->getMimeType() ?? (new MimeTypes())->guessMimeType($item->getRealPath()),
+                ];
+                if (null !== $item->getRelationship()) {
+                    $metadata[$filename]['relationship'] = $item->getRelationship();
+                }
+            }
         }
 
-        $this->getBodyBag()->set('embeds', $files ?? null);
+        $this->getBodyBag()->set('embeds', [] !== $files ? $files : null);
+        if ([] !== $metadata) {
+            $this->logWarningIfVersionIs('<', '8.31', 'The embedsMetadata option is not available.');
+            $this->getBodyBag()->set('embedsMetadata', $metadata);
+        }
 
         return $this;
     }
@@ -46,5 +71,6 @@ trait EmbedTrait
     private function normalizeEmbed(): \Generator
     {
         yield 'embeds' => NormalizerFactory::embed();
+        yield 'embedsMetadata' => NormalizerFactory::json();
     }
 }
