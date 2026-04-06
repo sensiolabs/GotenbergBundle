@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
@@ -208,6 +209,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['embed', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return StampPdfBuilder|TraceableBuilder
+     */
+    public function stamp(): BuilderInterface
+    {
+        /** @var StampPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->stamp();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['stamp', $traceableBuilder];
 
         return $traceableBuilder;
     }

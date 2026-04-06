@@ -49,6 +49,11 @@ class YourController
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
+- [stampExpression](#stampexpressionstring-stampexpression)
+- [stampFile](#stampfilestringablestring-path)
+- [stampOptions](#stampoptionsarray-stampoptions)
+- [stampPages](#stamppagesstring-stamppages)
+- [stampSource](#stampsourcesensiolabsgotenbergbundleenumerationstampsource-stampsource)
 - [watermarkExpression](#watermarkexpressionstring-watermarkexpression)
 - [watermarkFile](#watermarkfilestringablestring-path)
 - [watermarkOptions](#watermarkoptionsarray-watermarkoptions)
@@ -332,18 +337,81 @@ return $gotenberg
 ;
 ```
 
+### stampExpression(string \$stampExpression)
+The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
 
-### addWebhookExtraHeaders(array \$extraHttpHeaders)
-Adds extra headers to the ones already provided to the webhook endpoint, preserving previously set values.<br />
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->addWebhookExtraHeaders(['X-Custom-Header' => 'CustomValue'])
+    ->stampExpression('APPROVED')
     ->generate()
     ->stream()
 ;
 ```
+
+### stampFile(Stringable|string \$path)
+An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->stampFile('stamp.pdf')
+    ->generate()
+    ->stream()
+;
+```
+
+### stampOptions(array \$stampOptions)
+Advanced options in JSON format. Valid keys depend on the configured PDF engine (default: pdfcpu).<br />For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->stampOptions(['opacity' => 0.5])
+    ->generate()
+    ->stream()
+;
+```
+
+### stampPages(string \$stampPages)
+Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->stampPages('1-3')
+    ->generate()
+    ->stream()
+;
+```
+
+### stampSource(Sensiolabs\GotenbergBundle\Enumeration\StampSource \$stampSource)
+The stamp source type. Options: 'text', 'image', 'pdf'.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->stampSource(StampSource::Text)
+    ->generate()
+    ->stream()
+;
+```
+
 
 ### webhook(array \$webhook)
 > [!TIP]

@@ -196,6 +196,15 @@ class NormalizerFactory
     }
 
     /**
+     * @return (\Closure(string, array<string, \SplFileInfo>): list<array{stamp: DataPart}>)
+     */
+    public static function stamp(): \Closure
+    {
+        /** @var \Closure(string, array<string, \SplFileInfo>): list<array{stamp: DataPart}> */
+        return self::files('stamp');
+    }
+
+    /**
      * @return (\Closure(string, array<string, \SplFileInfo>): list<array{watermark: DataPart}>)
      */
     public static function watermark(): \Closure

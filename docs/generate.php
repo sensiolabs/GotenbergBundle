@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
@@ -70,6 +71,7 @@ class BuilderParser
             MarkdownPdfBuilder::class,
             MergePdfBuilder::class,
             SplitPdfBuilder::class,
+            StampPdfBuilder::class,
             UrlPdfBuilder::class,
             WatermarkPdfBuilder::class,
         ],

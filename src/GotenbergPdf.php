@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
 
@@ -29,7 +30,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'encrypt'|'embed'|'watermark' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'encrypt'|'embed'|'stamp'|'watermark' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -42,6 +43,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'flatten' ? FlattenPdfBuilder :
      *   $key is 'encrypt' ? EncryptPdfBuilder :
      *   $key is 'embed' ? EmbedPdfBuilder :
+     *   $key is 'stamp' ? StampPdfBuilder :
      *   $key is 'watermark' ? WatermarkPdfBuilder :
      *   BuilderInterface
      * )
@@ -99,6 +101,11 @@ final class GotenbergPdf implements GotenbergPdfInterface
     public function embed(): BuilderInterface
     {
         return $this->getInternal('embed');
+    }
+
+    public function stamp(): BuilderInterface
+    {
+        return $this->getInternal('stamp');
     }
 
     public function watermark(): BuilderInterface

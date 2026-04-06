@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
@@ -53,6 +54,7 @@ final class ConfigurationTest extends TestCase
                     MergePdfBuilder::class,
                     UrlPdfBuilder::class,
                     SplitPdfBuilder::class,
+                    StampPdfBuilder::class,
                     EncryptPdfBuilder::class,
                     WatermarkPdfBuilder::class,
                 ],
@@ -297,6 +299,7 @@ final class ConfigurationTest extends TestCase
                         ],
                         'ignore_resource_http_status_domains' => [],
                         'emulated_media_features' => [],
+                        'stamp_options' => [],
                         'watermark_options' => [],
                     ],
                     'url' => [
@@ -323,6 +326,7 @@ final class ConfigurationTest extends TestCase
                         ],
                         'ignore_resource_http_status_domains' => [],
                         'emulated_media_features' => [],
+                        'stamp_options' => [],
                         'watermark_options' => [],
                     ],
                     'markdown' => [
@@ -349,6 +353,7 @@ final class ConfigurationTest extends TestCase
                         ],
                         'ignore_resource_http_status_domains' => [],
                         'emulated_media_features' => [],
+                        'stamp_options' => [],
                         'watermark_options' => [],
                     ],
                     'office' => [
@@ -363,6 +368,7 @@ final class ConfigurationTest extends TestCase
                         ],
                         'metadata' => [
                         ],
+                        'stamp_options' => [],
                         'watermark_options' => [],
                     ],
                     'merge' => [
@@ -377,6 +383,7 @@ final class ConfigurationTest extends TestCase
                         ],
                         'metadata' => [
                         ],
+                        'stamp_options' => [],
                         'watermark_options' => [],
                     ],
                     'convert' => [
@@ -402,7 +409,21 @@ final class ConfigurationTest extends TestCase
                         ],
                         'metadata' => [
                         ],
+                        'stamp_options' => [],
                         'watermark_options' => [],
+                    ],
+                    'stamp' => [
+                        'download_from' => [],
+                        'webhook' => [
+                            'success' => [
+                            ],
+                            'error' => [
+                            ],
+                            'extra_http_headers' => [],
+                        ],
+                        'metadata' => [
+                        ],
+                        'stamp_options' => [],
                     ],
                     'encrypt' => [
                         'download_from' => [],

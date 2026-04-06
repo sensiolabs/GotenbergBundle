@@ -1,9 +1,9 @@
-# SplitPdfBuilder
+# StampPdfBuilder
 
-You may have the possibility to split several PDF pages.
+Applies a stamp (on top of page content) to one or more PDF files.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
 
 ## Basic usage
 
@@ -15,20 +15,17 @@ You may have the possibility to split several PDF pages.
 ```php
 namespace App\Controller;
 
+use Sensiolabs\GotenbergBundle\Enumeration\StampSource;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
 class YourController
 {
     public function yourControllerMethod(GotenbergPdfInterface $gotenberg): Response
     {
-        return $gotenberg->split()
-            ->files(
-                'document_1.pdf',
-                'document_2.pdf',
-            )
-            ->splitMode(SplitMode::Pages)
-            ->splitSpan('1-2')
-            ->splitUnify()
+        return $gotenberg->stamp()
+            ->files('document.pdf')
+            ->stampSource(StampSource::Text)
+            ->stampExpression('APPROVED')
             ->generate()
             ->stream()
          ;
@@ -43,32 +40,20 @@ class YourController
 
 - [addMetadata](#addmetadatastring-key-string-value)
 - [downloadFrom](#downloadfromarray-downloadfrom)
-- [embedFiles](#embedfilesstringablesensiolabsgotenbergbundlebuildervalueobjectembeddedfilestring-paths)
+- [embedFiles](#embedfilesstringablestring-paths)
 - [files](#filesstringablestring-paths)
-- [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
-- [splitMode](#splitmodesensiolabsgotenbergbundleenumerationsplitmode-splitmode)
-- [splitSpan](#splitspanstring-splitspan)
-- [splitUnify](#splitunifybool-bool)
 - [stampExpression](#stampexpressionstring-stampexpression)
 - [stampFile](#stampfilestringablestring-path)
 - [stampOptions](#stampoptionsarray-stampoptions)
 - [stampPages](#stamppagesstring-stamppages)
 - [stampSource](#stampsourcesensiolabsgotenbergbundleenumerationstampsource-stampsource)
-- [watermarkExpression](#watermarkexpressionstring-watermarkexpression)
-- [watermarkFile](#watermarkfilestringablestring-path)
-- [watermarkOptions](#watermarkoptionsarray-watermarkoptions)
-- [watermarkPages](#watermarkpagesstring-watermarkpages)
-- [watermarkSource](#watermarksourcesensiolabsgotenbergbundleenumerationwatermarksource-watermarksource)
-- [addWebhookExtraHeaders](#addwebhookextraheadersarray-extrahttpheaders)
 - [webhook](#webhookarray-webhook)
 - [webhookConfiguration](#webhookconfigurationstring-name)
 - [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
 - [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
-- [webhookEventsRoute](#webhookeventsroutestring-route-array-parameters)
-- [webhookEventsUrl](#webhookeventsurlstring-url)
 - [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
 - [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
 - [webhookUrl](#webhookurlstring-url-string-method)
@@ -102,8 +87,8 @@ return $gotenberg
 ;
 ```
 
-### embedFiles(Stringable|Sensiolabs\GotenbergBundle\Builder\ValueObject\EmbeddedFile|string ...\$paths)
-Set files to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+### embedFiles(Stringable|string ...\$paths)
+Add files to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
@@ -117,40 +102,16 @@ return $gotenberg
 ;
 ```
 
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->embedFiles(new EmbeddedFile('factur-x.xml', 'Data'))
-    ->generate()
-    ->stream()
-;
-```
-
 ### files(Stringable|string ...\$paths)
-Add PDF files to split.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+Add PDF files to stamp.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->files('document.pdf','document_2.pdf')
-    ->generate()
-    ->stream()
-;
-```
-
-### flatten(bool \$bool)
-Flattening a PDF combines all its contents into a single layer. (default false).<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->flatten() // is same as `->flatten(true)`
+    ->files('document.pdf')
     ->generate()
     ->stream()
 ;
@@ -197,129 +158,6 @@ Enable PDF for Universal Access for optimal accessibility.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->pdfUniversalAccess()  // is same as `->pdfUniversalAccess(true)`
-    ->generate()
-    ->stream()
-;
-```
-
-### splitMode(?Sensiolabs\GotenbergBundle\Enumeration\SplitMode \$splitMode)
-Either intervals or pages.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->splitMode(SplitMode::Intervals)
-    ->generate()
-    ->stream()
-;
-```
-
-### splitSpan(string \$splitSpan)
-Either the intervals or the page ranges to extract, depending on the selected mode.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->splitSpan('1')
-    ->generate()
-    ->stream()
-;
-```
-
-### splitUnify(bool \$bool)
-Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->splitUnify() // is same as `->splitUnify(true)`
-    ->generate()
-    ->stream()
-;
-```
-
-### watermarkExpression(string \$watermarkExpression)
-The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->watermarkExpression('CONFIDENTIAL')
-    ->generate()
-    ->stream()
-;
-```
-
-### watermarkFile(Stringable|string \$path)
-An image or PDF file used as watermark source (required when watermarkSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->watermarkFile('watermark.pdf')
-    ->generate()
-    ->stream()
-;
-```
-
-### watermarkOptions(array \$watermarkOptions)
-Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->watermarkOptions(['opacity' => 0.5])
-    ->generate()
-    ->stream()
-;
-```
-
-### watermarkPages(?string \$watermarkPages)
-Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->watermarkPages('1-3')
-    ->generate()
-    ->stream()
-;
-```
-
-### watermarkSource(Sensiolabs\GotenbergBundle\Enumeration\WatermarkSource \$watermarkSource)
-The watermark source type.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->watermarkSource(WatermarkSource::Text)
     ->generate()
     ->stream()
 ;
@@ -408,7 +246,7 @@ return $gotenberg
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST'], 'events' => ['url' => 'https://my.webhook.url/events']])
+    ->webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST']])
     ->generate()
     ->stream()
 ;
@@ -445,33 +283,6 @@ Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->webhookErrorUrl('https://my.webhook.url', 'PUT')
-    ->generate()
-    ->stream()
-;
-```
-
-### webhookEventsRoute(string \$route, array \$parameters)
-Sets the webhook route with params for event callbacks.<br />
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->webhookEventsRoute('my_route_events', ['foo' => 'bar'])
-    ->generate()
-    ->stream()
-;
-```
-
-### webhookEventsUrl(string \$url)
-Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->webhookEventsUrl('https://my.webhook.url/events')
     ->generate()
     ->stream()
 ;

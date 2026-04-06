@@ -10,6 +10,7 @@ trait LibreOfficeTrait
     use MetadataTrait;
     use PdfFormatTrait;
     use SplitTrait;
+    use StampTrait;
     use WatermarkTrait;
     use WebhookTrait;
 }

@@ -4,55 +4,46 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\BookmarksTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\StampTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\WatermarkTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
+use Sensiolabs\GotenbergBundle\Enumeration\StampSource;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
- * Merge `n` pdf files into a single one.
+ * Stamp PDF files.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs
- *
- * @methodDoc files Add PDF files to merge.
+ * @methodDoc files Add PDF files to stamp.
  * As assets files, by default the PDF files are fetch in the assets folder
  * of your application. For more information about path resolution go to
  * assets documentation.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs
+ * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs
  *
- * @example files('document.pdf','document_2.pdf')
+ * @example files('document.pdf')
  */
-#[WithBuilderConfiguration(type: 'pdf', name: 'merge')]
-final class MergePdfBuilder extends AbstractBuilder
+#[WithBuilderConfiguration(type: 'pdf', name: 'stamp')]
+final class StampPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
-    use BookmarksTrait;
     use DownloadFromTrait;
     use EmbedTrait;
     use EncryptTrait;
     use FilesTrait;
-    use FlattenTrait;
     use MetadataTrait;
     use PdfFormatTrait;
     use StampTrait;
-    use WatermarkTrait;
     use WebhookTrait;
 
-    public const ENDPOINT = '/forms/pdfengines/merge';
+    public const ENDPOINT = '/forms/pdfengines/stamp';
 
-    private const AVAILABLE_EXTENSIONS = [
-        'pdf',
-    ];
+    private const AVAILABLE_EXTENSIONS = ['pdf'];
 
     protected function getAllowedFilesExtensions(): array
     {
@@ -66,8 +57,23 @@ final class MergePdfBuilder extends AbstractBuilder
 
     protected function validatePayloadBody(): void
     {
+        $this->introducedIn('8.28');
+
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
+        }
+
+        if ($this->getBodyBag()->get('stampSource') === null) {
+            throw new MissingRequiredFieldException('Field "stampSource" must be provided.');
+        }
+
+        if ($this->getBodyBag()->get('stampExpression') === null) {
+            throw new MissingRequiredFieldException('Field "stampExpression" must be provided.');
+        }
+
+        $source = $this->getBodyBag()->get('stampSource');
+        if (\in_array($source, [StampSource::Image, StampSource::Pdf], true) && $this->getBodyBag()->get('stamp') === null) {
+            throw new MissingRequiredFieldException('A stamp file is required when source is "image" or "pdf".');
         }
     }
 }

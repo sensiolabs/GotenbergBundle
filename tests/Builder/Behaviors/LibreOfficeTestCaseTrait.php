@@ -33,6 +33,9 @@ trait LibreOfficeTestCaseTrait
     /** @use SplitTestCaseTrait<T> */
     use SplitTestCaseTrait;
 
+    /** @use StampTestCaseTrait<T> */
+    use StampTestCaseTrait;
+
     /** @use WatermarkTestCaseTrait<T> */
     use WatermarkTestCaseTrait;
 
