@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\SplitTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\WatermarkTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
@@ -42,6 +43,7 @@ final class SplitPdfBuilder extends AbstractBuilder
     use MetadataTrait;
     use PdfFormatTrait;
     use SplitTrait;
+    use WatermarkTrait;
     use WebhookTrait;
 
     public const ENDPOINT = '/forms/pdfengines/split';

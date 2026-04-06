@@ -196,6 +196,15 @@ class NormalizerFactory
     }
 
     /**
+     * @return (\Closure(string, array<string, \SplFileInfo>): list<array{watermark: DataPart}>)
+     */
+    public static function watermark(): \Closure
+    {
+        /** @var \Closure(string, array<string, \SplFileInfo>): list<array{watermark: DataPart}> */
+        return self::files('watermark');
+    }
+
+    /**
      * @return (\Closure(string, array<string, \SplFileInfo>): list<array<string, DataPart>>)
      */
     private static function files(string $type): \Closure

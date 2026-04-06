@@ -13,6 +13,8 @@ parameters:
 		- 'config'
 		- 'src'
 		- 'tests'
+	excludePaths:
+		- 'config/reference.php'
 	ignoreErrors:
 		-
 			message: '#^Call to function is_a\(\) with arguments class\-string\<Sensiolabs\\GotenbergBundle\\Builder\\BuilderInterface\>, ''Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\BuilderInterface'' and true will always evaluate to true\.$#'
@@ -154,6 +156,18 @@ parameters:
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/Builder/Pdf/EmbedPdfBuilder.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/WatermarkPdfBuilder.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Pdf/WatermarkPdfBuilder.php
 
 		-
 			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'

@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
 
 interface GotenbergPdfInterface
 {
@@ -74,4 +75,9 @@ interface GotenbergPdfInterface
      * @return EmbedPdfBuilder
      */
     public function embed(): BuilderInterface;
+
+    /**
+     * @return WatermarkPdfBuilder
+     */
+    public function watermark(): BuilderInterface;
 }

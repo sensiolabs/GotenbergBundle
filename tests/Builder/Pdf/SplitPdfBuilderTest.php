@@ -15,6 +15,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\SplitTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WatermarkTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -43,6 +44,9 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
 
     /** @use SplitTestCaseTrait<SplitPdfBuilder> */
     use SplitTestCaseTrait;
+
+    /** @use WatermarkTestCaseTrait<SplitPdfBuilder> */
+    use WatermarkTestCaseTrait;
 
     /** @use WebhookTestCaseTrait<SplitPdfBuilder> */
     use WebhookTestCaseTrait;

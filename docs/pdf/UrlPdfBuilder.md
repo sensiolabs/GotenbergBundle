@@ -80,6 +80,11 @@ class YourController
 - [splitSpan](#splitspanstring-splitspan)
 - [splitUnify](#splitunifybool-bool)
 - [url](#urlstring-url)
+- [watermarkExpression](#watermarkexpressionstring-watermarkexpression)
+- [watermarkFile](#watermarkfilestringablestring-path)
+- [watermarkOptions](#watermarkoptionsarray-watermarkoptions)
+- [watermarkPages](#watermarkpagesstring-watermarkpages)
+- [watermarkSource](#watermarksourcesensiolabsgotenbergbundleenumerationwatermarksource-watermarksource)
 - [addAsset](#addassetstringablestring-path)
 - [assets](#assetsstringablestring-paths)
 - [addWebhookExtraHeaders](#addwebhookextraheadersarray-extrahttpheaders)
@@ -302,6 +307,81 @@ URL of the page you want to convert into PDF.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->url('https://sensiolabs.com/fr/')
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkExpression(string \$watermarkExpression)
+The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkExpression('CONFIDENTIAL')
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkFile(Stringable|string \$path)
+An image or PDF file used as watermark source (required when watermarkSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkFile('watermark.pdf')
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkOptions(array \$watermarkOptions)
+Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkOptions(['opacity' => 0.5])
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkPages(string \$watermarkPages)
+Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkPages('1-3')
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkSource(Sensiolabs\GotenbergBundle\Enumeration\WatermarkSource \$watermarkSource)
+The watermark source type.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkSource(WatermarkSource::Text)
     ->generate()
     ->stream()
 ;

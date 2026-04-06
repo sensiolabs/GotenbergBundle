@@ -10,6 +10,7 @@ $finder = (new PhpCsFixer\Finder())
         __DIR__.'/tests',
     ])
     ->notPath('var')
+    ->notPath('reference.php')
 ;
 
 return (new PhpCsFixer\Config())

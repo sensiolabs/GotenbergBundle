@@ -20,5 +20,6 @@ trait ChromiumPdfTrait
     use MetadataTrait;
     use PdfFormatTrait;
     use SplitTrait;
+    use WatermarkTrait;
     use WebhookTrait;
 }

@@ -54,6 +54,9 @@ trait ChromiumPdfTestCaseTrait
     /** @use SplitTestCaseTrait<T> */
     use SplitTestCaseTrait;
 
+    /** @use WatermarkTestCaseTrait<T> */
+    use WatermarkTestCaseTrait;
+
     /** @use WebhookTestCaseTrait<T> */
     use WebhookTestCaseTrait;
 }

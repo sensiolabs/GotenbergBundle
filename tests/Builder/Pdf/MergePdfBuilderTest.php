@@ -14,6 +14,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EncryptTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WatermarkTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -42,6 +43,9 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 
     /** @use PdfFormatTestCaseTrait<MergePdfBuilder> */
     use PdfFormatTestCaseTrait;
+
+    /** @use WatermarkTestCaseTrait<MergePdfBuilder> */
+    use WatermarkTestCaseTrait;
 
     /** @use WebhookTestCaseTrait<MergePdfBuilder> */
     use WebhookTestCaseTrait;

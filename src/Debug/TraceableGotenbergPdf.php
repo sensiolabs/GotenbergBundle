@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
@@ -207,6 +208,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['embed', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return WatermarkPdfBuilder|TraceableBuilder
+     */
+    public function watermark(): BuilderInterface
+    {
+        /** @var WatermarkPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->watermark();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['watermark', $traceableBuilder];
 
         return $traceableBuilder;
     }
