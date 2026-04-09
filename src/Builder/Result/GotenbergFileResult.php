@@ -106,7 +106,7 @@ class GotenbergFileResult extends AbstractGotenbergResult
         return $generator->getReturn();
     }
 
-    public function stream(): StreamedResponse
+    public function stream(callable $streamCallback = null): StreamedResponse
     {
         $this->ensureExecution();
         $this->processed = true;
@@ -119,19 +119,25 @@ class GotenbergFileResult extends AbstractGotenbergResult
             $headers['Content-Disposition'] = [HeaderUtils::makeDisposition($this->disposition, $filename)];
         }
 
+        $stream = $this->stream;
+
         return new StreamedResponse(
-            function () use ($filename): void {
-                if (!$this->stream->valid()) {
-                    throw new ProcessorException('Already processed query.');
+            $streamCallback
+                ? function () use ($streamCallback, $stream) {
+                    return $streamCallback($stream);
                 }
+                : function () use ($stream, $filename): void {
+                    if (!$stream->valid()) {
+                        throw new ProcessorException('Already processed query.');
+                    }
 
-                $generator = ($this->processor)($filename);
+                    $generator = ($this->processor)($filename);
 
-                foreach ($this->stream as $chunk) {
-                    $generator->send($chunk);
-                    echo $chunk->getContent();
-                    flush();
-                }
+                    foreach ($stream as $chunk) {
+                        $generator->send($chunk);
+                        echo $chunk->getContent();
+                        flush();
+                    }
             },
             $this->getStatusCode(),
             $headers,
