@@ -38,7 +38,12 @@ trait ContentTrait
         return $this->withRenderedPart(Part::Body, $template, $context);
     }
 
-    public function contentString(string $html): self
+    /**
+     * The raw html string to convert into PDF.
+     *
+     * @example contentRaw('<html><body><h2>The content</h2></body></html>')
+     */
+    public function contentRaw(string $html): self
     {
         return $this->withRawPart(Part::Body, $html);
     }
@@ -81,10 +86,9 @@ trait ContentTrait
     /**
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
-     * @example headerString('<html><body><h1>The header</h1></body></html>')
+     * @example headerRaw('<html><body><h1>The header</h1></body></html>')
      */
-    #[WithConfigurationNode(new ArrayNodeBuilder('header'))]
-    public function headerString(string $html): static
+    public function headerRaw(string $html): static
     {
         return $this->withRawPart(Part::Header, $html);
     }
@@ -111,10 +115,9 @@ trait ContentTrait
     /**
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
-     * @example footerString('<html><body><h6>The footer</h6></body></html>')
+     * @example footerRaw('<html><body><h6>The footer</h6></body></html>')
      */
-    #[WithConfigurationNode(new ArrayNodeBuilder('footer'))]
-    public function footerString(string $html): static
+    public function footerRaw(string $html): static
     {
         return $this->withRawPart(Part::Footer, $html);
     }

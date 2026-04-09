@@ -106,10 +106,13 @@ class YourController
 - [waitForSelector](#waitforselectorstring-selector)
 - [content](#contentstring-template-array-context)
 - [contentFile](#contentfilestring-path)
+- [contentRaw](#contentrawstring-html)
 - [footer](#footerstring-template-array-context)
 - [footerFile](#footerfilestring-path)
+- [footerRaw](#footerrawstring-html)
 - [header](#headerstring-template-array-context)
 - [headerFile](#headerfilestring-path)
+- [headerRaw](#headerrawstring-html)
 - [emulatedMediaFeatures](#emulatedmediafeaturesarray-emulatedmediafeatures)
 - [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
 - [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
@@ -469,6 +472,18 @@ return $gotenberg
 ;
 ```
 
+### contentRaw(string \$html)
+The raw html string to convert into PDF.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->contentRaw('<html><body><h2>The content</h2></body></html>')
+    ->generate()
+    ->stream()
+;
+```
+
 ### footer(string \$template, array \$context)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
@@ -497,6 +512,19 @@ return $gotenberg
 ;
 ```
 
+### footerRaw(string \$html)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->footerRaw('<html><body><h6>The footer</h6></body></html>')
+    ->generate()
+    ->stream()
+;
+```
+
 ### header(string \$template, array \$context)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
@@ -520,6 +548,19 @@ HTML file containing the header.<br /><br />As assets files, by default the HTML
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->headerFile('../templates/html/header.html')
+    ->generate()
+    ->stream()
+;
+```
+
+### headerRaw(string \$html)
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->headerRaw('<html><body><h1>The header</h1></body></html>')
     ->generate()
     ->stream()
 ;
