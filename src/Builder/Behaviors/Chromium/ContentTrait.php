@@ -38,6 +38,11 @@ trait ContentTrait
         return $this->withRenderedPart(Part::Body, $template, $context);
     }
 
+    public function contentString(string $html): self
+    {
+        return $this->withRawPart(Part::Body, $html);
+    }
+
     /**
      * The HTML file to convert into PDF.
      *
@@ -74,6 +79,17 @@ trait ContentTrait
     }
 
     /**
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
+     *
+     * @example headerString('<html><body><h1>The header</h1></body></html>')
+     */
+    #[WithConfigurationNode(new ArrayNodeBuilder('header'))]
+    public function headerString(string $html): static
+    {
+        return $this->withRawPart(Part::Header, $html);
+    }
+
+    /**
      * @param string               $template #Template
      * @param array<string, mixed> $context
      *
@@ -90,6 +106,17 @@ trait ContentTrait
     public function footer(string $template, array $context = []): static
     {
         return $this->withRenderedPart(Part::Footer, $template, $context);
+    }
+
+    /**
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
+     *
+     * @example footerString('<html><body><h6>The footer</h6></body></html>')
+     */
+    #[WithConfigurationNode(new ArrayNodeBuilder('footer'))]
+    public function footerString(string $html): static
+    {
+        return $this->withRawPart(Part::Footer, $html);
     }
 
     /**
@@ -146,6 +173,13 @@ trait ContentTrait
         }
 
         $this->getBodyBag()->set($part->value, $renderedPart);
+
+        return $this;
+    }
+
+    protected function withRawPart(Part $part, string $html): static
+    {
+        $this->getBodyBag()->set($part->value, new RenderedPart($part, $html));
 
         return $this;
     }
