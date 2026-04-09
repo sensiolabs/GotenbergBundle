@@ -125,6 +125,94 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertContentFile('index.html', 'text/html', $expected);
     }
 
+    public function testWithRawHtmlWithHeaderAndFooterParts(): void
+    {
+        $this->getBuilder()
+            ->headerRaw(<<<HTML
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="utf-8" />
+                    <title>My PDF Header</title>
+                </head>
+                <body>
+                    <h1>Hello world!</h1>
+                    <img src="logo.png" />
+                </body>
+            </html>
+            HTML)
+            ->contentRaw(<<<HTML
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="utf-8" />
+                    <title>My PDF</title>
+                </head>
+                <body>
+                    <h2>Hello world!</h2>
+                    <img src="logo.png" />
+                </body>
+            </html>
+            HTML)
+            ->footerRaw(<<<HTML
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="utf-8" />
+                    <title>My PDF Footer</title>
+                </head>
+                <body>
+                    <h6>Hello world!</h6>
+                    <img src="logo.png" />
+                </body>
+            </html>
+            HTML)
+            ->generate()
+        ;
+
+        $this->assertContentFile('header.html', 'text/html', <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF Header</title>
+            </head>
+            <body>
+                <h1>Hello world!</h1>
+                <img src="logo.png" />
+            </body>
+        </html>
+        HTML);
+
+        $this->assertContentFile('index.html', 'text/html', <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF</title>
+            </head>
+            <body>
+                <h2>Hello world!</h2>
+                <img src="logo.png" />
+            </body>
+        </html>
+        HTML);
+
+        $this->assertContentFile('footer.html', 'text/html', <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF Footer</title>
+            </head>
+            <body>
+                <h6>Hello world!</h6>
+                <img src="logo.png" />
+            </body>
+        </html>
+        HTML);
+    }
+
     public function testWithTwigAndHeaderFooterParts(): void
     {
         $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
