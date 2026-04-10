@@ -41,7 +41,8 @@ trait ContentTrait
     /**
      * The raw html string to convert into PDF.
      *
-     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
+     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
      *
      * @example contentRaw('<html><body><h2>The content</h2></body></html>')
      */
@@ -56,6 +57,9 @@ trait ContentTrait
      * As assets files, by default the HTML files are fetch in the assets folder of your application.
      * If your HTML files are in another folder, you can override the default value of assets_directory in your
      * configuration file config/sensiolabs_gotenberg.yml.
+     *
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
+     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
      *
      * @throws PartRenderingException if the template could not be rendered
      *
@@ -88,7 +92,8 @@ trait ContentTrait
     /**
      * The raw html string to convert into PDF.
      *
-     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
+     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
      *
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
@@ -121,7 +126,8 @@ trait ContentTrait
     /**
      * The raw html string to convert into PDF.
      *
-     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
+     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
      *
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
@@ -138,6 +144,9 @@ trait ContentTrait
      * As assets files, by default the HTML files are fetch in the assets folder of your application.
      * If your HTML files are in another folder, you can override the default value of assets_directory in your
      * configuration file config/sensiolabs_gotenberg.yml.
+     *
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
+     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
      *
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
@@ -156,6 +165,9 @@ trait ContentTrait
      * As assets files, by default the HTML files are fetch in the assets folder of your application.
      * If your HTML files are in another folder, you can override the default value of assets_directory in your
      * configuration file config/sensiolabs_gotenberg.yml.
+     *
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
+     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
      *
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
