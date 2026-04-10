@@ -41,6 +41,8 @@ trait ContentTrait
     /**
      * The raw html string to convert into PDF.
      *
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically
+     *
      * @example contentRaw('<html><body><h2>The content</h2></body></html>')
      */
     public function contentRaw(string $html): self
@@ -84,6 +86,10 @@ trait ContentTrait
     }
 
     /**
+     * The raw html string to convert into PDF.
+     *
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically
+     *
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @example headerRaw('<html><body><h1>The header</h1></body></html>')
@@ -113,6 +119,10 @@ trait ContentTrait
     }
 
     /**
+     * The raw html string to convert into PDF.
+     *
+     * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically
+     *
      * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @example footerRaw('<html><body><h6>The footer</h6></body></html>')
