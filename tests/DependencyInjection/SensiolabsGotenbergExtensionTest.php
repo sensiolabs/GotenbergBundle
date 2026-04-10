@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
@@ -47,6 +48,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         $extension->registerBuilder(UrlPdfBuilder::class);
         $extension->registerBuilder(EncryptPdfBuilder::class);
         $extension->registerBuilder(EmbedPdfBuilder::class);
+        $extension->registerBuilder(RotatePdfBuilder::class);
 
         $extension->registerBuilder(HtmlScreenshotBuilder::class);
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
@@ -242,6 +244,9 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                     'split_mode' => SplitMode::Intervals,
                     'split_span' => 1,
                 ],
+                'rotate' => [
+                    'rotate_angle' => 90,
+                ],
             ],
             'screenshot' => [
                 'html' => [
@@ -408,6 +413,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                     ],
                     'encrypt' => [],
                     'embed' => [],
+                    'rotate' => [],
                 ],
             ],
         ]], $containerBuilder);
@@ -452,6 +458,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 ],
                 'encrypt' => [],
                 'embed' => [],
+                'rotate' => [],
             ],
             'screenshot' => [
                 'html' => [],
@@ -595,6 +602,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
      *                  'merge': array<string, mixed>,
      *                  'convert': array<string, mixed>,
      *                  'split': array<string, mixed>,
+     *                  'rotate': array<string, mixed>,
      *                  'encrypt': array<string, mixed>,
      *                  'embed': array<string, mixed>,
      *              },
@@ -797,6 +805,9 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                         'split' => [
                             'split_mode' => SplitMode::Intervals->value,
                             'split_span' => 1,
+                        ],
+                        'rotate' => [
+                            'rotate_angle' => 90,
                         ],
                         'encrypt' => [
                             'user_password' => 'user_secret',

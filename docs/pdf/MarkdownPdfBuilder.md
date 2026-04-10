@@ -128,6 +128,8 @@ class YourController
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
+- [rotateAngle](#rotateanglesensiolabsgotenbergbundleenumerationrotateangle-rotateangle)
+- [rotatePages](#rotatepagesstring-rotatepages)
 - [splitMode](#splitmodesensiolabsgotenbergbundleenumerationsplitmode-splitmode)
 - [splitSpan](#splitspanstring-splitspan)
 - [splitUnify](#splitunifybool-bool)
@@ -300,6 +302,36 @@ Enable PDF for Universal Access for optimal accessibility.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->pdfUniversalAccess()  // is same as `->pdfUniversalAccess(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### rotateAngle(?Sensiolabs\GotenbergBundle\Enumeration\RotateAngle \$rotateAngle)
+The rotation angle.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->rotateAngle(RotateAngle::Rotate90)
+    ->generate()
+    ->stream()
+;
+```
+
+### rotatePages(?string \$rotatePages)
+Page ranges to rotate (e.g., '1-3', '5'). Empty means all pages.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->rotatePages('1-2')
     ->generate()
     ->stream()
 ;

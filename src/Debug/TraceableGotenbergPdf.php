@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
@@ -243,6 +244,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['watermark', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return RotatePdfBuilder|TraceableBuilder
+     */
+    public function rotate(): BuilderInterface
+    {
+        /** @var RotatePdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->rotate();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['rotate', $traceableBuilder];
 
         return $traceableBuilder;
     }

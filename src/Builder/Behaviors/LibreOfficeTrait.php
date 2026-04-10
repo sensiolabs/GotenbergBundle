@@ -9,6 +9,7 @@ trait LibreOfficeTrait
     use LibreOffice\PagePropertiesTrait;
     use MetadataTrait;
     use PdfFormatTrait;
+    use RotateTrait;
     use SplitTrait;
     use StampTrait;
     use WatermarkTrait;

@@ -19,6 +19,7 @@ trait ChromiumPdfTrait
     use FlattenTrait;
     use MetadataTrait;
     use PdfFormatTrait;
+    use RotateTrait;
     use SplitTrait;
     use StampTrait;
     use WatermarkTrait;

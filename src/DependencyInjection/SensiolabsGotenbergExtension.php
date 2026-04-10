@@ -34,6 +34,7 @@ use Symfony\Component\Routing\RequestContext;
  *              merge: array<string, mixed>,
  *              convert: array<string, mixed>,
  *              split: array<string, mixed>,
+ *              rotate: array<string, mixed>,
  *              encrypt: array<string, mixed>,
  *              embed: array<string, mixed>,
  *              stamp: array<string, mixed>,
