@@ -62,13 +62,19 @@ class ValidatorFactory
     }
 
     /**
-     * @param list<array{url: string, extraHttpHeaders?: array<string, string>}> $downloadFrom
+     * @param list<array{url: string, extraHttpHeaders?: array<string, string>, field?: string}> $downloadFrom
      */
     public static function download(array $downloadFrom): void
     {
+        $validFields = ['watermark', 'stamp', 'embedded', ''];
+
         foreach ($downloadFrom as $file) {
             if (!\array_key_exists('url', $file)) {
                 throw new InvalidBuilderConfiguration('"url" is mandatory into "downloadFrom" array field.');
+            }
+
+            if (\array_key_exists('field', $file) && !\in_array($file['field'], $validFields, true)) {
+                throw new InvalidBuilderConfiguration(\sprintf('Invalid "field" value "%s" in "downloadFrom". Allowed values are: "watermark", "stamp", "embedded", "".', $file['field']));
             }
         }
     }

@@ -31,6 +31,21 @@ trait DownloadFromTestCaseTrait
         $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","extraHttpHeaders":{"MyHeader":"MyValue","User-Agent":"MyValue"}}]');
     }
 
+    public function testAddAnExternalResourceWithField(): void
+    {
+        $this->getDefaultBuilder()
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'field' => 'watermark',
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","field":"watermark"}]');
+    }
+
     public function testUnsetDownloadResource(): void
     {
         $builder = $this->getDefaultBuilder()

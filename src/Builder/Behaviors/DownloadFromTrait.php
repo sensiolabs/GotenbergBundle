@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 trait DownloadFromTrait
@@ -20,7 +21,7 @@ trait DownloadFromTrait
     /**
      * Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).
      *
-     * @param list<array{url: string, extraHttpHeaders?: array<string, string>}> $downloadFrom
+     * @param list<array{url: string, extraHttpHeaders?: array<string, string>, field?: ''|'watermark'|'stamp'|'embedded'}> $downloadFrom
      *
      * @see https://gotenberg.dev/docs/webhook-download#download-from
      *
@@ -32,6 +33,7 @@ trait DownloadFromTrait
             new ScalarNodeBuilder('name', required: true),
             new ScalarNodeBuilder('value', required: true),
         ]),
+        new EnumNodeBuilder('field', values: ['', 'watermark', 'stamp', 'embedded']),
     ]))]
     public function downloadFrom(array $downloadFrom): static
     {
@@ -43,6 +45,13 @@ trait DownloadFromTrait
         }
 
         $this->logWarningIfVersionIs('<', '8.10', 'The option downloadFrom is not available.');
+
+        foreach ($downloadFrom as $file) {
+            if (\array_key_exists('field', $file)) {
+                $this->logWarningIfVersionIs('<', '8.28', 'The option "field" in downloadFrom is not available.');
+                break;
+            }
+        }
 
         $value = $this->getBodyBag()->get('downloadFrom', []);
 
