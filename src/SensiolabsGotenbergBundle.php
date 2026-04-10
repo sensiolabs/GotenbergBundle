@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
@@ -41,6 +42,7 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder(MergePdfBuilder::class);
         $extension->registerBuilder(SplitPdfBuilder::class);
         $extension->registerBuilder(UrlPdfBuilder::class);
+        $extension->registerBuilder(WatermarkPdfBuilder::class);
 
         $extension->registerBuilder(HtmlScreenshotBuilder::class);
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);

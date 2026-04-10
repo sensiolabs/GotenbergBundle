@@ -14,7 +14,7 @@ parameters:
 		- 'src'
 		- 'tests'
 	excludePaths:
-		- 'config/reference.php'
+		- 'config/reference.php (?)'
 	ignoreErrors:
 		-
 			message: '#^Call to function is_a\(\) with arguments class\-string\<Sensiolabs\\GotenbergBundle\\Builder\\BuilderInterface\>, ''Sensiolabs\\\\GotenbergBundle\\\\Builder\\\\BuilderInterface'' and true will always evaluate to true\.$#'

@@ -424,8 +424,6 @@ final class ConfigurationTest extends TestCase
                             ],
                             'extra_http_headers' => [],
                         ],
-                        'metadata' => [
-                        ],
                         'watermark_options' => [],
                     ],
                 ],

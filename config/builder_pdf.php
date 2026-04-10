@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -94,6 +95,14 @@ return static function (ContainerConfigurator $container): void {
 
     // Embed
     $services->set('.sensiolabs_gotenberg.pdf_builder.embed', EmbedPdfBuilder::class)
+        ->share(false)
+        ->parent('.sensiolabs_gotenberg.abstract_builder')
+        ->tag('sensiolabs_gotenberg.builder')
+        ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
+    ;
+
+    // Watermark
+    $services->set('.sensiolabs_gotenberg.pdf_builder.watermark', WatermarkPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.builder')

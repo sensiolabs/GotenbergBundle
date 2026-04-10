@@ -35,7 +35,8 @@ use Symfony\Component\Routing\RequestContext;
  *              convert: array<string, mixed>,
  *              split: array<string, mixed>,
  *              encrypt: array<string, mixed>,
- *              embed: array<string, mixed>
+ *              embed: array<string, mixed>,
+ *              watermark: array<string, mixed>
  *          },
  *          screenshot: array{
  *              html: array<string, mixed>,
