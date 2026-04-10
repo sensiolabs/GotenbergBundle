@@ -347,7 +347,7 @@ return $gotenberg
 ;
 ```
 
-### stampPages(string \$stampPages)
+### stampPages(?string \$stampPages)
 Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
 
 > [!TIP]

@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormat
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\StampSource;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
@@ -63,11 +64,16 @@ trait StampTrait
      * @example stampPages('1-3')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('stamp_pages'))]
-    public function stampPages(string $stampPages): self
+    public function stampPages(string|null $stampPages = null): self
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The stamp option is not available.');
 
-        $this->getBodyBag()->set('stampPages', $stampPages);
+        if (!$stampPages) {
+            $this->getBodyBag()->unset('stampPages');
+        } else {
+            ValidatorFactory::range($stampPages);
+            $this->getBodyBag()->set('stampPages', $stampPages);
+        }
 
         return $this;
     }
@@ -119,8 +125,6 @@ trait StampTrait
     private function normalizeStamp(): \Generator
     {
         yield 'stampSource' => NormalizerFactory::enum();
-        yield 'stampExpression' => NormalizerFactory::noop();
-        yield 'stampPages' => NormalizerFactory::noop();
         yield 'stampOptions' => NormalizerFactory::json();
         yield 'stamp' => NormalizerFactory::stamp();
     }

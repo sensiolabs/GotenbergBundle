@@ -6,11 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\StampTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Enumeration\StampSource;
@@ -33,11 +29,7 @@ final class StampPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
     use DownloadFromTrait;
-    use EmbedTrait;
-    use EncryptTrait;
     use FilesTrait;
-    use MetadataTrait;
-    use PdfFormatTrait;
     use StampTrait;
     use WebhookTrait;
 

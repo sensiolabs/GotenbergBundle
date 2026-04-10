@@ -421,8 +421,6 @@ final class ConfigurationTest extends TestCase
                             ],
                             'extra_http_headers' => [],
                         ],
-                        'metadata' => [
-                        ],
                         'stamp_options' => [],
                     ],
                     'encrypt' => [
