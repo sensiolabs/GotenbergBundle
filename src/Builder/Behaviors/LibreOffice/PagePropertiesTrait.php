@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\FloatNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
@@ -400,6 +401,108 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Set the watermark text to render on every page during PDF export.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     *
+     * @example nativeWatermarkText('CONFIDENTIAL')
+     */
+    #[WithConfigurationNode(new ScalarNodeBuilder('native_watermark_text'))]
+    public function nativeWatermarkText(string $text): static
+    {
+        $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkText is not available.');
+
+        $this->getBodyBag()->set('nativeWatermarkText', $text);
+
+        return $this;
+    }
+
+    /**
+     * Set the watermark text color (e.g., '#000000').
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     *
+     * @example nativeWatermarkColor('#FF0000')
+     */
+    #[WithConfigurationNode(new ScalarNodeBuilder('native_watermark_color'))]
+    public function nativeWatermarkColor(string $color): static
+    {
+        $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkColor is not available.');
+
+        $this->getBodyBag()->set('nativeWatermarkColor', $color);
+
+        return $this;
+    }
+
+    /**
+     * Set the watermark font height in points.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     *
+     * @example nativeWatermarkFontHeight(50.0)
+     */
+    #[WithConfigurationNode(new FloatNodeBuilder('native_watermark_font_height'))]
+    public function nativeWatermarkFontHeight(float $height): static
+    {
+        $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkFontHeight is not available.');
+
+        $this->getBodyBag()->set('nativeWatermarkFontHeight', $height);
+
+        return $this;
+    }
+
+    /**
+     * Set the watermark rotation angle in degrees.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     *
+     * @example nativeWatermarkRotateAngle(-45.0)
+     */
+    #[WithConfigurationNode(new FloatNodeBuilder('native_watermark_rotate_angle'))]
+    public function nativeWatermarkRotateAngle(float $angle): static
+    {
+        $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkRotateAngle is not available.');
+
+        $this->getBodyBag()->set('nativeWatermarkRotateAngle', $angle);
+
+        return $this;
+    }
+
+    /**
+     * Set the watermark font name.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     *
+     * @example nativeWatermarkFontName('Liberation Sans')
+     */
+    #[WithConfigurationNode(new ScalarNodeBuilder('native_watermark_font_name'))]
+    public function nativeWatermarkFontName(string $fontName): static
+    {
+        $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkFontName is not available.');
+
+        $this->getBodyBag()->set('nativeWatermarkFontName', $fontName);
+
+        return $this;
+    }
+
+    /**
+     * Set a tiled watermark text rendered across every page during PDF export.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     *
+     * @example nativeTiledWatermarkText('DRAFT')
+     */
+    #[WithConfigurationNode(new ScalarNodeBuilder('native_tiled_watermark_text'))]
+    public function nativeTiledWatermarkText(string $text): static
+    {
+        $this->logWarningIfVersionIs('<', '8.28', 'The option nativeTiledWatermarkText is not available.');
+
+        $this->getBodyBag()->set('nativeTiledWatermarkText', $text);
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -425,5 +528,7 @@ trait PagePropertiesTrait
         yield 'reduceImageResolution' => NormalizerFactory::bool();
         yield 'maxImageResolution' => NormalizerFactory::enum();
         yield 'updateIndexes' => NormalizerFactory::bool();
+        yield 'nativeWatermarkFontHeight' => NormalizerFactory::float();
+        yield 'nativeWatermarkRotateAngle' => NormalizerFactory::float();
     }
 }
