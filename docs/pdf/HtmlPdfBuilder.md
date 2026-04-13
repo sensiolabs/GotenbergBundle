@@ -360,7 +360,7 @@ return $gotenberg
 ;
 ```
 
-### watermarkPages(string \$watermarkPages)
+### watermarkPages(?string \$watermarkPages)
 Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.<br />
 
 > [!TIP]

@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormat
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\WatermarkSource;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
@@ -62,11 +63,16 @@ trait WatermarkTrait
      * @example watermarkPages('1-3')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('watermark_pages'))]
-    public function watermarkPages(string $watermarkPages): self
+    public function watermarkPages(string|null $watermarkPages = null): self
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
 
-        $this->getBodyBag()->set('watermarkPages', $watermarkPages);
+        if (!$watermarkPages) {
+            $this->getBodyBag()->unset('stampPages');
+        } else {
+            ValidatorFactory::range($watermarkPages);
+            $this->getBodyBag()->set('watermarkPages', $watermarkPages);
+        }
 
         return $this;
     }
@@ -117,8 +123,6 @@ trait WatermarkTrait
     private function normalizeWatermark(): \Generator
     {
         yield 'watermarkSource' => NormalizerFactory::enum();
-        yield 'watermarkExpression' => NormalizerFactory::noop();
-        yield 'watermarkPages' => NormalizerFactory::noop();
         yield 'watermarkOptions' => NormalizerFactory::json();
         yield 'watermark' => NormalizerFactory::watermark();
     }
