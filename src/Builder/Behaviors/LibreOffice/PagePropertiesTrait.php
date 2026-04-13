@@ -10,7 +10,6 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
-use Sensiolabs\GotenbergBundle\NodeBuilder\FloatNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
@@ -406,10 +405,10 @@ trait PagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
-     * @example nativeWatermarkText('CONFIDENTIAL')
+     * @example watermarkText('CONFIDENTIAL')
      */
-    #[WithConfigurationNode(new ScalarNodeBuilder('native_watermark_text'))]
-    public function nativeWatermarkText(string $text): static
+    #[WithConfigurationNode(new ScalarNodeBuilder('watermark_text'))]
+    public function watermarkText(string $text): static
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkText is not available.');
 
@@ -419,14 +418,14 @@ trait PagePropertiesTrait
     }
 
     /**
-     * Set the watermark text color (e.g., '#000000').
+     * Set the watermark text color as a hex string (e.g., '#FF0000').
      *
      * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
-     * @example nativeWatermarkColor('#FF0000')
+     * @example watermarkColor('#FF0000')
      */
-    #[WithConfigurationNode(new ScalarNodeBuilder('native_watermark_color'))]
-    public function nativeWatermarkColor(string $color): static
+    #[WithConfigurationNode(new ScalarNodeBuilder('watermark_color'))]
+    public function watermarkColor(string $color): static
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkColor is not available.');
 
@@ -440,10 +439,10 @@ trait PagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
-     * @example nativeWatermarkFontHeight(50.0)
+     * @example watermarkFontHeight(50)
      */
-    #[WithConfigurationNode(new FloatNodeBuilder('native_watermark_font_height'))]
-    public function nativeWatermarkFontHeight(float $height): static
+    #[WithConfigurationNode(new IntegerNodeBuilder('watermark_font_height'))]
+    public function watermarkFontHeight(int $height): static
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkFontHeight is not available.');
 
@@ -453,14 +452,14 @@ trait PagePropertiesTrait
     }
 
     /**
-     * Set the watermark rotation angle in degrees.
+     * Set the watermark rotation angle in tenths of a degree (e.g., 450 = 45°).
      *
      * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
-     * @example nativeWatermarkRotateAngle(-45.0)
+     * @example watermarkRotateAngle(-450)
      */
-    #[WithConfigurationNode(new FloatNodeBuilder('native_watermark_rotate_angle'))]
-    public function nativeWatermarkRotateAngle(float $angle): static
+    #[WithConfigurationNode(new IntegerNodeBuilder('watermark_rotate_angle'))]
+    public function watermarkRotateAngle(int $angle): static
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkRotateAngle is not available.');
 
@@ -474,10 +473,10 @@ trait PagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
-     * @example nativeWatermarkFontName('Liberation Sans')
+     * @example watermarkFontName('Liberation Sans')
      */
-    #[WithConfigurationNode(new ScalarNodeBuilder('native_watermark_font_name'))]
-    public function nativeWatermarkFontName(string $fontName): static
+    #[WithConfigurationNode(new ScalarNodeBuilder('watermark_font_name'))]
+    public function watermarkFontName(string $fontName): static
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The option nativeWatermarkFontName is not available.');
 
@@ -491,10 +490,10 @@ trait PagePropertiesTrait
      *
      * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
-     * @example nativeTiledWatermarkText('DRAFT')
+     * @example tiledWatermarkText('DRAFT')
      */
-    #[WithConfigurationNode(new ScalarNodeBuilder('native_tiled_watermark_text'))]
-    public function nativeTiledWatermarkText(string $text): static
+    #[WithConfigurationNode(new ScalarNodeBuilder('tiled_watermark_text'))]
+    public function tiledWatermarkText(string $text): static
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The option nativeTiledWatermarkText is not available.');
 
@@ -528,7 +527,8 @@ trait PagePropertiesTrait
         yield 'reduceImageResolution' => NormalizerFactory::bool();
         yield 'maxImageResolution' => NormalizerFactory::enum();
         yield 'updateIndexes' => NormalizerFactory::bool();
-        yield 'nativeWatermarkFontHeight' => NormalizerFactory::float();
-        yield 'nativeWatermarkRotateAngle' => NormalizerFactory::float();
+        yield 'nativeWatermarkColor' => NormalizerFactory::hexColor();
+        yield 'nativeWatermarkFontHeight' => NormalizerFactory::int();
+        yield 'nativeWatermarkRotateAngle' => NormalizerFactory::int();
     }
 }

@@ -94,12 +94,6 @@ class YourController
 - [merge](#mergebool-bool)
 - [metadata](#metadataarray-metadata)
 - [nativePageRanges](#nativepagerangesstring-ranges)
-- [nativeTiledWatermarkText](#nativetiledwatermarktextstring-text)
-- [nativeWatermarkColor](#nativewatermarkcolorstring-color)
-- [nativeWatermarkFontHeight](#nativewatermarkfontheightfloat-height)
-- [nativeWatermarkFontName](#nativewatermarkfontnamestring-fontname)
-- [nativeWatermarkRotateAngle](#nativewatermarkrotateanglefloat-angle)
-- [nativeWatermarkText](#nativewatermarktextstring-text)
 - [password](#passwordstring-password)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
@@ -110,6 +104,12 @@ class YourController
 - [splitMode](#splitmodesensiolabsgotenbergbundleenumerationsplitmode-splitmode)
 - [splitSpan](#splitspanstring-splitspan)
 - [splitUnify](#splitunifybool-bool)
+- [tiledWatermarkText](#tiledwatermarktextstring-text)
+- [watermarkColor](#watermarkcolorstring-color)
+- [watermarkFontHeight](#watermarkfontheightint-height)
+- [watermarkFontName](#watermarkfontnamestring-fontname)
+- [watermarkRotateAngle](#watermarkrotateangleint-angle)
+- [watermarkText](#watermarktextstring-text)
 - [webhook](#webhookarray-webhook)
 - [webhookConfiguration](#webhookconfigurationstring-name)
 - [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
@@ -456,96 +456,6 @@ return $gotenberg
 ;
 ```
 
-### nativeTiledWatermarkText(string \$text)
-Set a tiled watermark text rendered across every page during PDF export.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->nativeTiledWatermarkText('DRAFT')
-    ->generate()
-    ->stream()
-;
-```
-
-### nativeWatermarkColor(string \$color)
-Set the watermark text color (e.g., '#000000').<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->nativeWatermarkColor('#FF0000')
-    ->generate()
-    ->stream()
-;
-```
-
-### nativeWatermarkFontHeight(float \$height)
-Set the watermark font height in points.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->nativeWatermarkFontHeight(50.0)
-    ->generate()
-    ->stream()
-;
-```
-
-### nativeWatermarkFontName(string \$fontName)
-Set the watermark font name.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->nativeWatermarkFontName('Liberation Sans')
-    ->generate()
-    ->stream()
-;
-```
-
-### nativeWatermarkRotateAngle(float \$angle)
-Set the watermark rotation angle in degrees.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->nativeWatermarkRotateAngle(-45.0)
-    ->generate()
-    ->stream()
-;
-```
-
-### nativeWatermarkText(string \$text)
-Set the watermark text to render on every page during PDF export.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->nativeWatermarkText('CONFIDENTIAL')
-    ->generate()
-    ->stream()
-;
-```
-
 ### password(string \$password)
 Set the password for opening the source file.<br />
 
@@ -679,6 +589,96 @@ Specify whether to put extracted pages into a single file or as many files as th
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->splitUnify() // is same as `->splitUnify(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### tiledWatermarkText(string \$text)
+Set a tiled watermark text rendered across every page during PDF export.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->tiledWatermarkText('DRAFT')
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkColor(string \$color)
+Set the watermark text color as a hex string (e.g., '#FF0000').<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkColor('#FF0000')
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkFontHeight(int \$height)
+Set the watermark font height in points.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkFontHeight(50)
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkFontName(string \$fontName)
+Set the watermark font name.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkFontName('Liberation Sans')
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkRotateAngle(int \$angle)
+Set the watermark rotation angle in tenths of a degree (e.g., 450 = 45°).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkRotateAngle(-450)
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarkText(string \$text)
+Set the watermark text to render on every page during PDF export.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarkText('CONFIDENTIAL')
     ->generate()
     ->stream()
 ;

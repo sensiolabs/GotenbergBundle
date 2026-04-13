@@ -268,60 +268,60 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('updateIndexes', 'false');
     }
 
-    public function testNativeWatermarkText(): void
+    public function testWatermarkText(): void
     {
         $this->getDefaultBuilder()
-            ->nativeWatermarkText('CONFIDENTIAL')
+            ->watermarkText('CONFIDENTIAL')
             ->generate()
         ;
 
         $this->assertGotenbergFormData('nativeWatermarkText', 'CONFIDENTIAL');
     }
 
-    public function testNativeWatermarkColor(): void
+    public function testWatermarkColor(): void
     {
         $this->getDefaultBuilder()
-            ->nativeWatermarkColor('#FF0000')
+            ->watermarkColor('#FF0000')
             ->generate()
         ;
 
-        $this->assertGotenbergFormData('nativeWatermarkColor', '#FF0000');
+        $this->assertGotenbergFormData('nativeWatermarkColor', '16711680');
     }
 
-    public function testNativeWatermarkFontHeight(): void
+    public function testWatermarkFontHeight(): void
     {
         $this->getDefaultBuilder()
-            ->nativeWatermarkFontHeight(50.0)
+            ->watermarkFontHeight(50)
             ->generate()
         ;
 
-        $this->assertGotenbergFormData('nativeWatermarkFontHeight', '50.0');
+        $this->assertGotenbergFormData('nativeWatermarkFontHeight', '50');
     }
 
-    public function testNativeWatermarkRotateAngle(): void
+    public function testWatermarkRotateAngle(): void
     {
         $this->getDefaultBuilder()
-            ->nativeWatermarkRotateAngle(-45.0)
+            ->watermarkRotateAngle(-450)
             ->generate()
         ;
 
-        $this->assertGotenbergFormData('nativeWatermarkRotateAngle', '-45.0');
+        $this->assertGotenbergFormData('nativeWatermarkRotateAngle', '-450');
     }
 
-    public function testNativeWatermarkFontName(): void
+    public function testWatermarkFontName(): void
     {
         $this->getDefaultBuilder()
-            ->nativeWatermarkFontName('Liberation Sans')
+            ->watermarkFontName('Liberation Sans')
             ->generate()
         ;
 
         $this->assertGotenbergFormData('nativeWatermarkFontName', 'Liberation Sans');
     }
 
-    public function testNativeTiledWatermarkText(): void
+    public function testTiledWatermarkText(): void
     {
         $this->getDefaultBuilder()
-            ->nativeTiledWatermarkText('DRAFT')
+            ->tiledWatermarkText('DRAFT')
             ->generate()
         ;
 

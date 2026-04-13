@@ -136,6 +136,14 @@ class NormalizerFactory
     }
 
     /**
+     * @return (\Closure(string, string): list<array<string, string>>)
+     */
+    public static function hexColor(): \Closure
+    {
+        return static fn (string $key, string $value) => yield [$key => (string) hexdec(ltrim($value, '#'))];
+    }
+
+    /**
      * @return (\Closure(string, float): list<array<string, string>>)
      */
     public static function float(): \Closure
