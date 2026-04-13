@@ -4,3 +4,4 @@
 
 * `Sensiolabs\GotenbergBundle\GotenbergPdfInterface` new method `watermark` added
 * `Sensiolabs\GotenbergBundle\GotenbergPdfInterface` new method `stamp` added
+* `Sensiolabs\GotenbergBundle\GotenbergPdfInterface` new method `rotate` added
