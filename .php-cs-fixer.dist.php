@@ -21,6 +21,7 @@ return (new PhpCsFixer\Config())
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'blank_line_between_import_groups' => false,
+        'declare_strict_types' => false,
         'native_function_invocation' => true,
         'no_superfluous_elseif' => true,
         'no_useless_else' => true,
