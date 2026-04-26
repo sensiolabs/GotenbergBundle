@@ -73,8 +73,18 @@ class ValidatorFactory
                 throw new InvalidBuilderConfiguration('"url" is mandatory into "downloadFrom" array field.');
             }
 
-            if (\array_key_exists('field', $file) && !\in_array($file['field'], $validFields, true)) {
-                throw new InvalidBuilderConfiguration(\sprintf('Invalid "field" value "%s" in "downloadFrom". Allowed values are: "watermark", "stamp", "embedded", "".', $file['field']));
+            if (!\is_string($file['url'])) {
+                throw new InvalidBuilderConfiguration('"url" in "downloadFrom" must be a string.');
+            }
+
+            if (\array_key_exists('field', $file)) {
+                if (!\is_string($file['field'])) {
+                    throw new InvalidBuilderConfiguration('"field" in "downloadFrom" must be a string.');
+                }
+
+                if (!\in_array($file['field'], $validFields, true)) {
+                    throw new InvalidBuilderConfiguration(\sprintf('Invalid "field" value "%s" in "downloadFrom". Allowed values are: "watermark", "stamp", "embedded", "".', $file['field']));
+                }
             }
         }
     }
