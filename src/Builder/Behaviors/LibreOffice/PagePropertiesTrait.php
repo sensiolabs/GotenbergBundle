@@ -807,6 +807,30 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Number of bookmark levels to show when opening the PDF. -1 shows all levels.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @param int<-1, max>|null $openBookmarkLevels
+     *
+     * @example openBookmarkLevels(-1)
+     */
+    #[WithConfigurationNode(new IntegerNodeBuilder('open_bookmark_levels', min: -1))]
+    public function openBookmarkLevels(int|null $openBookmarkLevels): self
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option openBookmarkLevels is not available.');
+
+        if ($openBookmarkLevels === null) {
+            $this->getBodyBag()->unset('openBookmarkLevels');
+        } else {
+            ValidatorFactory::openBookmarkLevels($openBookmarkLevels);
+            $this->getBodyBag()->set('openBookmarkLevels', $openBookmarkLevels);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -849,5 +873,6 @@ trait PagePropertiesTrait
         yield 'hideViewerToolbar' => NormalizerFactory::bool();
         yield 'hideViewerWindowControls' => NormalizerFactory::bool();
         yield 'useTransitionEffects' => NormalizerFactory::bool();
+        yield 'openBookmarkLevels' => NormalizerFactory::int();
     }
 }

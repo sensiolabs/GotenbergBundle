@@ -118,4 +118,11 @@ class ValidatorFactory
             throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must be between 1 and 100.', $value));
         }
     }
+
+    public static function openBookmarkLevels(int $value): void
+    {
+        if ($value < -1) {
+            throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must start at -1.', $value));
+        }
+    }
 }
