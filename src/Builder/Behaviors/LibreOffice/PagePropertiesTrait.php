@@ -723,6 +723,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Hide the viewer menu bar.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example hideViewerMenubar() // is same as `->hideViewerMenubar(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('hide_viewer_menubar'))]
+    public function hideViewerMenubar(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerMenubar is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('hideViewerMenubar');
+        } else {
+            $this->getBodyBag()->set('hideViewerMenubar', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -761,5 +782,6 @@ trait PagePropertiesTrait
         yield 'centerWindow' => NormalizerFactory::bool();
         yield 'openInFullScreenMode' => NormalizerFactory::bool();
         yield 'displayPDFDocumentTitle' => NormalizerFactory::bool();
+        yield 'hideViewerMenubar' => NormalizerFactory::bool();
     }
 }
