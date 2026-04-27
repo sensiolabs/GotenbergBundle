@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\InitialView;
+use Sensiolabs\GotenbergBundle\Enumeration\Magnification;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
@@ -549,6 +550,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Initial magnification level.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example magnification(Magnification::FitVisible)
+     */
+    #[WithConfigurationNode(new NativeEnumNodeBuilder('magnification', enumClass: Magnification::class))]
+    public function magnification(Magnification|null $magnification): self
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option magnification is not available.');
+
+        if (!$magnification) {
+            $this->getBodyBag()->unset('magnification');
+        } else {
+            $this->getBodyBag()->set('magnification', $magnification);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -579,5 +601,6 @@ trait PagePropertiesTrait
         yield 'nativeWatermarkRotateAngle' => NormalizerFactory::int();
         yield 'initialView' => NormalizerFactory::enum();
         yield 'initialPage' => NormalizerFactory::int();
+        yield 'magnification' => NormalizerFactory::enum();
     }
 }
