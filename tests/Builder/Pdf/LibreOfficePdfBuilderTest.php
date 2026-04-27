@@ -96,4 +96,16 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
+
+    public function testZoomConfigurationRequirement(): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage('"zoom" can only be set when "magnification" is set to 4.');
+
+        $this->getBuilder()
+            ->files('assets/office/document.odt')
+            ->zoom(50)
+            ->generate()
+        ;
+    }
 }
