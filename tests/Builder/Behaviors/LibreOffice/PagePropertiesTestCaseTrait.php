@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\InitialView;
 use Sensiolabs\GotenbergBundle\Enumeration\Magnification;
+use Sensiolabs\GotenbergBundle\Enumeration\PageLayout;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
 /**
@@ -417,5 +418,26 @@ trait PagePropertiesTestCaseTrait
 
         $builder->zoom(null);
         self::assertArrayNotHasKey('zoom', $builder->getBodyBag()->all());
+    }
+
+    public function testPageLayout(): void
+    {
+        $this->getDefaultBuilder()
+            ->pageLayout(PageLayout::SinglePage)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('pageLayout', (string)PageLayout::SinglePage->value);
+    }
+
+    public function testUnsetPageLayout(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->pageLayout(PageLayout::SinglePage);
+
+        self::assertArrayHasKey('pageLayout', $builder->getBodyBag()->all());
+
+        $builder->pageLayout(null);
+        self::assertArrayNotHasKey('pageLayout', $builder->getBodyBag()->all());
     }
 }
