@@ -639,6 +639,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Resize the viewer window to the size of the first page.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example resizeWindowToInitialPage() // is same as `->resizeWindowToInitialPage(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('resize_window_to_initial_page'))]
+    public function resizeWindowToInitialPage(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option resizeWindowToInitialPage is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('resizeWindowToInitialPage');
+        } else {
+            $this->getBodyBag()->set('resizeWindowToInitialPage', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -673,5 +694,6 @@ trait PagePropertiesTrait
         yield 'zoom' => NormalizerFactory::int();
         yield 'pageLayout' => NormalizerFactory::enum();
         yield 'firstPageOnLeft' => NormalizerFactory::bool();
+        yield 'resizeWindowToInitialPage' => NormalizerFactory::bool();
     }
 }
