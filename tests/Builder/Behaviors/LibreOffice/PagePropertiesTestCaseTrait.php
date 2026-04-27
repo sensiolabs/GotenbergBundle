@@ -503,4 +503,25 @@ trait PagePropertiesTestCaseTrait
         $builder->centerWindow(false);
         self::assertArrayNotHasKey('centerWindow', $builder->getBodyBag()->all());
     }
+
+    public function testOpenInFullScreenMode(): void
+    {
+        $this->getDefaultBuilder()
+            ->openInFullScreenMode()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('openInFullScreenMode', 'true');
+    }
+
+    public function testUnsetOpenInFullScreenMode(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->openInFullScreenMode();
+
+        self::assertArrayHasKey('openInFullScreenMode', $builder->getBodyBag()->all());
+
+        $builder->openInFullScreenMode(false);
+        self::assertArrayNotHasKey('openInFullScreenMode', $builder->getBodyBag()->all());
+    }
 }
