@@ -545,4 +545,25 @@ trait PagePropertiesTestCaseTrait
         $builder->displayPDFDocumentTitle(false);
         self::assertArrayNotHasKey('displayPDFDocumentTitle', $builder->getBodyBag()->all());
     }
+
+    public function testHideViewerMenubar(): void
+    {
+        $this->getDefaultBuilder()
+            ->hideViewerMenubar()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('hideViewerMenubar', 'true');
+    }
+
+    public function testUnsetHideViewerMenubar(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->hideViewerMenubar();
+
+        self::assertArrayHasKey('hideViewerMenubar', $builder->getBodyBag()->all());
+
+        $builder->hideViewerMenubar(false);
+        self::assertArrayNotHasKey('hideViewerMenubar', $builder->getBodyBag()->all());
+    }
 }
