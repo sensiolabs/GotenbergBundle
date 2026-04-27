@@ -629,4 +629,25 @@ trait PagePropertiesTestCaseTrait
         $builder->useTransitionEffects(false);
         self::assertArrayNotHasKey('useTransitionEffects', $builder->getBodyBag()->all());
     }
+
+    public function testOpenBookmarkLevels(): void
+    {
+        $this->getDefaultBuilder()
+            ->openBookmarkLevels(-1)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('openBookmarkLevels', '-1');
+    }
+
+    public function testUnsetOpenBookmarkLevels(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->openBookmarkLevels(-1);
+
+        self::assertArrayHasKey('openBookmarkLevels', $builder->getBodyBag()->all());
+
+        $builder->openBookmarkLevels(null);
+        self::assertArrayNotHasKey('openBookmarkLevels', $builder->getBodyBag()->all());
+    }
 }
