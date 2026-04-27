@@ -681,6 +681,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Open the PDF in full-screen mode.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example openInFullScreenMode() // is same as `->openInFullScreenMode(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('open_in_full_screen_mode'))]
+    public function openInFullScreenMode(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option openInFullScreenMode is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('openInFullScreenMode');
+        } else {
+            $this->getBodyBag()->set('openInFullScreenMode', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -717,5 +738,6 @@ trait PagePropertiesTrait
         yield 'firstPageOnLeft' => NormalizerFactory::bool();
         yield 'resizeWindowToInitialPage' => NormalizerFactory::bool();
         yield 'centerWindow' => NormalizerFactory::bool();
+        yield 'openInFullScreenMode' => NormalizerFactory::bool();
     }
 }
