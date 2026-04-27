@@ -395,4 +395,27 @@ trait PagePropertiesTestCaseTrait
         $builder->magnification(null);
         self::assertArrayNotHasKey('magnification', $builder->getBodyBag()->all());
     }
+
+    public function testZoom(): void
+    {
+        $this->getDefaultBuilder()
+            ->magnification(Magnification::UseZoomValue)
+            ->zoom(50)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('zoom', '50');
+    }
+
+    public function testUnsetZoom(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->magnification(Magnification::UseZoomValue)
+            ->zoom(50);
+
+        self::assertArrayHasKey('zoom', $builder->getBodyBag()->all());
+
+        $builder->zoom(null);
+        self::assertArrayNotHasKey('zoom', $builder->getBodyBag()->all());
+    }
 }
