@@ -66,9 +66,9 @@ class ValidatorFactory
      */
     public static function download(array $downloadFrom): void
     {
-        $validFields = ['watermark', 'stamp', 'embedded', ''];
+        $allowedValues = ['watermark', 'stamp', 'embedded', ''];
 
-        foreach ($downloadFrom as $file) {
+        foreach ($downloadFrom as $i => $file) {
             if (!\array_key_exists('url', $file)) {
                 throw new InvalidBuilderConfiguration('"url" is mandatory into "downloadFrom" array field.');
             }
@@ -79,11 +79,11 @@ class ValidatorFactory
 
             if (\array_key_exists('field', $file)) {
                 if (!\is_string($file['field'])) {
-                    throw new InvalidBuilderConfiguration('"field" in "downloadFrom" must be a string.');
+                    throw new InvalidBuilderConfiguration(sprintf('Unsupported "downloadFrom[%d].field", expected one of "%s".', $i, implode('", "', $allowedValues)));
                 }
 
-                if (!\in_array($file['field'], $validFields, true)) {
-                    throw new InvalidBuilderConfiguration(\sprintf('Invalid "field" value "%s" in "downloadFrom". Allowed values are: "watermark", "stamp", "embedded", "".', $file['field']));
+                if (!\in_array($file['field'], $allowedValues, true)) {
+                    throw new InvalidBuilderConfiguration(sprintf('Unsupported "downloadFrom[%d].field", expected one of "%s".', $i, implode('", "', $allowedValues)));
                 }
             }
         }
