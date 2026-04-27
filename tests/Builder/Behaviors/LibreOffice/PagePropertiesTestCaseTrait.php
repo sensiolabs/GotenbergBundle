@@ -461,4 +461,25 @@ trait PagePropertiesTestCaseTrait
         $builder->firstPageOnLeft(false);
         self::assertArrayNotHasKey('firstPageOnLeft', $builder->getBodyBag()->all());
     }
+
+    public function testResizeWindowToInitialPage(): void
+    {
+        $this->getDefaultBuilder()
+            ->resizeWindowToInitialPage()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('resizeWindowToInitialPage', 'true');
+    }
+
+    public function testUnsetResizeWindowToInitialPage(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->resizeWindowToInitialPage();
+
+        self::assertArrayHasKey('resizeWindowToInitialPage', $builder->getBodyBag()->all());
+
+        $builder->resizeWindowToInitialPage(false);
+        self::assertArrayNotHasKey('resizeWindowToInitialPage', $builder->getBodyBag()->all());
+    }
 }
