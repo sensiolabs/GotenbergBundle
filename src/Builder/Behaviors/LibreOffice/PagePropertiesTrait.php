@@ -660,6 +660,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Center the viewer window on the screen.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example centerWindow() // is same as `->centerWindow(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('center_window'))]
+    public function centerWindow(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option centerWindow is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('centerWindow');
+        } else {
+            $this->getBodyBag()->set('centerWindow', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -695,5 +716,6 @@ trait PagePropertiesTrait
         yield 'pageLayout' => NormalizerFactory::enum();
         yield 'firstPageOnLeft' => NormalizerFactory::bool();
         yield 'resizeWindowToInitialPage' => NormalizerFactory::bool();
+        yield 'centerWindow' => NormalizerFactory::bool();
     }
 }
