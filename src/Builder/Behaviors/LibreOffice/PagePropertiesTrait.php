@@ -702,6 +702,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Display the document title in the viewer title bar instead of the filename.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example displayPDFDocumentTitle() // is same as `->displayPDFDocumentTitle(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('display_pdf_document_title'))]
+    public function displayPDFDocumentTitle(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option displayPDFDocumentTitle is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('displayPDFDocumentTitle');
+        } else {
+            $this->getBodyBag()->set('displayPDFDocumentTitle', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -739,5 +760,6 @@ trait PagePropertiesTrait
         yield 'resizeWindowToInitialPage' => NormalizerFactory::bool();
         yield 'centerWindow' => NormalizerFactory::bool();
         yield 'openInFullScreenMode' => NormalizerFactory::bool();
+        yield 'displayPDFDocumentTitle' => NormalizerFactory::bool();
     }
 }
