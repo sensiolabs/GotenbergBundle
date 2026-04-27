@@ -608,4 +608,25 @@ trait PagePropertiesTestCaseTrait
         $builder->hideViewerWindowControls(false);
         self::assertArrayNotHasKey('hideViewerWindowControls', $builder->getBodyBag()->all());
     }
+
+    public function testUseTransitionEffects(): void
+    {
+        $this->getDefaultBuilder()
+            ->useTransitionEffects()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('useTransitionEffects', 'true');
+    }
+
+    public function testUnsetUseTransitionEffects(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->useTransitionEffects();
+
+        self::assertArrayHasKey('useTransitionEffects', $builder->getBodyBag()->all());
+
+        $builder->useTransitionEffects(false);
+        self::assertArrayNotHasKey('useTransitionEffects', $builder->getBodyBag()->all());
+    }
 }
