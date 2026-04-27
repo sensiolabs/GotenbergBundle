@@ -765,6 +765,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Hide the viewer window controls.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example hideViewerWindowControls() // is same as `->hideViewerWindowControls(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('hide_viewer_window_controls'))]
+    public function hideViewerWindowControls(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerWindowControls is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('hideViewerWindowControls');
+        } else {
+            $this->getBodyBag()->set('hideViewerWindowControls', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -805,5 +826,6 @@ trait PagePropertiesTrait
         yield 'displayPDFDocumentTitle' => NormalizerFactory::bool();
         yield 'hideViewerMenubar' => NormalizerFactory::bool();
         yield 'hideViewerToolbar' => NormalizerFactory::bool();
+        yield 'hideViewerWindowControls' => NormalizerFactory::bool();
     }
 }
