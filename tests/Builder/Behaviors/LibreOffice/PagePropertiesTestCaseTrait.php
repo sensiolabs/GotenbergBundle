@@ -566,4 +566,25 @@ trait PagePropertiesTestCaseTrait
         $builder->hideViewerMenubar(false);
         self::assertArrayNotHasKey('hideViewerMenubar', $builder->getBodyBag()->all());
     }
+
+    public function testHideViewerToolbar(): void
+    {
+        $this->getDefaultBuilder()
+            ->hideViewerToolbar()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('hideViewerToolbar', 'true');
+    }
+
+    public function testUnsetHideViewerToolbar(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->hideViewerToolbar();
+
+        self::assertArrayHasKey('hideViewerToolbar', $builder->getBodyBag()->all());
+
+        $builder->hideViewerToolbar(false);
+        self::assertArrayNotHasKey('hideViewerToolbar', $builder->getBodyBag()->all());
+    }
 }
