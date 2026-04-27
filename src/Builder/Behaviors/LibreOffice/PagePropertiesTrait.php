@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
+use Sensiolabs\GotenbergBundle\Enumeration\InitialView;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
@@ -502,6 +503,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Specify the initial view when opening the PDF.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example initialView(InitialView::Thumbnails)
+     */
+    #[WithConfigurationNode(new NativeEnumNodeBuilder('initial_view', enumClass: InitialView::class))]
+    public function initialView(InitialView|null $initialView): self
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option initialView is not available.');
+
+        if (!$initialView) {
+            $this->getBodyBag()->unset('initialView');
+        } else {
+            $this->getBodyBag()->set('initialView', $initialView);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -530,5 +552,6 @@ trait PagePropertiesTrait
         yield 'nativeWatermarkColor' => NormalizerFactory::hexColor();
         yield 'nativeWatermarkFontHeight' => NormalizerFactory::int();
         yield 'nativeWatermarkRotateAngle' => NormalizerFactory::int();
+        yield 'initialView' => NormalizerFactory::enum();
     }
 }
