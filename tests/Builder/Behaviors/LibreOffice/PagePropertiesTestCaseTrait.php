@@ -482,4 +482,25 @@ trait PagePropertiesTestCaseTrait
         $builder->resizeWindowToInitialPage(false);
         self::assertArrayNotHasKey('resizeWindowToInitialPage', $builder->getBodyBag()->all());
     }
+
+    public function testCenterWindow(): void
+    {
+        $this->getDefaultBuilder()
+            ->centerWindow()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('centerWindow', 'true');
+    }
+
+    public function testUnsetCenterWindow(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->centerWindow();
+
+        self::assertArrayHasKey('centerWindow', $builder->getBodyBag()->all());
+
+        $builder->centerWindow(false);
+        self::assertArrayNotHasKey('centerWindow', $builder->getBodyBag()->all());
+    }
 }
