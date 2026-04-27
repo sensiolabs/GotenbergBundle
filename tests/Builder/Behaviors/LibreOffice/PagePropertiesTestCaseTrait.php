@@ -440,4 +440,25 @@ trait PagePropertiesTestCaseTrait
         $builder->pageLayout(null);
         self::assertArrayNotHasKey('pageLayout', $builder->getBodyBag()->all());
     }
+
+    public function testFirstPageOnLeft(): void
+    {
+        $this->getDefaultBuilder()
+            ->firstPageOnLeft()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('firstPageOnLeft', 'true');
+    }
+
+    public function testUnsetFirstPageOnLeft(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->firstPageOnLeft();
+
+        self::assertArrayHasKey('firstPageOnLeft', $builder->getBodyBag()->all());
+
+        $builder->firstPageOnLeft(false);
+        self::assertArrayNotHasKey('firstPageOnLeft', $builder->getBodyBag()->all());
+    }
 }
