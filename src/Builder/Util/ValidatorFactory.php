@@ -111,4 +111,11 @@ class ValidatorFactory
             throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must start at 1.', $value));
         }
     }
+
+    public static function zoom(int $value): void
+    {
+        if ($value < 1 || $value > 100) {
+            throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must be between 1 and 100.', $value));
+        }
+    }
 }

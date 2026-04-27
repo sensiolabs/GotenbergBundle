@@ -571,6 +571,30 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Initial zoom percentage when magnification is set to 4.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @param int<1, 100>|null $zoom
+     *
+     * @example zoom(3)
+     */
+    #[WithConfigurationNode(new IntegerNodeBuilder('zoom', min: 1, max: 100))]
+    public function zoom(int|null $zoom): self
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option zoom is not available.');
+
+        if (!$zoom) {
+            $this->getBodyBag()->unset('zoom');
+        } else {
+            ValidatorFactory::zoom($zoom);
+            $this->getBodyBag()->set('zoom', $zoom);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -602,5 +626,6 @@ trait PagePropertiesTrait
         yield 'initialView' => NormalizerFactory::enum();
         yield 'initialPage' => NormalizerFactory::int();
         yield 'magnification' => NormalizerFactory::enum();
+        yield 'zoom' => NormalizerFactory::int();
     }
 }
