@@ -68,7 +68,7 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
         }
 
         if ($this->getBodyBag()->get('zoom') !== null && $this->getBodyBag()->get('magnification') !== Magnification::UseZoomValue) {
-            throw new InvalidBuilderConfiguration('"zoom" can only be set when "magnification" is set to 4.');
+            throw new InvalidBuilderConfiguration('"zoom" can only be set when "magnification" is set to "Magnification::UseZoomValue ( 4 )".');
         }
     }
 }
