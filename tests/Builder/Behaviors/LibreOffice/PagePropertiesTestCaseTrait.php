@@ -350,4 +350,26 @@ trait PagePropertiesTestCaseTrait
         $builder->initialView(null);
         self::assertArrayNotHasKey('initialView', $builder->getBodyBag()->all());
     }
+
+    public function testInitialPage(): void
+    {
+        $this->getDefaultBuilder()
+            ->initialPage(10)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('initialPage', '10');
+    }
+
+    public function testUnsetInitialPage(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->initialPage(10)
+        ;
+
+        self::assertArrayHasKey('initialPage', $builder->getBodyBag()->all());
+
+        $builder->initialPage(null);
+        self::assertArrayNotHasKey('initialPage', $builder->getBodyBag()->all());
+    }
 }
