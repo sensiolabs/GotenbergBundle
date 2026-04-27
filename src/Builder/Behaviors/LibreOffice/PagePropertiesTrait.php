@@ -618,6 +618,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Place the first page on the left when using two-column page layout.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example firstPageOnLeft() // is same as `->firstPageOnLeft(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('first_page_on_left'))]
+    public function firstPageOnLeft(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option firstPageOnLeft is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('firstPageOnLeft');
+        } else {
+            $this->getBodyBag()->set('firstPageOnLeft', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -651,5 +672,6 @@ trait PagePropertiesTrait
         yield 'magnification' => NormalizerFactory::enum();
         yield 'zoom' => NormalizerFactory::int();
         yield 'pageLayout' => NormalizerFactory::enum();
+        yield 'firstPageOnLeft' => NormalizerFactory::bool();
     }
 }
