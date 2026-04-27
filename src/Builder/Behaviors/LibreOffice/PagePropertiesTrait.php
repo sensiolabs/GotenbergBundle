@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
@@ -524,6 +525,30 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * The page on which the PDF opens.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @param int<1, max>|null $initialPage
+     *
+     * @example initialPage(3)
+     */
+    #[WithConfigurationNode(new IntegerNodeBuilder('initial_page', min: 1))]
+    public function initialPage(int|null $initialPage): self
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option initialPage is not available.');
+
+        if (!$initialPage) {
+            $this->getBodyBag()->unset('initialPage');
+        } else {
+            ValidatorFactory::initialPage($initialPage);
+            $this->getBodyBag()->set('initialPage', $initialPage);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -553,5 +578,6 @@ trait PagePropertiesTrait
         yield 'nativeWatermarkFontHeight' => NormalizerFactory::int();
         yield 'nativeWatermarkRotateAngle' => NormalizerFactory::int();
         yield 'initialView' => NormalizerFactory::enum();
+        yield 'initialPage' => NormalizerFactory::int();
     }
 }

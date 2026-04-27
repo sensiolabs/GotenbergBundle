@@ -104,4 +104,11 @@ class ValidatorFactory
             throw new InvalidBuilderConfiguration(\sprintf('Page number must be greater than or equal to 1, %d given.', $value));
         }
     }
+
+    public static function initialPage(int $value): void
+    {
+        if ($value < 1) {
+            throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must start at 1.', $value));
+        }
+    }
 }
