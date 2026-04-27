@@ -524,4 +524,25 @@ trait PagePropertiesTestCaseTrait
         $builder->openInFullScreenMode(false);
         self::assertArrayNotHasKey('openInFullScreenMode', $builder->getBodyBag()->all());
     }
+
+    public function testDisplayPDFDocumentTitle(): void
+    {
+        $this->getDefaultBuilder()
+            ->displayPDFDocumentTitle()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('displayPDFDocumentTitle', 'true');
+    }
+
+    public function testUnsetDisplayPDFDocumentTitle(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->displayPDFDocumentTitle();
+
+        self::assertArrayHasKey('displayPDFDocumentTitle', $builder->getBodyBag()->all());
+
+        $builder->displayPDFDocumentTitle(false);
+        self::assertArrayNotHasKey('displayPDFDocumentTitle', $builder->getBodyBag()->all());
+    }
 }
