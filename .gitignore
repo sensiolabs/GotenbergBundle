@@ -9,3 +9,4 @@
 .phpunit.result.cache
 composer.lock
 phpstan.neon
+/config/reference.php
