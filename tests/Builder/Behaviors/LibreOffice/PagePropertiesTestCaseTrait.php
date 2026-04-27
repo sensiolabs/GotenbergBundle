@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\LibreOffice;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\InitialView;
+use Sensiolabs\GotenbergBundle\Enumeration\Magnification;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
 /**
@@ -371,5 +372,27 @@ trait PagePropertiesTestCaseTrait
 
         $builder->initialPage(null);
         self::assertArrayNotHasKey('initialPage', $builder->getBodyBag()->all());
+    }
+
+    public function testMagnification(): void
+    {
+        $this->getDefaultBuilder()
+            ->magnification(Magnification::FitVisible)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('magnification', (string) Magnification::FitVisible->value);
+    }
+
+    public function testUnsetMagnification(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->magnification(Magnification::FitVisible)
+        ;
+
+        self::assertArrayHasKey('magnification', $builder->getBodyBag()->all());
+
+        $builder->magnification(null);
+        self::assertArrayNotHasKey('magnification', $builder->getBodyBag()->all());
     }
 }
