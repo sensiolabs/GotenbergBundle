@@ -786,6 +786,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Use transition effects when advancing slides in Impress presentations.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example useTransitionEffects() // is same as `->useTransitionEffects(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('use_transition_effects'))]
+    public function useTransitionEffects(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option useTransitionEffects is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('useTransitionEffects');
+        } else {
+            $this->getBodyBag()->set('useTransitionEffects', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -827,5 +848,6 @@ trait PagePropertiesTrait
         yield 'hideViewerMenubar' => NormalizerFactory::bool();
         yield 'hideViewerToolbar' => NormalizerFactory::bool();
         yield 'hideViewerWindowControls' => NormalizerFactory::bool();
+        yield 'useTransitionEffects' => NormalizerFactory::bool();
     }
 }
