@@ -516,11 +516,10 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new NativeEnumNodeBuilder('initial_view', enumClass: InitialView::class))]
     public function initialView(InitialView|null $initialView): self
     {
-        $this->logWarningIfVersionIs('<', '8.29', 'The option initialView is not available.');
-
         if (!$initialView) {
             $this->getBodyBag()->unset('initialView');
         } else {
+            $this->logWarningIfVersionIs('<', '8.29', 'The option initialView is not available.');
             $this->getBodyBag()->set('initialView', $initialView);
         }
 
@@ -539,11 +538,10 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('initial_page', min: 1))]
     public function initialPage(int|null $initialPage): self
     {
-        $this->logWarningIfVersionIs('<', '8.29', 'The option initialPage is not available.');
-
         if (!$initialPage) {
             $this->getBodyBag()->unset('initialPage');
         } else {
+            $this->logWarningIfVersionIs('<', '8.29', 'The option initialPage is not available.');
             ValidatorFactory::initialPage($initialPage);
             $this->getBodyBag()->set('initialPage', $initialPage);
         }
@@ -561,11 +559,10 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new NativeEnumNodeBuilder('magnification', enumClass: Magnification::class))]
     public function magnification(Magnification|null $magnification): self
     {
-        $this->logWarningIfVersionIs('<', '8.29', 'The option magnification is not available.');
-
         if (!$magnification) {
             $this->getBodyBag()->unset('magnification');
         } else {
+            $this->logWarningIfVersionIs('<', '8.29', 'The option magnification is not available.');
             $this->getBodyBag()->set('magnification', $magnification);
         }
 
@@ -584,11 +581,10 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('zoom', min: 1, max: 100))]
     public function zoom(int|null $zoom): self
     {
-        $this->logWarningIfVersionIs('<', '8.29', 'The option zoom is not available.');
-
         if (!$zoom) {
             $this->getBodyBag()->unset('zoom');
         } else {
+            $this->logWarningIfVersionIs('<', '8.29', 'The option zoom is not available.');
             ValidatorFactory::zoom($zoom);
             $this->getBodyBag()->set('zoom', $zoom);
         }
@@ -607,11 +603,10 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new NativeEnumNodeBuilder('page_layout', enumClass: PageLayout::class))]
     public function pageLayout(PageLayout|null $pageLayout): self
     {
-        $this->logWarningIfVersionIs('<', '8.29', 'The option pageLayout is not available.');
-
         if (!$pageLayout) {
             $this->getBodyBag()->unset('pageLayout');
         } else {
+            $this->logWarningIfVersionIs('<', '8.29', 'The option pageLayout is not available.');
             $this->getBodyBag()->set('pageLayout', $pageLayout);
         }
 
