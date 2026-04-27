@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\LibreOfficeTrait;
+use Sensiolabs\GotenbergBundle\Enumeration\Magnification;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -64,6 +65,10 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
 
         if ($this->getBodyBag()->get('splitUnify') === true && $this->getBodyBag()->get('splitMode') === SplitMode::Intervals) {
             throw new InvalidBuilderConfiguration('"splitUnify" can only be at "true" with "pages" mode for "splitMode".');
+        }
+
+        if ($this->getBodyBag()->get('zoom') !== null && $this->getBodyBag()->get('magnification') !== Magnification::UseZoomValue) {
+            throw new InvalidBuilderConfiguration('"zoom" can only be set when "magnification" is set to 4.');
         }
     }
 }
