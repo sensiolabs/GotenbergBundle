@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\InitialView;
 use Sensiolabs\GotenbergBundle\Enumeration\Magnification;
+use Sensiolabs\GotenbergBundle\Enumeration\PageLayout;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
@@ -595,6 +596,28 @@ trait PagePropertiesTrait
         return $this;
     }
 
+
+    /**
+     * Page layout.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example pageLayout(PageLayout::SinglePage)
+     */
+    #[WithConfigurationNode(new NativeEnumNodeBuilder('page_layout', enumClass: PageLayout::class))]
+    public function pageLayout(PageLayout|null $pageLayout): self
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option pageLayout is not available.');
+
+        if (!$pageLayout) {
+            $this->getBodyBag()->unset('pageLayout');
+        } else {
+            $this->getBodyBag()->set('pageLayout', $pageLayout);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -627,5 +650,6 @@ trait PagePropertiesTrait
         yield 'initialPage' => NormalizerFactory::int();
         yield 'magnification' => NormalizerFactory::enum();
         yield 'zoom' => NormalizerFactory::int();
+        yield 'pageLayout' => NormalizerFactory::enum();
     }
 }
