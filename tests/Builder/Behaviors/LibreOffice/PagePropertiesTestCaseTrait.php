@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\LibreOffice;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
+use Sensiolabs\GotenbergBundle\Enumeration\InitialView;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
 /**
@@ -326,5 +327,27 @@ trait PagePropertiesTestCaseTrait
         ;
 
         $this->assertGotenbergFormData('nativeTiledWatermarkText', 'DRAFT');
+    }
+
+    public function testInitialView(): void
+    {
+        $this->getDefaultBuilder()
+            ->initialView(InitialView::Thumbnails)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('initialView', (string) InitialView::Thumbnails->value);
+    }
+
+    public function testUnsetInitialView(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->initialView(InitialView::Thumbnails)
+        ;
+
+        self::assertArrayHasKey('initialView', $builder->getBodyBag()->all());
+
+        $builder->initialView(null);
+        self::assertArrayNotHasKey('initialView', $builder->getBodyBag()->all());
     }
 }
