@@ -744,6 +744,27 @@ trait PagePropertiesTrait
         return $this;
     }
 
+    /**
+     * Hide the viewer toolbar.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     *
+     * @example hideViewerToolbar() // is same as `->hideViewerToolbar(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('hide_viewer_toolbar'))]
+    public function hideViewerToolbar(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerToolbar is not available.');
+
+        if (!$bool) {
+            $this->getBodyBag()->unset('hideViewerToolbar');
+        } else {
+            $this->getBodyBag()->set('hideViewerToolbar', $bool);
+        }
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizePageProperties(): \Generator
     {
@@ -783,5 +804,6 @@ trait PagePropertiesTrait
         yield 'openInFullScreenMode' => NormalizerFactory::bool();
         yield 'displayPDFDocumentTitle' => NormalizerFactory::bool();
         yield 'hideViewerMenubar' => NormalizerFactory::bool();
+        yield 'hideViewerToolbar' => NormalizerFactory::bool();
     }
 }
