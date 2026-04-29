@@ -872,7 +872,7 @@ return $gotenberg
 ```
 
 ### zoom(?int \$zoom)
-Initial zoom percentage when magnification is set to 4.<br />
+Initial zoom percentage when magnification is set to Magnification::UseZoomValue (4).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
