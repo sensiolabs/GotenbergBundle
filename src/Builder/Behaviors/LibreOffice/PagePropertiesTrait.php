@@ -803,7 +803,7 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('open_bookmark_levels', min: -1))]
     public function openBookmarkLevels(int|null $openBookmarkLevels): self
     {
-        if (null === $openBookmarkLevel) {
+        if (null === $openBookmarkLevels) {
             $this->getBodyBag()->unset('openBookmarkLevels');
         } else {
             $this->logWarningIfVersionIs('<', '8.29', 'The option openBookmarkLevels is not available.');
