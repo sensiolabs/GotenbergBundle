@@ -194,6 +194,38 @@ trait WebhookTestCaseTrait
         $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value"}');
     }
 
+    public function testAddWebhookExtraHeadersToExistingHeaders(): void
+    {
+        $this->getDefaultBuilder()
+            ->webhookExtraHeaders(['my_header' => 'value'])
+            ->addWebhookExtraHeaders(['additional_header' => 'additional_value'])
+            ->generate()
+        ;
+
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value","additional_header":"additional_value"}');
+    }
+
+    public function testDoNotAddEmptyWebhookExtraHeadersToExistingHeaders(): void
+    {
+        $this->getDefaultBuilder()
+            ->webhookExtraHeaders(['my_header' => 'value'])
+            ->addWebhookExtraHeaders([])
+            ->generate()
+        ;
+
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value"}');
+    }
+
+    public function testAddWebhookExtraHeadersWithoutPriorHeaders(): void
+    {
+        $this->getDefaultBuilder()
+            ->addWebhookExtraHeaders(['my_header' => 'value'])
+            ->generate()
+        ;
+
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value"}');
+    }
+
     public function testWebhookEventsUrl(): void
     {
         $this->getDefaultBuilder()

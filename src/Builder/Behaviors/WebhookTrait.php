@@ -216,6 +216,25 @@ trait WebhookTrait
     }
 
     /**
+     * Adds extra headers to the ones already provided to the webhook endpoint, preserving previously set values.
+     *
+     * @param array<string, string> $extraHttpHeaders
+     *
+     * @example addWebhookExtraHeaders(['X-Custom-Header' => 'CustomValue'])
+     */
+    public function addWebhookExtraHeaders(array $extraHttpHeaders): static
+    {
+        if ([] === $extraHttpHeaders) {
+            return $this;
+        }
+
+        $current = $this->getHeadersBag()->get('Gotenberg-Webhook-Extra-Http-Headers');
+        $current = null !== $current ? json_decode($current, true) : [];
+
+        return $this->webhookExtraHeaders(array_merge($current, $extraHttpHeaders));
+    }
+
+    /**
      * Sets the webhook route with params and method for cases of success.
      *
      * @param string                    $route      #Route

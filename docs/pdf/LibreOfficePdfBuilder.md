@@ -110,6 +110,7 @@ class YourController
 - [watermarkFontName](#watermarkfontnamestring-fontname)
 - [watermarkRotateAngle](#watermarkrotateangleint-angle)
 - [watermarkText](#watermarktextstring-text)
+- [addWebhookExtraHeaders](#addwebhookextraheadersarray-extrahttpheaders)
 - [webhook](#webhookarray-webhook)
 - [webhookConfiguration](#webhookconfigurationstring-name)
 - [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
@@ -693,6 +694,18 @@ return $gotenberg
 ;
 ```
 
+
+### addWebhookExtraHeaders(array \$extraHttpHeaders)
+Adds extra headers to the ones already provided to the webhook endpoint, preserving previously set values.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addWebhookExtraHeaders(['X-Custom-Header' => 'CustomValue'])
+    ->generate()
+    ->stream()
+;
+```
 
 ### webhook(array \$webhook)
 > [!TIP]
