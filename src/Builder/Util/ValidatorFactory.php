@@ -90,6 +90,7 @@ class ValidatorFactory
             throw new InvalidBuilderConfiguration('Invalid value, the range value format need to look like e.g 1-20 or as a single int value e.g 2.');
         }
     }
+
     public static function quality(int $value): void
     {
         if ($value < 0 || $value > 100) {

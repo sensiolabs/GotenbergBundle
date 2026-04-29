@@ -6,7 +6,6 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
-use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
@@ -592,7 +591,6 @@ trait PagePropertiesTrait
         return $this;
     }
 
-
     /**
      * Page layout.
      *
@@ -805,7 +803,7 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('open_bookmark_levels', min: -1))]
     public function openBookmarkLevels(int|null $openBookmarkLevels): self
     {
-        if ($openBookmarkLevels === null) {
+        if (null === $openBookmarkLevel) {
             $this->getBodyBag()->unset('openBookmarkLevels');
         } else {
             $this->logWarningIfVersionIs('<', '8.29', 'The option openBookmarkLevels is not available.');

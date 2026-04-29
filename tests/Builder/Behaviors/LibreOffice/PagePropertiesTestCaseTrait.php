@@ -427,7 +427,7 @@ trait PagePropertiesTestCaseTrait
             ->generate()
         ;
 
-        $this->assertGotenbergFormData('pageLayout', (string)PageLayout::SinglePage->value);
+        $this->assertGotenbergFormData('pageLayout', (string) PageLayout::SinglePage->value);
     }
 
     public function testUnsetPageLayout(): void
