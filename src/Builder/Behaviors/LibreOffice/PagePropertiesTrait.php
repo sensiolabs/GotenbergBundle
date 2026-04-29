@@ -542,7 +542,7 @@ trait PagePropertiesTrait
             $this->getBodyBag()->unset('initialPage');
         } else {
             $this->logWarningIfVersionIs('<', '8.29', 'The option initialPage is not available.');
-            ValidatorFactory::initialPage($initialPage);
+            ValidatorFactory::page($initialPage);
             $this->getBodyBag()->set('initialPage', $initialPage);
         }
 

@@ -105,13 +105,6 @@ class ValidatorFactory
         }
     }
 
-    public static function initialPage(int $value): void
-    {
-        if ($value < 1) {
-            throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must start at 1.', $value));
-        }
-    }
-
     public static function zoom(int $value): void
     {
         if ($value < 1 || $value > 100) {
