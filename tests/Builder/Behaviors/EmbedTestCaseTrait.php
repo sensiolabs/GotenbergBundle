@@ -19,7 +19,7 @@ trait EmbedTestCaseTrait
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
-    public function  testWithEmbeddedFileFromString(): void
+    public function testWithEmbeddedFileFromString(): void
     {
         $this->withGotenbergVersion('8.25.0');
         $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
@@ -33,7 +33,7 @@ trait EmbedTestCaseTrait
         $this->assertGotenbergFormDataFile('embeds', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
     }
 
-    public function  testWithEmbeddedFileFromSplFileInfo(): void
+    public function testWithEmbeddedFileFromSplFileInfo(): void
     {
         $this->withGotenbergVersion('8.25.0');
 
