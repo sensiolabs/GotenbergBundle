@@ -570,7 +570,7 @@ trait PagePropertiesTrait
     }
 
     /**
-     * Initial zoom percentage when magnification is set to 4.
+     * Initial zoom percentage when magnification is set to Magnification::UseZoomValue (4).
      *
      * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
