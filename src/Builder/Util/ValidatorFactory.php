@@ -90,11 +90,10 @@ class ValidatorFactory
             throw new InvalidBuilderConfiguration('Invalid value, the range value format need to look like e.g 1-20 or as a single int value e.g 2.');
         }
     }
-
     public static function quality(int $value): void
     {
         if ($value < 0 || $value > 100) {
-            throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must be between 0 and 100.', $value));
+            throw new InvalidBuilderConfiguration(\sprintf('Quality value "%s" must be between 0 and 100.', $value));
         }
     }
 
@@ -108,14 +107,14 @@ class ValidatorFactory
     public static function zoom(int $value): void
     {
         if ($value < 1 || $value > 100) {
-            throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must be between 1 and 100.', $value));
+            throw new InvalidBuilderConfiguration(\sprintf('Zoom value "%s" must be between 1 and 100.', $value));
         }
     }
 
     public static function bookmarkLevels(int $value): void
     {
         if ($value < -1) {
-            throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must start at -1.', $value));
+            throw new InvalidBuilderConfiguration(\sprintf('BookmarkLevels value "%s" must be greater than or equal to -1.', $value));
         }
     }
 }
