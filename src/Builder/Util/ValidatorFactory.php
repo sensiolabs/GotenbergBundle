@@ -112,7 +112,7 @@ class ValidatorFactory
         }
     }
 
-    public static function openBookmarkLevels(int $value): void
+    public static function bookmarkLevels(int $value): void
     {
         if ($value < -1) {
             throw new InvalidBuilderConfiguration(\sprintf('The value "%s" must start at -1.', $value));

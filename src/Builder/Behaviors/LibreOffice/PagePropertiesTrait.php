@@ -809,7 +809,7 @@ trait PagePropertiesTrait
             $this->getBodyBag()->unset('openBookmarkLevels');
         } else {
             $this->logWarningIfVersionIs('<', '8.29', 'The option openBookmarkLevels is not available.');
-            ValidatorFactory::openBookmarkLevels($openBookmarkLevels);
+            ValidatorFactory::bookmarkLevels($openBookmarkLevels);
             $this->getBodyBag()->set('openBookmarkLevels', $openBookmarkLevels);
         }
 
