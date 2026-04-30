@@ -6,12 +6,15 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
-use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
+use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Translation\Loader\ArrayLoader;
+use Symfony\Component\Translation\LocaleSwitcher;
+use Symfony\Component\Translation\Translator;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\RuntimeLoader\RuntimeLoaderInterface;
@@ -54,8 +57,6 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testOutputFilename(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
-
         $this->getBuilder()
             ->contentFile('files/content.html')
             ->filename('test')
@@ -68,8 +69,6 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWidth(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
-
         $this->getBuilder()
             ->contentFile('files/content.html')
             ->filename('test')
@@ -87,20 +86,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWithTwigContentFile(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
-
-        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
-            'strict_variables' => true,
-        ]);
-
-        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
-            public function load(string $class): object|null
-            {
-                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
-            }
-        });
-
-        $this->container->set('twig', $twig);
+        $this->container->set('twig', $this->createTwig());
 
         $this->getBuilder()
             ->content('templates/content.html.twig', ['name' => 'world'])
@@ -215,20 +201,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testWithTwigAndHeaderFooterParts(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
-
-        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
-            'strict_variables' => true,
-        ]);
-
-        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
-            public function load(string $class): object|null
-            {
-                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
-            }
-        });
-
-        $this->container->set('twig', $twig);
+        $this->container->set('twig', $this->createTwig());
 
         $this->getBuilder()
             ->header('templates/header.html.twig', ['name' => 'header'])
@@ -287,8 +260,6 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 
     public function testFilesAsHeaderAndFooter(): void
     {
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
-
         $this->getBuilder()
             ->headerFile('files/header.html')
             ->contentFile('files/content.html')
@@ -309,20 +280,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
     {
         $this->expectException(PartRenderingException::class);
 
-        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
-
-        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
-            'strict_variables' => true,
-        ]);
-
-        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
-            public function load(string $class): object|null
-            {
-                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
-            }
-        });
-
-        $this->container->set('twig', $twig);
+        $this->container->set('twig', $this->createTwig());
 
         $this->getBuilder()
             ->content('templates/invalid.html.twig', ['name' => 'world'])
@@ -339,5 +297,89 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
             ->content('templates/content.html.twig', ['name' => 'world'])
             ->generate()
         ;
+    }
+
+    public function testTranslationDependencyRequirementWhenLocaleIsSet(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Symfony Translation is required to use "Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LocaleSwitcherAwareTrait::getLocaleSwitcher" method. Try to run "composer require symfony/translation".');
+
+        $this->container->set('twig', $this->createTwig());
+
+        $this->getBuilder()
+            ->locale('fr')
+            ->content('templates/content.html.twig', ['name' => 'world'])
+            ->generate()
+        ;
+    }
+
+    public function testWithLocaleSwitchesLocaleForRendering(): void
+    {
+        $translator = new Translator('en');
+        $translator->addLoader('array', new ArrayLoader());
+        $translator->addResource('array', ['hello' => 'Hello'], 'en');
+        $translator->addResource('array', ['hello' => 'Bonjour'], 'fr');
+
+        $localeSwitcher = new LocaleSwitcher('en', [$translator]);
+        $this->container->set('translation.locale_switcher', $localeSwitcher);
+
+        $twig = $this->createTwig();
+        $twig->addExtension(new TranslationExtension($translator));
+        $this->container->set('twig', $twig);
+
+        $this->getBuilder()
+            ->locale('fr')
+            ->content('templates/content_translated.html.twig', ['name' => 'world'])
+            ->generate()
+        ;
+
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF</title>
+            </head>
+            <body>
+                <h1>Bonjour world!</h1>
+            </body>
+        </html>
+
+        HTML;
+
+        $this->assertContentFile('index.html', 'text/html', $expected);
+        $this->assertSame('en', $localeSwitcher->getLocale(), 'Locale should be restored after rendering');
+    }
+
+    public function testWithSameLocaleDoesNotInvokeRunWithLocale(): void
+    {
+        $localeSwitcher = $this->createMock(LocaleSwitcher::class);
+        $localeSwitcher->method('getLocale')->willReturn('en');
+        $localeSwitcher->expects($this->never())->method('runWithLocale');
+        $this->container->set('translation.locale_switcher', $localeSwitcher);
+
+        $this->container->set('twig', $this->createTwig());
+
+        $this->getBuilder()
+            ->locale('en')
+            ->content('templates/content.html.twig', ['name' => 'world'])
+            ->generate()
+        ;
+    }
+
+    private function createTwig(): Environment
+    {
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
+            'strict_variables' => true,
+        ]);
+
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load(string $class): object|null
+            {
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
+            }
+        });
+
+        return $twig;
     }
 }
