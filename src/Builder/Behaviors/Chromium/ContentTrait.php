@@ -35,7 +35,7 @@ trait ContentTrait
      * Requires symfony/translation. The current application locale is restored
      * after each rendered template.
      *
-     * @example locale('fr')
+     * @example locale('fr')->content('content.html.twig')
      */
     #[WithConfigurationNode(new ScalarNodeBuilder('locale', restrictTo: 'string'))]
     public function locale(string $locale): static

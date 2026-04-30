@@ -911,7 +911,7 @@ Render Twig templates (content, header, footer) using the given locale.<br /><br
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->locale('fr')
+    ->locale('fr')->content('content.html.twig')
     ->generate()
     ->stream()
 ;
