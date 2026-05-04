@@ -537,7 +537,7 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('initial_page', min: 1))]
     public function initialPage(int|null $initialPage): self
     {
-        if (!$initialPage) {
+        if (null === $initialPage) {
             $this->getBodyBag()->unset('initialPage');
         } else {
             $this->logWarningIfVersionIs('<', '8.29', 'The option initialPage is not available.');
@@ -580,7 +580,7 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('zoom', min: 1, max: 100))]
     public function zoom(int|null $zoom): self
     {
-        if (!$zoom) {
+        if (null === $zoom) {
             $this->getBodyBag()->unset('zoom');
         } else {
             $this->logWarningIfVersionIs('<', '8.29', 'The option zoom is not available.');
