@@ -39,6 +39,8 @@ class YourController
 ### Available methods
 
 - [addMetadata](#addmetadatastring-key-string-value)
+- [autoIndexBookmarks](#autoindexbookmarksbool-bool)
+- [bookmarks](#bookmarksarray-bookmarks)
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [embedFiles](#embedfilesstringablestring-paths)
 - [files](#filesstringablestring-paths)
@@ -63,6 +65,45 @@ If you want to add metadata from the ones already loaded in the configuration.<b
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->addMetadata('key', 'value')
+    ->generate()
+    ->stream()
+;
+```
+
+### autoIndexBookmarks(bool \$bool)
+Extracts existing bookmarks from input files and offsets their page numbers<br />based on their position in the merged document (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->autoIndexBookmarks() // is same as `->autoIndexBookmarks(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### bookmarks(array \$bookmarks)
+Bookmarks to write (JSON). A list applies to the final merged PDF.<br />A map of filename→bookmarks shifts page indexes per file before merging.<br /><br />You can also provide custom bookmarks with the bookmarks form field. When provided as a list, it is applied<br />directly to the final merged PDF. When provided as a map of filename to bookmarks, page indexes are shifted per<br />file before merging.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->bookmarks([['title' => 'Introduction', 'page' => 1, 'children' => []], ['title' => 'Appendix', 'page' => 5, 'children' => []]])
+    ->generate()
+    ->stream()
+;
+```
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->bookmarks(['1_pdf.pdf' => [['title' => 'Introduction', 'page' => 1, 'children' => []]], '2_pdf.pdf' => [['title' => 'Appendix', 'page' => 1, 'children' => []]]])
     ->generate()
     ->stream()
 ;

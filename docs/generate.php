@@ -262,7 +262,7 @@ class BuilderParser
         $markdown = '';
         $lastKey = array_key_last($exampleList);
         foreach ($exampleList as $key => $example) {
-            $markdown = <<<MARKDOWN
+            $markdown .= <<<MARKDOWN
                 ```php
                 return \$gotenberg
                     // Your builder call as ->html() and the rest of your configuration code
@@ -276,11 +276,11 @@ class BuilderParser
             $isLast = $lastKey === $key;
 
             if (false === $isLast) {
-                $markdown .= '<br />';
+                $markdown .= "\n\n";
             }
         }
 
-        return rtrim($markdown, '<br />');
+        return rtrim($markdown);
     }
 
     /**

@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BookmarksTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EncryptTestCaseTrait;
@@ -21,6 +22,9 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 {
+    /** @use BookmarksTestCaseTrait<MergePdfBuilder> */
+    use BookmarksTestCaseTrait;
+
     /** @use DownloadFromTestCaseTrait<MergePdfBuilder> */
     use DownloadFromTestCaseTrait;
 

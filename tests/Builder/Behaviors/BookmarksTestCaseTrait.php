@@ -1,0 +1,64 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
+
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+
+/**
+ * @template T of BuilderInterface
+ */
+trait BookmarksTestCaseTrait
+{
+    /** @use BehaviorTrait<T> */
+    use BehaviorTrait;
+
+    abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
+
+    public function testBookmarksAsList(): void
+    {
+        $this->getDefaultBuilder()
+            ->bookmarks([
+                ['title' => 'Introduction', 'page' => 1, 'children' => []],
+                ['title' => 'Appendix', 'page' => 5, 'children' => []],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('bookmarks', '[{"title":"Introduction","page":1,"children":[]},{"title":"Appendix","page":5,"children":[]}]');
+    }
+
+    public function testBookmarksAsMap(): void
+    {
+        $this->getDefaultBuilder()
+            ->bookmarks([
+                '1_pdf.pdf' => [['title' => 'Introduction', 'page' => 1, 'children' => []]],
+                '2_pdf.pdf' => [['title' => 'Appendix', 'page' => 1, 'children' => []]],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('bookmarks', '{"1_pdf.pdf":[{"title":"Introduction","page":1,"children":[]}],"2_pdf.pdf":[{"title":"Appendix","page":1,"children":[]}]}');
+    }
+
+    public function testAutoIndexBookmarks(): void
+    {
+        $this->getDefaultBuilder()
+            ->autoIndexBookmarks()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('autoIndexBookmarks', 'true');
+    }
+
+    public function testAutoIndexBookmarksFalse(): void
+    {
+        $this->getDefaultBuilder()
+            ->autoIndexBookmarks(false)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('autoIndexBookmarks', 'false');
+    }
+}

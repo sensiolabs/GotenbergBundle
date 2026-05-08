@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\AbstractBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\BookmarksTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
@@ -33,6 +34,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 final class MergePdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
+    use BookmarksTrait;
     use DownloadFromTrait;
     use EmbedTrait;
     use EncryptTrait;
