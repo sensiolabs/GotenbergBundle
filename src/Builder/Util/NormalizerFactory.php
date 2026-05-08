@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Util;
 
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
+use Sensiolabs\GotenbergBundle\Enumeration\DownloadFromField;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Version\Version;
@@ -46,6 +47,28 @@ class NormalizerFactory
             }
 
             yield [$key => $value.$unit->value];
+        };
+    }
+
+    /**
+     * @return (\Closure(string, array<string, array{url: string, extraHttpHeaders?: array<string, string>, field?: DownloadFromField|string}>): list<array<string, string>>)
+     */
+    public static function downloadFrom(): \Closure
+    {
+        return static function (string $key, array $value) {
+            $entries = [];
+            foreach ($value as $entry) {
+                if (isset($entry['field']) && $entry['field'] instanceof DownloadFromField) {
+                    $entry['field'] = $entry['field']->value;
+                }
+                $entries[] = $entry;
+            }
+
+            try {
+                yield [$key => json_encode($entries, \JSON_THROW_ON_ERROR)];
+            } catch (\JsonException $exception) {
+                throw new JsonEncodingException(previous: $exception);
+            }
         };
     }
 

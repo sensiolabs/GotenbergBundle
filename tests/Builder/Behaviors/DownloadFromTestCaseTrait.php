@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\DownloadFromField;
 
 /**
  * @template T of BuilderInterface
@@ -38,6 +39,21 @@ trait DownloadFromTestCaseTrait
                 [
                     'url' => 'http://url/to/file.com',
                     'field' => 'watermark',
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('downloadFrom', '[{"url":"http:\/\/url\/to\/file.com","field":"watermark"}]');
+    }
+
+    public function testAddAnExternalResourceWithFieldEnum(): void
+    {
+        $this->getDefaultBuilder()
+            ->downloadFrom([
+                [
+                    'url' => 'http://url/to/file.com',
+                    'field' => DownloadFromField::Watermark,
                 ],
             ])
             ->generate()

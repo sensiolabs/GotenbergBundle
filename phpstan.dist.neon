@@ -190,7 +190,7 @@ parameters:
 			path: src/Builder/Screenshot/UrlScreenshotBuilder.php
 
 		-
-			message: '#^Call to function array_key_exists\(\) with ''url'' and array\{url\: string, extraHttpHeaders\?\: array\<string, string\>, field\?\: string\} will always evaluate to true\.$#'
+			message: '#^Call to function array_key_exists\(\) with ''url'' and array\{url\: string, extraHttpHeaders\?\: array\<string, string\>, field\?\: Sensiolabs\\GotenbergBundle\\Enumeration\\DownloadFromField\|string\} will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/Builder/Util/ValidatorFactory.php
@@ -198,7 +198,7 @@ parameters:
 		-
 			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 2
+			count: 1
 			path: src/Builder/Util/ValidatorFactory.php
 
 		-
