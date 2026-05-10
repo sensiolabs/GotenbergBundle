@@ -111,6 +111,7 @@ class YourController
 - [extraHttpHeaders](#extrahttpheadersarray-headers)
 - [userAgent](#useragentstring-useragent)
 - [emulatedMediaType](#emulatedmediatypesensiolabsgotenbergbundleenumerationemulatedmediatype-mediatype)
+- [skipNetworkAlmostIdleEvent](#skipnetworkalmostidleeventbool-bool)
 - [skipNetworkIdleEvent](#skipnetworkidleeventbool-bool)
 
 ### downloadFrom(array \$downloadFrom)
@@ -733,6 +734,21 @@ return $gotenberg
 ;
 ```
 
+
+### skipNetworkAlmostIdleEvent(bool \$bool)
+Does not wait for Chromium network to be almost idle (at most 2 open connections for 500ms) before conversion.<br />Useful for pages with long-polling or analytics connections. (default true).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->skipNetworkAlmostIdleEvent() // is same as `->skipNetworkAlmostIdleEvent(true)`
+    ->generate()
+    ->stream()
+;
+```
 
 ### skipNetworkIdleEvent(bool \$bool)
 Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during<br />conversion. However, this often significantly slows down the conversion process. Setting this form field to true<br />can greatly enhance the conversion speed.<br />

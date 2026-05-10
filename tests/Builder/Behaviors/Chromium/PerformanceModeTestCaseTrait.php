@@ -24,4 +24,14 @@ trait PerformanceModeTestCaseTrait
 
         $this->assertGotenbergFormData('skipNetworkIdleEvent', 'true');
     }
+
+    public function testSkipNetworkAlmostIdleEvent(): void
+    {
+        $this->getDefaultBuilder()
+            ->skipNetworkAlmostIdleEvent(false)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('skipNetworkAlmostIdleEvent', 'false');
+    }
 }
