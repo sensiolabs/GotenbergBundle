@@ -9,6 +9,9 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 
+/**
+ * @phpstan-type Bookmark array{title: string, page: int, children?: list<array{title: string, page: int, children?: list<mixed>}>}
+ */
 trait BookmarksTrait
 {
     use LoggerAwareTrait;
@@ -16,25 +19,45 @@ trait BookmarksTrait
     abstract protected function getBodyBag(): BodyBag;
 
     /**
-     * Bookmarks to write (JSON). A list applies to the final merged PDF.
-     * A map of filename→bookmarks shifts page indexes per file before merging.
+     * Bookmarks to write. When provided as a list, it is applied directly to the final merged PDF.
+     * When provided as a map of filename to bookmarks, page indexes are shifted per file before merging.
+     * The `children` property allows nesting bookmarks to create a hierarchical table of contents.
      *
-     * You can also provide custom bookmarks with the bookmarks form field. When provided as a list, it is applied
-     * directly to the final merged PDF. When provided as a map of filename to bookmarks, page indexes are shifted per
-     * file before merging.
-     *
-     * @param list<array{title: string, page: int, children?: list<mixed>}>|array<string, list<array{title: string, page: int, children?: list<mixed>}>> $bookmarks
+     * @param list<Bookmark>|array<string, list<Bookmark>> $bookmarks
      *
      * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
      *
-     * @example bookmarks([['title' => 'Introduction', 'page' => 1, 'children' => []], ['title' => 'Appendix', 'page' => 5, 'children' => []]])
-     * @example bookmarks(['1_pdf.pdf' => [['title' => 'Introduction', 'page' => 1, 'children' => []]], '2_pdf.pdf' => [['title' => 'Appendix', 'page' => 1, 'children' => []]]])
+     * @example bookmarks([['title' => 'Introduction', 'page' => 1, 'children' => [['title' => 'Overview', 'page' => 1]]], ['title' => 'Appendix', 'page' => 5]])
+     * @example bookmarks(['1_pdf.pdf' => [['title' => 'Introduction', 'page' => 1]], '2_pdf.pdf' => [['title' => 'Appendix', 'page' => 1]]])
      */
     public function bookmarks(array $bookmarks): static
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The option bookmarks is not available.');
 
         $this->getBodyBag()->set('bookmarks', $bookmarks);
+
+        return $this;
+    }
+
+    /**
+     * Adds a single bookmark entry to the existing list.
+     * The `children` property allows nesting bookmarks to create a hierarchical table of contents.
+     *
+     * @param Bookmark $bookmark
+     *
+     * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
+     *
+     * @example addBookmark(['title' => 'Introduction', 'page' => 1])
+     * @example addBookmark(['title' => 'Chapter 1', 'page' => 1, 'children' => [['title' => 'Overview', 'page' => 1]]])
+     */
+    public function addBookmark(array $bookmark): static
+    {
+        $this->logWarningIfVersionIs('<', '8.28', 'The option bookmarks is not available.');
+
+        /** @var list<Bookmark> $current */
+        $current = $this->getBodyBag()->get('bookmarks', []);
+
+        $this->getBodyBag()->set('bookmarks', [...$current, $bookmark]);
 
         return $this;
     }

@@ -29,6 +29,22 @@ trait BookmarksTestCaseTrait
         $this->assertGotenbergFormData('bookmarks', '[{"title":"Introduction","page":1,"children":[]},{"title":"Appendix","page":5,"children":[]}]');
     }
 
+    public function testBookmarksWithChildren(): void
+    {
+        $this->getDefaultBuilder()
+            ->bookmarks([
+                ['title' => 'Introduction', 'page' => 1, 'children' => [
+                    ['title' => 'Overview', 'page' => 1, 'children' => []],
+                    ['title' => 'Getting Started', 'page' => 2, 'children' => []],
+                ]],
+                ['title' => 'Appendix', 'page' => 5, 'children' => []],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('bookmarks', '[{"title":"Introduction","page":1,"children":[{"title":"Overview","page":1,"children":[]},{"title":"Getting Started","page":2,"children":[]}]},{"title":"Appendix","page":5,"children":[]}]');
+    }
+
     public function testBookmarksAsMap(): void
     {
         $this->getDefaultBuilder()
@@ -40,6 +56,17 @@ trait BookmarksTestCaseTrait
         ;
 
         $this->assertGotenbergFormData('bookmarks', '{"1_pdf.pdf":[{"title":"Introduction","page":1,"children":[]}],"2_pdf.pdf":[{"title":"Appendix","page":1,"children":[]}]}');
+    }
+
+    public function testAddBookmark(): void
+    {
+        $this->getDefaultBuilder()
+            ->addBookmark(['title' => 'Introduction', 'page' => 1, 'children' => []])
+            ->addBookmark(['title' => 'Appendix', 'page' => 5, 'children' => [['title' => 'Sub-section', 'page' => 5, 'children' => []]]])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('bookmarks', '[{"title":"Introduction","page":1,"children":[]},{"title":"Appendix","page":5,"children":[{"title":"Sub-section","page":5,"children":[]}]}]');
     }
 
     public function testAutoIndexBookmarks(): void
