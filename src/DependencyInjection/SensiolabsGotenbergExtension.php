@@ -79,7 +79,7 @@ class SensiolabsGotenbergExtension extends Extension
     }
 
     /**
-     * @param array<array-key, mixed> $config
+     * @param array<mixed> $config
      */
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {

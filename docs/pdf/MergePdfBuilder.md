@@ -38,6 +38,7 @@ class YourController
 
 ### Available methods
 
+- [addBookmark](#addbookmarkarray-bookmark)
 - [addMetadata](#addmetadatastring-key-string-value)
 - [autoIndexBookmarks](#autoindexbookmarksbool-bool)
 - [bookmarks](#bookmarksarray-bookmarks)
@@ -57,6 +58,30 @@ class YourController
 - [webhookUrl](#webhookurlstring-url-string-method)
 - [ownerPassword](#ownerpasswordstring-ownerpassword)
 - [userPassword](#userpasswordstring-userpassword)
+
+### addBookmark(array \$bookmark)
+Adds a single bookmark entry to the existing list.<br />The `children` property allows nesting bookmarks to create a hierarchical table of contents.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addBookmark(['title' => 'Introduction', 'page' => 1])
+    ->generate()
+    ->stream()
+;
+```
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addBookmark(['title' => 'Chapter 1', 'page' => 1, 'children' => [['title' => 'Overview', 'page' => 1]]])
+    ->generate()
+    ->stream()
+;
+```
 
 ### addMetadata(string \$key, string \$value)
 If you want to add metadata from the ones already loaded in the configuration.<br />
@@ -86,7 +111,7 @@ return $gotenberg
 ```
 
 ### bookmarks(array \$bookmarks)
-Bookmarks to write (JSON). A list applies to the final merged PDF.<br />A map of filename→bookmarks shifts page indexes per file before merging.<br /><br />You can also provide custom bookmarks with the bookmarks form field. When provided as a list, it is applied<br />directly to the final merged PDF. When provided as a map of filename to bookmarks, page indexes are shifted per<br />file before merging.<br />
+Bookmarks to write. When provided as a list, it is applied directly to the final merged PDF.<br />When provided as a map of filename to bookmarks, page indexes are shifted per file before merging.<br />The `children` property allows nesting bookmarks to create a hierarchical table of contents.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
@@ -94,7 +119,7 @@ Bookmarks to write (JSON). A list applies to the final merged PDF.<br />A map of
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->bookmarks([['title' => 'Introduction', 'page' => 1, 'children' => []], ['title' => 'Appendix', 'page' => 5, 'children' => []]])
+    ->bookmarks([['title' => 'Introduction', 'page' => 1, 'children' => [['title' => 'Overview', 'page' => 1]]], ['title' => 'Appendix', 'page' => 5]])
     ->generate()
     ->stream()
 ;
@@ -103,7 +128,7 @@ return $gotenberg
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->bookmarks(['1_pdf.pdf' => [['title' => 'Introduction', 'page' => 1, 'children' => []]], '2_pdf.pdf' => [['title' => 'Appendix', 'page' => 1, 'children' => []]]])
+    ->bookmarks(['1_pdf.pdf' => [['title' => 'Introduction', 'page' => 1]], '2_pdf.pdf' => [['title' => 'Appendix', 'page' => 1]]])
     ->generate()
     ->stream()
 ;
