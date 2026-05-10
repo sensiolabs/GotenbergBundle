@@ -67,8 +67,6 @@ class ValidatorFactory
      */
     public static function download(array $downloadFrom): void
     {
-        $allowedValues = array_column(DownloadFromField::cases(), 'value');
-
         foreach ($downloadFrom as $i => $file) {
             if (!\array_key_exists('url', $file)) {
                 throw new InvalidBuilderConfiguration('"url" is mandatory into "downloadFrom" array field.');
@@ -79,8 +77,8 @@ class ValidatorFactory
             }
 
             if (\array_key_exists('field', $file) && !$file['field'] instanceof DownloadFromField) {
-                if (!\in_array($file['field'], $allowedValues, true)) {
-                    throw new InvalidBuilderConfiguration(\sprintf('Unsupported "downloadFrom[%d].field" "%s", expected one of "%s".', $i, $file['field'], implode('", "', $allowedValues)));
+                if (DownloadFromField::tryFrom($file['field']) === null) {
+                    throw new InvalidBuilderConfiguration(\sprintf('Unsupported "downloadFrom[%d].field" "%s", expected one of "%s".', $i, $file['field'], implode('", "', array_column(DownloadFromField::cases(), 'value'))));
                 }
             }
         }
