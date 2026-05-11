@@ -27,7 +27,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *          route?: string|array{0: string, 1?: array<string, mixed>},
  *          method: 'PUT'|'PATCH'|'POST'|null
  *      },
- *     extra_http_headers?: array<string, string>
+ *     extra_http_headers?: array<string, string>,
+ *     events?: array{
+ *          url?: string,
+ *          route?: string|array{0: string, 1?: array<string, mixed>}
+ *      }
  *  }
  *
  * @package Behavior\\Async
@@ -44,7 +48,7 @@ trait WebhookTrait
      *
      * @see https://gotenberg.dev/docs/webhook-download#webhooks
      *
-     * @example webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST']])
+     * @example webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST'], 'events' => ['url' => 'https://my.webhook.url/events']])
      */
     #[WithConfigurationNode(new WebhookNodeBuilder('webhook', children: [
         new ScalarNodeBuilder('config_name', restrictTo: 'string'),
@@ -59,6 +63,10 @@ trait WebhookTrait
             new EnumNodeBuilder('method', values: ['POST', 'PUT', 'PATCH']),
         ]),
         new ArrayNodeBuilder('extra_http_headers', normalizeKeys: false, useAttributeAsKey: 'name', prototype: 'variable'),
+        new ArrayNodeBuilder('events', children: [
+            new ScalarNodeBuilder('url', restrictTo: 'string'),
+            new VariableNodeBuilder('route'),
+        ]),
     ]))]
     public function webhook(array $webhook): static
     {
@@ -68,6 +76,7 @@ trait WebhookTrait
             $this->getHeadersBag()->unset('Gotenberg-Webhook-Error-Url');
             $this->getHeadersBag()->unset('Gotenberg-Webhook-Error-Method');
             $this->getHeadersBag()->unset('Gotenberg-Webhook-Extra-Http-Headers');
+            $this->getHeadersBag()->unset('Gotenberg-Webhook-Events-Url');
 
             return $this;
         }
@@ -96,12 +105,27 @@ trait WebhookTrait
             }
         }
 
+        if (isset($webhook['events']['route'])) {
+            if (\is_string($webhook['events']['route'])) {
+                $this->webhookEventsRoute($webhook['events']['route']);
+            }
+
+            if (\is_array($webhook['events']['route'])) {
+                $route = $webhook['events']['route'];
+                $this->webhookEventsRoute($route[0], $route[1] ?? []);
+            }
+        }
+
         if (isset($webhook['success']['url'])) {
             $this->webhookUrl($webhook['success']['url'], $webhook['success']['method'] ?? null);
         }
 
         if (isset($webhook['error']['url'])) {
             $this->webhookErrorUrl($webhook['error']['url'], $webhook['error']['method'] ?? null);
+        }
+
+        if (isset($webhook['events']['url'])) {
+            $this->webhookEventsUrl($webhook['events']['url']);
         }
 
         if (isset($webhook['extra_http_headers'])) {
@@ -145,6 +169,36 @@ trait WebhookTrait
         }
 
         return $this;
+    }
+
+    /**
+     * Sets the URL that will receive structured JSON event callbacks after each webhook operation.
+     * When set, POST requests are sent with event type (`webhook.success` or `webhook.error`),
+     * `correlationId`, and `timestamp`.
+     *
+     * @see https://gotenberg.dev/docs/webhook-download#webhooks
+     *
+     * @example webhookEventsUrl('https://my.webhook.url/events')
+     */
+    public function webhookEventsUrl(string $url): static
+    {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option Gotenberg-Webhook-Events-Url is not available.');
+
+        $this->getHeadersBag()->set('Gotenberg-Webhook-Events-Url', $url);
+
+        return $this;
+    }
+
+    /**
+     * Sets the webhook route with params for event callbacks.
+     *
+     * @param array<string, mixed> $parameters
+     *
+     * @example webhookEventsRoute('my_route_events', ['foo' => 'bar'])
+     */
+    public function webhookEventsRoute(string $route, array $parameters = []): static
+    {
+        return $this->webhookEventsUrl($this->getUrlGenerator()->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -223,12 +277,12 @@ trait WebhookTrait
             throw new InvalidBuilderConfiguration('Invalid webhook configuration : At least a "success" key is required.');
         }
 
-        foreach (['success', 'error'] as $type) {
+        foreach (['success', 'error', 'events'] as $type) {
             if (isset($webhook[$type]['url'], $webhook[$type]['route'])) {
                 throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : You must provide "url" or "route" keys for "%s" configuration.', $type));
             }
 
-            if (isset($webhook[$type]['method']) && !\in_array($webhook[$type]['method'], ['POST', 'PUT', 'PATCH'], true)) {
+            if (\in_array($type, ['success', 'error'], true) && isset($webhook[$type]['method']) && !\in_array($webhook[$type]['method'], ['POST', 'PUT', 'PATCH'], true)) {
                 throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : "POST" "PUT", "PATCH" are the only available methods for "%s" configuration.', $type));
             }
 

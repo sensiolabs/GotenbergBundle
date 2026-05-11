@@ -283,6 +283,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'metadata' => [
                         ],
@@ -307,6 +308,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'metadata' => [
                         ],
@@ -331,6 +333,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'metadata' => [
                         ],
@@ -351,6 +354,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'metadata' => [
                         ],
@@ -363,6 +367,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'metadata' => [
                         ],
@@ -375,6 +380,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                     ],
                     'split' => [
@@ -385,6 +391,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'metadata' => [
                         ],
@@ -397,6 +404,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                     ],
                 ],
@@ -413,6 +421,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'footer' => [
                             'context' => [],
@@ -435,6 +444,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'footer' => [
                             'context' => [],
@@ -457,6 +467,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'footer' => [
                             'context' => [],

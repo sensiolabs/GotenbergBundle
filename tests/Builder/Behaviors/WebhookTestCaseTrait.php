@@ -39,6 +39,9 @@ trait WebhookTestCaseTrait
                 'extra_http_headers' => [
                     'my_header' => 'value',
                 ],
+                'events' => [
+                    'url' => 'https://my.webhook.url/events',
+                ],
             ])
             ->generate()
         ;
@@ -48,6 +51,7 @@ trait WebhookTestCaseTrait
         $this->assertGotenbergHeader('Gotenberg-Webhook-Error-Url', 'http://example.com/error');
         $this->assertGotenbergHeader('Gotenberg-Webhook-Error-Method', 'POST');
         $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value"}');
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Events-Url', 'https://my.webhook.url/events');
     }
 
     public function testFullWebhookConfigurationWithRoute(): void
@@ -126,6 +130,38 @@ trait WebhookTestCaseTrait
         $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value"}');
     }
 
+    public function testFullWebhookConfigurationWithEventsRoute(): void
+    {
+        $router = $this->createMock(Router::class);
+        $router->expects($this->exactly(3))
+            ->method('generate')
+            ->willReturnOnConsecutiveCalls('http://example.com/success', 'http://example.com/error', 'http://example.com/events')
+        ;
+
+        $this->container->set('router', $router);
+
+        $this->getDefaultBuilder()
+            ->webhook([
+                'success' => [
+                    'route' => 'my_route',
+                    'method' => 'PUT',
+                ],
+                'error' => [
+                    'route' => 'my_error_route',
+                    'method' => 'POST',
+                ],
+                'events' => [
+                    'route' => 'my_events_route',
+                ],
+            ])
+            ->generate()
+        ;
+
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Url', 'http://example.com/success');
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Error-Url', 'http://example.com/error');
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Events-Url', 'http://example.com/events');
+    }
+
     public function testAddWebhookUrlToCallOnSuccessResult(): void
     {
         $this->getDefaultBuilder()
@@ -156,6 +192,16 @@ trait WebhookTestCaseTrait
         ;
 
         $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value"}');
+    }
+
+    public function testWebhookEventsUrl(): void
+    {
+        $this->getDefaultBuilder()
+            ->webhookEventsUrl('https://my.webhook.url/events')
+            ->generate()
+        ;
+
+        $this->assertGotenbergHeader('Gotenberg-Webhook-Events-Url', 'https://my.webhook.url/events');
     }
 
     /**
@@ -215,6 +261,49 @@ trait WebhookTestCaseTrait
             ],
             'Invalid webhook configuration : You must provide "url" or "route" keys for "success" configuration.',
         ];
+        yield 'with events route and url configuration' => [
+            [
+                'success' => [
+                    'url' => 'http://example.com/success',
+                    'method' => 'PUT',
+                ],
+                'events' => [
+                    'url' => 'http://example.com/events',
+                    'route' => 'my_events_route',
+                ],
+            ],
+            'Invalid webhook configuration : You must provide "url" or "route" keys for "events" configuration.',
+        ];
+        yield 'with invalid events route configuration' => [
+            [
+                'success' => [
+                    'url' => 'http://example.com/success',
+                    'method' => 'PUT',
+                ],
+                'events' => [
+                    'route' => [
+                        ['my_events_route'],
+                        ['var' => 'foo'],
+                    ],
+                ],
+            ],
+            'Invalid webhook configuration : You must provide a valid route name for "events" configuration.',
+        ];
+        yield 'with invalid events route params configuration' => [
+            [
+                'success' => [
+                    'url' => 'http://example.com/success',
+                    'method' => 'PUT',
+                ],
+                'events' => [
+                    'route' => [
+                        'my_events_route',
+                        'foo',
+                    ],
+                ],
+            ],
+            'Invalid webhook configuration : You must provide valid route parameters for "events" configuration.',
+        ];
     }
 
     /**
@@ -249,6 +338,7 @@ trait WebhookTestCaseTrait
                     'my_header' => 'value',
                 ],
             ])
+            ->webhookEventsUrl('https://my.webhook.url/events')
         ;
 
         self::assertArrayHasKey('Gotenberg-Webhook-Url', $builder->getHeadersBag()->all());
@@ -266,6 +356,9 @@ trait WebhookTestCaseTrait
         self::assertArrayHasKey('Gotenberg-Webhook-Extra-Http-Headers', $builder->getHeadersBag()->all());
         self::assertSame('{"my_header":"value"}', $builder->getHeadersBag()->get('Gotenberg-Webhook-Extra-Http-Headers'));
 
+        self::assertArrayHasKey('Gotenberg-Webhook-Events-Url', $builder->getHeadersBag()->all());
+        self::assertSame('https://my.webhook.url/events', $builder->getHeadersBag()->get('Gotenberg-Webhook-Events-Url'));
+
         $builder->webhook([]);
 
         self::assertArrayNotHasKey('Gotenberg-Webhook-Url', $builder->getHeadersBag()->all());
@@ -273,6 +366,7 @@ trait WebhookTestCaseTrait
         self::assertArrayNotHasKey('Gotenberg-Webhook-Error-Url', $builder->getHeadersBag()->all());
         self::assertArrayNotHasKey('Gotenberg-Webhook-Error-Method', $builder->getHeadersBag()->all());
         self::assertArrayNotHasKey('Gotenberg-Webhook-Extra-Http-Headers', $builder->getHeadersBag()->all());
+        self::assertArrayNotHasKey('Gotenberg-Webhook-Events-Url', $builder->getHeadersBag()->all());
     }
 
     public function testWebhookUrlsCanBeSetUsingTheRegistry(): void

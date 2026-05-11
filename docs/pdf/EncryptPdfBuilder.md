@@ -40,6 +40,8 @@ class YourController
 - [webhookConfiguration](#webhookconfigurationstring-name)
 - [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
 - [webhookErrorUrl](#webhookerrorurlstring-url-string-method)
+- [webhookEventsRoute](#webhookeventsroutestring-route-array-parameters)
+- [webhookEventsUrl](#webhookeventsurlstring-url)
 - [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
 - [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
 - [webhookUrl](#webhookurlstring-url-string-method)
@@ -81,7 +83,7 @@ return $gotenberg
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST']])
+    ->webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST'], 'events' => ['url' => 'https://my.webhook.url/events']])
     ->generate()
     ->stream()
 ;
@@ -118,6 +120,33 @@ Sets the webhook for cases of success.<br />Optionally sets a custom HTTP method
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->webhookErrorUrl('https://my.webhook.url', 'PUT')
+    ->generate()
+    ->stream()
+;
+```
+
+### webhookEventsRoute(string \$route, array \$parameters)
+Sets the webhook route with params for event callbacks.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->webhookEventsRoute('my_route_events', ['foo' => 'bar'])
+    ->generate()
+    ->stream()
+;
+```
+
+### webhookEventsUrl(string \$url)
+Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`),<br />`correlationId`, and `timestamp`.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->webhookEventsUrl('https://my.webhook.url/events')
     ->generate()
     ->stream()
 ;
