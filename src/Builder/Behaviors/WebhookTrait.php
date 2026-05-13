@@ -281,7 +281,8 @@ trait WebhookTrait
                 throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : You must provide "url" or "route" keys for "%s" configuration.', $type));
             }
 
-            if (\in_array($type, ['success', 'error'], true) && !\in_array($webhook[$type]['method'] ?? '', ['POST', 'PUT', 'PATCH'], true)) {
+            $method = $webhook[$type]['method'] ?? null;
+            if (null !== $method && !\in_array($method, ['POST', 'PUT', 'PATCH'], true) && \in_array($type, ['success', 'error'], true)) {
                 throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : "POST" "PUT", "PATCH" are the only available methods for "%s" configuration.', $type));
             }
 
