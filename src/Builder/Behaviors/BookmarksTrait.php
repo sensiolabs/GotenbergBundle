@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 
 /**
@@ -43,19 +44,26 @@ trait BookmarksTrait
      * Adds a single bookmark entry to the existing list.
      * The `children` property allows nesting bookmarks to create a hierarchical table of contents.
      *
-     * @param Bookmark $bookmark
+     * @param list<Bookmark> $children
      *
      * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
      *
-     * @example addBookmark(['title' => 'Introduction', 'page' => 1])
-     * @example addBookmark(['title' => 'Chapter 1', 'page' => 1, 'children' => [['title' => 'Overview', 'page' => 1]]])
+     * @example addBookmark('Introduction', 1)
+     * @example addBookmark('Chapter 1', 1, [['title' => 'Overview', 'page' => 1]])
      */
-    public function addBookmark(array $bookmark): static
+    public function addBookmark(string $title, int $page, array $children = []): static
     {
+        ValidatorFactory::pageNumber($page);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The option bookmarks is not available.');
 
         /** @var list<Bookmark> $current */
         $current = $this->getBodyBag()->get('bookmarks', []);
+
+        $bookmark = ['title' => $title, 'page' => $page];
+        if ([] !== $children) {
+            $bookmark['children'] = $children;
+        }
 
         $this->getBodyBag()->set('bookmarks', [...$current, $bookmark]);
 

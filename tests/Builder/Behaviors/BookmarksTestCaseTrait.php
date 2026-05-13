@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 
 /**
  * @template T of BuilderInterface
@@ -61,12 +62,20 @@ trait BookmarksTestCaseTrait
     public function testAddBookmark(): void
     {
         $this->getDefaultBuilder()
-            ->addBookmark(['title' => 'Introduction', 'page' => 1, 'children' => []])
-            ->addBookmark(['title' => 'Appendix', 'page' => 5, 'children' => [['title' => 'Sub-section', 'page' => 5, 'children' => []]]])
+            ->addBookmark('Introduction', 1)
+            ->addBookmark('Appendix', 5, [['title' => 'Sub-section', 'page' => 5]])
             ->generate()
         ;
 
-        $this->assertGotenbergFormData('bookmarks', '[{"title":"Introduction","page":1,"children":[]},{"title":"Appendix","page":5,"children":[{"title":"Sub-section","page":5,"children":[]}]}]');
+        $this->assertGotenbergFormData('bookmarks', '[{"title":"Introduction","page":1},{"title":"Appendix","page":5,"children":[{"title":"Sub-section","page":5}]}]');
+    }
+
+    public function testAddBookmarkThrowsOnInvalidPage(): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage('Page number must be greater than or equal to 1, 0 given.');
+
+        $this->getDefaultBuilder()->addBookmark('Introduction', 0);
     }
 
     public function testAutoIndexBookmarks(): void
