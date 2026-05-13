@@ -173,8 +173,7 @@ trait WebhookTrait
 
     /**
      * Sets the URL that will receive structured JSON event callbacks after each webhook operation.
-     * When set, POST requests are sent with event type (`webhook.success` or `webhook.error`),
-     * `correlationId`, and `timestamp`.
+     * When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.
      *
      * @see https://gotenberg.dev/docs/webhook-download#webhooks
      *
@@ -282,7 +281,7 @@ trait WebhookTrait
                 throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : You must provide "url" or "route" keys for "%s" configuration.', $type));
             }
 
-            if (\in_array($type, ['success', 'error'], true) && isset($webhook[$type]['method']) && !\in_array($webhook[$type]['method'], ['POST', 'PUT', 'PATCH'], true)) {
+            if (\in_array($type, ['success', 'error'], true) && !\in_array($webhook[$type]['method'] ?? '', ['POST', 'PUT', 'PATCH'], true)) {
                 throw new InvalidBuilderConfiguration(\sprintf('Invalid webhook configuration : "POST" "PUT", "PATCH" are the only available methods for "%s" configuration.', $type));
             }
 
