@@ -1,12 +1,11 @@
-name: 'Unit Tests'
+name: 'Integration Tests'
 
 on:
   push:
     branches: ['main', '1.x']
-  pull_request:
-    branches: ['main', '1.x']
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: 'read'
@@ -21,10 +20,10 @@ jobs:
       - uses: 'actions/checkout@v4'
       - id: 'set-matrix'
         run: |
-          echo "matrix=$(jq -c '.' ./.dagger/src/matrix-versions.json)" >> $GITHUB_OUTPUT
+          echo "matrix=$(jq -c '.' ./.dagger/src/integration-matrix-versions.json)" >> $GITHUB_OUTPUT
 
   test:
-    name: 'Build and Test - ${{ matrix.name }}'
+    name: 'Integration - ${{ matrix.name }}'
     runs-on: 'ubuntu-latest'
     needs: 'setup'
     strategy:
@@ -36,28 +35,30 @@ jobs:
 
       - uses: './.github/actions/setup-dagger'
 
-      - name: 'Run test suite'
-        uses: 'dagger/dagger-for-github@v8.4.1'
+      - name: 'Run integration suite'
+        uses: 'dagger/dagger-for-github@v8.2.0'
         with:
           version: "latest"
-          call: "test --symfony-version '${{ matrix.symfony-version }}' --php-version '${{ matrix.php }}' --minimum-stability '${{ matrix.minimum-stability }}' phpunit"
+          call: "integration-test --gotenberg-version '${{ matrix.gotenberg-version }}' phpunit"
           dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
 
-  composer:
-    name: 'Validate composer files and dependencies'
+  latest:
+    name: 'Integration - latest nightly'
     runs-on: 'ubuntu-latest'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    continue-on-error: true
     steps:
       - uses: 'actions/checkout@v4'
 
       - uses: './.github/actions/setup-dagger'
 
-      - name: 'Validate dependencies'
-        uses: 'dagger/dagger-for-github@v8.4.1'
+      - name: 'Run latest compatibility suite'
+        uses: 'dagger/dagger-for-github@v8.2.0'
         with:
           version: "latest"
-          call: "test validate-dependencies"
+          call: "integration-test --gotenberg-version 'latest' phpunit"
           dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'
