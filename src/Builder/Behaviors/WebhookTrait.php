@@ -191,7 +191,8 @@ trait WebhookTrait
     /**
      * Sets the webhook route with params for event callbacks.
      *
-     * @param array<string, mixed> $parameters
+     * @param string                $route #Route
+     * @param array<string, mixed>  $parameters
      *
      * @example webhookEventsRoute('my_route_events', ['foo' => 'bar'])
      */
@@ -217,6 +218,7 @@ trait WebhookTrait
     /**
      * Sets the webhook route with params and method for cases of success.
      *
+     * @param string                    $route #Route
      * @param array<string, mixed>      $parameters
      * @param 'PATCH'|'POST'|'PUT'|null $method
      *
@@ -230,6 +232,7 @@ trait WebhookTrait
     /**
      * Sets the webhook route with params and method for cases of error.
      *
+     * @param string                    $route #Route
      * @param array<string, mixed>      $parameters
      * @param 'PATCH'|'POST'|'PUT'|null $method
      *
