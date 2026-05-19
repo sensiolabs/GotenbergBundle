@@ -38,7 +38,7 @@ class YourController
 
 ### Available methods
 
-- [addBookmark](#addbookmarkarray-bookmark)
+- [addBookmark](#addbookmarkstring-title-int-page-array-children)
 - [addMetadata](#addmetadatastring-key-string-value)
 - [autoIndexBookmarks](#autoindexbookmarksbool-bool)
 - [bookmarks](#bookmarksarray-bookmarks)
@@ -59,7 +59,7 @@ class YourController
 - [ownerPassword](#ownerpasswordstring-ownerpassword)
 - [userPassword](#userpasswordstring-userpassword)
 
-### addBookmark(array \$bookmark)
+### addBookmark(string \$title, int \$page, array \$children)
 Adds a single bookmark entry to the existing list.<br />The `children` property allows nesting bookmarks to create a hierarchical table of contents.<br />
 
 > [!TIP]
@@ -68,7 +68,7 @@ Adds a single bookmark entry to the existing list.<br />The `children` property 
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->addBookmark(['title' => 'Introduction', 'page' => 1])
+    ->addBookmark('Introduction', 1)
     ->generate()
     ->stream()
 ;
@@ -77,7 +77,7 @@ return $gotenberg
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->addBookmark(['title' => 'Chapter 1', 'page' => 1, 'children' => [['title' => 'Overview', 'page' => 1]]])
+    ->addBookmark('Chapter 1', 1, [['title' => 'Overview', 'page' => 1]])
     ->generate()
     ->stream()
 ;
