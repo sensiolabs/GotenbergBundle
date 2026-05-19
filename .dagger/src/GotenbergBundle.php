@@ -24,7 +24,7 @@ use function Dagger\dag;
 class GotenbergBundle
 {
     private const DEFAULT_PHP_VERSION = '8.4';
-    private const DEFAULT_SYMFONY_VERSION = '7.3.*';
+    private const DEFAULT_SYMFONY_VERSION = '8.0.*';
     private const DEFAULT_GOTENBERG_VERSION = '8.0';
 
     private function gotenbergContainer(
