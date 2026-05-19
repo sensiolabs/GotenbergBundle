@@ -125,6 +125,7 @@ class YourController
 - [stampPages](#stamppagesstring-stamppages)
 - [stampSource](#stampsourcesensiolabsgotenbergbundleenumerationstampsource-stampsource)
 - [tiledWatermarkText](#tiledwatermarktextstring-text)
+- [useTransitionEffects](#usetransitioneffectsbool-bool)
 - [watermarkColor](#watermarkcolorstring-color)
 - [watermarkExpression](#watermarkexpressionstring-watermarkexpression)
 - [watermarkFile](#watermarkfilestringablestring-path)
@@ -135,9 +136,8 @@ class YourController
 - [watermarkRotateAngle](#watermarkrotateangleint-angle)
 - [watermarkSource](#watermarksourcesensiolabsgotenbergbundleenumerationwatermarksource-watermarksource)
 - [watermarkText](#watermarktextstring-text)
-- [addWebhookExtraHeaders](#addwebhookextraheadersarray-extrahttpheaders)
-- [useTransitionEffects](#usetransitioneffectsbool-bool)
 - [zoom](#zoomint-zoom)
+- [addWebhookExtraHeaders](#addwebhookextraheadersarray-extrahttpheaders)
 - [webhook](#webhookarray-webhook)
 - [webhookConfiguration](#webhookconfigurationstring-name)
 - [webhookErrorRoute](#webhookerrorroutestring-route-array-parameters-string-method)
@@ -739,6 +739,21 @@ return $gotenberg
 ;
 ```
 
+### resizeWindowToInitialPage(bool \$bool)
+Resize the viewer window to the size of the first page.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->resizeWindowToInitialPage() // is same as `->resizeWindowToInitialPage(true)`
+    ->generate()
+    ->stream()
+;
+```
+
 ### rotateAngle(?Sensiolabs\GotenbergBundle\Enumeration\RotateAngle \$rotateAngle)
 The rotation angle.<br />
 
@@ -764,21 +779,6 @@ Page ranges to rotate (e.g., '1-3', '5'). Empty means all pages.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->rotatePages('1-2')
-    ->generate()
-    ->stream()
-;
-```
-
-### resizeWindowToInitialPage(bool \$bool)
-Resize the viewer window to the size of the first page.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->resizeWindowToInitialPage() // is same as `->resizeWindowToInitialPage(true)`
     ->generate()
     ->stream()
 ;
@@ -851,36 +851,6 @@ Specify whether to put extracted pages into a single file or as many files as th
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->splitUnify() // is same as `->splitUnify(true)`
-    ->generate()
-    ->stream()
-;
-```
-
-### useTransitionEffects(bool \$bool)
-Use transition effects when advancing slides in Impress presentations.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->useTransitionEffects() // is same as `->useTransitionEffects(true)`
-    ->generate()
-    ->stream()
-;
-```
-
-### zoom(?int \$zoom)
-Initial zoom percentage when magnification is set to Magnification::UseZoomValue (4).<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->zoom(3)
     ->generate()
     ->stream()
 ;
@@ -971,6 +941,21 @@ Set a tiled watermark text rendered across every page during PDF export.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->tiledWatermarkText('DRAFT')
+    ->generate()
+    ->stream()
+;
+```
+
+### useTransitionEffects(bool \$bool)
+Use transition effects when advancing slides in Impress presentations.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->useTransitionEffects() // is same as `->useTransitionEffects(true)`
     ->generate()
     ->stream()
 ;
@@ -1121,6 +1106,21 @@ Set the watermark text to render on every page during PDF export.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->watermarkText('CONFIDENTIAL')
+    ->generate()
+    ->stream()
+;
+```
+
+### zoom(?int \$zoom)
+Initial zoom percentage when magnification is set to Magnification::UseZoomValue (4).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->zoom(3)
     ->generate()
     ->stream()
 ;
