@@ -9,7 +9,6 @@ use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\Doc;
 use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
-use Dagger\File;
 use function Amp\async;
 use function Amp\Future\await;
 
