@@ -9,6 +9,7 @@ use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\Doc;
 use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Container;
+use Dagger\File;
 use function Amp\async;
 use function Amp\Future\await;
 
@@ -39,7 +40,7 @@ final class TestsGotenbergBundle
 
         $matches = [];
 
-        if (1 !== preg_match('#(?P<MajorMinor>^\d\.\d)#', $symfonyVersion, $matches)) {
+        if (1 !== preg_match('#(?P<MajorMinor>^\d+\.\d+)#', $symfonyVersion, $matches)) {
             return $symfonyVersion;
         }
 

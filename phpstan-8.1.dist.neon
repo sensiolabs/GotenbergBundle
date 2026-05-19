@@ -1,0 +1,24 @@
+includes:
+	- phpstan.dist.neon
+
+parameters:
+	ignoreErrors:
+
+		# See Issue: phpstan/phpstan#14229 (https://github.com/phpstan/phpstan/issues/14229)
+		-
+			message: '#^Call to method getControllerResult\(\) on an unknown class Symfony\\Component\\HttpKernel\\Event\\ViewEvent\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/EventListener/ProcessBuilderOnControllerResponse.php
+
+		-
+			message: '#^Call to method setResponse\(\) on an unknown class Symfony\\Component\\HttpKernel\\Event\\ViewEvent\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/EventListener/ProcessBuilderOnControllerResponse.php
+
+		-
+			message: '#^Parameter \$event of method Sensiolabs\\GotenbergBundle\\EventListener\\ProcessBuilderOnControllerResponse\:\:streamBuilder\(\) has invalid type Symfony\\Component\\HttpKernel\\Event\\ViewEvent\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/EventListener/ProcessBuilderOnControllerResponse.php
