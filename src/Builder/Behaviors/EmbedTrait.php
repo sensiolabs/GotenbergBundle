@@ -18,7 +18,7 @@ trait EmbedTrait
     abstract protected function getBodyBag(): BodyBag;
 
     /**
-     * Add files to embed.
+     * Set files to embed.
      *
      * As assets files, by default the files to embed are fetch in the assets folder
      * of your application. For more information about path resolution go to
