@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-dagger-
 
       - name: 'Run test suite'
-        uses: 'dagger/dagger-for-github@v8.2.0'
+        uses: 'dagger/dagger-for-github@v8.4.1'
         with:
           version: 'latest'
           call: 'php-cs-fixer check'
@@ -52,7 +52,7 @@ jobs:
             ${{ runner.os }}-dagger-
 
       - name: 'Run test suite'
-        uses: 'dagger/dagger-for-github@v8.2.0'
+        uses: 'dagger/dagger-for-github@v8.4.1'
         with:
           version: 'latest'
           call: 'test phpstan'
