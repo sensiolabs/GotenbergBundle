@@ -515,10 +515,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new NativeEnumNodeBuilder('initial_view', enumClass: InitialView::class))]
     public function initialView(InitialView|null $initialView): self
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option initialView is not available.');
+
         if (!$initialView) {
             $this->getBodyBag()->unset('initialView');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option initialView is not available.');
             $this->getBodyBag()->set('initialView', $initialView);
         }
 
@@ -537,10 +538,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('initial_page', min: 1))]
     public function initialPage(int|null $initialPage): self
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option initialPage is not available.');
+
         if (null === $initialPage) {
             $this->getBodyBag()->unset('initialPage');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option initialPage is not available.');
             ValidatorFactory::page($initialPage);
             $this->getBodyBag()->set('initialPage', $initialPage);
         }
@@ -558,10 +560,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new NativeEnumNodeBuilder('magnification', enumClass: Magnification::class))]
     public function magnification(Magnification|null $magnification): self
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option magnification is not available.');
+
         if (!$magnification) {
             $this->getBodyBag()->unset('magnification');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option magnification is not available.');
             $this->getBodyBag()->set('magnification', $magnification);
         }
 
@@ -580,10 +583,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('zoom', min: 1, max: 100))]
     public function zoom(int|null $zoom): self
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option zoom is not available.');
+
         if (null === $zoom) {
             $this->getBodyBag()->unset('zoom');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option zoom is not available.');
             ValidatorFactory::zoom($zoom);
             $this->getBodyBag()->set('zoom', $zoom);
         }
@@ -601,10 +605,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new NativeEnumNodeBuilder('page_layout', enumClass: PageLayout::class))]
     public function pageLayout(PageLayout|null $pageLayout): self
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option pageLayout is not available.');
+
         if (!$pageLayout) {
             $this->getBodyBag()->unset('pageLayout');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option pageLayout is not available.');
             $this->getBodyBag()->set('pageLayout', $pageLayout);
         }
 
@@ -621,10 +626,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('first_page_on_left'))]
     public function firstPageOnLeft(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option firstPageOnLeft is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('firstPageOnLeft');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option firstPageOnLeft is not available.');
             $this->getBodyBag()->set('firstPageOnLeft', $bool);
         }
 
@@ -641,10 +647,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('resize_window_to_initial_page'))]
     public function resizeWindowToInitialPage(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option resizeWindowToInitialPage is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('resizeWindowToInitialPage');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option resizeWindowToInitialPage is not available.');
             $this->getBodyBag()->set('resizeWindowToInitialPage', $bool);
         }
 
@@ -661,10 +668,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('center_window'))]
     public function centerWindow(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option centerWindow is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('centerWindow');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option centerWindow is not available.');
             $this->getBodyBag()->set('centerWindow', $bool);
         }
 
@@ -681,10 +689,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('open_in_full_screen_mode'))]
     public function openInFullScreenMode(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option openInFullScreenMode is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('openInFullScreenMode');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option openInFullScreenMode is not available.');
             $this->getBodyBag()->set('openInFullScreenMode', $bool);
         }
 
@@ -701,10 +710,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('display_pdf_document_title'))]
     public function displayPDFDocumentTitle(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option displayPDFDocumentTitle is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('displayPDFDocumentTitle');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option displayPDFDocumentTitle is not available.');
             $this->getBodyBag()->set('displayPDFDocumentTitle', $bool);
         }
 
@@ -721,10 +731,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('hide_viewer_menubar'))]
     public function hideViewerMenubar(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerMenubar is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('hideViewerMenubar');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerMenubar is not available.');
             $this->getBodyBag()->set('hideViewerMenubar', $bool);
         }
 
@@ -741,10 +752,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('hide_viewer_toolbar'))]
     public function hideViewerToolbar(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerToolbar is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('hideViewerToolbar');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerToolbar is not available.');
             $this->getBodyBag()->set('hideViewerToolbar', $bool);
         }
 
@@ -761,10 +773,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('hide_viewer_window_controls'))]
     public function hideViewerWindowControls(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerWindowControls is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('hideViewerWindowControls');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option hideViewerWindowControls is not available.');
             $this->getBodyBag()->set('hideViewerWindowControls', $bool);
         }
 
@@ -781,10 +794,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new BooleanNodeBuilder('use_transition_effects'))]
     public function useTransitionEffects(bool $bool = true): static
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option useTransitionEffects is not available.');
+
         if (!$bool) {
             $this->getBodyBag()->unset('useTransitionEffects');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option useTransitionEffects is not available.');
             $this->getBodyBag()->set('useTransitionEffects', $bool);
         }
 
@@ -803,10 +817,11 @@ trait PagePropertiesTrait
     #[WithConfigurationNode(new IntegerNodeBuilder('open_bookmark_levels', min: -1))]
     public function openBookmarkLevels(int|null $openBookmarkLevels): self
     {
+        $this->logWarningIfVersionIs('<', '8.29', 'The option openBookmarkLevels is not available.');
+
         if (null === $openBookmarkLevels) {
             $this->getBodyBag()->unset('openBookmarkLevels');
         } else {
-            $this->logWarningIfVersionIs('<', '8.29', 'The option openBookmarkLevels is not available.');
             ValidatorFactory::bookmarkLevels($openBookmarkLevels);
             $this->getBodyBag()->set('openBookmarkLevels', $openBookmarkLevels);
         }
