@@ -423,6 +423,7 @@ final class ConfigurationTest extends TestCase
                             'error' => [
                             ],
                             'extra_http_headers' => [],
+                            'events' => [],
                         ],
                         'watermark_options' => [],
                     ],
