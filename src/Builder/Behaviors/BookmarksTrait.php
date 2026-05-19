@@ -53,7 +53,7 @@ trait BookmarksTrait
      */
     public function addBookmark(string $title, int $page, array $children = []): static
     {
-        ValidatorFactory::pageNumber($page);
+        ValidatorFactory::page($page);
 
         $this->logWarningIfVersionIs('<', '8.28', 'The option bookmarks is not available.');
 

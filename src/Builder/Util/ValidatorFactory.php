@@ -87,7 +87,7 @@ class ValidatorFactory
         }
     }
 
-    public static function pageNumber(int $value): void
+    public static function page(int $value): void
     {
         if ($value < 1) {
             throw new InvalidBuilderConfiguration(\sprintf('Page number must be greater than or equal to 1, %d given.', $value));
