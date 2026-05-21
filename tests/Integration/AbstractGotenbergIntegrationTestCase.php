@@ -33,19 +33,6 @@ abstract class AbstractGotenbergIntegrationTestCase extends KernelTestCase
         }
     }
 
-    protected static function gotenbergVersionUnderTest(): string
-    {
-        self::requireIntegrationEnabled();
-
-        $version = getenv('GOTENBERG_VERSION_UNDER_TEST');
-
-        if (false === $version || '' === $version) {
-            self::markTestSkipped('GOTENBERG_VERSION_UNDER_TEST is required for version-sensitive integration tests.');
-        }
-
-        return $version;
-    }
-
     protected static function resolvedGotenbergVersionUnderTest(): string
     {
         if (null !== self::$resolvedGotenbergVersionUnderTest) {
@@ -56,16 +43,6 @@ abstract class AbstractGotenbergIntegrationTestCase extends KernelTestCase
         $versionFetcher = static::getContainer()->get(VersionFetcherInterface::class);
 
         return self::$resolvedGotenbergVersionUnderTest = (string) $versionFetcher->get();
-    }
-
-    protected static function requireVersionAtLeast(string $version): void
-    {
-        self::requireGotenbergVersionRequirement(\sprintf('>= %s', $version));
-    }
-
-    protected static function requireVersionBelow(string $version): void
-    {
-        self::requireGotenbergVersionRequirement(\sprintf('< %s', $version));
     }
 
     protected function assertBinaryFileResult(
