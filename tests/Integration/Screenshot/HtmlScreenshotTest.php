@@ -3,9 +3,9 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Integration\Screenshot;
 
 use Sensiolabs\GotenbergBundle\GotenbergScreenshotInterface;
-use Sensiolabs\GotenbergBundle\Tests\Integration\AbstractGotenbergIntegrationTestCase;
+use Sensiolabs\GotenbergBundle\Tests\Integration\GotenbergIntegrationTestCase;
 
-final class HtmlScreenshotTest extends AbstractGotenbergIntegrationTestCase
+final class HtmlScreenshotTest extends GotenbergIntegrationTestCase
 {
     public function testItGeneratesScreenshotFromRawHtml(): void
     {

@@ -9,7 +9,7 @@ use Sensiolabs\GotenbergBundle\Tests\Integration\Attributes\RequiresGotenberg;
 use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-abstract class AbstractGotenbergIntegrationTestCase extends KernelTestCase
+abstract class GotenbergIntegrationTestCase extends KernelTestCase
 {
     private static string|null $resolvedGotenbergVersionUnderTest = null;
 

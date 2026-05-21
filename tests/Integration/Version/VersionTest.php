@@ -4,10 +4,10 @@ namespace Sensiolabs\GotenbergBundle\Tests\Integration\Version;
 
 use Sensiolabs\GotenbergBundle\Exception\VersionCompatibilityException;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-use Sensiolabs\GotenbergBundle\Tests\Integration\AbstractGotenbergIntegrationTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Integration\Attributes\RequiresGotenberg;
+use Sensiolabs\GotenbergBundle\Tests\Integration\GotenbergIntegrationTestCase;
 
-final class VersionTest extends AbstractGotenbergIntegrationTestCase
+final class VersionTest extends GotenbergIntegrationTestCase
 {
     #[RequiresGotenberg('< 8.16')]
     public function testFlattenIsRejectedBeforeVersion816(): void
