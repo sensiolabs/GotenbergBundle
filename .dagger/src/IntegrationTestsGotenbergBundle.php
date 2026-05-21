@@ -81,15 +81,6 @@ final class IntegrationTestsGotenbergBundle
     }
 
     #[DaggerFunction]
-    #[Doc('Reads the raw /version response directly from the bound Gotenberg service.')]
-    public function rawVersion(): string
-    {
-        return trim($this->symfonyContainer
-            ->withExec(['php', '-r', 'echo file_get_contents(getenv("GOTENBERG_BASE_URI")."/version");'])
-            ->stdout());
-    }
-
-    #[DaggerFunction]
     #[Doc('Run the version fetch integration tests.')]
     public function version(): string
     {
