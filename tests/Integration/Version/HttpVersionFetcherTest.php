@@ -2,10 +2,10 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Integration\Version;
 
-use Sensiolabs\GotenbergBundle\Tests\Integration\AbstractGotenbergIntegrationTestCase;
+use Sensiolabs\GotenbergBundle\Tests\Integration\GotenbergIntegrationTestCase;
 use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 
-final class HttpVersionFetcherTest extends AbstractGotenbergIntegrationTestCase
+final class HttpVersionFetcherTest extends GotenbergIntegrationTestCase
 {
     public function testItFetchesTheRunningGotenbergVersion(): void
     {

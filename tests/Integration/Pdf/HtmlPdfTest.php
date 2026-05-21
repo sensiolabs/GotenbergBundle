@@ -3,9 +3,9 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Integration\Pdf;
 
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
-use Sensiolabs\GotenbergBundle\Tests\Integration\AbstractGotenbergIntegrationTestCase;
+use Sensiolabs\GotenbergBundle\Tests\Integration\GotenbergIntegrationTestCase;
 
-final class HtmlPdfTest extends AbstractGotenbergIntegrationTestCase
+final class HtmlPdfTest extends GotenbergIntegrationTestCase
 {
     public function testItGeneratesPdfFromRawHtml(): void
     {
