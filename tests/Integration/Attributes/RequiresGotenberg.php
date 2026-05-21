@@ -6,12 +6,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Integration\Attributes;
 final class RequiresGotenberg
 {
     public function __construct(
-        private readonly string $versionRequirement,
+        public readonly string $versionRequirement,
     ) {
-    }
-
-    public function versionRequirement(): string
-    {
-        return $this->versionRequirement;
     }
 }

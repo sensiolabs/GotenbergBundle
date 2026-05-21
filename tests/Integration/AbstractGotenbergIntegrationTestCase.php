@@ -117,7 +117,7 @@ abstract class AbstractGotenbergIntegrationTestCase extends KernelTestCase
         ] as $attribute) {
             /** @var RequiresGotenberg $requirement */
             $requirement = $attribute->newInstance();
-            self::requireGotenbergVersionRequirement($requirement->versionRequirement());
+            self::requireGotenbergVersionRequirement($requirement->versionRequirement);
         }
     }
 
