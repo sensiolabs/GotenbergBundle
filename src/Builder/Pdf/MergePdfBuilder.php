@@ -10,7 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FacturXTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesOrderTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\OptimizeImagesTrait;
@@ -43,7 +43,7 @@ final class MergePdfBuilder extends AbstractBuilder
     use EmbedTrait;
     use EncryptTrait;
     use FacturXTrait;
-    use FilesTrait;
+    use FilesOrderTrait;
     use FlattenTrait;
     use MetadataTrait;
     use OptimizeImagesTrait;
@@ -58,6 +58,9 @@ final class MergePdfBuilder extends AbstractBuilder
         'pdf',
     ];
 
+    /**
+     * @return list<string>
+     */
     protected function getAllowedFilesExtensions(): array
     {
         return self::AVAILABLE_EXTENSIONS;
