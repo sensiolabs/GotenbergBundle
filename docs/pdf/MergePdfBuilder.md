@@ -49,6 +49,8 @@ class YourController
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
+- [sortFilesByCall](#sortfilesbycall)
+- [sortFilesByName](#sortfilesbyname)
 - [stampExpression](#stampexpressionstring-stampexpression)
 - [stampFile](#stampfilestringablestring-path)
 - [stampOptions](#stampoptionsarray-stampoptions)
@@ -261,6 +263,12 @@ return $gotenberg
     ->stream()
 ;
 ```
+
+### sortFilesByCall()
+Preserves the order in which files were added to the builder.<br />Each file's multipart filename is prefixed with a zero-padded counter<br />(e.g. `000001-document.pdf`) so that Gotenberg's alphanumeric sort<br />yields the original call order. The file on disk is not renamed.
+
+### sortFilesByName()
+Lets Gotenberg sort the files alphanumerically by their multipart filename.<br />This is the default behavior.
 
 ### stampExpression(string \$stampExpression)
 The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
