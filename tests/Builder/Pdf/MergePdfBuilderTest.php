@@ -177,6 +177,98 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertFilesFilenames(['000001-simple_pdf.pdf']);
     }
 
+    public function testFilesWithSameBasenameInDifferentFoldersAreDisambiguated(): void
+    {
+        $this->getBuilder()
+            ->dedupeFiles(false)
+            ->files(
+                self::FIXTURE_DIR.'/pdf/simple_pdf.pdf',
+                self::FIXTURE_DIR.'/pdf/sub/simple_pdf.pdf',
+            )
+            ->generate()
+        ;
+
+        $this->assertFilesFilenames(['simple_pdf.pdf', 'simple_pdf000001.pdf']);
+    }
+
+    public function testSamePathAddedTwiceKeepsBothOccurrences(): void
+    {
+        $this->getBuilder()
+            ->dedupeFiles(false)
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf.pdf')
+            ->generate()
+        ;
+
+        $this->assertFilesFilenames(['simple_pdf.pdf', 'simple_pdf000001.pdf']);
+    }
+
+    public function testSortFilesByCallIsUnaffectedByBasenameCollision(): void
+    {
+        $this->getBuilder()
+            ->dedupeFiles(false)
+            ->sortFilesByCall()
+            ->files(
+                self::FIXTURE_DIR.'/pdf/simple_pdf.pdf',
+                self::FIXTURE_DIR.'/pdf/sub/simple_pdf.pdf',
+            )
+            ->generate()
+        ;
+
+        // The order prefix already makes filenames unique; no further suffix is added.
+        $this->assertFilesFilenames(['000001-simple_pdf.pdf', '000002-simple_pdf.pdf']);
+    }
+
+    public function testDefaultModeDedupsSamePath(): void
+    {
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf.pdf')
+            ->generate()
+        ;
+
+        $this->assertFilesFilenames(['simple_pdf.pdf']);
+    }
+
+    public function testDedupeAfterDisablingUsesBasenameNotIndex(): void
+    {
+        $this->getBuilder()
+            ->dedupeFiles(false)
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf_1.pdf')
+            ->dedupeFiles(true)
+            ->generate()
+        ;
+
+        $this->assertFilesFilenames(['simple_pdf.pdf', 'simple_pdf_1.pdf']);
+    }
+
+    public function testToggleDedupeBetweenFilesCallsUsesLatestStorage(): void
+    {
+        $this->getBuilder()
+            ->dedupeFiles(false)
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf.pdf')
+            ->dedupeFiles(true)
+            ->files('pdf/simple_pdf.pdf', 'pdf/simple_pdf_1.pdf')
+            ->generate()
+        ;
+
+        $this->assertFilesFilenames(['simple_pdf.pdf', 'simple_pdf_1.pdf']);
+    }
+
+    public function testFilesAlwaysReplacesPreviousCallRegardlessOfMode(): void
+    {
+        // files() is documented to override any previous files. Toggling
+        // dedupeFiles between calls must not turn it into an append.
+        $this->getBuilder()
+            ->dedupeFiles(false)
+            ->files('pdf/simple_pdf.pdf')
+            ->dedupeFiles(true)
+            ->dedupeFiles(false)
+            ->files('pdf/simple_pdf.pdf')
+            ->generate()
+        ;
+
+        $this->assertFilesFilenames(['simple_pdf.pdf']);
+    }
+
     /**
      * @param list<string> $expected
      */
