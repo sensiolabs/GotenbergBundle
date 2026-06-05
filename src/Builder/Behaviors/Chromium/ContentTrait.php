@@ -199,6 +199,7 @@ trait ContentTrait
     protected function withRenderedPart(Part $part, string $template, array $context = [], bool $lazy = false): static
     {
         $twig = $this->getTwig();
+        $context['_builder'] = $this;
 
         try {
             $loadedTemplate = $twig->load($template);
@@ -209,7 +210,7 @@ trait ContentTrait
         if (!$lazy) {
             $twig->getRuntime(GotenbergRuntime::class)->setBuilder($this);
             try {
-                $renderedPart = new RenderedPart($part, $loadedTemplate->render(array_merge($context, ['_builder' => $this])));
+                $renderedPart = new RenderedPart($part, $loadedTemplate->render($context));
             } catch (\Throwable $t) {
                 throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
             } finally {
@@ -226,7 +227,7 @@ trait ContentTrait
         $renderer = function () use ($twig, $loadedTemplate, $template, $part, $context): \Generator {
             $twig->getRuntime(GotenbergRuntime::class)->setBuilder($this);
             try {
-                yield from $loadedTemplate->stream(array_merge($context, ['_builder' => $this]));
+                yield from $loadedTemplate->stream($context);
             } catch (\Throwable $t) {
                 throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
             } finally {

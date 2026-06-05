@@ -143,26 +143,15 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->container->set('twig', $twig);
 
         $this->getBuilder()
-            ->content('templates/content.html.twig', ['name' => 'world'], lazy: true)
+            ->header('templates/header.html.twig', ['name' => 'world'], true)
+            ->content('templates/content.html.twig', ['name' => 'world'], true)
+            ->footer('templates/footer.html.twig', ['name' => 'world'], true)
             ->generate()
         ;
 
-        $expected = <<<HTML
-        <!DOCTYPE html>
-        <html lang="en">
-            <head>
-                <meta charset="utf-8" />
-                <title>My PDF</title>
-            </head>
-            <body>
-                <h1>Hello world!</h1>
-                <img src="logo.png" />
-            </body>
-        </html>
-
-        HTML;
-
-        $this->assertContentFile('index.html', 'text/html', $expected);
+        $this->assertContentFileContains('header.html', 'text/html', 'My Header');
+        $this->assertContentFileContains('index.html', 'text/html', 'My PDF');
+        $this->assertContentFileContains('footer.html', 'text/html', 'My Footer');
     }
 
     public function testWithRawHtmlWithHeaderAndFooterParts(): void

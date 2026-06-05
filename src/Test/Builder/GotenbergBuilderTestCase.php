@@ -157,4 +157,22 @@ abstract class GotenbergBuilderTestCase extends TestCase
 
         $this->fail(\sprintf('No matching content file found with name "%s" and content type "%s".', $filename, $contentType));
     }
+
+    protected function assertContentFileContains(string $filename, string $contentType = 'text/html', string|null $expectedContent = null): void
+    {
+        foreach ($this->client->getBody() as $part) {
+            if (!$part instanceof DataPart || $part->getFilename() !== $filename) {
+                continue;
+            }
+
+            self::assertSame($contentType, $part->getContentType());
+            if (null !== $expectedContent) {
+                self::assertStringContainsString($expectedContent, $part->getBody());
+            }
+
+            return;
+        }
+
+        $this->fail(\sprintf('No matching content file found with name "%s" and content type "%s".', $filename, $contentType));
+    }
 }
