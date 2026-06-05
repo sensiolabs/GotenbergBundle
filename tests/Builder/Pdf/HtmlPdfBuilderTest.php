@@ -125,6 +125,46 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertContentFile('index.html', 'text/html', $expected);
     }
 
+    public function testWithLazyTwigContentFile(): void
+    {
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
+
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
+            'strict_variables' => true,
+        ]);
+
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load(string $class): object|null
+            {
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
+            }
+        });
+
+        $this->container->set('twig', $twig);
+
+        $this->getBuilder()
+            ->content('templates/content.html.twig', ['name' => 'world'], lazy: true)
+            ->generate()
+        ;
+
+        $expected = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>My PDF</title>
+            </head>
+            <body>
+                <h1>Hello world!</h1>
+                <img src="logo.png" />
+            </body>
+        </html>
+
+        HTML;
+
+        $this->assertContentFile('index.html', 'text/html', $expected);
+    }
+
     public function testWithRawHtmlWithHeaderAndFooterParts(): void
     {
         $this->getBuilder()

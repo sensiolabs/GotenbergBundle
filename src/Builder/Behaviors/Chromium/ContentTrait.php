@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
+use Sensiolabs\GotenbergBundle\Builder\ValueObject\StreamedPart;
 use Sensiolabs\GotenbergBundle\Enumeration\Part;
 use Sensiolabs\GotenbergBundle\Exception\PartRenderingException;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
@@ -28,14 +29,17 @@ trait ContentTrait
     /**
      * @param string               $template #Template
      * @param array<string, mixed> $context
+     * @param bool                 $lazy     When true, the template is only rendered when the HTTP request is sent,
+     *                                       streaming the HTML chunk by chunk to keep memory usage minimal. Rendering
+     *                                       errors are then thrown during the request instead of when calling this method.
      *
      * @throws PartRenderingException if the template could not be rendered
      *
      * @example content('content.html.twig', ['my_var' => 'value'])
      */
-    public function content(string $template, array $context = []): self
+    public function content(string $template, array $context = [], bool $lazy = false): self
     {
-        return $this->withRenderedPart(Part::Body, $template, $context);
+        return $this->withRenderedPart(Part::Body, $template, $context, $lazy);
     }
 
     /**
@@ -73,6 +77,9 @@ trait ContentTrait
     /**
      * @param string               $template #Template
      * @param array<string, mixed> $context
+     * @param bool                 $lazy     When true, the template is only rendered when the HTTP request is sent,
+     *                                       streaming the HTML chunk by chunk to keep memory usage minimal. Rendering
+     *                                       errors are then thrown during the request instead of when calling this method.
      *
      * @throws PartRenderingException if the template could not be rendered
      *
@@ -84,9 +91,9 @@ trait ContentTrait
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
         new ArrayNodeBuilder('context', normalizeKeys: false, prototype: 'variable'),
     ]))]
-    public function header(string $template, array $context = []): static
+    public function header(string $template, array $context = [], bool $lazy = false): static
     {
-        return $this->withRenderedPart(Part::Header, $template, $context);
+        return $this->withRenderedPart(Part::Header, $template, $context, $lazy);
     }
 
     /**
@@ -107,6 +114,9 @@ trait ContentTrait
     /**
      * @param string               $template #Template
      * @param array<string, mixed> $context
+     * @param bool                 $lazy     When true, the template is only rendered when the HTTP request is sent,
+     *                                       streaming the HTML chunk by chunk to keep memory usage minimal. Rendering
+     *                                       errors are then thrown during the request instead of when calling this method.
      *
      * @throws PartRenderingException if the template could not be rendered
      *
@@ -118,9 +128,9 @@ trait ContentTrait
         new ScalarNodeBuilder('template', required: true, restrictTo: 'string'),
         new ArrayNodeBuilder('context', normalizeKeys: false, prototype: 'variable'),
     ]))]
-    public function footer(string $template, array $context = []): static
+    public function footer(string $template, array $context = [], bool $lazy = false): static
     {
-        return $this->withRenderedPart(Part::Footer, $template, $context);
+        return $this->withRenderedPart(Part::Footer, $template, $context, $lazy);
     }
 
     /**
@@ -186,18 +196,45 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      */
-    protected function withRenderedPart(Part $part, string $template, array $context = []): static
+    protected function withRenderedPart(Part $part, string $template, array $context = [], bool $lazy = false): static
     {
-        $this->getTwig()->getRuntime(GotenbergRuntime::class)->setBuilder($this);
+        $twig = $this->getTwig();
+
         try {
-            $renderedPart = new RenderedPart($part, $this->getTwig()->render($template, array_merge($context, ['_builder' => $this])));
+            $loadedTemplate = $twig->load($template);
         } catch (\Throwable $t) {
             throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
-        } finally {
-            $this->getTwig()->getRuntime(GotenbergRuntime::class)->setBuilder(null);
         }
 
-        $this->getBodyBag()->set($part->value, $renderedPart);
+        if (!$lazy) {
+            $twig->getRuntime(GotenbergRuntime::class)->setBuilder($this);
+            try {
+                $renderedPart = new RenderedPart($part, $loadedTemplate->render(array_merge($context, ['_builder' => $this])));
+            } catch (\Throwable $t) {
+                throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
+            } finally {
+                $twig->getRuntime(GotenbergRuntime::class)->setBuilder(null);
+            }
+
+            $this->getBodyBag()->set($part->value, $renderedPart);
+
+            return $this;
+        }
+
+        // Rendering is deferred until the request body is sent so the HTML is streamed chunk
+        // by chunk to Gotenberg instead of being buffered in memory.
+        $renderer = function () use ($twig, $loadedTemplate, $template, $part, $context): \Generator {
+            $twig->getRuntime(GotenbergRuntime::class)->setBuilder($this);
+            try {
+                yield from $loadedTemplate->stream(array_merge($context, ['_builder' => $this]));
+            } catch (\Throwable $t) {
+                throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
+            } finally {
+                $twig->getRuntime(GotenbergRuntime::class)->setBuilder(null);
+            }
+        };
+
+        $this->getBodyBag()->set($part->value, new StreamedPart($part, $renderer));
 
         return $this;
     }
