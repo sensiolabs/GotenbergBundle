@@ -87,7 +87,11 @@ final class GotenbergRuntime
 
         $packages = $this->packages;
         if (null !== $packages) {
+            // Remove leading slash since the path from a package is relative
             $path = ltrim($packages->getUrl($path), '/');
+
+            // Remove the query string or fragment added by some version strategy (e.g. "?v=abc123")
+            $path = substr($path, 0, strcspn($path, '?#'));
         }
 
         return $path;

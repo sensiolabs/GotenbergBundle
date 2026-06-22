@@ -109,6 +109,29 @@ class GotenbergRuntimeTest extends TestCase
         $this->assertSame('result.png', $path);
     }
 
+    public function testGetAssetUrlWhenPackagesWithQueryString(): void
+    {
+        $builder = $this->createMock(BuilderAssetInterface::class);
+        $builder->expects($this->once())
+            ->method('addAsset')
+            ->with('build/front/my_file.css')
+        ;
+
+        $packages = $this->createMock(Packages::class);
+        $packages->expects($this->once())
+            ->method('getUrl')
+            ->with('/build/front/my_file.css')
+            ->willReturn('/build/front/my_file.css?v=abc123')
+        ;
+
+        $runtime = new GotenbergRuntime($packages, null);
+        $runtime->setBuilder($builder);
+
+        $path = $runtime->getAssetUrl('/build/front/my_file.css');
+
+        $this->assertSame('my_file.css', $path);
+    }
+
     public function testGetAssetUrlWhenAssetMapperRepositoryAndPackages(): void
     {
         $builder = $this->createMock(BuilderAssetInterface::class);
