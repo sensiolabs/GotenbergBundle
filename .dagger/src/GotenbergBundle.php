@@ -6,14 +6,13 @@ namespace DaggerModule;
 
 use Dagger\Attribute\DaggerFunction;
 use Dagger\Attribute\DaggerObject;
-use Dagger\Attribute\DefaultPath;
 use Dagger\Attribute\Doc;
-use Dagger\Attribute\Ignore;
 use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Changeset;
 use Dagger\Container;
 use Dagger\Directory;
 use Dagger\Service;
+use Dagger\Workspace;
 use DaggerModule\Test\PhpCsFixer;
 use function Amp\async;
 use function Amp\Future\await;
@@ -120,17 +119,10 @@ class GotenbergBundle
     #[DaggerFunction]
     #[Doc('Generates documentation and returns the ChangeSet to apply locally.')]
     public function generateDocs(
-        #[DefaultPath('.')]
-        #[Ignore(
-            './.github/',
-            './.phpunit.cache/',
-            './.coverage/',
-            './var/',
-            './vendor/',
-        )]
-        Directory $source,
+        Workspace $ws,
         Container|null $symfonyContainer = null,
     ): Changeset {
+        $source = $ws->directory('/', ['./.github/', './.phpunit.cache/', './.coverage/', './var/', './vendor/']);
         $symfonyContainer ??= $this->symfonyContainer($source);
 
         $generatedDocs = dag()->directory()->withDirectory('./docs', $symfonyContainer
@@ -144,17 +136,10 @@ class GotenbergBundle
     #[DaggerFunction]
     #[Doc('Run php-cs-fixer. Returns the Directory diff.')]
     public function phpCsFixer(
-        #[DefaultPath('.')]
-        #[Ignore(
-            './.github/',
-            './.phpunit.cache/',
-            './.coverage/',
-            './var/',
-            './vendor/',
-        )]
-        Directory $source,
+        Workspace $ws,
         Container|null $symfonyContainer = null,
     ): PhpCsFixer {
+        $source = $ws->directory('/', ['./.github/', './.phpunit.cache/', './.coverage/', './var/', './vendor/']);
         $symfonyContainer ??= $this->symfonyContainer($source, phpVersion: self::DEFAULT_PHP_VERSION);
 
         return new PhpCsFixer($source, $symfonyContainer);
@@ -163,20 +148,13 @@ class GotenbergBundle
     #[DaggerFunction]
     #[Doc('Provide a container with all dependencies installed and ready to run tests.')]
     public function test(
-        #[DefaultPath('.')]
-        #[Ignore(
-            './.github/',
-            './.phpunit.cache/',
-            './.coverage/',
-            './var/',
-            './vendor/',
-        )]
-        Directory $source,
+        Workspace $ws,
         string $phpVersion = self::DEFAULT_PHP_VERSION,
         string $symfonyVersion = self::DEFAULT_SYMFONY_VERSION,
         string $minimumStability = 'stable',
         Container|null $symfonyContainer = null,
     ): TestsGotenbergBundle {
+        $source = $ws->directory('/', ['./.github/', './.phpunit.cache/', './.coverage/', './var/', './vendor/']);
         $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion, $minimumStability);
 
         return new TestsGotenbergBundle($symfonyContainer);
@@ -186,20 +164,12 @@ class GotenbergBundle
     #[Doc('Execute all tests within matrix (PHP version, Symfony version).')]
     #[ReturnsListOfType(TestsGotenbergBundle::class)]
     public function testsMatrix(
-        #[DefaultPath('.')]
-        #[Ignore(
-            './.github/',
-            './.phpunit.cache/',
-            './.coverage/',
-            './var/',
-            './vendor/',
-        )]
-        Directory $source,
+        Workspace $ws,
     ): array {
         $tests = [];
 
         foreach ($this->getMatrix() as [$symfonyVersion, $phpVersion, $minimumStability]) {
-            $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion, $minimumStability));
+            $tests[] = async(fn () => $this->test($ws, $phpVersion, $symfonyVersion, $minimumStability));
         }
 
         $result = [];
