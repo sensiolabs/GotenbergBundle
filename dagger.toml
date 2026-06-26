@@ -1,0 +1,9 @@
+[modules.GotenbergBundle]
+source = ".dagger/modules/GotenbergBundle"
+entrypoint = true
+
+[modules.php]
+source = "php"
+
+[[modules.php.as-sdk.modules]]
+path = ".dagger/modules/GotenbergBundle"
