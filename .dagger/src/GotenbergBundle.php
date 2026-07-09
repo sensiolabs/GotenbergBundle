@@ -118,6 +118,33 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
+    #[Doc('Check if our CI is clean.')]
+    public function zizmor(
+        #[DefaultPath('.')]
+        #[Ignore(
+            './.phpunit.cache/',
+            './.coverage/',
+            './var/',
+            './vendor/',
+        )]
+        Directory $source,
+    ): Changeset {
+        $zizmorContainer = dag()->container()->from('ghcr.io/zizmorcore/zizmor:latest');
+
+        $changedSource = $zizmorContainer
+            ->withMountedDirectory('/app', $source)
+            ->withWorkdir('/app')
+            ->withExec([
+                'zizmor',
+                '.'
+            ])
+            ->directory('/app')
+        ;
+
+        return $changedSource->changes($source);
+    }
+
+    #[DaggerFunction]
     #[Doc('Generates documentation and returns the ChangeSet to apply locally.')]
     public function generateDocs(
         #[DefaultPath('.')]

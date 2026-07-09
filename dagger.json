@@ -1,6 +1,6 @@
 {
   "name": "GotenbergBundle",
-  "engineVersion": "v0.20.8",
+  "engineVersion": "v0.21.7",
   "sdk": {
     "source": "php"
   },
