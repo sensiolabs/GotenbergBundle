@@ -14,13 +14,15 @@ jobs:
     name: 'Validate URL docs'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@v4'
+      - uses: 'actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0'
+        with:
+          persist-credentials: false
 
       - name: 'Validate URLS into PhpDoc'
-        uses: 'dagger/dagger-for-github@8.0.0'
+        uses: 'dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77'
         with:
           version: 'latest'
           call: 'test validate-url-doc'
           dagger-flags: '--silent'
         env:
-          DAGGER_NO_NAG: '1'
+          DAGGER_NO_NAG: '1' # zizmor: ignore[excessive-permissions]
