@@ -53,7 +53,7 @@ final class ActionsUp
          *         totalSkipped: positive-int,
          *     }
          * } $report */
-        $report = \json_decode($json, true);
+        $report = json_decode($json, true);
 
         $count = $report['summary']['totalUpdates'];
 
