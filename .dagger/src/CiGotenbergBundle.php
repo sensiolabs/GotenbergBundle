@@ -50,6 +50,15 @@ final class CiGotenbergBundle
     }
 
     #[DaggerFunction]
+    public function check(): string
+    {
+        $this->zizmor()->check()->sync();
+        $this->actionsUp()->check()->sync();
+
+        return ' >> ✅ All good !';
+    }
+
+    #[DaggerFunction]
     public function autofix(): Changeset
     {
         $zizmorFixes = $this->zizmor()->autofix();

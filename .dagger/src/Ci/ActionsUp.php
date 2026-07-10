@@ -10,7 +10,9 @@ use Dagger\Attribute\Doc;
 use Dagger\Changeset;
 use Dagger\Container;
 use Dagger\Directory;
+use RuntimeException;
 use function Dagger\dag;
+use function json_decode;
 
 #[DaggerObject]
 final class ActionsUp
@@ -29,14 +31,49 @@ final class ActionsUp
     #[DaggerFunction]
     public function check(): Container
     {
-        return $this->actionsUpContainer
+        $actionsUpContainer = $this->actionsUpContainer
             ->withExec([
                 'npx',
+                '-y',
                 'actions-up',
-                '--yes',
                 '--dry-run',
+                '--json',
             ])
         ;
+
+        $json = $actionsUpContainer->stdout();
+
+        /** @var array{
+         *     summary: array {
+         *         totalBreakingUpdates: positive-int,
+         *         totalCompositeActions: positive-int,
+         *         totalWorkflows: positive-int,
+         *         totalActionsChecked: positive-int,
+         *         totalBlockedByMode: positive-int,
+         *         totalActions: positive-int,
+         *         totalUpdates: positive-int,
+         *         totalSkipped: positive-int,
+         *     }
+         * } $report */
+        $report = json_decode($json, true);
+
+        $count = $report['summary']['totalUpdates'];
+
+        if ($count > 0) {
+            $rawOutput = $this->actionsUpContainer
+                ->withExec([
+                    'npx',
+                    '-y',
+                    'actions-up',
+                    '--dry-run',
+                    '--yes',
+                ])
+                ->stdout()
+            ;
+            throw new RuntimeException("Some ({$count}) GitHub actions require updates.\n\n{$rawOutput}");
+        }
+
+        return $actionsUpContainer;
     }
 
     #[DaggerFunction]
@@ -46,6 +83,7 @@ final class ActionsUp
         $changedSource = $this->actionsUpContainer
             ->withExec([
                 'npx',
+                '-y',
                 'actions-up',
                 '--yes',
             ])

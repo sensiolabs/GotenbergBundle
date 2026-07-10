@@ -88,6 +88,7 @@ Here is the list of all `dagger call` functions you can do :
 ```shell
 $ dagger functions
 Name            Description
+ci              Provide a container with all dependencies installed and ready to run tests.
 generate-docs   Generates documentation and returns the ChangeSet to apply locally.
 php-cs-fixer    Run php-cs-fixer. Returns the Directory diff.
 test            Provide a container with all dependencies installed and ready to run tests.
@@ -164,6 +165,9 @@ Detect potential issues in composer.json dependencies.
 ### CI / GithubActions
 
 ```shell
+$ # Check if everything is alright
+$ dagger call ci --gh-auth-token=cmd://"gh auth token" check
+$ # Apply autofixes (may require manual changes)
 $ dagger call ci --gh-auth-token=cmd://"gh auth token" autofix
 ```
 
