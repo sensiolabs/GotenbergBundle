@@ -62,10 +62,9 @@ final class CiGotenbergBundle
     public function autofix(): Changeset
     {
         $zizmorFixes = $this->zizmor()->autofix();
-        $actionsUpFixes = (new ActionsUp(
-            $this->app->withChanges($zizmorFixes)
-        ))->autofix();
 
-        return $actionsUpFixes;
+        return (new ActionsUp(
+            $this->app->withChanges($zizmorFixes),
+        ))->autofix();
     }
 }

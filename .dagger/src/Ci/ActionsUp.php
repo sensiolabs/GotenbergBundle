@@ -10,9 +10,7 @@ use Dagger\Attribute\Doc;
 use Dagger\Changeset;
 use Dagger\Container;
 use Dagger\Directory;
-use RuntimeException;
 use function Dagger\dag;
-use function json_decode;
 
 #[DaggerObject]
 final class ActionsUp
@@ -55,7 +53,7 @@ final class ActionsUp
          *         totalSkipped: positive-int,
          *     }
          * } $report */
-        $report = json_decode($json, true);
+        $report = \json_decode($json, true);
 
         $count = $report['summary']['totalUpdates'];
 
@@ -70,7 +68,7 @@ final class ActionsUp
                 ])
                 ->stdout()
             ;
-            throw new RuntimeException("Some ({$count}) GitHub actions require updates.\n\n{$rawOutput}");
+            throw new \RuntimeException("Some ({$count}) GitHub actions require updates.\n\n{$rawOutput}");
         }
 
         return $actionsUpContainer;
