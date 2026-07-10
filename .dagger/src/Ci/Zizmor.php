@@ -7,7 +7,6 @@ namespace DaggerModule\Ci;
 use Dagger\Attribute\DaggerFunction;
 use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\Doc;
-use Dagger\Attribute\ListOfType;
 use Dagger\Changeset;
 use Dagger\Container;
 use Dagger\Directory;
@@ -39,19 +38,6 @@ final class Zizmor
         }
 
         $this->zizmorContainer = $zizmorContainer;
-    }
-
-    #[DaggerFunction]
-    public function do(
-        #[ListOfType('string')]
-        array $args
-    ): Container {
-        return $this->zizmorContainer
-            ->withExec([
-                'zizmor',
-                ...$args,
-            ])
-        ;
     }
 
     #[DaggerFunction]
