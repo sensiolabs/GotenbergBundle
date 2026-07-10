@@ -67,6 +67,31 @@ parameters:
 			count: 1
 			path: src/Version/HttpVersionFetcher.php
 
+		# About src/Builder/Behaviors/WebhookTrait.php : false positive. We can't trust the phpdoc in this case.
+		-
+			message: '#^Call to function in_array\(\) with arguments ''PATCH''\|''POST''\|''PUT'', array\{''POST'', ''PUT'', ''PATCH''\} and true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Behaviors/WebhookTrait.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/Builder/Behaviors/WebhookTrait.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Behaviors/WebhookTrait.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Builder/Behaviors/WebhookTrait.php
+
 		- # TODO : fix this
 			message: '#^Although PHPStan\\Reflection\\Php\\PhpMethodReflection is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
 			identifier: phpstanApi.instanceofAssumption
