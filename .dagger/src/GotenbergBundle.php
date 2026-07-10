@@ -13,6 +13,7 @@ use Dagger\Attribute\ReturnsListOfType;
 use Dagger\Changeset;
 use Dagger\Container;
 use Dagger\Directory;
+use Dagger\Secret;
 use Dagger\Service;
 use DaggerModule\Test\PhpCsFixer;
 use function Amp\async;
@@ -118,33 +119,6 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
-    #[Doc('Check if our CI is clean.')]
-    public function zizmor(
-        #[DefaultPath('.')]
-        #[Ignore(
-            './.phpunit.cache/',
-            './.coverage/',
-            './var/',
-            './vendor/',
-        )]
-        Directory $source,
-    ): Changeset {
-        $zizmorContainer = dag()->container()->from('ghcr.io/zizmorcore/zizmor:latest');
-
-        $changedSource = $zizmorContainer
-            ->withMountedDirectory('/app', $source)
-            ->withWorkdir('/app')
-            ->withExec([
-                'zizmor',
-                '.'
-            ])
-            ->directory('/app')
-        ;
-
-        return $changedSource->changes($source);
-    }
-
-    #[DaggerFunction]
     #[Doc('Generates documentation and returns the ChangeSet to apply locally.')]
     public function generateDocs(
         #[DefaultPath('.')]
@@ -185,6 +159,17 @@ class GotenbergBundle
         $symfonyContainer ??= $this->symfonyContainer($source, phpVersion: self::DEFAULT_PHP_VERSION);
 
         return new PhpCsFixer($source, $symfonyContainer);
+    }
+
+    #[DaggerFunction]
+    #[Doc('Provide a container with all dependencies installed and ready to run tests.')]
+    public function ci(
+        #[DefaultPath('./.github/')]
+        Directory $source,
+
+        Secret|null $ghAuthToken = null,
+    ): CiGotenbergBundle {
+        return new CiGotenbergBundle($source, $ghAuthToken);
     }
 
     #[DaggerFunction]

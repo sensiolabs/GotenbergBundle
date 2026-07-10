@@ -15,13 +15,13 @@ jobs:
     name: 'Builders API'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0'
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
       - id: 'generate-docs-patch'
         name: 'Generate docs'
-        uses: 'dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77'
+        uses: dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77 # v8.4.1
         with:
           version: 'latest'
           call: 'generate-docs'

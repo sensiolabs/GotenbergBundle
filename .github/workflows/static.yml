@@ -14,12 +14,12 @@ jobs:
     name: 'PHP CS Fixer'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0'
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
       - name: 'Cache Dagger'
-        uses: 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ~/.config/dagger
@@ -29,7 +29,7 @@ jobs:
             ${{ runner.os }}-dagger-
 
       - name: 'Run test suite'
-        uses: 'dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77'
+        uses: dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77 # v8.4.1
         with:
           version: 'latest'
           call: 'php-cs-fixer check'
@@ -41,12 +41,12 @@ jobs:
     name: 'PHPStan'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0'
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
       - name: 'Cache Dagger'
-        uses: 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ~/.config/dagger
@@ -56,10 +56,37 @@ jobs:
             ${{ runner.os }}-dagger-
 
       - name: 'Run test suite'
-        uses: 'dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77'
+        uses: dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77 # v8.4.1
         with:
           version: 'latest'
           call: 'test phpstan'
+          dagger-flags: '--silent'
+        env:
+          DAGGER_NO_NAG: '1'
+
+  zizmor:
+    name: 'Zizmor'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: 'Cache Dagger'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.config/dagger
+            ~/.cache/dagger
+          key: ${{ runner.os }}-dagger-${{ hashFiles('dagger.json', '.dagger/src/**') }}
+          restore-keys: |
+            ${{ runner.os }}-dagger-
+
+      - name: 'Run test suite'
+        uses: dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77 # v8.4.1
+        with:
+          version: 'latest'
+          call: 'zizmor check --format=github stdout'
           dagger-flags: '--silent'
         env:
           DAGGER_NO_NAG: '1'

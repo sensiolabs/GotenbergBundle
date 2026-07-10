@@ -161,6 +161,12 @@ $ ./vendor/bin/composer-dependency-analyser
 
 Detect potential issues in composer.json dependencies.
 
+### CI / GithubActions
+
+```shell
+$ dagger call ci --gh-auth-token=cmd://"gh auth token" autofix
+```
+
 ### Fix Issues
 
 Address any warnings or errors reported by the tools above.
