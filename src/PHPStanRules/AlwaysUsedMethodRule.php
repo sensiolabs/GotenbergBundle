@@ -6,6 +6,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Methods\AlwaysUsedMethodExtension;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergHeaders;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 
 final class AlwaysUsedMethodRule implements AlwaysUsedMethodExtension
@@ -34,8 +35,10 @@ final class AlwaysUsedMethodRule implements AlwaysUsedMethodExtension
 
         try {
             $refMethod = new \ReflectionMethod($className, $methodReflection->getName());
-            if ([] !== $refMethod->getAttributes(NormalizeGotenbergPayload::class)) {
-                return true;
+            foreach ([NormalizeGotenbergPayload::class, NormalizeGotenbergHeaders::class] as $attribute) {
+                if ([] !== $refMethod->getAttributes($attribute)) {
+                    return true;
+                }
             }
         } catch (\ReflectionException) {
         }

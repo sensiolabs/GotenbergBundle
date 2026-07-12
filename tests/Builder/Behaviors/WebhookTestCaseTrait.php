@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
+use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Webhook\WebhookConfigurationRegistryInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
@@ -226,6 +227,16 @@ trait WebhookTestCaseTrait
         $this->assertGotenbergHeader('Gotenberg-Webhook-Extra-Http-Headers', '{"my_header":"value"}');
     }
 
+    public function testWebhookExtraHeadersRejectInvalidUtf8(): void
+    {
+        $this->expectException(JsonEncodingException::class);
+
+        $this->getDefaultBuilder()
+            ->webhookExtraHeaders(['my_header' => "\xB1"])
+            ->generate()
+        ;
+    }
+
     public function testWebhookEventsUrl(): void
     {
         $this->getDefaultBuilder()
@@ -386,7 +397,7 @@ trait WebhookTestCaseTrait
         self::assertSame('POST', $builder->getHeadersBag()->get('Gotenberg-Webhook-Error-Method'));
 
         self::assertArrayHasKey('Gotenberg-Webhook-Extra-Http-Headers', $builder->getHeadersBag()->all());
-        self::assertSame('{"my_header":"value"}', $builder->getHeadersBag()->get('Gotenberg-Webhook-Extra-Http-Headers'));
+        self::assertSame(['my_header' => 'value'], $builder->getHeadersBag()->get('Gotenberg-Webhook-Extra-Http-Headers'));
 
         self::assertArrayHasKey('Gotenberg-Webhook-Events-Url', $builder->getHeadersBag()->all());
         self::assertSame('https://my.webhook.url/events', $builder->getHeadersBag()->get('Gotenberg-Webhook-Events-Url'));

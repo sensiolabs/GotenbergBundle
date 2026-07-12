@@ -2,13 +2,19 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Fixtures;
 
+use Psr\Log\LoggerInterface;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergHeaders;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
+use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Version\Version;
 
 trait BehaviorTestTrait
 {
     abstract protected function getBodyBag(): BodyBag;
+
+    abstract protected function getHeadersBag(): HeadersBag;
 
     public function enableFeature(): static
     {
@@ -21,5 +27,20 @@ trait BehaviorTestTrait
     private function normalizeFeature(): \Generator
     {
         yield 'feature' => NormalizerFactory::bool();
+    }
+
+    public function enableHeaderFeature(): static
+    {
+        $this->getHeadersBag()->set('Gotenberg-Feature', true);
+
+        return $this;
+    }
+
+    #[NormalizeGotenbergHeaders]
+    private function normalizeHeaderFeature(): \Generator
+    {
+        yield 'Gotenberg-Feature' => static function (string $key, bool $value, Version $version, LoggerInterface|null $logger): \Generator {
+            yield [$key => $value ? 'true' : 'false'];
+        };
     }
 }

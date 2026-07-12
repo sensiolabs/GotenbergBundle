@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergHeaders;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
@@ -85,14 +86,10 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     public function generate(): GotenbergFileResult
     {
         $this->validatePayloadBody();
-        $payloadBody = iterator_to_array($this->normalizePayloadBody(), false);
 
         $response = $this->getClient()->call(
             $this->getEndpoint(),
-            new Payload(
-                $payloadBody,
-                $this->getHeadersBag()->all(),
-            ),
+            $this->buildPayload(),
         );
 
         return new GotenbergFileResult(
@@ -105,14 +102,10 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     public function generateAsync(): GotenbergAsyncResult
     {
         $this->validatePayloadBody();
-        $payloadBody = iterator_to_array($this->normalizePayloadBody(), false);
 
         $response = $this->getClient()->call(
             $this->getEndpoint(),
-            new Payload(
-                $payloadBody,
-                $this->getHeadersBag()->all(),
-            ),
+            $this->buildPayload(),
         );
 
         return new GotenbergAsyncResult(
@@ -158,13 +151,12 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         }
     }
 
-    /**
-     * @return \Generator<int, array<string, string>>
-     */
-    private function normalizePayloadBody(): \Generator
+    private function buildPayload(): Payload
     {
-        /** @var array<string, (\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, string>>)> $normalizers */
-        $normalizers = [];
+        /** @var array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, string>>)> $bodyNormalizers */
+        $bodyNormalizers = [];
+        /** @var array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, mixed>>)> $headerNormalizers */
+        $headerNormalizers = [];
 
         $reflection = new \ReflectionClass(static::class);
         do {
@@ -173,14 +165,21 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                     continue;
                 }
 
-                $attributes = $method->getAttributes(NormalizeGotenbergPayload::class);
+                $bodyAttributes = $method->getAttributes(NormalizeGotenbergPayload::class);
+                $headerAttributes = $method->getAttributes(NormalizeGotenbergHeaders::class);
 
-                if (\count($attributes) === 0) {
+                if (\count($bodyAttributes) === 0 && \count($headerAttributes) === 0) {
                     continue;
                 }
 
                 foreach ($method->invoke($this) as $key => $value) {
-                    $normalizers[$key] = $value;
+                    if (\count($bodyAttributes) > 0) {
+                        $bodyNormalizers[$key] = $value;
+                    }
+
+                    if (\count($headerAttributes) > 0) {
+                        $headerNormalizers[$key] = $value;
+                    }
                 }
             }
         } while ($reflection = $reflection->getParentClass());
@@ -188,7 +187,38 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
         $version = $this->getVersion();
         $logger = $this->getLogger();
 
+        return new Payload(
+            iterator_to_array($this->normalizePayloadBody($bodyNormalizers, $version, $logger), false),
+            array_merge(...iterator_to_array($this->normalizePayloadHeaders($headerNormalizers, $version, $logger), false)),
+        );
+    }
+
+    /**
+     * @param array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, string>>)> $normalizers
+     *
+     * @return \Generator<int, array<string, string>>
+     */
+    private function normalizePayloadBody(array $normalizers, Version $version, LoggerInterface|null $logger): \Generator
+    {
         foreach ($this->getBodyBag()->all() as $key => $value) {
+            $normalizer = $normalizers[$key] ?? NormalizerFactory::noop();
+
+            if (!\is_callable($normalizer)) {
+                throw new InvalidNormalizerException(\sprintf('Normalizer "%s" is not a valid callable function.', $key));
+            }
+
+            yield from $normalizer($key, $value, $version, $logger);
+        }
+    }
+
+    /**
+     * @param array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, mixed>>)> $normalizers
+     *
+     * @return \Generator<int, array<string, mixed>>
+     */
+    private function normalizePayloadHeaders(array $normalizers, Version $version, LoggerInterface|null $logger): \Generator
+    {
+        foreach ($this->getHeadersBag()->all() as $key => $value) {
             $normalizer = $normalizers[$key] ?? NormalizerFactory::noop();
 
             if (!\is_callable($normalizer)) {

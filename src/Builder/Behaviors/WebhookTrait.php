@@ -2,10 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
+use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergHeaders;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\UrlGeneratorAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\WebhookConfigurationRegistryAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
+use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\EnumNodeBuilder;
@@ -210,7 +212,7 @@ trait WebhookTrait
      */
     public function webhookExtraHeaders(array $extraHttpHeaders): static
     {
-        $this->getHeadersBag()->set('Gotenberg-Webhook-Extra-Http-Headers', json_encode($extraHttpHeaders));
+        $this->getHeadersBag()->set('Gotenberg-Webhook-Extra-Http-Headers', $extraHttpHeaders);
 
         return $this;
     }
@@ -228,10 +230,15 @@ trait WebhookTrait
             return $this;
         }
 
-        $current = $this->getHeadersBag()->get('Gotenberg-Webhook-Extra-Http-Headers');
-        $current = null !== $current ? json_decode($current, true) : [];
+        $current = $this->getHeadersBag()->get('Gotenberg-Webhook-Extra-Http-Headers', []);
 
         return $this->webhookExtraHeaders(array_merge($current, $extraHttpHeaders));
+    }
+
+    #[NormalizeGotenbergHeaders]
+    private function normalizeWebhookHeaders(): \Generator
+    {
+        yield 'Gotenberg-Webhook-Extra-Http-Headers' => NormalizerFactory::json();
     }
 
     /**

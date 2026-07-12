@@ -24,4 +24,24 @@ final class AbstractBuilderNormalizeTest extends GotenbergBuilderTestCase
 
         $this->assertGotenbergFormData('feature', 'true');
     }
+
+    public function testNormalizeHeadersFromTraitUsedInAbstractParent(): void
+    {
+        $this->getBuilder()
+            ->enableHeaderFeature()
+            ->generate()
+        ;
+
+        $this->assertGotenbergHeader('Gotenberg-Feature', 'true');
+    }
+
+    public function testNormalizeHeadersForAsyncRequest(): void
+    {
+        $this->getBuilder()
+            ->enableHeaderFeature()
+            ->generateAsync()
+        ;
+
+        $this->assertGotenbergHeader('Gotenberg-Feature', 'true');
+    }
 }

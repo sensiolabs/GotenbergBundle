@@ -17,11 +17,11 @@ use Symfony\Component\Routing\RequestContext;
 class NormalizerFactory
 {
     /**
-     * @return (\Closure(string, mixed): list<array<string, mixed>>)
+     * @return (\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, mixed>>)
      */
     public static function noop(): \Closure
     {
-        return static fn (string $key, mixed $value) => yield [$key => $value];
+        return static fn (string $key, mixed $value, Version|null $version = null, LoggerInterface|null $logger = null) => yield [$key => $value];
     }
 
     /**
