@@ -114,6 +114,7 @@ class GotenbergFileResult extends AbstractGotenbergResult
         $filename = $this->getFileName();
 
         $headers = $this->getHeaders();
+        unset($headers['content-encoding'], $headers['content-length'], $headers['transfer-encoding'], $headers['connection']);
         $headers['X-Accel-Buffering'] = ['no']; // See https://symfony.com/doc/current/components/http_foundation.html#streaming-a-json-response
         if ($filename) {
             $headers['Content-Disposition'] = [HeaderUtils::makeDisposition($this->disposition, $filename)];

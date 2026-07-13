@@ -95,6 +95,33 @@ class GotenbergFileResultTest extends TestCase
         self::assertSame('firstsecondlast', $output);
     }
 
+    public function testStreamDoesNotForwardStaleTransportHeaders(): void
+    {
+        $mockResponse = new MockResponse('decompressed pdf content', [
+            'response_headers' => [
+                'content-type' => 'application/pdf',
+                'content-disposition' => 'inline; filename=test.pdf',
+                'content-encoding' => 'gzip',
+                'content-length' => '42',
+                'transfer-encoding' => 'chunked',
+                'connection' => 'keep-alive',
+            ],
+        ]);
+
+        $client = new MockHttpClient([$mockResponse]);
+        $stream = $client->stream($client->request('GET', '/dummy'));
+
+        $fileResult = new GotenbergFileResult($stream, new InMemoryProcessor(), HeaderUtils::DISPOSITION_ATTACHMENT);
+
+        $headers = $fileResult->stream()->headers;
+
+        self::assertFalse($headers->has('content-encoding'));
+        self::assertFalse($headers->has('content-length'));
+        self::assertFalse($headers->has('transfer-encoding'));
+        self::assertFalse($headers->has('connection'));
+        self::assertSame('application/pdf', $headers->get('content-type'));
+    }
+
     public function testCannotProcessedAnAlreadyProcessedQuery(): void
     {
         $fileResult = $this->getGotenbergFileResult();
