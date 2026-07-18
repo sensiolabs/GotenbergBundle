@@ -1,0 +1,6 @@
+name = "GotenbergBundle"
+engineVersion = "v0.20.8"
+include = ["!../../../.dagger/sdk", "!../../../.dagger/vendor"]
+
+[runtime]
+  source = "php"
