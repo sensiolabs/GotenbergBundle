@@ -207,21 +207,6 @@ trait ContentTrait
             throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
         }
 
-        if (!$lazy) {
-            $twig->getRuntime(GotenbergRuntime::class)->setBuilder($this);
-            try {
-                $renderedPart = new RenderedPart($part, $loadedTemplate->render($context));
-            } catch (\Throwable $t) {
-                throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
-            } finally {
-                $twig->getRuntime(GotenbergRuntime::class)->setBuilder(null);
-            }
-
-            $this->getBodyBag()->set($part->value, $renderedPart);
-
-            return $this;
-        }
-
         // Rendering is deferred until the request body is sent so the HTML is streamed chunk
         // by chunk to Gotenberg instead of being buffered in memory.
         $renderer = function () use ($twig, $loadedTemplate, $template, $part, $context): \Generator {
@@ -234,6 +219,17 @@ trait ContentTrait
                 $twig->getRuntime(GotenbergRuntime::class)->setBuilder(null);
             }
         };
+
+        if (!$lazy) {
+            $html = '';
+            foreach ($renderer() as $chunk) {
+                $html .= $chunk;
+            }
+
+            $this->getBodyBag()->set($part->value, new RenderedPart($part, $html));
+
+            return $this;
+        }
 
         $this->getBodyBag()->set($part->value, new StreamedPart($part, $renderer));
 
