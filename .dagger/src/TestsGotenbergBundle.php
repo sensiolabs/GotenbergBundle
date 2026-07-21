@@ -93,7 +93,7 @@ final class TestsGotenbergBundle
     #[Doc('Run phpunit tests and returns the container it ran in.')]
     public function phpunit(string $filter = ''): string
     {
-        $exec = ['./vendor/bin/phpunit', '--display-all-issues'];
+        $exec = ['./vendor/bin/phpunit', '--testsuite', 'default', '--display-all-issues'];
         if ('' !== $filter) {
             $exec[] = "--filter={$filter}";
         }

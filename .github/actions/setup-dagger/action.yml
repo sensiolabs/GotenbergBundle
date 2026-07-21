@@ -1,0 +1,15 @@
+name: 'Setup Dagger'
+description: 'Restore the Dagger SDK and module cache shared by the bundle workflows.'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Cache Dagger'
+      uses: 'actions/cache@v4'
+      with:
+        path: |
+          ~/.config/dagger
+          ~/.cache/dagger
+        key: ${{ runner.os }}-dagger-${{ hashFiles('dagger.json', '.dagger/src/**') }}
+        restore-keys: |
+          ${{ runner.os }}-dagger-

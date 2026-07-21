@@ -53,7 +53,7 @@ $ dagger develop
 #### Run Tests
 
 ```shell
-$ # Run the PHPUnit 'unit' test suite with specific symfony or / and php version
+$ # Run the PHPUnit 'default' test suite with specific symfony or / and php version
 $ dagger --progress=logs call test --symfony-version='6.4.*' --php-version='8.2' phpunit
 
 $ # Make sure all dependencies are explicitly added to composer.json
@@ -73,6 +73,12 @@ $ dagger --progress=logs call test --symfony-version='8.0.*' --minimum-stability
 
 $ # Run all tests available with all supported version of both PHP and Symfony
 $ dagger --progress=logs call tests-matrix all
+
+$ # Run one Gotenberg integration target and show skipped test details
+$ dagger --progress=logs call integration-test --gotenberg-version='8.25' phpunit --display-skipped=true
+
+$ # Run the floating latest Gotenberg image locally
+$ dagger --progress=logs call integration-test --gotenberg-version='latest' phpunit
 ```
 
 About the list of flags available (`dagger call test --help` or `dagger call tests-matrix --help`) :
@@ -89,10 +95,25 @@ Here is the list of all `dagger call` functions you can do :
 $ dagger functions
 Name            Description
 generate-docs   Generates documentation and returns the ChangeSet to apply locally.
+integration-test Provide a container with all dependencies installed and ready to run integration tests against a real Gotenberg service.
+integration-tests-matrix Execute integration tests against the selected Gotenberg version matrix.
 php-cs-fixer    Run php-cs-fixer. Returns the Directory diff.
 test            Provide a container with all dependencies installed and ready to run tests.
 tests-matrix    Execute all tests within matrix (PHP version, Symfony version).
 ```
+
+The GitHub Actions integration workflow is intentionally not triggered on every pull request. It runs on pushes to
+maintained branches, on schedule, and can be launched manually from the Actions tab with `workflow_dispatch` when you
+want to demonstrate the full CI path for a branch. The fixed version matrix is the normal CI baseline; a separate
+`latest` compatibility job only runs for scheduled or manual executions so upstream Docker image changes are detected
+without making contributor feedback non-deterministic.
+
+The integration PHPUnit suite lives in `tests/Integration` and is intentionally skipped unless
+`GOTENBERG_INTEGRATION_ENABLED=1` is present. The Dagger functions inject this variable automatically, together with:
+
+- `GOTENBERG_BASE_URI=http://gotenberg:3000`
+- `GOTENBERG_VERSION_UNDER_TEST=<selected version>`
+- `GOTENBERG_VARIANT_UNDER_TEST=<selected variant>`
 
 and here is the list of all tests available in `dagger call test` :
 

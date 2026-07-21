@@ -25,21 +25,48 @@ class GotenbergBundle
 {
     private const DEFAULT_PHP_VERSION = '8.4';
     private const DEFAULT_SYMFONY_VERSION = '8.0.*';
-    private const DEFAULT_GOTENBERG_VERSION = '8.0';
+    private const DEFAULT_GOTENBERG_VERSION = '8.27';
+
+    /**
+     * @return \Generator<int, string>
+     */
+    private function getIntegrationMatrix(): \Generator
+    {
+        /** @var list<array{name: string, 'gotenberg-version': string, 'allow-failure': bool}> $matrix */
+        $matrix = json_decode(file_get_contents(__DIR__.'/integration-matrix-versions.json'), associative: true);
+
+        foreach ($matrix as $row) {
+            yield $row['gotenberg-version'];
+        }
+    }
+
+    private function gotenbergImage(
+        string $gotenbergVersion = self::DEFAULT_GOTENBERG_VERSION,
+        string|null $gotenbergVariant = null,
+    ): string {
+        return match ($gotenbergVariant) {
+            null, 'full' => "gotenberg/gotenberg:{$gotenbergVersion}",
+            'chromium' => "gotenberg/gotenberg:{$gotenbergVersion}-chromium",
+            'libreoffice' => "gotenberg/gotenberg:{$gotenbergVersion}-libreoffice",
+            default => throw new \InvalidArgumentException(\sprintf('Unknown Gotenberg variant "%s".', $gotenbergVariant)),
+        };
+    }
 
     private function gotenbergContainer(
         string $gotenbergVersion = self::DEFAULT_GOTENBERG_VERSION,
+        string|null $gotenbergVariant = null,
     ): Container {
         return dag()
             ->container()
-            ->from("gotenberg/gotenberg:{$gotenbergVersion}")
+            ->from($this->gotenbergImage($gotenbergVersion, $gotenbergVariant))
         ;
     }
 
     private function gotenbergService(
         string $gotenbergVersion = self::DEFAULT_GOTENBERG_VERSION,
+        string|null $gotenbergVariant = null,
     ): Service {
-        return $this->gotenbergContainer($gotenbergVersion)
+        return $this->gotenbergContainer($gotenbergVersion, $gotenbergVariant)
             ->withExposedPort(3000)
             ->asService()
         ;
@@ -51,7 +78,6 @@ class GotenbergBundle
     ): Container {
         $aptCache = dag()->cacheVolume("apt-cache-{$phpVersion}");
         $composerBin = dag()->container()->from('composer/composer:latest-bin')->file('/composer');
-
         $composerCache = dag()->cacheVolume('composer-cache');
 
         $phpContainer = dag()
@@ -101,6 +127,21 @@ class GotenbergBundle
             ->withEnvVariable('SYMFONY_REQUIRE', $symfonyVersion)
             ->withExec(['composer', 'config', 'minimum-stability', $minimumStability])
             ->withExec(['composer', 'update', '--prefer-dist', '--prefer-stable', '--no-progress'])
+        ;
+    }
+
+    private function integrationSymfonyContainer(
+        Container $symfonyContainer,
+        Service $gotenbergService,
+        string $gotenbergVersion,
+        string|null $gotenbergVariant,
+    ): Container {
+        return $symfonyContainer
+            ->withServiceBinding('gotenberg', $gotenbergService)
+            ->withEnvVariable('GOTENBERG_BASE_URI', 'http://gotenberg:3000')
+            ->withEnvVariable('GOTENBERG_VERSION_UNDER_TEST', $gotenbergVersion)
+            ->withEnvVariable('GOTENBERG_VARIANT_UNDER_TEST', $gotenbergVariant ?? 'full')
+            ->withEnvVariable('GOTENBERG_INTEGRATION_ENABLED', '1')
         ;
     }
 
@@ -183,6 +224,37 @@ class GotenbergBundle
     }
 
     #[DaggerFunction]
+    #[Doc('Provide a container with all dependencies installed and ready to run integration tests against a real Gotenberg service.')]
+    public function integrationTest(
+        #[DefaultPath('.')]
+        #[Ignore(
+            './.github/',
+            './.phpunit.cache/',
+            './.coverage/',
+            './var/',
+            './vendor/',
+        )]
+        Directory $source,
+        string $phpVersion = self::DEFAULT_PHP_VERSION,
+        string $symfonyVersion = self::DEFAULT_SYMFONY_VERSION,
+        string $minimumStability = 'stable',
+        string $gotenbergVersion = self::DEFAULT_GOTENBERG_VERSION,
+        string|null $gotenbergVariant = null,
+        Container|null $symfonyContainer = null,
+    ): IntegrationTestsGotenbergBundle {
+        $gotenbergService = $this->gotenbergService($gotenbergVersion, $gotenbergVariant);
+        $symfonyContainer ??= $this->symfonyContainer($source, $phpVersion, $symfonyVersion, $minimumStability);
+        $symfonyContainer = $this->integrationSymfonyContainer($symfonyContainer, $gotenbergService, $gotenbergVersion, $gotenbergVariant);
+
+        return new IntegrationTestsGotenbergBundle(
+            $symfonyContainer,
+            $gotenbergService,
+            $gotenbergVersion,
+            $gotenbergVariant,
+        );
+    }
+
+    #[DaggerFunction]
     #[Doc('Execute all tests within matrix (PHP version, Symfony version).')]
     #[ReturnsListOfType(TestsGotenbergBundle::class)]
     public function testsMatrix(
@@ -209,5 +281,37 @@ class GotenbergBundle
         }
 
         return $result;
+    }
+
+    #[DaggerFunction]
+    #[Doc('Execute integration tests against the selected Gotenberg version matrix.')]
+    #[ReturnsListOfType(IntegrationTestsGotenbergBundle::class)]
+    public function integrationTestsMatrix(
+        #[DefaultPath('.')]
+        #[Ignore(
+            './.github/',
+            './.phpunit.cache/',
+            './.coverage/',
+            './var/',
+            './vendor/',
+        )]
+        Directory $source,
+        string $phpVersion = self::DEFAULT_PHP_VERSION,
+        string $symfonyVersion = self::DEFAULT_SYMFONY_VERSION,
+        string $minimumStability = 'stable',
+    ): array {
+        $tests = [];
+
+        foreach ($this->getIntegrationMatrix() as $gotenbergVersion) {
+            $tests[] = $this->integrationTest(
+                $source,
+                $phpVersion,
+                $symfonyVersion,
+                $minimumStability,
+                $gotenbergVersion,
+            );
+        }
+
+        return $tests;
     }
 }

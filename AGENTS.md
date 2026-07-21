@@ -27,7 +27,7 @@ sources (URLs, HTML, Markdown, Office documents, etc.).
 
 - Use [dagger >= v0.18.10](https://docs.dagger.io/install)
 - Run `dagger call test --symfony-version '6.4.*' --php-version '8.2' phpunit`
-for 'unit' test suite with specific symfony or / and php version.
+for 'default' test suite with specific symfony or / and php version.
 - Run `dagger call test --symfony-version '6.4.*' --php-version '8.2' validate-dependencies`
 to make sure all dependencies are explicitly added to composer.json.
 - Run `dagger call generate-docs export --path ./docs` to generate the auto API
@@ -36,7 +36,12 @@ documentation for builders
 test with specific symfony / php versions
 - Run `dagger call tests-matrix` to test with all supported version of both PHP
  and Symfony
-- Run `dagger call test all` to test all.
+- Run `dagger call integration-tests-matrix phpunit` to execute the pinned
+integration matrix against supported Gotenberg versions.
+- Run `dagger call integration-test --gotenberg-version '8.25' phpunit --display-skipped=true`
+to inspect version-sensitive skips for a specific Gotenberg version.
+- Run `dagger call integration-test --gotenberg-version 'latest' phpunit` to
+check compatibility against the floating latest Gotenberg Docker image.
 
 ## PR instructions
 
