@@ -194,7 +194,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     }
 
     /**
-     * @param array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, string>>)> $normalizers
+     * @param array<string, false|(\Closure(string, mixed, Version, LoggerInterface|null): list<array<string, string>>)> $normalizers
      *
      * @return \Generator<int, array<string, string>>
      */
@@ -212,7 +212,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     }
 
     /**
-     * @param array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, mixed>>)> $normalizers
+     * @param array<string, false|(\Closure(string, mixed, Version, LoggerInterface|null): list<array<string, mixed>>)> $normalizers
      *
      * @return \Generator<int, array<string, mixed>>
      */

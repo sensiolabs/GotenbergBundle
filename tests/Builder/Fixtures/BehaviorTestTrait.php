@@ -39,7 +39,7 @@ trait BehaviorTestTrait
     #[NormalizeGotenbergHeaders]
     private function normalizeHeaderFeature(): \Generator
     {
-        yield 'Gotenberg-Feature' => static function (string $key, bool $value, Version $version, LoggerInterface|null $logger): \Generator {
+        yield 'Gotenberg-Feature' => static function (string $key, bool $value): \Generator {
             yield [$key => $value ? 'true' : 'false'];
         };
     }
