@@ -17,7 +17,7 @@ use Symfony\Component\Routing\RequestContext;
 class NormalizerFactory
 {
     /**
-     * @return (\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, mixed>>)
+     * @return (\Closure(string, mixed): list<array<string, mixed>>)
      */
     public static function noop(): \Closure
     {
