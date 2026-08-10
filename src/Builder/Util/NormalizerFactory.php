@@ -21,7 +21,7 @@ class NormalizerFactory
      */
     public static function noop(): \Closure
     {
-        return static fn (string $key, mixed $value, Version|null $version = null, LoggerInterface|null $logger = null) => yield [$key => $value];
+        return static fn (string $key, mixed $value) => yield [$key => $value];
     }
 
     /**
