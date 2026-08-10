@@ -155,7 +155,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     {
         /** @var array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, string>>)> $bodyNormalizers */
         $bodyNormalizers = [];
-        /** @var array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, mixed>>)> $headerNormalizers */
+        /** @var array<string, false|(\Closure(string, mixed, Version, LoggerInterface|null): list<array<string, mixed>>)> $headerNormalizers */
         $headerNormalizers = [];
 
         $reflection = new \ReflectionClass(static::class);
