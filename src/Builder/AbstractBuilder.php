@@ -153,7 +153,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     private function buildPayload(): Payload
     {
-        /** @var array<string, false|(\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, string>>)> $bodyNormalizers */
+        /** @var array<string, false|(\Closure(string, mixed, Version, LoggerInterface|null): list<array<string, string>>)> $bodyNormalizers */
         $bodyNormalizers = [];
         /** @var array<string, false|(\Closure(string, mixed, Version, LoggerInterface|null): list<array<string, mixed>>)> $headerNormalizers */
         $headerNormalizers = [];
