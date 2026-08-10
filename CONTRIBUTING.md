@@ -88,7 +88,7 @@ Here is the list of all `dagger call` functions you can do :
 ```shell
 $ dagger functions
 Name            Description
-ci              Provide a container with all dependencies installed and ready to run tests.
+ci              Provide a container with all dependencies installed and ready to check CI dependencies.
 generate-docs   Generates documentation and returns the ChangeSet to apply locally.
 php-cs-fixer    Run php-cs-fixer. Returns the Directory diff.
 test            Provide a container with all dependencies installed and ready to run tests.
