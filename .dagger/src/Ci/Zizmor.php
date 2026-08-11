@@ -17,13 +17,15 @@ use function Dagger\dag;
 #[DaggerObject]
 final class Zizmor
 {
+    private const ZIZMOR_IMAGE = 'ghcr.io/zizmorcore/zizmor:latest';
+
     private Container $zizmorContainer;
 
     public function __construct(
         private Directory $source,
         Secret|null $ghAuthToken = null,
     ) {
-        $zizmorContainer = dag()->container()->from('ghcr.io/zizmorcore/zizmor:latest');
+        $zizmorContainer = dag()->container()->from(self::ZIZMOR_IMAGE);
 
         $zizmorContainer = $zizmorContainer
             ->withMountedDirectory('/app', $this->source)
