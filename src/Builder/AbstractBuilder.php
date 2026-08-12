@@ -174,7 +174,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                 }
 
                 if (true === $hasBodyAttributes && true === $hasHeaderAttributes) {
-                    throw new LogicException(\sprintf('Only one of [%s] is allowed on a single method.', \implode(', ', [
+                    throw new LogicException(\sprintf('Only one of [%s] is allowed on a single method.', implode(', ', [
                         NormalizeGotenbergPayload::class,
                         NormalizeGotenbergHeaders::class,
                     ])));
