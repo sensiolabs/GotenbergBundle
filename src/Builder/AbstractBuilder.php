@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidNormalizerException;
+use Sensiolabs\GotenbergBundle\Exception\LogicException;
 use Sensiolabs\GotenbergBundle\Exception\VersionCompatibilityException;
 use Sensiolabs\GotenbergBundle\Processor\NullProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
@@ -165,19 +166,26 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
                     continue;
                 }
 
-                $bodyAttributes = $method->getAttributes(NormalizeGotenbergPayload::class);
-                $headerAttributes = $method->getAttributes(NormalizeGotenbergHeaders::class);
+                $hasBodyAttributes = \count($method->getAttributes(NormalizeGotenbergPayload::class)) > 0;
+                $hasHeaderAttributes = \count($method->getAttributes(NormalizeGotenbergHeaders::class)) > 0;
 
-                if (\count($bodyAttributes) === 0 && \count($headerAttributes) === 0) {
+                if (false === $hasBodyAttributes && false === $hasHeaderAttributes) {
                     continue;
                 }
 
+                if (true === $hasBodyAttributes && true === $hasHeaderAttributes) {
+                    throw new LogicException(\sprintf('Only one of [%s] is allowed on a single method.', \implode(', ', [
+                        NormalizeGotenbergPayload::class,
+                        NormalizeGotenbergHeaders::class,
+                    ])));
+                }
+
                 foreach ($method->invoke($this) as $key => $value) {
-                    if (\count($bodyAttributes) > 0) {
+                    if (true === $hasBodyAttributes) {
                         $bodyNormalizers[$key] = $value;
                     }
 
-                    if (\count($headerAttributes) > 0) {
+                    if (true === $hasHeaderAttributes) {
                         $headerNormalizers[$key] = $value;
                     }
                 }

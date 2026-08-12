@@ -2,13 +2,11 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Fixtures;
 
-use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergHeaders;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\HeadersBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
-use Sensiolabs\GotenbergBundle\Version\Version;
 
 trait BehaviorTestTrait
 {
