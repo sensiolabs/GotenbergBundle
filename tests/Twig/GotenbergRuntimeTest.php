@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderAssetInterface;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
@@ -109,7 +110,9 @@ class GotenbergRuntimeTest extends TestCase
         $this->assertSame('result.png', $path);
     }
 
-    public function testGetAssetUrlWhenPackagesWithQueryString(): void
+    #[TestWith(['/build/front/my_file.css?v=abc123'])]
+    #[TestWith(['/build/front/my_file.css#abc123'])]
+    public function testGetAssetUrlWhenPackagesWithUrlSpecificCharactersString(string $assetPathUrl): void
     {
         $builder = $this->createMock(BuilderAssetInterface::class);
         $builder->expects($this->once())
@@ -121,7 +124,7 @@ class GotenbergRuntimeTest extends TestCase
         $packages->expects($this->once())
             ->method('getUrl')
             ->with('/build/front/my_file.css')
-            ->willReturn('/build/front/my_file.css?v=abc123')
+            ->willReturn($assetPathUrl)
         ;
 
         $runtime = new GotenbergRuntime($packages, null);
