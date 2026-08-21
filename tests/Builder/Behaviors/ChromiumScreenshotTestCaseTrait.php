@@ -27,6 +27,9 @@ trait ChromiumScreenshotTestCaseTrait
     /** @use Chromium\PerformanceModeTestCaseTrait<T> */
     use Chromium\PerformanceModeTestCaseTrait;
 
+    /** @use Chromium\ScreenshotContentTestCaseTrait<T> */
+    use Chromium\ScreenshotContentTestCaseTrait;
+
     /** @use Chromium\ScreenshotPagePropertiesTestCaseTrait<T> */
     use Chromium\ScreenshotPagePropertiesTestCaseTrait;
 

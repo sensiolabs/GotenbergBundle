@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\CollectDeprecationsTrait;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 use Symfony\Component\DependencyInjection\Container;
 use Twig\Environment;
@@ -23,6 +24,7 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use ChromiumPdfTestCaseTrait<HtmlPdfBuilder> */
     use ChromiumPdfTestCaseTrait;
+    use CollectDeprecationsTrait;
 
     /** @use EmbedTestCaseTrait<HtmlPdfBuilder> */
     use EmbedTestCaseTrait;
@@ -339,5 +341,27 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
             ->content('templates/content.html.twig', ['name' => 'world'])
             ->generate()
         ;
+    }
+
+    /**
+     * Counterpart of the screenshot builders: PDF builders keep the real header*() and footer*()
+     * implementation, no deprecation must be triggered.
+     */
+    public function testContentHeaderAndFooterAreNotDeprecated(): void
+    {
+        $deprecations = $this->collectDeprecations(function (): void {
+            $this->getBuilder()
+                ->contentRaw('<h2>The content</h2>')
+                ->headerRaw('<h1>The header</h1>')
+                ->footerRaw('<h6>The footer</h6>')
+                ->generate()
+            ;
+        });
+
+        self::assertSame([], $deprecations);
+
+        $this->assertContentFile('header.html', 'text/html', '<h1>The header</h1>');
+        $this->assertContentFile('index.html', 'text/html', '<h2>The content</h2>');
+        $this->assertContentFile('footer.html', 'text/html', '<h6>The footer</h6>');
     }
 }

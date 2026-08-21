@@ -1154,38 +1154,20 @@ return $gotenberg
 
 
 ### content(string \$template, array \$context)
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->content('content.html.twig', ['my_var' => 'value'])
-    ->generate()
-    ->stream()
-;
-```
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, the page body comes from the URL, use "url()" or "route()" instead. It will be removed in 2.0.
 
 ### contentFile(string \$path)
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, the page body comes from the URL, use "url()" or "route()" instead. It will be removed in 2.0.
+
 The HTML file to convert into PDF.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->contentFile('../public/content.html')
-    ->generate()
-    ->stream()
-;
-```
-
 ### contentRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, the page body comes from the URL, use "url()" or "route()" instead. It will be removed in 2.0.
 
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->contentRaw('<html><body><h2>The content</h2></body></html>')
-    ->generate()
-    ->stream()
-;
-```
+The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
 ### footer(string \$template, array \$context)
 > [!TIP]
@@ -1194,7 +1176,7 @@ return $gotenberg
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->footer('header.html.twig', ['my_var' => 'value'])
+    ->footer('footer.html.twig', ['my_var' => 'value'])
     ->generate()
     ->stream()
 ;
@@ -1216,7 +1198,7 @@ return $gotenberg
 ```
 
 ### footerRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
+The raw html string to use as the page footer.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer)
@@ -1259,7 +1241,7 @@ return $gotenberg
 ```
 
 ### headerRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
+The raw html string to use as the page header.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer)

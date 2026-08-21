@@ -2,16 +2,23 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Configurator;
 
+use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Configurator\BuilderConfigurator;
 use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
+use Sensiolabs\GotenbergBundle\Tests\CollectDeprecationsTrait;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\TextPart;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\RuntimeLoader\RuntimeLoaderInterface;
 
 /**
  * The mapping the extension dumps into the container is the very one the configurator consumes. Building it with
@@ -22,6 +29,8 @@ use Symfony\Component\Routing\RouteCollection;
  */
 final class BuilderConfiguratorTest extends GotenbergBuilderTestCase
 {
+    use CollectDeprecationsTrait;
+
     protected function createBuilder(): UrlPdfBuilder
     {
         $this->container->set('router', new UrlGenerator(new RouteCollection(), new RequestContext()));
@@ -31,7 +40,7 @@ final class BuilderConfiguratorTest extends GotenbergBuilderTestCase
 
     public function testEnumConfigurationValuesAreConvertedThroughTheirEnumClass(): void
     {
-        $this->configure([
+        $this->configure($this->getBuilder(), [
             'pdf_format' => 'PDF/A-1b',
             'emulated_media_type' => 'screen',
         ]);
@@ -44,7 +53,7 @@ final class BuilderConfiguratorTest extends GotenbergBuilderTestCase
 
     public function testUnitConfigurationValuesAreParsedAndSpreadOverTheMethodArguments(): void
     {
-        $this->configure([
+        $this->configure($this->getBuilder(), [
             'paper_width' => '21cm',
             'margin_top' => 4.5,
         ]);
@@ -114,14 +123,48 @@ final class BuilderConfiguratorTest extends GotenbergBuilderTestCase
     }
 
     /**
+     * The "header" and "footer" keys of default_options.screenshot.* survive the deprecation of the matching
+     * methods: #[WithConfigurationNode] still maps them, so a YAML user gets the same deprecation as someone
+     * calling header() by hand.
+     */
+    public function testScreenshotHeaderAndFooterConfigurationTriggersTheMethodDeprecations(): void
+    {
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
+            'strict_variables' => true,
+        ]);
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load(string $class): object|null
+            {
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
+            }
+        });
+        $this->container->set('twig', $twig);
+
+        $builder = new HtmlScreenshotBuilder();
+        $builder->setContainer($this->container);
+
+        $deprecations = $this->collectDeprecations(function () use ($builder): void {
+            $this->configure($builder, [
+                'header' => ['template' => 'templates/header.html.twig', 'context' => ['name' => 'John Doe']],
+                'footer' => ['template' => 'templates/footer.html.twig', 'context' => ['name' => 'John Doe']],
+            ]);
+        });
+
+        self::assertSame([
+            'Since sensiolabs/gotenberg-bundle 1.5: Calling "Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder::header()" is deprecated, Gotenberg does not read headers on screenshot routes. It will be removed in 2.0.',
+            'Since sensiolabs/gotenberg-bundle 1.5: Calling "Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder::footer()" is deprecated, Gotenberg does not read footers on screenshot routes. It will be removed in 2.0.',
+        ], $deprecations);
+    }
+
+    /**
      * @param array<string, mixed> $values
      */
-    private function configure(array $values): void
+    private function configure(BuilderInterface $builder, array $values): void
     {
         $builderStack = new BuilderStack();
-        $builderStack->push(UrlPdfBuilder::class);
+        $builderStack->push($builder::class);
 
-        $configurator = new BuilderConfigurator($builderStack->getConfigMapping(), [UrlPdfBuilder::class => $values]);
-        $configurator($this->getBuilder());
+        $configurator = new BuilderConfigurator($builderStack->getConfigMapping(), [$builder::class => $values]);
+        $configurator($builder);
     }
 }
