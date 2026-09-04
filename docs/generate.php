@@ -54,7 +54,7 @@ class Summary
 }
 
 /**
- * @phpstan-type ParsedDocBlock array{package: string|null, description: list<string>, tags: array{param: array<string, array{type: string, description: string}>, see: list<string>, example: list<string>}}
+ * @phpstan-type ParsedDocBlock array{package: string|null, description: list<string>, tags: array{param: array<string, array{type: string, description: string}>, see: list<string>, example: list<string>, deprecated: list<string>}}
  */
 class BuilderParser
 {
@@ -200,8 +200,17 @@ class BuilderParser
     {
         $markdown = '';
 
+        $deprecated = $this->renderDeprecated($parts['tags']['deprecated'] ?? []);
+        if ('' !== $deprecated) {
+            $markdown .= $deprecated."\n";
+        }
+
         $description = $this->renderDescription($parts['description']);
         if ('' !== $description) {
+            if ('' !== $markdown) {
+                $markdown .= "\n";
+            }
+
             $markdown .= $description."\n";
         }
 
@@ -214,7 +223,7 @@ class BuilderParser
             $markdown .= $see."\n";
         }
 
-        $example = $this->renderExample($parts['tags']['example'] ?? []);
+        $example = '' === $deprecated ? $this->renderExample($parts['tags']['example'] ?? []) : '';
         if ('' !== $example) {
             if ('' !== $markdown) {
                 $markdown .= "\n";
@@ -229,6 +238,23 @@ class BuilderParser
     private function renderDescription(array $parts): string
     {
         return trim(implode('<br />', $parts), "\ \n\r\t\v\0");
+    }
+
+    /**
+     * @param list<string> $deprecatedList
+     */
+    private function renderDeprecated(array $deprecatedList): string
+    {
+        if ([] === $deprecatedList) {
+            return '';
+        }
+
+        $markdown = '> [!WARNING]';
+        foreach ($deprecatedList as $deprecated) {
+            $markdown .= "\n> Deprecated ".trim($deprecated);
+        }
+
+        return $markdown;
     }
 
     /**
@@ -347,7 +373,7 @@ class BuilderParser
                 $this->parts['methods']['@'][$method->getShortName()]['package'] = $newPackage;
             }
 
-            if (isset($parsedDocBlock['description']) && [''] !== $parsedDocBlock['description']) {
+            if (isset($parsedDocBlock['description']) && [] !== $parsedDocBlock['description'] && [''] !== $parsedDocBlock['description']) {
                 $this->parts['methods']['@'][$method->getShortName()]['description'] = $parsedDocBlock['description'];
             }
 
@@ -364,6 +390,10 @@ class BuilderParser
 
             if (isset($parsedDocBlock['tags']['example']) && [] !== $parsedDocBlock['tags']['example']) {
                 $this->parts['methods']['@'][$method->getShortName()]['tags']['example'] = $parsedDocBlock['tags']['example'];
+            }
+
+            if (isset($parsedDocBlock['tags']['deprecated']) && [] !== $parsedDocBlock['tags']['deprecated']) {
+                $this->parts['methods']['@'][$method->getShortName()]['tags']['deprecated'] = $parsedDocBlock['tags']['deprecated'];
             }
         }
     }

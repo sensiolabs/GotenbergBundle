@@ -518,124 +518,56 @@ return $gotenberg
 
 
 ### content(string \$template, array \$context)
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->content('content.html.twig', ['my_var' => 'value'])
-    ->generate()
-    ->stream()
-;
-```
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, the page body comes from the URL, use "url()" or "route()" instead. It will be removed in 2.0.
 
 ### contentFile(string \$path)
-The HTML file to convert into PDF.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, the page body comes from the URL, use "url()" or "route()" instead. It will be removed in 2.0.
 
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->contentFile('../public/content.html')
-    ->generate()
-    ->stream()
-;
-```
+The HTML file to convert into a screenshot.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#assets.<br />
 
 ### contentRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, the page body comes from the URL, use "url()" or "route()" instead. It will be removed in 2.0.
 
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->contentRaw('<html><body><h2>The content</h2></body></html>')
-    ->generate()
-    ->stream()
-;
-```
+The raw html string to convert into a screenshot.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#assets.<br />
 
 ### footer(string \$template, array \$context)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, Gotenberg does not read footers on screenshot routes. It will be removed in 2.0.
 
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->footer('header.html.twig', ['my_var' => 'value'])
-    ->generate()
-    ->stream()
-;
-```
+The Twig template to use as the page footer.<br />
 
 ### footerFile(string \$path)
-HTML file containing the footer.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, Gotenberg does not read footers on screenshot routes. It will be removed in 2.0.
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->footerFile('../templates/html/footer.html')
-    ->generate()
-    ->stream()
-;
-```
+HTML file containing the footer.<br />
 
 ### footerRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, Gotenberg does not read footers on screenshot routes. It will be removed in 2.0.
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->footerRaw('<html><body><h6>The footer</h6></body></html>')
-    ->generate()
-    ->stream()
-;
-```
+The raw html string to use as the page footer.<br />
 
 ### header(string \$template, array \$context)
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, Gotenberg does not read headers on screenshot routes. It will be removed in 2.0.
 
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->header('header.html.twig', ['my_var' => 'value'])
-    ->generate()
-    ->stream()
-;
-```
+The Twig template to use as the page header.<br />
 
 ### headerFile(string \$path)
-HTML file containing the header.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, Gotenberg does not read headers on screenshot routes. It will be removed in 2.0.
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->headerFile('../templates/html/header.html')
-    ->generate()
-    ->stream()
-;
-```
+HTML file containing the header.<br />
 
 ### headerRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+> [!WARNING]
+> Deprecated since sensiolabs/gotenberg-bundle 1.5, Gotenberg does not read headers on screenshot routes. It will be removed in 2.0.
 
-> [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->headerRaw('<html><body><h1>The header</h1></body></html>')
-    ->generate()
-    ->stream()
-;
-```
+The raw html string to use as the page header.<br />
 
 
 ### emulatedMediaFeatures(array \$emulatedMediaFeatures)
