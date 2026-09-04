@@ -70,7 +70,7 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
      *
      * @throws PartRenderingException if the template could not be rendered
      */
-    public function content(string $template, array $context = []): static
+    public function content(string $template, array $context = []): self
     {
         trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s()" is deprecated, the page body comes from the URL. Use "url()" or "route()" instead. It will be removed in 2.0.', __METHOD__);
 
@@ -80,7 +80,7 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
     /**
      * @deprecated since sensiolabs/gotenberg-bundle 1.5, the page body comes from the URL, use "url()" or "route()" instead. It will be removed in 2.0.
      */
-    public function contentRaw(string $html): static
+    public function contentRaw(string $html): self
     {
         trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s()" is deprecated, the page body comes from the URL. Use "url()" or "route()" instead. It will be removed in 2.0.', __METHOD__);
 
@@ -92,7 +92,7 @@ final class UrlScreenshotBuilder extends AbstractBuilder implements BuilderAsset
      *
      * @throws PartRenderingException if the file could not be found
      */
-    public function contentFile(string $path): static
+    public function contentFile(string $path): self
     {
         trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s()" is deprecated, the page body comes from the URL. Use "url()" or "route()" instead. It will be removed in 2.0.', __METHOD__);
 

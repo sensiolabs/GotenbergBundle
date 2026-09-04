@@ -25,7 +25,7 @@ trait PdfContentTrait
      *
      * @example content('content.html.twig', ['my_var' => 'value'])
      */
-    public function content(string $template, array $context = []): static
+    public function content(string $template, array $context = []): self
     {
         return $this->withRenderedPart(Part::Body, $template, $context);
     }
@@ -38,7 +38,7 @@ trait PdfContentTrait
      *
      * @example contentRaw('<html><body><h2>The content</h2></body></html>')
      */
-    public function contentRaw(string $html): static
+    public function contentRaw(string $html): self
     {
         return $this->withRawPart(Part::Body, $html);
     }
@@ -57,7 +57,7 @@ trait PdfContentTrait
      *
      * @example contentFile('../public/content.html')
      */
-    public function contentFile(string $path): static
+    public function contentFile(string $path): self
     {
         return $this->withFilePart(Part::Body, $path);
     }

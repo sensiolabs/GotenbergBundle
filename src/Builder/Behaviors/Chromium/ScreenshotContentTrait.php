@@ -25,7 +25,7 @@ trait ScreenshotContentTrait
      *
      * @example content('content.html.twig', ['my_var' => 'value'])
      */
-    public function content(string $template, array $context = []): static
+    public function content(string $template, array $context = []): self
     {
         return $this->withRenderedPart(Part::Body, $template, $context);
     }
@@ -38,7 +38,7 @@ trait ScreenshotContentTrait
      *
      * @example contentRaw('<html><body><h2>The content</h2></body></html>')
      */
-    public function contentRaw(string $html): static
+    public function contentRaw(string $html): self
     {
         return $this->withRawPart(Part::Body, $html);
     }
@@ -57,7 +57,7 @@ trait ScreenshotContentTrait
      *
      * @example contentFile('../public/content.html')
      */
-    public function contentFile(string $path): static
+    public function contentFile(string $path): self
     {
         return $this->withFilePart(Part::Body, $path);
     }
@@ -160,8 +160,9 @@ trait ScreenshotContentTrait
     private function normalizeContent(): \Generator
     {
         // header.html and footer.html are deprecated since 1.5: the screenshot routes ignore
-        // both parts. They keep being normalized, in the very order ContentTrait used, so that
-        // the deprecation leaves the multipart payload untouched.
+        // both parts. They must keep a content() normalizer nonetheless — without one the raw
+        // RenderedPart falls back to NormalizerFactory::noop() and the payload changes. The
+        // yield order is irrelevant: the multipart order comes from BodyBag insertion.
         yield 'header.html' => NormalizerFactory::content();
         yield 'index.html' => NormalizerFactory::content();
         yield 'footer.html' => NormalizerFactory::content();
