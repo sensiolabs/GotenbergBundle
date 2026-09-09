@@ -42,6 +42,7 @@ class YourController
 - [addMetadata](#addmetadatastring-key-string-value)
 - [autoIndexBookmarks](#autoindexbookmarksbool-bool)
 - [bookmarks](#bookmarksarray-bookmarks)
+- [dedupeFiles](#dedupefilesbool-dedupe)
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [embedFiles](#embedfilesstringablesensiolabsgotenbergbundlebuildervalueobjectembeddedfilestring-paths)
 - [files](#filesstringablestring-paths)
@@ -49,6 +50,8 @@ class YourController
 - [metadata](#metadataarray-metadata)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
+- [sortFilesByCall](#sortfilesbycall)
+- [sortFilesByName](#sortfilesbyname)
 - [stampExpression](#stampexpressionstring-stampexpression)
 - [stampFile](#stampfilestringablestring-path)
 - [stampOptions](#stampoptionsarray-stampoptions)
@@ -146,6 +149,9 @@ return $gotenberg
     ->stream()
 ;
 ```
+
+### dedupeFiles(bool \$dedupe)
+Controls how files sharing the same resolved path or basename are<br />handled.<br /><br />When `true` (the default), duplicate file entries are dropped so that a<br />single occurrence reaches Gotenberg. This matches Gotenberg's flat<br />upload namespace, where files sharing a multipart filename overwrite<br />each other silently.<br /><br />When `false`, every file passed to `files()` is kept, even when several<br />entries share the same path or basename. Multipart filenames are<br />disambiguated with a zero-padded numeric suffix (e.g. `report.pdf`,<br />`report000001.pdf`) to bypass Gotenberg's silent overwrite of colliding<br />filenames.<br /><br />Caveat: Gotenberg sorts files alphanumerically by their multipart<br />filename. When the original basename already ends with a number<br />before its extension (e.g. `report_1.pdf`), the suffixed duplicates<br />(`report_1000001.pdf`) are sorted as a much larger integer and drift<br />to the end of the merge. Combine with `sortFilesByCall()` whenever the<br />resulting order matters, as the call-order prefix is alphanumerically<br />stable regardless of the original basename.
 
 ### downloadFrom(array \$downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
@@ -261,6 +267,12 @@ return $gotenberg
     ->stream()
 ;
 ```
+
+### sortFilesByCall()
+Preserves the order in which files were added to the builder.<br />Each file's multipart filename is prefixed with a zero-padded counter<br />(e.g. `000001-document.pdf`) so that Gotenberg's alphanumeric sort<br />yields the original call order. The file on disk is not renamed.
+
+### sortFilesByName()
+Lets Gotenberg sort the files alphanumerically by their multipart filename.<br />This is the default behavior.
 
 ### stampExpression(string \$stampExpression)
 The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />

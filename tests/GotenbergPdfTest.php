@@ -141,12 +141,14 @@ final class GotenbergPdfTest extends KernelTestCase
         self::assertIsArray($data['files']);
 
         $firstFile = array_shift($data['files']);
-        self::assertInstanceOf(\SplFileInfo::class, $firstFile);
-        self::assertSame('document.pdf', $firstFile->getFilename());
+        self::assertIsArray($firstFile);
+        self::assertInstanceOf(\SplFileInfo::class, $firstFile[1]);
+        self::assertSame('document.pdf', $firstFile[1]->getFilename());
 
         $lastFile = array_pop($data['files']);
-        self::assertInstanceOf(\SplFileInfo::class, $lastFile);
-        self::assertSame('other_document.pdf', $lastFile->getFilename());
+        self::assertIsArray($lastFile);
+        self::assertInstanceOf(\SplFileInfo::class, $lastFile[1]);
+        self::assertSame('other_document.pdf', $lastFile[1]->getFilename());
 
         self::assertArrayHasKey('pdfua', $data);
         self::assertTrue($data['pdfua']);

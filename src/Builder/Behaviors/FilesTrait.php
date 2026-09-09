@@ -23,6 +23,10 @@ trait FilesTrait
      * Adds files (overrides any previous files).
      *
      * @example files('document.pdf', '/absolute/path/document_2.pdf')
+     *
+     * Files are deduplicated by path: passing the same path twice to `files()`
+     * results in a single file being sent. To merge the same document multiple
+     * times, provide distinct paths (e.g. copies with different names).
      */
     public function files(string|\Stringable ...$paths): self
     {
