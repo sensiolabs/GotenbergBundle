@@ -4,11 +4,21 @@ namespace Sensiolabs\GotenbergBundle\Configurator;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 
+/**
+ * The mapping is built at compile time by {@see \Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack} and
+ * dumped into the container, so a callback can only be a static method target — the container cannot dump a closure.
+ *
+ * @phpstan-type BuilderConfigurationMapping array<class-string<BuilderInterface>, array<string, array{
+ *     method: string,
+ *     mustUseVariadic: bool,
+ *     callback: array{class-string<\BackedEnum>, string}|null,
+ * }>>
+ */
 final class BuilderConfigurator
 {
     /**
-     * @param array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': (\Closure(mixed): mixed)|null}>> $configurations
-     * @param array<class-string<BuilderInterface>, array<string, mixed>>                                                                                       $values
+     * @param BuilderConfigurationMapping                                 $configurations
+     * @param array<class-string<BuilderInterface>, array<string, mixed>> $values
      */
     public function __construct(
         private readonly array $configurations,
@@ -28,7 +38,8 @@ final class BuilderConfigurator
             }
 
             if (null !== $configurationMap['callback']) {
-                $value = $configurationMap['callback']($value);
+                [$callbackClass, $callbackMethod] = $configurationMap['callback'];
+                $value = $callbackClass::$callbackMethod($value);
             }
 
             if (\is_array($value) && true === $configurationMap['mustUseVariadic']) {

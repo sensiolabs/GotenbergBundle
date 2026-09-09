@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\DependencyInjection;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Configurator\BuilderConfigurator;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
@@ -12,6 +13,8 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\NodeBuilderInterface;
 use Sensiolabs\GotenbergBundle\NodeBuilder\UnitNodeBuilder;
 
 /**
+ * @phpstan-import-type BuilderConfigurationMapping from BuilderConfigurator
+ *
  * @internal
  */
 final class BuilderStack
@@ -27,7 +30,7 @@ final class BuilderStack
     private array $typeReverseMapping = [];
 
     /**
-     * @var array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': array<array-key, string>|null}>>
+     * @var BuilderConfigurationMapping
      */
     private array $configMapping = [];
 
@@ -112,7 +115,7 @@ final class BuilderStack
     }
 
     /**
-     * @return array<class-string<BuilderInterface>, array<string, array{'method': string, 'mustUseVariadic': bool, 'callback': array<array-key, string>|null}>>
+     * @return BuilderConfigurationMapping
      */
     public function getConfigMapping(): array
     {
