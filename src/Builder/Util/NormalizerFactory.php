@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Util;
 
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
+use Sensiolabs\GotenbergBundle\Builder\ValueObject\StreamedPart;
 use Sensiolabs\GotenbergBundle\Enumeration\DownloadFromField;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
@@ -164,13 +165,15 @@ class NormalizerFactory
     }
 
     /**
-     * @return (\Closure(string, RenderedPart|\SplFileInfo): list<array{files: DataPart}>)
+     * @return (\Closure(string, RenderedPart|StreamedPart|\SplFileInfo): list<array{files: DataPart}>)
      */
     public static function content(): \Closure
     {
-        return static function (string $key, RenderedPart|\SplFileInfo $value) {
+        return static function (string $key, RenderedPart|StreamedPart|\SplFileInfo $value) {
             if ($value instanceof RenderedPart) {
                 yield ['files' => new DataPart($value->body, $value->type->value, 'text/html')];
+            } elseif ($value instanceof StreamedPart) {
+                yield ['files' => new StreamedDataPart($value->renderer, $value->type->value, 'text/html')];
             } else {
                 yield ['files' => new DataPart(new File($value, $key))];
             }

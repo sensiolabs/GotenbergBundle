@@ -183,10 +183,10 @@ class YourController
 - [waitForExpression](#waitforexpressionstring-expression)
 - [waitForSelector](#waitforselectorstring-selector)
 - [contentRaw](#contentrawstring-html)
-- [footer](#footerstring-template-array-context)
+- [footer](#footerstring-template-array-context-bool-lazy)
 - [footerFile](#footerfilestring-path)
 - [footerRaw](#footerrawstring-html)
-- [header](#headerstring-template-array-context)
+- [header](#headerstring-template-array-context-bool-lazy)
 - [headerFile](#headerfilestring-path)
 - [headerRaw](#headerrawstring-html)
 - [emulatedMediaFeatures](#emulatedmediafeaturesarray-emulatedmediafeatures)
@@ -1062,7 +1062,7 @@ return $gotenberg
 ;
 ```
 
-### footer(string \$template, array \$context)
+### footer(string \$template, array \$context, bool \$lazy)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
 
@@ -1105,7 +1105,7 @@ return $gotenberg
 ;
 ```
 
-### header(string \$template, array \$context)
+### header(string \$template, array \$context, bool \$lazy)
 > [!TIP]
 > See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
 

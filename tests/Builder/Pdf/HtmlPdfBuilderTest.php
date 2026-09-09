@@ -125,6 +125,40 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertContentFile('index.html', 'text/html', $expected);
     }
 
+    public function testWithLazyTwigContent(): void
+    {
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
+
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
+            'strict_variables' => true,
+        ]);
+
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load(string $class): object|null
+            {
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
+            }
+        });
+
+        $this->container->set('twig', $twig);
+
+        $this->getBuilder()
+            ->lazy()
+            ->header('templates/header.html.twig', ['name' => 'world'])
+            ->content('templates/content.html.twig', ['name' => 'world'])
+            ->footer('templates/footer.html.twig', ['name' => 'world'])
+            ->generate()
+        ;
+
+        $this->assertContentFileIsStreamed('header.html');
+        $this->assertContentFileIsStreamed('index.html');
+        $this->assertContentFileIsStreamed('footer.html');
+
+        $this->assertContentFileContains('header.html', 'text/html', 'My Header');
+        $this->assertContentFileContains('index.html', 'text/html', 'My PDF');
+        $this->assertContentFileContains('footer.html', 'text/html', 'My Footer');
+    }
+
     public function testWithRawHtmlWithHeaderAndFooterParts(): void
     {
         $this->getBuilder()
