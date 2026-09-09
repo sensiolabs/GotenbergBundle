@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Test\Builder;
 
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Builder\Util\StreamedDataPart;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Version\StaticVersionFetcher;
 use Symfony\Component\DependencyInjection\Container;
@@ -88,7 +89,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
             }
             $found = true;
 
-            $expected = trim($part->getBody());
+            $expected = trim(self::getPartBody($part));
             if (trim($value) === $expected) {
                 $this->addToAssertionCount(1);
 
@@ -149,7 +150,7 @@ abstract class GotenbergBuilderTestCase extends TestCase
 
             self::assertSame($contentType, $part->getContentType());
             if (null !== $expectedContent) {
-                self::assertSame($expectedContent, $part->getBody());
+                self::assertSame($expectedContent, self::getPartBody($part));
             }
 
             return;
@@ -167,12 +168,32 @@ abstract class GotenbergBuilderTestCase extends TestCase
 
             self::assertSame($contentType, $part->getContentType());
             if (null !== $expectedContent) {
-                self::assertStringContainsString($expectedContent, $part->getBody());
+                self::assertStringContainsString($expectedContent, self::getPartBody($part));
             }
 
             return;
         }
 
         $this->fail(\sprintf('No matching content file found with name "%s" and content type "%s".', $filename, $contentType));
+    }
+
+    protected function assertContentFileIsStreamed(string $filename): void
+    {
+        foreach ($this->client->getBody() as $part) {
+            if ($part instanceof StreamedDataPart && $part->getFilename() === $filename) {
+                return;
+            }
+        }
+
+        $this->fail(\sprintf('No streamed content file found with name "%s".', $filename));
+    }
+
+    private static function getPartBody(TextPart|DataPart $part): string
+    {
+        if ($part instanceof StreamedDataPart) {
+            return implode('', iterator_to_array($part->bodyToIterable(), false));
+        }
+
+        return $part->getBody();
     }
 }

@@ -5,11 +5,12 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Util;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\Util\StreamedDataPart;
+use Sensiolabs\GotenbergBundle\Exception\LogicException;
 
 #[CoversClass(StreamedDataPart::class)]
 final class StreamedDataPartTest extends TestCase
 {
-    public function testGetBodyMaterializesTheRenderedContent(): void
+    public function testBodyToIterableYieldsTheRenderedContent(): void
     {
         $part = new StreamedDataPart(
             static function (): \Generator {
@@ -24,8 +25,27 @@ final class StreamedDataPartTest extends TestCase
             'text/html',
         );
 
-        self::assertSame('Hello <strong>Jean-Beru</strong>!', $part->getBody());
-        self::assertSame('Hello <strong>Jean-Beru</strong>!', $part->bodyToString());
+        self::assertSame('Hello <strong>Jean-Beru</strong>!', implode('', iterator_to_array($part->bodyToIterable(), false)));
+    }
+
+    public function testGetBodyThrows(): void
+    {
+        $part = new StreamedDataPart(static fn (): \Generator => yield 'Hello', 'index.html', 'text/html');
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('A streamed part cannot be materialized in memory, use "Sensiolabs\GotenbergBundle\Builder\Util\StreamedDataPart::bodyToIterable()" instead.');
+
+        $part->getBody();
+    }
+
+    public function testBodyToStringThrows(): void
+    {
+        $part = new StreamedDataPart(static fn (): \Generator => yield 'Hello', 'index.html', 'text/html');
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('A streamed part cannot be materialized in memory, use "Sensiolabs\GotenbergBundle\Builder\Util\StreamedDataPart::bodyToIterable()" instead.');
+
+        $part->bodyToString();
     }
 
     public function testBodyToIterableBuffersSmallChunks(): void

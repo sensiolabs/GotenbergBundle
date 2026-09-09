@@ -2,10 +2,14 @@
 
 namespace Sensiolabs\GotenbergBundle\Builder\Util;
 
+use Sensiolabs\GotenbergBundle\Exception\LogicException;
 use Symfony\Component\Mime\Part\DataPart;
 
 /**
  * DataPart whose body is generated lazily, chunk by chunk, while the request is sent.
+ *
+ * Only {@see self::bodyToIterable()} may consume it: materializing the whole body in memory
+ * would defeat the purpose of streaming it.
  */
 class StreamedDataPart extends DataPart
 {
@@ -29,16 +33,11 @@ class StreamedDataPart extends DataPart
 
     public function getBody(): string
     {
-        return implode('', iterator_to_array(($this->renderer)(), false));
-    }
-
-    public function bodyToString(): string
-    {
-        return $this->getBody();
+        throw new LogicException(\sprintf('A streamed part cannot be materialized in memory, use "%s::bodyToIterable()" instead.', self::class));
     }
 
     /**
-     * @return iterable<string>
+     * @return \Generator<int, string>
      */
     public function bodyToIterable(): iterable
     {
