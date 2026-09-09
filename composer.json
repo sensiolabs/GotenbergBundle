@@ -56,6 +56,8 @@
         "symfony/monolog-bundle": "^3.10 || ^4.0",
         "symfony/routing": "^6.4 || ^7.0 || ^8.0",
         "symfony/stopwatch": "^6.4 || ^7.0 || ^8.0",
+        "symfony/translation": "^6.4 || ^7.0 || ^8.0",
+        "symfony/twig-bridge": "^6.4 || ^7.0 || ^8.0",
         "symfony/twig-bundle": "^6.4 || ^7.0 || ^8.0",
         "symfony/var-dumper": "^6.4 || ^7.0 || ^8.0",
         "symfony/yaml": "^6.4 || ^7.0 || ^8.0",
@@ -70,6 +72,7 @@
     "suggest": {
         "symfony/monolog-bundle": "Enables logging througout the generating process.",
         "symfony/routing": "Allows you to use webhook to generate URL or route.",
+        "symfony/translation": "Allows you to render Twig templates with a specific locale via the locale() builder method.",
         "symfony/twig-bundle": "Allows you to use Twig to render templates into PDF.",
         "monolog/monolog": "Enables logging througout the generating process.",
         "async-aws/s3": "Upload any file to aws s3 compatible endpoints supporting multi part upload without memory overhead.",

@@ -29,6 +29,9 @@ $config = $config
     ->ignoreErrorsOnPackage('symfony/routing', [
         ErrorType::DEV_DEPENDENCY_IN_PROD,
     ])
+    ->ignoreErrorsOnPackage('symfony/translation', [
+        ErrorType::DEV_DEPENDENCY_IN_PROD,
+    ])
     ->ignoreErrorsOnPackage('twig/twig', [
         ErrorType::DEV_DEPENDENCY_IN_PROD,
     ])

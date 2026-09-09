@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors\Chromium;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LocaleSwitcherAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\TwigAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
@@ -21,9 +22,28 @@ use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 trait ContentTrait
 {
     use AssetBaseDirFormatterAwareTrait;
+    use LocaleSwitcherAwareTrait;
     use TwigAwareTrait;
 
+    private string|null $locale = null;
+
     abstract protected function getBodyBag(): BodyBag;
+
+    /**
+     * Render Twig templates (content, header, footer) using the given locale.
+     *
+     * Requires symfony/translation. The current application locale is restored
+     * after each rendered template.
+     *
+     * @example locale('fr')->content('content.html.twig')
+     */
+    #[WithConfigurationNode(new ScalarNodeBuilder('locale', restrictTo: 'string'))]
+    public function locale(string $locale): static
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
 
     /**
      * @param string               $template #Template
@@ -187,6 +207,23 @@ trait ContentTrait
      * @throws PartRenderingException if the template could not be rendered
      */
     protected function withRenderedPart(Part $part, string $template, array $context = []): static
+    {
+        if (null !== $this->locale && $this->getLocaleSwitcher()->getLocale() !== $this->locale) {
+            return $this->getLocaleSwitcher()->runWithLocale(
+                $this->locale,
+                fn () => $this->doRenderPart($part, $template, $context),
+            );
+        }
+
+        return $this->doRenderPart($part, $template, $context);
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @throws PartRenderingException if the template could not be rendered
+     */
+    private function doRenderPart(Part $part, string $template, array $context): static
     {
         $this->getTwig()->getRuntime(GotenbergRuntime::class)->setBuilder($this);
         try {

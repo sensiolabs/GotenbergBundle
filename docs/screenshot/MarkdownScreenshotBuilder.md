@@ -159,6 +159,7 @@ class YourController
 - [header](#headerstring-template-array-context)
 - [headerFile](#headerfilestring-path)
 - [headerRaw](#headerrawstring-html)
+- [locale](#localestring-locale)
 - [emulatedMediaFeatures](#emulatedmediafeaturesarray-emulatedmediafeatures)
 - [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
 - [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
@@ -684,6 +685,18 @@ The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->headerRaw('<html><body><h1>The header</h1></body></html>')
+    ->generate()
+    ->stream()
+;
+```
+
+### locale(string \$locale)
+Render Twig templates (content, header, footer) using the given locale.<br /><br />Requires symfony/translation. The current application locale is restored<br />after each rendered template.<br />
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->locale('fr')->content('content.html.twig')
     ->generate()
     ->stream()
 ;
