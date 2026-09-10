@@ -10,9 +10,9 @@ use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 final class TraceableGotenbergClient implements GotenbergClientInterface
 {
     /**
-     * @var list<array{'headers': array<string, mixed>, 'body': list<array<string, string>>}>
+     * @var list<Payload>
      */
-    private array $payload = [];
+    private array $payloads = [];
 
     public function __construct(private readonly GotenbergClientInterface $inner)
     {
@@ -22,10 +22,7 @@ final class TraceableGotenbergClient implements GotenbergClientInterface
     {
         $response = $this->inner->call($endpoint, $payload);
 
-        $this->payload[] = [
-            'headers' => $payload->getHeadersOptions(),
-            'body' => $payload->getBodyOptions(),
-        ];
+        $this->payloads[] = $payload;
 
         return $response;
     }
@@ -36,10 +33,14 @@ final class TraceableGotenbergClient implements GotenbergClientInterface
     }
 
     /**
-     * @return list<array{'headers': array<string, mixed>, 'body': list<array<string, string>>}>
+     * @return list<array{'headers': array<string, mixed>, 'body': list<array<string, mixed>>|null}>
      */
     public function getPayload(): array
     {
-        return $this->payload;
+        // Read as late as possible.
+        return array_map(static fn (Payload $payload): array => [
+            'headers' => $payload->getHeadersOptions(),
+            'body' => $payload->isBodyResolved() ? $payload->getBodyOptions() : null,
+        ], $this->payloads);
     }
 }

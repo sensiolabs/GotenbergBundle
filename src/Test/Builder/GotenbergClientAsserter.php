@@ -30,6 +30,10 @@ class GotenbergClientAsserter implements GotenbergClientInterface
         try {
             $this->endpoint = $endpoint;
             $this->payload = $payload;
+
+            // Force DataPart resolution.
+            iterator_to_array($payload->bodyToIterable(), false);
+
             $this->body = $payload->getFormData()->getParts();
         } catch (\Throwable $t) {
             $this->throwable = $t;

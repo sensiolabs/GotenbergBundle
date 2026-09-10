@@ -2,6 +2,7 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
+use PHPUnit\Framework\Attributes\TestWith;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -10,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Twig\GotenbergExtension;
 use Sensiolabs\GotenbergBundle\Twig\GotenbergRuntime;
 use Symfony\Component\DependencyInjection\Container;
 use Twig\Environment;
@@ -157,6 +159,34 @@ final class HtmlPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertContentFileContains('header.html', 'text/html', 'My Header');
         $this->assertContentFileContains('index.html', 'text/html', 'My PDF');
         $this->assertContentFileContains('footer.html', 'text/html', 'My Footer');
+    }
+
+    #[TestWith([true])]
+    #[TestWith([false])]
+    public function testTwigContentRegistersAssetsFromTheTemplate(bool $lazy): void
+    {
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
+
+        $twig = new Environment(new FilesystemLoader(self::FIXTURE_DIR), [
+            'strict_variables' => true,
+        ]);
+        $twig->addExtension(new GotenbergExtension());
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load(string $class): object|null
+            {
+                return GotenbergRuntime::class === $class ? new GotenbergRuntime() : null;
+            }
+        });
+
+        $this->container->set('twig', $twig);
+
+        $this->getBuilder()
+            ->lazy($lazy)
+            ->content('templates/header_with_asset.html.twig', ['name' => 'world'])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormDataFile('files', 'image/png', self::FIXTURE_DIR.'/assets/logo.png');
     }
 
     public function testWithRawHtmlWithHeaderAndFooterParts(): void

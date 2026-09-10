@@ -3,12 +3,12 @@
 namespace Sensiolabs\GotenbergBundle\Builder;
 
 use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergAsyncResult;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Builder\ValueObject\StreamedPart;
 use Sensiolabs\GotenbergBundle\Client\GotenbergClientInterface;
 use Sensiolabs\GotenbergBundle\Exception\InvalidNormalizerException;
 use Sensiolabs\GotenbergBundle\Exception\VersionCompatibilityException;
@@ -85,12 +85,11 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     public function generate(): GotenbergFileResult
     {
         $this->validatePayloadBody();
-        $payloadBody = iterator_to_array($this->normalizePayloadBody(), false);
 
         $response = $this->getClient()->call(
             $this->getEndpoint(),
             new Payload(
-                $payloadBody,
+                $this->createPayloadBodyFactory(),
                 $this->getHeadersBag()->all(),
             ),
         );
@@ -105,12 +104,11 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     public function generateAsync(): GotenbergAsyncResult
     {
         $this->validatePayloadBody();
-        $payloadBody = iterator_to_array($this->normalizePayloadBody(), false);
 
         $response = $this->getClient()->call(
             $this->getEndpoint(),
             new Payload(
-                $payloadBody,
+                $this->createPayloadBodyFactory(),
                 $this->getHeadersBag()->all(),
             ),
         );
@@ -159,11 +157,44 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     }
 
     /**
-     * @return \Generator<int, array<string, string>>
+     * @return \Closure(): \Generator<int, array<string, string>>
      */
-    private function normalizePayloadBody(): \Generator
+    private function createPayloadBodyFactory(): \Closure
     {
-        /** @var array<string, (\Closure(string, mixed, Version=, LoggerInterface|null=): list<array<string, string>>)> $normalizers */
+        $normalizers = $this->getNormalizers();
+        $version = $this->getVersion();
+        $logger = $this->getLogger();
+
+        $normalize = function (bool $streamed) use ($normalizers, $version, $logger): \Generator {
+            foreach ($this->getBodyBag()->all() as $key => $value) {
+                if (($value instanceof StreamedPart) !== $streamed) {
+                    continue;
+                }
+
+                $normalizer = $normalizers[$key] ?? NormalizerFactory::noop();
+
+                if (!\is_callable($normalizer)) {
+                    throw new InvalidNormalizerException(\sprintf('Normalizer "%s" is not a valid callable function.', $key));
+                }
+
+                yield from $normalizer($key, $value, $version, $logger);
+            }
+        };
+
+        // Streamed parts are sent first. Rendering them may register extra fields - assets referenced from a Twig
+        // template, typically - and the body bag is only read back for the remaining fields once every streamed
+        // part has been written to the wire.
+        return static function () use ($normalize): \Generator {
+            yield from $normalize(true);
+            yield from $normalize(false);
+        };
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getNormalizers(): array
+    {
         $normalizers = [];
 
         $reflection = new \ReflectionClass(static::class);
@@ -185,17 +216,6 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
             }
         } while ($reflection = $reflection->getParentClass());
 
-        $version = $this->getVersion();
-        $logger = $this->getLogger();
-
-        foreach ($this->getBodyBag()->all() as $key => $value) {
-            $normalizer = $normalizers[$key] ?? NormalizerFactory::noop();
-
-            if (!\is_callable($normalizer)) {
-                throw new InvalidNormalizerException(\sprintf('Normalizer "%s" is not a valid callable function.', $key));
-            }
-
-            yield from $normalizer($key, $value, $version, $logger);
-        }
+        return $normalizers;
     }
 }

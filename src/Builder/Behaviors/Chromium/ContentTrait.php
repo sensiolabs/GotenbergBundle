@@ -218,13 +218,21 @@ trait ContentTrait
         // Rendering is deferred until the request body is sent, so the HTML is streamed chunk by chunk to Gotenberg
         // instead of being buffered in memory.
         $renderer = function () use ($twig, $loadedTemplate, $template, $part, $context): \Generator {
-            $twig->getRuntime(GotenbergRuntime::class)->setBuilder($this);
+            $runtime = $twig->getRuntime(GotenbergRuntime::class);
+            $runtime->setBuilder($this);
+
             try {
-                yield from $loadedTemplate->stream($context);
+                foreach ($loadedTemplate->stream($context) as $chunk) {
+                    yield $chunk;
+
+                    // The runtime is shared: another streamed part may have rendered - and reset it - while this
+                    // generator was suspended on the yield above.
+                    $runtime->setBuilder($this);
+                }
             } catch (\Throwable $t) {
                 throw new PartRenderingException(\sprintf('Could not render template "%s" into PDF part "%s". %s', $template, $part->value, $t->getMessage()), previous: $t);
             } finally {
-                $twig->getRuntime(GotenbergRuntime::class)->setBuilder(null);
+                $runtime->setBuilder(null);
             }
         };
 
