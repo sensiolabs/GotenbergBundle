@@ -214,6 +214,15 @@ class NormalizerFactory
     }
 
     /**
+     * @return (\Closure(string, array<string, \SplFileInfo>): list<array{facturxXml: DataPart}>)
+     */
+    public static function facturxXml(): \Closure
+    {
+        /** @var \Closure(string, array<string, \SplFileInfo>): list<array{facturxXml: DataPart}> */
+        return self::files('facturxXml');
+    }
+
+    /**
      * @return (\Closure(string, array<string, \SplFileInfo>): list<array<string, DataPart>>)
      */
     private static function files(string $type): \Closure

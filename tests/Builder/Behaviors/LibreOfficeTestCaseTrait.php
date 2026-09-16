@@ -18,6 +18,9 @@ trait LibreOfficeTestCaseTrait
     /** @use EncryptTestCaseTrait<T> */
     use EncryptTestCaseTrait;
 
+    /** @use FacturXTestCaseTrait<T> */
+    use FacturXTestCaseTrait;
+
     /** @use FlattenTestCaseTrait<T> */
     use FlattenTestCaseTrait;
 

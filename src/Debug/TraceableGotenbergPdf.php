@@ -6,6 +6,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FacturXPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
@@ -261,6 +262,23 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['rotate', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return FacturXPdfBuilder|TraceableBuilder
+     */
+    public function facturX(): BuilderInterface
+    {
+        /** @var FacturXPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->facturX();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['factur_x', $traceableBuilder];
 
         return $traceableBuilder;
     }

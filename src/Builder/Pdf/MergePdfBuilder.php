@@ -9,6 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormat
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\FacturXTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
@@ -40,6 +41,7 @@ final class MergePdfBuilder extends AbstractBuilder
     use DownloadFromTrait;
     use EmbedTrait;
     use EncryptTrait;
+    use FacturXTrait;
     use FilesTrait;
     use FlattenTrait;
     use MetadataTrait;
@@ -69,5 +71,7 @@ final class MergePdfBuilder extends AbstractBuilder
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
+
+        $this->validateFacturX();
     }
 }

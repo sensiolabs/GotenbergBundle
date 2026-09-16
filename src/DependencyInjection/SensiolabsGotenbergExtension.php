@@ -38,7 +38,8 @@ use Symfony\Component\Routing\RequestContext;
  *              encrypt: array<string, mixed>,
  *              embed: array<string, mixed>,
  *              stamp: array<string, mixed>,
- *              watermark: array<string, mixed>
+ *              watermark: array<string, mixed>,
+ *              factur_x: array<string, mixed>
  *          },
  *          screenshot: array{
  *              html: array<string, mixed>,

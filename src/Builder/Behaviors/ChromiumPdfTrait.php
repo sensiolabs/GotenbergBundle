@@ -16,6 +16,7 @@ trait ChromiumPdfTrait
     use Chromium\WaitBeforeRenderingTrait;
     use DownloadFromTrait;
     use EncryptTrait;
+    use FacturXTrait;
     use FlattenTrait;
     use MetadataTrait;
     use PdfFormatTrait;

@@ -33,5 +33,7 @@ final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterf
         if ($this->getBodyBag()->get(Part::Body->value) === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('Content is required');
         }
+
+        $this->validateFacturX();
     }
 }

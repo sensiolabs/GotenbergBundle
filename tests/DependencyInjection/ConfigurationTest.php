@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FacturXPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -59,6 +60,7 @@ final class ConfigurationTest extends TestCase
                     EncryptPdfBuilder::class,
                     WatermarkPdfBuilder::class,
                     RotatePdfBuilder::class,
+                    FacturXPdfBuilder::class,
                 ],
                 'screenshot' => [
                     HtmlScreenshotBuilder::class,
@@ -450,6 +452,17 @@ final class ConfigurationTest extends TestCase
                         'watermark_options' => [],
                     ],
                     'rotate' => [
+                        'download_from' => [],
+                        'webhook' => [
+                            'success' => [
+                            ],
+                            'error' => [
+                            ],
+                            'extra_http_headers' => [],
+                            'events' => [],
+                        ],
+                    ],
+                    'factur_x' => [
                         'download_from' => [],
                         'webhook' => [
                             'success' => [

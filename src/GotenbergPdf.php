@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FacturXPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
@@ -31,7 +32,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'encrypt'|'embed'|'stamp'|'watermark'|'rotate' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'encrypt'|'embed'|'stamp'|'watermark'|'rotate'|'factur_x' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -47,6 +48,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'stamp' ? StampPdfBuilder :
      *   $key is 'watermark' ? WatermarkPdfBuilder :
      *   $key is 'rotate' ? RotatePdfBuilder :
+     *   $key is 'factur_x' ? FacturXPdfBuilder :
      *   BuilderInterface
      * )
      */
@@ -118,5 +120,10 @@ final class GotenbergPdf implements GotenbergPdfInterface
     public function rotate(): BuilderInterface
     {
         return $this->getInternal('rotate');
+    }
+
+    public function facturX(): BuilderInterface
+    {
+        return $this->getInternal('factur_x');
     }
 }
