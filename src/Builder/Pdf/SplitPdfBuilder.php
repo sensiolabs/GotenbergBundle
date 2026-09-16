@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormat
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\FacturXTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
@@ -39,6 +40,7 @@ final class SplitPdfBuilder extends AbstractBuilder
     use DownloadFromTrait;
     use EmbedTrait;
     use EncryptTrait;
+    use FacturXTrait;
     use FilesTrait;
     use FlattenTrait;
     use MetadataTrait;
@@ -78,5 +80,7 @@ final class SplitPdfBuilder extends AbstractBuilder
         if ($this->getBodyBag()->get('splitSpan') === null) {
             throw new MissingRequiredFieldException('Field "splitSpan" must be provided.');
         }
+
+        $this->validateFacturX();
     }
 }

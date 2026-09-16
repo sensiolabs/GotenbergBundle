@@ -24,8 +24,11 @@ trait MetadataTrait
      * Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords,
      * Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.
      *
-     * Any ExifTool-compatible key is accepted, including custom XMP namespaces
-     * (e.g., 'XMP-fx:DocumentType' for Factur-X).
+     * Any ExifTool-compatible key is accepted, including custom XMP namespaces.
+     *
+     * For Factur-X/ZUGFeRD specifically, prefer `FacturXTrait::facturxXml()` and
+     * `FacturXTrait::facturxConformanceLevel()`, which use Gotenberg's dedicated
+     * `facturx*` form fields (>= 8.34) instead of raw `XMP-fx:*` metadata keys.
      *
      * @param array<string, mixed>&array{
      *      Author?: string,
@@ -42,7 +45,7 @@ trait MetadataTrait
      *      Trapped?: 'True'|'False'|'Unknown',
      *  } $metadata
      *
-     * @example metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg', 'XMP-fx:DocumentType' => 'INVOICE', 'XMP-fx:DocumentFileName' => 'factur-x.xml'])
+     * @example metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg'])
      */
     #[WithConfigurationNode(new MetadataNodeBuilder('metadata', children: [
         new ScalarNodeBuilder('Author'),
