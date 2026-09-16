@@ -46,6 +46,16 @@ trait ScreenshotPagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('clip', 'true');
     }
 
+    public function testSetDeviceScaleFactorOnScreenshotRendering(): void
+    {
+        $this->getDefaultBuilder()
+            ->deviceScaleFactor(2)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('deviceScaleFactor', '2.0');
+    }
+
     public function testScreenshotFormatOutput(): void
     {
         $this->getDefaultBuilder()

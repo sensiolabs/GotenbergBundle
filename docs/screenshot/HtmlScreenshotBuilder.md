@@ -98,6 +98,7 @@ class YourController
 - [forwardCookie](#forwardcookiestring-name)
 - [setCookie](#setcookiestring-name-symfonycomponenthttpfoundationcookiearray-cookie)
 - [clip](#clipbool-bool)
+- [deviceScaleFactor](#devicescalefactorfloat-devicescalefactor)
 - [format](#formatsensiolabsgotenbergbundleenumerationscreenshotformat-format)
 - [height](#heightint-height)
 - [omitBackground](#omitbackgroundbool-bool)
@@ -366,6 +367,21 @@ Define whether to clip the screenshot according to the device dimensions. (Defau
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->clip() // is same as `->clip(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### deviceScaleFactor(float \$deviceScaleFactor)
+The device scale ratio, controlling the screenshot pixel density. Set to 2 for retina-quality output. (Default 1).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->deviceScaleFactor(2)
     ->generate()
     ->stream()
 ;

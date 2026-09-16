@@ -8,6 +8,7 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\ScreenshotFormat;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\FloatNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
@@ -65,6 +66,23 @@ trait ScreenshotPagePropertiesTrait
         $this->logWarningIfVersionIs('<', '8.5', 'The option clip is not available.');
 
         $this->getBodyBag()->set('clip', $bool);
+
+        return $this;
+    }
+
+    /**
+     * The device scale ratio, controlling the screenshot pixel density. Set to 2 for retina-quality output. (Default 1).
+     *
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
+     *
+     * @example deviceScaleFactor(2)
+     */
+    #[WithConfigurationNode(new FloatNodeBuilder('device_scale_factor'))]
+    public function deviceScaleFactor(float $deviceScaleFactor): static
+    {
+        $this->logWarningIfVersionIs('<', '8.33', 'The option deviceScaleFactor is not available.');
+
+        $this->getBodyBag()->set('deviceScaleFactor', $deviceScaleFactor);
 
         return $this;
     }
@@ -133,6 +151,7 @@ trait ScreenshotPagePropertiesTrait
         yield 'width' => NormalizerFactory::int();
         yield 'height' => NormalizerFactory::int();
         yield 'clip' => NormalizerFactory::bool();
+        yield 'deviceScaleFactor' => NormalizerFactory::float();
         yield 'format' => NormalizerFactory::enum();
         yield 'quality' => NormalizerFactory::int();
         yield 'omitBackground' => NormalizerFactory::bool();
