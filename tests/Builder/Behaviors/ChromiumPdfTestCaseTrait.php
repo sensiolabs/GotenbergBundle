@@ -42,6 +42,9 @@ trait ChromiumPdfTestCaseTrait
     /** @use EncryptTestCaseTrait<T> */
     use EncryptTestCaseTrait;
 
+    /** @use FacturXTestCaseTrait<T> */
+    use FacturXTestCaseTrait;
+
     /** @use FlattenTestCaseTrait<T> */
     use FlattenTestCaseTrait;
 

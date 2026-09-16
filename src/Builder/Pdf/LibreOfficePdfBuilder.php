@@ -86,5 +86,6 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
         }
 
         $this->validateEncryptPermissions();
+        $this->validateFacturX();
     }
 }

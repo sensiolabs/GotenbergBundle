@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FacturXPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -51,6 +52,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         $extension->registerBuilder(EmbedPdfBuilder::class);
         $extension->registerBuilder(RotatePdfBuilder::class);
         $extension->registerBuilder(OptimizePdfBuilder::class);
+        $extension->registerBuilder(FacturXPdfBuilder::class);
 
         $extension->registerBuilder(HtmlScreenshotBuilder::class);
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
@@ -422,6 +424,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                     'embed' => [],
                     'rotate' => [],
                     'optimize' => [],
+                    'factur_x' => [],
                 ],
             ],
         ]], $containerBuilder);
@@ -468,6 +471,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 'embed' => [],
                 'rotate' => [],
                 'optimize' => [],
+                'factur_x' => [],
             ],
             'screenshot' => [
                 'html' => [],

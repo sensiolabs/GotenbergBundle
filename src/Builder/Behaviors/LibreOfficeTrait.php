@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 trait LibreOfficeTrait
 {
     use DownloadFromTrait;
+    use FacturXTrait;
     use FlattenTrait;
     use LibreOffice\PagePropertiesTrait;
     use MetadataTrait;

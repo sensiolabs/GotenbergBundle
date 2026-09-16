@@ -133,4 +133,16 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
+
+    public function testFacturxXmlWithoutConformanceLevelIsRejected(): void
+    {
+        $this->withGotenbergVersion('8.34.0');
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('"facturxConformanceLevel" must be provided when "facturxXml" is set.');
+
+        $this->getDefaultBuilder()
+            ->facturxXml('embed/factur-x.xml')
+            ->generate()
+        ;
+    }
 }
