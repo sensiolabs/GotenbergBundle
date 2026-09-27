@@ -7,6 +7,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel;
 use Sensiolabs\GotenbergBundle\Enumeration\FacturXDocumentType;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @template T of BuilderInterface
@@ -31,6 +32,31 @@ trait FacturXTestCaseTrait
         ;
 
         $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
+    }
+
+    public function testFacturxXmlFromSplFileInfo(): void
+    {
+        $this->withGotenbergVersion('8.34.0');
+
+        $this->getDefaultBuilder()
+            ->facturxXml(new \SplFileInfo(Path::canonicalize(self::FIXTURE_DIR.'/embed/factur-x.xml')), FacturXConformanceLevel::En16931)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
+    }
+
+    public function testFacturxXmlWithConformanceLevelAsArgument(): void
+    {
+        $this->withGotenbergVersion('8.34.0');
+
+        $this->getDefaultBuilder()
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::Extended)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
+        $this->assertGotenbergFormData('facturxConformanceLevel', 'EXTENDED');
     }
 
     public function testFacturxConformanceLevel(): void

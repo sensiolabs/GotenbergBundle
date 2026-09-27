@@ -28,30 +28,46 @@ trait FacturXTrait
 
     /**
      * The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the
-     * uploaded filename. Must be provided together with `facturxConformanceLevel()`.
+     * uploaded filename.
+     *
+     * Gotenberg requires a conformance level alongside the XML: pass it as the second
+     * argument, or set it on its own with `facturxConformanceLevel()` — through the bundle
+     * configuration, for instance, when your application always issues the same level.
      *
      * As an asset file, by default the file is fetched in the assets folder
      * of your application. For more information about path resolution go to
-     * assets documentation.
+     * assets documentation. Pass a `\SplFileInfo` to bypass that resolution.
      *
      * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
      *
-     * @example facturxXml('invoice.xml')
+     * @example facturxXml('invoice.xml', FacturXConformanceLevel::En16931)
+     * @example facturxXml(new \SplFileInfo('/var/invoices/2026-001.xml'), FacturXConformanceLevel::En16931)
      */
-    #[WithConfigurationNode(new ScalarNodeBuilder('facturx_xml'))]
-    public function facturxXml(string|\Stringable $path): self
+    public function facturxXml(string|\Stringable|\SplFileInfo $path, FacturXConformanceLevel|null $conformanceLevel = null): self
     {
         $this->logWarningIfVersionIs('<', '8.34', 'The facturxXml option is not available.');
 
-        $path = (string) $path;
-        $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
-        $this->getBodyBag()->set('facturxXml', [$path => $info]);
+        if ($path instanceof \SplFileInfo) {
+            $filename = $path->getFilename();
+            $info = $path;
+        } else {
+            $filename = (string) $path;
+            $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($filename));
+        }
+
+        $this->getBodyBag()->set('facturxXml', [$filename => $info]);
+
+        if (null !== $conformanceLevel) {
+            $this->facturxConformanceLevel($conformanceLevel);
+        }
 
         return $this;
     }
 
     /**
-     * The Factur-X/ZUGFeRD conformance level. Must be provided together with `facturxXml()`.
+     * The Factur-X/ZUGFeRD conformance level, recorded in the XMP metadata. Must be
+     * provided together with `facturxXml()`, which also accepts it as its second argument.
+     * See the `FacturXConformanceLevel` enum for what each level covers.
      *
      * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
      *

@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * @extends GotenbergBuilderTestCase<FacturXPdfBuilder>
@@ -60,6 +61,18 @@ final class FacturXPdfBuilderTest extends GotenbergBuilderTestCase
         $this->assertGotenbergFormDataFile('files', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
         $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
         $this->assertGotenbergFormData('facturxConformanceLevel', 'EN 16931');
+    }
+
+    public function testAddFacturxXmlAsSplFileInfoWithConformanceLevel(): void
+    {
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
+            ->facturxXml(new \SplFileInfo(Path::canonicalize(self::FIXTURE_DIR.'/embed/factur-x.xml')), FacturXConformanceLevel::Xrechnung)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
+        $this->assertGotenbergFormData('facturxConformanceLevel', 'XRECHNUNG');
     }
 
     public function testFacturxDocumentType(): void

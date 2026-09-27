@@ -170,7 +170,7 @@ class YourController
 - [facturxConformanceLevel](#facturxconformancelevelsensiolabsgotenbergbundleenumerationfacturxconformancelevel-conformancelevel)
 - [facturxDocumentType](#facturxdocumenttypesensiolabsgotenbergbundleenumerationfacturxdocumenttype-documenttype)
 - [facturxVersion](#facturxversionstring-version)
-- [facturxXml](#facturxxmlstringablestring-path)
+- [facturxXml](#facturxxmlstringablesplfileinfostring-path-sensiolabsgotenbergbundleenumerationfacturxconformancelevel-conformancelevel)
 
 ### addMetadata(string \$key, string \$value)
 If you want to add metadata from the ones already loaded in the configuration.<br />
@@ -1555,7 +1555,7 @@ return $gotenberg
 
 
 ### facturxConformanceLevel(Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel \$conformanceLevel)
-The Factur-X/ZUGFeRD conformance level. Must be provided together with `facturxXml()`.<br />
+The Factur-X/ZUGFeRD conformance level, recorded in the XMP metadata. Must be<br />provided together with `facturxXml()`, which also accepts it as its second argument.<br />See the `FacturXConformanceLevel` enum for what each level covers.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
@@ -1599,8 +1599,8 @@ return $gotenberg
 ;
 ```
 
-### facturxXml(Stringable|string \$path)
-The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the<br />uploaded filename. Must be provided together with `facturxConformanceLevel()`.<br /><br />As an asset file, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+### facturxXml(Stringable|SplFileInfo|string \$path, ?Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel \$conformanceLevel)
+The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the<br />uploaded filename.<br /><br />Gotenberg requires a conformance level alongside the XML: pass it as the second<br />argument, or set it on its own with `facturxConformanceLevel()` — through the bundle<br />configuration, for instance, when your application always issues the same level.<br /><br />As an asset file, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation. Pass a `\SplFileInfo` to bypass that resolution.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
@@ -1608,7 +1608,16 @@ The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of t
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->facturxXml('invoice.xml')
+    ->facturxXml('invoice.xml', FacturXConformanceLevel::En16931)
+    ->generate()
+    ->stream()
+;
+```
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->facturxXml(new \SplFileInfo('/var/invoices/2026-001.xml'), FacturXConformanceLevel::En16931)
     ->generate()
     ->stream()
 ;
