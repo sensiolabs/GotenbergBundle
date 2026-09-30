@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
@@ -49,6 +50,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         $extension->registerBuilder(EncryptPdfBuilder::class);
         $extension->registerBuilder(EmbedPdfBuilder::class);
         $extension->registerBuilder(RotatePdfBuilder::class);
+        $extension->registerBuilder(OptimizePdfBuilder::class);
 
         $extension->registerBuilder(HtmlScreenshotBuilder::class);
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
@@ -223,6 +225,8 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 'merge' => [
                     'pdf_format' => PdfFormat::Pdf3b,
                     'pdf_universal_access' => true,
+                    'optimize_images' => true,
+                    'image_quality' => 70,
                     'metadata' => [
                         'Author' => 'SensioLabs HTML',
                     ],
@@ -246,6 +250,9 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 ],
                 'rotate' => [
                     'rotate_angle' => 90,
+                ],
+                'optimize' => [
+                    'image_quality' => 60,
                 ],
             ],
             'screenshot' => [
@@ -414,6 +421,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                     'encrypt' => [],
                     'embed' => [],
                     'rotate' => [],
+                    'optimize' => [],
                 ],
             ],
         ]], $containerBuilder);
@@ -459,6 +467,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 'encrypt' => [],
                 'embed' => [],
                 'rotate' => [],
+                'optimize' => [],
             ],
             'screenshot' => [
                 'html' => [],
@@ -603,6 +612,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
      *                  'convert': array<string, mixed>,
      *                  'split': array<string, mixed>,
      *                  'rotate': array<string, mixed>,
+     *                  'optimize': array<string, mixed>,
      *                  'encrypt': array<string, mixed>,
      *                  'embed': array<string, mixed>,
      *              },
@@ -783,6 +793,8 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                         'merge' => [
                             'pdf_format' => PdfFormat::Pdf3b->value,
                             'pdf_universal_access' => true,
+                            'optimize_images' => true,
+                            'image_quality' => 70,
                             'metadata' => [
                                 'Author' => 'SensioLabs HTML',
                             ],
@@ -808,6 +820,9 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                         ],
                         'rotate' => [
                             'rotate_angle' => 90,
+                        ],
+                        'optimize' => [
+                            'image_quality' => 60,
                         ],
                         'encrypt' => [
                             'user_password' => 'user_secret',

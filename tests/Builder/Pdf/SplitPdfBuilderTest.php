@@ -13,6 +13,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EncryptTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\OptimizeImagesTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\SplitTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\StampTestCaseTrait;
@@ -39,6 +40,9 @@ final class SplitPdfBuilderTest extends GotenbergBuilderTestCase
 
     /** @use MetadataTestCaseTrait<SplitPdfBuilder> */
     use MetadataTestCaseTrait;
+
+    /** @use OptimizeImagesTestCaseTrait<SplitPdfBuilder> */
+    use OptimizeImagesTestCaseTrait;
 
     /** @use PdfFormatTestCaseTrait<SplitPdfBuilder> */
     use PdfFormatTestCaseTrait;

@@ -12,6 +12,7 @@ use Sensiolabs\GotenbergBundle\Builder\Behaviors\EncryptTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FlattenTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\MetadataTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\OptimizeImagesTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\PdfFormatTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\StampTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WatermarkTrait;
@@ -43,6 +44,7 @@ final class MergePdfBuilder extends AbstractBuilder
     use FilesTrait;
     use FlattenTrait;
     use MetadataTrait;
+    use OptimizeImagesTrait;
     use PdfFormatTrait;
     use StampTrait;
     use WatermarkTrait;

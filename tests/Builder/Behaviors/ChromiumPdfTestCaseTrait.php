@@ -48,6 +48,9 @@ trait ChromiumPdfTestCaseTrait
     /** @use MetadataTestCaseTrait<T> */
     use MetadataTestCaseTrait;
 
+    /** @use OptimizeImagesTestCaseTrait<T> */
+    use OptimizeImagesTestCaseTrait;
+
     /** @use PdfFormatTestCaseTrait<T> */
     use PdfFormatTestCaseTrait;
 
