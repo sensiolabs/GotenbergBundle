@@ -69,5 +69,7 @@ final class MergePdfBuilder extends AbstractBuilder
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
+
+        $this->validateEncryptPermissions();
     }
 }
