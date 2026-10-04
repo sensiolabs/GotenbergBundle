@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\FloatNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\IntegerNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
+use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
 /**
  * @package Behavior\\Chromium\\PageProperties
@@ -66,6 +67,23 @@ trait ScreenshotPagePropertiesTrait
         $this->logWarningIfVersionIs('<', '8.5', 'The option clip is not available.');
 
         $this->getBodyBag()->set('clip', $bool);
+
+        return $this;
+    }
+
+    /**
+     * Clip the screenshot to the bounding box of the first element matching this CSS selector.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
+     *
+     * @example clipToSelector('#chart')
+     */
+    #[WithConfigurationNode(new ScalarNodeBuilder('clip_to_selector', restrictTo: 'string'))]
+    public function clipToSelector(string $selector): static
+    {
+        $this->logWarningIfVersionIs('<', '8.36', 'The option clipToSelector is not available.');
+
+        $this->getBodyBag()->set('selector', $selector);
 
         return $this;
     }

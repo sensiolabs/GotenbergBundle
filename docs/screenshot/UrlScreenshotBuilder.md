@@ -86,6 +86,7 @@ class YourController
 - [forwardCookie](#forwardcookiestring-name)
 - [setCookie](#setcookiestring-name-symfonycomponenthttpfoundationcookiearray-cookie)
 - [clip](#clipbool-bool)
+- [clipToSelector](#cliptoselectorstring-selector)
 - [deviceScaleFactor](#devicescalefactorfloat-devicescalefactor)
 - [format](#formatsensiolabsgotenbergbundleenumerationscreenshotformat-format)
 - [height](#heightint-height)
@@ -382,6 +383,21 @@ Define whether to clip the screenshot according to the device dimensions. (Defau
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->clip() // is same as `->clip(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### clipToSelector(string \$selector)
+Clip the screenshot to the bounding box of the first element matching this CSS selector.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->clipToSelector('#chart')
     ->generate()
     ->stream()
 ;

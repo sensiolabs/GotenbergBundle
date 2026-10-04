@@ -42,6 +42,8 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
         yield 'html' => ['assets/office/document_2.html', 'text/html'];
         yield 'xslx' => ['assets/office/document_3.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
         yield 'pptx' => ['assets/office/document_4.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+        yield 'ppsx' => ['assets/office/document_5.ppsx', 'application/vnd.openxmlformats-officedocument.presentationml.slideshow'];
+        yield 'ppsm' => ['assets/office/document_6.ppsm', 'application/vnd.ms-powerpoint.slideshow.macroenabled.12'];
     }
 
     #[DataProvider('provideValidOfficeFiles')]
