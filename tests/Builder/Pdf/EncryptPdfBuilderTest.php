@@ -59,6 +59,32 @@ final class EncryptPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
+    public function testRequiredUserPasswordOrOwnerPassword(): void
+    {
+        $this->withGotenbergVersion('8.34.0');
+
+        $this->expectException(MissingRequiredFieldException::class);
+        $this->expectExceptionMessage('At least userPassword or ownerPassword must be provided.');
+
+        $this->getBuilder()
+            ->generate()
+        ;
+    }
+
+    public function testEncryptWithOwnerPasswordOnly(): void
+    {
+        $this->withGotenbergVersion('8.34.0');
+
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
+            ->ownerPassword('owner_password')
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/pdfengines/encrypt');
+        $this->assertGotenbergFormData('ownerPassword', 'owner_password');
+    }
+
     public function testAddFilesAsContent(): void
     {
         $this->getBuilder()

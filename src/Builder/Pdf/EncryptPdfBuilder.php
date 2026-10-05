@@ -14,7 +14,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may encrypt a PDF after it is created.
  *
- * You must provide at least a user password.
+ * You must provide at least a user password, or an owner password since Gotenberg 8.34.
  *
  * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
  */
@@ -47,8 +47,14 @@ final class EncryptPdfBuilder extends AbstractBuilder
     {
         $this->introducedIn('8.25');
 
-        if ($this->getBodyBag()->get('userPassword') === null) {
+        $this->validateEncryptPermissions();
+
+        if (!$this->hasEncryptPassword('userPassword') && $this->getVersion()->isLowerThan('8.34')) {
             throw new MissingRequiredFieldException('At least userPassword must be provided.');
+        }
+
+        if (!$this->hasEncryptPassword('userPassword') && !$this->hasEncryptPassword('ownerPassword')) {
+            throw new MissingRequiredFieldException('At least userPassword or ownerPassword must be provided.');
         }
 
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {

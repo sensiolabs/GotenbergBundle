@@ -69,6 +69,12 @@ class YourController
 - [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
 - [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
 - [webhookUrl](#webhookurlstring-url-string-method)
+- [allowAnnotating](#allowannotatingbool-bool)
+- [allowAssembling](#allowassemblingbool-bool)
+- [allowCopying](#allowcopyingbool-bool)
+- [allowFillingForms](#allowfillingformsbool-bool)
+- [allowModifying](#allowmodifyingbool-bool)
+- [allowPrinting](#allowprintingbool-bool)
 - [ownerPassword](#ownerpasswordstring-ownerpassword)
 - [userPassword](#userpasswordstring-userpassword)
 
@@ -537,6 +543,96 @@ return $gotenberg
 ;
 ```
 
+
+### allowAnnotating(bool \$bool)
+Allow adding or modifying annotations (default true).<br />Restricting it requires a user or an owner password.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->allowAnnotating(false)
+    ->generate()
+    ->stream()
+;
+```
+
+### allowAssembling(bool \$bool)
+Allow inserting, deleting and rotating pages (default true).<br />Restricting it requires a user or an owner password.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->allowAssembling(false)
+    ->generate()
+    ->stream()
+;
+```
+
+### allowCopying(bool \$bool)
+Allow extracting text and graphics from the document (default true).<br />Restricting it requires a user or an owner password.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->allowCopying(false)
+    ->generate()
+    ->stream()
+;
+```
+
+### allowFillingForms(bool \$bool)
+Allow filling in form fields (default true).<br />Restricting it requires a user or an owner password.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->allowFillingForms(false)
+    ->generate()
+    ->stream()
+;
+```
+
+### allowModifying(bool \$bool)
+Allow changing the document content (default true).<br />Restricting it requires a user or an owner password.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->allowModifying(false)
+    ->generate()
+    ->stream()
+;
+```
+
+### allowPrinting(bool \$bool)
+Allow printing the document (default true).<br />Restricting it requires a user or an owner password.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->allowPrinting(false)
+    ->generate()
+    ->stream()
+;
+```
 
 ### ownerPassword(?string \$ownerPassword)
 Set PDF owner password.<br />
