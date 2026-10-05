@@ -54,6 +54,7 @@ class YourController
 - [stampOptions](#stampoptionsarray-stampoptions)
 - [stampPages](#stamppagesstring-stamppages)
 - [stampSource](#stampsourcesensiolabsgotenbergbundleenumerationstampsource-stampsource)
+- [titleBookmarks](#titlebookmarksbool-bool)
 - [watermarkExpression](#watermarkexpressionstring-watermarkexpression)
 - [watermarkFile](#watermarkfilestringablestring-path)
 - [watermarkOptions](#watermarkoptionsarray-watermarkoptions)
@@ -332,6 +333,21 @@ The stamp source type. Options: 'text', 'image', 'pdf'.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->stampSource(StampSource::Text)
+    ->generate()
+    ->stream()
+;
+```
+
+### titleBookmarks(bool \$bool)
+Adds a bookmark per merged document, labeled by its Title metadata (falling back to the filename) and pointing to its first page, with the document's own bookmarks nested underneath (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->titleBookmarks() // is same as `->titleBookmarks(true)`
     ->generate()
     ->stream()
 ;

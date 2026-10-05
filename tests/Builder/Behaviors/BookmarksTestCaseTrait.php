@@ -97,4 +97,24 @@ trait BookmarksTestCaseTrait
 
         $this->assertGotenbergFormData('autoIndexBookmarks', 'false');
     }
+
+    public function testTitleBookmarks(): void
+    {
+        $this->getDefaultBuilder()
+            ->titleBookmarks()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('titleBookmarks', 'true');
+    }
+
+    public function testTitleBookmarksFalse(): void
+    {
+        $this->getDefaultBuilder()
+            ->titleBookmarks(false)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('titleBookmarks', 'false');
+    }
 }

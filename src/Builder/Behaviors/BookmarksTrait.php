@@ -88,10 +88,28 @@ trait BookmarksTrait
         return $this;
     }
 
+    /**
+     * Adds a bookmark per merged document, labeled by its Title metadata (falling back to the filename) and pointing to its first page, with the document's own bookmarks nested underneath (default false).
+     *
+     * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
+     *
+     * @example titleBookmarks() // is same as `->titleBookmarks(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('title_bookmarks'))]
+    public function titleBookmarks(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.36', 'The option titleBookmarks is not available.');
+
+        $this->getBodyBag()->set('titleBookmarks', $bool);
+
+        return $this;
+    }
+
     #[NormalizeGotenbergPayload]
     private function normalizeBookmarks(): \Generator
     {
         yield 'bookmarks' => NormalizerFactory::json();
         yield 'autoIndexBookmarks' => NormalizerFactory::bool();
+        yield 'titleBookmarks' => NormalizerFactory::bool();
     }
 }

@@ -46,6 +46,16 @@ trait ScreenshotPagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('clip', 'true');
     }
 
+    public function testClipToSelectorOnScreenshotRendering(): void
+    {
+        $this->getDefaultBuilder()
+            ->clipToSelector('#chart')
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('selector', '#chart');
+    }
+
     public function testSetDeviceScaleFactorOnScreenshotRendering(): void
     {
         $this->getDefaultBuilder()
