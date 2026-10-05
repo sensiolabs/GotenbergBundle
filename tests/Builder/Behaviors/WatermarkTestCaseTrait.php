@@ -66,6 +66,32 @@ trait WatermarkTestCaseTrait
         $this->assertGotenbergFormData('watermarkOptions', '{"opacity":"0.5"}');
     }
 
+    public function testUnsetWatermarkPages(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->watermarkPages('1-3')
+        ;
+        $builder->getBodyBag()->set('stampPages', '2');
+
+        self::assertArrayHasKey('watermarkPages', $builder->getBodyBag()->all());
+
+        $builder->watermarkPages(null);
+        self::assertArrayNotHasKey('watermarkPages', $builder->getBodyBag()->all());
+        self::assertArrayHasKey('stampPages', $builder->getBodyBag()->all());
+    }
+
+    public function testUnsetWatermarkOptions(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->watermarkOptions(['opacity' => '0.5'])
+        ;
+
+        self::assertArrayHasKey('watermarkOptions', $builder->getBodyBag()->all());
+
+        $builder->watermarkOptions([]);
+        self::assertArrayNotHasKey('watermarkOptions', $builder->getBodyBag()->all());
+    }
+
     public function testWatermarkFile(): void
     {
         $this->withGotenbergVersion('8.28.0');

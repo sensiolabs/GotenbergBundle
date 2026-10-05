@@ -89,7 +89,7 @@ Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->watermarkOptions(['opacity' => 0.5])
+    ->watermarkOptions(['opacity' => '0.5'])
     ->generate()
     ->stream()
 ;

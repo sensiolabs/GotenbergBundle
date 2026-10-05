@@ -86,12 +86,18 @@ trait StampTrait
      *
      * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs
      *
-     * @example stampOptions(['opacity' => 0.5])
+     * @example stampOptions(['opacity' => '0.5'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('stamp_options', useAttributeAsKey: 'key', prototype: 'variable'))]
     public function stampOptions(array $stampOptions): self
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The stamp option is not available.');
+
+        if ([] === $stampOptions) {
+            $this->getBodyBag()->unset('stampOptions');
+
+            return $this;
+        }
 
         $this->getBodyBag()->set('stampOptions', $stampOptions);
 

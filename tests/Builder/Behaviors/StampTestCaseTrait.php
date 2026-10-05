@@ -66,6 +66,18 @@ trait StampTestCaseTrait
         $this->assertGotenbergFormData('stampOptions', '{"opacity":"0.5"}');
     }
 
+    public function testUnsetStampOptions(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->stampOptions(['opacity' => '0.5'])
+        ;
+
+        self::assertArrayHasKey('stampOptions', $builder->getBodyBag()->all());
+
+        $builder->stampOptions([]);
+        self::assertArrayNotHasKey('stampOptions', $builder->getBodyBag()->all());
+    }
+
     public function testStampFile(): void
     {
         $this->withGotenbergVersion('8.28.0');

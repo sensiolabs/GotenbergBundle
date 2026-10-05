@@ -68,7 +68,7 @@ trait WatermarkTrait
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
 
         if (!$watermarkPages) {
-            $this->getBodyBag()->unset('stampPages');
+            $this->getBodyBag()->unset('watermarkPages');
         } else {
             ValidatorFactory::range($watermarkPages);
             $this->getBodyBag()->set('watermarkPages', $watermarkPages);
@@ -84,12 +84,18 @@ trait WatermarkTrait
      *
      * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs
      *
-     * @example watermarkOptions(['opacity' => 0.5])
+     * @example watermarkOptions(['opacity' => '0.5'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('watermark_options', useAttributeAsKey: 'key', prototype: 'variable'))]
     public function watermarkOptions(array $watermarkOptions): self
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
+
+        if ([] === $watermarkOptions) {
+            $this->getBodyBag()->unset('watermarkOptions');
+
+            return $this;
+        }
 
         $this->getBodyBag()->set('watermarkOptions', $watermarkOptions);
 
