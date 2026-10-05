@@ -283,7 +283,7 @@ class YourController
 
    `dif`, `slk`, `123`, `wk1`, `wks`, `wb2`
 
-   📽️ `ppt`, `pptx`, `pptm`, `pot`, `potx`, `potm`, `pps`, `odp`, `otp`, `sdd`, `sdp`, `sxi`, `sti`, `uop`, `key`
+   📽️ `ppt`, `pptx`, `pptm`, `pot`, `potx`, `potm`, `pps`, `ppsx`, `ppsm`, `odp`, `otp`, `sdd`, `sdp`, `sxi`, `sti`, `uop`, `key`
 
    🖼️ `svg`, `cdr`, `odg`, `otg`, `sda`, `sxd`, `std`, `svm`, `fodg`, `eps`, `emf`, `wmf`, `dxf`, `cgm`, `cmx`, `met`,
 
