@@ -48,6 +48,11 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
         'xltx', 'xlw', 'xml', 'xpm', 'zabw',
     ];
 
+    private const AVAILABLE_EXTENSIONS_SINCE = [
+        'ppsm' => '8.36',
+        'ppsx' => '8.36',
+    ];
+
     protected function getAllowedFilesExtensions(): array
     {
         return self::AVAILABLE_EXTENSIONS;
@@ -62,6 +67,14 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
     {
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one office file is required.');
+        }
+
+        foreach ($this->getBodyBag()->get('files') ?? [] as $file) {
+            $extension = strtolower($file->getExtension());
+
+            if (isset(self::AVAILABLE_EXTENSIONS_SINCE[$extension])) {
+                $this->logWarningIfVersionIs('<', self::AVAILABLE_EXTENSIONS_SINCE[$extension], "The \"{$extension}\" extension is not available.");
+            }
         }
 
         if ($this->getBodyBag()->get('splitUnify') === true && $this->getBodyBag()->get('splitMode') === SplitMode::Intervals) {

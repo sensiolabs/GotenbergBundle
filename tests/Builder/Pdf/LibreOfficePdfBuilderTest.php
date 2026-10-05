@@ -3,6 +3,7 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
@@ -56,6 +57,49 @@ class LibreOfficePdfBuilderTest extends GotenbergBuilderTestCase
 
         $this->assertGotenbergEndpoint('/forms/libreoffice/convert');
         $this->assertGotenbergFormDataFile('files', $contentType, self::FIXTURE_DIR.'/'.$filePath);
+    }
+
+    public static function provideSlideshowFiles(): \Generator
+    {
+        yield 'ppsx' => ['assets/office/document_5.ppsx', 'ppsx'];
+        yield 'ppsm' => ['assets/office/document_6.ppsm', 'ppsm'];
+    }
+
+    #[DataProvider('provideSlideshowFiles')]
+    public function testSlideshowFilesLogAWarningBeforeGotenberg836(string $filePath, string $extension): void
+    {
+        $this->withGotenbergVersion('8.35.0');
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('warning')
+            ->with('Gotenberg {$operator} {$version} required: {$message}', [
+                'operator' => '>=',
+                'version' => '8.36',
+                'message' => "The \"{$extension}\" extension is not available.",
+            ])
+        ;
+        $this->container->set('logger', $logger);
+
+        $this->getBuilder()
+            ->files($filePath)
+            ->generate()
+        ;
+    }
+
+    #[DataProvider('provideSlideshowFiles')]
+    public function testSlideshowFilesDoNotLogAWarningSinceGotenberg836(string $filePath): void
+    {
+        $this->withGotenbergVersion('8.36.0');
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())->method('warning');
+        $this->container->set('logger', $logger);
+
+        $this->getBuilder()
+            ->files($filePath)
+            ->generate()
+        ;
     }
 
     public function testWithStringableObject(): void
