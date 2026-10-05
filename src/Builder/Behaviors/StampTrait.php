@@ -251,12 +251,18 @@ trait StampTrait
      * @deprecated since 1.5, use addStampText(), addStampImage() or addStampPdf() instead
      * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs
      *
-     * @example stampOptions(['opacity' => 0.5])
+     * @example stampOptions(['opacity' => '0.5'])
      */
     #[WithConfigurationNode(new ArrayNodeBuilder('stamp_options', useAttributeAsKey: 'key', prototype: 'variable'))]
     public function stampOptions(array $stampOptions): self
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The stamp option is not available.');
+
+        if ([] === $stampOptions) {
+            $this->getBodyBag()->unset('stampOptions');
+
+            return $this;
+        }
 
         $this->getBodyBag()->set('stampOptions', $stampOptions);
 
