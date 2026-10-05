@@ -55,6 +55,11 @@ final class StampPdfBuilder extends AbstractBuilder
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
 
+        // Stamps added with addStamp*() or stamps() are valid by construction.
+        if (null !== $this->getBodyBag()->get('stamps')) {
+            return;
+        }
+
         if ($this->getBodyBag()->get('stampSource') === null) {
             throw new MissingRequiredFieldException('Field "stampSource" must be provided.');
         }

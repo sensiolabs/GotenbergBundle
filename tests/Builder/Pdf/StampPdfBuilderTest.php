@@ -166,4 +166,19 @@ final class StampPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
+
+    public function testImageSourceWithoutExpressionDefaultsToTheFilename(): void
+    {
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
+
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
+            ->addStampImage('assets/logo.png')
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('stampSource', 'image');
+        $this->assertGotenbergFormData('stampExpression', 'logo.png');
+        $this->assertGotenbergFormDataFile('stamp', 'image/png', self::FIXTURE_DIR.'/assets/logo.png');
+    }
 }

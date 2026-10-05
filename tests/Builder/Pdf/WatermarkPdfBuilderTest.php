@@ -166,4 +166,19 @@ final class WatermarkPdfBuilderTest extends GotenbergBuilderTestCase
             ->generate()
         ;
     }
+
+    public function testImageSourceWithoutExpressionDefaultsToTheFilename(): void
+    {
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
+
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
+            ->addWatermarkImage('assets/logo.png')
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('watermarkSource', 'image');
+        $this->assertGotenbergFormData('watermarkExpression', 'logo.png');
+        $this->assertGotenbergFormDataFile('watermark', 'image/png', self::FIXTURE_DIR.'/assets/logo.png');
+    }
 }

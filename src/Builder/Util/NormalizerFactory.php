@@ -214,6 +214,85 @@ class NormalizerFactory
     }
 
     /**
+     * @return (\Closure(string, list<array{
+     *     source: \BackedEnum,
+     *     expression?: string,
+     *     pages?: string,
+     *     options?: array<string, mixed>,
+     *     file?: \SplFileInfo,
+     * }>): list<array<string, string|DataPart>>)
+     */
+    public static function stamps(): \Closure
+    {
+        return self::stampEntries('stamp');
+    }
+
+    /**
+     * @return (\Closure(string, list<array{
+     *     source: \BackedEnum,
+     *     expression?: string,
+     *     pages?: string,
+     *     options?: array<string, mixed>,
+     *     file?: \SplFileInfo,
+     * }>): list<array<string, string|DataPart>>)
+     */
+    public static function watermarks(): \Closure
+    {
+        return self::stampEntries('watermark');
+    }
+
+    /**
+     * Gotenberg pairs the repeated {prefix}Source, {prefix}Expression, {prefix}Pages and {prefix}Options fields by index,
+     * so gaps are filled with empty values. Uploaded files are consumed in order by the "image" and "pdf" entries.
+     *
+     * @return (\Closure(string, list<array{
+     *     source: \BackedEnum,
+     *     expression?: string,
+     *     pages?: string,
+     *     options?: array<string, mixed>,
+     *     file?: \SplFileInfo,
+     * }>): list<array<string, string|DataPart>>)
+     */
+    private static function stampEntries(string $prefix): \Closure
+    {
+        return static function (string $key, array $entries) use ($prefix) {
+            $fields = ['Pages' => [], 'Options' => []];
+
+            foreach ($entries as $index => $entry) {
+                yield [$prefix.'Source' => (string) $entry['source']->value];
+                // Image and pdf entries send their filename, as expected by Gotenberg < 8.36.
+                yield [$prefix.'Expression' => $entry['expression'] ?? (isset($entry['file']) ? $entry['file']->getFilename() : '')];
+
+                if (isset($entry['pages'])) {
+                    $fields['Pages'][$index] = $entry['pages'];
+                }
+
+                if (isset($entry['options'])) {
+                    try {
+                        $fields['Options'][$index] = json_encode($entry['options'], \JSON_THROW_ON_ERROR);
+                    } catch (\JsonException $exception) {
+                        throw new JsonEncodingException(previous: $exception);
+                    }
+                }
+
+                if (isset($entry['file'])) {
+                    yield [$prefix => new DataPart(new File($entry['file']))];
+                }
+            }
+
+            foreach ($fields as $suffix => $values) {
+                if ([] === $values) {
+                    continue;
+                }
+
+                foreach (array_keys($entries) as $index) {
+                    yield [$prefix.$suffix => $values[$index] ?? ''];
+                }
+            }
+        };
+    }
+
+    /**
      * @return (\Closure(string, array<string, \SplFileInfo>): list<array<string, DataPart>>)
      */
     private static function files(string $type): \Closure

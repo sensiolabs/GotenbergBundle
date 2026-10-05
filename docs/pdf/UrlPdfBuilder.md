@@ -70,6 +70,12 @@ class YourController
 ### Available methods
 
 - [addMetadata](#addmetadatastring-key-string-value)
+- [addStampImage](#addstampimagestringablestring-path-string-pages-array-options)
+- [addStampPdf](#addstamppdfstringablestring-path-string-pages-array-options)
+- [addStampText](#addstamptextstring-text-string-pages-array-options)
+- [addWatermarkImage](#addwatermarkimagestringablestring-path-string-pages-array-options)
+- [addWatermarkPdf](#addwatermarkpdfstringablestring-path-string-pages-array-options)
+- [addWatermarkText](#addwatermarktextstring-text-string-pages-array-options)
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [flatten](#flattenbool-bool)
 - [metadata](#metadataarray-metadata)
@@ -86,12 +92,14 @@ class YourController
 - [stampOptions](#stampoptionsarray-stampoptions)
 - [stampPages](#stamppagesstring-stamppages)
 - [stampSource](#stampsourcesensiolabsgotenbergbundleenumerationstampsource-stampsource)
+- [stamps](#stampsarray-stamps)
 - [url](#urlstring-url)
 - [watermarkExpression](#watermarkexpressionstring-watermarkexpression)
 - [watermarkFile](#watermarkfilestringablestring-path)
 - [watermarkOptions](#watermarkoptionsarray-watermarkoptions)
 - [watermarkPages](#watermarkpagesstring-watermarkpages)
 - [watermarkSource](#watermarksourcesensiolabsgotenbergbundleenumerationwatermarksource-watermarksource)
+- [watermarks](#watermarksarray-watermarks)
 - [addAsset](#addassetstringablestring-path)
 - [assets](#assetsstringablestring-paths)
 - [addWebhookExtraHeaders](#addwebhookextraheadersarray-extrahttpheaders)
@@ -160,6 +168,96 @@ If you want to add metadata from the ones already loaded in the configuration.<b
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->addMetadata('key', 'value')
+    ->generate()
+    ->stream()
+;
+```
+
+### addStampImage(Stringable|string \$path, ?string \$pages, array \$options)
+Adds an image stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addStampImage('logo.png', pages: '1')
+    ->generate()
+    ->stream()
+;
+```
+
+### addStampPdf(Stringable|string \$path, ?string \$pages, array \$options)
+Adds a PDF stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addStampPdf('stamp.pdf')
+    ->generate()
+    ->stream()
+;
+```
+
+### addStampText(string \$text, ?string \$pages, array \$options)
+Adds a text stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu). For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addStampText('APPROVED', pages: '1-3', options: ['opacity' => '0.5'])
+    ->generate()
+    ->stream()
+;
+```
+
+### addWatermarkImage(Stringable|string \$path, ?string \$pages, array \$options)
+Adds an image watermark. Watermarks are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addWatermarkImage('logo.png', pages: '1')
+    ->generate()
+    ->stream()
+;
+```
+
+### addWatermarkPdf(Stringable|string \$path, ?string \$pages, array \$options)
+Adds a PDF watermark. Watermarks are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addWatermarkPdf('watermark.pdf')
+    ->generate()
+    ->stream()
+;
+```
+
+### addWatermarkText(string \$text, ?string \$pages, array \$options)
+Adds a text watermark. Watermarks are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu), e.g. font, color, rotation, opacity, scaling.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addWatermarkText('CONFIDENTIAL', pages: '1-3', options: ['opacity' => '0.5'])
     ->generate()
     ->stream()
 ;
@@ -335,7 +433,7 @@ return $gotenberg
 ```
 
 ### stampExpression(string \$stampExpression)
-The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
+Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -350,7 +448,7 @@ return $gotenberg
 ```
 
 ### stampFile(Stringable|string \$path)
-An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+Deprecated, use addStampImage() or addStampPdf() instead.<br />An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -365,7 +463,7 @@ return $gotenberg
 ```
 
 ### stampOptions(array \$stampOptions)
-Advanced options in JSON format. Valid keys depend on the configured PDF engine (default: pdfcpu).<br />For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
+Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />Advanced options in JSON format. Valid keys depend on the configured PDF engine (default: pdfcpu).<br />For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -380,7 +478,7 @@ return $gotenberg
 ```
 
 ### stampPages(?string \$stampPages)
-Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
+Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -395,7 +493,7 @@ return $gotenberg
 ```
 
 ### stampSource(Sensiolabs\GotenbergBundle\Enumeration\StampSource \$stampSource)
-The stamp source type. Options: 'text', 'image', 'pdf'.<br />
+Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />The stamp source type. Options: 'text', 'image', 'pdf'.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -404,6 +502,21 @@ The stamp source type. Options: 'text', 'image', 'pdf'.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->stampSource(StampSource::Text)
+    ->generate()
+    ->stream()
+;
+```
+
+### stamps(array \$stamps)
+Adds several stamps, applied in order. An empty list removes the stamps added with this method or the addStamp*() ones.<br />They cannot be combined with the deprecated stamp* methods.<br />A 'text' entry requires an 'expression', an 'image' or 'pdf' entry requires a 'file'.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->stamps([['source' => StampSource::Text, 'expression' => 'APPROVED'], ['source' => StampSource::Image, 'file' => 'logo.png']])
     ->generate()
     ->stream()
 ;
@@ -425,7 +538,7 @@ return $gotenberg
 ```
 
 ### watermarkExpression(string \$watermarkExpression)
-The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.<br />
+Deprecated, use addWatermarkText(), addWatermarkImage() or addWatermarkPdf() instead.<br />The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
@@ -440,7 +553,7 @@ return $gotenberg
 ```
 
 ### watermarkFile(Stringable|string \$path)
-An image or PDF file used as watermark source (required when watermarkSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+Deprecated, use addWatermarkImage() or addWatermarkPdf() instead.<br />An image or PDF file used as watermark source (required when watermarkSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
@@ -455,7 +568,7 @@ return $gotenberg
 ```
 
 ### watermarkOptions(array \$watermarkOptions)
-Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).<br />
+Deprecated, use addWatermarkText(), addWatermarkImage() or addWatermarkPdf() instead.<br />Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
@@ -470,7 +583,7 @@ return $gotenberg
 ```
 
 ### watermarkPages(?string \$watermarkPages)
-Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.<br />
+Deprecated, use addWatermarkText(), addWatermarkImage() or addWatermarkPdf() instead.<br />Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
@@ -485,7 +598,7 @@ return $gotenberg
 ```
 
 ### watermarkSource(Sensiolabs\GotenbergBundle\Enumeration\WatermarkSource \$watermarkSource)
-The watermark source type.<br />
+Deprecated, use addWatermarkText(), addWatermarkImage() or addWatermarkPdf() instead.<br />The watermark source type.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
@@ -494,6 +607,21 @@ The watermark source type.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->watermarkSource(WatermarkSource::Text)
+    ->generate()
+    ->stream()
+;
+```
+
+### watermarks(array \$watermarks)
+Adds several watermarks, applied in order. An empty list removes the watermarks added with this method or the addWatermark*() ones.<br />They cannot be combined with the deprecated watermark* methods.<br />A 'text' entry requires an 'expression', an 'image' or 'pdf' entry requires a 'file'.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->watermarks([['source' => WatermarkSource::Text, 'expression' => 'CONFIDENTIAL'], ['source' => WatermarkSource::Image, 'file' => 'logo.png']])
     ->generate()
     ->stream()
 ;

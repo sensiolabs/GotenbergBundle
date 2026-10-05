@@ -38,6 +38,9 @@ class YourController
 
 ### Available methods
 
+- [addStampImage](#addstampimagestringablestring-path-string-pages-array-options)
+- [addStampPdf](#addstamppdfstringablestring-path-string-pages-array-options)
+- [addStampText](#addstamptextstring-text-string-pages-array-options)
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [files](#filesstringablestring-paths)
 - [stampExpression](#stampexpressionstring-stampexpression)
@@ -45,6 +48,7 @@ class YourController
 - [stampOptions](#stampoptionsarray-stampoptions)
 - [stampPages](#stamppagesstring-stamppages)
 - [stampSource](#stampsourcesensiolabsgotenbergbundleenumerationstampsource-stampsource)
+- [stamps](#stampsarray-stamps)
 - [addWebhookExtraHeaders](#addwebhookextraheadersarray-extrahttpheaders)
 - [webhook](#webhookarray-webhook)
 - [webhookConfiguration](#webhookconfigurationstring-name)
@@ -55,6 +59,51 @@ class YourController
 - [webhookExtraHeaders](#webhookextraheadersarray-extrahttpheaders)
 - [webhookRoute](#webhookroutestring-route-array-parameters-string-method)
 - [webhookUrl](#webhookurlstring-url-string-method)
+
+### addStampImage(Stringable|string \$path, ?string \$pages, array \$options)
+Adds an image stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addStampImage('logo.png', pages: '1')
+    ->generate()
+    ->stream()
+;
+```
+
+### addStampPdf(Stringable|string \$path, ?string \$pages, array \$options)
+Adds a PDF stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addStampPdf('stamp.pdf')
+    ->generate()
+    ->stream()
+;
+```
+
+### addStampText(string \$text, ?string \$pages, array \$options)
+Adds a text stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu). For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->addStampText('APPROVED', pages: '1-3', options: ['opacity' => '0.5'])
+    ->generate()
+    ->stream()
+;
+```
 
 ### downloadFrom(array \$downloadFrom)
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
@@ -87,7 +136,7 @@ return $gotenberg
 ```
 
 ### stampExpression(string \$stampExpression)
-The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
+Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -102,7 +151,7 @@ return $gotenberg
 ```
 
 ### stampFile(Stringable|string \$path)
-An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
+Deprecated, use addStampImage() or addStampPdf() instead.<br />An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -117,7 +166,7 @@ return $gotenberg
 ```
 
 ### stampOptions(array \$stampOptions)
-Advanced options in JSON format. Valid keys depend on the configured PDF engine (default: pdfcpu).<br />For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
+Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />Advanced options in JSON format. Valid keys depend on the configured PDF engine (default: pdfcpu).<br />For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -132,7 +181,7 @@ return $gotenberg
 ```
 
 ### stampPages(?string \$stampPages)
-Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
+Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -147,7 +196,7 @@ return $gotenberg
 ```
 
 ### stampSource(Sensiolabs\GotenbergBundle\Enumeration\StampSource \$stampSource)
-The stamp source type. Options: 'text', 'image', 'pdf'.<br />
+Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />The stamp source type. Options: 'text', 'image', 'pdf'.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
@@ -156,6 +205,21 @@ The stamp source type. Options: 'text', 'image', 'pdf'.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->stampSource(StampSource::Text)
+    ->generate()
+    ->stream()
+;
+```
+
+### stamps(array \$stamps)
+Adds several stamps, applied in order. An empty list removes the stamps added with this method or the addStamp*() ones.<br />They cannot be combined with the deprecated stamp* methods.<br />A 'text' entry requires an 'expression', an 'image' or 'pdf' entry requires a 'file'.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->stamps([['source' => StampSource::Text, 'expression' => 'APPROVED'], ['source' => StampSource::Image, 'file' => 'logo.png']])
     ->generate()
     ->stream()
 ;
