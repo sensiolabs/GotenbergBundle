@@ -463,7 +463,7 @@ return $gotenberg
 ```
 
 ### clipToSelector(string \$selector)
-Clip the screenshot to the bounding box of the first element matching this CSS selector.<br />
+Clip the screenshot to the bounding box of the first element matching this CSS selector. Takes precedence over clip().<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
