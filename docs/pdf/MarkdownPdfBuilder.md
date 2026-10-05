@@ -125,7 +125,9 @@ class YourController
 - [downloadFrom](#downloadfromarray-downloadfrom)
 - [files](#filesstringablestring-paths)
 - [flatten](#flattenbool-bool)
+- [imageQuality](#imagequalityint-imagequality)
 - [metadata](#metadataarray-metadata)
+- [optimizeImages](#optimizeimagesbool-bool)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
 - [pdfUniversalAccess](#pdfuniversalaccessbool-bool)
 - [rotateAngle](#rotateanglesensiolabsgotenbergbundleenumerationrotateangle-rotateangle)
@@ -261,6 +263,21 @@ return $gotenberg
 ;
 ```
 
+### imageQuality(?int \$imageQuality)
+The JPEG quality applied to each re-encoded image, between 1 and 100. Only used if optimizeImages is true. (default 80).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->imageQuality(60)
+    ->generate()
+    ->stream()
+;
+```
+
 ### metadata(array \$metadata)
 Resets the metadata.<br />
 
@@ -272,6 +289,21 @@ Resets the metadata.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->metadata(['Author' => 'SensioLabs', 'Subject' => 'Gotenberg', 'XMP-fx:DocumentType' => 'INVOICE', 'XMP-fx:DocumentFileName' => 'factur-x.xml'])
+    ->generate()
+    ->stream()
+;
+```
+
+### optimizeImages(bool \$bool)
+Re-encodes the images of the resulting PDF to reduce its file size. Text, vectors and structure are left untouched. (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->optimizeImages() // is same as `->optimizeImages(true)`
     ->generate()
     ->stream()
 ;

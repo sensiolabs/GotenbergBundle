@@ -94,6 +94,7 @@ class YourController
 - [hideViewerMenubar](#hideviewermenubarbool-bool)
 - [hideViewerToolbar](#hideviewertoolbarbool-bool)
 - [hideViewerWindowControls](#hideviewerwindowcontrolsbool-bool)
+- [imageQuality](#imagequalityint-imagequality)
 - [initialPage](#initialpageint-initialpage)
 - [initialView](#initialviewsensiolabsgotenbergbundleenumerationinitialview-initialview)
 - [landscape](#landscapebool-bool)
@@ -105,6 +106,7 @@ class YourController
 - [nativePageRanges](#nativepagerangesstring-ranges)
 - [openBookmarkLevels](#openbookmarklevelsint-openbookmarklevels)
 - [openInFullScreenMode](#openinfullscreenmodebool-bool)
+- [optimizeImages](#optimizeimagesbool-bool)
 - [pageLayout](#pagelayoutsensiolabsgotenbergbundleenumerationpagelayout-pagelayout)
 - [password](#passwordstring-password)
 - [pdfFormat](#pdfformatsensiolabsgotenbergbundleenumerationpdfformat-format)
@@ -501,6 +503,21 @@ return $gotenberg
 ;
 ```
 
+### imageQuality(?int \$imageQuality)
+The JPEG quality applied to each re-encoded image, between 1 and 100. Only used if optimizeImages is true. (default 80).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->imageQuality(60)
+    ->generate()
+    ->stream()
+;
+```
+
 ### initialPage(?int \$initialPage)
 The page on which the PDF opens.<br />
 
@@ -653,6 +670,21 @@ Open the PDF in full-screen mode.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->openInFullScreenMode() // is same as `->openInFullScreenMode(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### optimizeImages(bool \$bool)
+Re-encodes the images of the resulting PDF to reduce its file size. Text, vectors and structure are left untouched. (default false).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->optimizeImages() // is same as `->optimizeImages(true)`
     ->generate()
     ->stream()
 ;

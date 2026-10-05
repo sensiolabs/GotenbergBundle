@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
@@ -59,6 +60,7 @@ final class ConfigurationTest extends TestCase
                     EncryptPdfBuilder::class,
                     WatermarkPdfBuilder::class,
                     RotatePdfBuilder::class,
+                    OptimizePdfBuilder::class,
                 ],
                 'screenshot' => [
                     HtmlScreenshotBuilder::class,
@@ -450,6 +452,17 @@ final class ConfigurationTest extends TestCase
                         'watermark_options' => [],
                     ],
                     'rotate' => [
+                        'download_from' => [],
+                        'webhook' => [
+                            'success' => [
+                            ],
+                            'error' => [
+                            ],
+                            'extra_http_headers' => [],
+                            'events' => [],
+                        ],
+                    ],
+                    'optimize' => [
                         'download_from' => [],
                         'webhook' => [
                             'success' => [

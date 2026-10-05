@@ -8,6 +8,7 @@ trait LibreOfficeTrait
     use FlattenTrait;
     use LibreOffice\PagePropertiesTrait;
     use MetadataTrait;
+    use OptimizeImagesTrait;
     use PdfFormatTrait;
     use RotateTrait;
     use SplitTrait;

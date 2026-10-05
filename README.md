@@ -307,6 +307,7 @@ class YourController
 9. [Flatten Builder](./docs/pdf/FlattenPdfBuilder.md)
 10. [Encrypt Builder](./docs/pdf/EncryptPdfBuilder.md)
 11. [Embed Builder](./docs/pdf/EmbedPdfBuilder.md)
+12. [Optimize Builder](./docs/pdf/OptimizePdfBuilder.md)
 
 ### Screenshot
 

@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
@@ -92,4 +93,9 @@ interface GotenbergPdfInterface
      * @return RotatePdfBuilder
      */
     public function rotate(): BuilderInterface;
+
+    /**
+     * @return OptimizePdfBuilder
+     */
+    public function optimize(): BuilderInterface;
 }
