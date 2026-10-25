@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\EmbedTrait;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\FacturXTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\WebhookTrait;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
@@ -27,6 +28,7 @@ final class EmbedPdfBuilder extends AbstractBuilder
     use AssetBaseDirFormatterAwareTrait;
     use DownloadFromTrait;
     use EmbedTrait;
+    use FacturXTrait;
     use FilesTrait;
     use WebhookTrait;
 
@@ -54,8 +56,8 @@ final class EmbedPdfBuilder extends AbstractBuilder
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
 
-        if ($this->getBodyBag()->get('embeds') === null) {
-            throw new MissingRequiredFieldException('At least one embed file is required.');
+        if ($this->getBodyBag()->get('embeds') === null && $this->getBodyBag()->get('facturxXml') === null) {
+            throw new MissingRequiredFieldException('At least one embed file or a Factur-X XML is required.');
         }
     }
 }

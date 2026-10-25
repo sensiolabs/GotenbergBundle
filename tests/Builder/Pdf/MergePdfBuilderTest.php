@@ -11,6 +11,7 @@ use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BookmarksTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EncryptTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FacturXTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FlattenTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\MetadataTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\PdfFormatTestCaseTrait;
@@ -35,6 +36,9 @@ final class MergePdfBuilderTest extends GotenbergBuilderTestCase
 
     /** @use EncryptTestCaseTrait<MergePdfBuilder> */
     use EncryptTestCaseTrait;
+
+    /** @use FacturXTestCaseTrait<MergePdfBuilder> */
+    use FacturXTestCaseTrait;
 
     /** @use FlattenTestCaseTrait<MergePdfBuilder> */
     use FlattenTestCaseTrait;

@@ -5,6 +5,7 @@ namespace Sensiolabs\GotenbergBundle;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FacturXPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
@@ -37,6 +38,7 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder(ConvertPdfBuilder::class);
         $extension->registerBuilder(EncryptPdfBuilder::class);
         $extension->registerBuilder(EmbedPdfBuilder::class);
+        $extension->registerBuilder(FacturXPdfBuilder::class);
         $extension->registerBuilder(FlattenPdfBuilder::class);
         $extension->registerBuilder(HtmlPdfBuilder::class);
         $extension->registerBuilder(LibreOfficePdfBuilder::class);

@@ -5,6 +5,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FacturXPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\FlattenPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
@@ -66,6 +67,7 @@ class BuilderParser
             ConvertPdfBuilder::class,
             EncryptPdfBuilder::class,
             EmbedPdfBuilder::class,
+            FacturXPdfBuilder::class,
             FlattenPdfBuilder::class,
             HtmlPdfBuilder::class,
             LibreOfficePdfBuilder::class,

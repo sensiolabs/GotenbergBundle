@@ -4,10 +4,12 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Pdf;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
+use Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\DownloadFromTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\EmbedTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\FacturXTestCaseTrait;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\WebhookTestCaseTrait;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -21,6 +23,9 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
 
     /** @use EmbedTestCaseTrait<EmbedPdfBuilder> */
     use EmbedTestCaseTrait;
+
+    /** @use FacturXTestCaseTrait<EmbedPdfBuilder> */
+    use FacturXTestCaseTrait;
 
     /** @use WebhookTestCaseTrait<EmbedPdfBuilder> */
     use WebhookTestCaseTrait;
@@ -67,10 +72,25 @@ final class EmbedPdfBuilderTest extends GotenbergBuilderTestCase
         ;
     }
 
+    public function testFacturxXmlWithoutEmbedFile(): void
+    {
+        $this->withGotenbergVersion('8.34.0');
+
+        $this->getBuilder()
+            ->files('pdf/simple_pdf.pdf')
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::EN16931)
+            ->generate()
+        ;
+
+        $this->assertGotenbergEndpoint('/forms/pdfengines/embed');
+        $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
+        $this->assertGotenbergFormData('facturxConformanceLevel', 'EN 16931');
+    }
+
     public function testRequiredEmbedFile(): void
     {
         $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('At least one embed file is required.');
+        $this->expectExceptionMessage('At least one embed file or a Factur-X XML is required.');
 
         $this->getBuilder()
             ->files('pdf/simple_pdf.pdf')
