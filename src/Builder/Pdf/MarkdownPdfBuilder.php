@@ -99,6 +99,5 @@ final class MarkdownPdfBuilder extends AbstractBuilder implements BuilderAssetIn
         }
 
         $this->validateEncryptPermissions();
-        $this->validateFacturX();
     }
 }

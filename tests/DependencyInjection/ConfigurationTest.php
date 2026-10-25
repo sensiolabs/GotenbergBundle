@@ -113,6 +113,26 @@ final class ConfigurationTest extends TestCase
         );
     }
 
+    public function testFacturxPdfFormatRejectsNonPdfA3(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $processor = new Processor();
+        $processor->processConfiguration(
+            self::getWithBuilders(['pdf' => [FacturXPdfBuilder::class]]),
+            [['default_options' => ['pdf' => ['facturx' => ['pdf_format' => 'PDF/A-1b']]]]],
+        );
+    }
+
+    public function testFacturxVersionMustBeAString(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $processor = new Processor();
+        $processor->processConfiguration(
+            self::getWithBuilders(['pdf' => [FacturXPdfBuilder::class]]),
+            [['default_options' => ['pdf' => ['facturx' => ['facturx_version' => 1.0]]]]],
+        );
+    }
+
     /**
      * @return iterable<string, list<array<array-key, string>|list<array{name: array-key, value: string}>>>
      */
@@ -559,7 +579,7 @@ final class ConfigurationTest extends TestCase
                             'events' => [],
                         ],
                     ],
-                    'factur_x' => [
+                    'facturx' => [
                         'download_from' => [],
                         'webhook' => [
                             'success' => [

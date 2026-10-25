@@ -35,6 +35,5 @@ final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterf
         }
 
         $this->validateEncryptPermissions();
-        $this->validateFacturX();
     }
 }

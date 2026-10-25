@@ -6,8 +6,8 @@ namespace Sensiolabs\GotenbergBundle\Enumeration;
  * PDF/A-3 variants accepted by the `/forms/pdfengines/factur-x` route.
  *
  * Distinct from {@see PdfFormat}: Factur-X requires PDF/A-3, the only PDF/A family
- * that allows embedded files, and this route does not accept the 1b/2b/3b subset
- * exposed elsewhere.
+ * that allows embedded files, so this route rejects PDF/A-1b and PDF/A-2b.
+ * Defaults to PDF/A-3b when omitted.
  */
 enum FacturXPdfFormat: string
 {

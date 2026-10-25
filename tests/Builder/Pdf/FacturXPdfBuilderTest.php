@@ -43,8 +43,7 @@ final class FacturXPdfBuilderTest extends GotenbergBuilderTestCase
     {
         return $builder
             ->files('pdf/simple_pdf.pdf')
-            ->facturxXml('embed/factur-x.xml')
-            ->facturxConformanceLevel(FacturXConformanceLevel::En16931)
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::EN16931)
         ;
     }
 
@@ -52,8 +51,7 @@ final class FacturXPdfBuilderTest extends GotenbergBuilderTestCase
     {
         $this->getBuilder()
             ->files('pdf/simple_pdf.pdf')
-            ->facturxXml('embed/factur-x.xml')
-            ->facturxConformanceLevel(FacturXConformanceLevel::En16931)
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::EN16931)
             ->generate()
         ;
 
@@ -67,7 +65,7 @@ final class FacturXPdfBuilderTest extends GotenbergBuilderTestCase
     {
         $this->getBuilder()
             ->files('pdf/simple_pdf.pdf')
-            ->facturxXml(new \SplFileInfo(Path::canonicalize(self::FIXTURE_DIR.'/embed/factur-x.xml')), FacturXConformanceLevel::Xrechnung)
+            ->facturxXml(new \SplFileInfo(Path::canonicalize(self::FIXTURE_DIR.'/embed/factur-x.xml')), FacturXConformanceLevel::XRechnung)
             ->generate()
         ;
 
@@ -121,8 +119,7 @@ final class FacturXPdfBuilderTest extends GotenbergBuilderTestCase
         $this->expectExceptionMessage('At least one PDF file is required.');
 
         $this->getBuilder()
-            ->facturxXml('embed/factur-x.xml')
-            ->facturxConformanceLevel(FacturXConformanceLevel::En16931)
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::EN16931)
             ->generate()
         ;
     }
@@ -134,19 +131,6 @@ final class FacturXPdfBuilderTest extends GotenbergBuilderTestCase
 
         $this->getBuilder()
             ->files('pdf/simple_pdf.pdf')
-            ->facturxConformanceLevel(FacturXConformanceLevel::En16931)
-            ->generate()
-        ;
-    }
-
-    public function testRequiredFacturxConformanceLevel(): void
-    {
-        $this->expectException(MissingRequiredFieldException::class);
-        $this->expectExceptionMessage('Field "facturxConformanceLevel" must be provided.');
-
-        $this->getBuilder()
-            ->files('pdf/simple_pdf.pdf')
-            ->facturxXml('embed/factur-x.xml')
             ->generate()
         ;
     }

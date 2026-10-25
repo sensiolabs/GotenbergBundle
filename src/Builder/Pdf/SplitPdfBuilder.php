@@ -84,6 +84,5 @@ final class SplitPdfBuilder extends AbstractBuilder
         }
 
         $this->validateEncryptPermissions();
-        $this->validateFacturX();
     }
 }

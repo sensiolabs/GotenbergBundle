@@ -74,7 +74,6 @@ final class UrlPdfBuilder extends AbstractBuilder implements BuilderAssetInterfa
         }
 
         $this->validateEncryptPermissions();
-        $this->validateFacturX();
     }
 
     /**

@@ -90,7 +90,6 @@ class YourController
 - [allowPrinting](#allowprintingbool-bool)
 - [ownerPassword](#ownerpasswordstring-ownerpassword)
 - [userPassword](#userpasswordstring-userpassword)
-- [facturxConformanceLevel](#facturxconformancelevelsensiolabsgotenbergbundleenumerationfacturxconformancelevel-conformancelevel)
 - [facturxDocumentType](#facturxdocumenttypesensiolabsgotenbergbundleenumerationfacturxdocumenttype-documenttype)
 - [facturxVersion](#facturxversionstring-version)
 - [facturxXml](#facturxxmlstringablesplfileinfostring-path-sensiolabsgotenbergbundleenumerationfacturxconformancelevel-conformancelevel)
@@ -282,11 +281,11 @@ return $gotenberg
 ```
 
 ### metadata(array \$metadata)
-Resets the metadata.<br />
+Resets the metadata.<br /><br />Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords,<br />Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.<br /><br />Any ExifTool-compatible key is accepted, including custom XMP namespaces.<br /><br />For Factur-X/ZUGFeRD specifically, prefer `FacturXTrait::facturxXml()`, which uses<br />Gotenberg's dedicated `facturx*` form fields (>= 8.34) instead of raw `XMP-fx:*`<br />metadata keys.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines)<br />
-> See: [https://exiftool.org/TagNames/XMP.html#pdf  Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords, Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.  Any ExifTool-compatible key is accepted, including custom XMP namespaces.  For Factur-X/ZUGFeRD specifically, prefer `FacturXTrait::facturxXml()` and `FacturXTrait::facturxConformanceLevel()`, which use Gotenberg's dedicated `facturx*` form fields (>= 8.34) instead of raw `XMP-fx:*` metadata keys.](https://exiftool.org/TagNames/XMP.html#pdf  Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords, Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.  Any ExifTool-compatible key is accepted, including custom XMP namespaces.  For Factur-X/ZUGFeRD specifically, prefer `FacturXTrait::facturxXml()` and `FacturXTrait::facturxConformanceLevel()`, which use Gotenberg's dedicated `facturx*` form fields (>= 8.34) instead of raw `XMP-fx:*` metadata keys.)
+> See: [https://exiftool.org/TagNames/XMP.html#pdf](https://exiftool.org/TagNames/XMP.html#pdf)
 
 ```php
 return $gotenberg
@@ -811,21 +810,6 @@ return $gotenberg
 ```
 
 
-### facturxConformanceLevel(Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel \$conformanceLevel)
-The Factur-X/ZUGFeRD conformance level, recorded in the XMP metadata. Must be<br />provided together with `facturxXml()`, which also accepts it as its second argument.<br />See the `FacturXConformanceLevel` enum for what each level covers.<br />
-
-> [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
-
-```php
-return $gotenberg
-    // Your builder call as ->html() and the rest of your configuration code
-    ->facturxConformanceLevel(FacturXConformanceLevel::En16931)
-    ->generate()
-    ->stream()
-;
-```
-
 ### facturxDocumentType(Sensiolabs\GotenbergBundle\Enumeration\FacturXDocumentType \$documentType)
 The Factur-X/ZUGFeRD document type. (Default INVOICE).<br />
 
@@ -856,8 +840,8 @@ return $gotenberg
 ;
 ```
 
-### facturxXml(Stringable|SplFileInfo|string \$path, ?Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel \$conformanceLevel)
-The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the<br />uploaded filename.<br /><br />Gotenberg requires a conformance level alongside the XML: pass it as the second<br />argument, or set it on its own with `facturxConformanceLevel()` — through the bundle<br />configuration, for instance, when your application always issues the same level.<br /><br />As an asset file, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation. Pass a `\SplFileInfo` to bypass that resolution.<br />
+### facturxXml(Stringable|SplFileInfo|string \$path, Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel \$conformanceLevel)
+The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the<br />uploaded filename.<br /><br />Gotenberg requires the conformance level alongside the XML, recorded in the XMP<br />metadata. See the `FacturXConformanceLevel` enum for what each level covers.<br /><br />As an asset file, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation. Pass a `\SplFileInfo` to bypass that resolution.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
@@ -865,7 +849,7 @@ The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of t
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->facturxXml('invoice.xml', FacturXConformanceLevel::En16931)
+    ->facturxXml('invoice.xml', FacturXConformanceLevel::EN16931)
     ->generate()
     ->stream()
 ;
@@ -874,7 +858,7 @@ return $gotenberg
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->facturxXml(new \SplFileInfo('/var/invoices/2026-001.xml'), FacturXConformanceLevel::En16931)
+    ->facturxXml(new \SplFileInfo('/var/invoices/2026-001.xml'), FacturXConformanceLevel::EN16931)
     ->generate()
     ->stream()
 ;

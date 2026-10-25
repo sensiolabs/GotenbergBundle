@@ -75,6 +75,5 @@ final class MergePdfBuilder extends AbstractBuilder
         }
 
         $this->validateEncryptPermissions();
-        $this->validateFacturX();
     }
 }

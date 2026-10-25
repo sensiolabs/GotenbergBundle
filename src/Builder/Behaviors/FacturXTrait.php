@@ -10,7 +10,6 @@ use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel;
 use Sensiolabs\GotenbergBundle\Enumeration\FacturXDocumentType;
-use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 
@@ -30,9 +29,8 @@ trait FacturXTrait
      * The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the
      * uploaded filename.
      *
-     * Gotenberg requires a conformance level alongside the XML: pass it as the second
-     * argument, or set it on its own with `facturxConformanceLevel()` — through the bundle
-     * configuration, for instance, when your application always issues the same level.
+     * Gotenberg requires the conformance level alongside the XML, recorded in the XMP
+     * metadata. See the `FacturXConformanceLevel` enum for what each level covers.
      *
      * As an asset file, by default the file is fetched in the assets folder
      * of your application. For more information about path resolution go to
@@ -40,10 +38,10 @@ trait FacturXTrait
      *
      * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
      *
-     * @example facturxXml('invoice.xml', FacturXConformanceLevel::En16931)
-     * @example facturxXml(new \SplFileInfo('/var/invoices/2026-001.xml'), FacturXConformanceLevel::En16931)
+     * @example facturxXml('invoice.xml', FacturXConformanceLevel::EN16931)
+     * @example facturxXml(new \SplFileInfo('/var/invoices/2026-001.xml'), FacturXConformanceLevel::EN16931)
      */
-    public function facturxXml(string|\Stringable|\SplFileInfo $path, FacturXConformanceLevel|null $conformanceLevel = null): self
+    public function facturxXml(string|\Stringable|\SplFileInfo $path, FacturXConformanceLevel $conformanceLevel): self
     {
         $this->logWarningIfVersionIs('<', '8.34', 'The facturxXml option is not available.');
 
@@ -56,28 +54,6 @@ trait FacturXTrait
         }
 
         $this->getBodyBag()->set('facturxXml', [$filename => $info]);
-
-        if (null !== $conformanceLevel) {
-            $this->facturxConformanceLevel($conformanceLevel);
-        }
-
-        return $this;
-    }
-
-    /**
-     * The Factur-X/ZUGFeRD conformance level, recorded in the XMP metadata. Must be
-     * provided together with `facturxXml()`, which also accepts it as its second argument.
-     * See the `FacturXConformanceLevel` enum for what each level covers.
-     *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
-     *
-     * @example facturxConformanceLevel(FacturXConformanceLevel::En16931)
-     */
-    #[WithConfigurationNode(new NativeEnumNodeBuilder('facturx_conformance_level', enumClass: FacturXConformanceLevel::class))]
-    public function facturxConformanceLevel(FacturXConformanceLevel $conformanceLevel): self
-    {
-        $this->logWarningIfVersionIs('<', '8.34', 'The facturxConformanceLevel option is not available.');
-
         $this->getBodyBag()->set('facturxConformanceLevel', $conformanceLevel);
 
         return $this;
@@ -107,7 +83,7 @@ trait FacturXTrait
      *
      * @example facturxVersion('1.0')
      */
-    #[WithConfigurationNode(new ScalarNodeBuilder('facturx_version'))]
+    #[WithConfigurationNode(new ScalarNodeBuilder('facturx_version', restrictTo: 'string'))]
     public function facturxVersion(string $version): self
     {
         $this->logWarningIfVersionIs('<', '8.34', 'The facturxVersion option is not available.');
@@ -115,24 +91,6 @@ trait FacturXTrait
         $this->getBodyBag()->set('facturxVersion', $version);
 
         return $this;
-    }
-
-    /**
-     * `facturxXml` and `facturxConformanceLevel` are required together: providing only
-     * one of them is rejected by Gotenberg.
-     */
-    protected function validateFacturX(): void
-    {
-        $hasXml = $this->getBodyBag()->get('facturxXml') !== null;
-        $hasConformanceLevel = $this->getBodyBag()->get('facturxConformanceLevel') !== null;
-
-        if ($hasXml && !$hasConformanceLevel) {
-            throw new MissingRequiredFieldException('"facturxConformanceLevel" must be provided when "facturxXml" is set.');
-        }
-
-        if ($hasConformanceLevel && !$hasXml) {
-            throw new MissingRequiredFieldException('"facturxXml" must be provided when "facturxConformanceLevel" is set.');
-        }
     }
 
     #[NormalizeGotenbergPayload]

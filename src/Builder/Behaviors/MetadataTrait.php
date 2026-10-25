@@ -18,17 +18,17 @@ trait MetadataTrait
     /**
      * Resets the metadata.
      *
-     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines
-     * @see https://exiftool.org/TagNames/XMP.html#pdf
-     *
      * Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords,
      * Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.
      *
      * Any ExifTool-compatible key is accepted, including custom XMP namespaces.
      *
-     * For Factur-X/ZUGFeRD specifically, prefer `FacturXTrait::facturxXml()` and
-     * `FacturXTrait::facturxConformanceLevel()`, which use Gotenberg's dedicated
-     * `facturx*` form fields (>= 8.34) instead of raw `XMP-fx:*` metadata keys.
+     * For Factur-X/ZUGFeRD specifically, prefer `FacturXTrait::facturxXml()`, which uses
+     * Gotenberg's dedicated `facturx*` form fields (>= 8.34) instead of raw `XMP-fx:*`
+     * metadata keys.
+     *
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines
+     * @see https://exiftool.org/TagNames/XMP.html#pdf
      *
      * @param array<string, mixed>&array{
      *      Author?: string,

@@ -296,7 +296,7 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
             return $traceableBuilder;
         }
 
-        $this->builders[] = ['factur_x', $traceableBuilder];
+        $this->builders[] = ['facturx', $traceableBuilder];
 
         return $traceableBuilder;
     }

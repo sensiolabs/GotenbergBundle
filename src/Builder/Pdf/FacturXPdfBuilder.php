@@ -32,7 +32,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
  *
  * @example files('invoice.pdf')
  */
-#[WithBuilderConfiguration(type: 'pdf', name: 'factur_x')]
+#[WithBuilderConfiguration(type: 'pdf', name: 'facturx')]
 final class FacturXPdfBuilder extends AbstractBuilder
 {
     use AssetBaseDirFormatterAwareTrait;
@@ -102,10 +102,6 @@ final class FacturXPdfBuilder extends AbstractBuilder
 
         if ($this->getBodyBag()->get('facturxXml') === null) {
             throw new MissingRequiredFieldException('Field "facturxXml" must be provided.');
-        }
-
-        if ($this->getBodyBag()->get('facturxConformanceLevel') === null) {
-            throw new MissingRequiredFieldException('Field "facturxConformanceLevel" must be provided.');
         }
     }
 

@@ -138,7 +138,7 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     // Factur-X
-    $services->set('.sensiolabs_gotenberg.pdf_builder.factur_x', FacturXPdfBuilder::class)
+    $services->set('.sensiolabs_gotenberg.pdf_builder.facturx', FacturXPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.builder')

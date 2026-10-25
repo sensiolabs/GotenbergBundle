@@ -20,6 +20,8 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\Enumeration\FacturXDocumentType;
+use Sensiolabs\GotenbergBundle\Enumeration\FacturXPdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
@@ -256,6 +258,11 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 'optimize' => [
                     'image_quality' => 60,
                 ],
+                'facturx' => [
+                    'pdf_format' => FacturXPdfFormat::Pdf3u,
+                    'facturx_document_type' => FacturXDocumentType::Order,
+                    'facturx_version' => '1.0',
+                ],
             ],
             'screenshot' => [
                 'html' => [
@@ -424,7 +431,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                     'embed' => [],
                     'rotate' => [],
                     'optimize' => [],
-                    'factur_x' => [],
+                    'facturx' => [],
                 ],
             ],
         ]], $containerBuilder);
@@ -471,7 +478,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 'embed' => [],
                 'rotate' => [],
                 'optimize' => [],
-                'factur_x' => [],
+                'facturx' => [],
             ],
             'screenshot' => [
                 'html' => [],
@@ -827,6 +834,11 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                         ],
                         'optimize' => [
                             'image_quality' => 60,
+                        ],
+                        'facturx' => [
+                            'pdf_format' => FacturXPdfFormat::Pdf3u->value,
+                            'facturx_document_type' => FacturXDocumentType::Order->value,
+                            'facturx_version' => '1.0',
                         ],
                         'encrypt' => [
                             'user_password' => 'user_secret',

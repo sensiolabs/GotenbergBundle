@@ -26,8 +26,7 @@ trait FacturXTestCaseTrait
         $this->withGotenbergVersion('8.34.0');
 
         $this->getDefaultBuilder()
-            ->facturxXml('embed/factur-x.xml')
-            ->facturxConformanceLevel(FacturXConformanceLevel::En16931)
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::EN16931)
             ->generate()
         ;
 
@@ -39,24 +38,11 @@ trait FacturXTestCaseTrait
         $this->withGotenbergVersion('8.34.0');
 
         $this->getDefaultBuilder()
-            ->facturxXml(new \SplFileInfo(Path::canonicalize(self::FIXTURE_DIR.'/embed/factur-x.xml')), FacturXConformanceLevel::En16931)
+            ->facturxXml(new \SplFileInfo(Path::canonicalize(self::FIXTURE_DIR.'/embed/factur-x.xml')), FacturXConformanceLevel::EN16931)
             ->generate()
         ;
 
         $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
-    }
-
-    public function testFacturxXmlWithConformanceLevelAsArgument(): void
-    {
-        $this->withGotenbergVersion('8.34.0');
-
-        $this->getDefaultBuilder()
-            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::Extended)
-            ->generate()
-        ;
-
-        $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
-        $this->assertGotenbergFormData('facturxConformanceLevel', 'EXTENDED');
     }
 
     public function testFacturxConformanceLevel(): void
@@ -64,11 +50,11 @@ trait FacturXTestCaseTrait
         $this->withGotenbergVersion('8.34.0');
 
         $this->getDefaultBuilder()
-            ->facturxXml('embed/factur-x.xml')
-            ->facturxConformanceLevel(FacturXConformanceLevel::BasicWl)
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::BasicWL)
             ->generate()
         ;
 
+        $this->assertGotenbergFormDataFile('facturxXml', 'application/xml', self::FIXTURE_DIR.'/embed/factur-x.xml');
         $this->assertGotenbergFormData('facturxConformanceLevel', 'BASIC WL');
     }
 
@@ -77,8 +63,7 @@ trait FacturXTestCaseTrait
         $this->withGotenbergVersion('8.34.0');
 
         $this->getDefaultBuilder()
-            ->facturxXml('embed/factur-x.xml')
-            ->facturxConformanceLevel(FacturXConformanceLevel::En16931)
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::EN16931)
             ->facturxDocumentType(FacturXDocumentType::Order)
             ->generate()
         ;
@@ -91,8 +76,7 @@ trait FacturXTestCaseTrait
         $this->withGotenbergVersion('8.34.0');
 
         $this->getDefaultBuilder()
-            ->facturxXml('embed/factur-x.xml')
-            ->facturxConformanceLevel(FacturXConformanceLevel::En16931)
+            ->facturxXml('embed/factur-x.xml', FacturXConformanceLevel::EN16931)
             ->facturxVersion('1.0')
             ->generate()
         ;

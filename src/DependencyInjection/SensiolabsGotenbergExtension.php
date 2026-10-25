@@ -40,7 +40,7 @@ use Symfony\Component\Routing\RequestContext;
  *              embed: array<string, mixed>,
  *              stamp: array<string, mixed>,
  *              watermark: array<string, mixed>,
- *              factur_x: array<string, mixed>,
+ *              facturx: array<string, mixed>,
  *          },
  *          screenshot: array{
  *              html: array<string, mixed>,
