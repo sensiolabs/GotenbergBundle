@@ -69,7 +69,10 @@ $ # Run all tests available with specific symfony / php versions
 $ dagger --progress=logs call test --symfony-version='6.4.*' --php-version='8.2' all
 
 $ # Run all tests available with next symfony / php versions
-$ dagger --progress=logs call test --symfony-version='8.0.*' --minimum-stability='dev' --php-version='8.2' all
+$ dagger --progress=logs call test --symfony-version='8.2.*' --minimum-stability='dev' --php-version='8.4' all
+
+$ # Show the matrix: maintained Symfony versions (symfony.com) x supported PHP versions (composer.json and php.net)
+$ dagger call matrix
 
 $ # Run all tests available with all supported version of both PHP and Symfony
 $ dagger --progress=logs call tests-matrix all
@@ -79,7 +82,7 @@ About the list of flags available (`dagger call test --help` or `dagger call tes
 
 | flag                  | description                                                                                                                                                          |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--symfony-version`   | Can be any SemVer compatible value (eg : `6.4.*`, `^6.4`, ...)                                                                                                       |
+| `--symfony-version`   | Can be any SemVer compatible value (eg : `6.4.*`, `^6.4`, ...). Defaults to the latest stable version.                                                               |
 | `--minimum-stability` | Can be any valid value from [official minimum stability values](https://getcomposer.org/doc/04-schema.md#minimum-stability)                                          |
 | `--php-version`       | Can be any tag from the [official PHP Docker image](https://github.com/docker-library/docs/blob/master/php/README.md#supported-tags-and-respective-dockerfile-links) |
 
@@ -90,6 +93,7 @@ $ dagger functions
 Name            Description
 ci              Provide a container with all dependencies installed and ready to check CI dependencies.
 generate-docs   Generates documentation and returns the ChangeSet to apply locally.
+matrix          Output the test matrix (maintained Symfony versions x supported PHP versions) as JSON.
 php-cs-fixer    Run php-cs-fixer. Returns the Directory diff.
 test            Provide a container with all dependencies installed and ready to run tests.
 tests-matrix    Execute all tests within matrix (PHP version, Symfony version).

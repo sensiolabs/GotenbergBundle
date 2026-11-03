@@ -24,8 +24,6 @@ use function Dagger\dag;
 #[Doc('Module for GotenbergBundle')]
 class GotenbergBundle
 {
-    private const DEFAULT_PHP_VERSION = '8.4';
-    private const DEFAULT_SYMFONY_VERSION = '8.0.*';
     private const DEFAULT_GOTENBERG_VERSION = '8.0';
 
     private function gotenbergContainer(
@@ -48,7 +46,7 @@ class GotenbergBundle
 
     private function phpContainer(
         Directory $source,
-        string $phpVersion = self::DEFAULT_PHP_VERSION,
+        string $phpVersion,
     ): Container {
         $aptCache = dag()->cacheVolume("apt-cache-{$phpVersion}");
         $composerBin = dag()->container()->from('composer/composer:latest-bin')->file('/composer');
@@ -84,11 +82,13 @@ class GotenbergBundle
 
     private function symfonyContainer(
         Directory $source,
-        string $phpVersion = self::DEFAULT_PHP_VERSION,
-        string $symfonyVersion = self::DEFAULT_SYMFONY_VERSION,
+        string $phpVersion = '',
+        string $symfonyVersion = '',
         string $minimumStability = 'stable',
         Container|null $phpContainer = null,
     ): Container {
+        ['php' => $phpVersion, 'symfony' => $symfonyVersion] = $this->resolveVersions(trim($phpVersion), trim($symfonyVersion));
+
         $phpContainer ??= $this->phpContainer($source, $phpVersion);
 
         $minimumStability = trim($minimumStability);
@@ -106,16 +106,121 @@ class GotenbergBundle
     }
 
     /**
-     * @return \Generator<int, array{string, string}>
+     * @return array<string, mixed>
      */
-    private function getMatrix(): \Generator
+    private function fetchJson(string $url): array
     {
-        /** @var list<array{name: string, symfony-version: string, php: string, 'allow-failure': bool}> $matrix */
-        $matrix = json_decode(file_get_contents(__DIR__.'/matrix-versions.json'), associative: true);
+        return json_decode(file_get_contents($url), associative: true, flags: \JSON_THROW_ON_ERROR);
+    }
 
-        foreach ($matrix as $row) {
-            yield [$row['symfony-version'], $row['php'], $row['minimum-stability'] ?? 'stable'];
+    /**
+     * Builds the matrix from the maintained Symfony versions (symfony.com) and the PHP versions
+     * between the bundle minimum (composer.json) and the latest active one (php.net).
+     *
+     * @return list<array{name: string, symfony-version: string, php: string, minimum-stability: string, allow-failure: bool}>
+     */
+    private function getMatrix(Directory $source): array
+    {
+        $symfony = $this->fetchJson('https://symfony.com/releases.json');
+
+        // e.g. ">=8.1" in composer.json and ["8.2", ..., "8.5"] on php.net give 8.1 to 8.5.
+        $composerPhpRequirement = json_decode($source->file('composer.json')->contents(), associative: true)['require']['php'];
+        preg_match('#\d+\.\d+#', $composerPhpRequirement, $minPhpVersion);
+        $phpVersions = [$minPhpVersion[0]];
+        foreach ($this->fetchJson('https://www.php.net/releases/active.php') as $activeVersions) {
+            foreach (array_keys($activeVersions) as $activeVersion) {
+                if (version_compare($activeVersion, $minPhpVersion[0], '>')) {
+                    $phpVersions[] = $activeVersion;
+                }
+            }
         }
+        usort($phpVersions, version_compare(...));
+
+        // "8.2.0" -> "8.2"
+        preg_match('#^\d+\.\d+#', $symfony['symfony_versions']['next'], $nextSymfonyVersion);
+
+        $matrix = [];
+        foreach ([...$symfony['supported_versions'], $nextSymfonyVersion[0]] as $symfonyVersion) {
+            $isNext = $nextSymfonyVersion[0] === $symfonyVersion;
+            // "8.4.0" -> "8.4"
+            preg_match('#^\d+\.\d+#', $symfony['min_php_requirements'][$symfonyVersion], $minPhpVersion);
+
+            foreach ($phpVersions as $phpVersion) {
+                if (version_compare($phpVersion, $minPhpVersion[0], '<')) {
+                    continue;
+                }
+
+                $matrix[] = [
+                    'name' => "Symfony '{$symfonyVersion}' with PHP '{$phpVersion}'",
+                    'symfony-version' => "{$symfonyVersion}.*",
+                    'php' => $phpVersion,
+                    'minimum-stability' => $isNext ? 'dev' : 'stable',
+                    'allow-failure' => $isNext,
+                ];
+            }
+        }
+
+        return $matrix;
+    }
+
+    /**
+     * Resolves the empty versions from symfony.com:
+     * - Symfony: the latest stable version, or the highest supported version that runs on the given PHP version.
+     * - PHP: the minimum PHP version of the Symfony version.
+     *
+     * @return array{php: string, symfony: string}
+     */
+    private function resolveVersions(string $phpVersion, string $symfonyVersion): array
+    {
+        if ('' !== $phpVersion && '' !== $symfonyVersion) {
+            return ['php' => $phpVersion, 'symfony' => $symfonyVersion];
+        }
+
+        $symfony = $this->fetchJson('https://symfony.com/releases.json');
+
+        if ('' !== $symfonyVersion) {
+            // "8.1.*" -> "8.1"
+            preg_match('#^\d+\.\d+#', $symfonyVersion, $matches);
+            $symfonyMinorVersion = $matches[0];
+        } elseif ('' === $phpVersion) {
+            $symfonyMinorVersion = $symfony['latest_stable_version'];
+        } else {
+            // supported_versions is sorted from the lowest to the highest version.
+            $versions = array_filter(
+                $symfony['supported_versions'],
+                static function (string $version) use ($symfony, $phpVersion): bool {
+                    // "8.4.0" -> "8.4", as version_compare('8.4', '8.4.0') returns -1.
+                    preg_match('#^\d+\.\d+#', $symfony['min_php_requirements'][$version], $matches);
+
+                    return version_compare($phpVersion, $matches[0], '>=');
+                },
+            );
+            $symfonyMinorVersion = end($versions);
+        }
+
+        if ('' === $phpVersion) {
+            // "8.4.0" -> "8.4"
+            preg_match('#^\d+\.\d+#', $symfony['min_php_requirements'][$symfonyMinorVersion], $matches);
+            $phpVersion = $matches[0];
+        }
+
+        return ['php' => $phpVersion, 'symfony' => $symfonyVersion ?: "{$symfonyMinorVersion}.*"];
+    }
+
+    #[DaggerFunction]
+    #[Doc('Output the test matrix (maintained Symfony versions x supported PHP versions) as JSON.')]
+    public function matrix(
+        #[DefaultPath('.')]
+        #[Ignore(
+            './.github/',
+            './.phpunit.cache/',
+            './.coverage/',
+            './var/',
+            './vendor/',
+        )]
+        Directory $source,
+    ): string {
+        return json_encode($this->getMatrix($source), \JSON_THROW_ON_ERROR);
     }
 
     #[DaggerFunction]
@@ -156,7 +261,7 @@ class GotenbergBundle
         Directory $source,
         Container|null $symfonyContainer = null,
     ): PhpCsFixer {
-        $symfonyContainer ??= $this->symfonyContainer($source, phpVersion: self::DEFAULT_PHP_VERSION);
+        $symfonyContainer ??= $this->symfonyContainer($source);
 
         return new PhpCsFixer($source, $symfonyContainer);
     }
@@ -184,8 +289,10 @@ class GotenbergBundle
             './vendor/',
         )]
         Directory $source,
-        string $phpVersion = self::DEFAULT_PHP_VERSION,
-        string $symfonyVersion = self::DEFAULT_SYMFONY_VERSION,
+        #[Doc('Defaults to the minimum PHP version of the latest stable Symfony version.')]
+        string $phpVersion = '',
+        #[Doc('Defaults to the latest stable Symfony version.')]
+        string $symfonyVersion = '',
         string $minimumStability = 'stable',
         Container|null $symfonyContainer = null,
     ): TestsGotenbergBundle {
@@ -210,8 +317,8 @@ class GotenbergBundle
     ): array {
         $tests = [];
 
-        foreach ($this->getMatrix() as [$symfonyVersion, $phpVersion, $minimumStability]) {
-            $tests[] = async(fn () => $this->test($source, $phpVersion, $symfonyVersion, $minimumStability));
+        foreach ($this->getMatrix($source) as $row) {
+            $tests[] = async(fn () => $this->test($source, $row['php'], $row['symfony-version'], $row['minimum-stability']));
         }
 
         $result = [];
