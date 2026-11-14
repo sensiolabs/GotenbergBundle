@@ -404,6 +404,23 @@ trait PagePropertiesTrait
     }
 
     /**
+     * Generate a tagged (accessible) PDF without declaring PDF/UA conformance.
+     *
+     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua
+     *
+     * @example generateTaggedPdf() // is same as `->generateTaggedPdf(true)`
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('generate_tagged_pdf'))]
+    public function generateTaggedPdf(bool $bool = true): static
+    {
+        $this->logWarningIfVersionIs('<', '8.38', 'The option generateTaggedPdf is not available.');
+
+        $this->getBodyBag()->set('generateTaggedPdf', $bool);
+
+        return $this;
+    }
+
+    /**
      * Set the watermark text to render on every page during PDF export.
      *
      * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
@@ -854,6 +871,7 @@ trait PagePropertiesTrait
         yield 'reduceImageResolution' => NormalizerFactory::bool();
         yield 'maxImageResolution' => NormalizerFactory::enum();
         yield 'updateIndexes' => NormalizerFactory::bool();
+        yield 'generateTaggedPdf' => NormalizerFactory::bool();
         yield 'nativeWatermarkColor' => NormalizerFactory::hexColor();
         yield 'nativeWatermarkFontHeight' => NormalizerFactory::int();
         yield 'nativeWatermarkRotateAngle' => NormalizerFactory::int();
