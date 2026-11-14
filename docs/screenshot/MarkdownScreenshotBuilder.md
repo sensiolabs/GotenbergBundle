@@ -162,6 +162,7 @@ class YourController
 - [headerRaw](#headerrawstring-html)
 - [emulatedMediaFeatures](#emulatedmediafeaturesarray-emulatedmediafeatures)
 - [failOnConsoleExceptions](#failonconsoleexceptionsbool-bool)
+- [failOnConsoleMessageTypes](#failonconsolemessagetypesarray-types)
 - [failOnHttpStatusCodes](#failonhttpstatuscodesarray-statuscodes)
 - [failOnResourceHttpStatusCodes](#failonresourcehttpstatuscodesarray-statuscodes)
 - [failOnResourceLoadingFailed](#failonresourceloadingfailedbool-bool)
@@ -732,6 +733,21 @@ Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptio
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->failOnConsoleExceptions() // is same as `->failOnConsoleExceptions(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### failOnConsoleMessageTypes(array \$types)
+Return a 409 Conflict response if the page logs a console message of one of the given types.<br />The response lists the offending messages. (overrides any previous configuration).<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->failOnConsoleMessageTypes([ConsoleMessageType::Error, ConsoleMessageType::Warning])
     ->generate()
     ->stream()
 ;

@@ -7,6 +7,8 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
+use Sensiolabs\GotenbergBundle\Enumeration\ConsoleMessageType;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\NodeBuilder\ArrayNodeBuilder;
 use Sensiolabs\GotenbergBundle\NodeBuilder\BooleanNodeBuilder;
 
@@ -91,6 +93,35 @@ trait FailOnTrait
     }
 
     /**
+     * Return a 409 Conflict response if the page logs a console message of one of the given types.
+     * The response lists the offending messages. (overrides any previous configuration).
+     *
+     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console
+     *
+     * @param list<ConsoleMessageType|string> $types
+     *
+     * @example failOnConsoleMessageTypes([ConsoleMessageType::Error, ConsoleMessageType::Warning])
+     */
+    #[WithConfigurationNode(new ArrayNodeBuilder('fail_on_console_message_types', prototype: 'scalar'))]
+    public function failOnConsoleMessageTypes(array $types): static
+    {
+        $this->logWarningIfVersionIs('<', '8.39', 'The option failOnConsoleMessageTypes is not available.');
+
+        $values = [];
+        foreach ($types as $type) {
+            if (\is_string($type)) {
+                $type = ConsoleMessageType::tryFrom($type) ?? throw new InvalidBuilderConfiguration(\sprintf('Invalid console message type "%s". Expected one of: "%s".', $type, implode('", "', array_column(ConsoleMessageType::cases(), 'value'))));
+            }
+
+            $values[] = $type->value;
+        }
+
+        $this->getBodyBag()->set('failOnConsoleMessageTypes', $values);
+
+        return $this;
+    }
+
+    /**
      * Exclude resources from failOnResourceHttpStatusCodes checks based on their hostname.
      *
      * The ignoreResourceHttpStatusDomains option allows you to exclude specific domains from the resource HTTP status
@@ -127,6 +158,7 @@ trait FailOnTrait
         yield 'failOnResourceHttpStatusCodes' => NormalizerFactory::json(false);
         yield 'failOnResourceLoadingFailed' => NormalizerFactory::bool();
         yield 'failOnConsoleExceptions' => NormalizerFactory::bool();
+        yield 'failOnConsoleMessageTypes' => NormalizerFactory::json(false);
         yield 'ignoreResourceHttpStatusDomains' => NormalizerFactory::json(false);
     }
 }

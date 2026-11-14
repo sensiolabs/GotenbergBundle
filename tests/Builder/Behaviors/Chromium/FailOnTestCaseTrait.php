@@ -3,6 +3,8 @@
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\Chromium;
 
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
+use Sensiolabs\GotenbergBundle\Enumeration\ConsoleMessageType;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\BehaviorTrait;
 
 /**
@@ -53,6 +55,26 @@ trait FailOnTestCaseTrait
         ;
 
         $this->assertGotenbergFormData('failOnConsoleExceptions', 'true');
+    }
+
+    public function testSetFailOnConsoleMessageTypes(): void
+    {
+        $this->getDefaultBuilder()
+            ->failOnConsoleMessageTypes([ConsoleMessageType::Error, 'warning'])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('failOnConsoleMessageTypes', '["error","warning"]');
+    }
+
+    public function testSetFailOnConsoleMessageTypesWithInvalidType(): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage('Invalid console message type "fatal".');
+
+        $this->getDefaultBuilder()
+            ->failOnConsoleMessageTypes(['fatal'])
+        ;
     }
 
     public function testSetIgnoreResourceHttpStatusDomains(): void
