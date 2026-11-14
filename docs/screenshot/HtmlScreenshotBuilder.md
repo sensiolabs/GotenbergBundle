@@ -675,7 +675,7 @@ return $gotenberg
 Return a 409 Conflict response if the page logs a console message of one of the given types.<br />The response lists the offending messages. (overrides any previous configuration).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#console](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#console)
 
 ```php
 return $gotenberg

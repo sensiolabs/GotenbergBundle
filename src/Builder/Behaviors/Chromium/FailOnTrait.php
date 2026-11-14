@@ -96,7 +96,7 @@ trait FailOnTrait
      * Return a 409 Conflict response if the page logs a console message of one of the given types.
      * The response lists the offending messages. (overrides any previous configuration).
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#console
      *
      * @param list<ConsoleMessageType|string> $types
      *
