@@ -27,6 +27,16 @@ trait PdfFormatTestCaseTrait
         $this->assertGotenbergFormData('pdfa', PdfFormat::Pdf1b->value);
     }
 
+    public function testPdfA4FormatForTheResultingPdf(): void
+    {
+        $this->getDefaultBuilder()
+            ->pdfFormat(PdfFormat::Pdf4)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('pdfa', 'PDF/A-4');
+    }
+
     public function testPdfUniversalAccessForTheResultingPdf(): void
     {
         $this->getDefaultBuilder()
