@@ -39,7 +39,7 @@ trait CustomHttpHeadersTrait
      *
      * @param array<string, string> $headers
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http-headers
      *
      * @example extraHttpHeaders(['MyHeader' => 'MyValue'])
      */

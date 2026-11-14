@@ -25,7 +25,7 @@ trait EmulatedMediaFeaturesTrait
      *
      * @param list<array{name: string, value: string}> $emulatedMediaFeatures
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#emulated-media-features
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#emulated-media-features
      *
      * @example emulatedMediaFeatures([['name' => 'prefers-color-scheme', 'value' => 'dark'], ['name' => 'prefers-reduced-motion', 'value' => 'reduce'])
      */

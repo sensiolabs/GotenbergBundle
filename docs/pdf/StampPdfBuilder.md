@@ -3,7 +3,7 @@
 Applies a stamp (on top of page content) to one or more PDF files.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ## Basic usage
 
@@ -60,7 +60,7 @@ class YourController
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -75,7 +75,7 @@ return $gotenberg
 Add PDF files to stamp.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -90,7 +90,7 @@ return $gotenberg
 The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -105,7 +105,7 @@ return $gotenberg
 An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -120,7 +120,7 @@ return $gotenberg
 Advanced options in JSON format. Valid keys depend on the configured PDF engine (default: pdfcpu).<br />For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -135,7 +135,7 @@ return $gotenberg
 Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -150,7 +150,7 @@ return $gotenberg
 The stamp source type. Options: 'text', 'image', 'pdf'.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -176,7 +176,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -239,7 +239,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg

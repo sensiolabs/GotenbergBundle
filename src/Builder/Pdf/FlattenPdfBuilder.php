@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * It combines all its contents into a single layer, making it non-editable
  * and ensuring that the document's integrity is maintained.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/flatten-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/flatten-pdfs
  *
  * @methodDoc files If you provide multiple PDF files you will get ZIP folder containing all the converted PDF.
  *

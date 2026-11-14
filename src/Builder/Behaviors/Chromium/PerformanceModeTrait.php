@@ -23,7 +23,7 @@ trait PerformanceModeTrait
      * conversion. However, this often significantly slows down the conversion process. Setting this form field to true
      * can greatly enhance the conversion speed.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http--networking
      *
      * @example skipNetworkIdleEvent() // is same as `->skipNetworkIdleEvent(true)`
      */
@@ -39,7 +39,7 @@ trait PerformanceModeTrait
      * Does not wait for Chromium network to be almost idle (at most 2 open connections for 500ms) before conversion.
      * Useful for pages with long-polling or analytics connections. (default true).
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http--networking
      *
      * @example skipNetworkAlmostIdleEvent() // is same as `->skipNetworkAlmostIdleEvent(true)`
      */

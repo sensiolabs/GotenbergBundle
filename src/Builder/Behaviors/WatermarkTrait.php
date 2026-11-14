@@ -24,7 +24,7 @@ trait WatermarkTrait
     /**
      * The watermark source type.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs
      *
      * @example watermarkSource(WatermarkSource::Text)
      */
@@ -41,7 +41,7 @@ trait WatermarkTrait
     /**
      * The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs
      *
      * @example watermarkExpression('CONFIDENTIAL')
      */
@@ -58,7 +58,7 @@ trait WatermarkTrait
     /**
      * Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs
      *
      * @example watermarkPages('1-3')
      */
@@ -82,7 +82,7 @@ trait WatermarkTrait
      *
      * @param array<string, mixed> $watermarkOptions
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs
      *
      * @example watermarkOptions(['opacity' => 0.5])
      */
@@ -103,7 +103,7 @@ trait WatermarkTrait
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs
      *
      * @example watermarkFile('watermark.pdf')
      */

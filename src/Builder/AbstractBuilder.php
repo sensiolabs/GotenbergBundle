@@ -52,7 +52,7 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
     /**
      *  The API automatically appends the file extension, so there's no need for you to set it manually.
      *
-     * @see https://gotenberg.dev/docs/routes#output-filename.
+     * @see https://gotenberg.dev/docs/8.x/routes#output-filename.
      *
      * @param HeaderUtils::DISPOSITION_* $headerDisposition
      */

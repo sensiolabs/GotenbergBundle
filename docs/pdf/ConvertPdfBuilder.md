@@ -3,7 +3,7 @@
 You may have the possibility to convert several PDF document.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/pdfa-pdfua](https://gotenberg.dev/docs/manipulate-pdfs/pdfa-pdfua)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/pdfa-pdfua](https://gotenberg.dev/docs/8.x/manipulate-pdfs/pdfa-pdfua)
 
 ## Basic usage
 
@@ -63,7 +63,7 @@ class YourController
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -90,7 +90,7 @@ return $gotenberg
 Flattening a PDF combines all its contents into a single layer. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
 
 ```php
 return $gotenberg
@@ -105,7 +105,7 @@ return $gotenberg
 Convert the resulting PDF into the given PDF/A format.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -120,7 +120,7 @@ return $gotenberg
 Enable PDF for Universal Access for optimal accessibility.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -146,7 +146,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -209,7 +209,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg

@@ -11,10 +11,10 @@ but it generates a `@font-face` rule that can be used inside a `<style>` block.
 
 > [!WARNING]
 > As a reminder, we can only load assets in the content. And not in Header or Footer.
-> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer).
+> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer).
 >
 > For header and footer, only fonts installed in the Docker image are loaded.
-> For more information about, see the [fonts configuration section](https://gotenberg.dev/docs/configuration#fonts).
+> For more information about, see the [fonts configuration section](https://gotenberg.dev/docs/8.x/configuration#fonts).
 
 ## Twig file
 

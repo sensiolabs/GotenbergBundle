@@ -9,7 +9,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 /**
  * @package Behavior\\Encrypt
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs
  */
 trait EncryptTrait
 {

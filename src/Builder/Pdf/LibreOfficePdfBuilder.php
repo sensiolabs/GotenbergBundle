@@ -17,7 +17,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to convert Office files into PDF.
  *
- * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf
+ * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf
  *
  * @methodDoc files Adds office files to convert (overrides any previous files).
  *

@@ -21,7 +21,7 @@ trait RotateTrait
     /**
      * The rotation angle.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs
      *
      * @example rotateAngle(RotateAngle::Rotate90)
      */
@@ -44,7 +44,7 @@ trait RotateTrait
     /**
      * Page ranges to rotate (e.g., '1-3', '5'). Empty means all pages.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs
      *
      * @example rotatePages('1-2')
      */

@@ -19,7 +19,7 @@ trait EmulatedMediaTypeTrait
     /**
      * Forces Chromium to emulate, either "screen" or "print". (default "print").
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#print-media
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#print-media
      *
      * @example emulatedMediaType(EmulatedMediaType::Screen)
      */

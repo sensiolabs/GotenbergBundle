@@ -3,7 +3,7 @@
 You may have the possibility to convert Office files into PDF.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf)
 
 ## Available extensions
 
@@ -178,7 +178,7 @@ return $gotenberg
 Specify whether multiple form fields exported are allowed to have the same field name.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata)
 
 ```php
 return $gotenberg
@@ -193,7 +193,7 @@ return $gotenberg
 Center the viewer window on the screen.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -220,7 +220,7 @@ return $gotenberg
 Display the document title in the viewer title bar instead of the filename.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -235,7 +235,7 @@ return $gotenberg
 Specify if bookmarks are exported to PDF.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata)
 
 ```php
 return $gotenberg
@@ -250,7 +250,7 @@ return $gotenberg
 Specify whether form fields are exported as widgets or only their fixed print representation is exported.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata)
 
 ```php
 return $gotenberg
@@ -277,7 +277,7 @@ return $gotenberg
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -292,7 +292,7 @@ return $gotenberg
 Set files to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
 
 ```php
 return $gotenberg
@@ -316,7 +316,7 @@ return $gotenberg
 Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata)
 
 ```php
 return $gotenberg
@@ -403,7 +403,7 @@ return $gotenberg
 Export the placeholders fields visual markings only. The exported placeholder is ineffective.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#rendering-behavior](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -430,7 +430,7 @@ return $gotenberg
 Place the first page on the left when using two-column page layout.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -445,7 +445,7 @@ return $gotenberg
 Flattening a PDF combines all its contents into a single layer. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
 
 ```php
 return $gotenberg
@@ -460,7 +460,7 @@ return $gotenberg
 Hide the viewer menu bar.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -475,7 +475,7 @@ return $gotenberg
 Hide the viewer toolbar.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -490,7 +490,7 @@ return $gotenberg
 Hide the viewer window controls.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -505,7 +505,7 @@ return $gotenberg
 The page on which the PDF opens.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -520,7 +520,7 @@ return $gotenberg
 Specify the initial view when opening the PDF.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -535,7 +535,7 @@ return $gotenberg
 Set the paper orientation to landscape.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -562,7 +562,7 @@ return $gotenberg
 Initial magnification level.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -601,7 +601,7 @@ return $gotenberg
 Resets the metadata.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines)<br />
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines)<br />
 > See: [https://exiftool.org/TagNames/XMP.html#pdf  Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords, Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.  Any ExifTool-compatible key is accepted, including custom XMP namespaces (e.g., 'XMP-fx:DocumentType' for Factur-X).](https://exiftool.org/TagNames/XMP.html#pdf  Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords, Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.  Any ExifTool-compatible key is accepted, including custom XMP namespaces (e.g., 'XMP-fx:DocumentType' for Factur-X).)
 
 ```php
@@ -617,7 +617,7 @@ return $gotenberg
 Page ranges to print, e.g., '1-4' - empty means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#split--page-ranges)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#split--page-ranges](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -632,7 +632,7 @@ return $gotenberg
 Number of bookmark levels to show when opening the PDF. -1 shows all levels.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -647,7 +647,7 @@ return $gotenberg
 Open the PDF in full-screen mode.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -662,7 +662,7 @@ return $gotenberg
 Page layout.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -689,7 +689,7 @@ return $gotenberg
 Convert the resulting PDF into the given PDF/A format.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -704,7 +704,7 @@ return $gotenberg
 Enable PDF for Universal Access for optimal accessibility.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -743,7 +743,7 @@ return $gotenberg
 Resize the viewer window to the size of the first page.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -758,7 +758,7 @@ return $gotenberg
 The rotation angle.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs)
 
 ```php
 return $gotenberg
@@ -773,7 +773,7 @@ return $gotenberg
 Page ranges to rotate (e.g., '1-3', '5'). Empty means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs)
 
 ```php
 return $gotenberg
@@ -812,8 +812,8 @@ return $gotenberg
 Either intervals or pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -828,8 +828,8 @@ return $gotenberg
 Either the intervals or the page ranges to extract, depending on the selected mode.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -844,8 +844,8 @@ return $gotenberg
 Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with pages mode. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/split-pdfs)<br />
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/split-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/split-pdfs)<br />
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#split--page-ranges](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#split--page-ranges)
 
 ```php
 return $gotenberg
@@ -860,7 +860,7 @@ return $gotenberg
 The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -875,7 +875,7 @@ return $gotenberg
 An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -890,7 +890,7 @@ return $gotenberg
 Advanced options in JSON format. Valid keys depend on the configured PDF engine (default: pdfcpu).<br />For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -905,7 +905,7 @@ return $gotenberg
 Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -920,7 +920,7 @@ return $gotenberg
 The stamp source type. Options: 'text', 'image', 'pdf'.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -935,7 +935,7 @@ return $gotenberg
 Set a tiled watermark text rendered across every page during PDF export.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
 
 ```php
 return $gotenberg
@@ -950,7 +950,7 @@ return $gotenberg
 Use transition effects when advancing slides in Impress presentations.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -965,7 +965,7 @@ return $gotenberg
 Set the watermark text color as a hex string (e.g., '#FF0000').<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
 
 ```php
 return $gotenberg
@@ -980,7 +980,7 @@ return $gotenberg
 The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -995,7 +995,7 @@ return $gotenberg
 An image or PDF file used as watermark source (required when watermarkSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -1010,7 +1010,7 @@ return $gotenberg
 Set the watermark font height in points.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
 
 ```php
 return $gotenberg
@@ -1025,7 +1025,7 @@ return $gotenberg
 Set the watermark font name.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
 
 ```php
 return $gotenberg
@@ -1040,7 +1040,7 @@ return $gotenberg
 Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -1055,7 +1055,7 @@ return $gotenberg
 Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -1070,7 +1070,7 @@ return $gotenberg
 Set the watermark rotation angle in tenths of a degree (e.g., 450 = 45°).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
 
 ```php
 return $gotenberg
@@ -1085,7 +1085,7 @@ return $gotenberg
 The watermark source type.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -1100,7 +1100,7 @@ return $gotenberg
 Set the watermark text to render on every page during PDF export.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice)
 
 ```php
 return $gotenberg
@@ -1115,7 +1115,7 @@ return $gotenberg
 Initial zoom percentage when magnification is set to Magnification::UseZoomValue (4).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences)
 
 ```php
 return $gotenberg
@@ -1141,7 +1141,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -1204,7 +1204,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg

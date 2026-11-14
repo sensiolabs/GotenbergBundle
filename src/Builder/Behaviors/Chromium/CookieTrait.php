@@ -30,7 +30,7 @@ trait CookieTrait
      *
      * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#cookies
      *
      * @example cookies([[ 'name' => 'my_cookie', 'value' => 'symfony', 'domain' => 'symfony.com', 'secure' => true, 'httpOnly' => true, 'sameSite' => 'Lax']])
      */
@@ -61,7 +61,7 @@ trait CookieTrait
      *
      * @param list<Cookie|array{name: string, value: string, domain: string, path?: string|null, secure?: bool|null, httpOnly?: bool|null, sameSite?: 'Strict'|'Lax'|null}> $cookies
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#cookies
      *
      * @example addCookies([['name' => 'my_cookie','value' => 'symfony','domain' => 'symfony.com','secure' => true,'httpOnly' => true,'sameSite' => 'Lax']])
      */

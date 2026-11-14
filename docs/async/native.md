@@ -1,6 +1,6 @@
 ## Using the native feature
 
-Gotenberg [allows](https://gotenberg.dev/docs/configuration#webhook) to defer the generation of your files through webhooks.
+Gotenberg [allows](https://gotenberg.dev/docs/8.x/configuration#webhook) to defer the generation of your files through webhooks.
 When it is done creating your file, it calls back whatever header you sent.
 
 To use this feature you need two things :
@@ -53,7 +53,7 @@ sensiolabs_gotenberg:
                 # HTTP method to use on that endpoint.
                 method:               null # One of "POST"; "PUT"; "PATCH"
 
-            # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/webhook
+            # HTTP headers to send back to both success and error endpoints - default None. https://gotenberg.dev/docs/8.x/webhook
             extra_http_headers:
 
                 # Prototype

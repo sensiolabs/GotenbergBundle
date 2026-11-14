@@ -21,7 +21,7 @@
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -36,7 +36,7 @@ return $gotenberg
 Add PDF files to rotate.<br />As assets files, by default the PDF files are fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs)
 
 ```php
 return $gotenberg
@@ -51,7 +51,7 @@ return $gotenberg
 The rotation angle.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs)
 
 ```php
 return $gotenberg
@@ -66,7 +66,7 @@ return $gotenberg
 Page ranges to rotate (e.g., '1-3', '5'). Empty means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs)
 
 ```php
 return $gotenberg
@@ -92,7 +92,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -155,7 +155,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg

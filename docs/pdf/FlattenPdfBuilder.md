@@ -5,7 +5,7 @@ It combines all its contents into a single layer, making it non-editable and
 ensuring that the document's integrity is maintained.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/flatten-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/flatten-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/flatten-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/flatten-pdfs)
 
 ## Basic usage
 
@@ -57,7 +57,7 @@ class YourController
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -95,7 +95,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -158,7 +158,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg

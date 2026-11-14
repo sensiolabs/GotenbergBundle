@@ -42,7 +42,7 @@ trait ContentTrait
      * The raw html string to convert into PDF.
      *
      * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
-     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
+     * Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.
      *
      * @example contentRaw('<html><body><h2>The content</h2></body></html>')
      */
@@ -59,7 +59,7 @@ trait ContentTrait
      * configuration file config/sensiolabs_gotenberg.yml.
      *
      * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
-     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
+     * Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.
      *
      * @throws PartRenderingException if the template could not be rendered
      *
@@ -76,7 +76,7 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @example header('header.html.twig', ['my_var' => 'value'])
      */
@@ -93,9 +93,9 @@ trait ContentTrait
      * The raw html string to convert into PDF.
      *
      * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
-     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
+     * Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @example headerRaw('<html><body><h1>The header</h1></body></html>')
      */
@@ -110,7 +110,7 @@ trait ContentTrait
      *
      * @throws PartRenderingException if the template could not be rendered
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @example footer('header.html.twig', ['my_var' => 'value'])
      */
@@ -127,9 +127,9 @@ trait ContentTrait
      * The raw html string to convert into PDF.
      *
      * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
-     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
+     * Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @example footerRaw('<html><body><h6>The footer</h6></body></html>')
      */
@@ -146,9 +146,9 @@ trait ContentTrait
      * configuration file config/sensiolabs_gotenberg.yml.
      *
      * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
-     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
+     * Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @throws PartRenderingException if the template could not be rendered
      *
@@ -167,9 +167,9 @@ trait ContentTrait
      * configuration file config/sensiolabs_gotenberg.yml.
      *
      * Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.
-     * Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.
+     * Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer
      *
      * @throws PartRenderingException if the template could not be rendered
      *

@@ -24,7 +24,7 @@ trait EmbedTrait
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines
      *
      * @example embedFiles('document.xml','document_2.json')
      * @example embedFiles(new EmbeddedFile('factur-x.xml', 'Data'))

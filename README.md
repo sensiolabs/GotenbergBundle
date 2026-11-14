@@ -25,7 +25,7 @@ It also helps you to generate, stream and save images locally from URL, HTML and
 Markdown by taking a screenshot.
 
 > [!NOTE]
-> This bundle interacts with the amazing [Gotenberg](https://gotenberg.dev/docs/getting-started/installation) API which
+> This bundle interacts with the amazing [Gotenberg](https://gotenberg.dev/docs/8.x/getting-started/installation) API which
 > is used under the hood.
 
 📦 [How to install](#how-to-install)
@@ -47,7 +47,7 @@ Markdown by taking a screenshot.
 ## How to install
 
 > [!NOTE]
-> You first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/getting-started/installation) by
+> You first need to install and configure [Gotenberg 8.x](https://gotenberg.dev/docs/8.x/getting-started/installation) by
 > yourself.
 
 Install the bundle using composer:
@@ -127,7 +127,7 @@ class YourController
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/convert-with-chromium/convert-url-to-pdf).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-url-to-pdf).
 
 #### Twig
 
@@ -196,7 +196,7 @@ can be relative as well as absolute.
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf).
 
 ### Screenshot
 
@@ -257,7 +257,7 @@ class YourController
 ```
 
 > [!TIP]
-> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html).
+> For more information go to [Gotenberg documentations](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html).
 
 ## Advanced Usage
 

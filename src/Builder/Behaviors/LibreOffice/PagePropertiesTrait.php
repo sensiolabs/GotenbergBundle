@@ -41,7 +41,7 @@ trait PagePropertiesTrait
     /**
      * Set the paper orientation to landscape.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#rendering-behavior
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#rendering-behavior
      *
      * @example landscape() // is same as `->landscape(true)`
      */
@@ -56,7 +56,7 @@ trait PagePropertiesTrait
     /**
      * Page ranges to print, e.g., '1-4' - empty means all pages.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#split--page-ranges
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#split--page-ranges
      *
      * @example nativePageRanges('1-5')
      */
@@ -76,7 +76,7 @@ trait PagePropertiesTrait
     /**
      * Specify whether form fields are exported as widgets or only their fixed print representation is exported.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata
      *
      * @example doNotExportFormFields() // is same as `->doNotExportFormFields(false)`
      */
@@ -93,7 +93,7 @@ trait PagePropertiesTrait
     /**
      * Specify whether multiple form fields exported are allowed to have the same field name.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata
      *
      * @example allowDuplicateFieldNames()  // is same as `->allowDuplicateFieldNames(true)`
      */
@@ -110,7 +110,7 @@ trait PagePropertiesTrait
     /**
      * Specify if bookmarks are exported to PDF.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata
      *
      * @example doNotExportBookmarks()  // is same as `->doNotExportBookmarks(false)`
      */
@@ -127,7 +127,7 @@ trait PagePropertiesTrait
     /**
      * Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#structure--metadata
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#structure--metadata
      *
      * @example exportBookmarksToPdfDestination()  // is same as `->exportBookmarksToPdfDestination(true)`
      */
@@ -144,7 +144,7 @@ trait PagePropertiesTrait
     /**
      * Export the placeholders fields visual markings only. The exported placeholder is ineffective.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#rendering-behavior
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#rendering-behavior
      *
      * @example exportPlaceholders()  // is same as `->exportPlaceholders(true)`
      */
@@ -406,7 +406,7 @@ trait PagePropertiesTrait
     /**
      * Set the watermark text to render on every page during PDF export.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
      * @example watermarkText('CONFIDENTIAL')
      */
@@ -423,7 +423,7 @@ trait PagePropertiesTrait
     /**
      * Set the watermark text color as a hex string (e.g., '#FF0000').
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
      * @example watermarkColor('#FF0000')
      */
@@ -440,7 +440,7 @@ trait PagePropertiesTrait
     /**
      * Set the watermark font height in points.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
      * @example watermarkFontHeight(50)
      */
@@ -457,7 +457,7 @@ trait PagePropertiesTrait
     /**
      * Set the watermark rotation angle in tenths of a degree (e.g., 450 = 45°).
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
      * @example watermarkRotateAngle(-450)
      */
@@ -474,7 +474,7 @@ trait PagePropertiesTrait
     /**
      * Set the watermark font name.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
      * @example watermarkFontName('Liberation Sans')
      */
@@ -491,7 +491,7 @@ trait PagePropertiesTrait
     /**
      * Set a tiled watermark text rendered across every page during PDF export.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
      *
      * @example tiledWatermarkText('DRAFT')
      */
@@ -508,7 +508,7 @@ trait PagePropertiesTrait
     /**
      * Specify the initial view when opening the PDF.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example initialView(InitialView::Thumbnails)
      */
@@ -529,7 +529,7 @@ trait PagePropertiesTrait
     /**
      * The page on which the PDF opens.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @param int<1, max>|null $initialPage
      *
@@ -553,7 +553,7 @@ trait PagePropertiesTrait
     /**
      * Initial magnification level.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example magnification(Magnification::FitVisible)
      */
@@ -574,7 +574,7 @@ trait PagePropertiesTrait
     /**
      * Initial zoom percentage when magnification is set to Magnification::UseZoomValue (4).
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @param int<1, 100>|null $zoom
      *
@@ -598,7 +598,7 @@ trait PagePropertiesTrait
     /**
      * Page layout.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example pageLayout(PageLayout::SinglePage)
      */
@@ -619,7 +619,7 @@ trait PagePropertiesTrait
     /**
      * Place the first page on the left when using two-column page layout.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example firstPageOnLeft() // is same as `->firstPageOnLeft(true)`
      */
@@ -640,7 +640,7 @@ trait PagePropertiesTrait
     /**
      * Resize the viewer window to the size of the first page.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example resizeWindowToInitialPage() // is same as `->resizeWindowToInitialPage(true)`
      */
@@ -661,7 +661,7 @@ trait PagePropertiesTrait
     /**
      * Center the viewer window on the screen.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example centerWindow() // is same as `->centerWindow(true)`
      */
@@ -682,7 +682,7 @@ trait PagePropertiesTrait
     /**
      * Open the PDF in full-screen mode.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example openInFullScreenMode() // is same as `->openInFullScreenMode(true)`
      */
@@ -703,7 +703,7 @@ trait PagePropertiesTrait
     /**
      * Display the document title in the viewer title bar instead of the filename.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example displayPDFDocumentTitle() // is same as `->displayPDFDocumentTitle(true)`
      */
@@ -724,7 +724,7 @@ trait PagePropertiesTrait
     /**
      * Hide the viewer menu bar.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example hideViewerMenubar() // is same as `->hideViewerMenubar(true)`
      */
@@ -745,7 +745,7 @@ trait PagePropertiesTrait
     /**
      * Hide the viewer toolbar.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example hideViewerToolbar() // is same as `->hideViewerToolbar(true)`
      */
@@ -766,7 +766,7 @@ trait PagePropertiesTrait
     /**
      * Hide the viewer window controls.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example hideViewerWindowControls() // is same as `->hideViewerWindowControls(true)`
      */
@@ -787,7 +787,7 @@ trait PagePropertiesTrait
     /**
      * Use transition effects when advancing slides in Impress presentations.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @example useTransitionEffects() // is same as `->useTransitionEffects(true)`
      */
@@ -808,7 +808,7 @@ trait PagePropertiesTrait
     /**
      * Number of bookmark levels to show when opening the PDF. -1 shows all levels.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdf-viewer-preferences
      *
      * @param int<-1, max>|null $openBookmarkLevels
      *

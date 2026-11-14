@@ -22,7 +22,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * The device screen width in pixels. (Default 800).
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example width(600)
      */
@@ -39,7 +39,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * The device screen width in pixels. (Default 600).
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example height(600)
      */
@@ -56,7 +56,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * Define whether to clip the screenshot according to the device dimensions. (Default false).
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example clip() // is same as `->clip(true)`
      */
@@ -73,7 +73,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * The device scale ratio, controlling the screenshot pixel density. Set to 2 for retina-quality output. (Default 1).
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example deviceScaleFactor(2)
      */
@@ -90,7 +90,7 @@ trait ScreenshotPagePropertiesTrait
     /**
      * The image compression format, either "png", "jpeg" or "webp". (default png).
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example format(ScreenshotFormat::Webp)
      */
@@ -107,7 +107,7 @@ trait ScreenshotPagePropertiesTrait
      *
      * @param int<0, 100> $quality
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior
      *
      * @example quality(50)
      */
