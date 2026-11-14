@@ -406,7 +406,7 @@ trait PagePropertiesTrait
     /**
      * Generate a tagged (accessible) PDF without declaring PDF/UA conformance.
      *
-     * @see https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua
      *
      * @example generateTaggedPdf() // is same as `->generateTaggedPdf(true)`
      */

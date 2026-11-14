@@ -461,7 +461,7 @@ return $gotenberg
 Generate a tagged (accessible) PDF without declaring PDF/UA conformance.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
