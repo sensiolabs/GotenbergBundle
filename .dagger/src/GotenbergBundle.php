@@ -110,7 +110,7 @@ class GotenbergBundle
      */
     private function fetchJson(string $url): array
     {
-        return json_decode(file_get_contents($url), associative: true, flags: \JSON_THROW_ON_ERROR);
+        return json_decode(dag()->http($url)->contents(), associative: true, flags: \JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -140,7 +140,7 @@ class GotenbergBundle
         preg_match('#^\d+\.\d+#', $symfony['symfony_versions']['next'], $nextSymfonyVersion);
 
         $matrix = [];
-        foreach ([...$symfony['supported_versions'], $nextSymfonyVersion[0]] as $symfonyVersion) {
+        foreach (array_unique([...$symfony['supported_versions'], $nextSymfonyVersion[0]]) as $symfonyVersion) {
             $isNext = $nextSymfonyVersion[0] === $symfonyVersion;
             // "8.4.0" -> "8.4"
             preg_match('#^\d+\.\d+#', $symfony['min_php_requirements'][$symfonyVersion], $minPhpVersion);
@@ -179,8 +179,8 @@ class GotenbergBundle
         $symfony = $this->fetchJson('https://symfony.com/releases.json');
 
         if ('' !== $symfonyVersion) {
-            // "8.1.*" -> "8.1"
-            preg_match('#^\d+\.\d+#', $symfonyVersion, $matches);
+            // "8.1.*", "^8.1" or "~8.1.0" -> "8.1"
+            preg_match('#\d+\.\d+#', $symfonyVersion, $matches);
             $symfonyMinorVersion = $matches[0];
         } elseif ('' === $phpVersion) {
             $symfonyMinorVersion = $symfony['latest_stable_version'];
