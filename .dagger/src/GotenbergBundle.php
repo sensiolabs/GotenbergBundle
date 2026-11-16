@@ -84,12 +84,12 @@ class GotenbergBundle
 
     private function symfonyContainer(
         Directory $source,
-        string $phpVersion = '',
-        string $symfonyVersion = '',
+        string|null $phpVersion = null,
+        string|null $symfonyVersion = null,
         string $minimumStability = 'stable',
         Container|null $phpContainer = null,
     ): Container {
-        ['php' => $phpVersion, 'symfony' => $symfonyVersion] = $this->resolveVersions(trim($phpVersion), trim($symfonyVersion));
+        ['php' => $phpVersion, 'symfony' => $symfonyVersion] = $this->resolveVersions($phpVersion, $symfonyVersion);
 
         $phpContainer ??= $this->phpContainer($source, $phpVersion);
 
@@ -185,19 +185,22 @@ class GotenbergBundle
      *
      * @return array{php: string, symfony: string}
      */
-    private function resolveVersions(string $phpVersion, string $symfonyVersion): array
+    private function resolveVersions(string|null $phpVersion, string|null $symfonyVersion): array
     {
-        if ('' !== $phpVersion && '' !== $symfonyVersion) {
+        $phpVersion = null !== $phpVersion ? trim($phpVersion) : null;
+        $symfonyVersion = null !== $symfonyVersion ? trim($symfonyVersion) : null;
+
+        if (null !== $phpVersion && null !== $symfonyVersion) {
             return ['php' => $phpVersion, 'symfony' => $symfonyVersion];
         }
 
         $symfony = $this->fetchJson('https://symfony.com/releases.json');
 
-        if ('' !== $symfonyVersion) {
+        if (null !== $symfonyVersion) {
             // The highest Symfony version that matches "8.1.*", "^8.1" or "~8.1.0".
             $matchingVersions = $this->filterVersions(array_keys($symfony['min_php_requirements']), $symfonyVersion);
             $symfonyMinorVersion = Semver::rsort($matchingVersions)[0] ?? throw new \InvalidArgumentException("No Symfony version matches '{$symfonyVersion}'.");
-        } elseif ('' === $phpVersion) {
+        } elseif (null === $phpVersion) {
             $symfonyMinorVersion = $symfony['latest_stable_version'];
         } else {
             // supported_versions is sorted from the lowest to the highest version.
@@ -213,13 +216,13 @@ class GotenbergBundle
             $symfonyMinorVersion = end($versions);
         }
 
-        if ('' === $phpVersion) {
+        if (null === $phpVersion) {
             // "8.4.0" -> "8.4"
             preg_match('#^\d+\.\d+#', $symfony['min_php_requirements'][$symfonyMinorVersion], $matches);
             $phpVersion = $matches[0];
         }
 
-        return ['php' => $phpVersion, 'symfony' => $symfonyVersion ?: "{$symfonyMinorVersion}.*"];
+        return ['php' => $phpVersion, 'symfony' => $symfonyVersion ?? "{$symfonyMinorVersion}.*"];
     }
 
     #[DaggerFunction]
@@ -305,9 +308,9 @@ class GotenbergBundle
         )]
         Directory $source,
         #[Doc('Defaults to the minimum PHP version of the latest stable Symfony version.')]
-        string $phpVersion = '',
+        string|null $phpVersion = null,
         #[Doc('Defaults to the latest stable Symfony version.')]
-        string $symfonyVersion = '',
+        string|null $symfonyVersion = null,
         string $minimumStability = 'stable',
         Container|null $symfonyContainer = null,
     ): TestsGotenbergBundle {
