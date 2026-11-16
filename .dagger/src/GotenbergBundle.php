@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DaggerModule;
 
+use Composer\Semver\Semver;
+use Composer\Semver\VersionParser;
 use Dagger\Attribute\DaggerFunction;
 use Dagger\Attribute\DaggerObject;
 use Dagger\Attribute\DefaultPath;
@@ -124,17 +126,15 @@ class GotenbergBundle
         $symfony = $this->fetchJson('https://symfony.com/releases.json');
 
         // e.g. ">=8.1" in composer.json and ["8.2", ..., "8.5"] on php.net give 8.1 to 8.5.
-        $composerPhpRequirement = json_decode($source->file('composer.json')->contents(), associative: true)['require']['php'];
-        preg_match('#\d+\.\d+#', $composerPhpRequirement, $minPhpVersion);
+        $composerPhpConstraint = json_decode($source->file('composer.json')->contents(), associative: true)['require']['php'];
+        // ">=8.1" -> "8.1.0.0" -> "8.1"
+        preg_match('#^\d+\.\d+#', (new VersionParser())->parseConstraints($composerPhpConstraint)->getLowerBound()->getVersion(), $minPhpVersion);
         $phpVersions = [$minPhpVersion[0]];
         foreach ($this->fetchJson('https://www.php.net/releases/active.php') as $activeVersions) {
-            foreach (array_keys($activeVersions) as $activeVersion) {
-                if (version_compare($activeVersion, $minPhpVersion[0], '>')) {
-                    $phpVersions[] = $activeVersion;
-                }
-            }
+            array_push($phpVersions, ...array_keys($activeVersions));
         }
-        usort($phpVersions, version_compare(...));
+        // The minimum version can also be an active one.
+        $phpVersions = Semver::sort($this->filterVersions(array_unique($phpVersions), $composerPhpConstraint));
 
         // "8.2.0" -> "8.2"
         preg_match('#^\d+\.\d+#', $symfony['symfony_versions']['next'], $nextSymfonyVersion);
@@ -164,6 +164,21 @@ class GotenbergBundle
     }
 
     /**
+     * Keeps the minor versions (e.g. "8.1") that match a Composer constraint (e.g. "^8.1").
+     *
+     * @param array<int, string> $versions
+     *
+     * @return array<int, string>
+     */
+    private function filterVersions(array $versions, string $constraint): array
+    {
+        return array_filter(
+            $versions,
+            static fn (string $version): bool => Semver::satisfies("{$version}.0", $constraint),
+        );
+    }
+
+    /**
      * Resolves the empty versions from symfony.com:
      * - Symfony: the latest stable version, or the highest supported version that runs on the given PHP version.
      * - PHP: the minimum PHP version of the Symfony version.
@@ -179,9 +194,9 @@ class GotenbergBundle
         $symfony = $this->fetchJson('https://symfony.com/releases.json');
 
         if ('' !== $symfonyVersion) {
-            // "8.1.*", "^8.1" or "~8.1.0" -> "8.1"
-            preg_match('#\d+\.\d+#', $symfonyVersion, $matches);
-            $symfonyMinorVersion = $matches[0];
+            // The highest Symfony version that matches "8.1.*", "^8.1" or "~8.1.0".
+            $matchingVersions = $this->filterVersions(array_keys($symfony['min_php_requirements']), $symfonyVersion);
+            $symfonyMinorVersion = Semver::rsort($matchingVersions)[0] ?? throw new \InvalidArgumentException("No Symfony version matches '{$symfonyVersion}'.");
         } elseif ('' === $phpVersion) {
             $symfonyMinorVersion = $symfony['latest_stable_version'];
         } else {
