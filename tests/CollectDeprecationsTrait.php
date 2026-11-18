@@ -2,6 +2,12 @@
 
 namespace Sensiolabs\GotenbergBundle\Tests;
 
+/**
+ * Stopgap until PHPUnit 11, which ships expectUserDeprecationMessage() but needs PHP 8.2.
+ * To be removed in 2.0 along with the deprecated methods it covers.
+ *
+ * @internal
+ */
 trait CollectDeprecationsTrait
 {
     /**

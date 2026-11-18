@@ -145,14 +145,14 @@ final class BuilderConfiguratorTest extends GotenbergBuilderTestCase
 
         $deprecations = $this->collectDeprecations(function () use ($builder): void {
             $this->configure($builder, [
-                'header' => ['template' => 'templates/header.html.twig', 'context' => ['name' => 'John Doe']],
                 'footer' => ['template' => 'templates/footer.html.twig', 'context' => ['name' => 'John Doe']],
+                'header' => ['template' => 'templates/header.html.twig', 'context' => ['name' => 'John Doe']],
             ]);
         });
 
         self::assertSame([
-            'Since sensiolabs/gotenberg-bundle 1.5: Calling "Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder::header()" is deprecated, Gotenberg does not read headers on screenshot routes. It will be removed in 2.0.',
             'Since sensiolabs/gotenberg-bundle 1.5: Calling "Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder::footer()" is deprecated, Gotenberg does not read footers on screenshot routes. It will be removed in 2.0.',
+            'Since sensiolabs/gotenberg-bundle 1.5: Calling "Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder::header()" is deprecated, Gotenberg does not read headers on screenshot routes. It will be removed in 2.0.',
         ], $deprecations);
     }
 
