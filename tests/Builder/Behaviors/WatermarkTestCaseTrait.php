@@ -97,6 +97,38 @@ trait WatermarkTestCaseTrait
         self::assertArrayNotHasKey('watermarkOptions', $builder->getBodyBag()->all());
     }
 
+    public function testWatermarkOptionsCastNumbersToStrings(): void
+    {
+        $this->withGotenbergVersion('8.28.0');
+
+        $this->getDefaultBuilder()
+            ->watermarkOptions(['opacity' => 0.5, 'rotation' => 45, 'position' => 'tl'])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('watermarkOptions', '{"opacity":"0.5","rotation":"45","position":"tl"}');
+    }
+
+    /**
+     * @return \Generator<string, array{mixed, string}>
+     */
+    public static function provideInvalidWatermarkOptions(): \Generator
+    {
+        yield 'boolean' => [true, 'bool'];
+        yield 'array' => [[10, 20], 'array'];
+        yield 'null' => [null, 'null'];
+    }
+
+    #[DataProvider('provideInvalidWatermarkOptions')]
+    public function testWatermarkOptionsRejectInvalidValues(mixed $value, string $type): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage(\sprintf('The "offset" watermark option must be a string or a number, "%s" given.', $type));
+
+        // @phpstan-ignore argument.type
+        $this->getDefaultBuilder()->watermarkOptions(['offset' => $value])->generate();
+    }
+
     public function testWatermarkFile(): void
     {
         $this->withGotenbergVersion('8.28.0');

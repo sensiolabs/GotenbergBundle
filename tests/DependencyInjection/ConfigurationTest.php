@@ -275,6 +275,20 @@ final class ConfigurationTest extends TestCase
         );
     }
 
+    public function testInvalidStampOptionsConfiguration(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('stamp_options.offset');
+
+        $processor = new Processor();
+        $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => ['pdf' => ['html' => ['stamp_options' => ['offset' => [10, 20]]]]],
+            ],
+        ]);
+    }
+
     public function testWithExtraMetadataConfiguration(): void
     {
         $processor = new Processor();

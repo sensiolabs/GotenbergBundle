@@ -244,14 +244,14 @@ trait WatermarkTrait
      * Deprecated, use addWatermarkText(), addWatermarkImage() or addWatermarkPdf() instead.
      * Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).
      *
-     * @param array<string, mixed> $watermarkOptions
+     * @param array<string, string|int|float> $watermarkOptions
      *
      * @deprecated since 1.5, use addWatermarkText(), addWatermarkImage() or addWatermarkPdf() instead
      * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs
      *
      * @example watermarkOptions(['opacity' => '0.5'])
      */
-    #[WithConfigurationNode(new ArrayNodeBuilder('watermark_options', useAttributeAsKey: 'key', prototype: 'variable'))]
+    #[WithConfigurationNode(new ArrayNodeBuilder('watermark_options', useAttributeAsKey: 'key', prototype: 'scalar'))]
     public function watermarkOptions(array $watermarkOptions): self
     {
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
@@ -296,7 +296,7 @@ trait WatermarkTrait
     private function normalizeWatermark(): \Generator
     {
         yield 'watermarkSource' => NormalizerFactory::enum();
-        yield 'watermarkOptions' => NormalizerFactory::json();
+        yield 'watermarkOptions' => NormalizerFactory::watermarkOptions();
         yield 'watermark' => NormalizerFactory::watermark();
         yield 'watermarks' => $this->normalizeWatermarks(...);
     }
