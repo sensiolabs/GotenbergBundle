@@ -39,12 +39,18 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
         'docx', 'dot', 'dotm', 'dotx', 'dxf', 'emf', 'eps', 'epub', 'fodg', 'fodp', 'fods', 'fodt', 'fopd',
         'gif', 'htm', 'html', 'hwp', 'jpeg', 'jpg', 'key', 'ltx', 'lwp', 'mcw', 'met', 'mml', 'mw', 'numbers',
         'odd', 'odg', 'odm', 'odp', 'ods', 'odt', 'otg', 'oth', 'otp', 'ots', 'ott', 'pages', 'pbm', 'pcd',
-        'pct', 'pcx', 'pdb', 'pdf', 'pgm', 'png', 'pot', 'potm', 'potx', 'ppm', 'pps', 'ppt', 'pptm', 'pptx',
+        'pct', 'pcx', 'pdb', 'pdf', 'pgm', 'png', 'pot', 'potm', 'potx', 'ppm', 'pps', 'ppsm', 'ppsx',
+        'ppt', 'pptm', 'pptx',
         'psd', 'psw', 'pub', 'pwp', 'pxl', 'ras', 'rtf', 'sda', 'sdc', 'sdd', 'sdp', 'sdw', 'sgl', 'slk',
         'smf', 'stc', 'std', 'sti', 'stw', 'svg', 'svm', 'swf', 'sxc', 'sxd', 'sxg', 'sxi', 'sxm', 'sxw',
         'tga', 'tif', 'tiff', 'txt', 'uof', 'uop', 'uos', 'uot', 'vdx', 'vor', 'vsd', 'vsdm', 'vsdx', 'wb2',
         'wk1', 'wks', 'wmf', 'wpd', 'wpg', 'wps', 'xbm', 'xhtml', 'xls', 'xlsb', 'xlsm', 'xlsx', 'xlt', 'xltm',
         'xltx', 'xlw', 'xml', 'xpm', 'zabw',
+    ];
+
+    private const AVAILABLE_EXTENSIONS_SINCE = [
+        'ppsm' => '8.36',
+        'ppsx' => '8.36',
     ];
 
     protected function getAllowedFilesExtensions(): array
@@ -61,6 +67,14 @@ final class LibreOfficePdfBuilder extends AbstractBuilder
     {
         if ($this->getBodyBag()->get('files') === null && $this->getBodyBag()->get('downloadFrom') === null) {
             throw new MissingRequiredFieldException('At least one office file is required.');
+        }
+
+        foreach ($this->getBodyBag()->get('files') ?? [] as $file) {
+            $extension = strtolower($file->getExtension());
+
+            if (isset(self::AVAILABLE_EXTENSIONS_SINCE[$extension])) {
+                $this->logWarningIfVersionIs('<', self::AVAILABLE_EXTENSIONS_SINCE[$extension], "The \"{$extension}\" extension is not available.");
+            }
         }
 
         if ($this->getBodyBag()->get('splitUnify') === true && $this->getBodyBag()->get('splitMode') === SplitMode::Intervals) {
