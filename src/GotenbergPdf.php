@@ -14,12 +14,14 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadBookmarksPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteBookmarksPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 
 final class GotenbergPdf implements GotenbergPdfInterface
@@ -35,7 +37,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'encrypt'|'embed'|'stamp'|'watermark'|'rotate'|'optimize'|'facturx'|'read_metadata'|'write_metadata' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'encrypt'|'embed'|'stamp'|'watermark'|'rotate'|'optimize'|'facturx'|'read_metadata'|'write_metadata'|'read_bookmarks'|'write_bookmarks' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -55,6 +57,8 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'facturx' ? FacturXPdfBuilder :
      *   $key is 'read_metadata' ? ReadMetadataPdfBuilder :
      *   $key is 'write_metadata' ? WriteMetadataPdfBuilder :
+     *   $key is 'read_bookmarks' ? ReadBookmarksPdfBuilder :
+     *   $key is 'write_bookmarks' ? WriteBookmarksPdfBuilder :
      *   BuilderInterface
      * )
      */
@@ -146,5 +150,15 @@ final class GotenbergPdf implements GotenbergPdfInterface
     public function writeMetadata(): BuilderInterface
     {
         return $this->getInternal('write_metadata');
+    }
+
+    public function readBookmarks(): BuilderInterface
+    {
+        return $this->getInternal('read_bookmarks');
+    }
+
+    public function writeBookmarks(): BuilderInterface
+    {
+        return $this->getInternal('write_bookmarks');
     }
 }

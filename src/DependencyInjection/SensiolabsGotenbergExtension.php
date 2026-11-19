@@ -43,6 +43,8 @@ use Symfony\Component\Routing\RequestContext;
  *              facturx: array<string, mixed>,
  *              read_metadata: array<string, mixed>,
  *              write_metadata: array<string, mixed>,
+ *              read_bookmarks: array<string, mixed>,
+ *              write_bookmarks: array<string, mixed>,
  *          },
  *          screenshot: array{
  *              html: array<string, mixed>,

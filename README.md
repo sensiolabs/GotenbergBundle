@@ -311,6 +311,8 @@ class YourController
 13. [Factur-X Builder](./docs/pdf/FacturXPdfBuilder.md)
 14. [Read Metadata Builder](./docs/pdf/ReadMetadataPdfBuilder.md)
 15. [Write Metadata Builder](./docs/pdf/WriteMetadataPdfBuilder.md)
+16. [Read Bookmarks Builder](./docs/pdf/ReadBookmarksPdfBuilder.md)
+17. [Write Bookmarks Builder](./docs/pdf/WriteBookmarksPdfBuilder.md)
 
 ### Screenshot
 
