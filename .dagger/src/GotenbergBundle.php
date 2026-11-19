@@ -63,8 +63,11 @@ class GotenbergBundle
             ->withExec(['apt', 'update'])
             ->withExec(['apt', 'install', '--yes',
                 'git',
+                'libonig-dev',
                 'zip',
             ])
+            // The php:8.6 image ships without mbstring, which PHPUnit requires.
+            ->withExec(['sh', '-c', 'php -m | grep -qx mbstring || docker-php-ext-install -j"$(nproc)" mbstring'])
             ->withMountedFile('/usr/bin/composer', $composerBin)
             ->withEnvVariable('COMPOSER_ALLOW_SUPERUSER', '1')
             ->withWorkdir('/GotenbergBundle')
