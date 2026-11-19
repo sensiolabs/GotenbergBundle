@@ -1262,7 +1262,7 @@ return $gotenberg
 Allow adding or modifying annotations (default true).<br />Restricting it requires a user or an owner password.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs)
 
 ```php
 return $gotenberg
@@ -1277,7 +1277,7 @@ return $gotenberg
 Allow inserting, deleting and rotating pages (default true).<br />Restricting it requires a user or an owner password.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs)
 
 ```php
 return $gotenberg
@@ -1292,7 +1292,7 @@ return $gotenberg
 Allow extracting text and graphics from the document (default true).<br />Restricting it requires a user or an owner password.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs)
 
 ```php
 return $gotenberg
@@ -1307,7 +1307,7 @@ return $gotenberg
 Allow filling in form fields (default true).<br />Restricting it requires a user or an owner password.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs)
 
 ```php
 return $gotenberg
@@ -1322,7 +1322,7 @@ return $gotenberg
 Allow changing the document content (default true).<br />Restricting it requires a user or an owner password.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs)
 
 ```php
 return $gotenberg
@@ -1337,7 +1337,7 @@ return $gotenberg
 Allow printing the document (default true).<br />Restricting it requires a user or an owner password.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs)
 
 ```php
 return $gotenberg

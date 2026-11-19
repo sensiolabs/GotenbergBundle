@@ -61,7 +61,7 @@ trait EncryptTrait
      * Allow printing the document (default true).
      * Restricting it requires a user or an owner password.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs
      *
      * @example allowPrinting(false)
      */
@@ -79,7 +79,7 @@ trait EncryptTrait
      * Allow extracting text and graphics from the document (default true).
      * Restricting it requires a user or an owner password.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs
      *
      * @example allowCopying(false)
      */
@@ -97,7 +97,7 @@ trait EncryptTrait
      * Allow changing the document content (default true).
      * Restricting it requires a user or an owner password.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs
      *
      * @example allowModifying(false)
      */
@@ -115,7 +115,7 @@ trait EncryptTrait
      * Allow adding or modifying annotations (default true).
      * Restricting it requires a user or an owner password.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs
      *
      * @example allowAnnotating(false)
      */
@@ -133,7 +133,7 @@ trait EncryptTrait
      * Allow filling in form fields (default true).
      * Restricting it requires a user or an owner password.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs
      *
      * @example allowFillingForms(false)
      */
@@ -151,7 +151,7 @@ trait EncryptTrait
      * Allow inserting, deleting and rotating pages (default true).
      * Restricting it requires a user or an owner password.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs
      *
      * @example allowAssembling(false)
      */
