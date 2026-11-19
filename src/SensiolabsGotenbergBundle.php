@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
@@ -42,6 +43,7 @@ class SensiolabsGotenbergBundle extends Bundle
         $extension->registerBuilder(LibreOfficePdfBuilder::class);
         $extension->registerBuilder(MarkdownPdfBuilder::class);
         $extension->registerBuilder(MergePdfBuilder::class);
+        $extension->registerBuilder(OptimizePdfBuilder::class);
         $extension->registerBuilder(RotatePdfBuilder::class);
         $extension->registerBuilder(SplitPdfBuilder::class);
         $extension->registerBuilder(StampPdfBuilder::class);

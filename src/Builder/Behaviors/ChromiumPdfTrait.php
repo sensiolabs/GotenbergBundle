@@ -18,6 +18,7 @@ trait ChromiumPdfTrait
     use EncryptTrait;
     use FlattenTrait;
     use MetadataTrait;
+    use OptimizeImagesTrait;
     use PdfFormatTrait;
     use RotateTrait;
     use SplitTrait;

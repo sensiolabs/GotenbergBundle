@@ -112,6 +112,13 @@ class ValidatorFactory
         }
     }
 
+    public static function imageQuality(int $value): void
+    {
+        if ($value < 1 || $value > 100) {
+            throw new InvalidBuilderConfiguration(\sprintf('ImageQuality value "%s" must be between 1 and 100.', $value));
+        }
+    }
+
     public static function bookmarkLevels(int $value): void
     {
         if ($value < -1) {
