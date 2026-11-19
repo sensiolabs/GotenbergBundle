@@ -271,6 +271,16 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('updateIndexes', 'false');
     }
 
+    public function testGenerateTaggedPdf(): void
+    {
+        $this->getDefaultBuilder()
+            ->generateTaggedPdf()
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('generateTaggedPdf', 'true');
+    }
+
     public function testWatermarkText(): void
     {
         $this->getDefaultBuilder()

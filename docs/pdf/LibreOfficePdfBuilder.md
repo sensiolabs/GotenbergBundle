@@ -91,6 +91,7 @@ class YourController
 - [files](#filesstringablestring-paths)
 - [firstPageOnLeft](#firstpageonleftbool-bool)
 - [flatten](#flattenbool-bool)
+- [generateTaggedPdf](#generatetaggedpdfbool-bool)
 - [hideViewerMenubar](#hideviewermenubarbool-bool)
 - [hideViewerToolbar](#hideviewertoolbarbool-bool)
 - [hideViewerWindowControls](#hideviewerwindowcontrolsbool-bool)
@@ -451,6 +452,21 @@ Flattening a PDF combines all its contents into a single layer. (default false).
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->flatten() // is same as `->flatten(true)`
+    ->generate()
+    ->stream()
+;
+```
+
+### generateTaggedPdf(bool \$bool)
+Generate a tagged (accessible) PDF without declaring PDF/UA conformance.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->generateTaggedPdf() // is same as `->generateTaggedPdf(true)`
     ->generate()
     ->stream()
 ;
