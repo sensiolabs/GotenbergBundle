@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\ScalarNodeBuilder;
 /**
  * @package Behavior\\FacturX
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
  */
 trait FacturXTrait
 {
@@ -36,7 +36,7 @@ trait FacturXTrait
      * of your application. For more information about path resolution go to
      * assets documentation. Pass a `\SplFileInfo` to bypass that resolution.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
      *
      * @example facturxXml('invoice.xml', FacturXConformanceLevel::EN16931)
      * @example facturxXml(new \SplFileInfo('/var/invoices/2026-001.xml'), FacturXConformanceLevel::EN16931)
@@ -62,7 +62,7 @@ trait FacturXTrait
     /**
      * The Factur-X/ZUGFeRD document type. (Default INVOICE).
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
      *
      * @example facturxDocumentType(FacturXDocumentType::Order)
      */
@@ -79,7 +79,7 @@ trait FacturXTrait
     /**
      * The Factur-X version. (Default '1.0').
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
      *
      * @example facturxVersion('1.0')
      */

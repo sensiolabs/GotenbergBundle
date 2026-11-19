@@ -21,14 +21,14 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
  * Embeds a Factur-X/ZUGFeRD e-invoice XML into an existing PDF, converting it to
  * PDF/A-3 (the only PDF/A family that allows embedded files).
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
  *
  * @methodDoc files The PDF file(s) to turn into a Factur-X/ZUGFeRD e-invoice.
  * As assets files, by default the PDF files are fetch in the assets folder
  * of your application. For more information about path resolution go to
  * assets documentation.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
  *
  * @example files('invoice.pdf')
  */
@@ -51,7 +51,7 @@ final class FacturXPdfBuilder extends AbstractBuilder
      * Convert the resulting PDF into the given PDF/A-3 variant, the only PDF/A family
      * that allows embedded files.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
      *
      * @example pdfFormat(FacturXPdfFormat::Pdf3b)
      */
@@ -70,7 +70,7 @@ final class FacturXPdfBuilder extends AbstractBuilder
     /**
      * Enable PDF for Universal Access for optimal accessibility.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
      *
      * @example pdfUniversalAccess() // is same as `->pdfUniversalAccess(true)`
      */

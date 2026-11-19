@@ -4,7 +4,7 @@ Embeds a Factur-X/ZUGFeRD e-invoice XML into an existing PDF, converting it to
 PDF/A-3 (the only PDF/A family that allows embedded files).
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x)
 
 ## Basic usage
 
@@ -75,7 +75,7 @@ return $gotenberg
 The PDF file(s) to turn into a Factur-X/ZUGFeRD e-invoice.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x)
 
 ```php
 return $gotenberg
@@ -90,7 +90,7 @@ return $gotenberg
 Convert the resulting PDF into the given PDF/A-3 variant, the only PDF/A family<br />that allows embedded files.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x ](https://gotenberg.dev/docs/manipulate-pdfs/factur-x )
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x ](https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x )
 
 ```php
 return $gotenberg
@@ -105,7 +105,7 @@ return $gotenberg
 Enable PDF for Universal Access for optimal accessibility.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x ](https://gotenberg.dev/docs/manipulate-pdfs/factur-x )
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x ](https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x )
 
 ```php
 return $gotenberg
@@ -246,7 +246,7 @@ return $gotenberg
 The Factur-X/ZUGFeRD document type. (Default INVOICE).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x)
 
 ```php
 return $gotenberg
@@ -261,7 +261,7 @@ return $gotenberg
 The Factur-X version. (Default '1.0').<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x)
 
 ```php
 return $gotenberg
@@ -276,7 +276,7 @@ return $gotenberg
 The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the<br />uploaded filename.<br /><br />Gotenberg requires the conformance level alongside the XML, recorded in the XMP<br />metadata. See the `FacturXConformanceLevel` enum for what each level covers.<br /><br />As an asset file, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation. Pass a `\SplFileInfo` to bypass that resolution.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x)
 
 ```php
 return $gotenberg

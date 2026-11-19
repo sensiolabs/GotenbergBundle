@@ -16,7 +16,7 @@ namespace Sensiolabs\GotenbergBundle\Enumeration;
  *
  * @see https://fnfe-mpe.org/factur-x/ Factur-X specification and profile definitions (FNFE-MPE)
  * @see https://xeinkauf.de/xrechnung/ XRechnung specification (KoSIT)
- * @see https://gotenberg.dev/docs/manipulate-pdfs/factur-x
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x
  */
 enum FacturXConformanceLevel: string
 {
