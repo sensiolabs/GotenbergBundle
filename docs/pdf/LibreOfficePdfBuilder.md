@@ -112,6 +112,7 @@ class YourController
 - [merge](#mergebool-bool)
 - [metadata](#metadataarray-metadata)
 - [nativePageRanges](#nativepagerangesstring-ranges)
+- [nativePdfFormats](#nativepdfformatsbool-bool)
 - [openBookmarkLevels](#openbookmarklevelsint-openbookmarklevels)
 - [openInFullScreenMode](#openinfullscreenmodebool-bool)
 - [optimizeImages](#optimizeimagesbool-bool)
@@ -764,6 +765,21 @@ Page ranges to print, e.g., '1-4' - empty means all pages.<br />
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
     ->nativePageRanges('1-5')
+    ->generate()
+    ->stream()
+;
+```
+
+### nativePdfFormats(bool \$bool)
+Let LibreOffice apply the PDF/A and PDF/UA formats itself (default), or hand them to the PDF engines with `false`.<br />
+
+> [!TIP]
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua)
+
+```php
+return $gotenberg
+    // Your builder call as ->html() and the rest of your configuration code
+    ->nativePdfFormats(false)
     ->generate()
     ->stream()
 ;

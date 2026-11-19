@@ -421,6 +421,21 @@ trait PagePropertiesTrait
     }
 
     /**
+     * Let LibreOffice apply the PDF/A and PDF/UA formats itself (default), or hand them to the PDF engines with `false`.
+     *
+     * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#pdfa--pdfua
+     *
+     * @example nativePdfFormats(false)
+     */
+    #[WithConfigurationNode(new BooleanNodeBuilder('native_pdf_formats'))]
+    public function nativePdfFormats(bool $bool = true): static
+    {
+        $this->getBodyBag()->set('nativePdfFormats', $bool);
+
+        return $this;
+    }
+
+    /**
      * Set the watermark text to render on every page during PDF export.
      *
      * @see https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#native-watermarks-libreoffice
@@ -872,6 +887,7 @@ trait PagePropertiesTrait
         yield 'maxImageResolution' => NormalizerFactory::enum();
         yield 'updateIndexes' => NormalizerFactory::bool();
         yield 'generateTaggedPdf' => NormalizerFactory::bool();
+        yield 'nativePdfFormats' => NormalizerFactory::bool();
         yield 'nativeWatermarkColor' => NormalizerFactory::hexColor();
         yield 'nativeWatermarkFontHeight' => NormalizerFactory::int();
         yield 'nativeWatermarkRotateAngle' => NormalizerFactory::int();
