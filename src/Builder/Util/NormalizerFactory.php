@@ -6,6 +6,7 @@ use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Enumeration\DownloadFromField;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Version\Version;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -211,6 +212,104 @@ class NormalizerFactory
     {
         /** @var \Closure(string, array<string, \SplFileInfo>): list<array{watermark: DataPart}> */
         return self::files('watermark');
+    }
+
+    /**
+     * @return (\Closure(string, list<array{
+     *     source: \BackedEnum,
+     *     expression?: string,
+     *     pages?: string,
+     *     options?: array<string, mixed>,
+     *     file?: \SplFileInfo,
+     * }>): list<array<string, string|DataPart>>)
+     */
+    public static function stamps(): \Closure
+    {
+        return self::stampEntries('stamp');
+    }
+
+    /**
+     * @return (\Closure(string, list<array{
+     *     source: \BackedEnum,
+     *     expression?: string,
+     *     pages?: string,
+     *     options?: array<string, mixed>,
+     *     file?: \SplFileInfo,
+     * }>): list<array<string, string|DataPart>>)
+     */
+    public static function watermarks(): \Closure
+    {
+        return self::stampEntries('watermark');
+    }
+
+    /**
+     * Gotenberg pairs the repeated {prefix}Source, {prefix}Expression, {prefix}Pages and {prefix}Options fields by index,
+     * so gaps are filled with empty values. Uploaded files are consumed in order by the "image" and "pdf" entries.
+     *
+     * @return (\Closure(string, list<array{
+     *     source: \BackedEnum,
+     *     expression?: string,
+     *     pages?: string,
+     *     options?: array<string, mixed>,
+     *     file?: \SplFileInfo,
+     * }>): list<array<string, string|DataPart>>)
+     */
+    private static function stampEntries(string $prefix): \Closure
+    {
+        return static function (string $key, array $entries) use ($prefix) {
+            $fields = ['Pages' => [], 'Options' => []];
+
+            foreach ($entries as $index => $entry) {
+                yield [$prefix.'Source' => (string) $entry['source']->value];
+                // Image and pdf entries send their filename, as expected by Gotenberg < 8.36.
+                yield [$prefix.'Expression' => $entry['expression'] ?? (isset($entry['file']) ? $entry['file']->getFilename() : '')];
+
+                if (isset($entry['pages'])) {
+                    $fields['Pages'][$index] = $entry['pages'];
+                }
+
+                if (isset($entry['options'])) {
+                    $fields['Options'][$index] = self::encodeOptions($prefix, $entry['options']);
+                }
+
+                if (isset($entry['file'])) {
+                    yield [$prefix => new DataPart(new File($entry['file']))];
+                }
+            }
+
+            foreach ($fields as $suffix => $values) {
+                if ([] === $values) {
+                    continue;
+                }
+
+                foreach (array_keys($entries) as $index) {
+                    yield [$prefix.$suffix => $values[$index] ?? ''];
+                }
+            }
+        };
+    }
+
+    /**
+     * Gotenberg decodes the options as a map of strings: numbers are cast, other values are rejected.
+     *
+     * @param array<string, mixed> $options
+     */
+    private static function encodeOptions(string $prefix, array $options): string
+    {
+        $strings = [];
+        foreach ($options as $name => $value) {
+            $strings[$name] = match (true) {
+                \is_string($value) => $value,
+                \is_int($value), \is_float($value) => (string) $value,
+                default => throw new InvalidBuilderConfiguration(\sprintf('The "%s" %s option must be a string or a number, "%s" given.', $name, $prefix, get_debug_type($value))),
+            };
+        }
+
+        try {
+            return json_encode($strings, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new JsonEncodingException(previous: $exception);
+        }
     }
 
     /**

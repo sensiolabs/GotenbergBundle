@@ -180,6 +180,59 @@ final class ConfigurationTest extends TestCase
         ], $config);
     }
 
+    public function testWithStampsConfiguration(): void
+    {
+        $processor = new Processor();
+        /** @var array{'default_options': array<string, mixed>} $config */
+        $config = $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => [
+                    'pdf' => [
+                        'html' => [
+                            'stamps' => [
+                                ['source' => 'text', 'expression' => 'APPROVED', 'options' => ['opacity' => '0.5']],
+                                ['source' => 'image', 'file' => 'logo.png', 'pages' => '1-3'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        self::assertEquals([
+            ['source' => 'text', 'expression' => 'APPROVED', 'options' => ['opacity' => '0.5']],
+            ['source' => 'image', 'file' => 'logo.png', 'pages' => '1-3', 'options' => []],
+        ], $config['default_options']['pdf']['html']['stamps'] ?? []);
+    }
+
+    public function testInvalidStampsSourceConfiguration(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $processor = new Processor();
+        $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => ['pdf' => ['html' => ['stamps' => [['source' => 'video']]]]],
+            ],
+        ]);
+    }
+
+    public function testInvalidStampsOptionsConfiguration(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('stamps.0.options.offset');
+
+        $processor = new Processor();
+        $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => ['pdf' => ['html' => ['stamps' => [['source' => 'text', 'expression' => 'APPROVED', 'options' => ['offset' => [10, 20]]]]]]],
+            ],
+        ]);
+    }
+
     /**
      * @return \Generator<string, array{array{array<string, array<string|int, mixed>>}}>
      */
@@ -303,7 +356,9 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_features' => [],
                         'fail_on_console_message_types' => [],
                         'stamp_options' => [],
+                        'stamps' => [],
                         'watermark_options' => [],
+                        'watermarks' => [],
                     ],
                     'url' => [
                         'cookies' => [],
@@ -331,7 +386,9 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_features' => [],
                         'fail_on_console_message_types' => [],
                         'stamp_options' => [],
+                        'stamps' => [],
                         'watermark_options' => [],
+                        'watermarks' => [],
                     ],
                     'markdown' => [
                         'cookies' => [],
@@ -359,7 +416,9 @@ final class ConfigurationTest extends TestCase
                         'emulated_media_features' => [],
                         'fail_on_console_message_types' => [],
                         'stamp_options' => [],
+                        'stamps' => [],
                         'watermark_options' => [],
+                        'watermarks' => [],
                     ],
                     'office' => [
                         'download_from' => [],
@@ -374,7 +433,9 @@ final class ConfigurationTest extends TestCase
                         'metadata' => [
                         ],
                         'stamp_options' => [],
+                        'stamps' => [],
                         'watermark_options' => [],
+                        'watermarks' => [],
                     ],
                     'merge' => [
                         'download_from' => [],
@@ -389,7 +450,9 @@ final class ConfigurationTest extends TestCase
                         'metadata' => [
                         ],
                         'stamp_options' => [],
+                        'stamps' => [],
                         'watermark_options' => [],
+                        'watermarks' => [],
                     ],
                     'convert' => [
                         'download_from' => [],
@@ -415,7 +478,9 @@ final class ConfigurationTest extends TestCase
                         'metadata' => [
                         ],
                         'stamp_options' => [],
+                        'stamps' => [],
                         'watermark_options' => [],
+                        'watermarks' => [],
                     ],
                     'stamp' => [
                         'download_from' => [],
@@ -428,6 +493,7 @@ final class ConfigurationTest extends TestCase
                             'events' => [],
                         ],
                         'stamp_options' => [],
+                        'stamps' => [],
                     ],
                     'encrypt' => [
                         'download_from' => [],
@@ -451,6 +517,7 @@ final class ConfigurationTest extends TestCase
                             'events' => [],
                         ],
                         'watermark_options' => [],
+                        'watermarks' => [],
                     ],
                     'rotate' => [
                         'download_from' => [],

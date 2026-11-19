@@ -55,6 +55,11 @@ final class WatermarkPdfBuilder extends AbstractBuilder
             throw new MissingRequiredFieldException('At least one PDF file is required.');
         }
 
+        // Watermarks added with addWatermark*() or watermarks() are valid by construction.
+        if (null !== $this->getBodyBag()->get('watermarks')) {
+            return;
+        }
+
         if ($this->getBodyBag()->get('watermarkSource') === null) {
             throw new MissingRequiredFieldException('Field "watermarkSource" must be provided.');
         }
