@@ -19,7 +19,7 @@ trait OptimizeImagesTrait
     /**
      * Re-encodes the images of the resulting PDF to reduce its file size. Text, vectors and structure are left untouched. (default false).
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs
      *
      * @example optimizeImages() // is same as `->optimizeImages(true)`
      */

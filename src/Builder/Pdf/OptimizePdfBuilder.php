@@ -14,7 +14,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to reduce the size of PDF files by re-encoding their images.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs
  *
  * @methodDoc files Add PDF files to optimize.
  * As assets files, by default the PDF files are fetched in the assets folder
@@ -22,13 +22,13 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * assets documentation.
  * If you provide multiple PDF files you will get a ZIP archive containing all the optimized PDF.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs
  *
  * @example files('document.pdf','document_2.pdf')
  *
  * @methodDoc imageQuality The JPEG quality applied to each re-encoded image, between 1 and 100. (default 80).
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs
  *
  * @example imageQuality(60)
  */

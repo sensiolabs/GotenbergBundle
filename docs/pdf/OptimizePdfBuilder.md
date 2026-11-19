@@ -5,7 +5,7 @@ Text, vectors, fonts and structure are left untouched. The optimization is
 always applied on this route, use `imageQuality()` to tune it.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs)
 
 ## Basic usage
 
@@ -71,7 +71,7 @@ return $gotenberg
 Add PDF files to optimize.<br />As assets files, by default the PDF files are fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />If you provide multiple PDF files you will get a ZIP archive containing all the optimized PDF.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs)
 
 ```php
 return $gotenberg
@@ -86,7 +86,7 @@ return $gotenberg
 The JPEG quality applied to each re-encoded image, between 1 and 100. (default 80).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs)
 
 ```php
 return $gotenberg

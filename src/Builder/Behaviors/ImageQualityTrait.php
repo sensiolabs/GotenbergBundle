@@ -21,7 +21,7 @@ trait ImageQualityTrait
      *
      * @param int<1, 100>|null $imageQuality
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs
      *
      * @example imageQuality(60)
      */

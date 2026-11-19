@@ -372,7 +372,7 @@ return $gotenberg
 The JPEG quality applied to each re-encoded image, between 1 and 100. Only used if optimizeImages is true. (default 80).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs)
 
 ```php
 return $gotenberg
@@ -403,7 +403,7 @@ return $gotenberg
 Re-encodes the images of the resulting PDF to reduce its file size. Text, vectors and structure are left untouched. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/optimize-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/optimize-pdfs)
 
 ```php
 return $gotenberg
