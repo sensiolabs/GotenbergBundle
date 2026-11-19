@@ -41,6 +41,8 @@ use Symfony\Component\Routing\RequestContext;
  *              stamp: array<string, mixed>,
  *              watermark: array<string, mixed>,
  *              facturx: array<string, mixed>,
+ *              read_metadata: array<string, mixed>,
+ *              write_metadata: array<string, mixed>,
  *          },
  *          screenshot: array{
  *              html: array<string, mixed>,

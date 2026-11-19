@@ -19,6 +19,7 @@ use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Sensiolabs\GotenbergBundle\Version\Version;
 use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -93,11 +94,21 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
             $this->buildPayload(),
         );
 
-        return new GotenbergFileResult(
+        return $this->createFileResult(
             $this->getClient()->stream($response),
             $this->processor,
             $this->headerDisposition,
         );
+    }
+
+    /**
+     * @param ProcessorInterface<mixed> $processor
+     *
+     * @return GotenbergFileResult<TProcessorResult>
+     */
+    protected function createFileResult(ResponseStreamInterface $stream, ProcessorInterface $processor, string $disposition): GotenbergFileResult
+    {
+        return new GotenbergFileResult($stream, $processor, $disposition);
     }
 
     public function generateAsync(): GotenbergAsyncResult
