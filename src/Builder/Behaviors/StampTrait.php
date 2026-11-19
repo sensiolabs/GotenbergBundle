@@ -190,6 +190,8 @@ trait StampTrait
     #[WithConfigurationNode(new NativeEnumNodeBuilder('stamp_source', enumClass: StampSource::class))]
     public function stampSource(StampSource $stampSource): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addStampText()", "addStampImage()", "addStampPdf()" or "stamps()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The stamp option is not available.');
 
         $this->getBodyBag()->set('stampSource', $stampSource);
@@ -210,6 +212,8 @@ trait StampTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('stamp_expression'))]
     public function stampExpression(string $stampExpression): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addStampText()", "addStampImage()", "addStampPdf()" or "stamps()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The stamp option is not available.');
 
         $this->getBodyBag()->set('stampExpression', $stampExpression);
@@ -229,6 +233,8 @@ trait StampTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('stamp_pages'))]
     public function stampPages(string|null $stampPages = null): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addStampText()", "addStampImage()", "addStampPdf()" or "stamps()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The stamp option is not available.');
 
         if (!$stampPages) {
@@ -256,6 +262,8 @@ trait StampTrait
     #[WithConfigurationNode(new ArrayNodeBuilder('stamp_options', useAttributeAsKey: 'key', prototype: 'scalar'))]
     public function stampOptions(array $stampOptions): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addStampText()", "addStampImage()", "addStampPdf()" or "stamps()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The stamp option is not available.');
 
         if ([] === $stampOptions) {
@@ -285,6 +293,8 @@ trait StampTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('stamp_file'))]
     public function stampFile(string|\Stringable $path): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addStampImage()", "addStampPdf()" or "stamps()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The stamp option is not available.');
 
         $path = (string) $path;

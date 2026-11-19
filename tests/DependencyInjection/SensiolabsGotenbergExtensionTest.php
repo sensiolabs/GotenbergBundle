@@ -18,6 +18,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
+use Sensiolabs\GotenbergBundle\DependencyInjection\BuilderStack;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
 use Sensiolabs\GotenbergBundle\Enumeration\FacturXDocumentType;
@@ -26,12 +27,15 @@ use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\SplitMode;
+use Sensiolabs\GotenbergBundle\Tests\CollectDeprecationsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 final class SensiolabsGotenbergExtensionTest extends KernelTestCase
 {
+    use CollectDeprecationsTrait;
+
     private function getContainerBuilder(bool $kernelDebug = false): ContainerBuilder
     {
         return new ContainerBuilder(new ParameterBag([
@@ -968,5 +972,18 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         ]], $containerBuilder);
 
         self::assertNotContains('sensiolabs_gotenberg.http_kernel.stream_builder', $containerBuilder->getServiceIds());
+    }
+
+    public function testSetBuilderStackIsDeprecated(): void
+    {
+        $extension = new SensiolabsGotenbergExtension();
+
+        $deprecations = $this->collectDeprecations(static function () use ($extension): void {
+            $extension->setBuilderStack(new BuilderStack());
+        });
+
+        self::assertSame([
+            'Since sensiolabs/gotenberg-bundle 1.1: Calling "Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension::setBuilderStack()" is deprecated, the extension creates its builder stack itself. Use "registerBuilder()" to add a builder. It will be removed in 2.0.',
+        ], $deprecations);
     }
 }

@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\StampSource;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\CollectDeprecationsTrait;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\TextPart;
 
@@ -20,6 +21,8 @@ trait StampTestCaseTrait
 {
     /** @use BehaviorTrait<T> */
     use BehaviorTrait;
+
+    use CollectDeprecationsTrait;
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
@@ -126,6 +129,38 @@ trait StampTestCaseTrait
         ;
 
         $this->assertGotenbergFormDataFile('stamp', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+    }
+
+    /**
+     * @return \Generator<string, array{string, list<mixed>, string}>
+     */
+    public static function provideDeprecatedStampMethods(): \Generator
+    {
+        $replacements = '"addStampText()", "addStampImage()", "addStampPdf()" or "stamps()"';
+
+        yield 'stampSource' => ['stampSource', [StampSource::Text], $replacements];
+        yield 'stampExpression' => ['stampExpression', ['APPROVED'], $replacements];
+        yield 'stampPages' => ['stampPages', ['1-3'], $replacements];
+        yield 'stampOptions' => ['stampOptions', [['opacity' => '0.5']], $replacements];
+        yield 'stampFile' => ['stampFile', ['pdf/simple_pdf.pdf'], '"addStampImage()", "addStampPdf()" or "stamps()"'];
+    }
+
+    /**
+     * @param list<mixed> $arguments
+     */
+    #[DataProvider('provideDeprecatedStampMethods')]
+    public function testDeprecatedStampMethodsTriggerADeprecation(string $method, array $arguments, string $replacements): void
+    {
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
+        $builder = $this->getDefaultBuilder();
+
+        $deprecations = $this->collectDeprecations(static function () use ($builder, $method, $arguments): void {
+            $builder->{$method}(...$arguments);
+        });
+
+        self::assertSame([
+            \sprintf('Since sensiolabs/gotenberg-bundle 1.5: Calling "%s::%s()" is deprecated, use %s instead. It will be removed in 2.0.', $builder::class, $method, $replacements),
+        ], $deprecations);
     }
 
     public function testStampTextImageAndPdf(): void
