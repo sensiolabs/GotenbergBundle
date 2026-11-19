@@ -68,7 +68,7 @@ final class BuilderConfiguratorTest extends GotenbergBuilderTestCase
     {
         $this->withGotenbergVersion('8.36.0');
 
-        $this->configure([
+        $this->configure($this->getBuilder(), [
             'stamps' => [
                 ['source' => 'text', 'expression' => 'APPROVED'],
                 ['source' => 'image', 'file' => 'assets/logo.png', 'pages' => '1'],
@@ -95,7 +95,7 @@ final class BuilderConfiguratorTest extends GotenbergBuilderTestCase
         $this->expectException(InvalidBuilderConfiguration::class);
         $this->expectExceptionMessage('The deprecated stamp* methods cannot be combined with addStampText(), addStampImage(), addStampPdf() or stamps().');
 
-        $this->configure([
+        $this->configure($this->getBuilder(), [
             'stamp_source' => 'text',
             'stamp_expression' => 'APPROVED',
             'stamps' => [
