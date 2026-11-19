@@ -14,14 +14,14 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to rotate PDF pages by 90°, 180°, or 270°.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs
  *
  * @methodDoc files Add PDF files to rotate.
  * As assets files, by default the PDF files are fetched in the assets folder
  * of your application. For more information about path resolution go to
  * assets documentation.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/rotate-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/rotate-pdfs
  *
  * @example files('document.pdf','document_2.pdf')
  */

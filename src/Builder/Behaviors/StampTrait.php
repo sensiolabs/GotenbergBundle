@@ -24,7 +24,7 @@ trait StampTrait
     /**
      * The stamp source type. Options: 'text', 'image', 'pdf'.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs
      *
      * @example stampSource(StampSource::Text)
      */
@@ -42,7 +42,7 @@ trait StampTrait
      * The stamp content. For 'text', the string to render.
      * For 'image' or 'pdf', the filename of the uploaded stamp file.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs
      *
      * @example stampExpression('APPROVED')
      */
@@ -59,7 +59,7 @@ trait StampTrait
     /**
      * Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs
      *
      * @example stampPages('1-3')
      */
@@ -84,7 +84,7 @@ trait StampTrait
      *
      * @param array<string, mixed> $stampOptions
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs
      *
      * @example stampOptions(['opacity' => 0.5])
      */
@@ -105,7 +105,7 @@ trait StampTrait
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs
      *
      * @example stampFile('stamp.pdf')
      */

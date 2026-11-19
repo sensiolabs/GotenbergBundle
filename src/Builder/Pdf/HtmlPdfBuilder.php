@@ -13,7 +13,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to convert HTML or Twig files into PDF.
  *
- * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf
+ * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'html')]
 final class HtmlPdfBuilder extends AbstractBuilder implements BuilderAssetInterface

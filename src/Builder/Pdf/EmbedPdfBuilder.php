@@ -17,7 +17,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * of your application. For more information about path resolution go to
  * assets documentation.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/attachments
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/attachments
  *
  * @example files('document.pdf','document_2.pdf')
  */

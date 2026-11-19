@@ -18,7 +18,7 @@ trait MetadataTrait
     /**
      * Resets the metadata.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines
      * @see https://exiftool.org/TagNames/XMP.html#pdf
      *
      * Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords,

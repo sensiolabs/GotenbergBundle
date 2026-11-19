@@ -4,7 +4,7 @@ You may have the possibility to embed document to your PDF file.
 It is compatible with standards like [ZUGFeRD/Factur-X](https://fnfe-mpe.org/factur-x/), which require embedding XML invoices and other files to be embedded into the PDF.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/attachments](https://gotenberg.dev/docs/manipulate-pdfs/attachments)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/attachments](https://gotenberg.dev/docs/8.x/manipulate-pdfs/attachments)
 ## Basic usage
 
 > [!WARNING]
@@ -55,7 +55,7 @@ class YourController
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -70,7 +70,7 @@ return $gotenberg
 Set files to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
 
 ```php
 return $gotenberg
@@ -94,7 +94,7 @@ return $gotenberg
 Add PDF files which is the source of embedded file.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/attachments](https://gotenberg.dev/docs/manipulate-pdfs/attachments)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/attachments](https://gotenberg.dev/docs/8.x/manipulate-pdfs/attachments)
 
 ```php
 return $gotenberg
@@ -120,7 +120,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -183,7 +183,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg

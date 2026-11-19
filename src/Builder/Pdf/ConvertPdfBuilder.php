@@ -15,7 +15,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * You may have the possibility to convert several PDF document.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/pdfa-pdfua
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/pdfa-pdfua
  *
  * @methodDoc files If you provide multiple PDF files you will get ZIP folder containing all the converted PDF.
  *

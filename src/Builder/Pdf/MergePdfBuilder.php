@@ -21,14 +21,14 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 /**
  * Merge `n` pdf files into a single one.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs
  *
  * @methodDoc files Add PDF files to merge.
  * As assets files, by default the PDF files are fetch in the assets folder
  * of your application. For more information about path resolution go to
  * assets documentation.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs
  *
  * @example files('document.pdf','document_2.pdf')
  */

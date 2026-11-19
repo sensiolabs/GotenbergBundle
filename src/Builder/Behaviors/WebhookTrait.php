@@ -48,7 +48,7 @@ trait WebhookTrait
     /**
      * @param WebhookConfiguration $webhook
      *
-     * @see https://gotenberg.dev/docs/webhook-download#webhooks
+     * @see https://gotenberg.dev/docs/8.x/webhook-download#webhooks
      *
      * @example webhook(['config_name' => 'my_config', 'success' => ['url' => 'https://my.webhook.url/success', 'method' => 'POST'], 'error' => ['route' => 'my_route_error', 'method' => 'POST'], 'events' => ['url' => 'https://my.webhook.url/events']])
      */
@@ -177,7 +177,7 @@ trait WebhookTrait
      * Sets the URL that will receive structured JSON event callbacks after each webhook operation.
      * When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.
      *
-     * @see https://gotenberg.dev/docs/webhook-download#webhooks
+     * @see https://gotenberg.dev/docs/8.x/webhook-download#webhooks
      *
      * @example webhookEventsUrl('https://my.webhook.url/events')
      */

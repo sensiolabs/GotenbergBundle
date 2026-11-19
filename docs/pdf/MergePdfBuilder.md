@@ -3,7 +3,7 @@
 You may have the possibility to merge several PDF document.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs)
 
 ## Basic usage
 
@@ -76,7 +76,7 @@ class YourController
 Adds a single bookmark entry to the existing list.<br />The `children` property allows nesting bookmarks to create a hierarchical table of contents.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
 
 ```php
 return $gotenberg
@@ -112,7 +112,7 @@ return $gotenberg
 Extracts existing bookmarks from input files and offsets their page numbers<br />based on their position in the merged document (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
 
 ```php
 return $gotenberg
@@ -127,7 +127,7 @@ return $gotenberg
 Bookmarks to write. When provided as a list, it is applied directly to the final merged PDF.<br />When provided as a map of filename to bookmarks, page indexes are shifted per file before merging.<br />The `children` property allows nesting bookmarks to create a hierarchical table of contents.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
 
 ```php
 return $gotenberg
@@ -151,7 +151,7 @@ return $gotenberg
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -166,7 +166,7 @@ return $gotenberg
 Set files to embed.<br /><br />As assets files, by default the files to embed are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#attachments-pdf-engines)
 
 ```php
 return $gotenberg
@@ -190,7 +190,7 @@ return $gotenberg
 Add PDF files to merge.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs)
 
 ```php
 return $gotenberg
@@ -205,7 +205,7 @@ return $gotenberg
 Flattening a PDF combines all its contents into a single layer. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-libreoffice/convert-to-pdf#flatten-pdf-engines)
 
 ```php
 return $gotenberg
@@ -220,7 +220,7 @@ return $gotenberg
 Resets the metadata.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines)<br />
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#metadata-pdf-engines)<br />
 > See: [https://exiftool.org/TagNames/XMP.html#pdf  Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords, Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.  Any ExifTool-compatible key is accepted, including custom XMP namespaces (e.g., 'XMP-fx:DocumentType' for Factur-X).](https://exiftool.org/TagNames/XMP.html#pdf  Common PDF metadata keys: Author, Copyright, CreationDate, Creator, Keywords, Marked, ModDate, PDFVersion, Producer, Subject, Title, Trapped.  Any ExifTool-compatible key is accepted, including custom XMP namespaces (e.g., 'XMP-fx:DocumentType' for Factur-X).)
 
 ```php
@@ -236,7 +236,7 @@ return $gotenberg
 Convert the resulting PDF into the given PDF/A format.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -251,7 +251,7 @@ return $gotenberg
 Enable PDF for Universal Access for optimal accessibility.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#pdfa--pdfua)
 
 ```php
 return $gotenberg
@@ -266,7 +266,7 @@ return $gotenberg
 The stamp content. For 'text', the string to render.<br />For 'image' or 'pdf', the filename of the uploaded stamp file.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -281,7 +281,7 @@ return $gotenberg
 An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -296,7 +296,7 @@ return $gotenberg
 Advanced options in JSON format. Valid keys depend on the configured PDF engine (default: pdfcpu).<br />For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -311,7 +311,7 @@ return $gotenberg
 Page ranges to stamp (e.g., '1-3', '5'). Empty string means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -326,7 +326,7 @@ return $gotenberg
 The stamp source type. Options: 'text', 'image', 'pdf'.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs)
 
 ```php
 return $gotenberg
@@ -341,7 +341,7 @@ return $gotenberg
 The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -356,7 +356,7 @@ return $gotenberg
 An image or PDF file used as watermark source (required when watermarkSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -371,7 +371,7 @@ return $gotenberg
 Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -386,7 +386,7 @@ return $gotenberg
 Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -401,7 +401,7 @@ return $gotenberg
 The watermark source type.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -427,7 +427,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -490,7 +490,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg

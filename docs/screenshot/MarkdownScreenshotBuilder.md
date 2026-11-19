@@ -4,7 +4,7 @@ You may have the possibility to convert Markdown files into screenshot.
 You just need to wrap your markdown file into an HTML or Twig file.
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown](https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-markdown](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-markdown)
 
 ## Basic usage
 
@@ -177,7 +177,7 @@ class YourController
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -192,7 +192,7 @@ return $gotenberg
 Add Markdown into a screenshot.<br />Required to generate a screenshot from Markdown builder.<br />You can pass several files with that method.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown](https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-markdown](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-markdown)
 
 ```php
 return $gotenberg
@@ -207,7 +207,7 @@ return $gotenberg
 The Twig file to convert into screenshot.<br /><br />Gotenberg expects an HTML template containing the directive {{ toHTML "filename.md" }}. To prevent any conflict,<br />you may want to use the verbatim tag to encapsulate the directive.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown](https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown)<br />
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-markdown](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-markdown)<br />
 > See: [https://twig.symfony.com/doc/3.x/tags/verbatim.html ](https://twig.symfony.com/doc/3.x/tags/verbatim.html )
 
 ```php
@@ -223,7 +223,7 @@ return $gotenberg
 The HTML file to wrap markdown file into screenshot.<br /><br />As assets files, by default the markdown files are fetch in the assets folder of your application.<br /><br />In the template, you must use the {{ toHTML "filename.md" }} special directive to reference the Markdown file.<br />The HTML template that receives your markdown file will look like this.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown ](https://gotenberg.dev/docs/convert-with-chromium/screenshot-markdown )
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-markdown ](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-markdown )
 
 ```php
 return $gotenberg
@@ -239,7 +239,7 @@ return $gotenberg
 Adds a file, like an image, font, stylesheet, and so on.<br /><br />By default, the assets files are fetch in the assets folder of your application.<br />If your assets are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets)
 
 ```php
 return $gotenberg
@@ -254,7 +254,7 @@ return $gotenberg
 Adds additional files, like images, fonts, stylesheets, and so on (overrides any previous files).<br /><br />By default, the assets files are fetch in the assets folder of your application.<br />If your assets are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets)
 
 ```php
 return $gotenberg
@@ -280,7 +280,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -343,7 +343,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -395,7 +395,7 @@ return $gotenberg
 Add cookies to store in the Chromium cookie jar.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#cookies](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#cookies)
 
 ```php
 return $gotenberg
@@ -410,7 +410,7 @@ return $gotenberg
 Cookies to store in the Chromium cookie jar.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#cookies)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#cookies](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#cookies)
 
 ```php
 return $gotenberg
@@ -450,7 +450,7 @@ return $gotenberg
 Define whether to clip the screenshot according to the device dimensions. (Default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -465,7 +465,7 @@ return $gotenberg
 The device scale ratio, controlling the screenshot pixel density. Set to 2 for retina-quality output. (Default 1).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -480,7 +480,7 @@ return $gotenberg
 The image compression format, either "png", "jpeg" or "webp". (default png).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -495,7 +495,7 @@ return $gotenberg
 The device screen width in pixels. (Default 600).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -534,7 +534,7 @@ return $gotenberg
 The compression quality from range 0 to 100 (jpeg only). (default 100).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -549,7 +549,7 @@ return $gotenberg
 The device screen width in pixels. (Default 800).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior)
 
 ```php
 return $gotenberg
@@ -565,7 +565,7 @@ return $gotenberg
 Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML<br />document before converting it to PDF.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-delay](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-delay)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-delay](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-delay)
 
 ```php
 return $gotenberg
@@ -580,7 +580,7 @@ return $gotenberg
 Sets the JavaScript expression to wait before converting an HTML document to PDF until it returns true.<br /><br />For instance: "window.status === 'ready'".<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-expression](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-expression)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-for-expression](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-for-expression)
 
 ```php
 return $gotenberg
@@ -595,7 +595,7 @@ return $gotenberg
 Selector (e.g. '#id') to query before converting an HTML document into PDF until it matches a node.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-selector](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-selector)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-for-selector](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-for-selector)
 
 ```php
 return $gotenberg
@@ -608,7 +608,7 @@ return $gotenberg
 
 
 ### contentRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
 ```php
 return $gotenberg
@@ -621,7 +621,7 @@ return $gotenberg
 
 ### footer(string \$template, array \$context)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -633,10 +633,10 @@ return $gotenberg
 ```
 
 ### footerFile(string \$path)
-HTML file containing the footer.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+HTML file containing the footer.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -648,10 +648,10 @@ return $gotenberg
 ```
 
 ### footerRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -664,7 +664,7 @@ return $gotenberg
 
 ### header(string \$template, array \$context)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -676,10 +676,10 @@ return $gotenberg
 ```
 
 ### headerFile(string \$path)
-HTML file containing the header.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+HTML file containing the header.<br /><br />As assets files, by default the HTML files are fetch in the assets folder of your application.<br />If your HTML files are in another folder, you can override the default value of assets_directory in your<br />configuration file config/sensiolabs_gotenberg.yml.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -691,10 +691,10 @@ return $gotenberg
 ```
 
 ### headerRaw(string \$html)
-The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#assets.<br />
+The raw html string to convert into PDF.<br /><br />Warning: Assets (css, images, etc...) cannot be parsed and loaded dynamically.<br />Assets can still be loaded using https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#assets.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer)
 
 ```php
 return $gotenberg
@@ -710,7 +710,7 @@ return $gotenberg
 You can simulate specific browser conditions by overriding CSS media features.<br />This is particularly useful for forcing "Dark Mode" or testing layouts with reduced motion.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#emulated-media-features](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#emulated-media-features)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#emulated-media-features](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#emulated-media-features)
 
 ```php
 return $gotenberg
@@ -726,7 +726,7 @@ return $gotenberg
 Forces GotenbergPdf to return a 409 Conflict response if there are<br />exceptions in the Chromium console. (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#console)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#console](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#console)
 
 ```php
 return $gotenberg
@@ -741,7 +741,7 @@ return $gotenberg
 Return a 409 Conflict response if the HTTP status code from<br />the main page is not acceptable. (default [499,599]). (overrides any previous configuration).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
 
 ```php
 return $gotenberg
@@ -756,7 +756,7 @@ return $gotenberg
 Return a 409 Conflict response if the HTTP status code from at least one resource is not acceptable. (overrides any previous configuration).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
 
 ```php
 return $gotenberg
@@ -771,7 +771,7 @@ return $gotenberg
 Forces GotenbergPdf to return a 409 Conflict response if Chromium fails to load at least one resource.<br />(default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http--networking)
 
 ```php
 return $gotenberg
@@ -786,7 +786,7 @@ return $gotenberg
 Exclude resources from failOnResourceHttpStatusCodes checks based on their hostname.<br /><br />The ignoreResourceHttpStatusDomains option allows you to exclude specific domains from the resource HTTP status<br />code checks. A match happens if the hostname equals the domain or is a subdomain of it<br />(e.g., browser.sentry-cdn.com matches sentry-cdn.com).<br /><br />Values are normalized (trimmed, lowercased) and may be provided as:<br /><br />example.com<br />.example.com or .example.com<br />example.com:443 (port is ignored)<br />https://example.com/path (scheme/path are ignored)<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#invalid-http-status-codes)
 
 ```php
 return $gotenberg
@@ -814,7 +814,7 @@ return $gotenberg
 Sets extra HTTP headers that Chromium will send when loading the HTML document. (overrides any previous headers).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http-headers)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http-headers](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http-headers)
 
 ```php
 return $gotenberg
@@ -842,7 +842,7 @@ return $gotenberg
 Forces Chromium to emulate, either "screen" or "print". (default "print").<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#print-media](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#print-media)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#print-media](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#print-media)
 
 ```php
 return $gotenberg
@@ -858,7 +858,7 @@ return $gotenberg
 Does not wait for Chromium network to be almost idle (at most 2 open connections for 500ms) before conversion.<br />Useful for pages with long-polling or analytics connections. (default true).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http--networking)
 
 ```php
 return $gotenberg
@@ -873,7 +873,7 @@ return $gotenberg
 Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during<br />conversion. However, this often significantly slows down the conversion process. Setting this form field to true<br />can greatly enhance the conversion speed.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#http--networking)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http--networking](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#http--networking)
 
 ```php
 return $gotenberg

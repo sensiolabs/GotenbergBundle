@@ -16,7 +16,7 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  *
  * You must provide at least a user password.
  *
- * @see https://gotenberg.dev/docs/manipulate-pdfs/encrypt-pdfs
+ * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/encrypt-pdfs
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'encrypt')]
 final class EncryptPdfBuilder extends AbstractBuilder

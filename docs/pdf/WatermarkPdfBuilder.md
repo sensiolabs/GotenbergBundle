@@ -24,7 +24,7 @@
 Sets download from to download each entry (file) in parallel (URLs MUST return a Content-Disposition header with a filename parameter.).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#download-from](https://gotenberg.dev/docs/webhook-download#download-from)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#download-from](https://gotenberg.dev/docs/8.x/webhook-download#download-from)
 
 ```php
 return $gotenberg
@@ -39,7 +39,7 @@ return $gotenberg
 Add PDF files to watermark.<br />As assets files, by default the PDF files are fetch in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -54,7 +54,7 @@ return $gotenberg
 The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -69,7 +69,7 @@ return $gotenberg
 An image or PDF file used as watermark source (required when watermarkSource is 'image' or 'pdf').<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -84,7 +84,7 @@ return $gotenberg
 Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -99,7 +99,7 @@ return $gotenberg
 Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -114,7 +114,7 @@ return $gotenberg
 The watermark source type.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs)
 
 ```php
 return $gotenberg
@@ -140,7 +140,7 @@ return $gotenberg
 
 ### webhook(array \$webhook)
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg
@@ -203,7 +203,7 @@ return $gotenberg
 Sets the URL that will receive structured JSON event callbacks after each webhook operation.<br />When set, POST requests are sent with event type (`webhook.success` or `webhook.error`), `correlationId`, and `timestamp`.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/webhook-download#webhooks](https://gotenberg.dev/docs/webhook-download#webhooks)
+> See: [https://gotenberg.dev/docs/8.x/webhook-download#webhooks](https://gotenberg.dev/docs/8.x/webhook-download#webhooks)
 
 ```php
 return $gotenberg

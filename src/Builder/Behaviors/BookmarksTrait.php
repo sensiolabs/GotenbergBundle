@@ -26,7 +26,7 @@ trait BookmarksTrait
      *
      * @param list<Bookmark>|array<string, list<Bookmark>> $bookmarks
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
      *
      * @example bookmarks([['title' => 'Introduction', 'page' => 1, 'children' => [['title' => 'Overview', 'page' => 1]]], ['title' => 'Appendix', 'page' => 5]])
      * @example bookmarks(['1_pdf.pdf' => [['title' => 'Introduction', 'page' => 1]], '2_pdf.pdf' => [['title' => 'Appendix', 'page' => 1]]])
@@ -46,7 +46,7 @@ trait BookmarksTrait
      *
      * @param list<Bookmark> $children
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
      *
      * @example addBookmark('Introduction', 1)
      * @example addBookmark('Chapter 1', 1, [['title' => 'Overview', 'page' => 1]])
@@ -74,7 +74,7 @@ trait BookmarksTrait
      * Extracts existing bookmarks from input files and offsets their page numbers
      * based on their position in the merged document (default false).
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
      *
      * @example autoIndexBookmarks() // is same as `->autoIndexBookmarks(true)`
      */

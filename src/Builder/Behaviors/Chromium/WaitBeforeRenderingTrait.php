@@ -18,7 +18,7 @@ trait WaitBeforeRenderingTrait
      * Sets the duration (i.e., "1s", "2ms", etc.) to wait when loading an HTML
      * document before converting it to PDF.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-delay
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-delay
      *
      * @example waitDelay('5s')
      */
@@ -36,7 +36,7 @@ trait WaitBeforeRenderingTrait
      *
      * For instance: "window.status === 'ready'".
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-expression
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-for-expression
      *
      * @example waitForExpression("window.globalVar === 'ready'")
      */
@@ -51,7 +51,7 @@ trait WaitBeforeRenderingTrait
     /**
      * Selector (e.g. '#id') to query before converting an HTML document into PDF until it matches a node.
      *
-     * @see https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#wait-for-selector
+     * @see https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#wait-for-selector
      *
      * @example waitForSelector('#special-id')
      */

@@ -9,7 +9,7 @@ You can add assets in several ways, and it's available for most builders.
 
 > [!WARNING]
 > As a reminder, we can only load assets in the content. And not in Header or Footer.
-> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/convert-with-chromium/convert-html-to-pdf#header--footer).
+> For more information about [Header and Footer restriction](https://gotenberg.dev/docs/8.x/convert-with-chromium/convert-html-to-pdf#header--footer).
 >
 > By default, the assets are fetch in the `assets` folder of your application.
 > If your assets files are in another folder, you can override the
