@@ -190,6 +190,8 @@ trait WatermarkTrait
     #[WithConfigurationNode(new NativeEnumNodeBuilder('watermark_source', enumClass: WatermarkSource::class))]
     public function watermarkSource(WatermarkSource $watermarkSource): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addWatermarkText()", "addWatermarkImage()", "addWatermarkPdf()" or "watermarks()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
 
         $this->getBodyBag()->set('watermarkSource', $watermarkSource);
@@ -209,6 +211,8 @@ trait WatermarkTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('watermark_expression'))]
     public function watermarkExpression(string $watermarkExpression): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addWatermarkText()", "addWatermarkImage()", "addWatermarkPdf()" or "watermarks()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
 
         $this->getBodyBag()->set('watermarkExpression', $watermarkExpression);
@@ -228,6 +232,8 @@ trait WatermarkTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('watermark_pages'))]
     public function watermarkPages(string|null $watermarkPages = null): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addWatermarkText()", "addWatermarkImage()", "addWatermarkPdf()" or "watermarks()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
 
         if (!$watermarkPages) {
@@ -254,6 +260,8 @@ trait WatermarkTrait
     #[WithConfigurationNode(new ArrayNodeBuilder('watermark_options', useAttributeAsKey: 'key', prototype: 'scalar'))]
     public function watermarkOptions(array $watermarkOptions): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addWatermarkText()", "addWatermarkImage()", "addWatermarkPdf()" or "watermarks()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
 
         if ([] === $watermarkOptions) {
@@ -283,6 +291,8 @@ trait WatermarkTrait
     #[WithConfigurationNode(new ScalarNodeBuilder('watermark_file'))]
     public function watermarkFile(string|\Stringable $path): self
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.5', 'Calling "%s::%s()" is deprecated, use "addWatermarkImage()", "addWatermarkPdf()" or "watermarks()" instead. It will be removed in 2.0.', static::class, __FUNCTION__);
+
         $this->logWarningIfVersionIs('<', '8.28', 'The watermark option is not available.');
 
         $path = (string) $path;

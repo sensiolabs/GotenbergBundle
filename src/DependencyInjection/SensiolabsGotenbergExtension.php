@@ -76,10 +76,12 @@ class SensiolabsGotenbergExtension extends Extension
     }
 
     /**
-     * @deprecated The BuilderStack is created by the extension itself
+     * @deprecated since 1.1, the BuilderStack is created by the extension itself
      */
     public function setBuilderStack(BuilderStack $builderStack): void
     {
+        trigger_deprecation('sensiolabs/gotenberg-bundle', '1.1', 'Calling "%s()" is deprecated, the extension creates its builder stack itself. Use "registerBuilder()" to add a builder. It will be removed in 2.0.', __METHOD__);
+
         $this->builderStack = $builderStack;
     }
 

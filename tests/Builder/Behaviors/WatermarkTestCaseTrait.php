@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\WatermarkSource;
 use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Formatter\AssetBaseDirFormatter;
+use Sensiolabs\GotenbergBundle\Tests\CollectDeprecationsTrait;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\TextPart;
 
@@ -20,6 +21,8 @@ trait WatermarkTestCaseTrait
 {
     /** @use BehaviorTrait<T> */
     use BehaviorTrait;
+
+    use CollectDeprecationsTrait;
 
     abstract protected function assertGotenbergFormData(string $field, string $expectedValue): void;
 
@@ -140,6 +143,38 @@ trait WatermarkTestCaseTrait
         ;
 
         $this->assertGotenbergFormDataFile('watermark', 'application/pdf', self::FIXTURE_DIR.'/pdf/simple_pdf.pdf');
+    }
+
+    /**
+     * @return \Generator<string, array{string, list<mixed>, string}>
+     */
+    public static function provideDeprecatedWatermarkMethods(): \Generator
+    {
+        $replacements = '"addWatermarkText()", "addWatermarkImage()", "addWatermarkPdf()" or "watermarks()"';
+
+        yield 'watermarkSource' => ['watermarkSource', [WatermarkSource::Text], $replacements];
+        yield 'watermarkExpression' => ['watermarkExpression', ['APPROVED'], $replacements];
+        yield 'watermarkPages' => ['watermarkPages', ['1-3'], $replacements];
+        yield 'watermarkOptions' => ['watermarkOptions', [['opacity' => '0.5']], $replacements];
+        yield 'watermarkFile' => ['watermarkFile', ['pdf/simple_pdf.pdf'], '"addWatermarkImage()", "addWatermarkPdf()" or "watermarks()"'];
+    }
+
+    /**
+     * @param list<mixed> $arguments
+     */
+    #[DataProvider('provideDeprecatedWatermarkMethods')]
+    public function testDeprecatedWatermarkMethodsTriggerADeprecation(string $method, array $arguments, string $replacements): void
+    {
+        $this->container->set('asset_base_dir_formatter', new AssetBaseDirFormatter(self::FIXTURE_DIR, [self::FIXTURE_DIR]));
+        $builder = $this->getDefaultBuilder();
+
+        $deprecations = $this->collectDeprecations(static function () use ($builder, $method, $arguments): void {
+            $builder->{$method}(...$arguments);
+        });
+
+        self::assertSame([
+            \sprintf('Since sensiolabs/gotenberg-bundle 1.5: Calling "%s::%s()" is deprecated, use %s instead. It will be removed in 2.0.', $builder::class, $method, $replacements),
+        ], $deprecations);
     }
 
     public function testWatermarkTextImageAndPdf(): void
