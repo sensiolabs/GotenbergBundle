@@ -82,6 +82,17 @@ sent to Gotenberg is unchanged. All of them will be removed in 2.0.
    ;
   ```
 
+## Bug Fixes
+
+* Gotenberg only accepts string values in the stamp and watermark options. Numbers given to `stampOptions()`,
+  `watermarkOptions()` or the `stamp_options` / `watermark_options` keys are now sent as strings, instead of making
+  Gotenberg answer `400`. Booleans, `null` and arrays throw an `InvalidBuilderConfiguration` when `generate()` builds
+  the request, and nested values in the configuration are rejected when the container is compiled. The options of
+  `addStamp*()`, `addWatermark*()` and of the `stamps` / `watermarks` lists follow the same rules.
+* `stampOptions([])` and `watermarkOptions([])` now remove the field. They used to send `[]`, which Gotenberg cannot
+  decode and answered `400`.
+* `watermarkPages(null)` now removes `watermarkPages`. It used to remove `stampPages` instead.
+
 ## Dependency Changes
 
 * Added `symfony/deprecation-contracts` to trigger the deprecations above.
