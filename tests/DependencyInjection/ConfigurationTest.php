@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FacturXPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -61,6 +62,7 @@ final class ConfigurationTest extends TestCase
                     WatermarkPdfBuilder::class,
                     RotatePdfBuilder::class,
                     OptimizePdfBuilder::class,
+                    FacturXPdfBuilder::class,
                 ],
                 'screenshot' => [
                     HtmlScreenshotBuilder::class,
@@ -108,6 +110,26 @@ final class ConfigurationTest extends TestCase
         $processor->processConfiguration(
             self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]),
             [['default_options' => ['pdf' => ['html' => ['native_page_ranges' => $range]]]]],
+        );
+    }
+
+    public function testFacturxPdfFormatRejectsNonPdfA3(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $processor = new Processor();
+        $processor->processConfiguration(
+            self::getWithBuilders(['pdf' => [FacturXPdfBuilder::class]]),
+            [['default_options' => ['pdf' => ['facturx' => ['pdf_format' => 'PDF/A-1b']]]]],
+        );
+    }
+
+    public function testFacturxVersionMustBeAString(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $processor = new Processor();
+        $processor->processConfiguration(
+            self::getWithBuilders(['pdf' => [FacturXPdfBuilder::class]]),
+            [['default_options' => ['pdf' => ['facturx' => ['facturx_version' => 1.0]]]]],
         );
     }
 
@@ -547,6 +569,17 @@ final class ConfigurationTest extends TestCase
                         ],
                     ],
                     'optimize' => [
+                        'download_from' => [],
+                        'webhook' => [
+                            'success' => [
+                            ],
+                            'error' => [
+                            ],
+                            'extra_http_headers' => [],
+                            'events' => [],
+                        ],
+                    ],
+                    'facturx' => [
                         'download_from' => [],
                         'webhook' => [
                             'success' => [

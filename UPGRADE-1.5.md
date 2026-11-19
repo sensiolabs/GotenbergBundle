@@ -3,6 +3,7 @@
 ## Breaking changes
 
 * `Sensiolabs\GotenbergBundle\GotenbergPdfInterface` new method `optimize` added
+* `Sensiolabs\GotenbergBundle\GotenbergPdfInterface` new method `facturX` added
 
 ## Deprecations
 

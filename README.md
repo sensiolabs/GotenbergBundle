@@ -308,6 +308,7 @@ class YourController
 10. [Encrypt Builder](./docs/pdf/EncryptPdfBuilder.md)
 11. [Embed Builder](./docs/pdf/EmbedPdfBuilder.md)
 12. [Optimize Builder](./docs/pdf/OptimizePdfBuilder.md)
+13. [Factur-X Builder](./docs/pdf/FacturXPdfBuilder.md)
 
 ### Screenshot
 
@@ -379,6 +380,7 @@ sensiolabs_gotenberg:
 - [UPGRADE FROM 1.1.0 to 1.2.0](./UPGRADE-1.2.md)
 - [UPGRADE FROM 1.2.0 to 1.3.0](./UPGRADE-1.3.md)
 - [UPGRADE FROM 1.3.0 to 1.4.0](./UPGRADE-1.4.md)
+- [UPGRADE FROM 1.4.0 to 1.5.0](./UPGRADE-1.5.md)
 
 ## Credits
 

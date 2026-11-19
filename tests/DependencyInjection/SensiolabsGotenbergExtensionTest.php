@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ConvertPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EmbedPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\EncryptPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\FacturXPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\HtmlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
@@ -19,6 +20,8 @@ use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\DependencyInjection\SensiolabsGotenbergExtension;
 use Sensiolabs\GotenbergBundle\Enumeration\EmulatedMediaType;
+use Sensiolabs\GotenbergBundle\Enumeration\FacturXDocumentType;
+use Sensiolabs\GotenbergBundle\Enumeration\FacturXPdfFormat;
 use Sensiolabs\GotenbergBundle\Enumeration\ImageResolutionDPI;
 use Sensiolabs\GotenbergBundle\Enumeration\PaperSize;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
@@ -51,6 +54,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
         $extension->registerBuilder(EmbedPdfBuilder::class);
         $extension->registerBuilder(RotatePdfBuilder::class);
         $extension->registerBuilder(OptimizePdfBuilder::class);
+        $extension->registerBuilder(FacturXPdfBuilder::class);
 
         $extension->registerBuilder(HtmlScreenshotBuilder::class);
         $extension->registerBuilder(MarkdownScreenshotBuilder::class);
@@ -254,6 +258,11 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 'optimize' => [
                     'image_quality' => 60,
                 ],
+                'facturx' => [
+                    'pdf_format' => FacturXPdfFormat::Pdf3u,
+                    'facturx_document_type' => FacturXDocumentType::Order,
+                    'facturx_version' => '1.0',
+                ],
             ],
             'screenshot' => [
                 'html' => [
@@ -422,6 +431,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                     'embed' => [],
                     'rotate' => [],
                     'optimize' => [],
+                    'facturx' => [],
                 ],
             ],
         ]], $containerBuilder);
@@ -468,6 +478,7 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                 'embed' => [],
                 'rotate' => [],
                 'optimize' => [],
+                'facturx' => [],
             ],
             'screenshot' => [
                 'html' => [],
@@ -823,6 +834,11 @@ final class SensiolabsGotenbergExtensionTest extends KernelTestCase
                         ],
                         'optimize' => [
                             'image_quality' => 60,
+                        ],
+                        'facturx' => [
+                            'pdf_format' => FacturXPdfFormat::Pdf3u->value,
+                            'facturx_document_type' => FacturXDocumentType::Order->value,
+                            'facturx_version' => '1.0',
                         ],
                         'encrypt' => [
                             'user_password' => 'user_secret',
