@@ -29,7 +29,7 @@ trait StampTrait
      *
      * @param array<string, mixed> $options
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps
      *
      * @example addStampText('APPROVED', pages: '1-3', options: ['opacity' => '0.5'])
      */
@@ -64,7 +64,7 @@ trait StampTrait
      *
      * @param array<string, mixed> $options
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps
      *
      * @example addStampImage('logo.png', pages: '1')
      */
@@ -99,7 +99,7 @@ trait StampTrait
      *
      * @param array<string, mixed> $options
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps
      *
      * @example addStampPdf('stamp.pdf')
      */
@@ -137,7 +137,7 @@ trait StampTrait
      *     file?: string|\Stringable|null,
      * }> $stamps
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps
      *
      * @example stamps([['source' => StampSource::Text, 'expression' => 'APPROVED'], ['source' => StampSource::Image, 'file' => 'logo.png']])
      */

@@ -29,7 +29,7 @@ trait WatermarkTrait
      *
      * @param array<string, mixed> $options
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks
      *
      * @example addWatermarkText('CONFIDENTIAL', pages: '1-3', options: ['opacity' => '0.5'])
      */
@@ -64,7 +64,7 @@ trait WatermarkTrait
      *
      * @param array<string, mixed> $options
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks
      *
      * @example addWatermarkImage('logo.png', pages: '1')
      */
@@ -99,7 +99,7 @@ trait WatermarkTrait
      *
      * @param array<string, mixed> $options
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks
      *
      * @example addWatermarkPdf('watermark.pdf')
      */
@@ -137,7 +137,7 @@ trait WatermarkTrait
      *     file?: string|\Stringable|null,
      * }> $watermarks
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks
      *
      * @example watermarks([['source' => WatermarkSource::Text, 'expression' => 'CONFIDENTIAL'], ['source' => WatermarkSource::Image, 'file' => 'logo.png']])
      */

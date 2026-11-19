@@ -187,7 +187,7 @@ return $gotenberg
 Adds an image stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps)
 
 ```php
 return $gotenberg
@@ -202,7 +202,7 @@ return $gotenberg
 Adds a PDF stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps)
 
 ```php
 return $gotenberg
@@ -217,7 +217,7 @@ return $gotenberg
 Adds a text stamp. Stamps are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu). For pdfcpu: font, points, color, rotation, opacity, scale, offset.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps)
 
 ```php
 return $gotenberg
@@ -232,7 +232,7 @@ return $gotenberg
 Adds an image watermark. Watermarks are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
 
 ```php
 return $gotenberg
@@ -247,7 +247,7 @@ return $gotenberg
 Adds a PDF watermark. Watermarks are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu).<br /><br />As asset files, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
 
 ```php
 return $gotenberg
@@ -262,7 +262,7 @@ return $gotenberg
 Adds a text watermark. Watermarks are applied in order.<br />Options depend on the configured PDF engine (default: pdfcpu), e.g. font, color, rotation, opacity, scaling.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
 
 ```php
 return $gotenberg
@@ -530,7 +530,7 @@ return $gotenberg
 Adds several stamps, applied in order. An empty list removes the stamps added with this method or the addStamp*() ones.<br />They cannot be combined with the deprecated stamp* methods.<br />A 'text' entry requires an 'expression', an 'image' or 'pdf' entry requires a 'file'.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/manipulate-pdfs/stamp-pdfs#multiple-stamps)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps](https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps)
 
 ```php
 return $gotenberg
@@ -620,7 +620,7 @@ return $gotenberg
 Adds several watermarks, applied in order. An empty list removes the watermarks added with this method or the addWatermark*() ones.<br />They cannot be combined with the deprecated watermark* methods.<br />A 'text' entry requires an 'expression', an 'image' or 'pdf' entry requires a 'file'.<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks](https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks)
 
 ```php
 return $gotenberg
