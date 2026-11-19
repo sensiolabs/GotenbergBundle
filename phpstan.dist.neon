@@ -27,6 +27,12 @@ parameters:
 			count: 1
 			path: src/DataCollector/GotenbergDataCollector.php
 
+		# Deprecated since 1.5, kept for third parties only. To be removed in 2.0 along with the trait.
+		-
+			identifier: trait.unused
+			count: 1
+			path: src/Builder/Behaviors/Chromium/ContentTrait.php
+
 		-
 			message: "#^ Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition|Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\VariableNodeDefinition::append\\(\\)\\.$#"
 			count: 1

@@ -7,6 +7,7 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 use Sensiolabs\GotenbergBundle\Test\Builder\GotenbergBuilderTestCase;
 use Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors\ChromiumPdfTestCaseTrait;
+use Sensiolabs\GotenbergBundle\Tests\CollectDeprecationsTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -21,6 +22,7 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
 {
     /** @use ChromiumPdfTestCaseTrait<UrlPdfBuilder> */
     use ChromiumPdfTestCaseTrait;
+    use CollectDeprecationsTrait;
 
     protected function createBuilder(): UrlPdfBuilder
     {
@@ -132,5 +134,26 @@ final class UrlPdfBuilderTest extends GotenbergBuilderTestCase
             ->route('article_read', ['id' => 1])
             ->generate()
         ;
+    }
+
+    /**
+     * Deprecated since 1.5, to be removed in 2.0 along with the content*() methods of this builder.
+     */
+    public function testContentIsDeprecatedButStillSent(): void
+    {
+        $deprecations = $this->collectDeprecations(function (): void {
+            $this->getDefaultBuilder()
+                ->contentFile('files/content.html')
+                ->contentRaw('<h2>The content</h2>')
+                ->generate()
+            ;
+        });
+
+        self::assertSame([
+            'Since sensiolabs/gotenberg-bundle 1.5: Calling "Sensiolabs\\GotenbergBundle\\Builder\\Pdf\\UrlPdfBuilder::contentFile()" is deprecated, the page body comes from the URL. Use "url()" or "route()" instead. It will be removed in 2.0.',
+            'Since sensiolabs/gotenberg-bundle 1.5: Calling "Sensiolabs\\GotenbergBundle\\Builder\\Pdf\\UrlPdfBuilder::contentRaw()" is deprecated, the page body comes from the URL. Use "url()" or "route()" instead. It will be removed in 2.0.',
+        ], $deprecations);
+
+        $this->assertContentFile('index.html', 'text/html', '<h2>The content</h2>');
     }
 }
