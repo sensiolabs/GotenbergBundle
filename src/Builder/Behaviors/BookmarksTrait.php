@@ -91,7 +91,7 @@ trait BookmarksTrait
     /**
      * Adds a bookmark per merged document, labeled by its Title metadata (falling back to the filename) and pointing to its first page, with the document's own bookmarks nested underneath (default false).
      *
-     * @see https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
+     * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines
      *
      * @example titleBookmarks() // is same as `->titleBookmarks(true)`
      */

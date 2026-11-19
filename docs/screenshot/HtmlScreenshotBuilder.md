@@ -377,7 +377,7 @@ return $gotenberg
 Clip the screenshot to the bounding box of the first element matching this CSS selector. Takes precedence over clip().<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/convert-with-chromium/screenshot-html#rendering-behavior)
+> See: [https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior](https://gotenberg.dev/docs/8.x/convert-with-chromium/screenshot-html#rendering-behavior)
 
 ```php
 return $gotenberg

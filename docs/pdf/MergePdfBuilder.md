@@ -342,7 +342,7 @@ return $gotenberg
 Adds a bookmark per merged document, labeled by its Title metadata (falling back to the filename) and pointing to its first page, with the document's own bookmarks nested underneath (default false).<br />
 
 > [!TIP]
-> See: [https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
+> See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines](https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs#bookmarks-pdf-engines)
 
 ```php
 return $gotenberg
