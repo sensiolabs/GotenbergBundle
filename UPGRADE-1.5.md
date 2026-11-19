@@ -7,8 +7,9 @@
 
 ## Deprecations
 
-Nothing changes at runtime: every deprecated method keeps its previous behaviour and the payload
-sent to Gotenberg is unchanged. All of them will be removed in 2.0.
+Apart from the deprecation notice they trigger, nothing changes at runtime: every deprecated method
+keeps its previous behaviour and the payload sent to Gotenberg is unchanged. All of them will be
+removed in 2.0.
 
 * `stampSource()`, `stampExpression()`, `stampPages()`, `stampOptions()` and `stampFile()` are deprecated, use
   `addStampText()`, `addStampImage()` or `addStampPdf()` instead. They cannot be combined with the new methods
@@ -17,7 +18,8 @@ sent to Gotenberg is unchanged. All of them will be removed in 2.0.
   deprecated, use `addWatermarkText()`, `addWatermarkImage()` or `addWatermarkPdf()` instead. They cannot be combined
   with the new methods on the same builder.
 * The `stamp_*` and `watermark_*` builder configuration keys should be replaced by the `stamps` and `watermarks` lists.
-  They cannot be combined on the same builder.
+  They cannot be combined on the same builder. Since they end up calling the methods above, they trigger the same
+  deprecation when the builder is instantiated.
 
   ```diff
   - ->stampSource(StampSource::Text)
@@ -81,6 +83,9 @@ sent to Gotenberg is unchanged. All of them will be removed in 2.0.
        ->generate()
    ;
   ```
+
+* `SensiolabsGotenbergExtension::setBuilderStack()`, deprecated since 1.1, now triggers a deprecation notice. Register
+  a builder with `registerBuilder()` instead.
 
 ## Bug Fixes
 
