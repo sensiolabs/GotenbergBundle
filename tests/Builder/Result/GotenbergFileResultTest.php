@@ -122,6 +122,30 @@ class GotenbergFileResultTest extends TestCase
         self::assertSame('application/pdf', $headers->get('content-type'));
     }
 
+    public function testGetGotenbergVersion(): void
+    {
+        $mockResponse = new MockResponse('pdf content', [
+            'response_headers' => [
+                'content-type' => 'application/pdf',
+                'gotenberg-version' => '8.39.0',
+            ],
+        ]);
+
+        $client = new MockHttpClient([$mockResponse]);
+        $stream = $client->stream($client->request('GET', '/dummy'));
+
+        $fileResult = new GotenbergFileResult($stream, new InMemoryProcessor(), HeaderUtils::DISPOSITION_ATTACHMENT);
+
+        self::assertSame('8.39.0', $fileResult->getGotenbergVersion());
+    }
+
+    public function testGetGotenbergVersionIsNullWhenHeaderIsMissing(): void
+    {
+        $fileResult = $this->getGotenbergFileResult();
+
+        self::assertNull($fileResult->getGotenbergVersion());
+    }
+
     public function testCannotProcessedAnAlreadyProcessedQuery(): void
     {
         $fileResult = $this->getGotenbergFileResult();
