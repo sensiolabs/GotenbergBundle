@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Behaviors;
 
 use Sensiolabs\GotenbergBundle\Builder\Attributes\NormalizeGotenbergPayload;
 use Sensiolabs\GotenbergBundle\Builder\Attributes\WithConfigurationNode;
+use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\LoggerAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\BodyBag;
 use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Enumeration\PdfFormat;
@@ -12,6 +13,8 @@ use Sensiolabs\GotenbergBundle\NodeBuilder\NativeEnumNodeBuilder;
 
 trait PdfFormatTrait
 {
+    use LoggerAwareTrait;
+
     abstract protected function getBodyBag(): BodyBag;
 
     /**
@@ -27,6 +30,10 @@ trait PdfFormatTrait
         if (!$format) {
             $this->getBodyBag()->unset('pdfa');
         } else {
+            if (PdfFormat::Pdf4 === $format) {
+                $this->logWarningIfVersionIs('<', '8.39', 'The PDF/A-4 format is not available.');
+            }
+
             $this->getBodyBag()->set('pdfa', $format);
         }
 
