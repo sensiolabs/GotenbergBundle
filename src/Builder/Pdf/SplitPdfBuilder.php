@@ -78,5 +78,7 @@ final class SplitPdfBuilder extends AbstractBuilder
         if ($this->getBodyBag()->get('splitSpan') === null) {
             throw new MissingRequiredFieldException('Field "splitSpan" must be provided.');
         }
+
+        $this->validateEncryptPermissions();
     }
 }
