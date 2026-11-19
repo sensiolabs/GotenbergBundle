@@ -71,6 +71,50 @@ trait StampTestCaseTrait
         $this->assertGotenbergFormData('stampOptions', '{"opacity":"0.5"}');
     }
 
+    public function testUnsetStampOptions(): void
+    {
+        $builder = $this->getDefaultBuilder()
+            ->stampOptions(['opacity' => '0.5'])
+        ;
+
+        self::assertArrayHasKey('stampOptions', $builder->getBodyBag()->all());
+
+        $builder->stampOptions([]);
+        self::assertArrayNotHasKey('stampOptions', $builder->getBodyBag()->all());
+    }
+
+    public function testStampOptionsCastNumbersToStrings(): void
+    {
+        $this->withGotenbergVersion('8.28.0');
+
+        $this->getDefaultBuilder()
+            ->stampOptions(['opacity' => 0.5, 'rotation' => 45, 'position' => 'tl'])
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('stampOptions', '{"opacity":"0.5","rotation":"45","position":"tl"}');
+    }
+
+    /**
+     * @return \Generator<string, array{mixed, string}>
+     */
+    public static function provideInvalidStampOptions(): \Generator
+    {
+        yield 'boolean' => [true, 'bool'];
+        yield 'array' => [[10, 20], 'array'];
+        yield 'null' => [null, 'null'];
+    }
+
+    #[DataProvider('provideInvalidStampOptions')]
+    public function testStampOptionsRejectInvalidValues(mixed $value, string $type): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage(\sprintf('The "offset" stamp option must be a string or a number, "%s" given.', $type));
+
+        // @phpstan-ignore argument.type
+        $this->getDefaultBuilder()->stampOptions(['offset' => $value])->generate();
+    }
+
     public function testStampFile(): void
     {
         $this->withGotenbergVersion('8.28.0');

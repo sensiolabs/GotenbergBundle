@@ -215,6 +215,32 @@ class NormalizerFactory
     }
 
     /**
+     * @return (\Closure(string, array<string, mixed>): list<array<string, string>>)
+     */
+    public static function stampOptions(): \Closure
+    {
+        return self::options('stamp');
+    }
+
+    /**
+     * @return (\Closure(string, array<string, mixed>): list<array<string, string>>)
+     */
+    public static function watermarkOptions(): \Closure
+    {
+        return self::options('watermark');
+    }
+
+    /**
+     * @return (\Closure(string, array<string, mixed>): list<array<string, string>>)
+     */
+    private static function options(string $prefix): \Closure
+    {
+        return static function (string $key, array $options) use ($prefix) {
+            yield [$key => self::encodeOptions($prefix, $options)];
+        };
+    }
+
+    /**
      * @return (\Closure(string, list<array{
      *     source: \BackedEnum,
      *     expression?: string,

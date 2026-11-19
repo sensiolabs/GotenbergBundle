@@ -529,7 +529,7 @@ Deprecated, use addStampText(), addStampImage() or addStampPdf() instead.<br />A
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->stampOptions(['opacity' => 0.5])
+    ->stampOptions(['opacity' => '0.5'])
     ->generate()
     ->stream()
 ;
@@ -619,7 +619,7 @@ Deprecated, use addWatermarkText(), addWatermarkImage() or addWatermarkPdf() ins
 ```php
 return $gotenberg
     // Your builder call as ->html() and the rest of your configuration code
-    ->watermarkOptions(['opacity' => 0.5])
+    ->watermarkOptions(['opacity' => '0.5'])
     ->generate()
     ->stream()
 ;
