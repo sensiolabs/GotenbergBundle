@@ -27,10 +27,13 @@ trait FacturXTrait
 
     /**
      * The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the
-     * uploaded filename.
+     * uploaded filename (`xrechnung.xml` for the XRECHNUNG level since Gotenberg 8.39).
      *
      * Gotenberg requires the conformance level alongside the XML, recorded in the XMP
      * metadata. See the `FacturXConformanceLevel` enum for what each level covers.
+     *
+     * Factur-X requires PDF/A-3: leave the PDF format unset, Gotenberg then converts to
+     * PDF/A-3b, or choose a PDF/A-3 variant. Gotenberg rejects any other format.
      *
      * As an asset file, by default the file is fetched in the assets folder
      * of your application. For more information about path resolution go to

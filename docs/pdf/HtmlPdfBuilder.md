@@ -1439,7 +1439,7 @@ return $gotenberg
 ```
 
 ### facturxXml(Stringable|SplFileInfo|string \$path, Sensiolabs\GotenbergBundle\Enumeration\FacturXConformanceLevel \$conformanceLevel)
-The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the<br />uploaded filename.<br /><br />Gotenberg requires the conformance level alongside the XML, recorded in the XMP<br />metadata. See the `FacturXConformanceLevel` enum for what each level covers.<br /><br />As an asset file, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation. Pass a `\SplFileInfo` to bypass that resolution.<br />
+The Factur-X/ZUGFeRD CII invoice XML, embedded as `factur-x.xml` regardless of the<br />uploaded filename (`xrechnung.xml` for the XRECHNUNG level since Gotenberg 8.39).<br /><br />Gotenberg requires the conformance level alongside the XML, recorded in the XMP<br />metadata. See the `FacturXConformanceLevel` enum for what each level covers.<br /><br />Factur-X requires PDF/A-3: leave the PDF format unset, Gotenberg then converts to<br />PDF/A-3b, or choose a PDF/A-3 variant. Gotenberg rejects any other format.<br /><br />As an asset file, by default the file is fetched in the assets folder<br />of your application. For more information about path resolution go to<br />assets documentation. Pass a `\SplFileInfo` to bypass that resolution.<br />
 
 > [!TIP]
 > See: [https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x](https://gotenberg.dev/docs/8.x/manipulate-pdfs/factur-x)
