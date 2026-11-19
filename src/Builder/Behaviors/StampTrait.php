@@ -27,7 +27,7 @@ trait StampTrait
      * Adds a text stamp. Stamps are applied in order.
      * Options depend on the configured PDF engine (default: pdfcpu). For pdfcpu: font, points, color, rotation, opacity, scale, offset.
      *
-     * @param array<string, mixed> $options
+     * @param array<string, string|int|float> $options
      *
      * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps
      *
@@ -62,7 +62,7 @@ trait StampTrait
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @param array<string, mixed> $options
+     * @param array<string, string|int|float> $options
      *
      * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps
      *
@@ -97,7 +97,7 @@ trait StampTrait
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @param array<string, mixed> $options
+     * @param array<string, string|int|float> $options
      *
      * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/stamp-pdfs#multiple-stamps
      *
@@ -133,7 +133,7 @@ trait StampTrait
      *     source: StampSource|string,
      *     expression?: string|null,
      *     pages?: string|null,
-     *     options?: array<string, mixed>,
+     *     options?: array<string, string|int|float>,
      *     file?: string|\Stringable|null,
      * }> $stamps
      *
@@ -145,7 +145,7 @@ trait StampTrait
         new EnumNodeBuilder('source', required: true, callback: StampSource::class),
         new ScalarNodeBuilder('expression'),
         new ScalarNodeBuilder('pages'),
-        new ArrayNodeBuilder('options', useAttributeAsKey: 'key', prototype: 'variable'),
+        new ArrayNodeBuilder('options', useAttributeAsKey: 'key', prototype: 'scalar'),
         new ScalarNodeBuilder('file'),
     ]))]
     public function stamps(array $stamps): static

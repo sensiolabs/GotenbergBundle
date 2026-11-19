@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\WatermarkSource;
@@ -102,6 +103,36 @@ trait WatermarkTestCaseTrait
         self::assertSame(['', '2', '', ''], $this->getWatermarkFormDataValues('watermarkPages'));
         self::assertSame(['', '', '{"opacity":"0.5"}', ''], $this->getWatermarkFormDataValues('watermarkOptions'));
         self::assertSame(['logo.png', 'simple_pdf_1.pdf'], $this->getWatermarkFormDataValues('watermark'));
+    }
+
+    public function testWatermarkOptionsSendNumbersAsStrings(): void
+    {
+        $this->getDefaultBuilderWithoutDeprecatedWatermark()
+            ->addWatermarkText('DRAFT', options: ['opacity' => 0.5, 'rotation' => 45, 'position' => 'tl'])
+            ->generate()
+        ;
+
+        self::assertSame(['{"opacity":"0.5","rotation":"45","position":"tl"}'], $this->getWatermarkFormDataValues('watermarkOptions'));
+    }
+
+    /**
+     * @return \Generator<string, array{mixed, string}>
+     */
+    public static function provideInvalidWatermarkOptionValue(): \Generator
+    {
+        yield 'boolean' => [true, 'bool'];
+        yield 'array' => [[10, 20], 'array'];
+        yield 'null' => [null, 'null'];
+    }
+
+    #[DataProvider('provideInvalidWatermarkOptionValue')]
+    public function testWatermarkOptionsRejectNonScalarValues(mixed $value, string $type): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage(\sprintf('The "offset" watermark option must be a string or a number, "%s" given.', $type));
+
+        // @phpstan-ignore argument.type
+        $this->getDefaultBuilderWithoutDeprecatedWatermark()->addWatermarkText('DRAFT', options: ['offset' => $value])->generate();
     }
 
     public function testDeprecatedWatermarkCannotBeCombinedWithTheWatermarks(): void

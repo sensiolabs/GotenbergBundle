@@ -27,7 +27,7 @@ trait WatermarkTrait
      * Adds a text watermark. Watermarks are applied in order.
      * Options depend on the configured PDF engine (default: pdfcpu), e.g. font, color, rotation, opacity, scaling.
      *
-     * @param array<string, mixed> $options
+     * @param array<string, string|int|float> $options
      *
      * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks
      *
@@ -62,7 +62,7 @@ trait WatermarkTrait
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @param array<string, mixed> $options
+     * @param array<string, string|int|float> $options
      *
      * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks
      *
@@ -97,7 +97,7 @@ trait WatermarkTrait
      * of your application. For more information about path resolution go to
      * assets documentation.
      *
-     * @param array<string, mixed> $options
+     * @param array<string, string|int|float> $options
      *
      * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/watermark-pdfs#multiple-watermarks
      *
@@ -133,7 +133,7 @@ trait WatermarkTrait
      *     source: WatermarkSource|string,
      *     expression?: string|null,
      *     pages?: string|null,
-     *     options?: array<string, mixed>,
+     *     options?: array<string, string|int|float>,
      *     file?: string|\Stringable|null,
      * }> $watermarks
      *
@@ -145,7 +145,7 @@ trait WatermarkTrait
         new EnumNodeBuilder('source', required: true, callback: WatermarkSource::class),
         new ScalarNodeBuilder('expression'),
         new ScalarNodeBuilder('pages'),
-        new ArrayNodeBuilder('options', useAttributeAsKey: 'key', prototype: 'variable'),
+        new ArrayNodeBuilder('options', useAttributeAsKey: 'key', prototype: 'scalar'),
         new ScalarNodeBuilder('file'),
     ]))]
     public function watermarks(array $watermarks): static

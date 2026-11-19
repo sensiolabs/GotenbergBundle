@@ -219,6 +219,20 @@ final class ConfigurationTest extends TestCase
         ]);
     }
 
+    public function testInvalidStampsOptionsConfiguration(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('stamps.0.options.offset');
+
+        $processor = new Processor();
+        $processor->processConfiguration(self::getWithBuilders(['pdf' => [HtmlPdfBuilder::class]]), [
+            [
+                'http_client' => 'http_client',
+                'default_options' => ['pdf' => ['html' => ['stamps' => [['source' => 'text', 'expression' => 'APPROVED', 'options' => ['offset' => [10, 20]]]]]]],
+            ],
+        ]);
+    }
+
     /**
      * @return \Generator<string, array{array{array<string, array<string|int, mixed>>}}>
      */

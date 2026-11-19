@@ -6,6 +6,7 @@ use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\ValueObject\RenderedPart;
 use Sensiolabs\GotenbergBundle\Enumeration\DownloadFromField;
 use Sensiolabs\GotenbergBundle\Enumeration\Unit;
+use Sensiolabs\GotenbergBundle\Exception\InvalidBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Exception\JsonEncodingException;
 use Sensiolabs\GotenbergBundle\Version\Version;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -268,11 +269,7 @@ class NormalizerFactory
                 }
 
                 if (isset($entry['options'])) {
-                    try {
-                        $fields['Options'][$index] = json_encode($entry['options'], \JSON_THROW_ON_ERROR);
-                    } catch (\JsonException $exception) {
-                        throw new JsonEncodingException(previous: $exception);
-                    }
+                    $fields['Options'][$index] = self::encodeOptions($prefix, $entry['options']);
                 }
 
                 if (isset($entry['file'])) {
@@ -290,6 +287,29 @@ class NormalizerFactory
                 }
             }
         };
+    }
+
+    /**
+     * Gotenberg decodes the options as a map of strings: numbers are cast, other values are rejected.
+     *
+     * @param array<string, mixed> $options
+     */
+    private static function encodeOptions(string $prefix, array $options): string
+    {
+        $strings = [];
+        foreach ($options as $name => $value) {
+            $strings[$name] = match (true) {
+                \is_string($value) => $value,
+                \is_int($value), \is_float($value) => (string) $value,
+                default => throw new InvalidBuilderConfiguration(\sprintf('The "%s" %s option must be a string or a number, "%s" given.', $name, $prefix, get_debug_type($value))),
+            };
+        }
+
+        try {
+            return json_encode($strings, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new JsonEncodingException(previous: $exception);
+        }
     }
 
     /**

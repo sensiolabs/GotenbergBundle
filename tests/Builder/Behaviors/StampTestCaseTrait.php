@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sensiolabs\GotenbergBundle\Tests\Builder\Behaviors;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Sensiolabs\GotenbergBundle\Builder\BuilderInterface;
 use Sensiolabs\GotenbergBundle\Enumeration\StampSource;
@@ -102,6 +103,36 @@ trait StampTestCaseTrait
         self::assertSame(['', '2', '', ''], $this->getStampFormDataValues('stampPages'));
         self::assertSame(['', '', '{"opacity":"0.5"}', ''], $this->getStampFormDataValues('stampOptions'));
         self::assertSame(['logo.png', 'simple_pdf_1.pdf'], $this->getStampFormDataValues('stamp'));
+    }
+
+    public function testStampOptionsSendNumbersAsStrings(): void
+    {
+        $this->getDefaultBuilderWithoutDeprecatedStamp()
+            ->addStampText('DRAFT', options: ['opacity' => 0.5, 'rotation' => 45, 'position' => 'tl'])
+            ->generate()
+        ;
+
+        self::assertSame(['{"opacity":"0.5","rotation":"45","position":"tl"}'], $this->getStampFormDataValues('stampOptions'));
+    }
+
+    /**
+     * @return \Generator<string, array{mixed, string}>
+     */
+    public static function provideInvalidStampOptionValue(): \Generator
+    {
+        yield 'boolean' => [true, 'bool'];
+        yield 'array' => [[10, 20], 'array'];
+        yield 'null' => [null, 'null'];
+    }
+
+    #[DataProvider('provideInvalidStampOptionValue')]
+    public function testStampOptionsRejectNonScalarValues(mixed $value, string $type): void
+    {
+        $this->expectException(InvalidBuilderConfiguration::class);
+        $this->expectExceptionMessage(\sprintf('The "offset" stamp option must be a string or a number, "%s" given.', $type));
+
+        // @phpstan-ignore argument.type
+        $this->getDefaultBuilderWithoutDeprecatedStamp()->addStampText('DRAFT', options: ['offset' => $value])->generate();
     }
 
     public function testDeprecatedStampCannotBeCombinedWithTheStamps(): void
