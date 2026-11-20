@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\RetryableHttpClient;
 
 require_once \dirname(__DIR__).'/vendor/autoload.php';
 
@@ -35,33 +36,43 @@ class ValidateUrlDoc
             array_push($urls, ...$this->extractUrls($file));
         }
 
-        $urls = array_unique($urls);
+        // Fetch each page once, whatever the number of anchors pointing to it.
+        $urlsByPage = [];
+        foreach (array_unique($urls) as $url) {
+            $urlsByPage[strtok($url, '#')][] = $url;
+        }
 
-        $client = HttpClient::create();
+        // Retries transient errors (429, 5xx) instead of failing the whole check.
+        $client = new RetryableHttpClient(HttpClient::create());
         $allResponses = [];
-        foreach ($urls as $url) {
-            $allResponses[] = $client->request('GET', $url);
+        foreach ($urlsByPage as $page => $pageUrls) {
+            $allResponses[] = $client->request('GET', $page, ['user_data' => $pageUrls]);
         }
 
         $failedUrls = [];
         foreach ($allResponses as $response) {
+            $pageUrls = $response->getInfo('user_data');
             try {
-                $url = $response->getInfo('url');
-
                 $statusCode = $response->getStatusCode();
                 if (200 !== $statusCode) {
-                    $failedUrls[$url] = "HTTP {$statusCode} error for: {$url}";
+                    foreach ($pageUrls as $url) {
+                        $failedUrls[$url] = "HTTP {$statusCode} error for: {$url}";
+                    }
+
+                    continue;
                 }
 
-                if (!\array_key_exists($url, $failedUrls)) {
-                    $checkError = $this->checkContentResponse($response->getInfo('url'), $response->getContent());
+                $content = $response->getContent();
+                foreach ($pageUrls as $url) {
+                    $checkError = $this->checkContentResponse($url, $content);
                     if (\is_string($checkError)) {
                         $failedUrls[$url] = $checkError;
                     }
                 }
             } catch (Throwable $e) {
-                $url = $response->getInfo('url');
-                $failedUrls[$url] = "Error for {$url}: {$e->getMessage()}";
+                foreach ($pageUrls as $url) {
+                    $failedUrls[$url] = "Error for {$url}: {$e->getMessage()}";
+                }
             } finally {
                 $progressBar->advance();
             }
