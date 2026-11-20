@@ -7,8 +7,9 @@
 
 ## Deprecations
 
-Nothing changes at runtime: every deprecated method keeps its previous behaviour and the payload
-sent to Gotenberg is unchanged. All of them will be removed in 2.0.
+Apart from the deprecation notice they trigger, nothing changes at runtime: every deprecated method
+keeps its previous behaviour and the payload sent to Gotenberg is unchanged. All of them will be
+removed in 2.0.
 
 * `stampSource()`, `stampExpression()`, `stampPages()`, `stampOptions()` and `stampFile()` are deprecated, use
   `addStampText()`, `addStampImage()` or `addStampPdf()` instead. They cannot be combined with the new methods
@@ -17,7 +18,8 @@ sent to Gotenberg is unchanged. All of them will be removed in 2.0.
   deprecated, use `addWatermarkText()`, `addWatermarkImage()` or `addWatermarkPdf()` instead. They cannot be combined
   with the new methods on the same builder.
 * The `stamp_*` and `watermark_*` builder configuration keys should be replaced by the `stamps` and `watermarks` lists.
-  They cannot be combined on the same builder.
+  They cannot be combined on the same builder. Since they end up calling the methods above, they trigger the same
+  deprecation when the builder is instantiated.
 
   ```diff
   - ->stampSource(StampSource::Text)
@@ -81,6 +83,20 @@ sent to Gotenberg is unchanged. All of them will be removed in 2.0.
        ->generate()
    ;
   ```
+
+* `SensiolabsGotenbergExtension::setBuilderStack()`, deprecated since 1.1, now triggers a deprecation notice. Register
+  a builder with `registerBuilder()` instead.
+
+## Bug Fixes
+
+* Gotenberg only accepts string values in the stamp and watermark options. Numbers given to `stampOptions()`,
+  `watermarkOptions()` or the `stamp_options` / `watermark_options` keys are now sent as strings, instead of making
+  Gotenberg answer `400`. Booleans, `null` and arrays throw an `InvalidBuilderConfiguration` when `generate()` builds
+  the request, and nested values in the configuration are rejected when the container is compiled. The options of
+  `addStamp*()`, `addWatermark*()` and of the `stamps` / `watermarks` lists follow the same rules.
+* `stampOptions([])` and `watermarkOptions([])` now remove the field. They used to send `[]`, which Gotenberg cannot
+  decode and answered `400`.
+* `watermarkPages(null)` now removes `watermarkPages`. It used to remove `stampPages` instead.
 
 ## Dependency Changes
 
