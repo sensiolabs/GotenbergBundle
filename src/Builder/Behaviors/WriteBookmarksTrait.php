@@ -9,7 +9,7 @@ use Sensiolabs\GotenbergBundle\Builder\Util\NormalizerFactory;
 use Sensiolabs\GotenbergBundle\Builder\Util\ValidatorFactory;
 
 /**
- * @phpstan-type Bookmark array{title: string, page: int, children?: list<array{title: string, page: int, children?: list<mixed>}>}
+ * @phpstan-import-type Bookmark from BookmarksTrait
  */
 trait WriteBookmarksTrait
 {

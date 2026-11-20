@@ -7,7 +7,6 @@ use Sensiolabs\GotenbergBundle\Builder\Attributes\WithBuilderConfiguration;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\Dependencies\AssetBaseDirFormatterAwareTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\DownloadFromTrait;
 use Sensiolabs\GotenbergBundle\Builder\Behaviors\FilesTrait;
-use Sensiolabs\GotenbergBundle\Builder\Behaviors\WriteBookmarksTrait;
 use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
 
 /**
@@ -23,10 +22,6 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/read-bookmarks
  *
  * @example files('document.pdf','document_2.pdf')
- *
- * @phpstan-import-type Bookmark from WriteBookmarksTrait
- *
- * @extends AbstractJsonBuilder<array<string, list<Bookmark>>>
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'read_bookmarks')]
 final class ReadBookmarksPdfBuilder extends AbstractJsonBuilder

@@ -45,7 +45,8 @@ class YourController
 
 > [!NOTE]
 > The route does not support webhooks: `generateAsync()` throws a `LogicException`.
-> `generate()->stream()` and `generate()->process()` still work, they hand over the raw JSON.
+> To keep the raw JSON, use `generate()->stream()`, or set a processor on the result:
+> `generate()->processor($processor)->process()`.
 
 <!-- AUTO generated doc from generate.php -->
 <!-- AUTO-GENERATED:START -->
