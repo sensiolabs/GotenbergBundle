@@ -12,7 +12,7 @@ trait FilesOrderTrait
     use FilesTrait;
 
     /**
-     * Normalizer of the "files" payload, null for Gotenberg's default sort.
+     * Normalizer of the "files" payload, sorted by name when null.
      *
      * @var (\Closure(string, array<string, \SplFileInfo>): iterable<array{files: DataPart}>)|null
      */
@@ -24,7 +24,7 @@ trait FilesOrderTrait
      */
     public function sortFilesByName(): self
     {
-        $this->filesNormalizer = null;
+        $this->filesNormalizer = NormalizerFactory::asset();
 
         return $this;
     }
