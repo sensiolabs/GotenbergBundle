@@ -82,6 +82,20 @@ sent to Gotenberg is unchanged. All of them will be removed in 2.0.
    ;
   ```
 
+## Bug Fixes
+
+* `GotenbergFileResult::stream()` no longer forwards hop-by-hop headers from the Gotenberg response:
+  `Keep-Alive`, `Proxy-Authenticate`, `Proxy-Authorization`, `Proxy-Connection`, `TE`, `Trailer` and
+  `Upgrade` are now dropped, on top of `Connection`, `Transfer-Encoding`, `Content-Encoding` and
+  `Content-Length` (already dropped since 1.3.1). Any header named in the `Connection` value is dropped
+  as well. If you relied on one of them reaching the browser, read it from `getHeaders()` and set it
+  on the `StreamedResponse` yourself.
+
+  ```diff
+    $response = $result->stream();
+  + $response->headers->set('X-Foo', $result->getHeaders()['x-foo'][0]);
+  ```
+
 ## Dependency Changes
 
 * Added `symfony/deprecation-contracts` to trigger the deprecations above.
