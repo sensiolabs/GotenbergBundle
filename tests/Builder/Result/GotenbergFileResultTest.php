@@ -6,6 +6,7 @@ namespace Sensiolabs\GotenbergBundle\Tests\Builder\Result;
 
 use PHPUnit\Framework\TestCase;
 use Sensiolabs\GotenbergBundle\Builder\Result\GotenbergFileResult;
+use Sensiolabs\GotenbergBundle\Exception\ClientException;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
 use Sensiolabs\GotenbergBundle\Processor\InMemoryProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
@@ -196,5 +197,22 @@ class GotenbergFileResultTest extends TestCase
         self::expectException(ProcessorException::class);
         self::expectExceptionMessage('Already processed query.');
         $fileResult->setDisposition(HeaderUtils::DISPOSITION_ATTACHMENT);
+    }
+
+    public function testClientExceptionContainsGotenbergErrorMessage(): void
+    {
+        $mockResponse = new MockResponse('Invalid HTTP status code from the main page: 404: Not Found', [
+            'http_code' => 409,
+        ]);
+
+        $client = new MockHttpClient([$mockResponse]);
+        $stream = $client->stream($client->request('POST', '/forms/chromium/convert/url'));
+
+        $fileResult = new GotenbergFileResult($stream, new InMemoryProcessor(), HeaderUtils::DISPOSITION_ATTACHMENT);
+
+        self::expectException(ClientException::class);
+        self::expectExceptionCode(409);
+        self::expectExceptionMessage('Invalid HTTP status code from the main page: 404: Not Found');
+        $fileResult->process();
     }
 }

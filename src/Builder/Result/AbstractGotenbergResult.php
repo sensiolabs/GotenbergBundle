@@ -53,7 +53,7 @@ abstract class AbstractGotenbergResult
 
         try {
             $this->statusCode = $this->getResponse()->getStatusCode();
-            $this->headers = $this->getResponse()->getHeaders();
+            $this->headers = $this->getResponse()->getHeaders(false);
 
             if (!\in_array($this->statusCode, [200, 204], true)) {
                 throw new ClientException($this->getResponse()->getContent(false), $this->statusCode);
