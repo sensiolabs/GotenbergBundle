@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Gotenberg '8.15'",
+        "gotenberg-version": "8.15",
+        "allow-failure": false
+    },
+    {
+        "name": "Gotenberg '8.27'",
+        "gotenberg-version": "8.27",
+        "allow-failure": false
+    }
+]
