@@ -281,6 +281,16 @@ trait PagePropertiesTestCaseTrait
         $this->assertGotenbergFormData('generateTaggedPdf', 'true');
     }
 
+    public function testNativePdfFormats(): void
+    {
+        $this->getDefaultBuilder()
+            ->nativePdfFormats(false)
+            ->generate()
+        ;
+
+        $this->assertGotenbergFormData('nativePdfFormats', 'false');
+    }
+
     public function testWatermarkText(): void
     {
         $this->getDefaultBuilder()
