@@ -309,6 +309,8 @@ class YourController
 11. [Embed Builder](./docs/pdf/EmbedPdfBuilder.md)
 12. [Optimize Builder](./docs/pdf/OptimizePdfBuilder.md)
 13. [Factur-X Builder](./docs/pdf/FacturXPdfBuilder.md)
+14. [Read Metadata Builder](./docs/pdf/ReadMetadataPdfBuilder.md)
+15. [Write Metadata Builder](./docs/pdf/WriteMetadataPdfBuilder.md)
 
 ### Screenshot
 

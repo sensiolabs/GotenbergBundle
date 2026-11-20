@@ -4,6 +4,7 @@
 
 * `Sensiolabs\GotenbergBundle\GotenbergPdfInterface` new method `optimize` added
 * `Sensiolabs\GotenbergBundle\GotenbergPdfInterface` new method `facturX` added
+* `Sensiolabs\GotenbergBundle\GotenbergPdfInterface` new methods `readMetadata` and `writeMetadata` added
 
 ## Deprecations
 

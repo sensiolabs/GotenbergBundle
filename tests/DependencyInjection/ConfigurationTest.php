@@ -13,11 +13,13 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\UrlScreenshotBuilder;
@@ -63,6 +65,8 @@ final class ConfigurationTest extends TestCase
                     RotatePdfBuilder::class,
                     OptimizePdfBuilder::class,
                     FacturXPdfBuilder::class,
+                    ReadMetadataPdfBuilder::class,
+                    WriteMetadataPdfBuilder::class,
                 ],
                 'screenshot' => [
                     HtmlScreenshotBuilder::class,
@@ -580,6 +584,21 @@ final class ConfigurationTest extends TestCase
                         ],
                     ],
                     'facturx' => [
+                        'download_from' => [],
+                        'webhook' => [
+                            'success' => [
+                            ],
+                            'error' => [
+                            ],
+                            'extra_http_headers' => [],
+                            'events' => [],
+                        ],
+                    ],
+                    'read_metadata' => [
+                        'download_from' => [],
+                    ],
+                    'write_metadata' => [
+                        'metadata' => [],
                         'download_from' => [],
                         'webhook' => [
                             'success' => [

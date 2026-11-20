@@ -19,6 +19,7 @@ use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Sensiolabs\GotenbergBundle\Version\Version;
 use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -86,15 +87,8 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
      */
     public function generate(): GotenbergFileResult
     {
-        $this->validatePayloadBody();
-
-        $response = $this->getClient()->call(
-            $this->getEndpoint(),
-            $this->buildPayload(),
-        );
-
         return new GotenbergFileResult(
-            $this->getClient()->stream($response),
+            $this->getClient()->stream($this->sendRequest()),
             $this->processor,
             $this->headerDisposition,
         );
@@ -102,15 +96,18 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
 
     public function generateAsync(): GotenbergAsyncResult
     {
+        return new GotenbergAsyncResult(
+            $this->sendRequest(),
+        );
+    }
+
+    protected function sendRequest(): ResponseInterface
+    {
         $this->validatePayloadBody();
 
-        $response = $this->getClient()->call(
+        return $this->getClient()->call(
             $this->getEndpoint(),
             $this->buildPayload(),
-        );
-
-        return new GotenbergAsyncResult(
-            $response,
         );
     }
 
