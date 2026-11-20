@@ -71,7 +71,7 @@ return $gotenberg
 ```
 
 ### files(Stringable|string ...\$paths)
-Adds files (overrides any previous files).<br />Files are deduplicated by path: passing the same path twice to `files()`<br />results in a single file being sent. To merge the same document multiple<br />times, provide distinct paths (e.g. copies with different names).<br />
+Adds files (overrides any previous files).<br />
 
 ```php
 return $gotenberg
