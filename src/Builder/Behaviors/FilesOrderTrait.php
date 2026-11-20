@@ -81,13 +81,12 @@ trait FilesOrderTrait
 
     /**
      * Adds files (overrides any previous files).
-     *
-     * @example files('document.pdf', '/absolute/path/document_2.pdf')
-     *
      * The deduplication and ordering rules selected via `dedupeFiles()`,
      * `sortFilesByName()` or `sortFilesByCall()` are applied when the request
      * is built, so they can be configured before or after this call without
      * changing the result.
+     *
+     * @example files('document.pdf', '/absolute/path/document_2.pdf')
      */
     public function files(string|\Stringable ...$paths): self
     {
