@@ -13,12 +13,14 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadBookmarksPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteBookmarksPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\HtmlScreenshotBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Screenshot\MarkdownScreenshotBuilder;
@@ -67,6 +69,8 @@ final class ConfigurationTest extends TestCase
                     FacturXPdfBuilder::class,
                     ReadMetadataPdfBuilder::class,
                     WriteMetadataPdfBuilder::class,
+                    ReadBookmarksPdfBuilder::class,
+                    WriteBookmarksPdfBuilder::class,
                 ],
                 'screenshot' => [
                     HtmlScreenshotBuilder::class,
@@ -599,6 +603,20 @@ final class ConfigurationTest extends TestCase
                     ],
                     'write_metadata' => [
                         'metadata' => [],
+                        'download_from' => [],
+                        'webhook' => [
+                            'success' => [
+                            ],
+                            'error' => [
+                            ],
+                            'extra_http_headers' => [],
+                            'events' => [],
+                        ],
+                    ],
+                    'read_bookmarks' => [
+                        'download_from' => [],
+                    ],
+                    'write_bookmarks' => [
                         'download_from' => [],
                         'webhook' => [
                             'success' => [

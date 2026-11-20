@@ -10,12 +10,14 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadBookmarksPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteBookmarksPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -157,6 +159,21 @@ return static function (ContainerConfigurator $container): void {
 
     // Write metadata
     $services->set('.sensiolabs_gotenberg.pdf_builder.write_metadata', WriteMetadataPdfBuilder::class)
+        ->share(false)
+        ->parent('.sensiolabs_gotenberg.abstract_builder')
+        ->tag('sensiolabs_gotenberg.builder')
+        ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
+    ;
+    // Read bookmarks
+    $services->set('.sensiolabs_gotenberg.pdf_builder.read_bookmarks', ReadBookmarksPdfBuilder::class)
+        ->share(false)
+        ->parent('.sensiolabs_gotenberg.abstract_builder')
+        ->tag('sensiolabs_gotenberg.builder')
+        ->configurator(service('sensiolabs_gotenberg.builder_configurator'))
+    ;
+
+    // Write bookmarks
+    $services->set('.sensiolabs_gotenberg.pdf_builder.write_bookmarks', WriteBookmarksPdfBuilder::class)
         ->share(false)
         ->parent('.sensiolabs_gotenberg.abstract_builder')
         ->tag('sensiolabs_gotenberg.builder')
