@@ -6,21 +6,19 @@ use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
 use Sensiolabs\GotenbergBundle\Processor\InMemoryProcessor;
 
 /**
- * Result of a route that answers with JSON instead of a file.
- *
- * @template TJson of array<mixed> = array<string, mixed>
+ * Result of a route that answers with JSON instead of a file, keyed by filename.
  *
  * @extends GotenbergFileResult<mixed>
  */
 class GotenbergJsonResult extends GotenbergFileResult
 {
     /**
-     * @var TJson|null
+     * @var array<string, mixed>|null
      */
     private array|null $decoded = null;
 
     /**
-     * @return TJson
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -38,7 +36,7 @@ class GotenbergJsonResult extends GotenbergFileResult
             throw new ProcessorException('Gotenberg did not answer with a JSON object.');
         }
 
-        /** @var TJson $decoded */
+        /** @var array<string, mixed> $decoded */
         return $this->decoded = $decoded;
     }
 

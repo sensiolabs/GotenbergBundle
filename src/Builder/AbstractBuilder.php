@@ -19,7 +19,7 @@ use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
 use Sensiolabs\GotenbergBundle\Version\Version;
 use Sensiolabs\GotenbergBundle\Version\VersionFetcherInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
-use Symfony\Contracts\HttpClient\ResponseStreamInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\Service\Attribute\SubscribedService;
 use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -87,41 +87,27 @@ abstract class AbstractBuilder implements BuilderAsyncInterface, BuilderFileInte
      */
     public function generate(): GotenbergFileResult
     {
-        $this->validatePayloadBody();
-
-        $response = $this->getClient()->call(
-            $this->getEndpoint(),
-            $this->buildPayload(),
-        );
-
-        return $this->createFileResult(
-            $this->getClient()->stream($response),
+        return new GotenbergFileResult(
+            $this->getClient()->stream($this->sendRequest()),
             $this->processor,
             $this->headerDisposition,
         );
     }
 
-    /**
-     * @param ProcessorInterface<mixed> $processor
-     *
-     * @return GotenbergFileResult<TProcessorResult>
-     */
-    protected function createFileResult(ResponseStreamInterface $stream, ProcessorInterface $processor, string $disposition): GotenbergFileResult
+    public function generateAsync(): GotenbergAsyncResult
     {
-        return new GotenbergFileResult($stream, $processor, $disposition);
+        return new GotenbergAsyncResult(
+            $this->sendRequest(),
+        );
     }
 
-    public function generateAsync(): GotenbergAsyncResult
+    protected function sendRequest(): ResponseInterface
     {
         $this->validatePayloadBody();
 
-        $response = $this->getClient()->call(
+        return $this->getClient()->call(
             $this->getEndpoint(),
             $this->buildPayload(),
-        );
-
-        return new GotenbergAsyncResult(
-            $response,
         );
     }
 

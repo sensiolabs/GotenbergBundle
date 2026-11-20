@@ -22,8 +22,6 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/read-metadata
  *
  * @example files('document.pdf','document_2.pdf')
- *
- * @extends AbstractJsonBuilder<array<string, array<string, mixed>>>
  */
 #[WithBuilderConfiguration(type: 'pdf', name: 'read_metadata')]
 final class ReadMetadataPdfBuilder extends AbstractJsonBuilder
