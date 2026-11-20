@@ -10,6 +10,7 @@ use Sensiolabs\GotenbergBundle\Exception\ClientException;
 use Sensiolabs\GotenbergBundle\Exception\ProcessorException;
 use Sensiolabs\GotenbergBundle\Processor\InMemoryProcessor;
 use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
+use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -202,31 +203,68 @@ class GotenbergFileResultTest extends TestCase
 
     public function testClientExceptionContainsGotenbergErrorMessage(): void
     {
-        $fileResult = $this->getFailingGotenbergFileResult('Invalid HTTP status code from the main page: 404: Not Found', 409);
+        $fileResult = $this->getFailingGotenbergFileResult(new MockResponse('Invalid HTTP status code from the main page: 404: Not Found', [
+            'http_code' => 409,
+            'response_headers' => ['content-type' => 'text/plain; charset=UTF-8'],
+        ]));
 
         try {
             $fileResult->process();
             self::fail('A ClientException should have been thrown.');
         } catch (ClientException $e) {
-            self::assertSame('Invalid HTTP status code from the main page: 404: Not Found', $e->getMessage());
+            self::assertSame('HTTP 409 returned for "https://example.com/forms/chromium/convert/url": Invalid HTTP status code from the main page: 404: Not Found', $e->getMessage());
             self::assertSame(409, $e->getCode());
             self::assertInstanceOf(HttpExceptionInterface::class, $e->getPrevious());
         }
     }
 
-    public function testClientExceptionFallsBackToHttpClientMessageWhenBodyIsEmpty(): void
+    public function testClientExceptionKeepsHttpClientMessageForGenericGotenbergError(): void
     {
-        $fileResult = $this->getFailingGotenbergFileResult('', 503);
+        $fileResult = $this->getFailingGotenbergFileResult(new MockResponse('Internal Server Error', [
+            'http_code' => 500,
+            'response_headers' => ['content-type' => 'text/plain; charset=UTF-8'],
+        ]));
 
         self::expectException(ClientException::class);
-        self::expectExceptionCode(503);
-        self::expectExceptionMessage('HTTP 503 returned for');
+        self::expectExceptionCode(500);
+        self::expectExceptionMessage('HTTP 500 returned for "https://example.com/forms/chromium/convert/url": Internal Server Error');
         $fileResult->process();
     }
 
-    private function getFailingGotenbergFileResult(string $body, int $statusCode): GotenbergFileResult
+    public function testClientExceptionIgnoresNonPlainTextBody(): void
     {
-        $client = new MockHttpClient([new MockResponse($body, ['http_code' => $statusCode])]);
+        $fileResult = $this->getFailingGotenbergFileResult(new MockResponse('<html><body><h1>502 Bad Gateway</h1></body></html>', [
+            'http_code' => 502,
+            'response_headers' => ['content-type' => 'text/html'],
+        ]));
+
+        self::expectException(ClientException::class);
+        self::expectExceptionCode(502);
+        self::expectExceptionMessageMatches('/^HTTP 502 returned for "[^"]+"\.$/');
+        $fileResult->process();
+    }
+
+    public function testClientExceptionIsThrownWhenErrorBodyCannotBeRead(): void
+    {
+        $body = (static function (): \Generator {
+            yield 'Invalid HTTP status';
+            throw new TransportException('Connection closed.');
+        })();
+
+        $fileResult = $this->getFailingGotenbergFileResult(new MockResponse($body, [
+            'http_code' => 409,
+            'response_headers' => ['content-type' => 'text/plain; charset=UTF-8'],
+        ]));
+
+        self::expectException(ClientException::class);
+        self::expectExceptionCode(409);
+        self::expectExceptionMessage('HTTP 409 returned for "https://example.com/forms/chromium/convert/url".');
+        $fileResult->process();
+    }
+
+    private function getFailingGotenbergFileResult(MockResponse $mockResponse): GotenbergFileResult
+    {
+        $client = new MockHttpClient([$mockResponse]);
         $stream = $client->stream($client->request('POST', '/forms/chromium/convert/url'));
 
         return new GotenbergFileResult($stream, new InMemoryProcessor(), HeaderUtils::DISPOSITION_ATTACHMENT);
