@@ -4,6 +4,7 @@ namespace Sensiolabs\GotenbergBundle\Builder\Result;
 
 use Sensiolabs\GotenbergBundle\Exception\ClientException;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 abstract class AbstractGotenbergResult
@@ -53,11 +54,16 @@ abstract class AbstractGotenbergResult
 
         try {
             $this->statusCode = $this->getResponse()->getStatusCode();
-            $this->headers = $this->getResponse()->getHeaders(false);
+            $this->headers = $this->getResponse()->getHeaders();
 
             if (!\in_array($this->statusCode, [200, 204], true)) {
                 throw new ClientException($this->getResponse()->getContent(false), $this->statusCode);
             }
+        } catch (HttpExceptionInterface $e) {
+            // Gotenberg explains the error in the response body: use it as message when available.
+            $content = trim($e->getResponse()->getContent(false));
+
+            throw new ClientException('' !== $content ? $content : $e->getMessage(), $e->getCode(), $e);
         } catch (ExceptionInterface $e) {
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         } finally {
