@@ -21,6 +21,13 @@ trait FilesOrderTrait
     private bool $dedupeFiles = true;
 
     /**
+     * Every file passed to files(), duplicates included, sent when dedupeFiles(false).
+     *
+     * @var list<\SplFileInfo>
+     */
+    private array $filesInCallOrder = [];
+
+    /**
      * Lets Gotenberg sort the files alphanumerically by their multipart filename.
      * This is the default behavior.
      */
@@ -90,17 +97,17 @@ trait FilesOrderTrait
      */
     public function files(string|\Stringable ...$paths): self
     {
-        /** @var list<array{0: string, 1: \SplFileInfo}> $files */
-        $files = [];
+        $this->filesInCallOrder = [];
         foreach ($paths as $path) {
             $path = (string) $path;
             $info = new \SplFileInfo($this->getAssetBaseDirFormatter()->resolve($path));
             ValidatorFactory::filesExtension([$info], $this->getAllowedFilesExtensions());
 
-            $files[] = [$path, $info];
+            $files[$path] = $info;
+            $this->filesInCallOrder[] = $info;
         }
 
-        $this->getBodyBag()->set('files', [] !== $files ? $files : null);
+        $this->getBodyBag()->set('files', $files ?? null);
 
         return $this;
     }
@@ -109,12 +116,9 @@ trait FilesOrderTrait
     private function normalizeFiles(): \Generator
     {
         $normalizer = $this->filesNormalizer ?? self::normalizeFilesByName(...);
-        $dedupe = $this->dedupeFiles;
+        $files = $this->dedupeFiles ? null : self::disambiguateFilenames($this->filesInCallOrder);
 
-        yield 'files' => static function (string $key, array $assets) use ($normalizer, $dedupe): iterable {
-            /** @var list<array{0: string, 1: \SplFileInfo}> $assets */
-            return $normalizer($key, $dedupe ? self::dedupeFilesByPath($assets) : self::disambiguateFilenames($assets));
-        };
+        yield 'files' => static fn (string $key, array $assets): iterable => $normalizer($key, $files ?? $assets);
     }
 
     /**
@@ -132,33 +136,16 @@ trait FilesOrderTrait
     }
 
     /**
-     * Keys each file by its path, dropping repeated paths.
-     *
-     * @param list<array{0: string, 1: \SplFileInfo}> $assets
-     *
-     * @return array<string, \SplFileInfo>
-     */
-    private static function dedupeFilesByPath(array $assets): array
-    {
-        $files = [];
-        foreach ($assets as [$path, $info]) {
-            $files[$path] = $info;
-        }
-
-        return $files;
-    }
-
-    /**
      * Keys each file by its basename, suffixing repeats before the extension (e.g. `report000001.pdf`).
      *
-     * @param list<array{0: string, 1: \SplFileInfo}> $assets
+     * @param list<\SplFileInfo> $assets
      *
      * @return array<string, \SplFileInfo>
      */
     private static function disambiguateFilenames(array $assets): array
     {
         $files = [];
-        foreach ($assets as [, $info]) {
+        foreach ($assets as $info) {
             $filename = $info->getFilename();
             $extension = $info->getExtension();
             $stem = $info->getBasename('' !== $extension ? '.'.$extension : '');
