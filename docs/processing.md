@@ -397,5 +397,3 @@ return $gotenbergPdf->html()
     ->process()
 ;
 ```
-
-Note: Since processors are passed as objects to `->processor()`, you do not need Symfony's service decoration (`#[AsDecorator]`).
