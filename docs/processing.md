@@ -335,3 +335,65 @@ class CustomProcessor implements ProcessorInterface
     }
 }
 ```
+
+### Decorating an existing processor
+
+Sometimes you want to extend an existing processor without reimplementing its chunk handling logic.
+For example, you may want to add logging, metrics, or post-processing around `FileProcessor`.
+You can create a decorator that wraps another processor by calling its generator, forwarding each chunk,
+and transforming the result.
+
+The pattern is the same as in `ChainProcessor` and `FileProcessor`: call the inner processor to get its generator,
+forward each chunk with `send()`, and retrieve the return value with `getReturn()`.
+
+```php
+use Psr\Log\LoggerInterface;
+use Sensiolabs\GotenbergBundle\Processor\FileProcessor;
+use Sensiolabs\GotenbergBundle\Processor\ProcessorInterface;
+use SplFileInfo;
+
+/**
+ * @implements ProcessorInterface<SplFileInfo>
+ */
+final class LoggingFileProcessor implements ProcessorInterface
+{
+    public function __construct(
+        private readonly FileProcessor $inner,
+        private readonly LoggerInterface $logger,
+    ) {}
+
+    public function __invoke(string|null $fileName): \Generator
+    {
+        $generator = ($this->inner)($fileName);
+
+        do {
+            $chunk = yield;
+            $this->logger->debug('Processing chunk of size {size}', ['size' => strlen($chunk->getContent())]);
+            $generator->send($chunk);
+        } while (!$chunk->isLast());
+
+        $result = $generator->getReturn();
+        $this->logger->info('File saved to {path}', ['path' => $result->getPathname()]);
+
+        return $result;
+    }
+}
+```
+
+Use the decorator by passing it directly to the builder:
+
+```php
+use Sensiolabs\GotenbergBundle\Processor\FileProcessor;
+use Symfony\Component\Filesystem\Filesystem;
+
+return $gotenbergPdf->html()
+    // ...
+    ->fileName('my_pdf')
+    ->processor(new LoggingFileProcessor(
+        new FileProcessor(new Filesystem(), $pdfStorage, $logger),
+        $logger,
+    ))
+    ->generate()
+    ->process()
+;
+```
