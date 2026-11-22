@@ -13,11 +13,13 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 
 interface GotenbergPdfInterface
 {
@@ -104,4 +106,14 @@ interface GotenbergPdfInterface
      * @return FacturXPdfBuilder
      */
     public function facturX(): BuilderInterface;
+
+    /**
+     * @return ReadMetadataPdfBuilder
+     */
+    public function readMetadata(): BuilderInterface;
+
+    /**
+     * @return WriteMetadataPdfBuilder
+     */
+    public function writeMetadata(): BuilderInterface;
 }

@@ -14,11 +14,13 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 
 final class GotenbergPdf implements GotenbergPdfInterface
 {
@@ -33,7 +35,7 @@ final class GotenbergPdf implements GotenbergPdfInterface
     }
 
     /**
-     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'encrypt'|'embed'|'stamp'|'watermark'|'rotate'|'optimize'|'facturx' $key
+     * @param 'html'|'url'|'markdown'|'office'|'merge'|'convert'|'split'|'flatten'|'encrypt'|'embed'|'stamp'|'watermark'|'rotate'|'optimize'|'facturx'|'read_metadata'|'write_metadata' $key
      *
      * @return (
      *   $key is 'html' ? HtmlPdfBuilder :
@@ -51,6 +53,8 @@ final class GotenbergPdf implements GotenbergPdfInterface
      *   $key is 'rotate' ? RotatePdfBuilder :
      *   $key is 'optimize' ? OptimizePdfBuilder :
      *   $key is 'facturx' ? FacturXPdfBuilder :
+     *   $key is 'read_metadata' ? ReadMetadataPdfBuilder :
+     *   $key is 'write_metadata' ? WriteMetadataPdfBuilder :
      *   BuilderInterface
      * )
      */
@@ -132,5 +136,15 @@ final class GotenbergPdf implements GotenbergPdfInterface
     public function facturX(): BuilderInterface
     {
         return $this->getInternal('facturx');
+    }
+
+    public function readMetadata(): BuilderInterface
+    {
+        return $this->getInternal('read_metadata');
+    }
+
+    public function writeMetadata(): BuilderInterface
+    {
+        return $this->getInternal('write_metadata');
     }
 }

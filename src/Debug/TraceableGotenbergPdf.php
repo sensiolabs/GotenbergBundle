@@ -13,11 +13,13 @@ use Sensiolabs\GotenbergBundle\Builder\Pdf\LibreOfficePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MarkdownPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\MergePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\OptimizePdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\ReadMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\RotatePdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\SplitPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\StampPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\UrlPdfBuilder;
 use Sensiolabs\GotenbergBundle\Builder\Pdf\WatermarkPdfBuilder;
+use Sensiolabs\GotenbergBundle\Builder\Pdf\WriteMetadataPdfBuilder;
 use Sensiolabs\GotenbergBundle\Debug\Builder\TraceableBuilder;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
@@ -297,6 +299,40 @@ final class TraceableGotenbergPdf implements GotenbergPdfInterface
         }
 
         $this->builders[] = ['facturx', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return ReadMetadataPdfBuilder|TraceableBuilder
+     */
+    public function readMetadata(): BuilderInterface
+    {
+        /** @var ReadMetadataPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->readMetadata();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['read_metadata', $traceableBuilder];
+
+        return $traceableBuilder;
+    }
+
+    /**
+     * @return WriteMetadataPdfBuilder|TraceableBuilder
+     */
+    public function writeMetadata(): BuilderInterface
+    {
+        /** @var WriteMetadataPdfBuilder|TraceableBuilder $traceableBuilder */
+        $traceableBuilder = $this->inner->writeMetadata();
+
+        if (!$traceableBuilder instanceof TraceableBuilder) {
+            return $traceableBuilder;
+        }
+
+        $this->builders[] = ['write_metadata', $traceableBuilder];
 
         return $traceableBuilder;
     }
