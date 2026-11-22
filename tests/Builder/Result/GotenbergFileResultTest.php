@@ -104,7 +104,11 @@ class GotenbergFileResultTest extends TestCase
                 'content-encoding' => 'gzip',
                 'content-length' => '42',
                 'transfer-encoding' => 'chunked',
-                'connection' => 'keep-alive',
+                'connection' => 'keep-alive, X-Proxy-Hop',
+                'keep-alive' => 'timeout=5',
+                'upgrade' => 'h2c',
+                'x-proxy-hop' => 'foo',
+                'x-end-to-end' => 'bar',
             ],
         ]);
 
@@ -119,7 +123,11 @@ class GotenbergFileResultTest extends TestCase
         self::assertFalse($headers->has('content-length'));
         self::assertFalse($headers->has('transfer-encoding'));
         self::assertFalse($headers->has('connection'));
+        self::assertFalse($headers->has('keep-alive'));
+        self::assertFalse($headers->has('upgrade'));
+        self::assertFalse($headers->has('x-proxy-hop'));
         self::assertSame('application/pdf', $headers->get('content-type'));
+        self::assertSame('bar', $headers->get('x-end-to-end'));
     }
 
     public function testGetGotenbergVersion(): void

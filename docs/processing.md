@@ -27,6 +27,18 @@ $result = $gotenbergFileResult->process(); // `$result` depends on the Processor
 $result = $gotenbergFileResult->stream(); // `$result` is a `Symfony\Component\HttpFoundation\StreamedResponse`
 ```
 
+> [!NOTE]
+> `stream()` copies the headers of the Gotenberg response to the `StreamedResponse`, except:
+> * the hop-by-hop headers, which only concern the connection between Gotenberg (or a proxy in front of it)
+>   and your application: `Connection`, `Keep-Alive`, `Proxy-Authenticate`, `Proxy-Authorization`,
+>   `Proxy-Connection`, `TE`, `Trailer`, `Transfer-Encoding`, `Upgrade`, and any header named in the
+>   `Connection` value (see [RFC 9110 §7.6.1](https://www.rfc-editor.org/rfc/rfc9110#section-7.6.1));
+> * `Content-Encoding` and `Content-Length`, which describe the body as received: the HttpClient may have
+>   decompressed it (e.g. when a reverse proxy gzips Gotenberg's response), so they would no longer match.
+>
+> `Content-Disposition` is rebuilt from the file name and disposition, and `X-Accel-Buffering: no` is added.
+> Use `getHeaders()` if you need the headers exactly as Gotenberg sent them.
+
 Here is the list of existing Processors :
 
 ### `Sensiolabs\GotenbergBundle\Processor\FileProcessor`

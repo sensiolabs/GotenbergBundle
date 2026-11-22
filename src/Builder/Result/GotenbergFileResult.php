@@ -14,6 +14,31 @@ use Symfony\Contracts\HttpClient\ResponseStreamInterface;
  */
 class GotenbergFileResult extends AbstractGotenbergResult
 {
+    /**
+     * Only meaningful for the connection between Gotenberg (or a proxy in front of it) and this application.
+     *
+     * @see https://www.rfc-editor.org/rfc/rfc9110#section-7.6.1
+     */
+    private const HOP_BY_HOP_HEADERS = [
+        'connection',
+        'keep-alive',
+        'proxy-authenticate',
+        'proxy-authorization',
+        'proxy-connection',
+        'te',
+        'trailer',
+        'transfer-encoding',
+        'upgrade',
+    ];
+
+    /**
+     * Describe the body as received, which HttpClient may have decoded before it is streamed again.
+     */
+    private const BODY_DEPENDENT_HEADERS = [
+        'content-encoding',
+        'content-length',
+    ];
+
     private bool $processed = false;
 
     /**
@@ -113,8 +138,7 @@ class GotenbergFileResult extends AbstractGotenbergResult
 
         $filename = $this->getFileName();
 
-        $headers = $this->getHeaders();
-        unset($headers['content-encoding'], $headers['content-length'], $headers['transfer-encoding'], $headers['connection']);
+        $headers = $this->getForwardableHeaders();
         $headers['X-Accel-Buffering'] = ['no']; // See https://symfony.com/doc/current/components/http_foundation.html#streaming-a-json-response
         if ($filename) {
             $headers['Content-Disposition'] = [HeaderUtils::makeDisposition($this->disposition, $filename)];
@@ -137,5 +161,25 @@ class GotenbergFileResult extends AbstractGotenbergResult
             $this->getStatusCode(),
             $headers,
         );
+    }
+
+    /**
+     * @return array<string, array<string>>
+     */
+    private function getForwardableHeaders(): array
+    {
+        $headers = $this->getHeaders();
+
+        // Headers named in "Connection" are hop-by-hop too.
+        $connectionOptions = [];
+        foreach ($headers['connection'] ?? [] as $value) {
+            foreach (explode(',', $value) as $option) {
+                $connectionOptions[] = strtolower(trim($option));
+            }
+        }
+
+        $excluded = array_flip([...self::HOP_BY_HOP_HEADERS, ...self::BODY_DEPENDENT_HEADERS, ...$connectionOptions]);
+
+        return array_diff_key($headers, $excluded);
     }
 }
