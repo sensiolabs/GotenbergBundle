@@ -13,3 +13,7 @@
     - <style>{{ gotenberg_font_face('fonts/my-font.woff2', 'MyFont') | raw }}</style>
     + <style>{{ gotenberg_font_face('fonts/my-font.woff2', 'MyFont') }}</style>
   ```
+* Since 1.3.1, `GotenbergFileResult::stream()` no longer forwards the `Content-Encoding`, `Content-Length`,
+  `Transfer-Encoding` and `Connection` headers of the Gotenberg response. Code that removed them by hand can stop.
+* The `gotenberg_*` Twig asset functions strip the query string and the fragment that a version strategy adds
+  (`framework.assets.version`) before looking the file up in `assets_directory`.
