@@ -29,6 +29,8 @@ use Sensiolabs\GotenbergBundle\Exception\MissingRequiredFieldException;
  * As assets files, by default the PDF files are fetch in the assets folder
  * of your application. For more information about path resolution go to
  * assets documentation.
+ * By default, a path given twice is sent once: use `dedupeFiles(false)`
+ * to keep every file.
  *
  * @see https://gotenberg.dev/docs/8.x/manipulate-pdfs/merge-pdfs
  *
