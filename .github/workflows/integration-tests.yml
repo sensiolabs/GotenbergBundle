@@ -1,0 +1,64 @@
+name: 'Integration Tests'
+
+on:
+  push:
+    branches: ['main', '1.x']
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: 'read'
+
+jobs:
+  setup:
+    name: 'Setup matrix'
+    runs-on: 'ubuntu-latest'
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: 'actions/checkout@v4'
+      - id: 'set-matrix'
+        run: |
+          echo "matrix=$(jq -c '.' ./.dagger/src/integration-matrix-versions.json)" >> $GITHUB_OUTPUT
+
+  test:
+    name: 'Integration - ${{ matrix.name }}'
+    runs-on: 'ubuntu-latest'
+    needs: 'setup'
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.setup.outputs.matrix) }}
+    continue-on-error: ${{ matrix.allow-failure }}
+    steps:
+      - uses: 'actions/checkout@v4'
+
+      - uses: './.github/actions/setup-dagger'
+
+      - name: 'Run integration suite'
+        uses: 'dagger/dagger-for-github@v8.2.0'
+        with:
+          version: "latest"
+          call: "integration-test --gotenberg-version '${{ matrix.gotenberg-version }}' phpunit"
+          dagger-flags: '--silent'
+        env:
+          DAGGER_NO_NAG: '1'
+
+  latest:
+    name: 'Integration - latest nightly'
+    runs-on: 'ubuntu-latest'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    continue-on-error: true
+    steps:
+      - uses: 'actions/checkout@v4'
+
+      - uses: './.github/actions/setup-dagger'
+
+      - name: 'Run latest compatibility suite'
+        uses: 'dagger/dagger-for-github@v8.2.0'
+        with:
+          version: "latest"
+          call: "integration-test --gotenberg-version 'latest' phpunit"
+          dagger-flags: '--silent'
+        env:
+          DAGGER_NO_NAG: '1'
